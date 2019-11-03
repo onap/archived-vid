@@ -23,6 +23,7 @@ package org.onap.vid.job.command
 
 import com.fasterxml.jackson.module.kotlin.convertValue
 import org.apache.commons.lang3.ObjectUtils.defaultIfNull
+import org.onap.logging.ref.slf4j.ONAPLogConstants
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate
 import org.onap.vid.changeManagement.RequestDetailsWrapper
 import org.onap.vid.exceptions.AbortingException
@@ -36,6 +37,7 @@ import org.onap.vid.model.serviceInstantiation.BaseResource
 import org.onap.vid.mso.RestMsoImplementation
 import org.onap.vid.utils.JACKSON_OBJECT_MAPPER
 import org.onap.vid.utils.getEnumFromMapOfStrings
+import org.slf4j.MDC
 import org.springframework.http.HttpMethod
 import java.util.*
 
@@ -359,6 +361,8 @@ abstract class ResourceCommand(
     }
 
     protected fun executeAndHandleMsoInstanceRequest(restCallPlan: MsoRestCallPlan): JobStatus {
+        //make sure requestIds are unique
+        MDC.put(ONAPLogConstants.MDCs.REQUEST_ID, UUID.randomUUID().toString())
         val msoResponse = restMso.restCall(
                 restCallPlan.httpMethod,
                 RequestReferencesContainer::class.java,
