@@ -43,9 +43,7 @@ class VolumeGroupCommand @Autowired constructor(
     }
 
     override fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String, testApi: String?): MsoRestCallPlan {
-
-        val serviceInstanceId = commandParentData.getInstanceId(CommandParentData.CommandDataKey.SERVICE_INSTANCE_ID)
-        val serviceModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.SERVICE_MODEL_INFO)
+        val serviceInstanceId = serviceInstanceIdFromRequest()
         val vnfInstanceId = commandParentData.getInstanceId(CommandParentData.CommandDataKey.VNF_INSTANCE_ID)
         val vnfModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.VNF_MODEL_INFO)
 
@@ -53,7 +51,7 @@ class VolumeGroupCommand @Autowired constructor(
 
         val requestDetailsWrapper = msoRequestBuilder.generateVolumeGroupInstantiationRequest(
                 request as VfModule,
-                serviceModelInfo, serviceInstanceId,
+                serviceModelInfoFromRequest(), serviceInstanceId,
                 vnfModelInfo,vnfInstanceId,
                 userId,
                 testApi

@@ -67,14 +67,13 @@ class InstanceGroupCommand @Autowired constructor(
     }
 
     override fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String, testApi: String?): MsoRestCallPlan {
-        val serviceInstanceId = commandParentData.getInstanceId(CommandParentData.CommandDataKey.SERVICE_INSTANCE_ID)
-        val serviceModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.SERVICE_MODEL_INFO)
+        val serviceInstanceId = serviceInstanceIdFromRequest()
 
         val instantiatePath = asyncInstantiationBL.getInstanceGroupInstantiationPath()
 
         val requestDetailsWrapper = msoRequestBuilder.generateInstanceGroupInstantiationRequest(
                 request as InstanceGroup,
-                serviceModelInfo, serviceInstanceId,
+                serviceModelInfoFromRequest(), serviceInstanceId,
                 userId,
                 testApi
         )

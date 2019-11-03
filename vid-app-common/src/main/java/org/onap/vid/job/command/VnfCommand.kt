@@ -62,7 +62,8 @@ class VnfCommand @Autowired constructor(
                 childJobs = pushChildrenJobsToBroker(vfModules.filter { filterModuleByNeedToCreateBase(it) }, dataForChild, JobType.VolumeGroupInstantiation)
             } catch (e: AsdcCatalogException) {
                 LOGGER.error("Failed to retrieve service definitions from SDC, for VfModule is BaseModule.. Error: " + e.message , e)
-                return Job.JobStatus.FAILED
+                //return Job.JobStatus.FAILED
+                throw e;
             }
         }
 
@@ -72,19 +73,18 @@ class VnfCommand @Autowired constructor(
     private fun filterModuleByNeedToCreateBase(it: VfModule):Boolean {
         return needToCreateBaseModule ==
             commandUtils.isVfModuleBaseModule(
-                commandParentData.getModelInfo(CommandParentData.CommandDataKey.SERVICE_MODEL_INFO).getModelVersionId(),
-                it.modelInfo.modelVersionId)
+                    serviceModelInfoFromRequest().modelVersionId,
+                    it.modelInfo.modelVersionId)
     }
 
     override fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String, testApi: String?): MsoRestCallPlan {
-        val serviceInstanceId = commandParentData.getInstanceId(CommandParentData.CommandDataKey.SERVICE_INSTANCE_ID)
-        val serviceModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.SERVICE_MODEL_INFO)
+        val serviceInstanceId = serviceInstanceIdFromRequest()
 
         val instantiatePath = asyncInstantiationBL.getVnfInstantiationPath(serviceInstanceId)
 
         val requestDetailsWrapper = msoRequestBuilder.generateVnfInstantiationRequest(
                 request as Vnf,
-                serviceModelInfo, serviceInstanceId,
+                serviceModelInfoFromRequest(), serviceInstanceId,
                 userId,
                 testApi
         )
@@ -110,7 +110,7 @@ class VnfCommand @Autowired constructor(
     }
 
     override fun planDeleteMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String): MsoRestCallPlan {
-        val serviceInstanceId = commandParentData.getInstanceId(CommandParentData.CommandDataKey.SERVICE_INSTANCE_ID)
+        val serviceInstanceId = serviceInstanceIdFromRequest()
         val path = asyncInstantiationBL.getVnfDeletionPath(serviceInstanceId, getRequest().instanceId)
         val requestDetailsWrapper = msoRequestBuilder.generateDeleteVnfRequest(getRequest(), userId)
         return MsoRestCallPlan(HttpMethod.DELETE, path, Optional.of(requestDetailsWrapper), Optional.of(userId),
