@@ -103,44 +103,48 @@ class VfmoduleCommand @Autowired constructor(
     data class ModelsInfoTriplet(val serviceModelInfo: ModelInfo, val vnfModelInfo: ModelInfo, val vfmModelInfo: ModelInfo)
 
     private fun newestSelector(newestModel: ServiceModel, commandParentData: CommandParentData): ModelsInfoTriplet {
-        val serviceModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.SERVICE_MODEL_INFO)
-        val vfmModelInfo = getRequest().modelInfo
-        val vnfModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.VNF_MODEL_INFO)
-
-        val newestServiceModelInfo = newestServiceModelInfo(newestModel)
-        val newestVfmModelInfo = newestVfmModelInfo(newestModel)
-        val newestVnfModelInfo = newestVnfModelInfo(newestModel, commandParentData)
-
-        return if (newestServiceModelInfo == null || newestVfmModelInfo == null || newestVnfModelInfo == null) {
-            ModelsInfoTriplet(serviceModelInfo, vnfModelInfo, vfmModelInfo)
-        } else {
-            ModelsInfoTriplet(newestServiceModelInfo, newestVnfModelInfo, newestVfmModelInfo)
-        }
+        return ModelsInfoTriplet(
+                newestServiceModelInfo(newestModel),
+                newestVnfModelInfo(newestModel, commandParentData),
+                newestVfmModelInfo(newestModel)
+        )
     }
 
     private fun newestServiceModelInfo(newestModel: ServiceModel) = toModelInfo(newestModel.service)
 
-    private fun newestVfmModelInfo(newestModel: ServiceModel): ModelInfo? {
+    private fun newestVfmModelInfo(newestModel: ServiceModel): ModelInfo {
         val vfmModelInfo = getRequest().modelInfo
-        val matchingVfms = selectVfms(newestModel, vfmModelInfo)
-        return toModelInfo(matchingVfms.getOrNull(0))
+        val matchingVfm = selectVfm(newestModel, vfmModelInfo)
+        return toModelInfo(matchingVfm)
     }
 
-    private fun newestVnfModelInfo(newestModel: ServiceModel, commandParentData: CommandParentData): ModelInfo? {
+    private fun newestVnfModelInfo(newestModel: ServiceModel, commandParentData: CommandParentData): ModelInfo {
         val vnfModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.VNF_MODEL_INFO)
-        val matchingVnfs = selectVnfs(newestModel, vnfModelInfo)
-        return toModelInfo(matchingVnfs.getOrNull(0))
+        val matchingVnf = selectVnf(newestModel, vnfModelInfo)
+        return toModelInfo(matchingVnf)
     }
 
-    private fun selectVfms(newestModel: ServiceModel, modelInfo: ModelInfo) =
-            newestModel.vfModules.values.filter { it.modelCustomizationName == modelInfo.modelCustomizationName }
+    internal fun selectVfm(newestModel: ServiceModel, modelInfo: ModelInfo) =
+            exactlyOne("vfModule for modelCustomizationName \"${modelInfo.modelCustomizationName}\"") {
+                newestModel.vfModules.values.single { it.modelCustomizationName == modelInfo.modelCustomizationName }
+            }
 
-    private fun selectVnfs(newestModel: ServiceModel, modelInfo: ModelInfo) =
-            newestModel.vnfs.values.filter { it.modelCustomizationName == modelInfo.modelCustomizationName }
+    internal fun selectVnf(newestModel: ServiceModel, modelInfo: ModelInfo) =
+            exactlyOne("VNF for modelCustomizationName \"${modelInfo.modelCustomizationName}\"") {
+                newestModel.vnfs.values.single { it.modelCustomizationName == modelInfo.modelCustomizationName }
+            }
 
-    private fun toModelInfo(toBeConverted: VNF?): ModelInfo? = toBeConverted?.let { toModelInfo(it, "vnf") }
+    private fun <T: Any> exactlyOne(predicateDescription: String, itemSupplier: () -> T): T {
+        return try {
+            itemSupplier.invoke()
+        } catch (cause: Exception) {
+            throw IllegalStateException("Cannot match $predicateDescription: ${cause.localizedMessage}", cause)
+        }
+    }
 
-    private fun toModelInfo(toBeConverted: ToscaVfm?): ModelInfo? = toBeConverted?.let { toModelInfo(it, "vfModule") }
+    private fun toModelInfo(toBeConverted: VNF): ModelInfo = toModelInfo(toBeConverted, "vnf")
+
+    private fun toModelInfo(toBeConverted: ToscaVfm): ModelInfo = toModelInfo(toBeConverted, "vfModule")
 
     private fun toModelInfo(toBeConverted: MinimalNode, modelType: String): ModelInfo {
         val targetModelInfo = ModelInfo()
@@ -167,11 +171,7 @@ class VfmoduleCommand @Autowired constructor(
         return targetModelInfo
     }
 
-    private fun toModelInfo(toBeConverted: Service?): ModelInfo? {
-
-        if (toBeConverted == null)
-            return null
-
+    internal fun toModelInfo(toBeConverted: Service): ModelInfo {
         val targetModelInfo = ModelInfo()
 
         targetModelInfo.modelVersionId = toBeConverted.uuid
@@ -197,10 +197,14 @@ class VfmoduleCommand @Autowired constructor(
         return getActionType() == Action.Upgrade
     }
 
-    private fun fetchNewestServiceModel(): ServiceModel {
+    internal fun fetchNewestServiceModel(): ServiceModel {
         val serviceModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.SERVICE_MODEL_INFO)
-        var modelNewestUuid = commandUtils.getNewestModelUuid(serviceModelInfo.modelInvariantId);
-        var serviceNewestModel = commandUtils.getServiceModel(modelNewestUuid);
+        val modelNewestUuid = commandUtils.getNewestModelUuid(serviceModelInfo.modelInvariantId);
+
+        check(!modelNewestUuid.equals(serviceModelInfo.modelVersionId, true)) {
+            "Model version id ${serviceModelInfo.modelVersionId} is already the latest version of model's invariant id ${serviceModelInfo.modelInvariantId}" }
+
+        val serviceNewestModel = commandUtils.getServiceModel(modelNewestUuid);
 
         return serviceNewestModel;
     }
