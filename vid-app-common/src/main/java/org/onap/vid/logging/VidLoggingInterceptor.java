@@ -20,10 +20,12 @@
 
 package org.onap.vid.logging;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.onap.logging.filter.spring.LoggingInterceptor;
-import org.onap.logging.ref.slf4j.ONAPLogConstants;
+import org.onap.logging.ref.slf4j.ONAPLogConstants.MDCs;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,16 +33,49 @@ public class VidLoggingInterceptor extends LoggingInterceptor {
 
     static final String INBOUND_INVO_ID = "InboundInvoId";
 
+    private static final String canonicalHostName = getCanonicalName();
+
+    private static String getCanonicalName() {
+        try {
+            return InetAddress.getLocalHost().getCanonicalHostName();
+        } catch (UnknownHostException e) {
+            // YOLO
+            return "";
+        }
+    }
+
     @Override
     protected void additionalPreHandling(HttpServletRequest request)  {
         super.additionalPreHandling(request);
-        MDC.put(INBOUND_INVO_ID, MDC.get(ONAPLogConstants.MDCs.INVOCATION_ID));
+        storeInboundInvocationId();
+    }
+
+    /*
+     * store inbound invocationId for later use in restoreInvocationId
+     */
+    private void storeInboundInvocationId() {
+        MDC.put(INBOUND_INVO_ID, MDC.get(MDCs.INVOCATION_ID));
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        MDC.put(ONAPLogConstants.MDCs.INVOCATION_ID, MDC.get(INBOUND_INVO_ID));
+        restoreInvocationId();
+        fixServerFQDN();
         super.postHandle(request, response, handler, modelAndView);
+    }
+
+    /*
+     * fix SERVER_FQDN, because EELFLoggerDelegate::setGlobalLoggingContext put wrong value
+     */
+    private void fixServerFQDN() {
+        MDC.put(MDCs.SERVER_FQDN, canonicalHostName);
+    }
+
+    /**
+     * restore invocationId that was overwritten by metrics interceptor
+     */
+    private void restoreInvocationId() {
+        MDC.put(MDCs.INVOCATION_ID, MDC.get(INBOUND_INVO_ID));
     }
 
 }
