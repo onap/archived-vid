@@ -1,16 +1,17 @@
 package org.onap.simulator.presetGenerator.presets.BasePresets;
 
-import org.onap.simulator.presetGenerator.presets.model.RegistrationRequest;
-import org.springframework.http.HttpMethod;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.model.RegistrationRequest;
+import org.springframework.http.HttpMethod;
 
 /**
  * Created by itzikliderman on 13/12/2017.
  */
 public abstract class BasePreset {
+
+    public static final String UUID_REGEX = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}";
 
     public RegistrationRequest generateScenario() {
         Map<String, String> responseHeaders = new HashMap<>();

@@ -97,28 +97,40 @@ public class LoggerFormatTest extends BaseApiTest {
     public static String getLogLines(LogName logname, int maxRows, int minRows, RestTemplate restTemplate, URI uri) {
         String logLines = restTemplate.getForObject(uri + "/logger/" + logname.name() + "?limit={maxRows}", String.class, maxRows);
         assertThat("expecting at least " + minRows + " rows in " + logname.name(),
-                StringUtils.countMatches(logLines, '\n') + 1,
-                is(greaterThanOrEqualTo(minRows)));
+            StringUtils.countMatches(logLines, '\n') + 1,
+            is(greaterThanOrEqualTo(minRows)));
         return logLines;
     }
 
     /**
-     * @return Chronological-ordered list of recent log-lines of a given requestId
+     * @return Chronological-ordered list of recent log-lines
      */
-    public static List<String> getRequestLogLines(String requestId, LogName logname, RestTemplate restTemplate, URI uri) {
-        String logLines = LoggerFormatTest.getLogLines(logname, 30, 1, restTemplate, uri);
+    public static List<String> getLogLinesAsList(LogName logname, int maxRows, int minRows, RestTemplate restTemplate, URI uri) {
+        String logLines = LoggerFormatTest.getLogLines(logname, maxRows, minRows, restTemplate, uri);
 
         // Split
         List<String> lines = new ArrayList<>(Arrays.asList(logLines.split("(\\r?\\n)")));
-
-        // Filter
-        lines.removeIf(line -> !StringUtils.containsIgnoreCase(line, requestId));
 
         // Reverse
         reverse(lines);
 
         return lines;
     }
+
+
+    /**
+     * @return Chronological-ordered list of recent log-lines of a given requestId
+     */
+    public static List<String> getRequestLogLines(String requestId, LogName logname, RestTemplate restTemplate, URI uri) {
+
+        List<String> lines = getLogLinesAsList(logname, 30, 1, restTemplate, uri);
+
+        //Filter
+        lines.removeIf(line -> !StringUtils.containsIgnoreCase(line, requestId));
+
+        return lines;
+    }
+
 
     public static void assertHeadersAndMetricLogs(RestTemplate restTemplate, URI uri, String requestId, String path, int requestsSize) {
         List<String> logLines =
@@ -146,22 +158,27 @@ public class LoggerFormatTest extends BaseApiTest {
             String invocationId = invocationIds.get(0);
             allInvocationIds.add(invocationId);
 
-            assertThat("request id  and invocation id must be found in exactly two rows",
-                logLines,
-                containsInRelativeOrder(
-                    allOf(
-                        containsString("RequestID="+requestId),
-                        containsString("InvocationID="+ invocationId),
-                        containsString("Invoke")),
-                    allOf(
-                        containsString("RequestID="+requestId),
-                        containsString("InvocationID="+ invocationId),
-                        containsString("InvokeReturn"))
-                ));
+            assertIdsInMetricsLog(logLines, requestId, invocationId);
         });
+
         //make sure no InvocationId is repeated twice
         assertThat("expect all InvocationIds to be unique",
             allInvocationIds, containsInAnyOrder(new HashSet<>(allInvocationIds).toArray()));
+    }
+
+    public static void assertIdsInMetricsLog(List<String> logLines, String requestId, String invocationId) {
+        assertThat("request id and invocation id must be found in exactly two rows",
+            logLines,
+            containsInRelativeOrder(
+                allOf(
+                    containsString("RequestID="+requestId),
+                    containsString("InvocationID="+ invocationId),
+                    containsString("Invoke")),
+                allOf(
+                    containsString("RequestID="+requestId),
+                    containsString("InvocationID="+ invocationId),
+                    containsString("InvokeReturn"))
+            ));
     }
 
     private JsonNode getCheckerResults(String logtype, String logLines) {

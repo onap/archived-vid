@@ -1,18 +1,27 @@
 package org.onap.vid.api;
 
 import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset.DEFAULT_INSTANCE_ID;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -39,6 +48,8 @@ import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaMo
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus.SourceStatus;
 import org.onap.vid.model.asyncInstantiation.ServiceInfo;
+import org.onap.vid.more.LoggerFormatTest;
+import org.onap.vid.more.LoggerFormatTest.LogName;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -49,6 +60,7 @@ import vid.automation.test.model.JobStatus;
 import vid.automation.test.model.ServiceAction;
 import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.services.SimulatorApi.RecordedRequests;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 
 @FeatureTogglingTest({Features.FLAG_ASYNC_ALACARTE_VNF})
@@ -395,6 +407,60 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
             assertRecordedRequests(retryPathCounterOverride, 0L, vnfRequestId);
         }
+    }
+
+    @Test
+    public void verifyMetricsLogInAsyncInstantiation() {
+
+        final String UUID_REGEX = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}";
+
+        final String msoURL = "/mso/serviceInstantiation/v";
+
+        deploy1ServiceFromCypress__verifyStatusAndMsoCalls_andRetry("none", emptyMap(), emptyMap(), true);
+        List<String> logLines =  LoggerFormatTest.getLogLinesAsList(LogName.metrics2019, 200, 1, restTemplate, uri);
+        List<RecordedRequests> requests = retrieveRecordedRequests();
+        List<RecordedRequests> underTestRequests =
+            requests.stream().filter(x->x.path.contains(msoURL)).collect(toList());
+
+        underTestRequests.forEach(request-> {
+            assertThat("X-ONAP-RequestID", request.headers.get("X-ONAP-RequestID"), contains(matchesPattern(UUID_REGEX)));
+            assertThat("X-ECOMP-RequestID", request.headers.get("X-ECOMP-RequestID"), contains(matchesPattern(UUID_REGEX)));
+            assertThat("X-ECOMP-RequestID", request.headers.get("X-InvocationID"), contains(matchesPattern(UUID_REGEX)));
+            assertThat("X-ONAP-PartnerName", request.headers.get("X-ONAP-PartnerName"), contains("VID.VID"));
+        });
+
+        List<String> allInvocationIds = new LinkedList<>();
+        List<String> allRequestsIds = new LinkedList<>();
+
+        underTestRequests.forEach(request->{
+            String invocationId = request.headers.get("X-InvocationID").get(0);
+            allInvocationIds.add(invocationId);
+
+            String requestId = request.headers.get("X-ONAP-RequestID").get(0);
+            allRequestsIds.add(requestId);
+
+            assertThat("request id and invocation id must be found in two rows",
+                logLines,
+                hasItems(
+                    allOf(
+                        containsString("RequestID="+requestId),
+                        containsString("InvocationID="+ invocationId),
+                        containsString("Invoke")),
+                    allOf(
+                        containsString("RequestID="+requestId),
+                        containsString("InvocationID="+ invocationId),
+                        containsString("InvokeReturn"))
+                ));
+        });
+
+        //make sure no InvocationId is repeated twice
+        assertThat("expect all InvocationIds to be unique",
+            allInvocationIds, containsInAnyOrder(new HashSet<>(allInvocationIds).toArray()));
+
+        //make sure no RequestId is repeated twice
+        assertThat("expect all RequestIds to be unique",
+            allRequestsIds, containsInAnyOrder(new HashSet<>(allRequestsIds).toArray()));
+
     }
 
     private void registerPresetsForRetryTest(String whatToFail, ImmutableMap<PresetMSOServiceInstanceGen2WithNames.Keys, String> names, String vnfRequestId, boolean withTestApi ) {

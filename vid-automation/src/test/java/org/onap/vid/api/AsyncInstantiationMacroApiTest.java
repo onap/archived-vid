@@ -135,12 +135,9 @@ public class AsyncInstantiationMacroApiTest extends AsyncInstantiationBase {
             deleteOneJobHavingTheStatus(jobs, JobStatus.IN_PROGRESS);
         } catch (HttpClientErrorException e) {
             JsonAssert.assertJsonPartEquals(
-                String.format(
-                    "Service status does not allow deletion from the queue (Request id: %s)",
-                    e.getResponseHeaders().getFirst("X-ECOMP-RequestID-echo")
-                ),
-                e.getResponseBodyAsString(),
-                "message"
+                    "Service status does not allow deletion from the queue (Request id: null)",
+                    e.getResponseBodyAsString(),
+                    "message"
             );
             assertThat(e.getStatusCode(), is(HttpStatus.METHOD_NOT_ALLOWED));
 
