@@ -35,6 +35,7 @@ import org.onap.vid.model.Action
 import org.onap.vid.model.RequestReferencesContainer
 import org.onap.vid.model.serviceInstantiation.BaseResource
 import org.onap.vid.mso.RestMsoImplementation
+import org.onap.vid.mso.model.ModelInfo
 import org.onap.vid.utils.JACKSON_OBJECT_MAPPER
 import org.onap.vid.utils.getEnumFromMapOfStrings
 import org.slf4j.MDC
@@ -407,6 +408,9 @@ abstract class ResourceCommand(
         commandParentData.setActionPhase(actionPhase)
         return commandParentData.parentData
     }
+
+    protected fun serviceModelInfoFromRequest(): ModelInfo = commandParentData.getModelInfo(CommandParentData.CommandDataKey.SERVICE_MODEL_INFO)
+    protected fun serviceInstanceIdFromRequest(): String = commandParentData.getInstanceId(CommandParentData.CommandDataKey.SERVICE_INSTANCE_ID)
 
     protected open fun addMyselfToChildrenData(commandParentData: CommandParentData, request: BaseResource) {
         // Nothing by default
