@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b6f55b4_21b90b8d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T12:47:11Z",
+      "side": 1,
+      "message": "Please consider making a short title, and adding the expanded text after a single empty line.\n\ne.g. https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html",
+      "revId": "a40a12657dff0cfa77e430d75433520747b1f70d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf0fc7e6_74aba97d",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T12:47:11Z",
+      "side": 1,
+      "message": "What\u0027s the meaning of \"incoming\" here?\nShouldn\u0027t it be more like \"assertRequestIdsInAuditLog\"?",
+      "range": {
+        "startLine": 134,
+        "startChar": 23,
+        "endLine": 134,
+        "endChar": 46
+      },
+      "revId": "a40a12657dff0cfa77e430d75433520747b1f70d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f6a2d58_e751523c",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T12:47:11Z",
+      "side": 1,
+      "message": "I suppose this one will eventually become a parameter?",
+      "range": {
+        "startLine": 136,
+        "startChar": 15,
+        "endLine": 136,
+        "endChar": 23
+      },
+      "revId": "a40a12657dff0cfa77e430d75433520747b1f70d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba321daa_31d19132",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T12:47:11Z",
+      "side": 1,
+      "message": "Maybe `requestIdPrefix`?",
+      "range": {
+        "startLine": 137,
+        "startChar": 15,
+        "endLine": 137,
+        "endChar": 25
+      },
+      "revId": "a40a12657dff0cfa77e430d75433520747b1f70d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb27e916_c92fc41e",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T12:47:11Z",
+      "side": 1,
+      "message": "should be `reqPath`, right?",
+      "range": {
+        "startLine": 148,
+        "startChar": 35,
+        "endLine": 148,
+        "endChar": 44
+      },
+      "revId": "a40a12657dff0cfa77e430d75433520747b1f70d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
