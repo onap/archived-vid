@@ -774,11 +774,12 @@ public class AaiApiTest extends BaseApiAaiTest {
             new PresetAAIGetVpnsByType(),
             new PresetAAIGetSubscribersGet()
         ),CLEAR_THEN_SET);
-
-        String url = uri + "/aai_get_vpn_list";
+        String internalPath = "/aai_get_vpn_list";
+        String url = uri + internalPath;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         final String requestId = response.getHeaders().getFirst("X-ECOMP-RequestID-echo");
         LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId,"/network/vpn-bindings" , 1);
+        LoggerFormatTest.assertIncomingAuditLogs(restTemplate, uri, requestId, internalPath);
     }
 
     @Test

@@ -220,7 +220,7 @@ public class SdcApiTest extends BaseApiTest {
     public void whenCallSdc_thenRequestRecordedInMetricsLog() {
 
         ModelInfo modelInfo = ModelInfo.transportWithPnfsService;
-
+        String internalPath = SDC_GET_SERVICE_MODEL + modelInfo.modelVersionId;
         registerExpectationFromPresets(ImmutableList.of(
             new PresetSDCGetServiceToscaModelGet(modelInfo),
             new PresetSDCGetServiceMetadataGet(modelInfo),
@@ -228,11 +228,12 @@ public class SdcApiTest extends BaseApiTest {
         ), CLEAR_THEN_SET);
 
         ResponseEntity<String> response = restTemplate.getForEntity(
-            buildUri(SDC_GET_SERVICE_MODEL + modelInfo.modelVersionId), String.class);
+            buildUri(internalPath), String.class);
 
         final String requestId = response.getHeaders().getFirst("X-ECOMP-RequestID-echo");
 
         LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId, SDC_ROOT_PATH, 2);
+        LoggerFormatTest.assertIncomingAuditLogs(restTemplate, uri, requestId, internalPath);
     }
 
 }
