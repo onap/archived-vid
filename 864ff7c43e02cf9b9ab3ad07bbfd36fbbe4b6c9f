@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5271774f_150d3850",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T06:23:44Z",
+      "side": 1,
+      "message": "please add return type",
+      "revId": "864ff7c43e02cf9b9ab3ad07bbfd36fbbe4b6c9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "286760b9_42970978",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T06:23:44Z",
+      "side": 1,
+      "message": "why \\\" ?",
+      "revId": "864ff7c43e02cf9b9ab3ad07bbfd36fbbe4b6c9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f28607e4_afaf9a03",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T06:23:44Z",
+      "side": 1,
+      "message": "please add return type",
+      "revId": "864ff7c43e02cf9b9ab3ad07bbfd36fbbe4b6c9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54cda011_86937014",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T06:23:44Z",
+      "side": 1,
+      "message": "${predicateDescription}",
+      "revId": "864ff7c43e02cf9b9ab3ad07bbfd36fbbe4b6c9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5986cc1c_be9153c7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T06:23:44Z",
+      "side": 1,
+      "message": "I\u0027m not familiar with this method check, but I guess it throw some assertion error.\nI think it\u0027s better to declare it in the method signature, that this method throw exception/assertion",
+      "revId": "864ff7c43e02cf9b9ab3ad07bbfd36fbbe4b6c9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
