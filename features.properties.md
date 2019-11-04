@@ -177,3 +177,7 @@
 * FLAG_SHOW_ORCHESTRATION_TYPE
   enables showing/hiding (true/false) column with orchestration type in Service Model browser.
   The types are fetched from aai.
+  
+* FLAG_1911_INSTANTIATION_ORDER_BUTTON_IN_ASYNC_ALACARTE
+   Let the user set the order of resource instantiation with the button (Move up / Move down) while using drawing board (new view edit)
+   for a-la-carte instantiation.
