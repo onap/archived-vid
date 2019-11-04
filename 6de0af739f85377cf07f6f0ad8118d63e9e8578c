@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3e7b25df_7d7cd1c9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/ResourceCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T10:54:36Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ea0913c_bd0e0d26",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T10:54:36Z",
+      "side": 1,
+      "message": "I\u0027ve learned  something new",
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
