@@ -178,6 +178,30 @@
     },
     {
       "key": {
+        "uuid": "8542d800_560ff42b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T11:14:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0a49a291_dec62d20",
+      "range": {
+        "startLine": 120,
+        "startChar": 5,
+        "endLine": 124,
+        "endChar": 5
+      },
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c8d3f91d_833d1ecd",
         "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
         "patchSetId": 4
@@ -233,6 +257,24 @@
       "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31b960d1_57aa7cfb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T11:14:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ce040f6f_cd8e3b7d",
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
