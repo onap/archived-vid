@@ -137,7 +137,6 @@ Usage:
 
 Example of mocking the scheduler: 
 
-#scheduler.server.url=http://mtanjv9sdlg10.aic.cip.att.com:8989/scheduler
 scheduler.server.url=http://localhost:7080/vidSimulator/scheduler
 
 

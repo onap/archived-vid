@@ -608,28 +608,7 @@
         	}
 		            
 		        	$scope.createFavoriteErrorMenu=function() {
-		                $scope.favoritesMenuItems = [
-// 		                                             {
-// 		                                         	    "menuId": "93",
-// 		                                         	    "text": "JSONLint",
-// 		                                         	    "url": "http://http://jsonlint.com"
-// 		                                         	  },
-// 		                                         	  {
-// 		                                         	    "menuId": "22",
-// 		                                         	    "text": "ECOMP Wasteland",
-// 		                                         	    "url": "https://ecomp.homer.att.com/ecompportal/applicationsHome"
-// 		                                         	  },
-// 		                                         	  {
-// 		                                         	    "menuId": "94",
-// 		                                         	    "text": "HROneStop",
-// 		                                         	    "url": "http://ebiz.sbc.com/hronestop"
-// 		                                         	  },
-// 		                                         	  {
-// 		                                         	    "menuId": "91",
-// 		                                         	    "text": "Andy and his Astrophotgraphy",
-// 		                                         	    "url": "https://ecomp.homer.att.com/ecompportal/applicationsHome"
-// 		                                         	  }
-		                                         	];
+		                $scope.favoritesMenuItems = [];
 		                $scope.favoriteItemsCount = Object.keys($scope.favoritesMenuItems).length;
 		                $log.info('number of favorite menus: ' + $scope.favoriteItemsCount);
 		        	}
@@ -699,20 +678,6 @@
                                	    "text": "JSONLint",
                                	    "parentMenuId": 4,
                                	    "url": "http://http://jsonlint.com"
-                               	  },
-                               	  {
-                               	    "menuId": 94,
-                               	    "column": 2,
-                               	    "text": "HROneStop",
-                               	    "parentMenuId": 4,
-                               	    "url": "http://ebiz.sbc.com/hronestop"
-                               	  },
-                               	  {
-                               	    "menuId": 95,
-                               	    "column": 2,
-                               	    "text": "4th Level App4a R16",
-                               	    "parentMenuId": 4,
-                               	    "url": "http://www.e-access.att.com/ecomp_portal_ist/ecompportal/widgets"
                                	  },
                                	  {
                                	    "menuId": 96,
