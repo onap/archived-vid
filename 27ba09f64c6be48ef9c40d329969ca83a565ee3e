@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f0780433_71cbd5bc",
+        "filename": "vid-app-common/src/test/resources/WEB-INF/conf/asdc.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T11:06:37Z",
+      "side": 1,
+      "message": "can completely remove most of these lines, to be like the non-test asdc.properties files.\n\nactually, not sure if this file is even needed.",
+      "revId": "27ba09f64c6be48ef9c40d329969ca83a565ee3e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a183b05_a0379774",
+        "filename": "vid-app-common/src/test/resources/WEB-INF/conf/raptor_app_fusion.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T11:06:37Z",
+      "side": 1,
+      "message": "Will it make any problem?\nCan reuse these:\n```\nsmtp_server\u003dtodo.smtp.com\ndefault_email_sender\u003demail-name@email.com\n```",
+      "revId": "27ba09f64c6be48ef9c40d329969ca83a565ee3e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
