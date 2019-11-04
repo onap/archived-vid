@@ -179,8 +179,7 @@ public class ServiceTreeApiTest extends BaseApiTest {
                 .replace("VNF4_INSTANCE_TYPE", vnfPreset4.getInstanceType());
 
         assertJsonEquals(response, expected);
-        final String requestId = responseEntity.getHeaders().getFirst("X-ECOMP-RequestID-echo");
-        LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId,  "/network/generic-vnfs/generic-vnf/", 5);
+        LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, echoedRequestId(responseEntity),  "/network/generic-vnfs/generic-vnf/", 5);
     }
 
     @Test
@@ -292,9 +291,14 @@ public class ServiceTreeApiTest extends BaseApiTest {
                 .replace("NETWORK4_INSTANCE_NAME", l3NetworkPreset4.getInstanceName())
                 .replace("NETWORK4_INSTANCE_ID", l3NetworkPreset4.getInstanceId());
 
-        String response = restTemplate.getForObject(buildUri(API_URL), String.class, "global-customer-id", "service-instance-type", "service-instance-id");
+        ResponseEntity<String> response = restTemplate.getForEntity(buildUri(API_URL), String.class, "global-customer-id", "service-instance-type", "service-instance-id");
 
-        assertJsonEquals(response, expected);
+        assertJsonEquals(response.getBody(), expected);
+        LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, echoedRequestId(response),  "/vf-modules", 2);
+    }
+
+    private String echoedRequestId(ResponseEntity<?> response) {
+        return response.getHeaders().getFirst("X-ECOMP-RequestID-echo");
     }
 
     @Override

@@ -20,8 +20,28 @@
 
 package org.onap.vid.services;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+import static org.onap.vid.utils.Streams.not;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -45,16 +65,6 @@ import org.onap.vid.utils.Unchecked;
 import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.*;
-import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
-import static org.onap.vid.utils.Streams.not;
 
 
 @Component
@@ -206,7 +216,7 @@ public class AAITreeNodeBuilder {
         directly fetching a resource URI.
          */
 
-        threadPool.execute(() -> {
+        Future<?> vfModulesTask = threadPool.submit(withCopyOfMDC(() -> {
             // the response is an array of vf-modules
             final JsonNode jsonNode;
             try {
@@ -215,29 +225,40 @@ public class AAITreeNodeBuilder {
                 if (e.getHttpCode().equals(404)) {
                     // it's ok, as we're just optimistically fetching
                     // the /vf-modules uri; 404 says this time it was a bad guess
-                    return;
+                    return true;
                 } else {
                     throw e;
                 }
             }
 
             if (isArray(jsonNode, NodeType.VF_MODULE)) {
-
                 //create list of AAITreeNode represent the VfModules from AAI result
                 List<AAITreeNode> vfModules = Streams.fromIterable(jsonNode.get(NodeType.VF_MODULE.getType()))
-                        .map(vfModuleNode -> createAaiNode(NodeType.VF_MODULE, vfModuleNode, nodesAccumulator))
-                        .collect(toList());
+                    .map(vfModuleNode -> createAaiNode(NodeType.VF_MODULE, vfModuleNode, nodesAccumulator))
+                    .collect(toList());
                 //enrich each of the VfModule with placement info
-                vfModules.forEach(vfModule-> enrichPlacementDataUsingTenantInfo(
-                        vfModule,
-                        AAITreeNodeUtils.findFirstRelationshipByRelatedTo(vfModule.getRelationshipList(), "vserver")
+                vfModules.forEach(vfModule -> enrichPlacementDataUsingTenantInfo(
+                    vfModule,
+                    AAITreeNodeUtils.findFirstRelationshipByRelatedTo(vfModule.getRelationshipList(), "vserver")
                 ));
                 //add all VfModules to children list of parent node
                 parentNode.getChildren().addAll(vfModules);
             } else {
                 LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to get vf-modules for vnf " + parentNode.getId());
             }
-        });
+
+            return true; // the Callable<> contract requires a return value
+        }));
+
+        waitForCompletion(vfModulesTask);
+    }
+
+    private void waitForCompletion(Future<?> future) {
+        try {
+            future.get();
+        } catch (Exception e) {
+            throw new GenericUncheckedException(e);
+        }
     }
 
     List<Relationship> getFilteredRelationships(JsonNode json, Tree<AAIServiceTree.AaiRelationship> pathsTree) {
