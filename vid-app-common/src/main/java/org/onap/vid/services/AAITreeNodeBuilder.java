@@ -42,6 +42,7 @@ import org.onap.vid.properties.VidProperties;
 import org.onap.vid.utils.Streams;
 import org.onap.vid.utils.Tree;
 import org.onap.vid.utils.Unchecked;
+import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -256,22 +257,31 @@ public class AAITreeNodeBuilder {
 
         if (!relationships.isEmpty()) {
             List<Callable<List<AAITreeNode>>> tasks = relationships.stream()
-                    .map(relationship ->
-                            (Callable<List<AAITreeNode>>) () ->
-                                    getChildNode(threadPool, nodesAccumulator, relationship.getRelatedTo(),
-                                            relationship.getRelatedLink(), pathsTree))
-                    .collect(Collectors.toList());
+                .map(relationship ->
+                    withCopyOfMDC(() -> getChildNode(threadPool, nodesAccumulator, relationship.getRelatedTo(),
+                            relationship.getRelatedLink(), pathsTree)))
+                .collect(Collectors.toList());
 
             try {
                 int depth = pathsTree.getChildrenDepth();
                 threadPool.invokeAll(tasks, timeout * depth, TimeUnit.SECONDS)
-                        .forEach(future ->
-                                addChildren(node, future)
-                        );
+                    .forEach(future ->
+                        addChildren(node, future)
+                    );
             } catch (Exception e) {
                 throw new GenericUncheckedException(e);
             }
         }
+    }
+
+    private <V> Callable<V> withCopyOfMDC(Callable<V> callable) {
+        //in order to be able to write the correct data while creating the node on a new thread
+        // save a copy of the current thread's context map, with keys and values of type String.
+        final Map<String, String> copyOfParentMDC = MDC.getCopyOfContextMap();
+        return () -> {
+            MDC.setContextMap(copyOfParentMDC);
+            return callable.call();
+        };
     }
 
     private List<AAITreeNode> getChildNode(ExecutorService threadPool, ConcurrentSkipListSet<AAITreeNode> nodesAccumulator,

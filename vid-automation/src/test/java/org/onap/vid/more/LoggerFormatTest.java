@@ -167,7 +167,7 @@ public class LoggerFormatTest extends BaseApiTest {
     }
 
     public static void assertIdsInMetricsLog(List<String> logLines, String requestId, String invocationId) {
-        assertThat("request id and invocation id must be found in exactly two rows",
+        assertThat("request id and invocation id must be found in exactly two rows in: \n" + String.join("\n", logLines),
             logLines,
             containsInRelativeOrder(
                 allOf(
