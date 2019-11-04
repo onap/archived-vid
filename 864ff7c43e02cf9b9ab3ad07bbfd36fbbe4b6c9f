@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "5d380fb3_9835d9f5",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T06:32:00Z",
+      "side": 1,
+      "message": "I\u0027m not sure about the newestModel naming. It just a serviceModel. it doesn\u0027t matter that it\u0027s the newest.",
+      "revId": "864ff7c43e02cf9b9ab3ad07bbfd36fbbe4b6c9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "286760b9_42970978",
         "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
         "patchSetId": 2
@@ -81,6 +98,40 @@
       "writtenOn": "2019-11-04T06:23:44Z",
       "side": 1,
       "message": "I\u0027m not familiar with this method check, but I guess it throw some assertion error.\nI think it\u0027s better to declare it in the method signature, that this method throw exception/assertion",
+      "revId": "864ff7c43e02cf9b9ab3ad07bbfd36fbbe4b6c9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aac00a09_e78c7dc1",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/VfmoduleCommandTest.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T06:32:00Z",
+      "side": 1,
+      "message": "what about rest of the methods of VfmoduleCommand ?\nat least the upgrade related ?",
+      "revId": "864ff7c43e02cf9b9ab3ad07bbfd36fbbe4b6c9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d19fa884_b26728c6",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/VfmoduleCommandTest.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-04T06:32:00Z",
+      "side": 1,
+      "message": "nice",
       "revId": "864ff7c43e02cf9b9ab3ad07bbfd36fbbe4b6c9f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
