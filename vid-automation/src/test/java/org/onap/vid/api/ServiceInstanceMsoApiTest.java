@@ -139,6 +139,7 @@ public class ServiceInstanceMsoApiTest extends BaseMsoApiTest{
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(buildUri(MSO_ACTIVATE_FABRIC_CONFIGURATION), requestBody, String.class);
         String requestId = responseEntity.getHeaders().getFirst("X-ECOMP-RequestID-echo");
         LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId, msoRootPath, 1);
+        LoggerFormatTest.verifyExistenceOfIncomingReqsInAuditLogs(restTemplate, uri, requestId, MSO_ACTIVATE_FABRIC_CONFIGURATION);
     }
 
     @Test(dataProvider = "errorCodes")
