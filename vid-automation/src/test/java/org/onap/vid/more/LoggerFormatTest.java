@@ -131,6 +131,23 @@ public class LoggerFormatTest extends BaseApiTest {
         return lines;
     }
 
+    public static void assertIncomingAuditLogs(RestTemplate restTemplate, URI uri, String requestId){
+        List<String> logLines = getRequestLogLines(requestId, LogName.audit2019, restTemplate, uri);
+        String reqPath = "models/services/12550cd7-7708-4f53-a09e-41d3d6327ebc";
+        String reqStrVar = "RequestID=";
+        assertThat("request id must be found in exactly two rows - entry & exit message in audit log, and include the req path",
+            logLines,
+            containsInRelativeOrder(
+                allOf(
+                    containsString(reqStrVar+requestId),
+                    containsString("ENTRY"),
+                    containsString(reqPath)),
+                allOf(
+                    containsString(reqStrVar+requestId),
+                    containsString("EXIT"),
+                    containsString(reqStrVar))
+            ));
+    }
 
     public static void assertHeadersAndMetricLogs(RestTemplate restTemplate, URI uri, String requestId, String path, int requestsSize) {
         List<String> logLines =

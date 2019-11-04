@@ -233,6 +233,7 @@ public class SdcApiTest extends BaseApiTest {
         final String requestId = response.getHeaders().getFirst("X-ECOMP-RequestID-echo");
 
         LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId, SDC_ROOT_PATH, 2);
+        LoggerFormatTest.assertIncomingAuditLogs(restTemplate, uri, requestId);
     }
 
 }
