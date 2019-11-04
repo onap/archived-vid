@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6a52d890_3be06389",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/ResourceCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T11:13:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3e7b25df_7d7cd1c9",
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5f72e467_bb29c01f",
         "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/ResourceCommand.kt",
         "patchSetId": 4
@@ -39,6 +57,30 @@
       "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9cc866bb_db34175b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/ResourceCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T11:13:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5f72e467_bb29c01f",
+      "range": {
+        "startLine": 412,
+        "startChar": 4,
+        "endLine": 414,
+        "endChar": 0
+      },
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "732bc017_b8bfd33c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T11:13:23Z",
+      "side": 1,
+      "message": "only the service-part of the model, not the full service.\ni.e. only about 5 UUIDs, not a complete data.\n\nactually, in a second look -- this exception will look very weird.",
+      "parentUuid": "28bd1fc0_73e7ad01",
+      "range": {
+        "startLine": 114,
+        "startChar": 44,
+        "endLine": 114,
+        "endChar": 119
+      },
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dc43d07a_fa807f00",
         "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
         "patchSetId": 4
@@ -76,6 +142,30 @@
       "writtenOn": "2019-11-04T11:01:29Z",
       "side": 1,
       "message": "Shouldn\u0027t we throw an exception?",
+      "range": {
+        "startLine": 120,
+        "startChar": 5,
+        "endLine": 124,
+        "endChar": 5
+      },
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a49a291_dec62d20",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T11:13:23Z",
+      "side": 1,
+      "message": "It will throw: selectVfm will throw if `exactlyOne` will throw. this will happen when .`single{}` will throw",
+      "parentUuid": "dc43d07a_fa807f00",
       "range": {
         "startLine": 120,
         "startChar": 5,
@@ -122,6 +212,24 @@
       "writtenOn": "2019-11-04T10:54:36Z",
       "side": 1,
       "message": "I\u0027ve learned  something new",
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce040f6f_cd8e3b7d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-04T11:13:23Z",
+      "side": 1,
+      "message": "so did i",
+      "parentUuid": "1ea0913c_bd0e0d26",
       "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
