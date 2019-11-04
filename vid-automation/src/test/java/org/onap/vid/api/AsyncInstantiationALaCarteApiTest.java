@@ -1,7 +1,6 @@
 package org.onap.vid.api;
 
 import static java.util.Collections.emptyMap;
-import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -418,9 +417,7 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
         deploy1ServiceFromCypress__verifyStatusAndMsoCalls_andRetry("none", emptyMap(), emptyMap(), true);
         List<String> logLines =  LoggerFormatTest.getLogLinesAsList(LogName.metrics2019, 200, 1, restTemplate, uri);
-        List<RecordedRequests> requests = retrieveRecordedRequests();
-        List<RecordedRequests> underTestRequests =
-            requests.stream().filter(x->x.path.contains(msoURL)).collect(toList());
+        List<RecordedRequests> underTestRequests = retrieveRecordedRequests();
 
         underTestRequests.forEach(request-> {
             assertThat("X-ONAP-RequestID", request.headers.get("X-ONAP-RequestID"), contains(matchesPattern(UUID_REGEX)));
@@ -430,14 +427,16 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
         });
 
         List<String> allInvocationIds = new LinkedList<>();
-        List<String> allRequestsIds = new LinkedList<>();
+        List<String> allMsoRequestsIds = new LinkedList<>();
 
         underTestRequests.forEach(request->{
             String invocationId = request.headers.get("X-InvocationID").get(0);
             allInvocationIds.add(invocationId);
 
             String requestId = request.headers.get("X-ONAP-RequestID").get(0);
-            allRequestsIds.add(requestId);
+            if (request.path.contains(msoURL)) {
+                allMsoRequestsIds.add(requestId);
+            }
 
             assertThat("request id and invocation id must be found in two rows",
                 logLines,
@@ -459,7 +458,7 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
         //make sure no RequestId is repeated twice
         assertThat("expect all RequestIds to be unique",
-            allRequestsIds, containsInAnyOrder(new HashSet<>(allRequestsIds).toArray()));
+            allMsoRequestsIds, containsInAnyOrder(new HashSet<>(allMsoRequestsIds).toArray()));
 
     }
 
