@@ -19,6 +19,98 @@
     },
     {
       "key": {
+        "uuid": "5f72e467_bb29c01f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/ResourceCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-04T11:01:29Z",
+      "side": 1,
+      "message": "like",
+      "range": {
+        "startLine": 412,
+        "startChar": 4,
+        "endLine": 414,
+        "endChar": 0
+      },
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28bd1fc0_73e7ad01",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-04T11:01:29Z",
+      "side": 1,
+      "message": "Will this print the full model info of both current and target service model?",
+      "range": {
+        "startLine": 114,
+        "startChar": 44,
+        "endLine": 114,
+        "endChar": 119
+      },
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc43d07a_fa807f00",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-04T11:01:29Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we throw an exception?",
+      "range": {
+        "startLine": 120,
+        "startChar": 5,
+        "endLine": 124,
+        "endChar": 5
+      },
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8d3f91d_833d1ecd",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-04T11:01:29Z",
+      "side": 1,
+      "message": "are we sure about using \"string\" predicate? will Koltin validate it? upon desing?",
+      "range": {
+        "startLine": 132,
+        "startChar": 17,
+        "endLine": 138,
+        "endChar": 98
+      },
+      "revId": "6de0af739f85377cf07f6f0ad8118d63e9e8578c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1ea0913c_bd0e0d26",
         "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
         "patchSetId": 4
