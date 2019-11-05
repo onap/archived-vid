@@ -136,10 +136,14 @@ public class RequestIdFilterInstalled extends BaseApiTest {
 
     @Test
     public void healthcheck_doGET_RequestIdReceived() {
+        String path = "/healthCheck";
         final Pair<HttpEntity, String> responseAndUuid = makeRequest(
-                HttpMethod.GET, "/healthCheck", null
+                HttpMethod.GET, path, null
         );
         assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit2019, responseAndUuid);
+        LoggerFormatTest
+            .verifyExistenceOfIncomingReqsInAuditLogs(restTemplate, uri,
+                responseAndUuid.getKey().getHeaders().get("X-ECOMP-RequestID-echo").get(0).toString(), path);
     }
 
     private void assertThatUuidInResponseAndUuidIsInARecentLog(LogName logName, Pair<HttpEntity, String> responseAndUuid) {

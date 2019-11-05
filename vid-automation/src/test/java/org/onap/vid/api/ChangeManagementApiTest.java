@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoChangeManagementBase;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfInPlaceSoftwareUpdate;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfReplace;
@@ -11,8 +12,10 @@ import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMso
 import org.onap.simulator.presetGenerator.presets.aaf.*;
 import org.onap.vid.model.mso.*;
 import org.onap.vid.model.workflow.*;
+import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StopWatch;
+import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -470,6 +473,14 @@ public class ChangeManagementApiTest extends BaseApiTest {
         Response response = callChangeManagementUpdate(vnfIds, changeManagementRequest);
         MsoResponseWrapper2 body = response.readEntity(MsoResponseWrapper2.class);
         assertForHappyPath(vnfIds, body, requestType);
+        RestTemplate manualRestTemplate = new RestTemplate();
+        super.loginWithChosenRESTClient(getUserCredentials(), manualRestTemplate);
+        SimulatorApi.registerExpectationFromPreset( new PresetAAIGetSubscribersGet(), RegistrationStrategy.APPEND);
+        LoggerFormatTest
+            .verifyExistenceOfIncomingReqsInAuditLogs(manualRestTemplate, uri,
+                response.getHeaders().get("X-ECOMP-RequestID-echo").get(0).toString(),
+                "/vid/change-management/workflow/VidVnf");
+
     }
 
     private ChangeManagementRequest createChangeManagementRequest(VnfIds vnfDetails, String requestType) {
