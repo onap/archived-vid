@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "591637a7_3390230c",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-05T08:30:12Z",
+      "side": 1,
+      "message": "May append to assertion description:\n```\n...include the req path: \\n\" + String.join(\"\\n\", logLines)\n```",
+      "range": {
+        "startLine": 138,
+        "startChar": 126,
+        "endLine": 138,
+        "endChar": 128
+      },
+      "revId": "5e0e88d7c19479494215af17d23e07b26dd62dbc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "531b6e4f_00ae522a",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-05T08:30:12Z",
+      "side": 1,
+      "message": "Actually, should be \"contains()\" as we expect exactly 2 lines in audit.",
+      "range": {
+        "startLine": 140,
+        "startChar": 12,
+        "endLine": 140,
+        "endChar": 35
+      },
+      "revId": "5e0e88d7c19479494215af17d23e07b26dd62dbc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
