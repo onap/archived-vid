@@ -41,6 +41,7 @@ public class ChangeManagementUserApiLoggingTest extends BaseApiTest {
     String requestId = responseEntity.getHeaders().getFirst("X-ECOMP-RequestID-echo");
 
     LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, requestId, "/mso/orchestrationRequests/", 2);
+    LoggerFormatTest.verifyExistenceOfIncomingReqsInAuditLogs(restTemplate, uri, requestId, CHANGE_MANAGEMENT + MSO);
   }
 
   @Test

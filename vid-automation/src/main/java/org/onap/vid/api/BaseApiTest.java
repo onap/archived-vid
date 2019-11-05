@@ -77,9 +77,20 @@ public class BaseApiTest {
     }
 
     public void login(UserCredentials userCredentials) {
+        final List<ClientHttpRequestInterceptor> interceptors = loginWithChosenRESTClient(userCredentials, restTemplate);
+        restTemplateErrorAgnostic.setInterceptors(interceptors);
+        restTemplateErrorAgnostic.setErrorHandler(new DefaultResponseErrorHandler() {
+            @Override
+            public boolean hasError(ClientHttpResponse response) {
+                return false;
+            }
+        });
+    }
+
+    public List<ClientHttpRequestInterceptor> loginWithChosenRESTClient(UserCredentials userCredentials,RestTemplate givenRestTemplate) {
         final List<ClientHttpRequestInterceptor> interceptors = singletonList(new CookieAndJsonHttpHeadersInterceptor(getUri(), userCredentials));
-        restTemplate.setInterceptors(interceptors);
-        restTemplate.setErrorHandler(new DefaultResponseErrorHandler() {
+        givenRestTemplate.setInterceptors(interceptors);
+        givenRestTemplate.setErrorHandler(new DefaultResponseErrorHandler() {
             @Override
             public void handleError(ClientHttpResponse response) throws IOException {
                 try {
@@ -90,14 +101,7 @@ public class BaseApiTest {
                 }
             }
         });
-
-        restTemplateErrorAgnostic.setInterceptors(interceptors);
-        restTemplateErrorAgnostic.setErrorHandler(new DefaultResponseErrorHandler() {
-            @Override
-            public boolean hasError(ClientHttpResponse response) {
-                return false;
-            }
-        });
+        return interceptors;
     }
 
 
