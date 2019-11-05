@@ -32,10 +32,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  */
 @Configuration
 
-@PropertySources({
-		@PropertySource(value="asdc.properties",  ignoreResourceNotFound = true),
-		@PropertySource(value="${container.classpath:}/WEB-INF/conf/asdc.properties", ignoreResourceNotFound = true)
-})
+	@PropertySource(value="asdc.properties",  ignoreResourceNotFound = true)
+	@PropertySource(value="${container.classpath:}/WEB-INF/conf/asdc.properties", ignoreResourceNotFound = true)
+
 public class AsdcClientConfiguration {
 
     @Bean
