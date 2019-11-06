@@ -21,7 +21,11 @@
 package org.onap.vid.utils;
 
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.mock;
@@ -33,12 +37,15 @@ import com.att.eelf.configuration.EELFLogger;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.google.common.collect.ImmutableMap;
 import io.joshworks.restclient.http.HttpResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 import javax.crypto.BadPaddingException;
 import javax.net.ssl.SSLHandshakeException;
 import javax.ws.rs.ProcessingException;
@@ -46,6 +53,7 @@ import org.apache.commons.io.IOUtils;
 import org.mockito.ArgumentCaptor;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.testUtils.TestUtils;
+import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -194,6 +202,71 @@ public class LoggingUtilsTest {
         String expectedButDotsEscaped = expectedDescription.replace(".", "\\.");
 
         assertThat(Logging.exceptionToDescription(exceptionToDescribe), matchesRegEx(expectedButDotsEscaped));
+    }
+
+    @Test
+    public void testWithMDCInternal_whenGivenProvider_functionShouldBeExtractedWithMdc() {
+        Object myAnything = new Object();
+
+        Object result = logginService.withMDCInternal(ImmutableMap.of("my key", "my value"),
+            () -> {
+                assertThat("MDC values should be installed when extracting the supplier",
+                    MDC.getCopyOfContextMap(), hasEntry("my key", "my value"));
+                return myAnything;
+            }
+        );
+
+        assertThat("withMDCInternal should extract my function", result, is(sameInstance(myAnything)));
+        assertThat("MDC values should be removed", MDC.getCopyOfContextMap(), not(hasEntry("k", "v")));
+    }
+
+    @Test
+    public void testWithMDC_whenGivenFunction_functionShouldBeEncapsulated() {
+        // Given
+        String[] stringsArray = {"before"};
+
+        Function<String, Integer> myFunction = s -> {
+            assertThat("MDC values should be installed when inside myFunction",
+                MDC.getCopyOfContextMap(), hasEntry("my key", "my value"));
+            stringsArray[0] = s;
+            return 42;
+        };
+
+        // When
+        Function<String, Integer> functionWithMDC =
+            logginService.withMDC(ImmutableMap.of("my key", "my value"), myFunction);
+
+
+        assertThat("invocation of function must not happen yet", stringsArray[0], is("before"));
+
+        Integer result = functionWithMDC.apply("after");
+
+        assertThat("invocation of my function should have been deferred", stringsArray[0], is("after"));
+        assertThat("apply should return function's value", result, is(42));
+    }
+
+    @Test
+    public void testWithMDC_whenGivenCallable_callableShouldBeEncapsulated() throws Exception {
+        // Given
+        String[] stringsArray = {"before"};
+
+        Callable<Integer> myCallable = () -> {
+            assertThat("MDC values should be installed when inside myCallable",
+                MDC.getCopyOfContextMap(), hasEntry("my key", "my value"));
+            stringsArray[0] = "after";
+            return 42;
+        };
+
+        // When
+        Callable<Integer> callableWithMDC = logginService.withMDC(ImmutableMap.of("my key", "my value"), myCallable);
+
+
+        assertThat("invocation of callable must not happen yet", stringsArray[0], is("before"));
+
+        Integer result = callableWithMDC.call();
+
+        assertThat("invocation of my callable should have been deferred", stringsArray[0], is("after"));
+        assertThat("apply should return function's value", result, is(42));
     }
 
     private static String escapeBrackets(String in) {
