@@ -47,6 +47,7 @@ import org.onap.vid.aai.util.TestWithAaiClient;
 import org.onap.vid.model.aaiTree.Network;
 import org.onap.vid.model.aaiTree.VpnBinding;
 import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -56,19 +57,20 @@ public class AAIServiceIntegrativeTest extends TestWithAaiClient {
 
     private AAIRestInterface aaiRestInterface;
     private AaiServiceImpl aaiServiceWithoutMocks;
+    private Logging logging = new Logging();
 
     private AaiServiceImpl createAaiServiceWithoutMocks(AAIRestInterface aaiRestInterface, CacheProvider cacheProvider) {
         AaiClient aaiClient = new AaiClient(aaiRestInterface, null, cacheProvider);
         ExecutorService executorService = MoreExecutors.newDirectExecutorService();
         AAIServiceTree aaiServiceTree = new AAIServiceTree(
                 aaiClient,
-                new AAITreeNodeBuilder(aaiClient),
+                new AAITreeNodeBuilder(aaiClient, logging),
                 new AAITreeConverter(),
                 null,
                 null,
                 executorService
         );
-        return new AaiServiceImpl(aaiClient, null, aaiServiceTree, executorService);
+        return new AaiServiceImpl(aaiClient, null, aaiServiceTree, executorService, logging);
     }
 
     @BeforeMethod

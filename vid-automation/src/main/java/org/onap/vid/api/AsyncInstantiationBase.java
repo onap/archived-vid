@@ -1,8 +1,34 @@
 package org.onap.vid.api;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toMap;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromCollection;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.Uninterruptibles;
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -37,33 +63,6 @@ import vid.automation.test.model.JobStatus;
 import vid.automation.test.model.ServiceAction;
 import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.SimulatorApi;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toMap;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
-import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromCollection;
 
 public class AsyncInstantiationBase extends BaseMsoApiTest {
 
@@ -507,7 +506,7 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
                     .filter(serviceInfo -> serviceInfo.jobId.equals(jobId))
                     .findFirst().orElse(null);
             Assert.assertNotNull(serviceInfoFromDB);
-            Assert.assertEquals(serviceInfoDataReflected(expectedServiceInfo), serviceInfoDataReflected(serviceInfoFromDB));
+            Assert.assertEquals(serviceInfoDataReflected(serviceInfoFromDB), serviceInfoDataReflected(expectedServiceInfo));
             assertTrue("actual service instance doesn't contain template service name:" + expectedServiceInfo.serviceInstanceName,
                     serviceInfoFromDB.serviceInstanceName.contains(expectedServiceInfo.serviceInstanceName));
 
