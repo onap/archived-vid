@@ -142,7 +142,8 @@ public class RequestIdFilterInstalled extends BaseApiTest {
         );
         assertThatUuidInResponseAndUuidIsInARecentLog(LogName.audit2019, responseAndUuid);
         LoggerFormatTest
-            .verifyExistenceOfIncomingReqsInAuditLogs(restTemplate, uri, responseAndUuid.getKey().getHeaders().get("X-ECOMP-RequestID-echo").get(0).toString(), path);
+            .verifyExistenceOfIncomingReqsInAuditLogs(restTemplate, uri,
+                responseAndUuid.getKey().getHeaders().get("X-ECOMP-RequestID-echo").get(0).toString(), path+"111");
     }
 
     private void assertThatUuidInResponseAndUuidIsInARecentLog(LogName logName, Pair<HttpEntity, String> responseAndUuid) {

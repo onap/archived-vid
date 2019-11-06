@@ -477,7 +477,9 @@ public class ChangeManagementApiTest extends BaseApiTest {
         super.loginWithChosenRESTClient(getUserCredentials(), manualRestTemplate);
         SimulatorApi.registerExpectationFromPreset( new PresetAAIGetSubscribersGet(), RegistrationStrategy.APPEND);
         LoggerFormatTest
-            .verifyExistenceOfIncomingReqsInAuditLogs(manualRestTemplate, uri, response.getHeaders().get("X-ECOMP-RequestID-echo").get(0).toString(), "/vid/change-management/workflow/VidVnf");
+            .verifyExistenceOfIncomingReqsInAuditLogs(manualRestTemplate, uri,
+                response.getHeaders().get("X-ECOMP-RequestID-echo").get(0).toString(),
+                "/vid/change-management/workflow/VidVnf");
 
     }
 

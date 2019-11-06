@@ -135,11 +135,11 @@ public class LoggerFormatTest extends BaseApiTest {
         String path){
         List<String> logLines = getRequestLogLines(requestId, LogName.audit2019, restTemplate, uri);
         String requestIdPrefix = "RequestID=";
-        assertThat("\nENTRY & EXIT logs are expected to include RequestId: \n"
-                + requestId+
-                " \nand request path:\n"
+        assertThat("\nENTRY & EXIT logs are expected to include RequestId: " + requestId
+                + " \nAnd request path: "
                 + path +
-                "\nin exactly two rows - inside the audit log\n",
+                "\nin exactly two rows - inside the audit log matching lines:\n"
+                + String.join("\n", logLines) + "\n",
             logLines,
             contains(
                 allOf(
