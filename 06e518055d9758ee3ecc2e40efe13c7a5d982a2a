@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "08f2948f_4e970ddb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-11-06T09:48:42Z",
+      "side": 1,
+      "message": "I think it is worth to add the class name(VidLoggingInterceptor) over here, since getBasicAuthUserName\nis commonly used. In order to support easier debug",
+      "revId": "06e518055d9758ee3ecc2e40efe13c7a5d982a2a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
