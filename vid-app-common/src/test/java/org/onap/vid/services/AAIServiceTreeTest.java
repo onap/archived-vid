@@ -55,6 +55,7 @@ import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeTest;
@@ -199,7 +200,7 @@ public class AAIServiceTreeTest {
         ExecutorService executorService = MoreExecutors.newDirectExecutorService();
         AAIServiceTree aaiServiceTree = new AAIServiceTree(
                 aaiClientMock,
-                new AAITreeNodeBuilder(aaiClientMock),
+                new AAITreeNodeBuilder(aaiClientMock, new Logging()),
                 new AAITreeConverter(),
                 null,
                 null,

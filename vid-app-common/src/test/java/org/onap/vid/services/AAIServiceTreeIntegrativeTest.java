@@ -54,6 +54,7 @@ import org.onap.vid.model.aaiTree.FailureAAITreeNode;
 import org.onap.vid.model.aaiTree.ServiceInstance;
 import org.onap.vid.model.aaiTree.Vnf;
 import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -78,6 +79,7 @@ public class AAIServiceTreeIntegrativeTest {
     private AAITreeNodeBuilder aaiTreeNodeBuilder;
 
     private AAITreeConverter aaiTreeConverter = new AAITreeConverter();
+    private Logging logging = new Logging();
 
     private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
@@ -292,7 +294,7 @@ public class AAIServiceTreeIntegrativeTest {
     @BeforeMethod
     public void initMocks() {
         TestUtils.initMockitoMocks(this);
-        aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClient);
+        aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClient, logging);
     }
 
     public void getServiceInstanceTreeAndAssert(boolean isDuplicatedKeysInTenantRelation) throws IOException, AsdcCatalogException {

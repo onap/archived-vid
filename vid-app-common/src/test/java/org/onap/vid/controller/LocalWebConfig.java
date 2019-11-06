@@ -40,7 +40,6 @@ import org.onap.vid.asdc.AsdcClient;
 import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.parser.VidNotionsBuilder;
 import org.onap.vid.services.AAIServiceTree;
-import org.onap.vid.services.AAITreeNodeBuilder;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.VidService;
@@ -72,8 +71,8 @@ public class LocalWebConfig {
 
     @Bean
     public AaiService getAaiService(AaiClientInterface aaiClient, AaiResponseTranslator aaiResponseTranslator,
-        AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree, ExecutorService executorService) {
-        return new AaiServiceImpl(aaiClient, aaiResponseTranslator, aaiServiceTree, executorService);
+        AAIServiceTree aaiServiceTree, Logging logging, ExecutorService executorService) {
+        return new AaiServiceImpl(aaiClient, aaiResponseTranslator, aaiServiceTree, executorService, logging);
     }
 
     @Bean
