@@ -7,10 +7,12 @@ export class MultiselectFormControl extends FormControlModel{
   options$ : Observable<any[]>;
   args : string[];
   onInit: (data : MultiselectFormControl, form: FormGroup) => Observable<any>;
-  selectedItems : string;
+  selectedItems :  any[];
   onInitSelectedItems : string[];
+  selectedFieldName : string;
   ngValue : string;
   settings: {};
+  onInitSelectedField?: string[];
 
 
   constructor(data) {
@@ -18,10 +20,12 @@ export class MultiselectFormControl extends FormControlModel{
     this.type = FormControlType.MULTI_SELECT;
     this.options$ = data.options;
     this.onInit = data.onInit;
-    this.selectedItems = data.selectedItems;
+    this.selectedItems = data.selectedItems || [];
     this.onInitSelectedItems = data.onInitSelectedItems ? data.onInitSelectedItems : null;
     this.ngValue = data.selectedField ? data.selectedField : 'id';
+    this.selectedFieldName = data.selectedFieldName;
     this.settings = data.settings || {};
+    this.onInitSelectedField = data.onInitSelectedField ? data.onInitSelectedField : null;
   }
 
 }
