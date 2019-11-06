@@ -1,0 +1,232 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e301c95_cd4f834d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "Rename class to have the word \"Audit\"",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4cd118d9_5df1a3e8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "Just userId",
+      "range": {
+        "startLine": 66,
+        "startChar": 39,
+        "endLine": 66,
+        "endChar": 78
+      },
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a6471c7_dffbf2c2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "Explain why it is done.",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e37f8ade_0af81216",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "join with next line (formatting)",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2228961_e934d5a6",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/logging/VidLoggingInterceptorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "Rename class to have the word \"Audit\"",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a66e6724_f2987e95",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 64,
+        "startChar": 85,
+        "endLine": 64,
+        "endChar": 88
+      },
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bbfce352_9e3d5dd3",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "may inline",
+      "range": {
+        "startLine": 71,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 22
+      },
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43c04ae8_db6bb28b",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "redundant",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7cda4210_6b7ec43d",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "redundant",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ac6c455_c264b15e",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "extract variable",
+      "range": {
+        "startLine": 78,
+        "startChar": 37,
+        "endLine": 78,
+        "endChar": 47
+      },
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1478cb8_6a719940",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "StringUtils.containsAny()",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76914a9b_9547299d",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T08:25:02Z",
+      "side": 1,
+      "message": "remove comment",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
