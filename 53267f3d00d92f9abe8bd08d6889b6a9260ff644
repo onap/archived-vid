@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "92340bdf_6969996c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/utils/Logging.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T19:49:51Z",
+      "side": 1,
+      "message": "it is contexted, hopefully, on the thread pool\u0027s thread. if not cleared -- it might stick to the next time the thread is used for a different request (which is not ok)",
+      "parentUuid": "e2c6ff6a_fe530ac3",
+      "range": {
+        "startLine": 226,
+        "startChar": 13,
+        "endLine": 226,
+        "endChar": 24
+      },
+      "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "77181184_816631fc",
         "filename": "vid-app-common/src/test/java/org/onap/vid/utils/LoggingUtilsTest.java",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2019-11-06T16:02:04Z",
       "side": 1,
       "message": "but of course k,v are not there.. right?",
+      "range": {
+        "startLine": 219,
+        "startChar": 103,
+        "endLine": 220,
+        "endChar": 103
+      },
+      "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b65471d5_c5d65323",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/utils/LoggingUtilsTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T19:49:51Z",
+      "side": 1,
+      "message": "it\u0027s a mistake, should have been \"my key\" and \"my value\"",
+      "parentUuid": "77181184_816631fc",
       "range": {
         "startLine": 219,
         "startChar": 103,
@@ -68,6 +116,30 @@
       "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e5cbbb4_b1aa28a9",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/utils/LoggingUtilsTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T19:49:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "020fc2d3_187ba481",
+      "range": {
+        "startLine": 238,
+        "startChar": 7,
+        "endLine": 243,
+        "endChar": 75
+      },
+      "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
