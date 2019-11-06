@@ -13,6 +13,8 @@ import {
 } from "../../../../models/formControlModels/formControl.model";
 import {FormControlNames, VfModuleControlGenerator} from "./vfModule.control.generator";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
+import {VfModuleInstance} from "../../../../models/vfModuleInstance";
+import {VfModule} from "../../../../models/vfModule";
 
 class MockAppStore<T> {
   getState() {
@@ -976,6 +978,60 @@ describe('VFModule Control Generator', () => {
       let requiredExist = controls.find(ctrl => ctrl.controlName === mandatoryControls[i]).validations.find(item => item.validatorName === 'required');
       expect(requiredExist).toBeDefined();
     }
+  });
+
+  test('getAlaCarteFormControls check for Volume Group Name Field', () => {
+    const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
+    const vnfStoreKey: string = 'VF_vGeraldine 0';
+    const vfModuleStoreKey: string = 'vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0';
+    const uuidData: Object = {
+      modelId : "522159d5-d6e0-4c2a-aa44-5a542a12a830",
+      modelName :  "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0",
+      serviceId : "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
+      type : "VFmodule",
+      vFModuleStoreKey : "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0vmvzo",
+      vnfStoreKey : "VF_vGeraldine 0"
+    };
+    const controls: FormControlModel[] = service.getAlaCarteFormControls(serviceId, vnfStoreKey, vfModuleStoreKey, uuidData, true);
+    let requiredExist = controls.find(ctrl => ctrl.controlName === FormControlNames.VOLUME_GROUP_NAME);
+    expect(requiredExist).toBeDefined();
+  });
+
+  test('Check for Volume Group Name Field - Given Ecomp Gen Name boolean - expect name to be null / moduleName_vol', () => {
+    // let reduxState = new MockAppStore();
+    const moduleName = "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0";
+    service.vfModuleModel = new VfModule();
+    service.vfModuleModel.volumeGroupAllowed = true;
+    let vnf : Object =  {isEcompGeneratedNaming: true};
+    // spyOn(service.vfModuleModel, 'getState').and.returnValue(reduxState.getState());
+    const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
+    const vnfStoreKey: string = 'VF_vGeraldine 0';
+    // const vfModuleStoreKey: string = 'vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0';
+    const uuidData: Object = {
+      modelId : "522159d5-d6e0-4c2a-aa44-5a542a12a830",
+      modelName :  moduleName,
+      serviceId : "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
+      type : "VFmodule",
+      vFModuleStoreKey : "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0vmvzo",
+      vnfStoreKey : "VF_vGeraldine 0"
+    };
+    service.vfModuleModel.name = uuidData["modelName"];
+    const vfModuleModel :VfModuleInstance = service.getVfModuleInstance(serviceId, vnfStoreKey, uuidData,true);
+
+    let controls: FormControlModel[] = service.buildFormByGivenState( [],vfModuleModel ,serviceId, vnf,vnfStoreKey);
+    let requiredExist = controls.find(ctrl => ctrl.controlName === FormControlNames.VOLUME_GROUP_NAME);
+    expect(requiredExist).toBeDefined();
+    expect(requiredExist.value).toEqual(null);
+
+    vnf["isEcompGeneratedNaming"] = false;
+    controls = service.buildFormByGivenState( [],vfModuleModel ,serviceId, vnf,vnfStoreKey);
+    requiredExist = controls.find(ctrl => ctrl.controlName === FormControlNames.VOLUME_GROUP_NAME);
+    expect(requiredExist.value).toEqual( moduleName+"_vol");
+
+    service.vfModuleModel.volumeGroupAllowed = false;
+    controls = service.buildFormByGivenState( [],vfModuleModel ,serviceId, vnf,vnfStoreKey);
+    requiredExist = controls.find(ctrl => ctrl.controlName === FormControlNames.VOLUME_GROUP_NAME);
+    expect(requiredExist).toBeUndefined();
   });
 
   test('getMacroFormControls check for mandatory controls', () => {

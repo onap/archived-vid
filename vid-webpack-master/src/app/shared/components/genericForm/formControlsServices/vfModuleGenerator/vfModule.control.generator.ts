@@ -105,15 +105,21 @@ export class VfModuleControlGenerator {
     let result: FormControlModel[] = [];
 
     if (!_.isNil(vfModuleModel)) {
-      result.push(this.getInstanceName(vfModuleInstance, serviceId, vnfModel.isEcompGeneratedNaming));
-      if (this.vfModuleModel.volumeGroupAllowed) {
-        result.push(this.getVolumeGroupName(vfModuleInstance, serviceId, vnfStoreKey, vfModuleInstance && vfModuleInstance.volumeGroupName, vnfModel.isEcompGeneratedNaming));
-     }
+      result = this.buildFormByGivenState(result, vfModuleInstance, serviceId, vnfModel,vnfStoreKey);
     }
     if(this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
       let suppFileInput:FileFormControl = <FileFormControl>(this.getSupplementaryFile(vfModuleInstance));
       result.push(suppFileInput);
       result = result.concat(suppFileInput.hiddenFile);
+    }
+    return result;
+  }
+
+  buildFormByGivenState(result: FormControlModel[], vfModuleElement :any, serviceId: string, vnfModel :any, vnfStoreKey: string) :FormControlModel[]{
+    result.push(this.getInstanceName(vfModuleElement, serviceId, vnfModel.isEcompGeneratedNaming));
+    let vfModuleName =  _.isNil(this.vfModuleName) ?  this.vfModuleName : (vfModuleElement && vfModuleElement.volumeGroupName);
+    if (this.vfModuleModel.volumeGroupAllowed) {
+      result.push(this.getVolumeGroupName(vfModuleElement, serviceId, vnfStoreKey, vfModuleName, vnfModel.isEcompGeneratedNaming));
     }
     return result;
   }
@@ -133,11 +139,7 @@ export class VfModuleControlGenerator {
 
     const vfModuleInstance = this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode);
     let result: FormControlModel[] = [];
-    result.push(this.getInstanceName(vfModuleInstance, serviceId, vnfModel.isEcompGeneratedNaming));
-
-    if (this.vfModuleModel.volumeGroupAllowed) {
-      result.push(this.getVolumeGroupName(vfModuleInstance, serviceId, vnfStoreKey, this.vfModuleName, vnfModel.isEcompGeneratedNaming));
-    }
+    this.buildFormByGivenState(result, vfModuleInstance, serviceId, vnfModel, vnfStoreKey);
     result.push(this.getLcpRegionControl(serviceId, vfModuleInstance, result));
     result.push(this._basicControlGenerator.getLegacyRegion(vfModuleInstance));
     result.push(this.getTenantControl(serviceId, vfModuleInstance, result));
@@ -163,7 +165,7 @@ export class VfModuleControlGenerator {
     return formControlModel;
   }
 
-  getDefaultVolumeGroupName(instance: any, vfModuleName: string, isEcompGeneratedNaming: boolean): string {
+  getDefaultVolumeGroupName(instance: any, isEcompGeneratedNaming: boolean): string {
     if ((!_.isNil(instance) && instance.volumeGroupName))  {
       return instance.volumeGroupName;
     }
@@ -191,7 +193,7 @@ export class VfModuleControlGenerator {
       tooltip : 'When filled, VID will create a Volume Group by this name and associate with this module.\n' +
                 'When empty, the module is created without a Volume Group.',
       isVisible: true,
-      value: this.getDefaultVolumeGroupName(instance, vfModuleName, isEcompGeneratedNaming),
+      value: this.getDefaultVolumeGroupName(instance, isEcompGeneratedNaming),
       onKeypress: (event) => {
         const pattern:RegExp = BasicControlGenerator.INSTANCE_NAME_REG_EX;
         if (pattern) {
@@ -346,4 +348,8 @@ export class VfModuleControlGenerator {
       new SelectOption({id: 'false', name: 'Don\'t Rollback'})
     ]);
   };
+
+  getStore() :NgRedux<AppState>{
+    return this.store;
+  }
 }
