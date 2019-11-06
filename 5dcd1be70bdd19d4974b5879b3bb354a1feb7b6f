@@ -16,6 +16,29 @@
       "revId": "5dcd1be70bdd19d4974b5879b3bb354a1feb7b6f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55a86161_c32baa33",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/RequestIdFilterInstalled.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T06:48:18Z",
+      "side": 1,
+      "message": "Actually. thess blocks yields the same value:\n1) responseAndUuid.getRight()\n2) responseAndUuid.getKey().getHeaders().get(\"X-ECOMP-RequestID-echo\").get(0).toString()",
+      "range": {
+        "startLine": 145,
+        "startChar": 73,
+        "endLine": 145,
+        "endChar": 158
+      },
+      "revId": "5dcd1be70bdd19d4974b5879b3bb354a1feb7b6f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
