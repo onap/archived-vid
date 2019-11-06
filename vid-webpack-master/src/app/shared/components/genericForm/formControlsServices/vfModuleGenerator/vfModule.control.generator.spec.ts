@@ -978,6 +978,23 @@ describe('VFModule Control Generator', () => {
     }
   });
 
+  test('getAlaCarteFormControls check for Volume Group Name Field', () => {
+    const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
+    const vnfStoreKey: string = 'VF_vGeraldine 0';
+    const vfModuleStoreKey: string = 'vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0';
+    const uuidData: Object = {
+      modelId : "522159d5-d6e0-4c2a-aa44-5a542a12a830",
+      modelName :  "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0",
+      serviceId : "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
+      type : "VFmodule",
+      vFModuleStoreKey : "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0vmvzo",
+      vnfStoreKey : "VF_vGeraldine 0"
+    };
+    const controls: FormControlModel[] = service.getAlaCarteFormControls(serviceId, vnfStoreKey, vfModuleStoreKey, uuidData, true);
+    let requiredExist = controls.find(ctrl => ctrl.controlName === FormControlNames.VOLUME_GROUP_NAME);
+    expect(requiredExist).toBeDefined();
+  });
+
   test('getMacroFormControls check for mandatory controls', () => {
     const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
     const vnfStoreKey: string = 'VF_vGeraldine 0';
