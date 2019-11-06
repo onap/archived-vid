@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
 import javax.ws.rs.core.Response;
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
@@ -88,6 +89,7 @@ import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.model.aaiTree.RelatedVnf;
 import org.onap.vid.model.aaiTree.ServiceInstance;
 import org.onap.vid.roles.RoleValidator;
+import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -130,6 +132,8 @@ public class AaiServiceImplTest {
 
     @Mock
     private AaiResponseTranslator aaiResponseTranslator;
+    @Mock
+    private Logging logging;
     @Mock
     private AAIServiceTree aaiServiceTree;
     @Spy
@@ -504,6 +508,7 @@ public class AaiServiceImplTest {
         when(aaiServiceTree.buildAAITree(anyString(), isNull(), eq(HttpMethod.GET), any(), anyBoolean()))
             .thenReturn(Collections.singletonList(testedTree));
         when(aaiClient.getCloudRegionAndTenantByVnfId(anyString())).thenReturn(regionsAndTenants);
+        when(logging.withMDC(any(), any(Function.class))).thenAnswer(invocation -> invocation.getArgument(1));
 
         List<RelatedVnf> actualGroupMembers = aaiService.searchGroupMembers(GLOBAL_CUSTOMER_ID, SERVICE_TYPE,
             INVARIANT_ID, GROUP_TYPE_FAILING, GROUP_ROLE_FAILING);
