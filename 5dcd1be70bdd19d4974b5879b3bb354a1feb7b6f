@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3554a588_aa30aa9d",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/RequestIdFilterInstalled.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T06:35:39Z",
+      "side": 1,
+      "message": "too long line. please add enter",
+      "revId": "5dcd1be70bdd19d4974b5879b3bb354a1feb7b6f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
