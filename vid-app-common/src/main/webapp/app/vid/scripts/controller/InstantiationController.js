@@ -162,13 +162,10 @@
             if ((!($scope.isObjectEmpty(svcModel))) && (!($scope.isObjectEmpty(svcModel.vnfs)))) {
                 if ((svcModel.isNewFlow) && (vnfModelCustomizationUuid != null)) {
                     vnfModel = svcModel.vnfs[vnfModelCustomizationUuid];
-                    if (vnfModel !== undefined) {
-
-                        if (!($scope.isObjectEmpty(vnfModel.volumeGroups))) {
+                    if (vnfModel !== undefined && !($scope.isObjectEmpty(vnfModel.volumeGroups))) {
                             //console.log ("vnfModel.volumeGroups: "); console.log (JSON.stringify(vnfModel.volumeGroups, null, 4));
                             return (vnfModel.volumeGroups);
                         }
-                    }
                 }
                 else {
                     // old flow
