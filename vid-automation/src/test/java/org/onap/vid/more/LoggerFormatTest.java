@@ -9,9 +9,12 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
+import static org.hamcrest.Matchers.either;
+import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.matchesPattern;
 import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,6 +29,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.vid.api.BaseApiTest;
 import org.springframework.web.client.RestTemplate;
@@ -55,7 +59,25 @@ public class LoggerFormatTest extends BaseApiTest {
 
     @Test
     public void validateAudit2019LogsFormat() {
-        validateLogsFormat(LogName.audit2019, "audit-ELS-2019.11");
+        String logLines = validateLogsFormat(LogName.audit2019, "audit-ELS-2019.11");
+        moreValidationsForAuditFormat(logLines);
+    }
+
+    //more validations for log format that logcheck doesn't verify
+    private void moreValidationsForAuditFormat(String logLines) {
+        splitLogLines(logLines).forEach(line->{
+            String[] records = line.split("\\|");
+            assertThat("server name shall be empty", records[5], emptyOrNullString());
+
+            //authenticated request shall logs with userId.
+            final String serviceName = records[6];
+            if (StringUtils.containsAny(serviceName, "aai", "mso")) {
+                assertThat("Partner name shall be userId", records[7], matchesPattern("^[A-Za-z0-9]{4,15}$"));
+            }
+
+            assertThat("Severity shall be empty", records[13], emptyOrNullString());
+            assertThat("marker", records[21], either(is("ENTRY")).or(is("EXIT")));
+        });
     }
 
     @Test(enabled = false) // no total-score is returned for error-log
@@ -72,11 +94,11 @@ public class LoggerFormatTest extends BaseApiTest {
         validateLogsFormat(logName, logName.name());
     }
 
-    private void validateLogsFormat(LogName logName, String logType) {
-        validateLogsFormat(logName, logType, 0.95);
+    private String validateLogsFormat(LogName logName, String logType) {
+        return validateLogsFormat(logName, logType, 0.95);
     }
 
-    private void validateLogsFormat(LogName logName, String logType, double score) {
+    private String validateLogsFormat(LogName logName, String logType, double score) {
 
         String logLines = getLogLines(logName);
         logger.info("logLines are: "+logLines);
@@ -88,6 +110,8 @@ public class LoggerFormatTest extends BaseApiTest {
 
         assertThat(total_records, greaterThan(30)); //make sure we have at least 30 total records
         assertThat((double)valid_records/total_records, is(greaterThanOrEqualTo(score)));
+
+        return logLines;
     }
 
     private String getLogLines(LogName logname) {
@@ -107,14 +131,17 @@ public class LoggerFormatTest extends BaseApiTest {
      */
     public static List<String> getLogLinesAsList(LogName logname, int maxRows, int minRows, RestTemplate restTemplate, URI uri) {
         String logLines = LoggerFormatTest.getLogLines(logname, maxRows, minRows, restTemplate, uri);
-
-        // Split
-        List<String> lines = new ArrayList<>(Arrays.asList(logLines.split("(\\r?\\n)")));
+        List<String> lines = splitLogLines(logLines);
 
         // Reverse
         reverse(lines);
 
         return lines;
+    }
+
+    @NotNull
+    private static List<String> splitLogLines(String logLines) {
+        return new ArrayList<>(Arrays.asList(logLines.split("(\\r?\\n)")));
     }
 
 
