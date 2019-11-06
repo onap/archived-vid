@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6979563d_e1da0ad5",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-06T06:53:35Z",
+      "side": 1,
+      "message": "I think this line should be with more information and less line-breaks:\n```\n        assertThat(\"ENTRY \u0026 EXIT logs are expected to include RequestId and request path in exactly two rows - inside the audit log: \\n\" + String.join(\"\\n\", logLines),\n```\n\nBut the current is fair from most of the line breaks perspective.\nSo this is acceptable as well IMO:\n```\n        assertThat(\"ENTRY \u0026 EXIT logs are expected to include \\nRequestId: \"\n                + requestId+\n                \" \\nand request path: \"\n                + path +\n                \"\\nin exactly two rows - inside the audit log in: \\n\" \n                + String.join(\"\\n\", logLines),\n```",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 0
+      },
+      "revId": "d857e035f54bfd41b211162c1dc9adc7ea569fbd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
