@@ -92,7 +92,7 @@ describe('A la carte', function () {
     });
 
 
-    it(`VNF a-la-carte`, ()=> {
+    it.only(`VNF a-la-carte`, ()=> {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setTestApiParamToGR();
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
