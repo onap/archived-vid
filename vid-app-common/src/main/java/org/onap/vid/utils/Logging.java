@@ -33,8 +33,11 @@ import com.google.common.collect.ImmutableList;
 import io.joshworks.restclient.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
@@ -42,6 +45,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.utils.Unchecked.UncheckedThrowingSupplier;
+import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -197,5 +202,29 @@ public class Logging {
         }
     }
 
+    /**
+     * in order to be able to write the correct data while creating the node on a new thread save a copy of the current
+     * thread's context map, with keys and values of type String.
+     */
+    public <T> Callable<T> withMDC(Map<String, String> copyOfParentMDC, Callable<T> callable) {
+        return () -> withMDCInternal(copyOfParentMDC, callable::call);
+    }
+
+    /**
+     * in order to be able to write the correct data while creating the node on a new thread save a copy of the current
+     * thread's context map, with keys and values of type String.
+     */
+    public <T, U> Function<T, U> withMDC(Map<String, String> copyOfParentMDC, Function<T, U> function) {
+        return t -> withMDCInternal(copyOfParentMDC, () -> function.apply(t));
+    }
+
+    <T> T withMDCInternal(Map<String, String> copyOfParentMDC, UncheckedThrowingSupplier<T> supplier) {
+        try {
+            MDC.setContextMap(copyOfParentMDC);
+            return supplier.get();
+        } finally {
+            MDC.clear();
+        }
+    }
 
 }

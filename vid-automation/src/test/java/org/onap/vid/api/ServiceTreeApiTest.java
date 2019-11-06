@@ -39,6 +39,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.util.RetryAnalyzerCount;
 import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 
 public class ServiceTreeApiTest extends BaseApiTest {
 
@@ -179,7 +180,12 @@ public class ServiceTreeApiTest extends BaseApiTest {
                 .replace("VNF4_INSTANCE_TYPE", vnfPreset4.getInstanceType());
 
         assertJsonEquals(response, expected);
+
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), RegistrationStrategy.APPEND);
         LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, echoedRequestId(responseEntity),  "/network/generic-vnfs/generic-vnf/", 5);
+        // org.onap.vid.aai.AaiClient.getCloudRegionAndTenantByVnfId for presets PresetAAIGetCloudRegionFromVnf is
+        // PUTing to AAI, so path is just /aai/v../query
+        LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, echoedRequestId(responseEntity),  "/query", 4);
     }
 
     @Test

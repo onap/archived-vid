@@ -20,10 +20,11 @@
 
 package org.onap.vid.utils;
 
-import org.onap.vid.exceptions.GenericUncheckedException;
-
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.function.Supplier;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.onap.vid.exceptions.GenericUncheckedException;
 
 public class Unchecked {
     private Unchecked() {
@@ -39,5 +40,19 @@ public class Unchecked {
         }
     }
 
+    @FunctionalInterface
+    public interface UncheckedThrowingSupplier<T> extends Supplier<T> {
+
+        @Override
+        default T get() {
+            try {
+                return getThrows();
+            } catch (Exception e) {
+                return ExceptionUtils.rethrow(e);
+            }
+        }
+
+        T getThrows() throws Exception;
+    }
 
 }
