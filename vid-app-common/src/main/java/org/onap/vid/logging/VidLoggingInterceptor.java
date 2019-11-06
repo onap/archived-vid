@@ -24,8 +24,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.onap.logging.filter.base.MDCSetup;
+import org.onap.logging.filter.base.SimpleMap;
 import org.onap.logging.filter.spring.LoggingInterceptor;
 import org.onap.logging.ref.slf4j.ONAPLogConstants.MDCs;
+import org.onap.vid.controller.ControllersUtils;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,6 +38,11 @@ public class VidLoggingInterceptor extends LoggingInterceptor {
     static final String INBOUND_INVO_ID = "InboundInvoId";
 
     private static final String canonicalHostName = getCanonicalName();
+    private final ControllersUtils controllersUtils;
+
+    public VidLoggingInterceptor(ControllersUtils controllersUtils) {
+        this.controllersUtils = controllersUtils;
+    }
 
     private static String getCanonicalName() {
         try {
@@ -45,9 +54,30 @@ public class VidLoggingInterceptor extends LoggingInterceptor {
     }
 
     @Override
-    protected void additionalPreHandling(HttpServletRequest request)  {
+    protected void additionalPreHandling(HttpServletRequest request) {
         super.additionalPreHandling(request);
         storeInboundInvocationId();
+        fillPartnerNameWithUserId(request);
+    }
+
+    void fillPartnerNameWithUserId(HttpServletRequest request) {
+        String userId = controllersUtils.extractUserId(request);
+        if (StringUtils.isNotEmpty(userId)) {
+            MDC.put(MDCs.PARTNER_NAME, userId);
+        }
+    }
+
+    @Override
+    //this method override fix bug in logging library
+    //that may throw some exceptions, e.g. StringIndexOutOfBoundsException
+    protected String getBasicAuthUserName(SimpleMap headers) {
+        try {
+            return super.getBasicAuthUserName(headers);
+        } catch (Exception e) {
+            MDCSetup.logger.error("failed to getBasicAuthUserName", e);
+        }
+
+        return null;
     }
 
     /*
@@ -61,6 +91,7 @@ public class VidLoggingInterceptor extends LoggingInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         restoreInvocationId();
         fixServerFQDN();
+        fillPartnerNameWithUserId(request);
         super.postHandle(request, response, handler, modelAndView);
     }
 
