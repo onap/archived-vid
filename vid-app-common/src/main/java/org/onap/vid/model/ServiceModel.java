@@ -360,11 +360,9 @@ public class ServiceModel {
 				" Associated VF Module customizationName=" + vfModuleComponent.getKey() + " with VNF customization name=" + vnfCustomizationName);
 
 		// now find if this vf module has volume groups, if so, find the volume group with the same customization name and put it under the VNF
-		if ( vfModuleComponent.getValue().isVolumeGroupAllowed() ) {
-            if (isVolumeGroupsContainsVfModuleCustomName(vfModuleCustomizationName)) {
+		if ( vfModuleComponent.getValue().isVolumeGroupAllowed() && isVolumeGroupsContainsVfModuleCustomName(vfModuleCustomizationName) ) {
 			(vnfComponent.getValue().getVolumeGroups()).put(vfModuleCustomizationName, (getVolumeGroups()).get(vfModuleCustomizationName));
 		}
-	}
 	}
 
 	private boolean isVolumeGroupsContainsVfModuleCustomName(String vfModuleCustomizationName) {
