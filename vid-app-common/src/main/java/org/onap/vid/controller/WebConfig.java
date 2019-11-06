@@ -66,6 +66,7 @@ import org.onap.vid.services.PombaService;
 import org.onap.vid.services.PombaServiceImpl;
 import org.onap.vid.utils.JoshworksJacksonObjectMapper;
 import org.onap.vid.utils.Logging;
+import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -222,6 +223,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new VidLoggingInterceptor());
+        registry.addInterceptor(new VidLoggingInterceptor(
+            new ControllersUtils(new SystemPropertiesWrapper())));
     }
 }
