@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d4697f8b_6921bf9c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "in next commit",
+      "parentUuid": "4e301c95_cd4f834d",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4cd118d9_5df1a3e8",
         "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
         "patchSetId": 2
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "313d0429_709b8bb5",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4cd118d9_5df1a3e8",
+      "range": {
+        "startLine": 66,
+        "startChar": 39,
+        "endLine": 66,
+        "endChar": 78
+      },
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4a6471c7_dffbf2c2",
         "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
         "patchSetId": 2
@@ -56,6 +98,24 @@
       "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7df3426f_dc33fc85",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a6471c7_dffbf2c2",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "79dc652a_d94a20a6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/logging/VidLoggingInterceptor.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e37f8ade_0af81216",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b2228961_e934d5a6",
         "filename": "vid-app-common/src/test/java/org/onap/vid/logging/VidLoggingInterceptorTest.java",
         "patchSetId": 2
@@ -87,6 +165,24 @@
       "writtenOn": "2019-11-06T08:25:02Z",
       "side": 1,
       "message": "Rename class to have the word \"Audit\"",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d1b4539_97c4dee3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/logging/VidLoggingInterceptorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "in next commit",
+      "parentUuid": "b2228961_e934d5a6",
       "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -116,6 +212,30 @@
     },
     {
       "key": {
+        "uuid": "b452e94c_1af822c7",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a66e6724_f2987e95",
+      "range": {
+        "startLine": 64,
+        "startChar": 85,
+        "endLine": 64,
+        "endChar": 88
+      },
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bbfce352_9e3d5dd3",
         "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
         "patchSetId": 2
@@ -139,6 +259,30 @@
     },
     {
       "key": {
+        "uuid": "51fee302_44f8fb4e",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbfce352_9e3d5dd3",
+      "range": {
+        "startLine": 71,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 22
+      },
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "43c04ae8_db6bb28b",
         "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
         "patchSetId": 2
@@ -156,6 +300,24 @@
     },
     {
       "key": {
+        "uuid": "50e71135_a2ec81d7",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43c04ae8_db6bb28b",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7cda4210_6b7ec43d",
         "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
         "patchSetId": 2
@@ -170,6 +332,24 @@
       "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da892788_a3a787fb",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cda4210_6b7ec43d",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -213,6 +393,48 @@
     },
     {
       "key": {
+        "uuid": "abdd38a6_abc02a01",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ac6c455_c264b15e",
+      "range": {
+        "startLine": 78,
+        "startChar": 37,
+        "endLine": 78,
+        "endChar": 47
+      },
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f46a584c_e2539778",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1478cb8_6a719940",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "76914a9b_9547299d",
         "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
         "patchSetId": 2
@@ -227,6 +449,24 @@
       "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7321178d_d372a7a1",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-06T09:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76914a9b_9547299d",
+      "revId": "80b6f8b38173a1933cea86b9a736ac98f0ef920c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
