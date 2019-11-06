@@ -13,6 +13,8 @@ import {
 } from "../../../../models/formControlModels/formControl.model";
 import {FormControlNames, VfModuleControlGenerator} from "./vfModule.control.generator";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
+import {VfModuleInstance} from "../../../../models/vfModuleInstance";
+import {VfModule} from "../../../../models/vfModule";
 
 class MockAppStore<T> {
   getState() {
@@ -977,6 +979,46 @@ describe('VFModule Control Generator', () => {
       expect(requiredExist).toBeDefined();
     }
   });
+
+
+  const cases = [
+    [true, true, true, null, true, true],
+    [true, true, false, null, true, false], //Scenario to check that UI field doesn't appear.
+    [false, true, false, "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0_vol", true, true],
+    [false, true, true, "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0_vol", true, true],
+    [false, false, true, null, false, false],
+  ];
+
+  test.each(cases)('Given Ecomp Gen Name: %p and VG Name %p , ' +
+    'is A La Carte %p - expect the name value for VG to be %p , ' +
+    'VG Name should be defined: %p , and should the field be visible: %p',
+    (ecomGenName, vGName, isALaCarte, expectedName, shouldWeVerifyDefinitionOfField, isVisible) => {
+    const moduleName = "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0";
+    service.vfModuleModel = new VfModule();
+    service.vfModuleModel.name = moduleName;
+    service.vfModuleModel.volumeGroupAllowed = vGName;
+    let vnf : Object =  {isEcompGeneratedNaming: ecomGenName};
+    const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
+    const vnfStoreKey: string = 'VF_vGeraldine 0';
+    const uuidData: Object = {
+      modelName :  moduleName,
+      vFModuleStoreKey : "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0vmvzo",
+    };
+    const vfModuleModel :VfModuleInstance = service.getVfModuleInstance(serviceId, vnfStoreKey, uuidData,true);
+    let existingMatchingFieldInForm = buildVfModuleFormControlModel(vfModuleModel ,serviceId, vnf, isALaCarte);
+      if (shouldWeVerifyDefinitionOfField) {
+        expect(existingMatchingFieldInForm).toBeDefined();
+        expect(existingMatchingFieldInForm.value).toEqual(expectedName);
+        expect(existingMatchingFieldInForm.isVisible).toEqual(isVisible);
+      } else {
+        expect(existingMatchingFieldInForm).toBeUndefined();
+      }
+    });
+
+  let buildVfModuleFormControlModel = function(vfModuleModel :any, serviceId: string, vnf, isALaCarte) :FormControlModel {
+    let controls: FormControlModel[] = service.pushInstanceAndVGToForm([], vfModuleModel, serviceId, vnf, isALaCarte);
+    return controls.find(ctrl => ctrl.controlName === FormControlNames.VOLUME_GROUP_NAME);
+  };
 
   test('getMacroFormControls check for mandatory controls', () => {
     const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";

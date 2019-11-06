@@ -46,7 +46,6 @@ export enum FormControlNames {
 export class VfModuleControlGenerator {
   aaiService: AaiService;
   vfModuleModel: VfModule;
-  vfModuleName : string;
   isUpdateMode : boolean;
 
   constructor(private genericFormService: GenericFormService,
@@ -63,7 +62,6 @@ export class VfModuleControlGenerator {
       const vfModulesKeys = Object.keys(vfModules);
       for(let key of  vfModulesKeys){
         if(vfModules[key].uuid === vfModuleUuid){
-          this.vfModuleName = key;
           return;
         }
       }
@@ -105,15 +103,20 @@ export class VfModuleControlGenerator {
     let result: FormControlModel[] = [];
 
     if (!_.isNil(vfModuleModel)) {
-      result.push(this.getInstanceName(vfModuleInstance, serviceId, vnfModel.isEcompGeneratedNaming));
-      if (this.vfModuleModel.volumeGroupAllowed) {
-        result.push(this.getVolumeGroupName(vfModuleInstance, serviceId, vnfStoreKey, vfModuleInstance && vfModuleInstance.volumeGroupName, vnfModel.isEcompGeneratedNaming));
-     }
+      result = this.pushInstanceAndVGToForm(result, vfModuleInstance, serviceId, vnfModel, false);
     }
     if(this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
       let suppFileInput:FileFormControl = <FileFormControl>(this.getSupplementaryFile(vfModuleInstance));
       result.push(suppFileInput);
       result = result.concat(suppFileInput.hiddenFile);
+    }
+    return result;
+  }
+
+  pushInstanceAndVGToForm(result: FormControlModel[], vfModuleElement: any, serviceId: string, vnfModel: any, isALaCarte: boolean) :FormControlModel[]{
+    result.push(this.getInstanceName(vfModuleElement, serviceId, vnfModel.isEcompGeneratedNaming));
+    if (this.vfModuleModel.volumeGroupAllowed) {
+      result.push(this.getVolumeGroupData(vfModuleElement, serviceId, vnfModel.isEcompGeneratedNaming, isALaCarte));
     }
     return result;
   }
@@ -133,11 +136,7 @@ export class VfModuleControlGenerator {
 
     const vfModuleInstance = this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode);
     let result: FormControlModel[] = [];
-    result.push(this.getInstanceName(vfModuleInstance, serviceId, vnfModel.isEcompGeneratedNaming));
-
-    if (this.vfModuleModel.volumeGroupAllowed) {
-      result.push(this.getVolumeGroupName(vfModuleInstance, serviceId, vnfStoreKey, this.vfModuleName, vnfModel.isEcompGeneratedNaming));
-    }
+    this.pushInstanceAndVGToForm(result, vfModuleInstance, serviceId, vnfModel, true);
     result.push(this.getLcpRegionControl(serviceId, vfModuleInstance, result));
     result.push(this._basicControlGenerator.getLegacyRegion(vfModuleInstance));
     result.push(this.getTenantControl(serviceId, vfModuleInstance, result));
@@ -163,17 +162,14 @@ export class VfModuleControlGenerator {
     return formControlModel;
   }
 
-  getDefaultVolumeGroupName(instance: any, vfModuleName: string, isEcompGeneratedNaming: boolean): string {
-    if ((!_.isNil(instance) && instance.volumeGroupName))  {
-      return instance.volumeGroupName;
-    }
+  getDefaultVolumeGroupName(instance: any, isEcompGeneratedNaming: boolean): string {
     if (isEcompGeneratedNaming) {
       return null;
     }
     return this._basicControlGenerator.getDefaultInstanceName(instance, this.vfModuleModel) + "_vol";
   }
 
-  getVolumeGroupName(instance: any, serviceId: string, vnfStoreKey: string, vfModuleName: string, isEcompGeneratedNaming: boolean): FormControlModel {
+  getVolumeGroupData(instance: any, serviceId: string, isEcompGeneratedNaming: boolean, isALaCarte: boolean): FormControlModel {
     let validations: ValidatorModel[] = [
       new ValidatorModel(ValidatorOptions.pattern, 'Instance name may include only alphanumeric characters and underscore.', BasicControlGenerator.INSTANCE_NAME_REG_EX),
       new ValidatorModel(CustomValidatorOptions.uniqueInstanceNameValidator, 'Volume Group instance name is already in use, please pick another name', [this.store, serviceId, instance && instance.volumeGroupName])
@@ -190,8 +186,8 @@ export class VfModuleControlGenerator {
       validations: validations,
       tooltip : 'When filled, VID will create a Volume Group by this name and associate with this module.\n' +
                 'When empty, the module is created without a Volume Group.',
-      isVisible: true,
-      value: this.getDefaultVolumeGroupName(instance, vfModuleName, isEcompGeneratedNaming),
+      isVisible: this.shouldVGNameBeVisible(isEcompGeneratedNaming,isALaCarte),
+      value: this.getDefaultVolumeGroupName(instance, isEcompGeneratedNaming),
       onKeypress: (event) => {
         const pattern:RegExp = BasicControlGenerator.INSTANCE_NAME_REG_EX;
         if (pattern) {
@@ -202,6 +198,14 @@ export class VfModuleControlGenerator {
         return event;
       }
     });
+  }
+
+  private shouldVGNameBeVisible(isEcompGeneratedNaming: boolean, isALaCarte: boolean) {
+    if((!isALaCarte && !isEcompGeneratedNaming) || isALaCarte){
+      return true;
+    }
+    return false;
+
   }
 
   getSupplementaryFile(instance: any): FormControlModel {
