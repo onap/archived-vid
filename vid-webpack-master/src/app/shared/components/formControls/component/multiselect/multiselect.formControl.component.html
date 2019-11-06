@@ -1,16 +1,25 @@
-<div>
-  <div class="details-item" *ngIf="data != null && form != null">
-    <label [ngClass]="{'required': data.isRequired()}"
-           for="{{data?.dataTestId}}">{{data?.displayName}}:</label>
-    <angular2-multiselect id="{{data?.dataTestId}}"
-                          [attr.data-tests-id]="data?.dataTestId"
-                          [formControl]="form.controls[data.controlName]"
-                          [(ngModel)]="data.selectedItems"
-                          [data]="data?.options$"
-                          [settings]="data?.settings"
-                          title="{{data.tooltip}}"
-                          [ngClass]="{'error-style' : form?.controls[data?.controlName]?.touched && form?.controls[data?.controlName]?.errors}">
-    </angular2-multiselect>
-  </div>
-</div>
 
+<div class="details-item" *ngIf="data != null && form != null">
+  <label [ngClass]="{'required': data.isRequired()}"
+         for="{{data?.dataTestId}}-select">{{data?.displayName}}:</label>
+
+  <angular2-multiselect [data]="options"
+                        [(ngModel)]="selectedItems"
+                        [settings]="dropdownSettings"
+                        (onSelect)="data?.onChange($event)"
+                        (onDeSelect)="data?.onChange($event)"
+                        (onSelectAll)="data?.onChange($event)"
+                        (onDeSelectAll)="data?.onChange($event)">>
+    <c-item>
+      <ng-template let-item="item">
+        <label
+          [attr.data-tests-id]="item?.id"
+          style="color: #333;min-width: 150px;">{{item?.itemName}}</label>
+      </ng-template>
+    </c-item>
+  </angular2-multiselect>
+
+
+
+  <form-control-error *ngIf="data?.hasEmptyOptions && data?.isRequired()" [message]="'No results for this request. Please change criteria.'"></form-control-error>
+</div>

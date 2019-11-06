@@ -20,6 +20,7 @@ import {Observable, of} from "rxjs";
 import {SelectOption} from "../../../../models/selectOption";
 import * as _ from 'lodash';
 import {Constants} from "../../../../utils/constants";
+import {MultiselectFormControl} from "../../../../models/formControlModels/multiselectFormControl.model";
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -101,12 +102,13 @@ export class VnfControlGenerator {
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
 
     if (!_.isNil(vnfModel)) {
+      const flags = this.store.getState().global.flags;
       result.push(this.getInstanceName(vnfInstance, serviceId, vnfName, vnfModel.isEcompGeneratedNaming));
       result.push(this._basicControlGenerator.getProductFamilyControl(vnfInstance, result, false));
       result.push(this.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._basicControlGenerator.getLegacyRegion(vnfInstance));
       result.push(this.getTenantControl(serviceId, vnfInstance, result));
-      result.push(this.getPlatformControl(vnfInstance, result));
+      result.push(this.getPlatformControl(vnfInstance, result, flags['FLAG_A_LA_CARTE_PLATFORM_MULTI_SELECT']));
       result.push(this.getLineOfBusinessControl(vnfInstance, result));
       result.push(this.getRollbackOnFailureControl(vnfInstance, result));
     }
@@ -139,21 +141,42 @@ export class VnfControlGenerator {
     })
   };
 
-  getPlatformControl = (instance: any, controls: FormControlModel[]): DropdownFormControl => {
-    return new DropdownFormControl({
-      type: FormControlType.DROPDOWN,
+  getPlatformControl = (instance: any, controls: FormControlModel[], isMultiSelect?: boolean): MultiselectFormControl | DropdownFormControl => {
+    const shouldGenerateDropdown =  _.isNil(isMultiSelect) || !isMultiSelect;
+    const data = {
+      type: shouldGenerateDropdown ? FormControlType.DROPDOWN : FormControlType.MULTI_SELECT,
       controlName: 'platformName',
       displayName: 'Platform',
       dataTestId: 'platform',
+      selectedFieldName :  shouldGenerateDropdown ? null : 'name',
+      ngValue : shouldGenerateDropdown ? null : 'name',
       placeHolder: 'Select Platform',
       isDisabled: false,
       name: "platform",
-      value: instance ? instance.platformName : null,
+      value: [],//"xxx1" , //instance ? (instance.platformNames !== "" ? instance.platformNames.split(",") : []) : [],
       validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
       onInitSelectedField: ['platformList'],
       onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
-    })
+    };
+    return shouldGenerateDropdown ? new DropdownFormControl(data) : new MultiselectFormControl(data);
   };
+
+
+  // getPlatformControl = (instance: any, controls: FormControlModel[]): DropdownFormControl => {
+  //   return new DropdownFormControl({
+  //     type: FormControlType.DROPDOWN,
+  //     controlName: 'platformName',
+  //     displayName: 'Platform',
+  //     dataTestId: 'platform',
+  //     placeHolder: 'Select Platform',
+  //     isDisabled: false,
+  //     name: "platform",
+  //     value: instance ? instance.platformName : null,
+  //     validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
+  //     onInitSelectedField: ['platformList'],
+  //     onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
+  //   })
+  // };
 
   getTenantControl = (serviceId: string, instance: any, controls: FormControlModel[]): DropdownFormControl => {
     const service = this.store.getState().service.serviceInstance[serviceId];
