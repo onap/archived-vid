@@ -87,7 +87,9 @@ import org.onap.vid.model.aaiTree.VpnBinding;
 import org.onap.vid.model.aaiTree.VpnBindingKt;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.utils.Intersection;
+import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Tree;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 
@@ -104,6 +106,7 @@ public class AaiServiceImpl implements AaiService {
     private AaiResponseTranslator aaiResponseTranslator;
     private AAIServiceTree aaiServiceTree;
     private ExecutorService executorService;
+    private final Logging logging;
 
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AaiServiceImpl.class);
@@ -113,12 +116,13 @@ public class AaiServiceImpl implements AaiService {
         AaiClientInterface aaiClient,
         AaiResponseTranslator aaiResponseTranslator,
         AAIServiceTree aaiServiceTree,
-        ExecutorService executorService)
+        ExecutorService executorService, Logging logging)
     {
         this.aaiClient = aaiClient;
         this.aaiResponseTranslator = aaiResponseTranslator;
         this.aaiServiceTree = aaiServiceTree;
         this.executorService = executorService;
+        this.logging = logging;
     }
 
     private List<Service> convertModelToService(Model model) {
@@ -523,10 +527,12 @@ public class AaiServiceImpl implements AaiService {
                 .map(RelatedVnf::from)
                 .collect(Collectors.toList());
 
+        final Map<String, String> copyOfParentMDC = MDC.getCopyOfContextMap();
+
         try {
             return executorService.submit(() ->
                     convertedVnfs.parallelStream()
-                            .map(this::enrichRelatedVnfWithCloudRegionAndTenant)
+                            .map(logging.withMDC(copyOfParentMDC, this::enrichRelatedVnfWithCloudRegionAndTenant))
                             .collect(Collectors.toList())
             ).get();
         } catch (Exception e) {

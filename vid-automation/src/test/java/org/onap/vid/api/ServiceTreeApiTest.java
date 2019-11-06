@@ -1,5 +1,6 @@
 package org.onap.vid.api;
 
+import static java.lang.Integer.min;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
@@ -21,6 +22,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Map;
 import java.util.UUID;
+import org.apache.commons.lang3.StringUtils;
 import org.onap.simulator.presetGenerator.presets.aai.Placement;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudRegionFromVnf;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServiceInstancesByInvariantId;
@@ -39,6 +41,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.util.RetryAnalyzerCount;
 import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 
 public class ServiceTreeApiTest extends BaseApiTest {
 
@@ -103,8 +106,10 @@ public class ServiceTreeApiTest extends BaseApiTest {
         PresetAAIStandardQueryGet instanceGroup1 = PresetAAIStandardQueryGet.ofInstanceGroup("L3-NETWORK", "SUB_INTERFACE", ImmutableMultimap.of());
         PresetAAIStandardQueryGet instanceGroup2 = PresetAAIStandardQueryGet.ofInstanceGroup("LOAD-GROUP", "SERVICE-ACCESS", ImmutableMultimap.of());
 
+        String vnfInstanceIdPrefix = StringUtils.left(randUuid(), 7);
+
         PresetAAIStandardQueryGet vnfPreset1 =
-                PresetAAIStandardQueryGet.ofRelatedVnf(randUuid(), "7a6ee536-f052-46fa-aa7e-2fca9d674c44",  "",
+                PresetAAIStandardQueryGet.ofRelatedVnf(randUuid(vnfInstanceIdPrefix), "7a6ee536-f052-46fa-aa7e-2fca9d674c44",  "",
                         ImmutableMultimap.of("instance-group", instanceGroup1.getReqPath()));
 
         PresetAAIStandardQueryGet vnfPreset2 =
@@ -179,7 +184,12 @@ public class ServiceTreeApiTest extends BaseApiTest {
                 .replace("VNF4_INSTANCE_TYPE", vnfPreset4.getInstanceType());
 
         assertJsonEquals(response, expected);
+
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), RegistrationStrategy.APPEND);
         LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, echoedRequestId(responseEntity),  "/network/generic-vnfs/generic-vnf/", 5);
+        // org.onap.vid.aai.AaiClient.getCloudRegionAndTenantByVnfId for presets PresetAAIGetCloudRegionFromVnf is
+        // PUTing to AAI, so path is just /aai/v../query
+        LoggerFormatTest.assertHeadersAndMetricLogs(restTemplate, uri, echoedRequestId(responseEntity),  "/query", 4);
     }
 
     @Test
@@ -493,6 +503,11 @@ public class ServiceTreeApiTest extends BaseApiTest {
 
     private String randUuid() {
         return UUID.randomUUID().toString();
+    }
+
+    private String randUuid(String prefix) {
+        int prefixLen = min(prefix.length(), 7);
+        return StringUtils.left(prefix, prefixLen) + StringUtils.substring(randUuid(), prefixLen);
     }
 
 }

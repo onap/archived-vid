@@ -58,7 +58,6 @@ import org.onap.vid.properties.VidProperties;
 import org.onap.vid.scheduler.SchedulerService;
 import org.onap.vid.scheduler.SchedulerServiceImpl;
 import org.onap.vid.services.AAIServiceTree;
-import org.onap.vid.services.AAITreeNodeBuilder;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.services.AaiServiceImpl;
 import org.onap.vid.services.ChangeManagementService;
@@ -101,8 +100,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public AaiService getAaiService(AaiClientInterface aaiClient, AaiResponseTranslator aaiResponseTranslator,
-        AAITreeNodeBuilder aaiTreeNode, AAIServiceTree aaiServiceTree, ExecutorService executorService) {
-        return new AaiServiceImpl(aaiClient, aaiResponseTranslator, aaiServiceTree, executorService);
+        AAIServiceTree aaiServiceTree, Logging logging, ExecutorService executorService) {
+        return new AaiServiceImpl(aaiClient, aaiResponseTranslator, aaiServiceTree, executorService, logging);
     }
 
     @Bean

@@ -59,6 +59,7 @@ import org.onap.vid.model.aaiTree.FailureAAITreeNode;
 import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.onap.vid.properties.VidProperties;
+import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Streams;
 import org.onap.vid.utils.Tree;
 import org.onap.vid.utils.Unchecked;
@@ -71,7 +72,8 @@ import org.springframework.stereotype.Component;
 public class AAITreeNodeBuilder {
 
     private static final String RESULTS = "results";
-    private AaiClientInterface aaiClient;
+    private final AaiClientInterface aaiClient;
+    private final Logging logging;
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AAITreeNodeBuilder.class);
 
@@ -97,8 +99,9 @@ public class AAITreeNodeBuilder {
     }
 
     @Inject
-    public AAITreeNodeBuilder(AaiClientInterface aaiClient) {
+    public AAITreeNodeBuilder(AaiClientInterface aaiClient, Logging logging) {
         this.aaiClient = aaiClient;
+        this.logging = logging;
     }
 
     List<AAITreeNode> buildNode(NodeType nodeType,
@@ -296,13 +299,7 @@ public class AAITreeNodeBuilder {
     }
 
     private <V> Callable<V> withCopyOfMDC(Callable<V> callable) {
-        //in order to be able to write the correct data while creating the node on a new thread
-        // save a copy of the current thread's context map, with keys and values of type String.
-        final Map<String, String> copyOfParentMDC = MDC.getCopyOfContextMap();
-        return () -> {
-            MDC.setContextMap(copyOfParentMDC);
-            return callable.call();
-        };
+        return logging.withMDC(MDC.getCopyOfContextMap(), callable);
     }
 
     private List<AAITreeNode> getChildNode(ExecutorService threadPool, ConcurrentSkipListSet<AAITreeNode> nodesAccumulator,

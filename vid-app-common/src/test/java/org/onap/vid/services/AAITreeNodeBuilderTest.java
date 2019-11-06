@@ -20,44 +20,6 @@
 
 package org.onap.vid.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.util.concurrent.MoreExecutors;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.stubbing.Answer;
-import org.onap.vid.aai.AaiClientInterface;
-import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship;
-import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelationshipList;
-import org.onap.vid.exceptions.GenericUncheckedException;
-import org.onap.vid.model.aaiTree.AAITreeNode;
-import org.onap.vid.model.aaiTree.NodeType;
-import org.onap.vid.mso.model.CloudConfiguration;
-import org.onap.vid.utils.Tree;
-import org.onap.vid.utils.Unchecked;
-import org.onap.vid.testUtils.TestUtils;
-import org.springframework.http.HttpMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import static java.util.Comparator.comparing;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
@@ -72,6 +34,42 @@ import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.MoreExecutors;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
+import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.RelationshipList;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.NodeType;
+import org.onap.vid.mso.model.CloudConfiguration;
+import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.Logging;
+import org.onap.vid.utils.Tree;
+import org.onap.vid.utils.Unchecked;
+import org.springframework.http.HttpMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 public class AAITreeNodeBuilderTest {
 
     private AAITreeNodeBuilder aaiTreeNodeBuilder;
@@ -80,13 +78,14 @@ public class AAITreeNodeBuilderTest {
     private AaiClientInterface aaiClientMock;
 
     private ExecutorService executorService;
+    private Logging logging = new Logging();
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @BeforeClass
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
-        aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClientMock);
+        aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClientMock, logging);
         executorService = MoreExecutors.newDirectExecutorService();
     }
 
