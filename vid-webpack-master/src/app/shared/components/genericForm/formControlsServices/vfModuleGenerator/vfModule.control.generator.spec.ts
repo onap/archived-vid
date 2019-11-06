@@ -13,6 +13,8 @@ import {
 } from "../../../../models/formControlModels/formControl.model";
 import {FormControlNames, VfModuleControlGenerator} from "./vfModule.control.generator";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
+import {VfModuleInstance} from "../../../../models/vfModuleInstance";
+import {VfModule} from "../../../../models/vfModule";
 
 class MockAppStore<T> {
   getState() {
@@ -977,6 +979,38 @@ describe('VFModule Control Generator', () => {
       expect(requiredExist).toBeDefined();
     }
   });
+
+
+  const cases = [[true, true, null, true],[false, true, "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0_vol", true],[false, false, null,false]];
+
+  test.each(cases)('Given Ecomp Gen Name: %p and VG Name %p - expect the name value for VG to be %p',
+    (ecomGenName, vGName, expectedValue, shouldRequireExistVerifiedForDefinition) => {
+    const moduleName = "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0";
+    service.vfModuleModel = new VfModule();
+    service.vfModuleModel.name = moduleName;
+    service.vfModuleModel.volumeGroupAllowed = vGName;
+    let vnf : Object =  {isEcompGeneratedNaming: ecomGenName};
+    const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
+    const vnfStoreKey: string = 'VF_vGeraldine 0';
+    const uuidData: Object = {
+      modelName :  moduleName,
+      vFModuleStoreKey : "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0vmvzo",
+    };
+    const vfModuleModel :VfModuleInstance = service.getVfModuleInstance(serviceId, vnfStoreKey, uuidData,true);
+    let requiredExist = buildVfModuleFormControlModel(vfModuleModel ,serviceId, vnf);
+    if(!shouldRequireExistVerifiedForDefinition){
+      expect(requiredExist).toBeUndefined();
+    }
+    else {
+      expect(requiredExist).toBeDefined();
+      expect(requiredExist.value).toEqual(expectedValue);
+    }
+  });
+
+  let buildVfModuleFormControlModel = function(vfModuleModel :any, serviceId: string, vnf) :FormControlModel {
+    let controls: FormControlModel[] = service.pushInstanceAndVGToForm( [],vfModuleModel ,serviceId, vnf);
+    return controls.find(ctrl => ctrl.controlName === FormControlNames.VOLUME_GROUP_NAME);
+  };
 
   test('getMacroFormControls check for mandatory controls', () => {
     const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
