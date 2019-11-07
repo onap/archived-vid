@@ -1016,8 +1016,7 @@
             var isVfc = false;
 
             _.map($scope.service.model.vnfs, function (value, key) {
-                if (value.uuid == vnf.uuid) {
-                    if (!_.isEmpty(value.vfcInstanceGroups)) {
+                if (value.uuid == vnf.uuid && !_.isEmpty(value.vfcInstanceGroups)) {
                         isVfc = true;
                         var queryData = {
                             serviceModelId: $scope.service.model.service.uuid,
@@ -1033,7 +1032,6 @@
                         $scope.$broadcast(COMPONENT.IFRAME_DIALOG, queryData);
                         return;
                     }
-                }
             });
 
             DataService.setSubscriberName($scope.service.instance.subscriberName);
