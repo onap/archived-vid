@@ -8,7 +8,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 
-//import com.automation.common.report_portal_integration.listeners.ReportPortalListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -69,7 +68,8 @@ public class BaseApiTest {
     private URI getUri() {
         String host = System.getProperty("VID_HOST", "127.0.0.1");
         int port = Integer.valueOf(System.getProperty("VID_PORT", "8080"));
-        return new JerseyUriBuilder().host(host).port(port).scheme("http").path("vid").build();
+        String protocol = System.getProperty("VID_PROTOCOL", "http");
+        return new JerseyUriBuilder().host(host).port(port).scheme(protocol).path("vid").build();
     }
 
     public void login() {
