@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "4ad7395e_269ed0b4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/utils/Logging.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-07T17:59:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "92340bdf_6969996c",
+      "range": {
+        "startLine": 226,
+        "startChar": 13,
+        "endLine": 226,
+        "endChar": 24
+      },
+      "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "77181184_816631fc",
         "filename": "vid-app-common/src/test/java/org/onap/vid/utils/LoggingUtilsTest.java",
         "patchSetId": 4
