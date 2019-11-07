@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bc07bfb5_8bea1368",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WebConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-07T13:25:34Z",
+      "side": 0,
+      "message": "yes",
+      "parentUuid": "9ec2209f_2e63215e",
+      "range": {
+        "startLine": 104,
+        "startChar": 8,
+        "endLine": 104,
+        "endChar": 38
+      },
+      "revId": "06e518055d9758ee3ecc2e40efe13c7a5d982a2a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e43a096b_561407bd",
         "filename": "vid-app-common/src/test/java/org/onap/vid/utils/LoggingTest.java",
         "patchSetId": 4
