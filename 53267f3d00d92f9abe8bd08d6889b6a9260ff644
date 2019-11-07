@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "5f7dbb38_b6ace63c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/utils/Logging.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-07T12:45:20Z",
+      "side": 1,
+      "message": "is it getThrows() implementation ?",
+      "range": {
+        "startLine": 210,
+        "startChar": 54,
+        "endLine": 210,
+        "endChar": 68
+      },
+      "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45334681_9d6a7757",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/utils/Logging.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-07T12:45:20Z",
+      "side": 1,
+      "message": "is it getThrows() implementation ?",
+      "range": {
+        "startLine": 218,
+        "startChar": 53,
+        "endLine": 218,
+        "endChar": 76
+      },
+      "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e2c6ff6a_fe530ac3",
         "filename": "vid-app-common/src/main/java/org/onap/vid/utils/Logging.java",
         "patchSetId": 4
@@ -140,6 +186,40 @@
       "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e926dfbe_f3e8906b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/utils/LoggingUtilsTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-07T12:45:20Z",
+      "side": 1,
+      "message": "I dont see any validation here that use withMDC use WithMdcInternal.\nI think that testWithMDCInternal_whenGivenProvider_functionShouldBeExtractedWithMdc content should be part of this test.\nAnd testWithMDCInternal_whenGivenProvider_functionShouldBeExtractedWithMdc might be private (and not directly tested)",
+      "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7e8a7f0_7ef13663",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/utils/LoggingUtilsTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-07T12:45:20Z",
+      "side": 1,
+      "message": "I dont see any validation here that use withMDC use WithMdcInternal.\nI think that testWithMDCInternal_whenGivenProvider_functionShouldBeExtractedWithMdc content should be part of this test.\nAnd testWithMDCInternal_whenGivenProvider_functionShouldBeExtractedWithMdc might be private (and not directly tested)",
+      "revId": "53267f3d00d92f9abe8bd08d6889b6a9260ff644",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
