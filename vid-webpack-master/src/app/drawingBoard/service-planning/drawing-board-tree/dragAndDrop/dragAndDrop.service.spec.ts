@@ -5,14 +5,15 @@ import {DragAndDropService} from "./dragAndDrop.service";
 import {AppState} from "../../../../shared/store/reducers";
 
 class MockAppStore<T> {
-  dispatch(){
+  dispatch() {
 
   }
+
   getState() {
     return {
       global: {
         flags: {
-          "FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE" : true
+          "FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE": true
         }
       },
       service: {
@@ -53,6 +54,7 @@ describe('Drag and drop service', () => {
   let service: DragAndDropService;
   let httpMock: HttpTestingController;
   let store: NgRedux<AppState>;
+  let nodes;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -67,158 +69,142 @@ describe('Drag and drop service', () => {
     service = injector.get(DragAndDropService);
     httpMock = injector.get(HttpTestingController);
     store = injector.get(NgRedux);
+
+
   })().then(done).catch(done.fail));
 
+  beforeEach(() => {
+    nodes = [
+      {
+        "trackById": "ckfqe3sb3y8",
+        "componentInfoType": "VNF",
+        "parentType": "",
+        "type": "VF",
+        "typeName": "VNF",
+        "instanceName": "2017-488_PASQUALE-vPE",
+        "id": "04686zg11ur2",
+        "children": [
+          {
+            "id": "1150884479608",
+            "action": "Create",
+            "instanceName": "puwesovabe",
+            "name": "puwesovabe",
+            "type": "VFmodule",
+            "trackById": "d5if1906rqa",
+            "parentType": "VNF",
+            "position": 1,
+            "componentInfoType": "VFModule",
+            "errors": {},
+            "updatePoistionFunction": () => {
+            },
+          },
+          {
+            "id": "4637423092446",
+            "action": "Create",
+            "instanceName": "bnmgtrx",
+            "name": "bnmgtrx",
+            "type": "VFmodule",
+            "trackById": "9ei9adlh27e",
+            "parentType": "VNF",
+            "position": 2,
+            "componentInfoType": "VFModule",
+            "updatePoistionFunction": () => {
+            }
+          }
+        ],
+        "errors": {},
+      }
+    ];
+  })
+  test('drag should execute array_move when the nodes parent are same', () => {
 
-  test('drag should move element position', () => {
-    let nodes = [{
-      "modelCustomizationId": "91415b44-753d-494c-926a-456a9172bbb9",
-      "modelId": "d6557200-ecf2-4641-8094-5393ae3aae60",
-      "modelUniqueId": "91415b44-753d-494c-926a-456a9172bbb9",
-      "missingData": false,
-      "id": "tjjongy92jn",
-      "action": "Create",
-      "inMaint": false,
-      "name": "yoav2_001",
-      "modelName": "VF_vGeraldine 0",
-      "type": "VF",
-      "isEcompGeneratedNaming": true,
-      "networkStoreKey": "VF_vGeraldine 0:0001",
-      "vnfStoreKey": "VF_vGeraldine 0:0001",
-      "typeName": "VNF",
-      "menuActions": {"edit": {}, "showAuditInfo": {}, "duplicate": {}, "remove": {}, "delete": {}, "undoDelete": {}},
-      "isFailed": false,
-      "statusProperties": [{"key": "Prov Status:", "testId": "provStatus"}, {
-        "key": "Orch Status:",
-        "testId": "orchStatus"
-      }],
-      "trackById": "di9khuolht",
-      "parentType": "",
-      "position": 0,
-      "children": [{
-        "modelCustomizationId": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
-        "modelId": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
-        "modelUniqueId": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
-        "missingData": false,
-        "id": 6654971919519,
-        "action": "Create",
-        "name": "VFModule1",
-        "modelName": "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0",
-        "type": "VFmodule",
-        "isEcompGeneratedNaming": true,
-        "dynamicInputs": [],
-        "dynamicModelName": "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0bykqx",
-        "typeName": "M",
-        "menuActions": {"edit": {}, "showAuditInfo": {}, "remove": {}, "delete": {}, "undoDelete": {}},
-        "isFailed": false,
-        "statusProperties": [{"key": "Prov Status:", "testId": "provStatus"}, {
-          "key": "Orch Status:",
-          "testId": "orchStatus"
-        }],
-        "trackById": "5pfyfah820h",
-        "parentType": "VNF",
-        "position": 0,
-        "errors": {}
-      }, {
-        "modelCustomizationId": "6add59e0-7fe1-4bc4-af48-f8812422ae7c",
-        "modelId": "41708296-e443-4c71-953f-d9a010f059e1",
-        "modelUniqueId": "6add59e0-7fe1-4bc4-af48-f8812422ae7c",
-        "missingData": false,
-        "id": 987761655742,
-        "action": "Create",
-        "name": "VNFModule3",
-        "modelName": "vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2",
-        "type": "VFmodule",
-        "isEcompGeneratedNaming": true,
-        "dynamicInputs": [],
-        "dynamicModelName": "vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2fjrrc",
-        "typeName": "M",
-        "menuActions": {"edit": {}, "showAuditInfo": {}, "remove": {}, "delete": {}, "undoDelete": {}},
-        "isFailed": false,
-        "statusProperties": [{"key": "Prov Status:", "testId": "provStatus"}, {
-          "key": "Orch Status:",
-          "testId": "orchStatus"
-        }],
-        "trackById": "i3dllio31bb",
-        "parentType": "VNF",
-        "position": 1,
-        "errors": {}
-      }, {
-        "modelCustomizationId": "55b1be94-671a-403e-a26c-667e9c47d091",
-        "modelId": "522159d5-d6e0-4c2a-aa44-5a542a12a830",
-        "modelUniqueId": "55b1be94-671a-403e-a26c-667e9c47d091",
-        "missingData": false,
-        "id": 873798901625,
-        "action": "Create",
-        "name": "VFModule2",
-        "modelName": "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1",
-        "type": "VFmodule",
-        "isEcompGeneratedNaming": true,
-        "dynamicInputs": [],
-        "dynamicModelName": "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1djjni",
-        "typeName": "M",
-        "menuActions": {"edit": {}, "showAuditInfo": {}, "remove": {}, "delete": {}, "undoDelete": {}},
-        "isFailed": false,
-        "statusProperties": [{"key": "Prov Status:", "testId": "provStatus"}, {
-          "key": "Orch Status:",
-          "testId": "orchStatus"
-        }],
-        "trackById": "w7bvw1nh47s",
-        "parentType": "VNF",
-        "position": 2,
-        "errors": {}
-      }],
-      "errors": {}
-    }, {
-      "modelCustomizationId": "91415b44-753d-494c-926a-456a9172bbb9",
-      "modelId": "d6557200-ecf2-4641-8094-5393ae3aae60",
-      "modelUniqueId": "91415b44-753d-494c-926a-456a9172bbb9",
-      "missingData": false,
-      "id": "dywch8hkomi",
-      "action": "Create",
-      "inMaint": false,
-      "name": "yoav2",
-      "modelName": "VF_vGeraldine 0",
-      "type": "VF",
-      "isEcompGeneratedNaming": true,
-      "networkStoreKey": "VF_vGeraldine 0",
-      "vnfStoreKey": "VF_vGeraldine 0",
-      "typeName": "VNF",
-      "menuActions": {"edit": {}, "showAuditInfo": {}, "duplicate": {}, "remove": {}, "delete": {}, "undoDelete": {}},
-      "isFailed": false,
-      "statusProperties": [{"key": "Prov Status:", "testId": "provStatus"}, {
-        "key": "Orch Status:",
-        "testId": "orchStatus"
-      }],
-      "trackById": "fjczf1urdqo",
-      "parentType": "",
-      "position": 1,
-      "children": [],
-      "errors": {}
-    }];
     let from = {
+      id: "04686zg11ur2",
+      index: 0,
       data: {
-        type: 'VF',
-        index: 1
+        instanceName: 'puwesovabe',
+      },
+      parent: {
+        data: {
+          type: 'VF',
+          index: 0,
+          trackById: 'ckfqe3sb3y8',
+          vnfStoreKey: '2017-488_PASQUALE-vPE 0',
+        }
       }
     };
 
     let to = {
       parent: {
+        id: "4637423092446",
+        index: 1,
         data: {
-          type: 'VF',
-          index: 0
+          instanceName: 'bnmgtrx',
+        },
+        parent: {
+          data: {
+            type: 'VF',
+            trackById: 'ckfqe3sb3y8',
+            vnfStoreKey: '2017-488_PASQUALE-vPE 0',
+          }
         }
       }
     };
+
     jest.spyOn(service, 'array_move');
 
-    service.drag(store, "serviceInstanceId", nodes, {from, to});
-
+    service.drop(store, "serviceInstanceId", nodes, {from, to});
 
     expect(service.array_move).toHaveBeenCalled();
 
   });
 
 
+  test('drag shouldnt execute array_move when the nodes parent are different', () => {
+
+    let from = {
+      id: 1150884479608,
+      index: 0,
+      data: {
+        instanceName: '2017-488_PASQUALE-vPE',
+      },
+      parent: {}
+    };
+
+    let to = {
+      parent: {
+        id: 4637423092446,
+        index: 1,
+        data: {
+          instanceName: 'bnmgtrx',
+        },
+        parent: {
+          data: {
+            type: 'VF',
+            trackById: '1111',
+            vnfStoreKey: '2017-488_PASQUALE-vPE 0',
+          }
+        }
+      }
+    };
+
+
+    jest.spyOn(service, 'array_move');
+
+    service.drop(store, "serviceInstanceId", nodes, {from, to});
+
+    jest.clearAllMocks();
+
+    expect(service.array_move).not.toHaveBeenCalled();
+
+  });
+
+  test('drop should change nodes index and position', () => {
+
+    let arr: Array<any> = service.array_move(nodes[0].children, 0, 1, "serviceInstanceId", '')
+
+    expect(arr[0]).toMatchObject({instanceName: "bnmgtrx", position: 1});
+    expect(arr[1]).toMatchObject({instanceName: "puwesovabe", position: 2});
+
+  });
 });
