@@ -489,8 +489,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             if (model && model.vnfs && !_.isEmpty(model.vnfs)) {
                 Object.keys(model.vnfs).forEach(function (key) {
                     var vnf = model.vnfs[key];
-                    if (vnf.vfcInstanceGroups && !_.isEmpty(vnf.vfcInstanceGroups)) {
-                        if (vnf.uuid === genericVnf.modelVersionId) {
+                    if (vnf.vfcInstanceGroups && !_.isEmpty(vnf.vfcInstanceGroups) && vnf.uuid === genericVnf.modelVersionId) {
                             AaiService.getInstanceGroupsByVNFInstanceId(genericVnf.nodeId,
                                 function (response) { //success
                                     handleGetRelatedInstanceGroupsResponseForVnf(response, genericVnf);
@@ -502,7 +501,6 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                                 }
                             )
                         }
-                    }
                 });
             }
         }
