@@ -795,11 +795,9 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         };
 
         $scope.isShowAssignmentsEnabled = function () {
-            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_SHOW_ASSIGNMENTS)) {
-                if ($scope.serviceOrchestrationStatus) {
+            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_SHOW_ASSIGNMENTS) && $scope.serviceOrchestrationStatus) {
                     return $scope.serviceOrchestrationStatus.toLowerCase() === 'assigned';
                 }
-            }
             return false;
         };
 
