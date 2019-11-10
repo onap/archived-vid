@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
 import com.google.common.base.CaseFormat
 
-class VidNotions(@get:JsonInclude(JsonInclude.Include.NON_NULL)
+data class VidNotions(@get:JsonInclude(JsonInclude.Include.NON_NULL)
                  val instantiationUI: InstantiationUI,
                  val modelCategory: ModelCategory,
                  val viewEditUI: InstantiationUI,
@@ -41,7 +41,8 @@ class VidNotions(@get:JsonInclude(JsonInclude.Include.NON_NULL)
         TRANSPORT_SERVICE,
         SERVICE_WITH_COLLECTION_RESOURCE,
         A_LA_CARTE_VNF_SERVICE_ROLE,
-        INFRASTRUCTURE_VPN
+        INFRASTRUCTURE_VPN,
+        ANY_ALACARTE_WHICH_NOT_EXCLUDED,
         ;
 
         @JsonValue
