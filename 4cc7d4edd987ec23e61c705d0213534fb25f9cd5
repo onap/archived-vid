@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f87f3c49_2727850f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-10T10:37:18Z",
+      "side": 1,
+      "message": "Remove this check",
+      "range": {
+        "startLine": 157,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 37
+      },
+      "revId": "4cc7d4edd987ec23e61c705d0213534fb25f9cd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1340a093_454fa155",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-10T10:37:18Z",
+      "side": 1,
+      "message": "can be removed as check of macro removed",
+      "range": {
+        "startLine": 151,
+        "startChar": 8,
+        "endLine": 151,
+        "endChar": 66
+      },
+      "revId": "4cc7d4edd987ec23e61c705d0213534fb25f9cd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b90cd0c6_e4ba1bf1",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-10T10:37:18Z",
+      "side": 1,
+      "message": "test name should imply that PM will go to legacy UI",
+      "revId": "4cc7d4edd987ec23e61c705d0213534fb25f9cd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a500876a_00aa6291",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-10T10:37:18Z",
+      "side": 1,
+      "message": "sohuld be removed",
+      "range": {
+        "startLine": 225,
+        "startChar": 8,
+        "endLine": 225,
+        "endChar": 66
+      },
+      "revId": "4cc7d4edd987ec23e61c705d0213534fb25f9cd5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
