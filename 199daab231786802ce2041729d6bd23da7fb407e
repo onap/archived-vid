@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c9dfa03_2b9fe4e2",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2019-11-10T11:42:23Z",
+      "side": 1,
+      "message": "adding Done",
+      "revId": "199daab231786802ce2041729d6bd23da7fb407e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccbf881e_f8f3da5d",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2019-11-10T11:42:23Z",
+      "side": 1,
+      "message": "done()",
+      "revId": "199daab231786802ce2041729d6bd23da7fb407e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4b73ef3_c002b004",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2019-11-10T11:42:23Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "199daab231786802ce2041729d6bd23da7fb407e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
