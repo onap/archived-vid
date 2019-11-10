@@ -181,3 +181,6 @@
 * FLAG_1911_INSTANTIATION_ORDER_BUTTON_IN_ASYNC_ALACARTE
    Let the user set the order of resource instantiation with the button (Move up / Move down) while using drawing board (new view edit)
    for a-la-carte instantiation.
+   
+* FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI
+  Any a-la-carte new service deployment will be open in modern UI, besides excluded services : Port mirroring, VLAN Tagging
