@@ -34,6 +34,7 @@ import org.onap.sdc.toscaparser.api.NodeTemplate;
 import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.VidNotions;
+import org.onap.vid.model.VidNotions.ModelCategory;
 import org.onap.vid.properties.Features;
 import org.togglz.core.manager.FeatureManager;
 
@@ -153,6 +154,9 @@ public class VidNotionsBuilder {
         if(isALaCarte(csarHelper) && hasFabricConfiguration(csarHelper)) {
             return VidNotions.ModelCategory.IS_5G_FABRIC_CONFIGURATION_MODEL;
         }
+        if (isPortMirroringService(serviceModel)) {
+            return ModelCategory.PORT_MIRRORING;
+        }
         if (isInfraStructureVpn(csarHelper)) {
             return VidNotions.ModelCategory.INFRASTRUCTURE_VPN;
         }
@@ -231,5 +235,10 @@ public class VidNotionsBuilder {
     private boolean isGrouping(ISdcCsarHelper csarHelper) {
         final String serviceRole = csarHelper.getServiceMetadata().getValue(ToscaParserImpl2.Constants.SERVICE_ROLE);
         return StringUtils.equalsIgnoreCase(serviceRole, ToscaParserImpl2.Constants.GROUPING);
+    }
+
+    private boolean isPortMirroringService(ServiceModel serviceModel) {
+        return (serviceModel.getService()!=null &&
+            StringUtils.equals(serviceModel.getService().getServiceType(), "portMirroring"));
     }
 }

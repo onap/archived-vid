@@ -56,6 +56,7 @@ import org.onap.sdc.tosca.parser.exceptions.SdcToscaParserException;
 import org.onap.sdc.toscaparser.api.NodeTemplate;
 import org.onap.sdc.toscaparser.api.Property;
 import org.onap.sdc.toscaparser.api.elements.Metadata;
+import org.onap.vid.asdc.parser.ToscaParserImpl2.Constants;
 import org.onap.vid.model.CR;
 import org.onap.vid.model.Network;
 import org.onap.vid.model.Node;
@@ -197,6 +198,15 @@ public class VidNotionsBuilderTest {
         assertThat(vidNotionsBuilder.suggestModelCategory(csarHelper, serviceModel), is(ModelCategory.INFRASTRUCTURE_VPN));
     }
 
+    @Test()
+    public void withoutMocks_givenToscaOfPortMirroring_InstantiationUIIsLegacyAndCategoryIsPortMirroring() throws SdcToscaParserException, IOException {
+        initServiceModelAndscarHelperWithRealCsar("/csars/portMirroringService.zip");
+        when(featureManagerMock.isActive(Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI)).thenReturn(true);
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel), is(InstantiationUI.LEGACY));
+        assertThat(vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel), is(InstantiationUI.LEGACY));
+        assertThat(vidNotionsBuilder.suggestModelCategory(csarHelper, serviceModel), is(ModelCategory.PORT_MIRRORING));
+    }
+
     @Test
     public void uuidIsExactly1ffce89fEtc_UIHintIsPositive() {
         initServiceModelAndscarHelperWithMocks();
@@ -214,6 +224,12 @@ public class VidNotionsBuilderTest {
 
         when(featureManagerMock.isActive(Features.FLAG_5G_IN_NEW_INSTANTIATION_UI)).thenReturn(flagValue);
         assertThat(vidNotionsBuilder.buildVidNotions(csarHelper, serviceModel), hasProperty("instantiationUI", is(InstantiationUI.LEGACY)));
+    }
+
+    private void mockInstantiationType(ServiceModel serviceModel, String aLaCarte) {
+        Service mockService = mock(Service.class);
+        when(serviceModel.getService()).thenReturn(mockService);
+        when(mockService.getInstantiationType()).thenReturn(aLaCarte);
     }
 
     @DataProvider
@@ -256,9 +272,7 @@ public class VidNotionsBuilderTest {
         when(featureManagerMock.isActive(Features.FLAG_1902_NEW_VIEW_EDIT)).thenReturn(isFlag1902NewViewEdit);
 
         ServiceModel serviceModel = mock(ServiceModel.class);
-        Service service = mock(Service.class);
-        when(serviceModel.getService()).thenReturn(service);
-        when(service.getInstantiationType()).thenReturn(ToscaParserImpl2.Constants.A_LA_CARTE);
+        mockInstantiationType(serviceModel, Constants.A_LA_CARTE);
 
         InstantiationUI result = vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel);
         assertEquals(expectedViewEditUi, result);
@@ -302,9 +316,7 @@ public class VidNotionsBuilderTest {
     @Test(dataProvider="toscaParserInstantiationTypeToVidNotion")
     public void testSuggestInstantiationTypeWhenInstantiationUiLegacy(String toscaParserInstantiationType, InstantiationType expectedInstantiationType) {
         ServiceModel serviceModel = mock(ServiceModel.class);
-        Service service = mock(Service.class);
-        when(serviceModel.getService()).thenReturn(service);
-        when(service.getInstantiationType()).thenReturn(toscaParserInstantiationType);
+        mockInstantiationType(serviceModel, toscaParserInstantiationType);
         assertEquals(expectedInstantiationType, vidNotionsBuilder.suggestInstantiationType(serviceModel, ModelCategory.OTHER));
     }
 
@@ -326,9 +338,7 @@ public class VidNotionsBuilderTest {
             boolean isFeatureOn,
             InstantiationType expectedInstantiationType) {
         ServiceModel serviceModel = mock(ServiceModel.class);
-        Service service = mock(Service.class);
-        when(serviceModel.getService()).thenReturn(service);
-        when(service.getInstantiationType()).thenReturn(ToscaParserImpl2.Constants.A_LA_CARTE);
+        mockInstantiationType(serviceModel, Constants.A_LA_CARTE);
         when(featureManagerMock.isActive(featureFlag)).thenReturn(isFeatureOn);
         assertEquals(expectedInstantiationType, vidNotionsBuilder.suggestInstantiationType(serviceModel, instantiationUI));
     }
@@ -378,9 +388,7 @@ public class VidNotionsBuilderTest {
     @Test
     public void whenInstantiationTypeInServiceModelIsNull_thenInstantiationTypeIsClientConfig() {
         initServiceModelAndscarHelperWithMocks();
-        Service service = mock(Service.class);
-        when(serviceModel.getService()).thenReturn(service);
-        when(service.getInstantiationType()).thenReturn(null);
+        mockInstantiationType(serviceModel, null);
         assertEquals( InstantiationType.ClientConfig, vidNotionsBuilder.suggestInstantiationType(serviceModel, ModelCategory.OTHER));
     }
 
