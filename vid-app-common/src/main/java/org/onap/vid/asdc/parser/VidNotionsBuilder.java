@@ -34,6 +34,7 @@ import org.onap.sdc.toscaparser.api.NodeTemplate;
 import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.VidNotions;
+import org.onap.vid.model.VidNotions.InstantiationUI;
 import org.onap.vid.model.VidNotions.ModelCategory;
 import org.onap.vid.properties.Features;
 import org.togglz.core.manager.FeatureManager;
@@ -56,9 +57,9 @@ public class VidNotionsBuilder {
     VidNotions buildVidNotions(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
         VidNotions.ModelCategory modelCategory = suggestModelCategory(csarHelper, serviceModel);
         return new VidNotions(
-                suggestInstantiationUI(csarHelper, serviceModel),
+                suggestInstantiationUI(csarHelper, serviceModel, modelCategory),
                 modelCategory,
-                suggestViewEditUI(csarHelper, serviceModel),
+                suggestViewEditUI(csarHelper, serviceModel, modelCategory),
                 suggestInstantiationType(serviceModel, modelCategory));
     }
 
@@ -89,10 +90,17 @@ public class VidNotionsBuilder {
     //UI route a-la-carte services to old UI only if InstantiationUI is LEGACY
     //So any other value for InstantiationUI other than LEGACY make UI to route
     //a-la-carte services to new UI
-    VidNotions.InstantiationUI suggestInstantiationUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
+    VidNotions.InstantiationUI suggestInstantiationUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel, ModelCategory modelCategory) {
         if(featureManager.isActive(Features.FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI) && isALaCarte(csarHelper)) {
             return VidNotions.InstantiationUI.ANY_ALACARTE_NEW_UI;
         }
+
+        if (featureManager.isActive(Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI) &&
+            !isMacro(serviceModel) &&
+            !isAlacrteExcludedByCategory(modelCategory)) {
+            return InstantiationUI.ANY_ALACARTE_WHICH_NOT_EXCLUDED;
+        }
+
         if (featureManager.isActive(Features.FLAG_1902_VNF_GROUPING) && isGrouping(csarHelper)) {
             return VidNotions.InstantiationUI.SERVICE_WITH_VNF_GROUPING;
         }
@@ -114,6 +122,10 @@ public class VidNotionsBuilder {
         }
         return VidNotions.InstantiationUI.LEGACY;
 
+    }
+
+    private boolean isAlacrteExcludedByCategory(ModelCategory modelCategory) {
+        return modelCategory==ModelCategory.PORT_MIRRORING || modelCategory==ModelCategory.VLAN_TAGGING ;
     }
 
     private boolean isVnfServiceRole(ISdcCsarHelper csarHelper) {
@@ -172,7 +184,7 @@ public class VidNotionsBuilder {
         return VidNotions.ModelCategory.OTHER;
     }
 
-    VidNotions.InstantiationUI suggestViewEditUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
+    VidNotions.InstantiationUI suggestViewEditUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel, ModelCategory modelCategory) {
         if (featureManager.isActive(Features.FLAG_1902_VNF_GROUPING) && isGrouping(csarHelper)) {
             return VidNotions.InstantiationUI.SERVICE_WITH_VNF_GROUPING;
         }
@@ -186,7 +198,7 @@ public class VidNotionsBuilder {
         }
 
         if (featureManager.isActive(Features.FLAG_1902_NEW_VIEW_EDIT)) {
-            VidNotions.InstantiationUI instantiationUISuggestion = suggestInstantiationUI(csarHelper, serviceModel);
+            VidNotions.InstantiationUI instantiationUISuggestion = suggestInstantiationUI(csarHelper, serviceModel, modelCategory);
             if (instantiationUISuggestion!=VidNotions.InstantiationUI.LEGACY) {
                 return instantiationUISuggestion;
             }
