@@ -127,11 +127,11 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
   nodes = [];
   serviceModelId: string;
   options = {
-    allowDrag: this._dragAndDropService.isAllow(),
+    allowDrag: this._dragAndDropService.isFlagOn(),
     actionMapping: {
       mouse: {
         drop: (tree:TreeModel, node:TreeNode, $event:any, {from, to}) => {
-          this._dragAndDropService.drag(this.store, this.serviceModelId, this.nodes, {from, to});
+          this._dragAndDropService.drop(this.store, this.serviceModelId, this.nodes, {from, to});
         }
       }
     },

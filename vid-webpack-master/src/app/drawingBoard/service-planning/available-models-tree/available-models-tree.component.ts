@@ -93,6 +93,7 @@ export class AvailableModelsTreeComponent {
   service = {name: ''};
 
   options: ITreeOptions = {
+    allowDrop:false,
     nodeHeight: 36,
     dropSlotHeight: 0,
     nodeClass: (node: ITreeNode) => {
