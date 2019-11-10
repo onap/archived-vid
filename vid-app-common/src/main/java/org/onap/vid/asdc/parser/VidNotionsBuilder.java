@@ -157,6 +157,9 @@ public class VidNotionsBuilder {
         if (isPortMirroringService(serviceModel)) {
             return ModelCategory.PORT_MIRRORING;
         }
+        if (isVlanTaggingService(serviceModel)) {
+            return ModelCategory.VLAN_TAGGING;
+        }
         if (isInfraStructureVpn(csarHelper)) {
             return VidNotions.ModelCategory.INFRASTRUCTURE_VPN;
         }
@@ -240,5 +243,16 @@ public class VidNotionsBuilder {
     private boolean isPortMirroringService(ServiceModel serviceModel) {
         return (serviceModel.getService()!=null &&
             StringUtils.equals(serviceModel.getService().getServiceType(), "portMirroring"));
+    }
+
+    private boolean isVlanTaggingService(ServiceModel serviceModel) {
+        if (serviceModel==null || serviceModel.getVnfs()==null) {
+            return false;
+        }
+
+        return serviceModel.getVnfs().values().stream().anyMatch(
+            vnf-> MapUtils.isNotEmpty(vnf.getVfcInstanceGroups())
+        );
+
     }
 }

@@ -59,7 +59,8 @@ class VidNotions(@get:JsonInclude(JsonInclude.Include.NON_NULL)
         Transport,
         SERVICE_WITH_COLLECTION_RESOURCE,
         INFRASTRUCTURE_VPN,
-        PORT_MIRRORING,        
+        PORT_MIRRORING,
+        VLAN_TAGGING,
         @JsonProperty("other")
         OTHER
     }
