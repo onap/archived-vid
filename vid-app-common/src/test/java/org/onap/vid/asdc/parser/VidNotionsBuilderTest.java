@@ -197,6 +197,15 @@ public class VidNotionsBuilderTest {
         assertThat(vidNotionsBuilder.suggestModelCategory(csarHelper, serviceModel), is(ModelCategory.INFRASTRUCTURE_VPN));
     }
 
+    @Test()
+    public void withoutMocks_givenZippedToscaFileOfPortMirroring_InstantiationUIAndCategoryAreRight() throws SdcToscaParserException, IOException {
+        initServiceModelAndscarHelperWithRealCsar("/csars/portMirroringService.zip");
+        when(featureManagerMock.isActive(Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI)).thenReturn(true);
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel), is(InstantiationUI.LEGACY));
+        assertThat(vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel), is(InstantiationUI.LEGACY));
+        assertThat(vidNotionsBuilder.suggestModelCategory(csarHelper, serviceModel), is(ModelCategory.PORT_MIRRORING));
+    }
+
     @Test
     public void uuidIsExactly1ffce89fEtc_UIHintIsPositive() {
         initServiceModelAndscarHelperWithMocks();
