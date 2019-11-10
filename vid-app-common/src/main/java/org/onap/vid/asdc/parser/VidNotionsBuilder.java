@@ -242,7 +242,7 @@ public class VidNotionsBuilder {
 
     private boolean isPortMirroringService(ServiceModel serviceModel) {
         return (serviceModel.getService()!=null &&
-            StringUtils.equals(serviceModel.getService().getServiceType(), "portMirroring"));
+            StringUtils.equals(serviceModel.getService().getServiceType(), "PORT-MIRROR"));
     }
 
     private boolean isVlanTaggingService(ServiceModel serviceModel) {
