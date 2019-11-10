@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a0d0210_bcb4b7b7",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/ala-carte.e2e.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-10T09:14:59Z",
+      "side": 1,
+      "message": "plz not `only`",
+      "revId": "2d8094d8da1e217636c05a77a71d2c69980b88cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0cf03669_894f8343",
+        "filename": "vid-webpack-master/src/app/shared/components/formControls/component/multiselect/multiselect.formControl.component.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-10T09:14:59Z",
+      "side": 1,
+      "message": "Should delete or keep, not comment out.",
+      "revId": "2d8094d8da1e217636c05a77a71d2c69980b88cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5113fd11_b1dcea76",
+        "filename": "vid-webpack-master/src/app/shared/components/formControls/component/multiselect/multiselect.formControl.component.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-10T09:14:59Z",
+      "side": 1,
+      "message": "why deleted the tests? shouldn\u0027t these be re-implemented?",
+      "revId": "2d8094d8da1e217636c05a77a71d2c69980b88cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4484f883_dd493bc5",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-10T09:14:59Z",
+      "side": 1,
+      "message": "Really is that our idiom for flags?",
+      "revId": "2d8094d8da1e217636c05a77a71d2c69980b88cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5f73bdc_3e10fee5",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-10T09:14:59Z",
+      "side": 1,
+      "message": "What is going on on this line?",
+      "revId": "2d8094d8da1e217636c05a77a71d2c69980b88cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f651f53a_422fb06b",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-10T09:14:59Z",
+      "side": 1,
+      "message": "Or delete or keep.",
+      "revId": "2d8094d8da1e217636c05a77a71d2c69980b88cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39d877a3_0ce4bea2",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/generic-form.component.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-10T09:14:59Z",
+      "side": 1,
+      "message": "What will happen if `formControl` is null? Why should the form will absorb this case?",
+      "range": {
+        "startLine": 9,
+        "startChar": 113,
+        "endLine": 9,
+        "endChar": 156
+      },
+      "revId": "2d8094d8da1e217636c05a77a71d2c69980b88cd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
