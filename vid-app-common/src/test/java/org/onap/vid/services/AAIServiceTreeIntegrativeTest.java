@@ -37,8 +37,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
 import javax.ws.rs.core.Response;
 import org.mockito.Mock;
 import org.onap.vid.aai.AaiClientInterface;
@@ -76,10 +78,12 @@ public class AAIServiceTreeIntegrativeTest {
     @Mock
     ServiceModelInflator serviceModelInflator;
 
+    @Mock
+    Logging logging;
+
     private AAITreeNodeBuilder aaiTreeNodeBuilder;
 
     private AAITreeConverter aaiTreeConverter = new AAITreeConverter();
-    private Logging logging = new Logging();
 
     private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
@@ -89,7 +93,6 @@ public class AAIServiceTreeIntegrativeTest {
     private String serviceType = "vWINIFRED";
     private String serviceInstanceId = "62888f15-6d24-4f7b-92a7-c3f35beeb215";
 
-    //TODO Amichai: if in the future it is neede, add here the SUFFIX to the URL: "?format=simple"
     private String serviceInstanceRequestUri = "business/customers/customer/" +
             globalCustomerID +
             "/service-subscriptions/service-subscription/" +
@@ -294,7 +297,13 @@ public class AAIServiceTreeIntegrativeTest {
     @BeforeMethod
     public void initMocks() {
         TestUtils.initMockitoMocks(this);
+        reboundLoggingWithMdcMock();
         aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClient, logging);
+    }
+
+    private void reboundLoggingWithMdcMock() {
+        when(logging.withMDC(any(), any(Callable.class))).thenAnswer(invocation -> invocation.getArgument(1));
+        when(logging.withMDC(any(), any(Function.class))).thenAnswer(invocation -> invocation.getArgument(1));
     }
 
     public void getServiceInstanceTreeAndAssert(boolean isDuplicatedKeysInTenantRelation) throws IOException, AsdcCatalogException {
