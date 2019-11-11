@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "aed52b74_bd892a7f",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-11T14:18:15Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "31066fb8_ae3c4d43",
+      "range": {
+        "startLine": 189,
+        "startChar": 17,
+        "endLine": 189,
+        "endChar": 62
+      },
+      "revId": "81edb057a2658964c20330ed34fdf591e689b2d8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "704ffdd4_977e05b4",
         "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
         "patchSetId": 1
@@ -69,6 +93,30 @@
       "revId": "81edb057a2658964c20330ed34fdf591e689b2d8",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53d0d345_294fad48",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-11T14:18:15Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "47a83e06_92b5cad8",
+      "range": {
+        "startLine": 306,
+        "startChar": 50,
+        "endLine": 306,
+        "endChar": 64
+      },
+      "revId": "81edb057a2658964c20330ed34fdf591e689b2d8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
