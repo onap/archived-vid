@@ -303,7 +303,7 @@ public class Constants {
             }};
         }
 
-        public static final String CREATE_SERVICE_INSTANCE_MACRO_MODAL = "Set a new service instance";
+
 
 
     }
