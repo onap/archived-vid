@@ -94,6 +94,7 @@ import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.UsersService;
 import vid.automation.test.utils.CookieAndJsonHttpHeadersInterceptor;
 import vid.automation.test.utils.DB_CONFIG;
+import vid.automation.test.utils.InsecureTLSRestClient;
 import vid.automation.test.utils.TestConfigurationHelper;
 import vid.automation.test.utils.TestHelper;
 
@@ -102,7 +103,7 @@ public class VidBaseTestCase extends SetupCDTest{
 
     protected final UsersService usersService = new UsersService();
     protected final CategoryParamsService categoryParamsService = new CategoryParamsService();
-    protected final RestTemplate restTemplate = new RestTemplate();
+    protected final RestTemplate restTemplate = InsecureTLSRestClient.newRestTemplate();
     protected final URI uri;
     protected final URI envUrI;
 
