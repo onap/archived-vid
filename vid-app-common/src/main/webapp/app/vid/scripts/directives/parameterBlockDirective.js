@@ -419,12 +419,10 @@ var parameterBlockDirective = function($log, PARAMETER, UtilityService, $compile
                 element.find("input, select, multiselect").each(function() {
                     if ($(this).attr("is-required") === "true") {
                         var requiredField = getRequiredField(this);
-                        if (requiredField !== "") {
-                            if (++count == 1) {
+                        if ((requiredField !== "") && (++count == 1)) {
                                 requiredFields = requiredField;
                             }
                         }
-                    }
                 });
                 if (--count <= 0) {
                     return requiredFields;
