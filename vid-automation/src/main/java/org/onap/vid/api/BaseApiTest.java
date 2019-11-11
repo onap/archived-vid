@@ -38,6 +38,7 @@ import vid.automation.reportportal.ReportPortalListenerDelegator;
 import vid.automation.test.infra.FeaturesTogglingConfiguration;
 import vid.automation.test.services.UsersService;
 import vid.automation.test.utils.CookieAndJsonHttpHeadersInterceptor;
+import vid.automation.test.utils.InsecureTLSRestClient;
 
 @Listeners(ReportPortalListenerDelegator.class)
 public class BaseApiTest {
@@ -50,10 +51,10 @@ public class BaseApiTest {
     @SuppressWarnings("WeakerAccess")
     protected Client client;
     protected Random random;
-    protected final RestTemplate restTemplate = new RestTemplate();
+    protected final RestTemplate restTemplate = InsecureTLSRestClient.newRestTemplate();
 
     protected final UsersService usersService = new UsersService();
-    protected final RestTemplate restTemplateErrorAgnostic = new RestTemplate();
+    protected final RestTemplate restTemplateErrorAgnostic = InsecureTLSRestClient.newRestTemplate();
 
     @BeforeClass
     public void init() {

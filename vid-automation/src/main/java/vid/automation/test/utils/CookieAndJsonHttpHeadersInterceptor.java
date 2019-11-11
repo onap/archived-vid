@@ -1,18 +1,22 @@
 package vid.automation.test.utils;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
-import java.net.URI;
-import java.util.Collections;
-import java.util.List;
 
 public class CookieAndJsonHttpHeadersInterceptor implements ClientHttpRequestInterceptor {
     private final HttpHeaders cookieAndJsonHttpHeaders;
@@ -33,7 +37,7 @@ public class CookieAndJsonHttpHeadersInterceptor implements ClientHttpRequestInt
     protected HttpHeaders getCookieAndJsonHttpHeaders(URI uri, UserCredentials userCredentials) {
         HttpHeaders loginRequestHeaders = new HttpHeaders();
         loginRequestHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = InsecureTLSRestClient.newRestTemplate();
         ResponseEntity<String> loginRes = restTemplate.postForEntity(uri.toASCIIString() + "/login_external.htm", new HttpEntity<>("loginId=" + userCredentials.getUserId() + "&password=" + userCredentials.getPassword(), loginRequestHeaders), String.class);
         Assert.assertEquals("Login failed - wrong http status with user:" + userCredentials.getUserId() + " password:" + userCredentials.getPassword(), HttpStatus.FOUND, loginRes.getStatusCode());
         Assert.assertNull("Failed to login with user:" + userCredentials.getUserId() + " password:" + userCredentials.getPassword(), loginRes.getBody());
