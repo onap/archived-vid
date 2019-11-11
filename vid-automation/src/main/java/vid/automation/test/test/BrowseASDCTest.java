@@ -1,49 +1,62 @@
 package vid.automation.test.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_NETWORK_TO_ASYNC_INSTANTIATION;
+import static vid.automation.test.infra.Features.FLAG_SHOW_ORCHESTRATION_TYPE;
+import static vid.automation.test.infra.ModelInfo.aLaCarteForBrowseSdc;
+import static vid.automation.test.infra.ModelInfo.aLaCarteServiceCreationTest;
+import static vid.automation.test.infra.ModelInfo.instantiationTypeAlacarte_vidNotionsInstantiationUIByUUID;
+import static vid.automation.test.infra.ModelInfo.macroForBrowseSdc;
+
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matchers;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.TimeBombSkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.Service;
 import vid.automation.test.model.User;
-import vid.automation.test.sections.*;
+import vid.automation.test.sections.BrowseASDCPage;
+import vid.automation.test.sections.DeployDialogBase;
+import vid.automation.test.sections.DeployModernUIALaCarteDialog;
+import vid.automation.test.sections.DeployModernUIMacroDialog;
+import vid.automation.test.sections.DeployOldALaCarteDialog;
+import vid.automation.test.sections.DeployOldMacroDialog;
+import vid.automation.test.sections.SideMenu;
+import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
-
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
-import static vid.automation.test.infra.Features.FLAG_SHOW_ORCHESTRATION_TYPE;
-import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
-import static vid.automation.test.infra.ModelInfo.*;
 
 
 public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     private final String invariantUUIDAlacarte = aLaCarteForBrowseSdc.modelInvariantId;
     private final String invariantUUIDMacro = macroForBrowseSdc.modelInvariantId;
-    private final String instantiationTypeNameAlacarte = "a la carte";
-    private final String instantiationTypeNameMacro = "macro";
-    private final String oldMacro = "old macro";
-    private final String newAlacarte = "new a la carte";
     public static final String modelInvariantUUID1 = "aeababbc-010b-4a60-8df7-e64c07389466";
     public static final String modelInvariantUUID2 = "aa2f8e9c-9e47-4b15-a95c-4a9385599abc";
     public static final String modelInvariantUUID3 = "d849c57d-b6fe-4843-8349-4ab8bbb08d71";
@@ -69,7 +82,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         return new UserCredentials(user.credentials.userId, user.credentials.password, Constants.Users.EMANUEL_EMANUEL, "", "");
     }
 
-    @Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
+    //@Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
     public void testPNFOnCreatePopup() {
         Service service = servicesService.getService("f39389e4-2a9c-4085-8ac3-04aea9c651be");
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
@@ -85,12 +98,9 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         validateServiceCreationDialog(service);
     }
 
-//    @BeforeMethod
-//    public void clearSimulator() {
-//        SimulatorApi.clearAll();
-//    }
 
-    @Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
+
+    //@Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
     private void testPNFMacroInstantation() throws Exception {
         User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
         relogin(user.credentials);
@@ -126,89 +136,94 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test
-    private void browseServiceModel_deployServiceALaCarteByBackendInput_creationPopupIsALaCarte() throws Exception {
+    private void browseServiceModel_deployServiceALaCarteByBackendInput_creationPopupIsALaCarte()  {
         // model uuid should be of macro
         deployServiceAndAssertInstantiationType(
                 "csar15782222_instantiationTypeAlacarte_invariantUUIDMacro.zip",
                 invariantUUIDMacro,
-                instantiationTypeNameAlacarte
+                FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI.isActive() ?
+                new DeployModernUIMacroDialog() :
+                new DeployOldALaCarteDialog()
         );
     }
 
     @Test
     @FeatureTogglingTest(FLAG_5G_IN_NEW_INSTANTIATION_UI)
-    private void browseServiceModel_deployServiceALaCarteByBackendInputHintNewUI_creationPopupIsAngular2() throws Exception {
+    private void browseServiceModel_deployServiceALaCarteByBackendInputHintNewUI_creationPopupIsAngular2()  {
         deployServiceAndAssertInstantiationType(
                 instantiationTypeAlacarte_vidNotionsInstantiationUIByUUID,
-                newAlacarte
+                new DeployModernUIALaCarteDialog()
         );
     }
 
     @Test
-    private void browseServiceModel_deployServiceALaCarteBecauseNotOnMACRO_SERVICESConfig_creationPopupIsALaCarte() throws Exception {
+    private void browseServiceModel_deployServiceALaCarteBecauseNotOnMACRO_SERVICESConfig_creationPopupIsALaCarte()  {
         deployServiceAndAssertInstantiationType(
                 "csar15782222_instantiationTypeEmpty_invariantUUIDAlacarte.zip",
                 invariantUUIDAlacarte,
-                instantiationTypeNameAlacarte
+                FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI.isActive() ?
+                new DeployModernUIALaCarteDialog() :
+                new DeployOldALaCarteDialog()
         );
     }
 
     @Test
-    private void browseServiceModel_deployServiceMacroByBackendInput_creationPopupIsMacro() throws Exception {
+    private void browseServiceModel_deployServiceMacroByBackendInput_creationPopupIsMacro()  {
         deployServiceAndAssertInstantiationType(
                 "csar15782222_instantiationTypeMacro_invariantUUIDAlacarte_withoutNetworks.zip",
                 invariantUUIDAlacarte,
-                instantiationTypeNameMacro
+                new DeployModernUIMacroDialog()
         );
     }
 
     @Test
-    private void browseServiceModel_deployServiceMacroByMACRO_SERVICESConfig_creationPopupIsOldMacro() throws Exception {
+    private void browseServiceModel_deployServiceMacroByMACRO_SERVICESConfig_creationPopupIsOldMacro()  {
+        if (FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI.isActive() ) {
+            throw new TimeBombSkipException("skipping identify macro by uuid for awhile", "2019/11/25");
+        }
         deployServiceAndAssertInstantiationType(
                 "csar15782222_invariantUUIDMacro.zip",
                 invariantUUIDMacro,
-                oldMacro
-
+                new DeployOldMacroDialog()
         );
     }
 
     @Test
-    private void browseServiceModel_deployServiceMacroWithPnf_creationPopupIsOldMacro() throws Exception {
+    private void browseServiceModel_deployServiceMacroWithPnf_creationPopupIsOldMacro() {
         deployServiceAndAssertInstantiationType(
                 "csar15782222_instantiationTypeMacroWithPnf.zip",
                 invariantUUIDMacro,
-                oldMacro
-
+            new DeployOldMacroDialog()
         );
     }
 
     @Test
-    @FeatureTogglingTest(flagActive = false, value = FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI)
-    public void browseServiceModel_deployServiceMacroWithCR_creationPopupIsOldMacro() throws Exception {
+    public void browseServiceModel_deployServiceMacroWithCR_creationPopupIsOldMacro()  {
         deployServiceAndAssertInstantiationType(
-                "csar15782222_instantiationTypeMacroWithCR.zip",
-                invariantUUIDMacro,
-                oldMacro
-
+            ModelInfo.collectionResourceService,
+                FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI.isActive() ?
+                    new DeployModernUIMacroDialog() :
+                    new DeployOldMacroDialog()
         );
     }
 
     @Test
-    private void browseServiceModel_deployServiceMacroWithNetwork_creationPopupIsMacroByFF() throws Exception {
-        String macroInstantiationAccordingFF = Features.FLAG_NETWORK_TO_ASYNC_INSTANTIATION.isActive() ? instantiationTypeNameMacro : oldMacro;
+    private void browseServiceModel_deployServiceMacroWithNetwork_creationPopupIsMacroByFF()  {
         deployServiceAndAssertInstantiationType(
                 "csar15782222_instantiationTypeMacroWithNetwork.zip",
                 invariantUUIDMacro,
-                macroInstantiationAccordingFF
+                FLAG_NETWORK_TO_ASYNC_INSTANTIATION.isActive() ?
+                new DeployModernUIMacroDialog() :
+                new DeployOldMacroDialog()
         );
     }
 
 
-    private void deployServiceAndAssertInstantiationType(String modelZipFileName, String modelInvariantId, String expectedInstantiationType) throws Exception {
-        deployServiceAndAssertInstantiationType(new ModelInfo("4d71990b-d8ad-4510-ac61-496288d9078e", modelInvariantId, modelZipFileName), expectedInstantiationType);
+    private void deployServiceAndAssertInstantiationType(String modelZipFileName, String modelInvariantId, DeployDialogBase deployDialog)  {
+        deployServiceAndAssertInstantiationType(new ModelInfo("4d71990b-d8ad-4510-ac61-496288d9078e", modelInvariantId, modelZipFileName), deployDialog);
     }
 
-    private void deployServiceAndAssertInstantiationType(ModelInfo modelInfo, String expectedInstantiationType) throws Exception {
+    private void deployServiceAndAssertInstantiationType(ModelInfo modelInfo, DeployDialogBase deployDialog)  {
 
         registerExpectationForLegacyServiceDeployment(modelInfo, "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
         User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
@@ -219,19 +234,15 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
         GeneralUIUtils.ultimateWait();
         browseASDCPage.clickDeployServiceButtonByServiceUUID(modelInfo.modelVersionId);
-        DeployMacroDialogBase macroDialog = null;
-        if (expectedInstantiationType.equals(instantiationTypeNameAlacarte)) {
-            GeneralUIUtils.ultimateWait();
-            browseASDCPage.clickCancelButtonByTestID();
-        } else { //macro
-            macroDialog = expectedInstantiationType.equals(oldMacro) ? new DeployMacroDialogOld() : getMacroDialog();
-            macroDialog.assertTitle();
-            macroDialog.closeDialog();
-        }
+
+        deployDialog.waitForDialogToLoad();
+        deployDialog.assertDialog();
+        deployDialog.closeDialog();
     }
 
+    @FeatureTogglingTest(value = FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI, flagActive = false)
     @Test
-    private void testServiceInstantiationAlaCarte() throws Exception {
+    private void testServiceInstantiationAlaCarte()  {
         User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
         relogin(user.credentials);
 
@@ -303,8 +314,9 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         BrowseASDCPage browseASDCPage = registerSimulatorAndGoToBrowseSDC();
         Service service = servicesService.getService("2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd");
         browseASDCPage.clickDeployServiceButtonByServiceUUID(service.uuid);
-        DeployMacroDialogBase deployMacroDialog = getMacroDialog();
-        deployMacroDialog.assertDialogExists();
+        DeployModernUIMacroDialog deployMacroDialog = new DeployModernUIMacroDialog();
+        deployMacroDialog.waitForDialogToLoad();
+        deployMacroDialog.assertDialog();
         deployMacroDialog.clickProjectSelect();
         deployMacroDialog.clickOwningEntitySelect();
     }
@@ -324,7 +336,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         return new BrowseASDCPage();
     }
 
-    @Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
+    //@Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
     private void testOwningEntityRequiredAndProjectOptional() throws Exception {
         User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);
         relogin(user.credentials);
@@ -358,7 +370,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         assertSuccessfulServiceInstanceCreation();
     }
 
-    @Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
+    //@Test(groups = {"shouldBeMigratedToWorkWithSimulator"})
     protected void testLineOfBusinessOptionalAndPlatformRequired() throws Exception {
 
         User user = usersService.getUser(Constants.Users.SILVIA_ROBBINS_TYLER_SILVIA);

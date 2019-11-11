@@ -20,10 +20,12 @@
 
 package org.onap.sdc.ci.tests.execute.setup;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-
+import net.lightbody.bmp.core.har.Har;
 import org.onap.sdc.ci.tests.datatypes.Configuration;
 import org.onap.sdc.ci.tests.datatypes.User;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
@@ -43,11 +45,6 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
-
-import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
-
-import net.lightbody.bmp.core.har.Har;
 
 public abstract class SetupCDTest extends DriverFactory {
 
@@ -172,7 +169,7 @@ public abstract class SetupCDTest extends DriverFactory {
 		return url;
 	}
 
-	public static void navigateToUrl(String url) throws Exception {
+	public static void navigateToUrl(String url)  {
 		try {
 			System.out.println("Deleting cookies...");
 			deleteCookies();
@@ -282,7 +279,7 @@ public abstract class SetupCDTest extends DriverFactory {
 		}
 	}
 
-	public void navigateAndLogin(UserCredentials userCredentials) throws Exception {
+	public void navigateAndLogin(UserCredentials userCredentials)  {
 		int refreshAttempts = getWindowTest().getRefreshAttempts() != 0 ? getWindowTest().getRefreshAttempts() : 0;
 		setRefreshAttempts(refreshAttempts);
 		setUser(userCredentials);
@@ -300,7 +297,7 @@ public abstract class SetupCDTest extends DriverFactory {
 		return user;
 	}
 
-	protected void reloginWithNewRole(UserCredentials userCredentials) throws Exception {
+	protected void reloginWithNewRole(UserCredentials userCredentials)  {
 		System.out.println(String.format("Setup before relogin with the userId %s", userCredentials.getUserId()));
 		navigateAndLogin(userCredentials);
 	}
