@@ -20,7 +20,6 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.TimeZone;
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,6 +37,7 @@ import vid.automation.reportportal.ReportPortalListenerDelegator;
 import vid.automation.test.infra.FeaturesTogglingConfiguration;
 import vid.automation.test.services.UsersService;
 import vid.automation.test.utils.CookieAndJsonHttpHeadersInterceptor;
+import vid.automation.test.utils.InsecureHttpsClient;
 
 @Listeners(ReportPortalListenerDelegator.class)
 public class BaseApiTest {
@@ -50,16 +50,16 @@ public class BaseApiTest {
     @SuppressWarnings("WeakerAccess")
     protected Client client;
     protected Random random;
-    protected final RestTemplate restTemplate = new RestTemplate();
+    protected final RestTemplate restTemplate = InsecureHttpsClient.newRestTemplate();
 
     protected final UsersService usersService = new UsersService();
-    protected final RestTemplate restTemplateErrorAgnostic = new RestTemplate();
+    protected final RestTemplate restTemplateErrorAgnostic = InsecureHttpsClient.newRestTemplate();
 
     @BeforeClass
     public void init() {
         uri = getUri();
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        client = ClientBuilder.newClient();
+        client = InsecureHttpsClient.newJaxrsClient();
         client.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
         random = new Random(System.currentTimeMillis());
         FeaturesTogglingConfiguration.initializeFeatureManager();
