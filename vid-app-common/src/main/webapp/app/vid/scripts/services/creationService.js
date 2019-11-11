@@ -662,10 +662,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 userParams : getArbitraryParameters(parameterList)
             }
         };
-        if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ADD_MSO_TESTAPI_FIELD)) {
-            if ((_this.componentId != COMPONENT.SERVICE) || ( DataService.getALaCarte() )) {
+        if ((featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ADD_MSO_TESTAPI_FIELD)) && ((_this.componentId != COMPONENT.SERVICE) || ( DataService.getALaCarte() ))) {
                 requestDetails.requestParameters.testApi = DataService.getMsoRequestParametersTestApi();
-            }
         }
         if ( (_this.componentId != COMPONENT.SERVICE) || ( !DataService.getALaCarte() ) ) {
             // include cloud region for everything but service create alacarte
