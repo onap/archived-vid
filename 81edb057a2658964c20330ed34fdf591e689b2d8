@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "31066fb8_ae3c4d43",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-11T13:08:06Z",
+      "side": 0,
+      "message": "check if file \"csar15782222_instantiationTypeMacroWithCR.zip\" is still in use",
+      "range": {
+        "startLine": 189,
+        "startChar": 17,
+        "endLine": 189,
+        "endChar": 62
+      },
+      "revId": "81edb057a2658964c20330ed34fdf591e689b2d8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "704ffdd4_977e05b4",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-11T13:08:06Z",
+      "side": 0,
+      "message": "Is \"getMacroDialog\" still in use?",
+      "range": {
+        "startLine": 306,
+        "startChar": 50,
+        "endLine": 306,
+        "endChar": 64
+      },
+      "revId": "81edb057a2658964c20330ed34fdf591e689b2d8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
