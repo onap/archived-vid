@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3f96ba61_5c56c2ea",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-11T09:02:15Z",
+      "side": 1,
+      "message": "It is a kind of philosophical argument that we will not decide now.\nLet\u0027s talk about it later",
+      "parentUuid": "ffbdc260_95f32a2f",
+      "revId": "180bc966881b9e0505e8c443c860f6f0fd87a34d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "eb16d716_9ef7075c",
         "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
         "patchSetId": 1
