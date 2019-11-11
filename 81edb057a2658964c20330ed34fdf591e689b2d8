@@ -45,6 +45,30 @@
       "revId": "81edb057a2658964c20330ed34fdf591e689b2d8",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47a83e06_92b5cad8",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-11T14:00:38Z",
+      "side": 0,
+      "message": "deleted",
+      "parentUuid": "704ffdd4_977e05b4",
+      "range": {
+        "startLine": 306,
+        "startChar": 50,
+        "endLine": 306,
+        "endChar": 64
+      },
+      "revId": "81edb057a2658964c20330ed34fdf591e689b2d8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }

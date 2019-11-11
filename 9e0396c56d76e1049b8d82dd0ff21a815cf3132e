@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "fdc083b1_1f5bb4c9",
+        "filename": "vid-automation/src/main/java/vid/automation/test/sections/DeployOldDialogBase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-11T14:00:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4dc35ab8_e868abc1",
+      "revId": "9e0396c56d76e1049b8d82dd0ff21a815cf3132e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1b528bd6_fee3039d",
         "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
         "patchSetId": 1
@@ -73,6 +91,30 @@
       "revId": "9e0396c56d76e1049b8d82dd0ff21a815cf3132e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42086322_c3dff41a",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-11T14:00:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b528bd6_fee3039d",
+      "range": {
+        "startLine": 145,
+        "startChar": 20,
+        "endLine": 145,
+        "endChar": 45
+      },
+      "revId": "9e0396c56d76e1049b8d82dd0ff21a815cf3132e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -99,6 +141,30 @@
     },
     {
       "key": {
+        "uuid": "9da36d9b_4669ae32",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-11T14:00:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6617d356_e662d198",
+      "range": {
+        "startLine": 144,
+        "startChar": 16,
+        "endLine": 146,
+        "endChar": 45
+      },
+      "revId": "9e0396c56d76e1049b8d82dd0ff21a815cf3132e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c52d9019_c99540ff",
         "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
         "patchSetId": 1
@@ -122,6 +188,30 @@
     },
     {
       "key": {
+        "uuid": "a57815fa_827943ec",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-11T14:00:38Z",
+      "side": 1,
+      "message": "wrong feature flag. fixed",
+      "parentUuid": "c52d9019_c99540ff",
+      "range": {
+        "startLine": 201,
+        "startChar": 16,
+        "endLine": 201,
+        "endChar": 83
+      },
+      "revId": "9e0396c56d76e1049b8d82dd0ff21a815cf3132e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5213ac2_508b7b63",
         "filename": "vid-automation/src/main/java/vid/automation/test/test/VidBaseTestCase.java",
         "patchSetId": 1
@@ -136,6 +226,24 @@
       "revId": "9e0396c56d76e1049b8d82dd0ff21a815cf3132e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "901bad54_40911445",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/VidBaseTestCase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-11T14:00:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5213ac2_508b7b63",
+      "revId": "9e0396c56d76e1049b8d82dd0ff21a815cf3132e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
