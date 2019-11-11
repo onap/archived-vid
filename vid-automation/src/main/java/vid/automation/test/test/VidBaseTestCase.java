@@ -1,17 +1,59 @@
 package vid.automation.test.test;
 
-//import com.automation.common.report_portal_integration.annotations.Step;
-//import com.automation.common.report_portal_integration.listeners.ReportPortalListener;
-//import com.automation.common.report_portal_integration.screenshots.WebDriverScreenshotsProvider;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toSet;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
+import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.fail;
+import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
+import static vid.automation.test.utils.TestHelper.GET_TENANTS;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.Configuration;
+import org.onap.sdc.ci.tests.datatypes.UserCredentials;
+import org.onap.sdc.ci.tests.execute.setup.SetupCDTest;
+import org.onap.sdc.ci.tests.utilities.FileHandling;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.*;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAICloudRegionAndSourceFromConfigurationPut;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetPortMirroringSourcePorts;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsWithoutInstancesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPortalPresetsUtils;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2;
@@ -19,10 +61,6 @@ import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInst
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
-import org.onap.sdc.ci.tests.datatypes.UserCredentials;
-import org.onap.sdc.ci.tests.execute.setup.SetupCDTest;
-import org.onap.sdc.ci.tests.utilities.FileHandling;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -36,10 +74,21 @@ import org.testng.annotations.Test;
 import vid.automation.reportportal.ReportPortalListenerDelegator;
 import vid.automation.test.Constants;
 import vid.automation.test.Constants.ViewEdit;
-import vid.automation.test.infra.*;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
 import vid.automation.test.model.Credentials;
 import vid.automation.test.model.User;
-import vid.automation.test.sections.*;
+import vid.automation.test.sections.LoginExternalPage;
+import vid.automation.test.sections.SearchExistingPage;
+import vid.automation.test.sections.SideMenu;
+import vid.automation.test.sections.VidBasePage;
+import vid.automation.test.sections.ViewEditPage;
+import vid.automation.test.sections.deploy.DeployModernUIMacroDialog;
 import vid.automation.test.services.CategoryParamsService;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.UsersService;
@@ -47,29 +96,6 @@ import vid.automation.test.utils.CookieAndJsonHttpHeadersInterceptor;
 import vid.automation.test.utils.DB_CONFIG;
 import vid.automation.test.utils.TestConfigurationHelper;
 import vid.automation.test.utils.TestHelper;
-
-import java.io.File;
-import java.lang.reflect.Method;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.*;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
-import static java.util.Collections.emptySet;
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.*;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
-import static org.testng.Assert.assertEquals;
-import static org.testng.AssertJUnit.fail;
-import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
-import static vid.automation.test.utils.TestHelper.GET_TENANTS;
 
 @Listeners(ReportPortalListenerDelegator.class)
 public class VidBaseTestCase extends SetupCDTest{
@@ -229,7 +255,7 @@ public class VidBaseTestCase extends SetupCDTest{
         return presets;
     }
 
-    protected void relogin(Credentials credentials) throws Exception {
+    protected void relogin(Credentials credentials)  {
         // `getWindowTest().getPreviousUser()` is SetupCDTest's state of previous user used
         if (!credentials.userId.equals(getWindowTest().getPreviousUser())) {
             UserCredentials userCredentials = new UserCredentials(credentials.userId,
@@ -485,12 +511,6 @@ public class VidBaseTestCase extends SetupCDTest{
         assertThat(String.format(Constants.ServiceModelInfo.METADETA_ERROR_MESSAGE, elementTestId),  infoItemText, is(value));
     }
 
-    public DeployMacroDialogBase getMacroDialog(){
-        VidBasePage vidBasePage =new VidBasePage();
-        vidBasePage.goToIframe();
-        return new DeployMacroDialog();
-    }
-
     protected void loadServicePopup(ModelInfo modelInfo) {
         loadServicePopup(modelInfo.modelVersionId);
     }
@@ -503,7 +523,7 @@ public class VidBaseTestCase extends SetupCDTest{
     }
 
     protected void loadServicePopupOnBrowseASDCPage(String modelVersionId ) {
-        DeployMacroDialog deployMacroDialog = new DeployMacroDialog();
+        DeployModernUIMacroDialog deployMacroDialog = new DeployModernUIMacroDialog();
         VidBasePage.goOutFromIframe();
         deployMacroDialog.clickDeployServiceButtonByServiceUUID(modelVersionId);
         deployMacroDialog.goToIframe();
