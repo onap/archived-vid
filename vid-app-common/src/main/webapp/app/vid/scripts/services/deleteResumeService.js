@@ -346,13 +346,11 @@ var DeleteResumeService = function($log, AaiService, AsdcService, DataService,
 					requestorId: requestorloggedInId
 				}
 		};
-        if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ADD_MSO_TESTAPI_FIELD)) {
-            if ((_this.componentId != COMPONENT.SERVICE) || ( DataService.getALaCarte() )) {
+        if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_ADD_MSO_TESTAPI_FIELD) && (_this.componentId != COMPONENT.SERVICE) || ( DataService.getALaCarte() ) ) {
                 // a-la-carte services AND *any* non-service
                 requestDetails.requestParameters = {
                     testApi : DataService.getMsoRequestParametersTestApi()
                 };
-            }
         }
 
 		console.log("getMsoRequestDetails COMPONENT." + _this.componentId);
