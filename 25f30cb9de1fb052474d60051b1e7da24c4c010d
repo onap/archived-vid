@@ -16,6 +16,92 @@
       "revId": "25f30cb9de1fb052474d60051b1e7da24c4c010d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a275614_464878bf",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T11:57:31Z",
+      "side": 1,
+      "message": "VG allowed",
+      "range": {
+        "startLine": 986,
+        "startChar": 49,
+        "endLine": 986,
+        "endChar": 56
+      },
+      "revId": "25f30cb9de1fb052474d60051b1e7da24c4c010d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b958ec54_7e5843c2",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 987,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T11:57:31Z",
+      "side": 1,
+      "message": "vgAllowed",
+      "range": {
+        "startLine": 987,
+        "startChar": 18,
+        "endLine": 987,
+        "endChar": 24
+      },
+      "revId": "25f30cb9de1fb052474d60051b1e7da24c4c010d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5accd011_f9f02a81",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T11:57:31Z",
+      "side": 1,
+      "message": "pushInstanceAndVGNamesToForm\nor\npushInstanceNameAndVGToForm",
+      "range": {
+        "startLine": 116,
+        "startChar": 2,
+        "endLine": 116,
+        "endChar": 25
+      },
+      "revId": "25f30cb9de1fb052474d60051b1e7da24c4c010d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05dd0ce6_52e26364",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T11:57:31Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "25f30cb9de1fb052474d60051b1e7da24c4c010d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
