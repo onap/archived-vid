@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
+import vid.automation.test.infra.Get;
 
 public abstract class DeployOldDialogBase extends DeployDialogBase {
 
@@ -30,6 +31,11 @@ public abstract class DeployOldDialogBase extends DeployDialogBase {
     public void assertTitle(){
         WebElement modalTitle = GeneralUIUtils.getWebElementByTestID(Constants.CREATE_MODAL_TITLE_ID, 30);
         assertThat(modalTitle.getText().toLowerCase(), containsString(getTitle()));
+    }
+
+    @Override
+    public String getModelVersionId() {
+        return Get.byTestId("Service UUID").getText();
     }
 
     public abstract String getTitle();

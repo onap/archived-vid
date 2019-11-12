@@ -147,7 +147,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     }
 
     @NotNull
-    private DeployDialogBase getAlacarteDialogByFlagValue() {
+    public static DeployDialogBase getAlacarteDialogByFlagValue() {
         return FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI.isActive() ?
             new DeployModernUIALaCarteDialog() :
             new DeployOldALaCarteDialog();
@@ -240,9 +240,7 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
         GeneralUIUtils.ultimateWait();
         browseASDCPage.clickDeployServiceButtonByServiceUUID(modelInfo.modelVersionId);
 
-        deployDialog.waitForDialogToLoad();
-        deployDialog.assertDialog();
-        deployDialog.closeDialog();
+        deployDialog.waitForDialogAssertAndClose();
     }
 
     @FeatureTogglingTest(value = FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI, flagActive = false)
