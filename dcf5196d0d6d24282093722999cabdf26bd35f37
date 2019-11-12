@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "6f83e131_c4faf8a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:20:41Z",
+      "side": 1,
+      "message": "please consider rewording this generic message.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 52
+      },
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "52598f8c_d7857cf2",
         "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
         "patchSetId": 5
