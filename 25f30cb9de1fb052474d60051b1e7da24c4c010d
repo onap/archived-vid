@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "ab210b7d_593b20a0",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 985,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T12:06:53Z",
+      "side": 1,
+      "message": "what about [true,false,...] ? requiredExist should be undefined",
+      "revId": "25f30cb9de1fb052474d60051b1e7da24c4c010d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a492b29f_a5d6ebc0",
         "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
         "patchSetId": 6
@@ -58,6 +75,29 @@
         "startChar": 18,
         "endLine": 987,
         "endChar": 24
+      },
+      "revId": "25f30cb9de1fb052474d60051b1e7da24c4c010d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0b580a6_c90adcf5",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 1003,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T12:06:53Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this condition.\nIf vGName false, then it should be BeUndefined, not matter about ecompGenName value",
+      "range": {
+        "startLine": 1001,
+        "startChar": 4,
+        "endLine": 1003,
+        "endChar": 5
       },
       "revId": "25f30cb9de1fb052474d60051b1e7da24c4c010d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
