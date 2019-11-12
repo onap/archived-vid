@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ac0fb44_5c012a17",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/PreviousVersionsPopupTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T12:49:29Z",
+      "side": 1,
+      "message": "This test did not and will not check if the correct version is used to deploy?",
+      "revId": "8efc5932d2b96aac217ddcad332d334648d38788",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
