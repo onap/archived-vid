@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "52598f8c_d7857cf2",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 983,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T09:17:34Z",
+      "side": 1,
+      "message": "is this test really needed ?\nI think the scenario is covered in `getAlaCarteFormControls responce with wrong order of controls`",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4cf68471_4091e408",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T09:17:34Z",
+      "side": 1,
+      "message": "I think it\u0027s better to  create a model here from a JSON and not used the exteranl state.",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0282ddcd_bfe6e028",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T09:17:34Z",
+      "side": 1,
+      "message": "here a new test case starting.\nuse jest each for test different values.\n\nsee test \"getAlacartFormControls $controllerName control validator shall have the expected regex\" in same class for example",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ade39f47_3e9b2f90",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 1026,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T09:17:34Z",
+      "side": 1,
+      "message": "another use case for the each",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f4756c6_a7a3bf2e",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T09:17:34Z",
+      "side": 1,
+      "message": "why this line is needed ?",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14cd2fbf_cb2277bf",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T09:17:34Z",
+      "side": 1,
+      "message": "is vnfStoreKey in use here ?\nIf not, it can remove also from caller method",
+      "range": {
+        "startLine": 178,
+        "startChar": 55,
+        "endLine": 178,
+        "endChar": 66
+      },
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e264956c_d1fb20af",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T09:17:34Z",
+      "side": 1,
+      "message": "is vfModuleName in use here ?\nIf not, also line 120 is not needed",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "377d1037_075ca922",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-12T09:17:34Z",
+      "side": 1,
+      "message": "is it in used ?",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
