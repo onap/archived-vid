@@ -9,4 +9,13 @@ public abstract class DeployDialogBase extends VidBasePage {
     public abstract void assertDialog();
 
     public abstract void waitForDialogToLoad();
+
+    public abstract String getModelVersionId();
+
+    public void waitForDialogAssertAndClose() {
+        waitForDialogToLoad();
+        assertDialog();
+        closeDialog();
+    }
+
 }

@@ -7,6 +7,7 @@ import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Get;
 
 public abstract class DeployModernUIBase extends DeployDialogBase {
 
@@ -32,6 +33,11 @@ public abstract class DeployModernUIBase extends DeployDialogBase {
     @Override
     public void assertDialog() {
         assertTitle();
+    }
+
+    @Override
+    public String getModelVersionId() {
+        return Get.byTestId("model-item-value-uuid").getText();
     }
 
     protected boolean isLcpRegionExist() {
