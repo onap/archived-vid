@@ -1,17 +1,62 @@
 package org.onap.vid.api;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.onap.vid.api.TestUtils.getNestedPropertyInMap;
+import static org.testng.AssertJUnit.assertEquals;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.ws.rs.HttpMethod;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.onap.simulator.presetGenerator.presets.aaf.AAFGetBasicAuthPreset;
+import org.onap.simulator.presetGenerator.presets.aaf.AAFGetUrlServicePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoChangeManagementBase;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfInPlaceSoftwareUpdate;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfReplace;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfUpdate;
-import org.onap.simulator.presetGenerator.presets.aaf.*;
-import org.onap.vid.model.mso.*;
-import org.onap.vid.model.workflow.*;
+import org.onap.vid.model.mso.ChangeManagementRequest;
+import org.onap.vid.model.mso.ChangeManagementRequestDetails;
+import org.onap.vid.model.mso.CloudConfiguration;
+import org.onap.vid.model.mso.MsoExceptionResponse;
+import org.onap.vid.model.mso.MsoResponseWrapper2;
+import org.onap.vid.model.mso.RelatedInstance;
+import org.onap.vid.model.mso.RelatedInstanceList;
+import org.onap.vid.model.mso.RequestInfo;
+import org.onap.vid.model.mso.RequestParameters;
+import org.onap.vid.model.workflow.GetVnfWorkflowRelationRequest;
+import org.onap.vid.model.workflow.GetWorkflowsResponse;
+import org.onap.vid.model.workflow.VnfDetails;
+import org.onap.vid.model.workflow.VnfDetailsWithWorkflows;
+import org.onap.vid.model.workflow.VnfWorkflowRelationAllResponse;
+import org.onap.vid.model.workflow.VnfWorkflowRelationRequest;
+import org.onap.vid.model.workflow.VnfWorkflowRelationResponse;
+import org.onap.vid.model.workflow.WorkflowsDetail;
 import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StopWatch;
@@ -22,31 +67,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
+import vid.automation.test.utils.InsecureHttpsClient;
 import vid.automation.test.utils.ReadFile;
-
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.onap.vid.api.TestUtils.getNestedPropertyInMap;
-import static org.testng.AssertJUnit.assertEquals;
 
 
 //This is integration test that require running tomcat
@@ -473,7 +495,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
         Response response = callChangeManagementUpdate(vnfIds, changeManagementRequest);
         MsoResponseWrapper2 body = response.readEntity(MsoResponseWrapper2.class);
         assertForHappyPath(vnfIds, body, requestType);
-        RestTemplate manualRestTemplate = new RestTemplate();
+        RestTemplate manualRestTemplate = InsecureHttpsClient.newRestTemplate();
         super.loginWithChosenRESTClient(getUserCredentials(), manualRestTemplate);
         SimulatorApi.registerExpectationFromPreset( new PresetAAIGetSubscribersGet(), RegistrationStrategy.APPEND);
         LoggerFormatTest
