@@ -2,6 +2,7 @@ package org.onap.simulator.presetGenerator.presets.aaf;
 
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.springframework.http.HttpMethod;
+import vid.automation.test.services.SimulatorApi;
 
 public class AAFGetUrlServicePreset extends BasePreset {
     @Override
@@ -11,7 +12,11 @@ public class AAFGetUrlServicePreset extends BasePreset {
 
     @Override
     public String getReqPath() {
-        return "/locate/com.att.aaf.service:2.0";
+        return "/locate/" + regexAafServerName() + ":2.0";
+    }
+
+    private String regexAafServerName() {
+        return "([a-z-]+\\.)*[a-z-]+";
     }
 
     @Override
@@ -21,6 +26,22 @@ public class AAFGetUrlServicePreset extends BasePreset {
 
     @Override
     public Object getResponseBody() {
-        return "{\"endpoint\":[{\"name\":\"com.att.aaf.service\",\"major\": 2,\"minor\": 0,\"patch\": 19,\"pkg\": 21,\"latitude\": 38.627346,\"longitude\": -90.19377,\"protocol\": \"http\",\"subprotocol\": [],\"hostname\": \"127.0.0.1\",\"port\": 1080}]}";
+        return ""
+            + "{"
+            + "  \"endpoint\": [{"
+            + "      \"name\": \"aaf-service\","
+            + "      \"major\": 2,"
+            + "      \"minor\": 0,"
+            + "      \"patch\": 19,"
+            + "      \"pkg\": 21,"
+            + "      \"latitude\": 38.627346,"
+            + "      \"longitude\": -90.19377,"
+            + "      \"protocol\": \"http\","
+            + "      \"subprotocol\": [],"
+            + "      \"port\": " + SimulatorApi.getSimulatedResponsesPort() + ","
+            + "      \"hostname\": \"" + SimulatorApi.getSimulatorHost() + "\""
+            + "    }"
+            + "  ]"
+            + "}"; 
     }
 }
