@@ -1,28 +1,33 @@
 package vid.automation.test.test;
 
+import static vid.automation.test.infra.ModelInfo.ModelInfoWithMultipleVersions.modelInfoWithMultipleVersions;
+import static vid.automation.test.infra.ModelInfo.serviceWithOneVersion;
+
 import com.google.common.collect.ImmutableList;
 import org.junit.Assert;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
-import org.onap.simulator.presetGenerator.presets.aai.*;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkZones;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetServicesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubDetailsWithoutInstancesGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIServiceDesignAndCreationPut;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstancePost;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceMetadataGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.Click;
 import vid.automation.test.infra.Get;
+import vid.automation.test.infra.ModelInfo;
 import vid.automation.test.sections.BrowseASDCPage;
-import vid.automation.test.sections.CreateNewInstancePage;
 import vid.automation.test.sections.PreviousVersionDialog;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.SimulatorApi;
-
-import static vid.automation.test.infra.ModelInfo.ModelInfoWithMultipleVersions.modelInfoWithMultipleVersions;
-import static vid.automation.test.infra.ModelInfo.serviceWithOneVersion;
 
 public class PreviousVersionsPopupTest extends CreateInstanceDialogBaseTest{
 
@@ -79,17 +84,12 @@ public class PreviousVersionsPopupTest extends CreateInstanceDialogBaseTest{
     }
     @Test
     private void openPreviousVersionPopup_deployOldVersion_creationPopupIsALaCarte(){
-        String expectedPopupIsALaCarteName = "Create Service Instance -- a la carte";
         prepareSimulatorWithThreeVersionsBeforeBrowseASDCService();
-        CreateNewInstancePage newInstance= new CreateNewInstancePage();
+        registerExpectationForLegacyServiceDeployment(ModelInfo.aLaCarteServiceCreationTest, "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
         newVersionDialog = new PreviousVersionDialog();
         navigateToBrowseAsdcAndClickPreviousButton();
         newVersionDialog.clickDeployServiceButtonByServiceUUID(modelVersionId2);
-        assertNewInstanceFormOpened(createModalTitleTestId,expectedPopupIsALaCarteName);
-        newInstance.clickCancelButtonByTestID();
-        GeneralUIUtils.ultimateWait();
-        newVersionDialog.clickCancelButton();
-
+        BrowseASDCTest.getAlacarteDialogByFlagValue().waitForDialogAssertAndClose();
     }
 
     private void navigateToBrowseAsdcAndClickPreviousButton() {
