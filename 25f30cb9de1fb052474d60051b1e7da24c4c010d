@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a492b29f_a5d6ebc0",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T11:49:53Z",
+      "side": 1,
+      "message": "yafe",
+      "revId": "25f30cb9de1fb052474d60051b1e7da24c4c010d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
