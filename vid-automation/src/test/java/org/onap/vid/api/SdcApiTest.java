@@ -23,6 +23,7 @@ package org.onap.vid.api;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
@@ -129,7 +130,9 @@ public class SdcApiTest extends BaseApiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MACRO_INSTANTIATION_TYPE_UUID), String.class);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         String emptyInstantiationTypeExpectedResponse = loadResourceAsString(EMPTY_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
-        assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(turnOffInstantiationUI(emptyInstantiationTypeExpectedResponse))));
+        assertThat(response.getBody(), jsonEquals(emptyInstantiationTypeExpectedResponse)
+            .when(IGNORING_ARRAY_ORDER)
+            .whenIgnoringPaths("service.vidNotions.instantiationUI"));
     }
 
     @Test
@@ -149,7 +152,9 @@ public class SdcApiTest extends BaseApiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MIN_MAX_INITIAL_UUID), String.class);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         String minMaxInitialExpectedResponse = loadResourceAsString("sdcApiTest/minMaxInitialExpectedResponse.json");
-        assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(turnOffInstantiationUI(minMaxInitialExpectedResponse))));
+        assertThat(response.getBody(), jsonEquals(minMaxInitialExpectedResponse)
+            .when(IGNORING_ARRAY_ORDER)
+            .whenIgnoringPaths("service.vidNotions.instantiationUI"));
     }
 
     @Test
@@ -163,12 +168,18 @@ public class SdcApiTest extends BaseApiTest {
 
     @Test
     @FeatureTogglingTest(Features.FLAG_1902_VNF_GROUPING)
-    public void getServiceModelWithServiceRoleGrouping(){
+    public void getServiceModelWithServiceRoleGrouping() throws Exception {
         registerToSimulatorWithPresets(GROUPING_SERVICE_ROLE_UUID, GROUPING_SERVICE_ROLE_INVARIANT_UUID, GROUPING_SERVICE_ROLE_FILE_PATH);
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + GROUPING_SERVICE_ROLE_UUID), String.class);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         String groupingServiceRoleExpectedResponse = loadResourceAsString(GROUPING_SERVICE_ROLE_EXPECTED_RESPONSE);
-        assertThat("The response is in the format of JSON", response.getBody(), is(jsonStringEquals(groupingServiceRoleExpectedResponse)));
+        assertThat(response.getBody(), jsonEquals(groupingServiceRoleExpectedResponse)
+            .when(IGNORING_ARRAY_ORDER)
+            .whenIgnoringPaths("service.vidNotions.instantiationUI"));
+
+        //assert that instantiationUI is not legacy
+        JsonNode instantiationUI = objectMapper.readValue(response.getBody(), JsonNode.class).get("service").get("vidNotions").get("instantiationUI");
+        assertThat(instantiationUI.asText(), not(equalTo("legacy")));
     }
 
     private void registerToSimulatorWithPresets(String uuid, String invariantUuid, String pathPath){
@@ -176,15 +187,6 @@ public class SdcApiTest extends BaseApiTest {
                 new PresetSDCGetServiceToscaModelGet(uuid, pathPath),
                 new PresetSDCGetServiceMetadataGet(uuid,invariantUuid, pathPath));
         registerExpectationFromPresets(presets, CLEAR_THEN_SET);
-    }
-
-    private String turnOffInstantiationUI(String expectedJson) {
-        if (!Features.FLAG_5G_IN_NEW_INSTANTIATION_UI.isActive()) {
-            // replaces the instantiationUI field-value with "legacy", whatever it was
-            return expectedJson.replaceFirst("(\"instantiationUI\": *\")[^\"]*(\",)", "$1legacy$2");
-        } else {
-            return expectedJson;
-        }
     }
 
     @Test
