@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e72aaccd_bd1c402a",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/aaf/AAFGetUrlServicePreset.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-12T08:13:31Z",
+      "side": 1,
+      "message": "Do we know what was changed?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 81
+      },
+      "revId": "47b43b07599591dceb31275aa398ae93f2524768",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
