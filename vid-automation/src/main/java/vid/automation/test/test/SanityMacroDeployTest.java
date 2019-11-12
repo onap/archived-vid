@@ -1,5 +1,10 @@
 package vid.automation.test.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static vid.automation.test.infra.ModelInfo.macroForBrowseSdc;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+
 import com.google.common.collect.ImmutableList;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
@@ -16,11 +21,6 @@ import vid.automation.test.model.User;
 import vid.automation.test.sections.BrowseASDCPage;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.SimulatorApi;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static vid.automation.test.infra.ModelInfo.macroForBrowseSdc;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 public class SanityMacroDeployTest extends CreateInstanceDialogBaseTest {
 
@@ -150,7 +150,7 @@ public class SanityMacroDeployTest extends CreateInstanceDialogBaseTest {
         Assert.assertEquals(currElem.getText(), RESOURCE_DESCRIPTION);
 
         currElem = GeneralUIUtils.getWebElementByTestID(Constants.SERVICE_INVARIANT_UUID, 30);
-        Assert.assertEquals(currElem.getText(), macroForBrowseSdc.modelInvariantId);
+        Assert.assertEquals(currElem.getText(), "a8dcd72d-d44d-44f2-aa85-53aa9ca99cba");
 
         currElem = GeneralUIUtils.getWebElementByTestID(Constants.SERVICE_VERSION, 30);
         Assert.assertEquals(currElem.getText(), SERVICE_VERSION);

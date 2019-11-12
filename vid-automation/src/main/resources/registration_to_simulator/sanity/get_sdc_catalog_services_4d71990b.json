@@ -6,7 +6,7 @@
     },
     "simulatorResponse": {
       "responseCode": 200,
-      "file": "csar15782222_invariantUUIDMacro.zip"
+      "file": "csar15782222_instantiationTypeMacro_invariantUUIDAlacarte.zip"
     }
   },
   {
@@ -24,7 +24,7 @@
         "invariantUUID": "d27e42cf-087e-4d31-88ac-6c4b7585f800",
         "name": "vidmacrofalsenaming",
         "version": "1.0",
-        "toscaModelURL": "./csar15782222_invariantUUIDMacro.zip",
+        "toscaModelURL": "./csar15782222_instantiationTypeMacro_invariantUUIDAlacarte.zip",
         "category": "Network Connectivityv",
         "lifecycleState": "CERTIFIED",
         "lastUpdaterUserId": "rg276b",

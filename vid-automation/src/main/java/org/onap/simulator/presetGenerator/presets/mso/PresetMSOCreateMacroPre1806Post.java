@@ -25,7 +25,7 @@ public class PresetMSOCreateMacroPre1806Post extends PresetMSOBaseCreateInstance
                 "    }," +
                 "    \"modelInfo\": {" +
                 "      \"modelType\": \"service\"," +
-                "      \"modelInvariantId\": \"d27e42cf-087e-4d31-88ac-6c4b7585f800\"," +
+                "      \"modelInvariantId\": \"a8dcd72d-d44d-44f2-aa85-53aa9ca99cba\"," +
                 "      \"modelVersionId\": \"4d71990b-d8ad-4510-ac61-496288d9078e\"," +
                 "      \"modelName\": \"vidmacrofalsenaming\"," +
                 "      \"modelVersion\": \"1.0\"" +
