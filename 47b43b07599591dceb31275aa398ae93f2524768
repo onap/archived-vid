@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "909f69b2_b24108f4",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/aaf/AAFGetUrlServicePreset.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:21:15Z",
+      "side": 1,
+      "message": "removed the optional slash. i\u0027m pretty assured we\u0027re ok without it.",
+      "parentUuid": "070d7218_88b2df94",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 81
+      },
+      "revId": "47b43b07599591dceb31275aa398ae93f2524768",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f35efb9f_beb3d4dc",
         "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/aaf/AAFGetUrlServicePreset.java",
         "patchSetId": 2
