@@ -1,19 +1,18 @@
 package org.onap.vid.api;
 
+import java.util.HashMap;
 import org.junit.Assert;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.Test;
-
-import java.util.HashMap;
+import vid.automation.test.utils.InsecureHttpsClient;
 
 public class VersionControllerApiTest extends BaseApiTest {
 
     @Test
     public void probeRequest_returnsResponseAsExpected() {
         // without log-in
-        ResponseEntity<HashMap<String, String>> response = new RestTemplate().exchange(
+        ResponseEntity<HashMap<String, String>> response = InsecureHttpsClient.newRestTemplate().exchange(
                 uri + "/version",
                 org.springframework.http.HttpMethod.GET,
                 null,
