@@ -19,6 +19,63 @@
     },
     {
       "key": {
+        "uuid": "9c657c0b_47c91ada",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 983,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:19:18Z",
+      "side": 1,
+      "message": "please describe with given/then or similar.\ne.g. given a vfmodule bla bla -\u003e expect volume-group-name field to be displayed.",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "578e792f_4cea5ef9",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:19:18Z",
+      "side": 1,
+      "message": "what is uuidData",
+      "range": {
+        "startLine": 995,
+        "startChar": 115,
+        "endLine": 995,
+        "endChar": 123
+      },
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0cb9b50_d3c66dc4",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:19:18Z",
+      "side": 1,
+      "message": "i suppose can rewrite to:\nexpect(controls).toContain(expect.objectContaining({\n  controlName : FormControlNames.VOLUME_GROUP_NAME\n}))\n\nI hope Jest can do it, and also will describe to meaningful error.",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4cf68471_4091e408",
         "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
         "patchSetId": 5
@@ -30,6 +87,23 @@
       "writtenOn": "2019-11-12T09:17:34Z",
       "side": 1,
       "message": "I think it\u0027s better to  create a model here from a JSON and not used the exteranl state.",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ba2715d_e80993bb",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 1018,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:19:18Z",
+      "side": 1,
+      "message": "You\u0027re using \"buildVfModuleFormControlModel\" to verify the result. Isn\u0027t it expecting for the actual already?",
       "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -53,6 +127,23 @@
     },
     {
       "key": {
+        "uuid": "1b3677bf_7c9b8eed",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 1022,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:19:18Z",
+      "side": 1,
+      "message": "I suggest splitting to two different tests.",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ade39f47_3e9b2f90",
         "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
         "patchSetId": 5
@@ -70,6 +161,40 @@
     },
     {
       "key": {
+        "uuid": "8bf70b28_2301e5fc",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:19:18Z",
+      "side": 1,
+      "message": "nice removal; very nice.",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a48257c_a8630e48",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:19:18Z",
+      "side": 1,
+      "message": "This method side-affects `result`, but its name does not imply it.\nI suggest returning a fresh `FormControlModel[]` and concatenating it outside of the method, by caller, if needed.",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1f4756c6_a7a3bf2e",
         "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
         "patchSetId": 5
@@ -81,6 +206,23 @@
       "writtenOn": "2019-11-12T09:17:34Z",
       "side": 1,
       "message": "why this line is needed ?",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09c042c5_41d55071",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:19:18Z",
+      "side": 1,
+      "message": "I don\u0027t think we\u0027re \"building form\" here. only adding two fields: instance name and vf-module name. please rename method.",
       "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -138,6 +280,23 @@
       "writtenOn": "2019-11-12T09:17:34Z",
       "side": 1,
       "message": "is it in used ?",
+      "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3db42254_7bd82420",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-12T09:19:18Z",
+      "side": 1,
+      "message": "Created but not used? I see many this.store references in file, but no \"getStore()\" reference.",
       "revId": "dcf5196d0d6d24282093722999cabdf26bd35f37",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
