@@ -82,7 +82,7 @@ public class SimulatorApi {
             ImmutableList.of(dropTestApiFieldFromString(), dropFieldCloudOwnerFromString());
 
     static {
-        String host = System.getProperty("SIM_HOST", System.getProperty("VID_HOST", "127.0.0.1"));
+        String host = getSimulatorHost();
         Integer port = Integer.valueOf(System.getProperty("SIM_PORT", System.getProperty("VID_PORT", "8080"))); //port for registration
         uri = new JerseyUriBuilder().host(host).port(port).scheme("http").path("vidSimulator").build();
         client = ClientBuilder.newClient();
@@ -94,8 +94,16 @@ public class SimulatorApi {
         jacksonJsonProvider.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         client.register(jacksonJsonProvider);
 
-        Integer simulationPort = Integer.valueOf(System.getProperty("SIMULATION_PORT", "1080")); //port getting simulated responses
+        Integer simulationPort = getSimulatedResponsesPort();
         simulationUri = new JerseyUriBuilder().host(host).port(simulationPort).scheme("http").build();
+    }
+
+    public static String getSimulatorHost() {
+        return System.getProperty("SIM_HOST", System.getProperty("VID_HOST", "127.0.0.1"));
+    }
+
+    public static Integer getSimulatedResponsesPort() {
+        return Integer.valueOf(System.getProperty("SIMULATION_PORT", "1080"));
     }
 
     public static URI getSimulationUri() {
