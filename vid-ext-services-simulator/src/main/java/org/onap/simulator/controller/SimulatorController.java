@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
@@ -253,7 +254,7 @@ public class SimulatorController {
         String userName = reqUri.substring(reqUri.lastIndexOf('/') + 1);
         TypedQuery<User> userQuery = entityManager.createQuery("select u from fn_user u where u.loginId = :userName", User.class);
         userQuery.setParameter("userName", userName);
-        User user = userQuery.getSingleResult();
+        User user = doWithSingleRetry(userQuery::getSingleResult);
 
         Gson g = new Gson();
         String jsonString = g.toJson(user);
@@ -269,7 +270,7 @@ public class SimulatorController {
             return new ResponseEntity<>("Centralized Role Access is disabled", HttpStatus.SERVICE_UNAVAILABLE);
         }
         TypedQuery<Function> userQuery = entityManager.createQuery("select f from fn_function f", Function.class);
-        List<Function> functions = userQuery.getResultList();
+        List<Function> functions = doWithSingleRetry(userQuery::getResultList);
         Gson g = new Gson();
         String jsonString = g.toJson(functions);
 
@@ -339,6 +340,16 @@ public class SimulatorController {
         }
 
         return responseEntity;
+    }
+
+    private <T> T doWithSingleRetry(Supplier<T> supplier) {
+        try {
+            return supplier.get();
+        } catch (Exception e) {
+            logger.error("exception was thrown; will retry the same action one more time", e);
+            // here exceptions will be thrown
+            return supplier.get();
+        }
     }
 
     private void register(SimulatorRequestResponseExpectation expectationModel) throws VidSimulatorException{
