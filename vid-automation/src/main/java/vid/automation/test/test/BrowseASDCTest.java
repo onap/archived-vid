@@ -174,9 +174,8 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
     @Test
     private void browseServiceModel_deployServiceMacroByBackendInput_creationPopupIsMacro()  {
         deployServiceAndAssertInstantiationType(
-                "csar15782222_instantiationTypeMacro_invariantUUIDAlacarte_withoutNetworks.zip",
-                invariantUUIDAlacarte,
-                new DeployModernUIMacroDialog()
+            ModelInfo.serviceWithInstantiationTypeMacro,
+            new DeployModernUIMacroDialog()
         );
     }
 
