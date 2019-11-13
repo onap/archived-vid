@@ -1,7 +1,6 @@
 package vid.automation.test.test;
 
-//import com.automation.common.report_portal_integration.annotations.Step;
-
+import static java.util.Collections.emptyList;
 import static junit.framework.TestCase.assertNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -17,9 +16,11 @@ import static vid.automation.test.infra.Features.FLAG_1908_COLLECTION_RESOURCE_N
 import static vid.automation.test.infra.Features.FLAG_1908_INFRASTRUCTURE_VPN;
 import static vid.automation.test.infra.Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT;
 import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_ENABLE_WEBPACK_MODERN_UI;
 import static vid.automation.test.infra.ModelInfo.aLaCarteNetworkProvider5G;
+import static vid.automation.test.infra.ModelInfo.aLaCarteServiceCreationNewUI;
 import static vid.automation.test.infra.ModelInfo.aLaCarteVnfGroupingService;
 import static vid.automation.test.infra.ModelInfo.collectionResourceService;
 import static vid.automation.test.infra.ModelInfo.infrastructureVpnService;
@@ -229,7 +230,8 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, true, true, true,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
+            0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5", false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
@@ -277,7 +279,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 IS_GENERATED_NAMING.FALSE, false, true, false,
                 "2017-488_PASQUALE-vPE 0",
                 "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, ImmutableList.of("Bandwidth", "Bandwidth units"),
-                "25284168-24bb-4698-8cb4-3f509146eca5");
+                "25284168-24bb-4698-8cb4-3f509146eca5", false);
 
         // this is the instance-name that createMacroService is going to use
         String serviceInstanceName = randomAlphabetic + "instancename";
@@ -361,7 +363,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.TRUE_BUT_GIVE_NAME_EITHER_WAY, true, true, false,
                 null,
-                null, 0, 1, new ArrayList<>(), null);
+                null, 0, 1, new ArrayList<>(), null, false);
         final String serviceInstanceName = createMacroService(serviceData, false);
 
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
@@ -402,7 +404,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.TRUE, true, true, false,
                 null,
-                null, 0, 1, new ArrayList<>(), null);
+                null, 0, 1, new ArrayList<>(), null, false);
         createMacroService(serviceData, false, randomAlphabetic(5), true, 1);
 
         drawingBoardPage.deploy();
@@ -426,7 +428,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.TRUE, true, true, false,
                 null,
-                null, 0, 1, new ArrayList<>(), null);
+                null, 0, 1, new ArrayList<>(), null, false);
         createMacroService(serviceData, false, randomAlphabetic(5), false, 1);
 
         drawingBoardPage.deploy();
@@ -443,7 +445,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 aLaCarteVnfGroupingService.modelVersionId,
                 ImmutableList.of(),
                 IS_GENERATED_NAMING.FALSE, false, true, false,
-                null, null, 0, 1, ImmutableList.of(), null);
+                null, null, 0, 1, ImmutableList.of(), null, false);
         prepareServicePreset(aLaCarteVnfGroupingService, false);
 
         createALaCarteService(serviceData, randomAlphabetic);
@@ -545,7 +547,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, true, false, true,
                 "2017-488_PASQUALE-vPE 0",
-                vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID);
+                vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID, false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
@@ -562,7 +564,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, false, false, false,
                 "2017-488_PASQUALE-vPE 0",
-                vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID);
+                vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID, false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
@@ -579,7 +581,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, false, true, false,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5", false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
@@ -590,6 +592,23 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     }
 
+    @Test(enabled = false)
+    @FeatureTogglingTest(FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI)
+    public void createNewServiceInstance_aLaCarte_WithVnf() {
+        String serviceInstanceName = "ALaCarteWithVnf"+randomAlphabetic(5);
+        String vnfInstanceName= "VnfForALaCarte"+randomAlphabetic(5);
+        resetGetServicesCache();
+        prepareServicePreset(aLaCarteServiceCreationNewUI, true);
+        loadServicePopup(aLaCarteServiceCreationNewUI.modelVersionId);
+        fillALaCarteServicePopup(serviceInstanceName);
+        VnfData vnfData = new VnfData("vOCG_1804_VF 0", "aca3f7b1-15f9-45a5-b182-b8b5aca84a76", vnfInstanceName, true);
+        VfData vfmData = new VfData("vocg_1804_vf0..Vocg1804Vf..base_ocg..module-0", false, 1, 1, emptyList(), "815db6e5-bdfd-4cb6-9575-82c36df8747a");
+        createVnf(vnfData, false, true, serviceInstanceName, false);
+        openVfModulePopup(vnfData, vfmData, true, false);
+        fillAndSetVfModulePopup(vnfData, vfmData, serviceInstanceName, true);
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
+    }
 
     @Test
     @FeatureTogglingTest(FLAG_5G_IN_NEW_INSTANTIATION_UI)
@@ -597,7 +616,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         String serviceInstanceName = "NcService"+randomAlphabetic(5);
         String networkInstanceName= "NcNetowrk"+randomAlphabetic(5);
         String defactoNetworkInstanceName = "ExtVL"+networkInstanceName;
-        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
+
         prepareServicePreset(aLaCarteNetworkProvider5G, true);
         String serviceRequestId = UUID.randomUUID().toString();
         String networkRequestId = UUID.randomUUID().toString();
@@ -620,6 +639,16 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             APPEND
         );
         loadServicePopup(aLaCarteNetworkProvider5G.modelVersionId);
+        fillALaCarteServicePopup(serviceInstanceName);
+        VnfData networkData = new VnfData("SR-IOV Provider-1", "840ffc47-e4cf-46de-8e23-525fd8c6fdc3", defactoNetworkInstanceName, false);
+        createNetwork(networkData, false, false, serviceInstanceName);
+
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
+    }
+
+    private void fillALaCarteServicePopup(String serviceInstanceName) {
+        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
         WebElement instanceNameInput = Get.byId("instanceName");
         instanceNameInput.sendKeys(serviceInstanceName);
         VidBasePage.selectSubscriberById("e433710f-9217-458d-a79d-1c7aff376d89");
@@ -631,11 +660,6 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         Click.byTestId("form-set");
         VidBasePage.goOutFromIframe();
         browseASDCPage.goToIframe();
-        VnfData networkData = new VnfData("SR-IOV Provider-1", "840ffc47-e4cf-46de-8e23-525fd8c6fdc3", defactoNetworkInstanceName, false);
-        createNetwork(networkData, false, false, serviceInstanceName);
-
-        drawingBoardPage.deploy();
-        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
     }
 
     @Test
@@ -647,7 +671,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 serviceDynamicFields,
                 IS_GENERATED_NAMING.TRUE, true, true, false,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5", false);
 
         prepareServicePreset(macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails, false);
 
@@ -1153,24 +1177,28 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     //@Step("create vf module")
     private void createVfModule(ServiceData serviceData, String serviceInstanceName, boolean addedByDefault, boolean addOpensPopup) {
-        clickAddVfModule(serviceData, addedByDefault);
-        if (!addOpensPopup) {
-            clickEditVfModule(serviceData);
-        }
-        fillAndSetVfModulePopup(serviceData, serviceInstanceName);
+        openVfModulePopup(serviceData.vnfData, serviceData.vfData, addedByDefault, addOpensPopup);
+        fillAndSetVfModulePopup(serviceData.vnfData, serviceData.vfData, serviceInstanceName, serviceData.isALaCarte);
     }
 
-    private void fillAndSetVfModulePopup(ServiceData serviceData, String serviceInstanceName) {
+    private void openVfModulePopup(VnfData vnfData, VfData vfmData, boolean addedByDefault, boolean addOpensPopup) {
+        clickAddVfModule(vnfData, vfmData, addedByDefault);
+        if (!addOpensPopup) {
+            clickEditVfModule(vfmData);
+        }
+    }
+
+    private void fillAndSetVfModulePopup(VnfData vnfData, VfData vfmData, String serviceInstanceName, boolean isALaCarte) {
         String setButtonTestId = "form-set";
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
 
-        Assert.assertEquals(isElementByIdRequired("instanceName-label"), !serviceData.vnfData.isGeneratedNaming,"instance name input should be optional when EcompNaming == true, and required when false.");
+        //Assert.assertEquals(isElementByIdRequired("instanceName-label"), !vnfData.isGeneratedNaming,"instance name input should be optional when EcompNaming == true, and required when false.");
 
-        if (!serviceData.vnfData.isGeneratedNaming) {
+        if (!vnfData.isGeneratedNaming) {
             Input.text("VF instance name", "instanceName");
         }
 
-        if (serviceData.vfData.vgEnabled) {
+        if (vfmData.vgEnabled) {
             browseASDCPage.setInputText("volumeGroupName", "_abc");
             Assert.assertEquals(isElementByIdRequired("volumeGroupName-label"), false,  "volume Group name input should be always optional");
         } else {
@@ -1178,13 +1206,20 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         }
         Wait.waitByTestId("model-item-value-subscriberName", 10);
         Assert.assertEquals(Get.byTestId("model-item-value-subscriberName").getText(), "SILVIA ROBBINS", "Subscriber name should be shown in vf module");
-        Assert.assertEquals(Get.byTestId("model-item-value-min").getText(), Integer.toString(serviceData.vfData.vfMin), "Min should be shown");
-        Assert.assertEquals(Get.byTestId("model-item-value-max").getText(), Integer.toString(serviceData.vfData.vfMax), "Max should be shown");
-        if (!serviceData.vnfData.isGeneratedNaming) {
-            Wait.byText(serviceInstanceName);
-            Assert.assertEquals(Get.byTestId("model-item-value-serviceName").getText(), serviceInstanceName, "Service name should be shown in vf module");
+        Assert.assertEquals(Get.byTestId("model-item-value-min").getText(), Integer.toString(vfmData.vfMin), "Min should be shown");
+        Assert.assertEquals(Get.byTestId("model-item-value-max").getText(), Integer.toString(vfmData.vfMax), "Max should be shown");
+
+        Wait.byText(serviceInstanceName);
+        Assert.assertEquals(Get.byTestId("model-item-value-serviceName").getText(), serviceInstanceName, "Service name should be shown in vf module");
+
+        if (isALaCarte) {
+            String lcpRegion = "hvf6";
+            Wait.waitByClassAndText("lcpRegionOption", lcpRegion, 30);
+            viewEditPage.selectLcpRegion(lcpRegion, AIC);
+            browseASDCPage.selectTenant("bae71557c5bb4d5aac6743a4e5f1d054");
         }
-        validateDynamicFields(serviceData.vfData.dynamicFields);
+
+        validateDynamicFields(vfmData.dynamicFields);
 
         uploadSupplementaryFile("invalid-file.json", false, browseASDCPage, setButtonTestId);
         deleteSupplementaryFile();
@@ -1194,25 +1229,25 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         Click.byTestId(setButtonTestId);
     }
 
-    private void clickEditVfModule(ServiceData serviceData) {
+    private void clickEditVfModule(VfData vfmData) {
         if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
-            hoverAndClickEditButton(serviceData.vfData.uuid + "-" + serviceData.vfData.vfName);
+            hoverAndClickEditButton(vfmData.uuid + "-" + vfmData.vfName);
         }
     }
 
-    private void clickAddVfModule(ServiceData serviceData, boolean addedByDefault) {
+    private void clickAddVfModule(VnfData vnfData, VfData vfmData, boolean addedByDefault) {
         if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive() && addedByDefault) {
             return;
         }
         System.out.println("VFModule should be added 'manually'");
 
-        final WebElement vfModuleNode = Get.byTestId(Constants.DrawingBoard.NODE_PREFIX + serviceData.vfData.vfName);
+        final WebElement vfModuleNode = Get.byTestId(Constants.DrawingBoard.NODE_PREFIX + vfmData.vfName);
 
         if (vfModuleNode == null || !vfModuleNode.isDisplayed()) {
             // expand tree
-            drawingBoardPage.clickNode(serviceData.vnfData.vnfName);
+            drawingBoardPage.clickNode(vnfData.vnfName);
         }
-        drawingBoardPage.clickAddButtonByNodeName(serviceData.vfData.vfName);
+        drawingBoardPage.clickAddButtonByNodeName(vfmData.vfName);
     }
 
     private void clickRemoveVfModule(String vfModuleId, String vfModuleName) {
@@ -1259,11 +1294,15 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     static class ServiceData {
-        ServiceData(String modelUuid, List<String> dynamicFields, IS_GENERATED_NAMING isServiceGeneratedNaming, boolean isVnfGeneratedNaming, boolean isVgEnabled, boolean multiStageDesign, String vnfName, String vfName, int vfMin, int vfMax, List<String> vfModuleDynamicFields, String vfVersionId) {
+
+        ServiceData(String modelUuid, List<String> dynamicFields, IS_GENERATED_NAMING isServiceGeneratedNaming,
+            boolean isVnfGeneratedNaming, boolean isVgEnabled, boolean multiStageDesign, String vnfName,
+            String vfName, int vfMin, int vfMax, List<String> vfModuleDynamicFields, String vfVersionId, boolean isALaCarte) {
             this.modelUuid = modelUuid;
             this.dynamicFields = dynamicFields;
             this.isGeneratedNaming = isServiceGeneratedNaming;
             this.multiStageDesign = multiStageDesign;
+            this.isALaCarte = isALaCarte;
             this.vnfData = new VnfData(vnfName, "69e09f68-8b63-4cc9-b9ff-860960b5db09", "VNF instance name", isVnfGeneratedNaming);
             this.vfData = new VfData(vfName, isVgEnabled, vfMin, vfMax, vfModuleDynamicFields, vfVersionId);
         }
@@ -1274,6 +1313,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         final boolean multiStageDesign;
         final VnfData vnfData;
         final VfData vfData;
+        final boolean isALaCarte;
 
         enum IS_GENERATED_NAMING { TRUE, FALSE, TRUE_BUT_GIVE_NAME_EITHER_WAY}
     }
