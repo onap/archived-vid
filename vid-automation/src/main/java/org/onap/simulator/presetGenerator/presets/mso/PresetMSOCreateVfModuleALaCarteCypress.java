@@ -1,12 +1,10 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
 import com.google.common.collect.ImmutableMap;
-
 import java.util.Map;
 
-public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOBaseCreateInstancePost {
-    private String serviceInstanceId;
-    private String vnfInstanceId;
+public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOCreateVfModuleBase {
+
     protected final Map<Keys, String> names;
 
     public enum Keys {
@@ -34,22 +32,10 @@ public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOBaseCreateI
             .build();
 
     public PresetMSOCreateVfModuleALaCarteCypress(String overrideRequestId, String serviceInstanceId, String vnfInstanceId, Map<Keys, String> names, String testApi, boolean withTestApi) {
-        super(overrideRequestId);
-        this.vnfInstanceId = vnfInstanceId;
-        this.serviceInstanceId = serviceInstanceId;
+        super(overrideRequestId, serviceInstanceId, vnfInstanceId);
         this.names = names;
         this.msoTestApi = testApi;
         this.withTestApi = withTestApi;
-    }
-
-    @Override
-    public boolean isStrictMatch() {
-        return true;
-    }
-
-    @Override
-    public String getReqPath() {
-        return getRootPath() + "/serviceInstantiation/v./serviceInstances/" + serviceInstanceId + "/vnfs/" + vnfInstanceId + "/vfModules";
     }
 
     @Override
