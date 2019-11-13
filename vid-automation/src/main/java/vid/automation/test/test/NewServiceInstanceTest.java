@@ -1,12 +1,12 @@
 package vid.automation.test.test;
 
-//import com.automation.common.report_portal_integration.annotations.Step;
-
+import static java.util.Collections.emptyList;
 import static junit.framework.TestCase.assertNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId.PRESET_SOME_LEGACY_REGION_TO_ATT_AIC;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID;
@@ -17,6 +17,7 @@ import static vid.automation.test.infra.Features.FLAG_1908_COLLECTION_RESOURCE_N
 import static vid.automation.test.infra.Features.FLAG_1908_INFRASTRUCTURE_VPN;
 import static vid.automation.test.infra.Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT;
 import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_ENABLE_WEBPACK_MODERN_UI;
 import static vid.automation.test.infra.ModelInfo.aLaCarteNetworkProvider5G;
@@ -55,16 +56,17 @@ import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matchers;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegionSpecificState;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetTenants;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetVpnsByType;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIPostNamedQueryForViewEdit;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateNetworkALaCarte5G;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceAlacarte5GServiceWithNetwork;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceAlacarte;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteGroupingService;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleALaCarteE2E;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfALaCarteE2E;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork.ResponseDetails;
@@ -229,7 +231,8 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, true, true, true,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
+            0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5", false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
@@ -277,7 +280,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 IS_GENERATED_NAMING.FALSE, false, true, false,
                 "2017-488_PASQUALE-vPE 0",
                 "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, ImmutableList.of("Bandwidth", "Bandwidth units"),
-                "25284168-24bb-4698-8cb4-3f509146eca5");
+                "25284168-24bb-4698-8cb4-3f509146eca5", false);
 
         // this is the instance-name that createMacroService is going to use
         String serviceInstanceName = randomAlphabetic + "instancename";
@@ -329,7 +332,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                     .build();
             registerExpectationFromPresets(ImmutableList.of(
                     // although "some legacy region" is provided for vnf, Service's region "hvf6" overrides it
-                    PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC,
+                    PRESET_MTN6_TO_ATT_AIC,
                     new PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse(vars, 0, request1),
                     new PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse(vars, 1, request2)
             ), SimulatorApi.RegistrationStrategy.APPEND);
@@ -351,7 +354,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(infrastructureVpnService, false);
 
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
-            PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC,
+            PRESET_MTN6_TO_ATT_AIC,
                 new PresetAAIGetL3NetworksByCloudRegionSpecificState("irma-aic", "hvf6", "bae71557c5bb4d5aac6743a4e5f1d054"),
             new PresetAAIGetVpnsByType()
         ), APPEND);
@@ -361,7 +364,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.TRUE_BUT_GIVE_NAME_EITHER_WAY, true, true, false,
                 null,
-                null, 0, 1, new ArrayList<>(), null);
+                null, 0, 1, new ArrayList<>(), null, false);
         final String serviceInstanceName = createMacroService(serviceData, false);
 
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
@@ -392,7 +395,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         String instanceId = UUID.randomUUID().toString();
 
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
-                PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC,
+                PRESET_MTN6_TO_ATT_AIC,
                 PresetMsoCreateMacroCommonPre1806.ofCollectionResource(requestId, instanceId),
                 new PresetMSOOrchestrationRequestGet(COMPLETE, requestId)
         ), APPEND);
@@ -402,7 +405,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.TRUE, true, true, false,
                 null,
-                null, 0, 1, new ArrayList<>(), null);
+                null, 0, 1, new ArrayList<>(), null, false);
         createMacroService(serviceData, false, randomAlphabetic(5), true, 1);
 
         drawingBoardPage.deploy();
@@ -426,7 +429,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.TRUE, true, true, false,
                 null,
-                null, 0, 1, new ArrayList<>(), null);
+                null, 0, 1, new ArrayList<>(), null, false);
         createMacroService(serviceData, false, randomAlphabetic(5), false, 1);
 
         drawingBoardPage.deploy();
@@ -443,7 +446,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 aLaCarteVnfGroupingService.modelVersionId,
                 ImmutableList.of(),
                 IS_GENERATED_NAMING.FALSE, false, true, false,
-                null, null, 0, 1, ImmutableList.of(), null);
+                null, null, 0, 1, ImmutableList.of(), null, false);
         prepareServicePreset(aLaCarteVnfGroupingService, false);
 
         createALaCarteService(serviceData, randomAlphabetic);
@@ -545,7 +548,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, true, false, true,
                 "2017-488_PASQUALE-vPE 0",
-                vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID);
+                vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID, false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
@@ -562,7 +565,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, false, false, false,
                 "2017-488_PASQUALE-vPE 0",
-                vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID);
+                vfModule0Name, 1, 1, new ArrayList<>(), vfModule0UUID, false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
@@ -579,7 +582,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, false, true, false,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5", false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
@@ -590,24 +593,70 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     }
 
+    @Test
+    @FeatureTogglingTest(FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI)
+    public void createNewServiceInstance_aLaCarte_WithVnf() {
+        final ModelInfo serviceModelInfo = ModelInfo.aLaCarteServiceCreationNewUI;
+        String serviceInstanceName = "ALaCarteWithVnf"+randomAlphabetic(5);
+        String vnfInstanceName= "VnfForALaCarte"+randomAlphabetic(5);
+        VnfData vnfData = new VnfData("vOCG_1804_VF 0", "aca3f7b1-15f9-45a5-b182-b8b5aca84a76", vnfInstanceName, true);
+        VfData vfmData = new VfData("vocg_1804_vf0..Vocg1804Vf..base_ocg..module-0", false, 1, 1, emptyList(), "815db6e5-bdfd-4cb6-9575-82c36df8747a");
+        ServiceData serviceData = new ServiceData(IS_GENERATED_NAMING.TRUE, vnfData, vfmData, true);
+
+        resetGetServicesCache();
+
+        prepareServicePreset(serviceModelInfo, true);
+
+        String serviceRequestId = UUID.randomUUID().toString();
+        String vnfRequestId = UUID.randomUUID().toString();
+        String requestorID = getUserCredentials().getUserId();
+        String serviceInstanceId = UUID.randomUUID().toString();
+        String vnfInstanceId = UUID.randomUUID().toString();
+        String vfModuleRequestId = UUID.randomUUID().toString();
+
+        registerExpectationFromPresets(
+            ImmutableList.of(
+                new PresetMSOCreateServiceInstanceAlacarte(
+                    ImmutableMap.of(Keys.SERVICE_NAME, serviceInstanceName),
+                    serviceRequestId, serviceInstanceId,
+                    requestorID, serviceModelInfo),
+                PRESET_SOME_LEGACY_REGION_TO_ATT_AIC,
+                new PresetMSOOrchestrationRequestGet(COMPLETE, serviceRequestId),
+                new PresetMSOCreateVnfALaCarteE2E(vnfRequestId, serviceInstanceId, vnfInstanceId, "ONAP", requestorID, serviceModelInfo),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, vnfRequestId),
+                PRESET_MTN6_TO_ATT_AIC,
+                new PresetMSOCreateVfModuleALaCarteE2E(vfModuleRequestId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, vfModuleRequestId)
+            ),
+            APPEND
+        );
+
+        loadServicePopup(serviceModelInfo.modelVersionId);
+        fillALaCarteServicePopup(serviceInstanceName);
+
+        createVnf(vnfData, false, true, serviceInstanceName);
+        createVfModule(serviceData, serviceInstanceName, true, false);
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
+    }
 
     @Test
     @FeatureTogglingTest(FLAG_5G_IN_NEW_INSTANTIATION_UI)
-    public void createNewServiceInstance_aLaCarte_validPopupDataAndUI() {
+    public void createNewServiceInstance_aLaCarte_withNetwork_validPopupDataAndUI() {
         String serviceInstanceName = "NcService"+randomAlphabetic(5);
         String networkInstanceName= "NcNetowrk"+randomAlphabetic(5);
         String defactoNetworkInstanceName = "ExtVL"+networkInstanceName;
-        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
+
         prepareServicePreset(aLaCarteNetworkProvider5G, true);
         String serviceRequestId = UUID.randomUUID().toString();
         String networkRequestId = UUID.randomUUID().toString();
         String requestorID = getUserCredentials().getUserId();
         registerExpectationFromPresets(
                 ImmutableList.of(
-                    new PresetMSOCreateServiceInstanceAlacarte5GServiceWithNetwork(
+                    new PresetMSOCreateServiceInstanceAlacarte(
                         ImmutableMap.of(Keys.SERVICE_NAME, serviceInstanceName),
-                        serviceRequestId,
-                            requestorID),
+                        serviceRequestId, DEFAULT_SERVICE_INSTANCE_ID,
+                            requestorID, aLaCarteNetworkProvider5G),
                     new PresetMSOOrchestrationRequestGet(COMPLETE, serviceRequestId),
                     PRESET_SOME_LEGACY_REGION_TO_ATT_AIC,
                     new PresetMSOCreateNetworkALaCarte5G(networkRequestId, DEFAULT_SERVICE_INSTANCE_ID, defactoNetworkInstanceName, requestorID),
@@ -620,6 +669,16 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             APPEND
         );
         loadServicePopup(aLaCarteNetworkProvider5G.modelVersionId);
+        fillALaCarteServicePopup(serviceInstanceName);
+        VnfData networkData = new VnfData("SR-IOV Provider-1", "840ffc47-e4cf-46de-8e23-525fd8c6fdc3", defactoNetworkInstanceName, false);
+        createNetwork(networkData, false, false, serviceInstanceName);
+
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
+    }
+
+    private void fillALaCarteServicePopup(String serviceInstanceName) {
+        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
         WebElement instanceNameInput = Get.byId("instanceName");
         instanceNameInput.sendKeys(serviceInstanceName);
         VidBasePage.selectSubscriberById("e433710f-9217-458d-a79d-1c7aff376d89");
@@ -631,11 +690,6 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         Click.byTestId("form-set");
         VidBasePage.goOutFromIframe();
         browseASDCPage.goToIframe();
-        VnfData networkData = new VnfData("SR-IOV Provider-1", "840ffc47-e4cf-46de-8e23-525fd8c6fdc3", defactoNetworkInstanceName, false);
-        createNetwork(networkData, false, false, serviceInstanceName);
-
-        drawingBoardPage.deploy();
-        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
     }
 
     @Test
@@ -647,7 +701,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 serviceDynamicFields,
                 IS_GENERATED_NAMING.TRUE, true, true, false,
                 "2017-488_PASQUALE-vPE 0",
-                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5");
+                "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", 0, 1, new ArrayList<>(), "25284168-24bb-4698-8cb4-3f509146eca5", false);
 
         prepareServicePreset(macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails, false);
 
@@ -1184,10 +1238,18 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         Assert.assertEquals(Get.byTestId("model-item-value-subscriberName").getText(), "SILVIA ROBBINS", "Subscriber name should be shown in vf module");
         Assert.assertEquals(Get.byTestId("model-item-value-min").getText(), Integer.toString(serviceData.vfData.vfMin), "Min should be shown");
         Assert.assertEquals(Get.byTestId("model-item-value-max").getText(), Integer.toString(serviceData.vfData.vfMax), "Max should be shown");
-        if (!serviceData.vnfData.isGeneratedNaming) {
+        if (serviceData.isGeneratedNaming!=IS_GENERATED_NAMING.TRUE) {
             Wait.byText(serviceInstanceName);
             Assert.assertEquals(Get.byTestId("model-item-value-serviceName").getText(), serviceInstanceName, "Service name should be shown in vf module");
         }
+
+        if (serviceData.isALaCarte) {
+            String lcpRegion = "hvf6";
+            Wait.waitByClassAndText("lcpRegionOption", lcpRegion, 30);
+            viewEditPage.selectLcpRegion(lcpRegion, AIC);
+            browseASDCPage.selectTenant("bae71557c5bb4d5aac6743a4e5f1d054");
+        }
+
         validateDynamicFields(serviceData.vfData.dynamicFields);
 
         uploadSupplementaryFile("invalid-file.json", false, browseASDCPage, setButtonTestId);
@@ -1263,21 +1325,33 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     static class ServiceData {
-        ServiceData(String modelUuid, List<String> dynamicFields, IS_GENERATED_NAMING isServiceGeneratedNaming, boolean isVnfGeneratedNaming, boolean isVgEnabled, boolean multiStageDesign, String vnfName, String vfName, int vfMin, int vfMax, List<String> vfModuleDynamicFields, String vfVersionId) {
+
+        ServiceData(String modelUuid, List<String> dynamicFields, IS_GENERATED_NAMING isServiceGeneratedNaming,
+            boolean isVnfGeneratedNaming, boolean isVgEnabled, boolean multiStageDesign, String vnfName,
+            String vfName, int vfMin, int vfMax, List<String> vfModuleDynamicFields, String vfVersionId, boolean isALaCarte) {
             this.modelUuid = modelUuid;
             this.dynamicFields = dynamicFields;
             this.isGeneratedNaming = isServiceGeneratedNaming;
             this.multiStageDesign = multiStageDesign;
+            this.isALaCarte = isALaCarte;
             this.vnfData = new VnfData(vnfName, "69e09f68-8b63-4cc9-b9ff-860960b5db09", "VNF instance name", isVnfGeneratedNaming);
             this.vfData = new VfData(vfName, isVgEnabled, vfMin, vfMax, vfModuleDynamicFields, vfVersionId);
         }
 
-        final String modelUuid;
-        final List<String> dynamicFields;
-        final IS_GENERATED_NAMING isGeneratedNaming;
-        final boolean multiStageDesign;
-        final VnfData vnfData;
-        final VfData vfData;
+        public ServiceData(IS_GENERATED_NAMING isGeneratedNaming, VnfData vnfData, VfData vfData, boolean isALaCarte) {
+            this.isGeneratedNaming = isGeneratedNaming;
+            this.vnfData = vnfData;
+            this.vfData = vfData;
+            this.isALaCarte = isALaCarte;
+        }
+
+        String modelUuid;
+        List<String> dynamicFields;
+        IS_GENERATED_NAMING isGeneratedNaming;
+        boolean multiStageDesign;
+        VnfData vnfData;
+        VfData vfData;
+        boolean isALaCarte;
 
         enum IS_GENERATED_NAMING { TRUE, FALSE, TRUE_BUT_GIVE_NAME_EITHER_WAY}
     }
