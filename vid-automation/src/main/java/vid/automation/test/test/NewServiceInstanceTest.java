@@ -1,7 +1,6 @@
 package vid.automation.test.test;
 
-//import com.automation.common.report_portal_integration.annotations.Step;
-
+import static java.util.Collections.emptyList;
 import static junit.framework.TestCase.assertNull;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -17,9 +16,11 @@ import static vid.automation.test.infra.Features.FLAG_1908_COLLECTION_RESOURCE_N
 import static vid.automation.test.infra.Features.FLAG_1908_INFRASTRUCTURE_VPN;
 import static vid.automation.test.infra.Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT;
 import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_ENABLE_WEBPACK_MODERN_UI;
 import static vid.automation.test.infra.ModelInfo.aLaCarteNetworkProvider5G;
+import static vid.automation.test.infra.ModelInfo.aLaCarteServiceCreationNewUI;
 import static vid.automation.test.infra.ModelInfo.aLaCarteVnfGroupingService;
 import static vid.automation.test.infra.ModelInfo.collectionResourceService;
 import static vid.automation.test.infra.ModelInfo.infrastructureVpnService;
@@ -590,6 +591,22 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     }
 
+    @Test
+    @FeatureTogglingTest(FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI)
+    public void createNewServiceInstance_aLaCarte_WithVnf() {
+        String serviceInstanceName = "ALaCarteWithVnf"+randomAlphabetic(5);
+        String vnfInstanceName= "VnfForALaCarte"+randomAlphabetic(5);
+        resetGetServicesCache();
+        prepareServicePreset(aLaCarteServiceCreationNewUI, true);
+        loadServicePopup(aLaCarteServiceCreationNewUI.modelVersionId);
+        fillALaCarteServicePopup(serviceInstanceName);
+        VnfData vnfData = new VnfData("vOCG_1804_VF 0", "aca3f7b1-15f9-45a5-b182-b8b5aca84a76", vnfInstanceName, false);
+        VfData vfmData = new VfData("Vocg1804Vf..base_ocg..module-0", false, 1, 1, emptyList(), "815db6e5-bdfd-4cb6-9575-82c36df8747a");
+        createVnf(vnfData, false, true, serviceInstanceName, false);
+        openVfModulePopup(vnfData, vfmData, true, false);
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
+    }
 
     @Test
     @FeatureTogglingTest(FLAG_5G_IN_NEW_INSTANTIATION_UI)
@@ -597,7 +614,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         String serviceInstanceName = "NcService"+randomAlphabetic(5);
         String networkInstanceName= "NcNetowrk"+randomAlphabetic(5);
         String defactoNetworkInstanceName = "ExtVL"+networkInstanceName;
-        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
+
         prepareServicePreset(aLaCarteNetworkProvider5G, true);
         String serviceRequestId = UUID.randomUUID().toString();
         String networkRequestId = UUID.randomUUID().toString();
@@ -620,6 +637,16 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             APPEND
         );
         loadServicePopup(aLaCarteNetworkProvider5G.modelVersionId);
+        fillALaCarteServicePopup(serviceInstanceName);
+        VnfData networkData = new VnfData("SR-IOV Provider-1", "840ffc47-e4cf-46de-8e23-525fd8c6fdc3", defactoNetworkInstanceName, false);
+        createNetwork(networkData, false, false, serviceInstanceName);
+
+        drawingBoardPage.deploy();
+        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
+    }
+
+    private void fillALaCarteServicePopup(String serviceInstanceName) {
+        BrowseASDCPage browseASDCPage = new BrowseASDCPage();
         WebElement instanceNameInput = Get.byId("instanceName");
         instanceNameInput.sendKeys(serviceInstanceName);
         VidBasePage.selectSubscriberById("e433710f-9217-458d-a79d-1c7aff376d89");
@@ -631,11 +658,6 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         Click.byTestId("form-set");
         VidBasePage.goOutFromIframe();
         browseASDCPage.goToIframe();
-        VnfData networkData = new VnfData("SR-IOV Provider-1", "840ffc47-e4cf-46de-8e23-525fd8c6fdc3", defactoNetworkInstanceName, false);
-        createNetwork(networkData, false, false, serviceInstanceName);
-
-        drawingBoardPage.deploy();
-        drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
     }
 
     @Test
@@ -1153,11 +1175,15 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     //@Step("create vf module")
     private void createVfModule(ServiceData serviceData, String serviceInstanceName, boolean addedByDefault, boolean addOpensPopup) {
-        clickAddVfModule(serviceData, addedByDefault);
-        if (!addOpensPopup) {
-            clickEditVfModule(serviceData);
-        }
+        openVfModulePopup(serviceData.vnfData, serviceData.vfData, addedByDefault, addOpensPopup);
         fillAndSetVfModulePopup(serviceData, serviceInstanceName);
+    }
+
+    private void openVfModulePopup(VnfData vnfData, VfData vfmData, boolean addedByDefault, boolean addOpensPopup) {
+        clickAddVfModule(vnfData, vfmData, addedByDefault);
+        if (!addOpensPopup) {
+            clickEditVfModule(vfmData);
+        }
     }
 
     private void fillAndSetVfModulePopup(ServiceData serviceData, String serviceInstanceName) {
@@ -1194,25 +1220,25 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         Click.byTestId(setButtonTestId);
     }
 
-    private void clickEditVfModule(ServiceData serviceData) {
+    private void clickEditVfModule(VfData vfmData) {
         if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
-            hoverAndClickEditButton(serviceData.vfData.uuid + "-" + serviceData.vfData.vfName);
+            hoverAndClickEditButton(vfmData.uuid + "-" + vfmData.vfName);
         }
     }
 
-    private void clickAddVfModule(ServiceData serviceData, boolean addedByDefault) {
+    private void clickAddVfModule(VnfData vnfData, VfData vfmData, boolean addedByDefault) {
         if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive() && addedByDefault) {
             return;
         }
         System.out.println("VFModule should be added 'manually'");
 
-        final WebElement vfModuleNode = Get.byTestId(Constants.DrawingBoard.NODE_PREFIX + serviceData.vfData.vfName);
+        final WebElement vfModuleNode = Get.byTestId(Constants.DrawingBoard.NODE_PREFIX + vfmData.vfName);
 
         if (vfModuleNode == null || !vfModuleNode.isDisplayed()) {
             // expand tree
-            drawingBoardPage.clickNode(serviceData.vnfData.vnfName);
+            drawingBoardPage.clickNode(vnfData.vnfName);
         }
-        drawingBoardPage.clickAddButtonByNodeName(serviceData.vfData.vfName);
+        drawingBoardPage.clickAddButtonByNodeName(vfmData.vfName);
     }
 
     private void clickRemoveVfModule(String vfModuleId, String vfModuleName) {
