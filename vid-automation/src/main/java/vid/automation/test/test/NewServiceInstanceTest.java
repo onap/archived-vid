@@ -17,9 +17,11 @@ import static vid.automation.test.infra.Features.FLAG_1908_COLLECTION_RESOURCE_N
 import static vid.automation.test.infra.Features.FLAG_1908_INFRASTRUCTURE_VPN;
 import static vid.automation.test.infra.Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT;
 import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_ENABLE_WEBPACK_MODERN_UI;
 import static vid.automation.test.infra.ModelInfo.aLaCarteNetworkProvider5G;
+import static vid.automation.test.infra.ModelInfo.aLaCarteServiceCreationNewUI;
 import static vid.automation.test.infra.ModelInfo.aLaCarteVnfGroupingService;
 import static vid.automation.test.infra.ModelInfo.collectionResourceService;
 import static vid.automation.test.infra.ModelInfo.infrastructureVpnService;
@@ -590,6 +592,14 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     }
 
+    @Test
+    @FeatureTogglingTest(FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI)
+    public void createNewServiceInstance_aLaCarte_WithVnf() {
+        resetGetServicesCache();
+        prepareServicePreset(aLaCarteServiceCreationNewUI, true);
+        loadServicePopup(aLaCarteServiceCreationNewUI.modelVersionId);
+
+    }
 
     @Test
     @FeatureTogglingTest(FLAG_5G_IN_NEW_INSTANTIATION_UI)
@@ -1243,7 +1253,11 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     //@Step("prepare service preset")
-    private void prepareServicePreset(ModelInfo modelInfo, boolean deploy) {
+    private void
+
+
+
+    prepareServicePreset(ModelInfo modelInfo, boolean deploy) {
         String subscriberId = "e433710f-9217-458d-a79d-1c7aff376d89";
 
         if (deploy) {
