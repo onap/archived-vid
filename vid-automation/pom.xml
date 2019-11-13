@@ -9,7 +9,7 @@
         <springframework.version>5.1.9.RELEASE</springframework.version>
         <jersey.version>2.29</jersey.version>
         <jackson.version>2.9.9</jackson.version>
-        <jackson.databind.version>2.9.9.3</jackson.databind.version>
+        <jackson.databind.version>2.9.10.1</jackson.databind.version>
         <aspectj.version>1.8.10</aspectj.version>
         <selenium.version>3.6.0</selenium.version>
         <log4j.version>2.12.0</log4j.version>
