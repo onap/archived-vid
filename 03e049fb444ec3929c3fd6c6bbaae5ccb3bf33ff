@@ -152,6 +152,24 @@
     },
     {
       "key": {
+        "uuid": "dfeba40a_a4657a9c",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-14T12:07:23Z",
+      "side": 1,
+      "message": "an new-line was randomly added between \"String\" and \"requestId\".\nassuming it is because line length, a suppose a better new-line will come before the word \"String\", not after.\n\nalso, IMO can avoid this line break.",
+      "parentUuid": "b025dc1a_84a0948c",
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "008bcc43_5a88a40f",
         "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
         "patchSetId": 1
