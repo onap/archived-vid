@@ -1,12 +1,14 @@
 package org.onap.vid.api;
 
 import static java.util.Collections.emptyMap;
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset.DEFAULT_INSTANCE_ID;
@@ -18,12 +20,14 @@ import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
@@ -408,6 +412,23 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
         }
     }
 
+
+    @Test
+    public void deployServiceAfterDragAndDropVFModule__verifyOrderMsoCalls() {
+        final ImmutableMap<PresetMSOServiceInstanceGen2WithNames.Keys, String> names = ImmutableMap
+            .of(SERVICE_NAME, "serviceInstanceName");
+        String vnfRequestId = UUID.randomUUID().toString();
+        registerPresetsForRetryTest("none", names, vnfRequestId, false);
+
+        final List<String> uuids = createBulkOfInstances(false, 1, names,
+            CREATE_BULK_OF_ALACARTE_NO_TESTAPI_REQUEST_CYPRESS);
+
+        final String jobId = uuids.get(0);
+
+        assertServiceInfoSpecific2(jobId, JobStatus.COMPLETED, names.get(SERVICE_NAME));
+        assertMSOcalledWithOrder();
+    }
+
     @Test
     public void verifyMetricsLogInAsyncInstantiation() {
 
@@ -523,6 +544,24 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
                 TestUtils.hasOrLacksOfEntry("/mso/serviceInstantiation/v./serviceInstances/" + DEFAULT_INSTANCE_ID + "/vnfs/" + vnfRequestId + "/vfModules",
                         pathCounterOverride.getOrDefault("vfModules", vfModulesDefaultValue))
         ));
+    }
+
+
+    private void assertMSOcalledWithOrder() {
+
+        List<RecordedRequests> requests = retrieveRecordedRequests();
+
+        String path = "/mso/serviceInstantiation/v7/serviceInstances/.*/vnfs/.*/vfModules";
+        List<String> msoVFModulesRequests =
+            requests.stream().filter(x -> x.path.matches(path)).map(x -> x.body).collect(toList());
+
+        assertThat("request for vfNodule send with position order",
+            msoVFModulesRequests,
+            contains(
+                containsString("2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"),
+                containsString("2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2"),
+                containsString("2017488PasqualeVpe..PASQUALE_vRE_BV..module-1")
+            ));
     }
 
     private ImmutableList<JobAuditStatus> vidAuditStatusesCompleted(String jobId) {

@@ -56,17 +56,24 @@ public class SimulatorApi {
         public List<StringWrapper> values;
     }
 
+    public static class BodyWrapper {
+        public String value;
+    }
+
     public static class HttpRequest {
         public StringWrapper path;
+        public BodyWrapper body;
         public List<RecordedHeaders> headers;
     }
 
     public static class RecordedRequests {
         public String path;
+        public String body;
         public Map<String, List<String>> headers;
 
-        public RecordedRequests(String path, Map<String, List<String>> headers) {
+        public RecordedRequests(String path,  String body, Map<String, List<String>> headers) {
             this.path = path;
+            this.body = body;
             this.headers = headers;
         }
 
@@ -188,6 +195,7 @@ public class SimulatorApi {
         List<HttpRequest> rawRequests =  retrieveRecordedHttpRequests();
         return rawRequests.stream().map(request->new RecordedRequests(
             request.path.value,
+            request.body != null && request.body != null ?  request.body.value : "",
             request.headers.stream().collect(
                 Collectors.toMap(
                     x->x.name.value,
