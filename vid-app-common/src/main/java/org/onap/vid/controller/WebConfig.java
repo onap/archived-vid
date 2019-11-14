@@ -69,6 +69,7 @@ import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.togglz.core.manager.FeatureManager;
@@ -222,7 +223,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new VidLoggingInterceptor(
-            new ControllersUtils(new SystemPropertiesWrapper())));
+        registry.addInterceptor(
+                new VidLoggingInterceptor(new ControllersUtils(new SystemPropertiesWrapper()))
+        ).order(Ordered.HIGHEST_PRECEDENCE);
     }
 }

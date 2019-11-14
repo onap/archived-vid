@@ -66,7 +66,7 @@ public class LoggerController extends RestrictedBaseController {
         this.logfilePathCreator = logfilePathCreator;
     }
 
-    @GetMapping(value = "/{loggerName:audit|audit2019|error|metrics|metrics2019}")
+    @GetMapping(value = "/{loggerName:audit|audit2019|error|metrics|metrics2019|debug}")
     public String getLog(@PathVariable String loggerName, HttpServletRequest request,
                          @RequestParam(value="limit", defaultValue = "5000") Integer limit) throws IOException {
 
