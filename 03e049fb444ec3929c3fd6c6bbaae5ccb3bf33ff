@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "3afee2c0_3af24d45",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-14T11:53:12Z",
+      "side": 1,
+      "message": "I disagree.\nI think it validates both. \nI mean only if we have validated that log records exist then we can validate its format.",
+      "parentUuid": "9777adf6_1b2d55e5",
+      "range": {
+        "startLine": 73,
+        "startChar": 28,
+        "endLine": 73,
+        "endChar": 31
+      },
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f01b5bc5_88a1170c",
         "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
         "patchSetId": 1
@@ -53,6 +77,24 @@
       "writtenOn": "2019-11-14T10:11:41Z",
       "side": 1,
       "message": "i think default score is 0.95.\nare we ready for that ?\ndid you run pipeline with this change ?",
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3af39425_b652724f",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-14T11:53:12Z",
+      "side": 1,
+      "message": "Pipeline was not available.\nI\u0027ve used the log checker manually with my local log records. Have used some random aai API test\nShould be 100%.to fill the log file.",
+      "parentUuid": "f01b5bc5_88a1170c",
       "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -121,6 +163,24 @@
       "writtenOn": "2019-11-14T09:37:13Z",
       "side": 1,
       "message": "consider a different line break",
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63c7fc9a_200eb9b5",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-14T11:53:12Z",
+      "side": 1,
+      "message": "Not sure if I follow you",
+      "parentUuid": "008bcc43_5a88a40f",
       "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
