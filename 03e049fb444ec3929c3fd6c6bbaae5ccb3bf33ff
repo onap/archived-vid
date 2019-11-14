@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8c8b91d6_1ba6f8e3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/controller/LoggerControllerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-14T09:37:13Z",
+      "side": 1,
+      "message": "not sure this test is needed.",
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9777adf6_1b2d55e5",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-14T09:37:13Z",
+      "side": 1,
+      "message": "It is validating the logs\u0027 format, not the \"logs and format\"",
+      "range": {
+        "startLine": 73,
+        "startChar": 28,
+        "endLine": 73,
+        "endChar": 31
+      },
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2819a3af_6244aee0",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-14T09:37:13Z",
+      "side": 1,
+      "message": "consider a different line break",
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d60580e_abd4ac84",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-14T09:37:13Z",
+      "side": 1,
+      "message": "consider a different line break",
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b025dc1a_84a0948c",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-14T09:37:13Z",
+      "side": 1,
+      "message": "consider a different line break",
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "008bcc43_5a88a40f",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-14T09:37:13Z",
+      "side": 1,
+      "message": "consider a different line break",
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
