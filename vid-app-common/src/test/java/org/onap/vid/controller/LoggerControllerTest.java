@@ -108,4 +108,19 @@ public class LoggerControllerTest {
             .andExpect(content().string(""))
             .andExpect(status().isOk());
     }
+
+    @Test
+    public void shouldReturnEmptyString_whenDebugLogFileIsEmpty() throws Exception {
+        List<Role> list = ImmutableList.of(new Role(EcompRole.READ, "subName1", "servType1", "tenant1"));
+
+        given(provider.getUserRoles(argThat(req -> req.getRequestedSessionId().equals("id1")))).willReturn(list);
+        given(provider.userPermissionIsReadLogs(list)).willReturn(true);
+        given(creator.getLogfilePath("debug")).willReturn(EMPTY_LOG_PATH);
+
+        mockMvc.perform(get("/logger/debug")
+                .with(req -> {req.setRequestedSessionId("id1");
+                    return req;}))
+                .andExpect(content().string(""))
+                .andExpect(status().isOk());
+    }
 }
