@@ -42,6 +42,23 @@
     },
     {
       "key": {
+        "uuid": "f01b5bc5_88a1170c",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-14T10:11:41Z",
+      "side": 1,
+      "message": "i think default score is 0.95.\nare we ready for that ?\ndid you run pipeline with this change ?",
+      "revId": "03e049fb444ec3929c3fd6c6bbaae5ccb3bf33ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2819a3af_6244aee0",
         "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
         "patchSetId": 1
