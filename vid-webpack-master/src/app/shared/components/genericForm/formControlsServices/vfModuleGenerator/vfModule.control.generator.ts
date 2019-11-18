@@ -163,6 +163,9 @@ export class VfModuleControlGenerator {
   }
 
   getDefaultVolumeGroupName(instance: any, isEcompGeneratedNaming: boolean): string {
+    if ((!_.isNil(instance) && instance.volumeGroupName))  {
+      return instance.volumeGroupName;
+    }
     if (isEcompGeneratedNaming) {
       return null;
     }
