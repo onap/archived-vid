@@ -105,9 +105,9 @@ appDS2.constant("VIDCONFIGURATION", (function() {
 	var COMPONENT_LIST_NAMED_QUERY_ID = "0367193e-c785-4d5f-9cb8-7bc89dc9ddb7";
 	var MACRO_SERVICES = [];
 
-	var SCHEDULER_CALLBACK_URL = "";
+	var SCHEDULER_CALLBACK_URL = "x";
 
-	var SCHEDULER_PORTAL_URL = "";
+	var SCHEDULER_PORTAL_URL = "x";
 	
 	var SDNC_SHOW_ASSIGNMENTS_URL = "https://sdnc.api.simpledemo.onap.org:8448/configAdapter/index#/resource_manager/<SERVICE_INSTANCE_ID>";
 	

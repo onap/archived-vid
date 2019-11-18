@@ -6,7 +6,7 @@ module.exports = {
   modulePaths: [
     "<rootDir>/src/main/webapp/app/vid/external"
   ],
-  setupFilesAfterEnv: ["<rootDir>/test-config.js"],
+  setupFilesAfterEnv: ["./test-config.js"],
   collectCoverage: false,
   collectCoverageFrom: [
     "src/**/*.js",
