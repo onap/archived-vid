@@ -1169,12 +1169,13 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         if (!serviceData.vnfData.isGeneratedNaming) {
             Input.text("VF instance name", "instanceName");
         }
-
-        if (serviceData.vfData.vgEnabled) {
+//visible: (!isALaCarte && !isEcompGeneratedNaming) || isALaCarte
+        if (serviceData.vfData.vgEnabled && serviceData.isGeneratedNaming.equals("FALSE")) {
             browseASDCPage.setInputText("volumeGroupName", "_abc");
             Assert.assertEquals(isElementByIdRequired("volumeGroupName-label"), false,  "volume Group name input should be always optional");
         } else {
-            Assert.assertNull(Get.byTestId("volumeGroupName"), "volumeGroupName input should be invisible when vgEnabled == false");
+            Assert.assertNull(Get.byTestId("volumeGroupName"), "volumeGroupName input should be invisible "
+                + "when vgEnabled is false or when vgEnabled is true and EcompGenName is true");
         }
         Wait.waitByTestId("model-item-value-subscriberName", 10);
         Assert.assertEquals(Get.byTestId("model-item-value-subscriberName").getText(), "SILVIA ROBBINS", "Subscriber name should be shown in vf module");

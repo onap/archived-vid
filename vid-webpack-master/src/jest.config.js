@@ -25,7 +25,7 @@ module.exports = {
     // Replaces the following formats with an empty module.
     '^.+\\.(scss|css|svg|woff|woff2|mp4|webm)$': '<rootDir>/tests/emptyModule',
   },
-  setupFilesAfterEnv: ["<rootDir>/src/setupJest.ts"],
+  setupFilesAfterEnv: ["./setupJest.ts"],
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/(assets|bin|config|coverage|dist|docs|flow|locale|src)/',
