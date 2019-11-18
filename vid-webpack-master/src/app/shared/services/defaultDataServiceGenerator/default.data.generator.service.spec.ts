@@ -32,6 +32,7 @@ describe('Default Data Generator Service', () => {
 
     let result = service.generateVFModule(serviceHierarchy.vnfs[vnfUUID].vfModules[vnfModuleUUID], [], false, true);
     expect(result.isMissingData).toBeTruthy();
+    expect(result.rollbackOnFailure).toBeTruthy();
   });
 
   test('generateVFModule should create vf module object', () => {
@@ -51,6 +52,7 @@ describe('Default Data Generator Service', () => {
     expect(result.sdncPreReload).toBeNull();
     expect(result.isMissingData).toBeTruthy();
     expect(result.instanceParams).toEqual([{}]);
+    expect(result.rollbackOnFailure).toBeNull();
   });
 
   test('generateVNFData should create vnf object', () => {
