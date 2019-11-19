@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "548a78c6_18873200",
+        "filename": "features.properties.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-19T20:29:34Z",
+      "side": 1,
+      "message": "I\u0027m not sure it\u0027s an understandable description",
+      "revId": "5f255d156f26c02d6fd5ee129f1a07b5872f15df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76162e16_76f9b742",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-19T20:29:34Z",
+      "side": 1,
+      "message": "please keep with the comma at end of line where possible",
+      "revId": "5f255d156f26c02d6fd5ee129f1a07b5872f15df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4df62dc0_9b790a1f",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/dev.features.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-19T20:29:34Z",
+      "side": 1,
+      "message": "wrong. don\u0027t modify this file",
+      "revId": "5f255d156f26c02d6fd5ee129f1a07b5872f15df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eef85329_c54a27cb",
+        "filename": "vid-automation/src/main/java/vid/automation/test/infra/Features.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-19T20:29:34Z",
+      "side": 1,
+      "message": "please keep with the comma at end of line where possible",
+      "revId": "5f255d156f26c02d6fd5ee129f1a07b5872f15df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4aed972f_9a1aefcd",
+        "filename": "vid-automation/src/test/resources/features.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-19T20:29:34Z",
+      "side": 1,
+      "message": "wrong. don\u0027t modify this file",
+      "revId": "5f255d156f26c02d6fd5ee129f1a07b5872f15df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46a98d27_1bcb5a53",
+        "filename": "vid-webpack-master/src/app/shared/services/featureFlag/feature-flags.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-19T20:29:34Z",
+      "side": 1,
+      "message": "I don\u0027t think it is relevant here, if flag not used in old screens.",
+      "revId": "5f255d156f26c02d6fd5ee129f1a07b5872f15df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
