@@ -1,16 +1,20 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-import java.util.Map;
-
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
 
-public class PresetMSOCreateServiceInstanceAlacarte5GServiceWithNetwork extends PresetMSOCreateServiceInstanceGen2WithNames {
+import java.util.Map;
+import vid.automation.test.infra.ModelInfo;
+
+public class PresetMSOCreateServiceInstanceAlacarte extends PresetMSOCreateServiceInstanceGen2WithNames {
 
     private final String requestorId;
+    protected final ModelInfo modelInfo;
 
-    public PresetMSOCreateServiceInstanceAlacarte5GServiceWithNetwork(Map<Keys, String> names, String requestId, String requestorId) {
-        super(names, 0, requestId);
+    public PresetMSOCreateServiceInstanceAlacarte(Map<Keys, String> names, String requestId, String responseInstanceId,
+        String requestorId, ModelInfo modelInfo) {
+        super(names, 0, requestId, responseInstanceId);
         this.requestorId = requestorId;
+        this.modelInfo = modelInfo;
     }
 
     @Override
@@ -22,13 +26,7 @@ public class PresetMSOCreateServiceInstanceAlacarte5GServiceWithNetwork extends 
     public Object getRequestBody() {
         return "{" +
                 "  \"requestDetails\": {" +
-                "    \"modelInfo\": {" +
-                "      \"modelInvariantId\": \"16e56d12-40b3-4db1-a40e-d48c36679e2e\"," +
-                "      \"modelVersionId\": \"4659e8bd-0920-4eed-8ec5-550b4c8dceeb\"," +
-                "      \"modelName\": \"SR-IOV Provider-1\"," +
-                "      \"modelType\": \"service\"," +
-                "      \"modelVersion\": \"1.0\"" +
-                "    }," +
+                    modelInfo.createMsoModelInfo()+
                 "    \"owningEntity\": {" +
                 "      \"owningEntityId\": \"d61e6f2d-12fa-4cc2-91df-7c244011d6fc\"," +
                 "      \"owningEntityName\": \"WayneHolland\"" +

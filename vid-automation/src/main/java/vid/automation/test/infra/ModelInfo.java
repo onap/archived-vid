@@ -6,6 +6,8 @@ public class ModelInfo {
     public final String modelVersionId; //aka model uuid
     public final String modelInvariantId;
     public final String zipFileName;
+    public String modelName;
+    public String modelVersion;
 
     public static class ModelInfoWithMultipleVersions {
         public final String modelInvariantId;
@@ -37,6 +39,14 @@ public class ModelInfo {
         this.zipFileName = zipFileName;
     }
 
+    public ModelInfo(String modelVersionId, String modelInvariantId, String zipFileName, String modelName, String modelVersion) {
+        this.modelVersionId = modelVersionId;
+        this.modelInvariantId = modelInvariantId;
+        this.zipFileName = zipFileName;
+        this.modelName = modelName;
+        this.modelVersion = modelVersion;
+    }
+
     public ModelInfo(String modelVersionId, String modelInvariantId) {
         this(modelVersionId, modelInvariantId, "fakeCsarName.zip");
     }
@@ -50,10 +60,11 @@ public class ModelInfo {
     public static final ModelInfo macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails = new ModelInfo     ("1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd", "cdb90b57-ed78-4d44-a5b4-7f43a02ec632", "csar-noDynamicFields-ecompNamingFalse-fullModelDetails-1a80c596.zip");
     public static final ModelInfo macroSriovWithDynamicFieldsEcompNamingFalsePartialModelDetailsVnfEcompNamingFalse = new ModelInfo("6b528779-44a3-4472-bdff-9cd15ec93450", "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0" , "csar-withDynamicFields-ecompNamingFalse-partialModelDetails-vnfEcompNamingFalse.zip");
     public static final ModelInfo macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse = new ModelInfo("4a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd", "4140a873-00bb-4f57-ac46-0494cc9e674a", "csar-noDynamicFields-ecompNamingFalse-fullModelDetails-1a80c596-vnfEcompNamingFalse.zip");
-    public static final ModelInfo aLaCarteNetworkProvider5G = new ModelInfo("4659e8bd-0920-4eed-8ec5-550b4c8dceeb", "16e56d12-40b3-4db1-a40e-d48c36679e2e", "service-SrIovProvider1-csar.zip");
+    public static final ModelInfo aLaCarteNetworkProvider5G = new ModelInfo("4659e8bd-0920-4eed-8ec5-550b4c8dceeb", "16e56d12-40b3-4db1-a40e-d48c36679e2e", "service-SrIovProvider1-csar.zip", "SR-IOV Provider-1", "1.0");
     public static final ModelInfo pasqualeVmxVpeBvService488Annotations = new ModelInfo("f4d84bb4-a416-4b4e-997e-0059973630b9", "598e3f9e-3244-4d8f-a8e0-0e5d7a29eda9", "service-PasqualeVmxVpeBvService488-csar-annotations.zip");
     public static final ModelInfo macroDrawingBoardComplexService = new ModelInfo("6e59c5de-f052-46fa-aa7e-2fca9d674c44","cfef8302-d90f-475f-87cc-3f49a62ef14c", "service-Complexservice-csar.zip" );
     public static final ModelInfo aLaCarteServiceCreationTest = new ModelInfo("f913c5d0-206e-45c2-9284-1c68f4e67dc7", "45e61192-876c-4e28-9139-5a0c47410379", "serviceCreationTest.zip");
+    public static final ModelInfo aLaCarteServiceCreationNewUI = new ModelInfo("f3862254-8df2-4a0a-8137-0a9fe985860c", "d1068db8-b933-4919-8972-8bc1aed366c8", "service-Vocg1804Svc.zip", "vOCG_1804_SVC", "1.0");
     public static final ModelInfo aLaCarteServiceOldVersionTest = new ModelInfo("04743c62-ab58-41a0-bc53-1052ef1c094a", "5d353b28-e5b7-419b-98e8-cad5d258be13", "serviceCreationTest04743c62-ab58-41a0-bc53-1052ef1c094a.zip");
     public static final ModelInfo aLaCarteVnfGroupingService = new ModelInfo("4117a0b6-e234-467d-b5b9-fe2f68c8b0fc", "7ee41ce4-4827-44b0-a48e-2707a59905d2", "csar15782222_instantiationTypeAlacarte_VnfGrouping.zip");
     public static final ModelInfo serviceFabricSriovService = new ModelInfo("253f1467-fe68-4e80-ba71-308000caec31", "c15fe228-7d40-4f99-afa7-10abeedf9aac", "service-fabric-SriovService-csar.zip");
@@ -86,8 +97,20 @@ public class ModelInfo {
                 .add(transportWithPnfsService)
                 .add(collectionResourceService)
                 .add(collectionResourceForResume)
+                .add(aLaCarteServiceCreationNewUI)
                 .add(serviceWithInstantiationTypeMacro)
                 .build();
+    }
+
+    public String createMsoModelInfo() {
+        return
+            "    \"modelInfo\": {" +
+            "      \"modelInvariantId\": \""+modelInvariantId+"\"," +
+            "      \"modelVersionId\": \""+modelVersionId+"\"," +
+            "      \"modelName\": \""+modelName+"\"," +
+            "      \"modelType\": \"service\"," +
+            "      \"modelVersion\": \""+modelVersion+"\""  +
+            "    },";
     }
 }
 
