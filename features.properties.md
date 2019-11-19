@@ -181,3 +181,6 @@
    
 * FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI
   Any a-la-carte new service deployment will be open in modern UI, besides excluded services : Port mirroring, VLAN Tagging
+
+* FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS
+  Enables additional options on Phase 2
