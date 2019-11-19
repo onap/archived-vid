@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ad3cc09_d39f8913",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2019-11-19T12:50:24Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 637,
+        "startChar": 61,
+        "endLine": 637,
+        "endChar": 66
+      },
+      "revId": "dcf3a03a9098811264583717f6aa652b5c0822da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ec767f9_7a4189d5",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/drawing-board-tree.service.ts",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2019-11-19T12:50:24Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "dcf3a03a9098811264583717f6aa652b5c0822da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
