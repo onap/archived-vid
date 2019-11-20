@@ -24,7 +24,7 @@ public class PresetMSOCreateVnfALaCarteCypress2 extends PresetMSOCreateVnfBase {
                     "{\"lcpCloudRegionId\":\"just another region\"," +
                     addCloudOwnerIfNeeded() +
                     "\"tenantId\":\"092eb9e8e4b7412e8787dd091bc58e86\"}," +
-                "\"platform\":{\"platformName\":\"xxx1\"}," +
+                "\"platform\":{\"platformName\":\"xxx1,platform\"}," +
                 "\"modelInfo\":" +
                     "{\"modelCustomizationId\":\"1da7b585-5e61-4993-b95e-8e6606c81e45\"," +
                     "\"modelCustomizationName\":\"2017-488_PASQUALE-vPE 0\"," +

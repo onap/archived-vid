@@ -6,6 +6,11 @@
         <checkbox-form-control *ngSwitchCase="'CHECKBOX'"  [data]="formControl" [form]="dynamicFormGroup" ></checkbox-form-control>
         <dropdown-form-control *ngSwitchCase="'DROPDOWN'" [data]="formControl" [form]="dynamicFormGroup" ></dropdown-form-control>
         <file-form-control *ngSwitchCase="'FILE'" [data]="formControl" [form]="dynamicFormGroup"></file-form-control>
+        <multiselect-form-control *ngSwitchCase="'MULTI_SELECT'"
+                                  [data]="formControl"
+                                  [form]="dynamicFormGroup"
+                                  [multiselectOptions]="formControl?.options$"
+                                  [selectedItems]="formControl.value"></multiselect-form-control>
       </div>
       <div  *ngIf="dynamicFormGroup != null && formControl != null && dynamicFormGroup.controls[formControl.controlName]?.errors">
         <div *ngFor="let validatorModel of formControl?.validations">
