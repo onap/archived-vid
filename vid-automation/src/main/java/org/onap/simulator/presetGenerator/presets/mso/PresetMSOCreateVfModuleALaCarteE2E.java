@@ -1,42 +1,47 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
+import org.apache.commons.lang3.ObjectUtils;
 import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.infra.ModelInfoWithCustomization;
 
 public class PresetMSOCreateVfModuleALaCarteE2E extends PresetMSOCreateVfModuleBase {
 
     protected final String requestorId;
     protected final ModelInfo serviceModelInfo;
+    private final String instanceName;
+    private final ModelInfoWithCustomization resourceModelInfo;
+    private final String relatedInstance;
 
     public PresetMSOCreateVfModuleALaCarteE2E(
         String overrideRequestId,
+        String responseInstanceId,
         String serviceInstanceId,
         String vnfInstanceId,
         String requestorId,
-        ModelInfo serviceModelInfo) {
-        super(overrideRequestId, serviceInstanceId, vnfInstanceId);
-        this.requestorId = requestorId;
-        this.serviceModelInfo = serviceModelInfo;
+        ModelInfo serviceModelInfo,
+        String instanceName,
+        ModelInfoWithCustomization resourceModelInfo,
+        String relatedInstance) {
+            super(overrideRequestId, responseInstanceId, serviceInstanceId, vnfInstanceId, resourceModelInfo.resourceType);
+            this.requestorId = requestorId;
+            this.serviceModelInfo = serviceModelInfo;
+            this.instanceName = instanceName;
+            this.resourceModelInfo = resourceModelInfo;
+            this.relatedInstance = relatedInstance;
     }
 
     @Override
     public Object getRequestBody() {
         return "{"
             + "    \"requestDetails\": {"
-            + "        \"modelInfo\": {"
-            + "            \"modelCustomizationName\": \"Vocg1804Vf..base_ocg..module-0\","
-            + "            \"modelCustomizationId\": \"a7b333d7-7633-4197-b40d-80fcfcadee94\","
-            + "            \"modelInvariantId\": \"e9c795c8-6b98-4db3-bd90-a84b8ca5181b\","
-            + "            \"modelVersionId\": \"815db6e5-bdfd-4cb6-9575-82c36df8747a\","
-            + "            \"modelName\": \"Vocg1804Vf..base_ocg..module-0\","
-            + "            \"modelType\": \"vfModule\","
-            + "            \"modelVersion\": \"4\""
-            + "        },"
+            +   resourceModelInfo.createMsoModelInfo()
             + "        \"cloudConfiguration\": {"
             + "            \"lcpCloudRegionId\": \"hvf6\","
             +               addCloudOwnerIfNeeded()
             + "            \"tenantId\": \"bae71557c5bb4d5aac6743a4e5f1d054\""
             + "        },"
             + "        \"requestInfo\": {"
+            +           addInstanceName()
             + "            \"source\": \"VID\","
             + "            \"suppressRollback\": false,"
             + "            \"requestorId\": \""+requestorId+"\""
@@ -59,7 +64,7 @@ public class PresetMSOCreateVfModuleALaCarteE2E extends PresetMSOCreateVfModuleB
             + "                    },"
             + "                    \"instanceId\": \""+vnfInstanceId+"\""
             + "                }"
-            + "            }"
+            + "            }" + addRelatedInstance()
             + "        ],"
             + "        \"requestParameters\": {"
             + "            \"userParams\": [{"
@@ -71,5 +76,14 @@ public class PresetMSOCreateVfModuleALaCarteE2E extends PresetMSOCreateVfModuleB
             + "        }"
             + "    }"
             + "}";
+    }
+
+    private String addInstanceName() {
+        return instanceName==null ? "" :
+            "\"instanceName\": \""+instanceName+"\",";
+    }
+
+    private String addRelatedInstance() {
+        return ObjectUtils.defaultIfNull(relatedInstance, "");
     }
 }

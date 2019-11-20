@@ -2,12 +2,9 @@ package vid.automation.test.infra;
 
 import com.google.common.collect.ImmutableList;
 
-public class ModelInfo {
-    public final String modelVersionId; //aka model uuid
-    public final String modelInvariantId;
+public class ModelInfo extends ModelInfoBase {
+
     public final String zipFileName;
-    public String modelName;
-    public String modelVersion;
 
     public static class ModelInfoWithMultipleVersions {
         public final String modelInvariantId;
@@ -34,17 +31,12 @@ public class ModelInfo {
     }
 
     public ModelInfo(String modelVersionId, String modelInvariantId, String zipFileName) {
-        this.modelVersionId = modelVersionId;
-        this.modelInvariantId = modelInvariantId;
-        this.zipFileName = zipFileName;
+        this(modelVersionId, modelInvariantId, zipFileName, null, null);
     }
 
     public ModelInfo(String modelVersionId, String modelInvariantId, String zipFileName, String modelName, String modelVersion) {
-        this.modelVersionId = modelVersionId;
-        this.modelInvariantId = modelInvariantId;
+        super(modelVersionId, modelInvariantId, modelName, modelVersion, "service");
         this.zipFileName = zipFileName;
-        this.modelName = modelName;
-        this.modelVersion = modelVersion;
     }
 
     public ModelInfo(String modelVersionId, String modelInvariantId) {
@@ -102,16 +94,6 @@ public class ModelInfo {
                 .build();
     }
 
-    public String createMsoModelInfo() {
-        return
-            "    \"modelInfo\": {" +
-            "      \"modelInvariantId\": \""+modelInvariantId+"\"," +
-            "      \"modelVersionId\": \""+modelVersionId+"\"," +
-            "      \"modelName\": \""+modelName+"\"," +
-            "      \"modelType\": \"service\"," +
-            "      \"modelVersion\": \""+modelVersion+"\""  +
-            "    },";
-    }
 }
 
 
