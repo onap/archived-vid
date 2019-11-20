@@ -3,13 +3,14 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Modifications Copyright (C) 2019 Nokia.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,30 +21,25 @@
 
 package org.onap.vid.aai.model.AaiGetOperationalEnvironments;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Collections;
+import java.util.List;
 import org.onap.vid.aai.OperationalEnvironment;
 
-import java.util.List;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OperationalEnvironmentList {
+public final class OperationalEnvironmentList {
+
+    private final List<OperationalEnvironment> operationalEnvironment;
+
+    @JsonCreator
+    public OperationalEnvironmentList(
+        @JsonProperty("operational-environment") List<OperationalEnvironment> operationalEnvironment) {
+        this.operationalEnvironment = Collections.unmodifiableList(operationalEnvironment);
+    }
 
     public List<OperationalEnvironment> getOperationalEnvironment() {
         return operationalEnvironment;
     }
-
-    @JsonAlias("operational-environment")
-    public void setOperationalEnvironment(List<OperationalEnvironment> operationalEnvironment) {
-        this.operationalEnvironment = operationalEnvironment;
-    }
-
-    public OperationalEnvironmentList() {
-    }
-
-    public OperationalEnvironmentList(List<OperationalEnvironment> operationalEnvironment) {
-        this.operationalEnvironment = operationalEnvironment;
-    }
-
-    private List<OperationalEnvironment> operationalEnvironment;
 }

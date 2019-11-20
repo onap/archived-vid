@@ -23,14 +23,12 @@ package org.onap.vid.aai;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
 import org.onap.vid.aai.model.RelationshipList;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.google.code.beanmatchers.BeanMatchers.hasValidGettersAndSetters;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -58,13 +56,13 @@ public class OperationalEnvironmentTest {
 
         OperationalEnvironment operationalEnvironment =
                 new OperationalEnvironment.OperationalEnvironmentBuilder()
-                        .setOperationalEnvironmentId("testId")
-                        .setOperationalEnvironmentName("testEnvName")
-                        .setOperationalEnvironmentType("testEnvType")
-                        .setOperationalEnvironmentStatus("testEnvStatus")
-                        .setTenantContext("testTenant").setWorkloadContext("testWorkload")
-                        .setResourceVersion("testResource").setRelationshipList(relationshipList)
-                        .createOperationalEnvironment();
+                        .withOperationalEnvironmentId("testId")
+                        .withOperationalEnvironmentName("testEnvName")
+                        .withOperationalEnvironmentType("testEnvType")
+                        .withOperationalEnvironmentStatus("testEnvStatus")
+                        .withTenantContext("testTenant").withWorkloadContext("testWorkload")
+                        .withResourceVersion("testResource").withRelationshipList(relationshipList)
+                        .build();
 
         assertThat(operationalEnvironment.getOperationalEnvironmentId()).isEqualTo("testId");
         assertThat(operationalEnvironment.getWorkloadContext()).isEqualTo("testWorkload");

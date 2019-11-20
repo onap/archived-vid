@@ -57,8 +57,10 @@ import org.onap.vid.aai.AaiResponseTranslator;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigData;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataError;
 import org.onap.vid.aai.AaiResponseTranslator.PortMirroringConfigDataOk;
+import org.onap.vid.aai.OperationalEnvironment;
 import org.onap.vid.aai.model.AaiGetAicZone.AicZones;
 import org.onap.vid.aai.model.AaiGetAicZone.Zone;
+import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironmentList;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetails;
 import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsError;
@@ -561,5 +563,27 @@ public class AaiControllerTest {
             .andExpect(content().string(expectedResponse));
     }
 
+    @Test
+    public void getOperationalEnvironments_shouldReturnOkResponse() throws Exception {
+        String operationalEnvironmentType = "testEnvType";
+        String operationalEnvironmentStatus = "testEnvStatus";
+        OperationalEnvironmentList operationalEnvironmentList = new OperationalEnvironmentList(
+            ImmutableList.of(OperationalEnvironment.builder()
+                .withOperationalEnvironmentType(operationalEnvironmentType)
+                .withOperationalEnvironmentStatus(operationalEnvironmentStatus)
+                .build()));
+        AaiResponse<OperationalEnvironmentList> aaiResponse = new AaiResponse<>(operationalEnvironmentList, null,
+            HttpStatus.OK.value());
+        given(aaiService.getOperationalEnvironments(operationalEnvironmentType, operationalEnvironmentStatus))
+            .willReturn(aaiResponse);
+
+        mockMvc.perform(get("/get_operational_environments")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("operationalEnvironmentType", operationalEnvironmentType)
+            .param("operationalEnvironmentStatus", operationalEnvironmentStatus))
+            .andExpect(status().isOk())
+            .andExpect(content().json(objectMapper.writeValueAsString(aaiResponse)));
+    }
 }
 
