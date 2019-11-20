@@ -1,5 +1,6 @@
 import {Utils} from "./utils";
 import {TestBed} from "@angular/core/testing";
+import each from "jest-each";
 
 
 describe('Util', () => {
@@ -28,4 +29,15 @@ describe('Util', () => {
   test('hasContents should return true if object is not undefined and not null and not empty', () => {
     expect(Utils.hasContents("someValue")).toBeTruthy();
   });
+
+  const instantiationTypesDataProvider = [
+    ['Macro', false ],
+    ['ALaCarte', true ],
+    ['ClientConfig', true],
+    ['dont know', true]
+  ];
+  each(instantiationTypesDataProvider).test('instantiationType %s isALaCarte shall be %s', (instantiationType, expected ) => {
+    expect(Utils.isALaCarte(instantiationType)).toEqual(expected);
+  });
+
 });

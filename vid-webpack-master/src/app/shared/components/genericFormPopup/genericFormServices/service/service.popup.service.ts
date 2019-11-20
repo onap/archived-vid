@@ -20,6 +20,7 @@ import {ModelInfo} from "../../../../models/modelInfo";
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import {createServiceInstance, updateServiceInstance} from "../../../../storeUtil/utils/service/service.actions";
 import * as _ from 'lodash';
+import {Utils} from "../../../../utils/utils";
 
 @Injectable()
 export class ServicePopupService implements GenericPopupInterface {
@@ -169,7 +170,7 @@ export class ServicePopupService implements GenericPopupInterface {
   };
 
   setIsALaCarte = (formValues: any, instantiationType) => {
-    formValues.isALaCarte = instantiationType !== 'Macro';
+    formValues.isALaCarte = Utils.isALaCarte(instantiationType);
   };
 
   setTestApi = (formValues: any) =>{

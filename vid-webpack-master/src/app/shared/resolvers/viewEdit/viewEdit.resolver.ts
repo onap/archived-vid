@@ -10,6 +10,7 @@ import {ServiceInstance} from "../../models/serviceInstance";
 import * as _ from "lodash";
 import {ModelInfo} from "../../models/modelInfo";
 import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
+import {Utils} from "../../utils/utils";
 
 @Injectable()
 export class ViewEditResolver implements Resolve<Observable<boolean>> {
@@ -69,7 +70,7 @@ export class ViewEditResolver implements Resolve<Observable<boolean>> {
   };
 
   setIsALaCarte(service: any, instantiationType) :void{
-    service.isALaCarte = instantiationType === 'ALaCarte';
+    service.isALaCarte = Utils.isALaCarte(instantiationType);
   };
 
 }

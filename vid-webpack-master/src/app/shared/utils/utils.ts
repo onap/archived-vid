@@ -179,6 +179,10 @@ export class Utils {
     return (convertedAsdcModel);
   };
 
+  public static isALaCarte(instantiationType) {
+    return instantiationType !== 'Macro';
+  }
+
   private static convertOldModel(serviceModel ) {
     let resource = {};
     let convertedAsdcModel = {

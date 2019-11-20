@@ -28,6 +28,7 @@ import {DrawingBoardTreeComponent} from "../drawing-board-tree/drawing-board-tre
 import {ComponentInfoModel} from "../component-info/component-info-model";
 import {ComponentInfoService} from "../component-info/component-info.service";
 import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
+import {Utils} from "../../../shared/utils/utils";
 
 
 @Component({
@@ -146,7 +147,7 @@ export class AvailableModelsTreeComponent {
     this.isNewObject = isNewObject;
     let data = node.data;
     let dynamicInputs = data.dynamicInputs;
-    let isAlaCarte: boolean = this.serviceHierarchy.service.vidNotions.instantiationType == 'ALaCarte';
+    let isAlaCarte: boolean = Utils.isALaCarte(this.serviceHierarchy.service.vidNotions.instantiationType);
     let isEcompGeneratedNaming: boolean = data.isEcompGeneratedNaming;
     let type: string = data.type;
     if (!this.store.getState().global.flags['FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD'] || node.data.type === ServiceNodeTypes.VF ||
