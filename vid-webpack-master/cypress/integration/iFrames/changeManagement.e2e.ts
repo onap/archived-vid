@@ -23,7 +23,7 @@ describe('Change management AKA VNF changes', function () {
         "aai-sub-details")
     });
 
-    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.json').then(() => {
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json').then(() => {
       cy.server()
         .route({
           method: 'GET',

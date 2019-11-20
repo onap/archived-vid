@@ -38,6 +38,7 @@ import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ComponentInfoService} from "../../../component-info/component-info.service";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
+import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 
 export class VnfModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -46,6 +47,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
               private _dialogService: DialogService,
               private _vnfPopupService: VnfPopupService,
               private _vfModulePopupService: VfModulePopuopService,
+              private _vfModuleUpgradePopupService : VfModuleUpgradePopupService,
               private _duplicateService: DuplicateService,
               private modalService: SdcUiServices.ModalService,
               private _iframeService: IframeService,
@@ -111,7 +113,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
    * return next level object (VFModule)
    ************************************************************/
   getNextLevelObject = (): VFModuleModelInfo => {
-    return new VFModuleModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._vfModulePopupService, this._iframeService, this._store, this._componentInfoService);
+    return new VFModuleModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._vfModulePopupService, this._vfModuleUpgradePopupService, this._iframeService, this._store, this._componentInfoService);
   };
 
   /***********************************************************

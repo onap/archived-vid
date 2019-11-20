@@ -22,6 +22,7 @@ import {ComponentInfoService} from "../../../component-info/component-info.servi
 import {AaiService} from "../../../../../shared/services/aaiService/aai.service";
 import {HttpClient, HttpHandler} from "@angular/common/http";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 
 describe('Vnf Model Info', () => {
  let injector;
@@ -32,6 +33,7 @@ describe('Vnf Model Info', () => {
  let _defaultDataGeneratorService : DefaultDataGeneratorService;
  let _dialogService : DialogService;
  let _vfModulePopupService : VfModulePopuopService;
+ let _vfModuleUpgradePopupService : VfModuleUpgradePopupService;
  let _vnfPopupService : VnfPopupService;
  let _duplicateService : DuplicateService;
  let _iframeService : IframeService;
@@ -47,6 +49,7 @@ describe('Vnf Model Info', () => {
         DynamicInputsService,
         DialogService,
         VfModulePopuopService,
+        VfModuleUpgradePopupService,
         VnfPopupService,
         DefaultDataGeneratorService,
         SharedTreeService,
@@ -71,6 +74,7 @@ describe('Vnf Model Info', () => {
       _dialogService,
       _vnfPopupService,
       _vfModulePopupService,
+      _vfModuleUpgradePopupService,
       _duplicateService,
       null,
       _iframeService,

@@ -43,7 +43,7 @@ function initCategoryParameter(response? : JSON) : void {
 }
 
 function initFlags(response? : JSON, delay?: number, status?: number) : void {
-  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.json').then((res) => {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json').then((res) => {
     cy.server()
       .route({
         method: 'GET',

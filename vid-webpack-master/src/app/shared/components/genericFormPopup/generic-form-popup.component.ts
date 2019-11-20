@@ -27,6 +27,7 @@ export enum PopupType{
   VNF = 'vnf',
   NETWORK = 'network',
   VF_MODULE = 'vf_module',
+  VF_MODULE_UPGRADE = 'vf_module_upgrade',
   VNF_GROUP = 'vnf_group'
 }
 

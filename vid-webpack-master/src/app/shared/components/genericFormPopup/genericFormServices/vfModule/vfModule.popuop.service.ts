@@ -33,13 +33,13 @@ export class VfModulePopuopService implements GenericPopupInterface {
   isUpdateMode: boolean;
 
 
-  constructor(private _basicControlGenerator: BasicControlGenerator,
-              private _vfModuleControlGenerator: VfModuleControlGenerator,
-              private _iframeService: IframeService,
-              private _defaultDataGeneratorService: DefaultDataGeneratorService,
-              private _aaiService: AaiService,
-              private _basicPopupService : BasicPopupService,
-              private _store: NgRedux<AppState>) {
+  constructor(protected _basicControlGenerator: BasicControlGenerator,
+              protected _vfModuleControlGenerator: VfModuleControlGenerator,
+              protected _iframeService: IframeService,
+              protected _defaultDataGeneratorService: DefaultDataGeneratorService,
+              protected _aaiService: AaiService,
+              protected _basicPopupService : BasicPopupService,
+              protected _store: NgRedux<AppState>) {
 
   }
 
@@ -141,15 +141,19 @@ export class VfModulePopuopService implements GenericPopupInterface {
       delete form.value['supplementaryFileName'];
     }
     that.storeVFModule(that, form.value);
+    this.postSubmitIframeMessage(that);
+    this.onCancel(that, form);
+  }
+
+
+  protected postSubmitIframeMessage(that) {
     window.parent.postMessage({
       eventId: 'submitIframe',
       data: {
         serviceModelId: that.serviceModel.uuid
       }
     }, "*");
-    this.onCancel(that, form);
   }
-
 
   onCancel(that, form) {
     form.reset();

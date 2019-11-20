@@ -40,6 +40,7 @@ import {ComponentInfoModel, ComponentInfoType} from "../component-info/component
 import {ModelInformationItem} from "../../../shared/components/model-information/model-information.component";
 import {VpnStepService} from "./models/vrf/vrfModal/vpnStep/vpn.step.service";
 import {NetworkStepService} from "./models/vrf/vrfModal/networkStep/network.step.service";
+import {VfModuleUpgradePopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 
 class MockAppStore<T> {
   getState() {
@@ -96,6 +97,7 @@ describe('Shared Tree Service', () => {
         NetworkPopupService,
         NetworkControlGenerator,
         VfModulePopuopService,
+        VfModuleUpgradePopupService,
         VfModuleControlGenerator,
         VnfGroupControlGenerator,
         DialogService,
@@ -162,7 +164,7 @@ describe('Shared Tree Service', () => {
     jest.spyOn(AuditInfoModalComponent.openInstanceAuditInfoModal, 'next');
 
     let modelInfoServiceMock: ILevelNodeInfo = new VnfModelInfo(null, null,
-      null, null, null, null,
+      null, null, null, null, null,
       null, null, null, null,null);
     const modelMock = {"a": "a"};
     const instanceMock = {"instance": "instance", "trackById": "123456789"};
