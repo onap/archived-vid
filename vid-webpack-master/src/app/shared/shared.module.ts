@@ -73,6 +73,7 @@ import {ClickOutsideDirective} from "./directives/clickOutside/clickOutside.dire
 import {DynamicInputsComponent} from "./components/dynamic-inputs/dynamic-inputs.component";
 import {DynamicInputLabelPipe} from "./pipes/dynamicInputLabel/dynamic-input-label.pipe";
 import {ModelInformationService} from "./components/model-information/model-information.service";
+import {MultiselectFormControlService} from "./components/formControls/component/multiselect/multiselect.formControl.service";
 
 
 @NgModule({
@@ -196,6 +197,7 @@ import {ModelInformationService} from "./components/model-information/model-info
     ErrorMsgService,
     DataFilterPipe,
     ModelInformationService,
+    MultiselectFormControlService
   ]
 })
 export class SharedModule {

@@ -14,15 +14,15 @@ describe('A la carte', function () {
     const CONFIRM_BUTTON: string = 'confirmButton';
 
     beforeEach(() => {
-        cy.clearSessionStorage();
-        cy.setReduxState();
-        cy.preventErrorsOnLoading();
-        cy.initAAIMock();
-        cy.initVidMock();
-        cy.mockLatestVersionForService(SERVICE_ID, SERVICE_INVARIANT_ID);
-        cy.initAlaCarteService();
-        cy.initZones();
-        cy.login();
+      cy.clearSessionStorage();
+      cy.setReduxState();
+      cy.preventErrorsOnLoading();
+      cy.initAAIMock();
+      cy.initVidMock();
+      cy.mockLatestVersionForService(SERVICE_ID, SERVICE_INVARIANT_ID);
+      cy.initAlaCarteService();
+      cy.initZones();
+      cy.login();
     });
 
     afterEach(() => {
@@ -30,8 +30,7 @@ describe('A la carte', function () {
     });
 
 
-
-    it(`service name should be mandatory : serviceEcompNaming = true`, ()=> {
+    it(`service name should be mandatory : serviceEcompNaming = true`, () => {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
         jsonBuilderAAIService.basicJson(res,
           Cypress.config('baseUrl') + '/rest/models/services/' + SERVICE_ID,
@@ -43,13 +42,13 @@ describe('A la carte', function () {
       });
     });
 
-    it(`Service a-la-carte`, ()=> {
+    it(`Service a-la-carte`, () => {
 
-      const subscriptionServiceType : string = "TYLER SILVIA";
-      const owningEntityName : string = "WayneHolland";
-      const rollbackOnFailure : string = "true";
-      const projectName : string = "WATKINS";
-      const instanceName : string = "serviceInstanceName";
+      const subscriptionServiceType: string = "TYLER SILVIA";
+      const owningEntityName: string = "WayneHolland";
+      const rollbackOnFailure: string = "true";
+      const projectName: string = "WATKINS";
+      const instanceName: string = "serviceInstanceName";
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
 
         cy.setTestApiParamToGR();
@@ -91,8 +90,20 @@ describe('A la carte', function () {
       });
     });
 
+    it(`VNF a-la-carte`, () => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json').then((res) => {
+        res['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'] = true;
+        cy.server()
+          .route({
+            method: 'GET',
+            delay: 0,
+            status: 200,
+            url: Cypress.config('baseUrl') + "/flags**",
+            response: res
+          }).as('initFlags with multi select');
+      });
 
-    it(`VNF a-la-carte`, ()=> {
+
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setTestApiParamToGR();
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
@@ -119,31 +130,43 @@ describe('A la carte', function () {
         cy.get('#quantity-select').should('have.attr', 'disabled');
         cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
           cy.getElementByDataTestsId('node-2017-488_PASQUALE-vPE 0-add-btn').click({force: true}).then(() => {
+
             cy.selectDropdownOptionByText('productFamily', 'Emanuel');
             cy.selectDropdownOptionByText('lcpRegion', 'AAIAIC25');
             cy.typeToInput("lcpRegionText", "just another region");
             cy.selectDropdownOptionByText('tenant', 'USP-SIP-IC-24335-T-01');
             cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
-            cy.selectDropdownOptionByText('platform', 'xxx1');
-            cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
-              cy.getReduxState().then((state) => {
 
-                const vnf = state.service.serviceInstance['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'];
-                cy.readFile('../vid-automation/src/test/resources/a-la-carte/redux-a-la-carte.json').then((file) => {
-                  file.vnfs['2017-488_PASQUALE-vPE 0'].trackById = vnf.trackById;
-                  file.vnfs['2017-488_PASQUALE-vPE 0'].vfModules = {};
-                  file.vnfs['2017-488_PASQUALE-vPE 0'].upgradedVFMSonsCounter = 0;
-                  cy.deepCompare(vnf, file.vnfs['2017-488_PASQUALE-vPE 0'])
+            cy.selelctPlatformValue(false, 'xxx1');
+
+            cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
+
+              const vnfMenuBtnDataTestId = 'node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0-menu-btn';
+
+              cy.getElementByDataTestsId(vnfMenuBtnDataTestId).click({force: true}).then(() => {
+                cy.getElementByDataTestsId('context-menu-edit').click({force: true});
+                cy.selelctPlatformValue(false, 'platform');
+                cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
+                  cy.getReduxState().then((state) => {
+
+                    const vnf = state.service.serviceInstance['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'];
+                    cy.readFile('../vid-automation/src/test/resources/a-la-carte/redux-a-la-carte.json').then((file) => {
+                      file.vnfs['2017-488_PASQUALE-vPE 0'].platformName = 'xxx1,platform';
+                      file.vnfs['2017-488_PASQUALE-vPE 0'].trackById = vnf.trackById;
+                      file.vnfs['2017-488_PASQUALE-vPE 0'].vfModules = {};
+                      file.vnfs['2017-488_PASQUALE-vPE 0'].upgradedVFMSonsCounter = 0;
+                      cy.deepCompare(vnf, file.vnfs['2017-488_PASQUALE-vPE 0'])
+                    });
+                  });
                 });
               });
             });
-
           });
         });
       });
     });
 
-    it(`Network a-la-carte`, ()=> {
+    it(`Network a-la-carte`, () => {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setTestApiParamToGR();
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
@@ -173,7 +196,8 @@ describe('A la carte', function () {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.getElementByDataTestsId("node-ExtVL 0-add-btn").click({force: true});
-        cy.selectDropdownOptionByText("platform", "xxx1");
+
+        cy.selelctPlatformValue(true, 'xxx1');
         cy.selectDropdownOptionByText("lcpRegion", "AAIAIC25");
         cy.selectDropdownOptionByText("tenant", "USP-SIP-IC-24335-T-01");
         cy.selectDropdownOptionByText("productFamily", "ERICA");
@@ -193,7 +217,7 @@ describe('A la carte', function () {
       });
     });
 
-    it(`VFModule a-la-carte`, ()=> {
+    it(`VFModule a-la-carte`, () => {
       var timeBomb = new Date('12/09/2018');
       if (new Date() < timeBomb) {
         return;
@@ -210,7 +234,7 @@ describe('A la carte', function () {
           cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
           cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-STTest2');
           cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
-          cy.selectDropdownOptionByText('platform', 'xxx1');
+          cy.selelctPlatformValue(true, 'xxx1');
           cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
             const vnfName = '2017-488_PASQUALE-vPE 0';
             let vfModulesNames: Array<string> = [
@@ -261,7 +285,7 @@ describe('A la carte', function () {
         .get('.error').contains(INSTANCE_NAME_NOT_MANDATORY_MESSAGE);
     }
 
-    function addVfModule (vnfName: string, vfModuleName: string, instanceName: string, lcpRegion: string, legacyRegion: string, tenant: string, rollback: boolean, sdncPreLoad: boolean, deleteVgName: boolean): Chainable<any> {
+    function addVfModule(vnfName: string, vfModuleName: string, instanceName: string, lcpRegion: string, legacyRegion: string, tenant: string, rollback: boolean, sdncPreLoad: boolean, deleteVgName: boolean): Chainable<any> {
       return cy.getElementByDataTestsId('node-' + vnfName).click({force: true}).then(() => {
         cy.getElementByDataTestsId('node-' + vfModuleName + '-add-btn').click({force: true}).then(() => {
           cy.getElementByDataTestsId('instanceName').clear().type(instanceName, {force: true}).then(() => {

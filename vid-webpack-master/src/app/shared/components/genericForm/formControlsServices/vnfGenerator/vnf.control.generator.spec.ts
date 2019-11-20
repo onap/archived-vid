@@ -16,6 +16,7 @@ import {VnfControlGenerator} from "./vnf.control.generator";
 import {Observable} from "rxjs";
 import {SelectOption} from "../../../../models/selectOption";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
+import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
 
 class MockAppStore<T> {
   getState(){
@@ -939,6 +940,35 @@ describe('VNF Control Generator', () => {
 
   })().then(done).catch(done.fail));
 
+
+
+  test('should call platform dropdown control', ()=>{
+    spyOn(service, 'getPlatformDropdownControl');
+
+    service.getPlatformControl(null, [], false);
+
+    expect(service.getPlatformDropdownControl).toBeCalledWith(null, []);
+  });
+
+  test('should call platform multi select control', ()=>{
+    spyOn(service, 'getPlatformMultiselectControl');
+
+    service.getPlatformControl(null, [], true);
+
+    expect(service.getPlatformMultiselectControl).toBeCalledWith(null, []);
+  });
+
+  test('should generate platform multi select control', ()=>{
+    const control = service.getPlatformMultiselectControl(null, []);
+    expect(control.type).toEqual(FormControlType.MULTI_SELECT);
+    expect(control.controlName).toEqual('platformName');
+    expect(control.displayName).toEqual('Platform');
+    expect(control.dataTestId).toEqual('multi-selectPlatform');
+    expect(control.selectedFieldName).toEqual('name');
+    expect(control.value).toEqual('');
+    expect(control.onChange).toBeDefined();
+    expect(control.convertOriginalDataToArray).toBeDefined();
+  });
 
   test('getMacroFormControls check for mandatory controls', () => {
     const serviceId : string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
