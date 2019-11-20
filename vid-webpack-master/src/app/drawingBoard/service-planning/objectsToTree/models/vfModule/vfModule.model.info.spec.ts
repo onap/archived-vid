@@ -16,6 +16,7 @@ import {ModelInformationItem} from "../../../../../shared/components/model-infor
 import {AaiService} from "../../../../../shared/services/aaiService/aai.service";
 import {HttpClient, HttpHandler} from "@angular/common/http";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 
 class MockAppStore<T> {
   getState() {
@@ -34,6 +35,7 @@ describe('VFModule Model Info', () => {
   let  vfModuleModel: VFModuleModelInfo;
   let _dialogService : DialogService;
   let _vfModulePopupService : VfModulePopuopService;
+  let _vfModuleUpgradePopupService : VfModuleUpgradePopupService;
   let _iframeService : IframeService;
   let _componentInfoService : ComponentInfoService;
 
@@ -44,6 +46,7 @@ describe('VFModule Model Info', () => {
         DynamicInputsService,
         DialogService,
         VfModulePopuopService,
+        VfModuleUpgradePopupService,
         SharedTreeService,
         IframeService,
         {provide: NgRedux, useClass: MockAppStore},
@@ -60,7 +63,7 @@ describe('VFModule Model Info', () => {
     injector = getTestBed();
     _sharedTreeService = injector.get(SharedTreeService);
     _componentInfoService = injector.get(ComponentInfoService)
-    vfModuleModel = new VFModuleModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vfModulePopupService, _iframeService, MockNgRedux.getInstance(),_componentInfoService);
+    vfModuleModel = new VFModuleModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vfModulePopupService, _vfModuleUpgradePopupService, _iframeService, MockNgRedux.getInstance(),_componentInfoService);
 
   })().then(done).catch(done.fail));
 

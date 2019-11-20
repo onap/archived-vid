@@ -111,7 +111,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
         expect(Object(xhr.request.body).action).to.equal("None_Upgrade");
         expect(Object(xhr.request.body).vnfs['VNF2_INSTANCE_ID'].action).to.equal("None_Upgrade");
-        expect(Object(xhr.request.body).vnfs['VNF2_INSTANCE_ID'].vfModules['dc229cd8-c132-4455-8517-5c1787c18b14']['3ef042c4-259f-45e0-9aba-0989bd8d1cc5'].action).to.equal("None_Upgrade");
+        expect(Object(xhr.request.body).vnfs['VNF2_INSTANCE_ID'].vfModules['vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1']['2c1ca484-cbc2-408b-ab86-25a2c15ce280'].action).to.equal("None_Upgrade");
       });
     });
 
@@ -206,16 +206,18 @@ describe('View Edit Page: Upgrade VFModule', function () {
       method: 'GET',
       status: 200,
       response: {},
-    }).as("expectLatestServiceModelUpgradeVersion")
+    }).as("expectLatestServiceModelUpgradeVersion");
   }
 
-  function upgradeTheVFM(treeNodeId = 'node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14'): Chainable<any> {
-    return cy.getElementByDataTestsId(`${treeNodeId}-menu-btn`).click()
+  function upgradeTheVFM(treeNodeId = 'node-522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1') {
+    cy.getElementByDataTestsId(`${treeNodeId}-menu-btn`).click()
     .drawingBoardTreeClickOnContextMenuOptionByName("Upgrade");
+    // The following is needed when enabling FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS
+    cy.getElementByDataTestsId('form-set').click();
   }
 
   function undoUpgradeForVFM() {
-    cy.getElementByDataTestsId('node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14-menu-btn').click()
+    cy.getElementByDataTestsId('node-522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1-menu-btn').click()
     .drawingBoardTreeClickOnContextMenuOptionByName("Undo Upgrade");
   }
 

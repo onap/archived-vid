@@ -14,6 +14,7 @@ import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flag
 import {VnfGroupPopupService} from "./vnfGroup.popup.service";
 import {VnfGroupControlGenerator} from "../../../genericForm/formControlsServices/vnfGroupGenerator/vnfGroup.control.generator";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {VfModuleUpgradePopupService} from "../vfModuleUpgrade/vfModule.upgrade.popuop.service";
 
 class MockAppStore<T> {}
 
@@ -2258,6 +2259,7 @@ describe('vnf group new popup service', () => {
         LogService,
         BasicPopupService,
         VfModulePopuopService,
+        VfModuleUpgradePopupService,
         BasicControlGenerator,
         VnfGroupControlGenerator,
         {provide: NgRedux, useClass: MockReduxStore},

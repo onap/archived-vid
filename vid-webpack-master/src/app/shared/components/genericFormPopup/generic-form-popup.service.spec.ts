@@ -20,6 +20,7 @@ import {NetworkControlGenerator} from "../genericForm/formControlsServices/netwo
 import {VfModulePopuopService} from "./genericFormServices/vfModule/vfModule.popuop.service";
 import {VfModuleControlGenerator} from "../genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {FeatureFlagsService} from "../../services/featureFlag/feature-flags.service";
+import {VfModuleUpgradePopupService} from "./genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 
 class MockAppStore<T>{
   getState() {
@@ -970,6 +971,7 @@ describe('Generic Form popup Service', () => {
         NetworkPopupService,
         NetworkControlGenerator,
         VfModulePopuopService,
+        VfModuleUpgradePopupService,
         VfModuleControlGenerator,
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: ActivatedRoute, useClass: ActivatedRouteMock},

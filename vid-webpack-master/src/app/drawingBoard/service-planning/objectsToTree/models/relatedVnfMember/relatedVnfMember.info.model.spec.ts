@@ -13,6 +13,7 @@ import {VnfPopupService} from "../../../../../shared/components/genericFormPopup
 import {DuplicateService} from "../../../duplicate/duplicate.service";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {RelatedVnfMemberInfoModel} from "./relatedVnfMember.info.model";
+import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 
 
 class MockAppStore<T> {
@@ -38,6 +39,7 @@ describe('Related Vnf member Model Info', () => {
         DynamicInputsService,
         DialogService,
         VfModulePopuopService,
+        VfModuleUpgradePopupService,
         VnfPopupService,
         DefaultDataGeneratorService,
         SharedTreeService,
