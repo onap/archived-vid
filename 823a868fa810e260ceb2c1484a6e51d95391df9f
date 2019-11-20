@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d03a6c1a_cc6f93e3",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOCreateVfModuleALaCarteE2E.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-20T14:48:31Z",
+      "side": 1,
+      "message": "formatting",
+      "revId": "823a868fa810e260ceb2c1484a6e51d95391df9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc7cd93e_a391c977",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-20T14:48:31Z",
+      "side": 1,
+      "message": "extract method `uuid()`",
+      "range": {
+        "startLine": 613,
+        "startChar": 34,
+        "endLine": 613,
+        "endChar": 62
+      },
+      "revId": "823a868fa810e260ceb2c1484a6e51d95391df9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c0753a2_4de5ba6d",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1307,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-20T14:48:31Z",
+      "side": 1,
+      "message": "replace with input `serviceData.vfData.vgName\u003d\"_abc\"` where relevant.",
+      "range": {
+        "startLine": 1307,
+        "startChar": 0,
+        "endLine": 1307,
+        "endChar": 18
+      },
+      "revId": "823a868fa810e260ceb2c1484a6e51d95391df9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
