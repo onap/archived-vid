@@ -184,3 +184,6 @@
 
 * FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS
   When flag is true the new popup will be opened with additional options to perform on VFM.
+  
+* FLAG_2002_VNF_PLATFORM_MULTI_SELECT
+  When flag is true the platform will appear as a multi select field, if false the platform will be dropbox
