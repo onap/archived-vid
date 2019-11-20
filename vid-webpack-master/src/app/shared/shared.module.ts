@@ -42,6 +42,7 @@ import {NetworkPopupService} from "./components/genericFormPopup/genericFormServ
 import {NetworkControlGenerator} from "./components/genericForm/formControlsServices/networkGenerator/network.control.generator";
 import {BasicPopupService} from "./components/genericFormPopup/genericFormServices/basic.popup.service";
 import {VfModulePopuopService} from "./components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModuleUpgradePopupService} from "./components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {VfModuleControlGenerator} from "./components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {OrderByPipe} from "./pipes/order/orderBy.pipe";
 import {ServicePopupService} from "./components/genericFormPopup/genericFormServices/service/service.popup.service";
@@ -181,6 +182,7 @@ import {ModelInformationService} from "./components/model-information/model-info
     CustomValidators,
     NetworkPopupService,
     VfModulePopuopService,
+    VfModuleUpgradePopupService,
     NetworkControlGenerator,
     VnfGroupControlGenerator,
     VnfGroupPopupService,

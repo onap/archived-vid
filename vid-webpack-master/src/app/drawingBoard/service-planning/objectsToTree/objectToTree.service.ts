@@ -24,6 +24,7 @@ import {AaiService} from "../../../shared/services/aaiService/aai.service";
 import {VrfModelInfo} from "./models/vrf/vrf.model.info";
 import {NetworkStepService} from "./models/vrf/vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "./models/vrf/vrfModal/vpnStep/vpn.step.service";
+import { VfModuleUpgradePopupService } from "../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 
 @Injectable()
 export class ObjectToTreeService {
@@ -34,6 +35,7 @@ export class ObjectToTreeService {
               private _vnfPopupService : VnfPopupService,
               private  _networkPopupService :  NetworkPopupService,
               private _vfModulePopupService : VfModulePopuopService,
+              private _vfModuleUpgradePopupService : VfModuleUpgradePopupService,
               private _vnfGroupPopupService : VnfGroupPopupService,
               private _duplicateService : DuplicateService,
               private _modalService: SdcUiServices.ModalService,
@@ -52,7 +54,7 @@ export class ObjectToTreeService {
    * return all first optional first level of the model tree
    ************************************************************/
   getFirstLevelOptions(): ILevelNodeInfo[] {
-    return [new VnfModelInfo(this._dynamicInputsService, this._sharedTreeService, this._defaultDataGeneratorService, this._dialogService, this._vnfPopupService, this._vfModulePopupService, this._duplicateService, this._modalService, this._iframeService, this._componentInfoService, this._store)
+    return [new VnfModelInfo(this._dynamicInputsService, this._sharedTreeService, this._defaultDataGeneratorService, this._dialogService, this._vnfPopupService, this._vfModulePopupService, this._vfModuleUpgradePopupService,this._duplicateService, this._modalService, this._iframeService, this._componentInfoService, this._store)
       , new NetworkModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._networkPopupService, this._duplicateService, this._modalService, this._iframeService,  this._store),
       new PnfModelInfo(),
       new VrfModelInfo(this._store, this._sharedTreeService, this._dialogService, this._iframeService, this._networkStepService, this._vpnStepService),

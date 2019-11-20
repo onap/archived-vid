@@ -30,12 +30,15 @@ import {
 import {ComponentInfoService} from "../../../component-info/component-info.service";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
+import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {FeatureFlagsService, Features} from "../../../../../shared/services/featureFlag/feature-flags.service";
 
 export class VFModuleModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
               private _sharedTreeService: SharedTreeService,
               private _dialogService: DialogService,
               private _vfModulePopupService: VfModulePopuopService,
+              private _vfModuleUpgradePopupService: VfModuleUpgradePopupService,
               private _iframeService: IframeService,
               private _store: NgRedux<AppState>,
               private _componentInfoService: ComponentInfoService) {
@@ -93,7 +96,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     newVfModule.typeName = this.typeName;
     newVfModule.menuActions = this.getMenuAction(<any>newVfModule, currentModel.uuid);
     newVfModule.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
-    newVfModule.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage: "";
+    newVfModule.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
 
     newVfModule = this._sharedTreeService.addingStatusProperty(newVfModule);
     return newVfModule;
@@ -247,7 +250,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     if (!_.isNil(this._store.getState().service.serviceInstance[serviceModelId].vnfs[selectedVNF]) && node.parent.data.name === this._store.getState().service.serviceInstance[serviceModelId].vnfs[selectedVNF].originalName) {
       const existingVFModules = this.getCountVFModuleOfSelectedVNF(node, selectedVNF, serviceModelId);
       const reachedLimit = this.isVFModuleReachedLimit(node, this._store.getState().service.serviceHierarchy, serviceModelId, existingVFModules);
-      const showAddIcon = this._sharedTreeService.shouldShowAddIcon()&& !reachedLimit;
+      const showAddIcon = this._sharedTreeService.shouldShowAddIcon() && !reachedLimit;
       return new AvailableNodeIcons(showAddIcon, reachedLimit);
     }
     return new AvailableNodeIcons(false, false);
@@ -356,10 +359,9 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
         enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
       },
-      upgrade : {
-        method : (node, serviceModelId) => {
-          this._sharedTreeService.upgradeBottomUp(node, serviceModelId);
-          this._store.dispatch(upgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceModelId, node.data.dynamicModelName));
+      upgrade: {
+        method: (node, serviceModelId) => {
+          this.upgradeVFM(serviceModelId, node);
         },
         visible: (node,serviceModelId) => {
           return this._sharedTreeService.shouldShowUpgrade(node, serviceModelId);
@@ -371,7 +373,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
       undoUpgrade: {
         method: (node, serviceModelId) => {
           this._sharedTreeService.undoUpgradeBottomUp(node, serviceModelId);
-          this._store.dispatch(undoUgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceModelId, node.data.dynamicModelName));
+          this._store.dispatch(undoUgradeVFModule(node.data.modelName, node.parent.data.vnfStoreKey, serviceModelId, node.data.dynamicModelName));
         },
         visible: (node) => {
           return this._sharedTreeService.shouldShowUndoUpgrade(node);
@@ -383,7 +385,30 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     };
   }
 
-  updatePosition(that , node, instanceId, parentStoreKey): void {
+  private upgradeVFM(serviceModelId, node) {
+    this._sharedTreeService.upgradeBottomUp(node, serviceModelId);
+    this._store.dispatch(upgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceModelId, node.data.dynamicModelName));
+
+    if (FeatureFlagsService.getFlagState(Features.FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS, this._store)) {
+      this._iframeService.addClassOpenModal('content');
+      this._dialogService.addDialog(GenericFormPopupComponent, {
+        type: PopupType.VF_MODULE_UPGRADE,
+        uuidData: <any>{
+          serviceId: serviceModelId,
+          modelName: node.data.modelName,
+          vFModuleStoreKey: node.data.dynamicModelName,
+          vnfStoreKey: node.parent.data.vnfStoreKey,
+          modelId: node.data.modelId,
+          type: node.data.type,
+          popupService: this._vfModuleUpgradePopupService,
+        },
+        node: node,
+        isUpdateMode: false
+      });
+    }
+  }
+
+  updatePosition(that, node, instanceId, parentStoreKey): void {
     that.store.dispatch(updateVFModulePosition(node, instanceId, parentStoreKey));
   }
 
@@ -395,12 +420,12 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   getInfo(model, instance): ModelInformationItem[] {
     const modelInformation = !_.isEmpty(model) && !_.isEmpty(model.properties) ? [
       ModelInformationItem.createInstance("Base module", model.properties.baseModule),
-      ModelInformationItem.createInstance("Min instances", !_.isNull(model.properties.minCountInstances)? String(model.properties.minCountInstances): null),
-      ModelInformationItem.createInstance("Max instances", !_.isNull(model.properties.maxCountInstances)? String(model.properties.maxCountInstances): null),
-      ModelInformationItem.createInstance("Initial instances count", !_.isNull(model.properties.initialCount)? String(model.properties.initialCount): null)
+      ModelInformationItem.createInstance("Min instances", !_.isNull(model.properties.minCountInstances) ? String(model.properties.minCountInstances) : null),
+      ModelInformationItem.createInstance("Max instances", !_.isNull(model.properties.maxCountInstances) ? String(model.properties.maxCountInstances) : null),
+      ModelInformationItem.createInstance("Initial instances count", !_.isNull(model.properties.initialCount) ? String(model.properties.initialCount) : null)
     ] : [];
 
-    const instanceInfo =  [];
+    const instanceInfo = [];
     const result = [modelInformation, instanceInfo];
     return _.uniq(_.flatten(result));
   }

@@ -75,7 +75,7 @@ describe('Soft delete tests', function () {
 
     it(`Resume button display in orch status - pendingactivation, assigned - feature FLAG_VF_MODULE_RESUME_STATUS_CREATE - is OFF`, function () {
 
-      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.json').then(() => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json').then(() => {
         cy.server()
           .route({
             method: 'GET',

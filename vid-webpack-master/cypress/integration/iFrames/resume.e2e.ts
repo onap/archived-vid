@@ -76,7 +76,7 @@ describe('Resume tests', function () {
 
     it(`Resume Defect 710619 - with flag FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE is OFF`, function () {
 
-      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.json').then((res) => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json').then((res) => {
         cy.server()
           .route({
             method: 'GET',

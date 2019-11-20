@@ -206,12 +206,13 @@ describe('View Edit Page: Upgrade VFModule', function () {
       method: 'GET',
       status: 200,
       response: {},
-    }).as("expectLatestServiceModelUpgradeVersion")
+    }).as("expectLatestServiceModelUpgradeVersion");
   }
 
   function upgradeTheVFM(treeNodeId = 'node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14'): Chainable<any> {
-    return cy.getElementByDataTestsId(`${treeNodeId}-menu-btn`).click()
+    cy.getElementByDataTestsId(`${treeNodeId}-menu-btn`).click()
     .drawingBoardTreeClickOnContextMenuOptionByName("Upgrade");
+    return cy.getElementByDataTestsId('form-set').click();
   }
 
   function undoUpgradeForVFM() {

@@ -49,6 +49,7 @@ export enum PopupType {
   VNF_MACRO  ='vnf macro',
   VNF_A_LA_CARTE = 'vnf a-la-carte',
   VFMODULE = 'vfModule',
+  VFMODULE_UPGRADE = 'vfModule_upgrade',
   NETWORK_MACRO = 'network_macro',
   VNF_GROUP = 'vnfGroup'
 }
