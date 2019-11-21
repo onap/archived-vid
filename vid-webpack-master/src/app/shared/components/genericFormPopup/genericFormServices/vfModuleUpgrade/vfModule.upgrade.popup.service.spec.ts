@@ -13,6 +13,7 @@ import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {VfModuleUpgradePopupService} from "./vfModule.upgrade.popuop.service";
+import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 
 class MockModalService<T> {
 }
@@ -52,6 +53,7 @@ describe('VFModule popup service', () => {
         AaiService,
         LogService,
         BasicPopupService,
+        SharedTreeService,
         {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},

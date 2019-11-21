@@ -2,9 +2,9 @@ import {Action} from "redux";
 import * as _ from "lodash";
 import {
   CreateVFModuleInstanceAction, DeleteActionVfModuleInstanceAction,
-  DeleteVfModuleInstanceAction, UndoDeleteActionVfModuleInstanceAction, UpdateVFModluePosition,
-  UpdateVFModuleInstanceAction, UpgradeVfModuleInstanceAction,
-  VfModuleActions
+  DeleteVfModuleInstanceAction, UndoDeleteActionVfModuleInstanceAction, UpdateVFModluePosition, UpdateVFModuleField,
+  UpdateVFModuleInstanceAction, updateVFModulePosition, UpgradeVfModuleInstanceAction,
+  VfModuleActions,
 } from "./vfModule.actions";
 import {ServiceInstance} from "../../../models/serviceInstance";
 import {VfModuleMap} from "../../../models/vfModulesMap";
@@ -143,6 +143,16 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
           .vfModules[upgradeAction.modelName][upgradeAction.dynamicModelName]
           .action = ServiceInstanceActions.None;
       }
+      return clonedState;
+    }
+    case VfModuleActions.UPDATE_VFMODULE_FEILD : {
+      let clonedState = _.cloneDeep(state);
+      let upgradeAction =  (<UpdateVFModuleField> action);
+
+        clonedState.serviceInstance[upgradeAction.serviceId]
+          .vnfs[upgradeAction.vnfStoreKey]
+          .vfModules[upgradeAction.modelName][upgradeAction.dynamicModelName][upgradeAction.fieldName] =  upgradeAction.fieldNameValue;
+
       return clonedState;
     }
   }

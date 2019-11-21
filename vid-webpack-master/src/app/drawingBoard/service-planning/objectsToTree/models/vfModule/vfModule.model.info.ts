@@ -386,9 +386,6 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   }
 
   private upgradeVFM(serviceModelId, node) {
-    this._sharedTreeService.upgradeBottomUp(node, serviceModelId);
-    this._store.dispatch(upgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceModelId, node.data.dynamicModelName));
-
     if (FeatureFlagsService.getFlagState(Features.FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS, this._store)) {
       this._iframeService.addClassOpenModal('content');
       this._dialogService.addDialog(GenericFormPopupComponent, {
@@ -401,8 +398,9 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
           modelId: node.data.modelId,
           type: node.data.type,
           popupService: this._vfModuleUpgradePopupService,
+          vfModule : _.cloneDeep(node)
         },
-        node: node,
+        node,
         isUpdateMode: false
       });
     }
