@@ -1,7 +1,7 @@
 import {Action} from "redux";
 import * as _ from "lodash";
 import {
-  CreateVFModuleInstanceAction, DeleteActionVfModuleInstanceAction,
+  CreateVFModuleInstanceAction, DeleteActionVfModuleInstanceAction, DeleteVFModuleField,
   DeleteVfModuleInstanceAction, UndoDeleteActionVfModuleInstanceAction, UpdateVFModluePosition, UpdateVFModuleField,
   UpdateVFModuleInstanceAction, updateVFModulePosition, UpgradeVfModuleInstanceAction,
   VfModuleActions,
@@ -147,11 +147,21 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
     }
     case VfModuleActions.UPDATE_VFMODULE_FEILD : {
       let clonedState = _.cloneDeep(state);
-      let upgradeAction =  (<UpdateVFModuleField> action);
+      let updateFieldAction =  (<UpdateVFModuleField> action);
 
-        clonedState.serviceInstance[upgradeAction.serviceId]
-          .vnfs[upgradeAction.vnfStoreKey]
-          .vfModules[upgradeAction.modelName][upgradeAction.dynamicModelName][upgradeAction.fieldName] =  upgradeAction.fieldNameValue;
+        clonedState.serviceInstance[updateFieldAction.serviceId]
+          .vnfs[updateFieldAction.vnfStoreKey]
+          .vfModules[updateFieldAction.modelName][updateFieldAction.dynamicModelName][updateFieldAction.fieldName] =  updateFieldAction.fieldNameValue;
+
+      return clonedState;
+    }
+    case VfModuleActions.DELETE_VFMODULE_FEILD : {
+      let clonedState = _.cloneDeep(state);
+      let deleteAction =  (<DeleteVFModuleField> action);
+
+      delete clonedState.serviceInstance[deleteAction.serviceId]
+        .vnfs[deleteAction.vnfStoreKey]
+        .vfModules[deleteAction.modelName][deleteAction.dynamicModelName][deleteAction.deleteFieldName];
 
       return clonedState;
     }

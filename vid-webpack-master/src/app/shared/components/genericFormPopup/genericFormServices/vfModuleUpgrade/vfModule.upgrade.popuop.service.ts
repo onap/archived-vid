@@ -13,6 +13,13 @@ import {IframeService} from "../../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {BasicPopupService} from "../basic.popup.service";
+import {
+  FormControlModel
+} from "../../../../models/formControlModels/formControl.model";
+import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
+import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
+import {VfModuleInstance} from "../../../../models/vfModuleInstance";
+import * as _ from "lodash";
 
 @Injectable()
 export class VfModuleUpgradePopupService extends VfModulePopuopService {
@@ -33,9 +40,33 @@ export class VfModuleUpgradePopupService extends VfModulePopuopService {
   }
 
   getDynamicInputs = () => [];
-  getControls = () => [
 
-  ];
+  getControls = (serviceInstaceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean) : FormControlModel[] => {
+    const vfModuleInstance = this.getVfModuleInstance(serviceInstaceId, vnfStoreKey, this.uuidData, isUpdateMode);
+    return [
+      new CheckboxFormControl({
+        type: FormControlType.CHECKBOX,
+        controlName: 'retainAssignments',
+        displayName: 'Retain Assignments',
+        dataTestId: 'retainAssignments',
+        value: vfModuleInstance ? vfModuleInstance['retainAssignments'] : false,
+        validations: []
+      })
+    ];
+  };
+
+
+  getVfModuleInstance = (serviceId: string, vnfStoreKey: string, UUIDData: Object, isUpdateMode: boolean): VfModuleInstance => {
+    let vfModuleInstance: VfModuleInstance = null;
+    if (isUpdateMode && this._store.getState().service.serviceInstance[serviceId] &&
+      _.has(this._store.getState().service.serviceInstance[serviceId].vnfs, vnfStoreKey) &&
+      _.has(this._store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey].vfModules, UUIDData['modelName'])) {
+      vfModuleInstance = Object.assign({},this._store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey].vfModules[UUIDData['modelName']][UUIDData['vFModuleStoreKey']]);
+    }
+    return vfModuleInstance;
+  };
+
+
   getTitle = (): string => 'Upgrade Module';
 
   onSubmit(that, form: FormGroup) {
@@ -44,7 +75,7 @@ export class VfModuleUpgradePopupService extends VfModulePopuopService {
 
     this._sharedTreeService.upgradeBottomUp(node, serviceInstanceId);
     this._store.dispatch(upgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceInstanceId ,node.data.dynamicModelName));
-    this._store.dispatch(updateVFModuleField(node.data.modelName,  node.parent.data.vnfStoreKey, serviceInstanceId ,node.data.dynamicModelName, 'retainAssignments', true));
+    this._store.dispatch(updateVFModuleField(node.data.modelName,  node.parent.data.vnfStoreKey, serviceInstanceId ,node.data.dynamicModelName, 'retainAssignments', form.controls['retainAssignments'].value));
 
     this.postSubmitIframeMessage(that);
     this.onCancel(that, form);

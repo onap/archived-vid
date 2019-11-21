@@ -100,7 +100,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
         `servicePlanning/EDIT?serviceModelId=${serviceUuid}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
     });
 
-    it.only(`Upgrade a VFModule`, function () {
+    it(`Upgrade a VFModule`, function () {
       cy.initDrawingBoardUserPermission();
       initServicePlanning("EDIT",
         '../vid-automation/src/test/resources/viewEdit/ServiceTreeWithMultipleChildren_serviceInstance_withUpdatedLatestVersion.json');
@@ -115,7 +115,6 @@ describe('View Edit Page: Upgrade VFModule', function () {
         expect(requestBody.vnfs['VNF2_INSTANCE_ID'].action).to.equal("None_Upgrade");
         expect(vfModuleRequest.action).to.equal("None_Upgrade");
         expect(vfModuleRequest['retainAssignments']).to.equal(true);
-
       });
     });
 
@@ -217,6 +216,8 @@ describe('View Edit Page: Upgrade VFModule', function () {
     cy.getElementByDataTestsId(`${treeNodeId}-menu-btn`).click()
     .drawingBoardTreeClickOnContextMenuOptionByName("Upgrade");
     // The following is needed when enabling FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS
+
+    cy.getElementByDataTestsId('retainAssignments').click();
     cy.getElementByDataTestsId('form-set').click();
   }
 

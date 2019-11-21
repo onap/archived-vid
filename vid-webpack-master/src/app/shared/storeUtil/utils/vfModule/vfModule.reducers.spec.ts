@@ -1,6 +1,6 @@
 import {
   CreateVFModuleInstanceAction,
-  DeleteActionVfModuleInstanceAction,
+  DeleteActionVfModuleInstanceAction, DeleteVFModuleField,
   DeleteVfModuleInstanceAction,
   UndoDeleteActionVfModuleInstanceAction,
   UpdateVFModluePosition, UpdateVFModuleField,
@@ -99,75 +99,6 @@ describe('vfModuleReducer', () => {
     expect(vfModule[firstVfModuleName].isMissingData).toBeFalsy();
   });
 
-  test('#UPDATE_VF_MODULE: should update existing VFModule', ()=>{
-    let vfModuleInstance : VfModuleInstance = new VfModuleInstance();
-    vfModuleInstance.instanceName = 'instanceName';
-    vfModuleInstance.isMissingData = false;
-    vfModuleInstance.volumeGroupName = 'volumeGroupName';
-    let vfModule = vfModuleReducer(<any>{
-        serviceHierarchy : {
-          'serviceModelId' : {}
-        },
-        serviceInstance : {
-          'serviceModelId' : {
-            vnfs : {
-              'vfName' : {
-                vfModules : {
-                  'modelName' : {
-                    'dynamicModelName1': {
-                      isMissingData : true
-                    },
-                    'dynamicModelName2': {},
-                  }
-                }
-              }
-            }
-          }
-        }},
-      <CreateVFModuleInstanceAction>{
-        type: VfModuleActions.UPDATE_VF_MODULE,
-        vfId : 'modelName',
-        vfInstance : new VfModuleInstance(),
-        vnfStoreKey : 'vfName',
-        dynamicModelName : 'dynamicModelName1',
-        serviceUuid : 'serviceModelId',
-        index : 1
-      }).serviceInstance['serviceModelId'].vnfs['vfName'].vfModules;
-
-    let firstVfModuleName = Object.keys(vfModule)[0];
-    expect(vfModule[firstVfModuleName]).toBeDefined();
-    expect(vfModule[firstVfModuleName].isMissingData).toBeFalsy();
-  });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   test('#UPDATE_VFMODULE_FEILD: should update field with some value', ()=>{
     const newFieldName = 'newFieldName';
     const newFieldValue = 'newFieldValue';
@@ -207,23 +138,43 @@ describe('vfModuleReducer', () => {
     expect(vfModule[newFieldName]).toEqual(newFieldValue);
   });
 
+  test('#DELETE_VFMODULE_FEILD: should update field with some value', ()=>{
+    const deleteFieldName = 'deleteFieldName';
+    let newState = vfModuleReducer(<any>{
+        serviceHierarchy : {
+          'serviceModelId' : {}
+        },
+        serviceInstance : {
+          'serviceModelId' : {
+            vnfs : {
+              'vnfStoreKey' : {
+                vfModules : {
+                  'modelName' : {
+                    'dynamicModelName1': {
+                      isMissingData : true,
+                      [deleteFieldName] : true,
+                      action : 'None'
+                    },
+                    'dynamicModelName2': {},
+                  }
+                }
+              }
+            }
+          }
+        }},
+      <DeleteVFModuleField>{
+        type: VfModuleActions.DELETE_VFMODULE_FEILD,
+        dynamicModelName: 'dynamicModelName1',
+        vnfStoreKey : 'vnfStoreKey',
+        serviceId: 'serviceModelId',
+        modelName: 'modelName',
+        deleteFieldName : deleteFieldName,
+      });
 
+    let vfModule = newState.serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    expect(vfModule[deleteFieldName]).toBeUndefined();
+  });
 
   test('#UPDATE_VFMODULE_POSITION: should update position', ()=>{
     let vfModule = vfModuleReducer(<any>{
@@ -259,7 +210,6 @@ describe('vfModuleReducer', () => {
 
     expect(vfModule.position).toEqual(1);
   });
-
 
   test('#DELETE_ACTION_VF_MODULE_INSTANCE', ()=>{
     let vfModule = vfModuleReducer(<any>{

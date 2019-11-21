@@ -20,10 +20,10 @@ import {MessageBoxService} from "../../../../../shared/components/messageBox/mes
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {
-  deleteActionVfModuleInstance,
+  deleteActionVfModuleInstance, deleteVFModuleField,
   removeVfModuleInstance,
   undoDeleteVfModuleInstance,
-  undoUgradeVFModule,
+  undoUgradeVFModule, updateVFModuleField,
   updateVFModulePosition,
   upgradeVFModule
 } from "../../../../../shared/storeUtil/utils/vfModule/vfModule.actions";
@@ -354,7 +354,8 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
       },
       undoDelete: {
         method: (node, serviceModelId) => {
-          this._store.dispatch(undoDeleteVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId))
+          this._store.dispatch(undoDeleteVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId));
+          this._store.dispatch(deleteVFModuleField(node.data.modelName,  node.parent.data.vnfStoreKey, node.data.servicedId ,node.data.dynamicModelName, 'retainAssignments'));
         },
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
         enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
