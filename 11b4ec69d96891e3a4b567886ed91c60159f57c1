@@ -1,0 +1,296 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a33d6d73_669bba13",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/viewEditUpgradeVfModule.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "remove the \"only\"",
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a36d919e_19767a90",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/viewEditUpgradeVfModule.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "Can you explain why this test does not fail? shoudn\u0027t the file \"upgrade_vfmodule_e2e__fe_input_cypress.json\" be updated with the \"retainAssignments: true\" property?",
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6a2031e_76cd5465",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/models/vfModule/vfModule.model.info.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "The change here kills the feature, as now user cannot upgrade when \"FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS\" is OFF.\nIt will simply do nothing.",
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95bceb9b_078b066a",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/models/vfModule/vfModule.model.info.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "Doesn\u0027t it clones the whole tree nodes through parents of parents and children of children?\nHow\u0027s the performance of this trick?",
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e3f68bf_456dd8d1",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/models/vfModule/vfModule.model.info.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "shouldn\u0027t it be \"node: node\" (key: value)?",
+      "range": {
+        "startLine": 403,
+        "startChar": 8,
+        "endLine": 403,
+        "endChar": 12
+      },
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34c7a602_270b4de2",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.actions.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "This is not an optional field; should be required.",
+      "range": {
+        "startLine": 69,
+        "startChar": 11,
+        "endLine": 69,
+        "endChar": 12
+      },
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96309251_93876a86",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.actions.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "please replace with a trailing \";\" to keep with other fields",
+      "range": {
+        "startLine": 71,
+        "startChar": 19,
+        "endLine": 71,
+        "endChar": 20
+      },
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47d8b24e_39d0d74f",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.actions.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "Rename to \"fieldNewValue\" or \"fieldValue\"",
+      "range": {
+        "startLine": 72,
+        "startChar": 2,
+        "endLine": 72,
+        "endChar": 17
+      },
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d97cabb4_a922fb08",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.actions.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "please add a trailing \";\" to keep with other fields",
+      "range": {
+        "startLine": 72,
+        "startChar": 19,
+        "endLine": 72,
+        "endChar": 22
+      },
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4a94b9c_c7df9f75",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "are these blanks required?",
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27ab4fc2_ad81252b",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "I suggest extracting this object to a local member (e.g. \"oldState\").\nIt will make the distinction between setup and test more obvious.\n\ni.e. to have \n\n...\n\nlet newState \u003d vfModuleReducer(oldState, \u003cUpdateVFModuleField\u003e{ \n...",
+      "range": {
+        "startLine": 174,
+        "startChar": 35,
+        "endLine": 194,
+        "endChar": 10
+      },
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26dd0445_5d9a59a0",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "If it\u0027s VfModule actions class, isn\u0027t it simpler to have the action named \"UPDATE_FEILD\"?",
+      "range": {
+        "startLine": 148,
+        "startChar": 32,
+        "endLine": 148,
+        "endChar": 41
+      },
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0507434_f0cd5cbd",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "are the parentheses needed?",
+      "range": {
+        "startLine": 150,
+        "startChar": 27,
+        "endLine": 150,
+        "endChar": 28
+      },
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0384d451_a34eb497",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T16:55:48Z",
+      "side": 1,
+      "message": "Rename to updateVFModuleAction",
+      "range": {
+        "startLine": 150,
+        "startChar": 10,
+        "endLine": 150,
+        "endChar": 24
+      },
+      "revId": "11b4ec69d96891e3a4b567886ed91c60159f57c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
