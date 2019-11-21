@@ -2,6 +2,92 @@
   "comments": [
     {
       "key": {
+        "uuid": "ebcd960c_8e5f459a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T09:12:15Z",
+      "side": 1,
+      "message": "Set\u003cUUID\u003e",
+      "range": {
+        "startLine": 54,
+        "startChar": 22,
+        "endLine": 54,
+        "endChar": 28
+      },
+      "revId": "15cb69da1264f5b5e7b40a7c15c00a0453516fbe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43b63a71_1b2f89b5",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T09:12:15Z",
+      "side": 1,
+      "message": "introduce a \"default\" empty resource.",
+      "range": {
+        "startLine": 68,
+        "startChar": 31,
+        "endLine": 68,
+        "endChar": 55
+      },
+      "revId": "15cb69da1264f5b5e7b40a7c15c00a0453516fbe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6adda28c_c6555a00",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T09:12:15Z",
+      "side": 1,
+      "message": "extract method",
+      "range": {
+        "startLine": 68,
+        "startChar": 31,
+        "endLine": 74,
+        "endChar": 9
+      },
+      "revId": "15cb69da1264f5b5e7b40a7c15c00a0453516fbe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc460b0b_a28e7891",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T09:12:15Z",
+      "side": 1,
+      "message": "1) case of invalid-uuid -\u003e to return false\n2) case of upper/lower case",
+      "revId": "15cb69da1264f5b5e7b40a7c15c00a0453516fbe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5fb73eaa_9b0d609b",
         "filename": "vid-app-common/src/test/resources/macro_services_by_invariant_uuid.json",
         "patchSetId": 2
@@ -13,6 +99,23 @@
       "writtenOn": "2019-11-21T07:36:00Z",
       "side": 1,
       "message": "these uuids are fake",
+      "revId": "15cb69da1264f5b5e7b40a7c15c00a0453516fbe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c11731a6_155f9200",
+        "filename": "vid-app-common/src/test/resources/macro_services_by_invariant_uuid.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T09:12:15Z",
+      "side": 1,
+      "message": "i would suggest on object; i.e.:\n\n{\n   macroInvariantUuids: [\n   ... \n   ...\n   ]\n}",
       "revId": "15cb69da1264f5b5e7b40a7c15c00a0453516fbe",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
