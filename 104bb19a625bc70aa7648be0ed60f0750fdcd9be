@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "077accef_a8239c81",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/OperationalEnvironment.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T15:07:19Z",
+      "side": 1,
+      "message": "This is great.\n\nIn addition, I would suggest converting this and builder to Kotlin, if you will.\nhttps://www.baeldung.com/kotlin-builder-pattern#kotlin-style\n\nIf you think it fits, 1) yeh!  2) it can wait for a different commit.",
+      "revId": "104bb19a625bc70aa7648be0ed60f0750fdcd9be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fba58d5c_b1ef4b68",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/model/AaiGetOperationalEnvironments/OperationalEnvironmentList.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T15:07:19Z",
+      "side": 1,
+      "message": "Must have the @JsonAlias(\"operational-environment\"); not sure how it works with the Json-Creator approach.\n\nThe **alias** lets the object serialize to camelCase operationalEnvironment, while deserialize from either dash-separated operational-environment and camelCase.\n\nThis is because AAI responds with dash-separated names, but object is forwarded to front-end with camelCase field names.",
+      "revId": "104bb19a625bc70aa7648be0ed60f0750fdcd9be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
