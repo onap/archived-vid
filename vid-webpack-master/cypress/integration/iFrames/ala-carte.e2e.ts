@@ -3,7 +3,6 @@
 import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
 import {ServiceModel} from '../../support/jsonBuilders/models/service.model';
 import * as _ from 'lodash';
-import {By} from "@angular/platform-browser";
 
 describe('A la carte', function () {
   describe('check service name', () => {
