@@ -54,6 +54,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matchers;
+import org.jetbrains.annotations.NotNull;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegionSpecificState;
@@ -88,6 +89,7 @@ import vid.automation.test.infra.Features;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.Input;
 import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.infra.ModelInfoWithCustomization;
 import vid.automation.test.infra.SelectOption;
 import vid.automation.test.infra.Wait;
 import vid.automation.test.model.Service;
@@ -348,8 +350,8 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     @Test
     @FeatureTogglingTest(FLAG_1908_INFRASTRUCTURE_VPN)
     public void createNewServiceInstance_infraStructureVpn() {
-        String requestId = UUID.randomUUID().toString();
-        String instanceId = UUID.randomUUID().toString();
+        String requestId = uuid();
+        String instanceId = uuid();
 
         prepareServicePreset(infrastructureVpnService, false);
 
@@ -391,8 +393,8 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     @FeatureTogglingTest(FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI)
     public void createNewServiceInstance_collectionResource() {
         prepareServicePreset(collectionResourceService, false);
-        String requestId = UUID.randomUUID().toString();
-        String instanceId = UUID.randomUUID().toString();
+        String requestId = uuid();
+        String instanceId = uuid();
 
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
                 PRESET_MTN6_TO_ATT_AIC,
@@ -416,8 +418,8 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     @FeatureTogglingTest(FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI)
     public void createNewServiceInstance_transportService() {
         prepareServicePreset(transportWithPnfsService, false);
-        String requestId = UUID.randomUUID().toString();
-        String instanceId = UUID.randomUUID().toString();
+        String requestId = uuid();
+        String instanceId = uuid();
 
         SimulatorApi.registerExpectationFromPresets(ImmutableList.of(
                 PresetMsoCreateMacroCommonPre1806.ofTransportService(requestId, instanceId),
@@ -600,19 +602,77 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         String serviceInstanceName = "ALaCarteWithVnf"+randomAlphabetic(5);
         String vnfInstanceName= "VnfForALaCarte"+randomAlphabetic(5);
         VnfData vnfData = new VnfData("vOCG_1804_VF 0", "aca3f7b1-15f9-45a5-b182-b8b5aca84a76", vnfInstanceName, true);
-        VfData vfmData = new VfData("vocg_1804_vf0..Vocg1804Vf..base_ocg..module-0", false, 1, 1, emptyList(), "815db6e5-bdfd-4cb6-9575-82c36df8747a");
+        VfData vfmData = new VfData("vocg_1804_vf0..Vocg1804Vf..base_ocg..module-0", false, 1, 1, emptyList(), "815db6e5-bdfd-4cb6-9575-82c36df8747a", null);
         ServiceData serviceData = new ServiceData(IS_GENERATED_NAMING.TRUE, vnfData, vfmData, true);
 
         resetGetServicesCache();
 
         prepareServicePreset(serviceModelInfo, true);
 
-        String serviceRequestId = UUID.randomUUID().toString();
-        String vnfRequestId = UUID.randomUUID().toString();
         String requestorID = getUserCredentials().getUserId();
-        String serviceInstanceId = UUID.randomUUID().toString();
-        String vnfInstanceId = UUID.randomUUID().toString();
-        String vfModuleRequestId = UUID.randomUUID().toString();
+
+        String serviceRequestId = uuid();
+        String serviceInstanceId = uuid();
+        String vnfRequestId = uuid();
+        String vnfInstanceId = uuid();
+        String vfm0RequestId = uuid();
+        String vfm0InstanceId = uuid();
+        String vg1RequestId = uuid();
+        String vg1InstanceId = uuid();
+        String vfm1RequestId = uuid();
+        String vfm1InstanceId = uuid();
+        String vfm12RequestId = uuid();
+        String vfm12InstanceId = uuid();
+
+        ModelInfoWithCustomization vfm0 = new ModelInfoWithCustomization(
+            "815db6e5-bdfd-4cb6-9575-82c36df8747a",
+            "e9c795c8-6b98-4db3-bd90-a84b8ca5181b",
+            "Vocg1804Vf..base_ocg..module-0",
+            "4",
+            "vfModule",
+            "Vocg1804Vf..base_ocg..module-0",
+            "a7b333d7-7633-4197-b40d-80fcfcadee94");
+
+        ModelInfoWithCustomization vg1 = new ModelInfoWithCustomization(
+            "9c219e70-1177-494b-8977-1395c9f9168c",
+            "0ad14d60-98b6-4575-a9b8-458a796c3f98",
+            "Vocg1804Vf..ocgmgr..module-1",
+            "4",
+            "volumeGroup",
+            "Vocg1804Vf..ocgmgr..module-1",
+            "f332f3ce-434d-4084-a1e7-5261c16d4940"
+        );
+
+        ModelInfoWithCustomization vfm1 = new ModelInfoWithCustomization(
+            "9c219e70-1177-494b-8977-1395c9f9168c",
+            "0ad14d60-98b6-4575-a9b8-458a796c3f98",
+            "Vocg1804Vf..ocgmgr..module-1",
+            "4",
+            "vfModule",
+            "Vocg1804Vf..ocgmgr..module-1",
+            "f332f3ce-434d-4084-a1e7-5261c16d4940"
+        );
+
+        ModelInfoWithCustomization vfm12 = new ModelInfoWithCustomization(
+            "b601eef4-62fd-4201-a788-ae30e06a1aec",
+            "e3cb8b85-7a3c-4897-b20b-70640c26d671",
+            "Vocg1804Vf..ocgapp_001..module-12",
+            "2",
+            "vfModule",
+            "Vocg1804Vf..ocgapp_001..module-12",
+            "fcc82961-865e-4d38-9c7a-207c511405b6"
+        );
+
+        final String vgName = "vg_for_module1";
+        
+        String vgRelatedInstance = ",{\"relatedInstance\": {"
+            + "                    \"modelInfo\": {"
+            + "                        \"modelType\": \"volumeGroup\""
+            + "                    },"
+            + "                    \"instanceId\": \""+vg1InstanceId+"\","
+            + "                    \"instanceName\": \""+vgName+"\""
+            + "                }}";
+
 
         registerExpectationFromPresets(
             ImmutableList.of(
@@ -625,8 +685,14 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new PresetMSOCreateVnfALaCarteE2E(vnfRequestId, serviceInstanceId, vnfInstanceId, "ONAP", requestorID, serviceModelInfo),
                 new PresetMSOOrchestrationRequestGet(COMPLETE, vnfRequestId),
                 PRESET_MTN6_TO_ATT_AIC,
-                new PresetMSOCreateVfModuleALaCarteE2E(vfModuleRequestId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo),
-                new PresetMSOOrchestrationRequestGet(COMPLETE, vfModuleRequestId)
+                new PresetMSOCreateVfModuleALaCarteE2E(vfm0RequestId, vfm0InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, null, vfm0, null),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, vfm0RequestId),
+                new PresetMSOCreateVfModuleALaCarteE2E(vg1RequestId, vg1InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, vgName, vg1, null),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, vg1RequestId),
+                new PresetMSOCreateVfModuleALaCarteE2E(vfm1RequestId, vfm1InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, null, vfm1, vgRelatedInstance),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, vfm1RequestId),
+                new PresetMSOCreateVfModuleALaCarteE2E(vfm12RequestId, vfm12InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, null, vfm12, null),
+                new PresetMSOOrchestrationRequestGet(COMPLETE, vfm12RequestId)
             ),
             APPEND
         );
@@ -636,6 +702,10 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         createVnf(vnfData, false, true, serviceInstanceName);
         createVfModule(serviceData, serviceInstanceName, true, false);
+        serviceData.vfData =  new VfData("vocg_1804_vf0..Vocg1804Vf..ocgmgr..module-1", true, 0, 1, emptyList(), "9c219e70-1177-494b-8977-1395c9f9168c", vgName);
+        createVfModule(serviceData, serviceInstanceName, false, false);
+        serviceData.vfData =  new VfData("vocg_1804_vf0..Vocg1804Vf..ocgapp_001..module-12", true, 0, 1, emptyList(), "b601eef4-62fd-4201-a788-ae30e06a1aec", null);
+        createVfModule(serviceData, serviceInstanceName, false, false);
         drawingBoardPage.deploy();
         drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "service "+serviceInstanceName);
     }
@@ -648,8 +718,8 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         String defactoNetworkInstanceName = "ExtVL"+networkInstanceName;
 
         prepareServicePreset(aLaCarteNetworkProvider5G, true);
-        String serviceRequestId = UUID.randomUUID().toString();
-        String networkRequestId = UUID.randomUUID().toString();
+        String serviceRequestId = uuid();
+        String networkRequestId = uuid();
         String requestorID = getUserCredentials().getUserId();
         registerExpectationFromPresets(
                 ImmutableList.of(
@@ -1224,15 +1294,19 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             Input.text("VF instance name", "instanceName");
         }
 
-        if (serviceData.vfData.vgEnabled && !serviceData.vnfData.isGeneratedNaming) {
-            browseASDCPage.setInputText("volumeGroupName", "_abc");
-            Assert.assertFalse(isElementByIdRequired("volumeGroupName-label"),
-                "volume Group name input should be always optional");
-        } else {
+        if (!serviceData.vfData.vgEnabled || (!serviceData.isALaCarte && serviceData.vnfData.isGeneratedNaming)) {
             Assert.assertNull(Get.byTestId("volumeGroupName"), "volumeGroupName input should be invisible "
                 + "when vgEnabled is false or when vgEnabled is true and EcompGenName is true "
-                + "(was: serviceData.vfData.vgEnabled=>"+serviceData.vfData.vgEnabled+", serviceData.isGeneratedNaming=>" + IS_GENERATED_NAMING.FALSE + ")");
+                + "(was: serviceData.vfData.vgEnabled=>" + serviceData.vfData.vgEnabled + ", serviceData.isGeneratedNaming=>" + IS_GENERATED_NAMING.FALSE + ")");
         }
+        else {
+            Assert.assertFalse(isElementByIdRequired("volumeGroupName-label"),
+                "volume Group name input should be always optional");
+            if (serviceData.vfData.vgName!=null) {
+                browseASDCPage.setInputText("volumeGroupName", serviceData.vfData.vgName);
+            }
+        }
+
 
         Wait.waitByTestId("model-item-value-subscriberName", 10);
         Assert.assertEquals(Get.byTestId("model-item-value-subscriberName").getText(), "SILVIA ROBBINS", "Subscriber name should be shown in vf module");
@@ -1298,6 +1372,12 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         }
     }
 
+    @NotNull
+    private String uuid() {
+        return UUID.randomUUID().toString();
+    }
+
+
     private void assertNotificationAreaVisibilityBehaviourAndSetBulkSize(int size) {
         WebElement webElement = Get.byId("notification-area");
         Assert.assertNull(webElement, "notification area should be invisible if only 1 qty.");
@@ -1335,7 +1415,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             this.multiStageDesign = multiStageDesign;
             this.isALaCarte = isALaCarte;
             this.vnfData = new VnfData(vnfName, "69e09f68-8b63-4cc9-b9ff-860960b5db09", "VNF instance name", isVnfGeneratedNaming);
-            this.vfData = new VfData(vfName, isVgEnabled, vfMin, vfMax, vfModuleDynamicFields, vfVersionId);
+            this.vfData = new VfData(vfName, isVgEnabled, vfMin, vfMax, vfModuleDynamicFields, vfVersionId, "_abc");
         }
 
         public ServiceData(IS_GENERATED_NAMING isGeneratedNaming, VnfData vnfData, VfData vfData, boolean isALaCarte) {
@@ -1372,13 +1452,14 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
 
     private static class VfData {
-        VfData(String vfName, boolean vgEnabled, int vfMin, int vfMax, List<String> dynamicFields, String uuid) {
+        VfData(String vfName, boolean vgEnabled, int vfMin, int vfMax, List<String> dynamicFields, String uuid, String vgName) {
             this.vfName = vfName;
             this.vgEnabled = vgEnabled;
             this.vfMin = vfMin;
             this.vfMax = vfMax;
             this.dynamicFields = dynamicFields;
             this.uuid = uuid;
+            this.vgName = vgName;
         }
 
         final int vfMin;
@@ -1387,6 +1468,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         final String vfName;
         final boolean vgEnabled;
         final List<String> dynamicFields;
+        final String vgName;
     }
 
 

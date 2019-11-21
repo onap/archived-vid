@@ -32,7 +32,7 @@ public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOCreateVfMod
             .build();
 
     public PresetMSOCreateVfModuleALaCarteCypress(String overrideRequestId, String serviceInstanceId, String vnfInstanceId, Map<Keys, String> names, String testApi, boolean withTestApi) {
-        super(overrideRequestId, serviceInstanceId, vnfInstanceId);
+        super(overrideRequestId, DEFAULT_INSTANCE_ID, serviceInstanceId, vnfInstanceId, "vfModule");
         this.names = names;
         this.msoTestApi = testApi;
         this.withTestApi = withTestApi;
