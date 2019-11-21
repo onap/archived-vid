@@ -130,6 +130,11 @@ public class SdcApiTest extends BaseApiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MACRO_INSTANTIATION_TYPE_UUID), String.class);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         String emptyInstantiationTypeExpectedResponse = loadResourceAsString(EMPTY_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
+
+        if (Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND.isActive()) {
+            emptyInstantiationTypeExpectedResponse = emptyInstantiationTypeExpectedResponse.replaceFirst("ClientConfig", "ALaCarte");
+        }
+
         assertThat(response.getBody(), jsonEquals(emptyInstantiationTypeExpectedResponse)
             .when(IGNORING_ARRAY_ORDER)
             .whenIgnoringPaths("service.vidNotions.instantiationUI"));
@@ -154,7 +159,7 @@ public class SdcApiTest extends BaseApiTest {
         String minMaxInitialExpectedResponse = loadResourceAsString("sdcApiTest/minMaxInitialExpectedResponse.json");
         assertThat(response.getBody(), jsonEquals(minMaxInitialExpectedResponse)
             .when(IGNORING_ARRAY_ORDER)
-            .whenIgnoringPaths("service.vidNotions.instantiationUI"));
+            .whenIgnoringPaths("service.vidNotions.instantiationUI", "service.vidNotions.instantiationType"));
     }
 
     @Test
