@@ -112,14 +112,20 @@ public class VfModuleInstantiationRequestDetails extends BaseResourceInstantiati
 
     public static class RequestParametersVfModule extends BaseResourceInstantiationRequestDetails.RequestParameters {
         @JsonInclude(NON_NULL) private final Boolean usePreload;
+        @JsonInclude(NON_NULL) private final Boolean rebuildVolumeGroups;
 
-        public RequestParametersVfModule(List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi) {
+        public RequestParametersVfModule(List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi, Boolean rebuildVolumeGroups) {
             super(userParams, testApi);
             this.usePreload = usePreload;
+            this.rebuildVolumeGroups = rebuildVolumeGroups;
         }
 
         public Boolean isUsePreload() {
             return usePreload;
+        }
+
+        public Boolean getRebuildVolumeGroups() {
+            return rebuildVolumeGroups;
         }
     }
 
