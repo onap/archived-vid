@@ -48,6 +48,23 @@
     },
     {
       "key": {
+        "uuid": "cfd13dab_e35e40f7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-11-21T09:22:02Z",
+      "side": 1,
+      "message": "If I remember correctly,Collections empty set creates an empty Set, while you aim for HashSet.\nMaybe consider changing it to new empty hashset?",
+      "revId": "15cb69da1264f5b5e7b40a7c15c00a0453516fbe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6adda28c_c6555a00",
         "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
         "patchSetId": 2
