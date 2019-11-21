@@ -99,7 +99,11 @@ class MsoRequestBuilder
         return RequestDetailsWrapper(VnfInstantiationRequestDetails(vnfDetails.modelInfo, cloudConfiguration, requestInfo, null, null, null, null))
     }
 
-    fun generateVfModuleInstantiationRequest(vfModuleDetails: VfModule, serviceModelInfo: ModelInfo, serviceInstanceId: String, vnfModelInfo: ModelInfo, vnfInstanceId: String, vgInstanceId: String?, userId: String, testApi: String?): RequestDetailsWrapper<VfModuleInstantiationRequestDetails> {
+    fun generateVfModuleInstantiationRequest(
+            vfModuleDetails: VfModule, serviceModelInfo: ModelInfo,
+            serviceInstanceId: String, vnfModelInfo: ModelInfo, vnfInstanceId: String,
+            vgInstanceId: String?, userId: String, testApi: String?
+    ): RequestDetailsWrapper<VfModuleInstantiationRequestDetails> {
         val requestInfo = generateRequestInfo(vfModuleDetails.instanceName, ResourceType.VF_MODULE, vfModuleDetails.isRollbackOnFailure, null, userId)
 
         //cloud configuration
@@ -107,7 +111,8 @@ class MsoRequestBuilder
 
         //request parameters
         val userParams = aggregateAllInstanceParams(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
-        val requestParameters = VfModuleInstantiationRequestDetails.RequestParametersVfModule(userParams, vfModuleDetails.isUsePreload, testApi)
+        val requestParameters = VfModuleInstantiationRequestDetails.RequestParametersVfModule(
+                userParams, vfModuleDetails.isUsePreload, testApi, nullSafeNegate(vfModuleDetails.isRetainVolumeGroups))
 
         //related instance list
         val relatedInstanceList = generateRelatedInstances(mapOf(serviceInstanceId to serviceModelInfo, vnfInstanceId to vnfModelInfo))
@@ -119,11 +124,13 @@ class MsoRequestBuilder
         return RequestDetailsWrapper(VfModuleInstantiationRequestDetails(vfModuleDetails.modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters))
     }
 
+    private fun nullSafeNegate(v: Boolean?): Boolean? = v?.not()
+
     fun generateVolumeGroupInstantiationRequest(vfModuleDetails: VfModule, serviceModelInfo: ModelInfo, serviceInstanceId: String, vnfModelInfo: ModelInfo, vnfInstanceId: String, userId: String, testApi: String?): RequestDetailsWrapper<VolumeGroupRequestDetails> {
         val requestInfo = generateRequestInfo(vfModuleDetails.volumeGroupInstanceName, ResourceType.VOLUME_GROUP, vfModuleDetails.isRollbackOnFailure, null, userId)
         val cloudConfiguration = generateCloudConfiguration(vfModuleDetails.lcpCloudRegionId, vfModuleDetails.tenantId)
         val userParams = aggregateAllInstanceParams(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
-        val requestParameters = VfModuleInstantiationRequestDetails.RequestParametersVfModule(userParams, vfModuleDetails.isUsePreload, testApi)
+        val requestParameters = VfModuleInstantiationRequestDetails.RequestParametersVfModule(userParams, vfModuleDetails.isUsePreload, testApi, null)
         val relatedInstances = generateRelatedInstances(mapOf(serviceInstanceId to serviceModelInfo, vnfInstanceId to vnfModelInfo))
 
         vfModuleDetails.modelInfo.modelType = "volumeGroup"
