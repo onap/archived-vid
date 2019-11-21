@@ -33,6 +33,7 @@
       }
     ],
     "requestParameters": {
+      "retainAssignments": true,
       "userParams": [],
       "testApi": "VNF_API"
     },

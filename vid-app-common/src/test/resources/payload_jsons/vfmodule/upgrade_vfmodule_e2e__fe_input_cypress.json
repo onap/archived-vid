@@ -1,6 +1,6 @@
 {
   "action": "None_Upgrade",
-  "isDirty": true,
+  "isDirty": false,
   "vnfs": {
     "d520268f-7489-4662-be59-f81495b3a069": {
       "action": "None_Upgrade",
@@ -33,6 +33,7 @@
         "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0": {
           "b0732bed-3ddf-43cc-b193-7f18db84e476": {
             "action": "None_Upgrade",
+            "retainAssignments" : true,
             "instanceName": "PST-VfMod-Replace-5-Vfmod",
             "instanceId": "b0732bed-3ddf-43cc-b193-7f18db84e476",
             "orchStatus": "Active",
