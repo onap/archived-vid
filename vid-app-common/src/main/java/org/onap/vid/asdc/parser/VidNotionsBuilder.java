@@ -43,6 +43,7 @@ import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.VidNotions;
+import org.onap.vid.model.VidNotions.InstantiationType;
 import org.onap.vid.model.VidNotions.InstantiationUI;
 import org.onap.vid.model.VidNotions.ModelCategory;
 import org.onap.vid.properties.Features;
@@ -92,22 +93,37 @@ public class VidNotionsBuilder {
         return (featureOfMacroType!=null && featureManager.isActive(featureOfMacroType));
     }
 
-    VidNotions.InstantiationType suggestInstantiationType(ServiceModel serviceModel, VidNotions.ModelCategory modelCategory) {
+    InstantiationType suggestInstantiationType(ServiceModel serviceModel, VidNotions.ModelCategory modelCategory) {
         if (isMacroTypeByModelCategory(modelCategory)) {
-            return VidNotions.InstantiationType.Macro;
+            return InstantiationType.Macro;
         }
-        if (serviceModel==null || serviceModel.getService()==null || isEmpty(serviceModel.getService().getInstantiationType())) {
-            return VidNotions.InstantiationType.ClientConfig;
+        if (serviceModel==null || serviceModel.getService()==null) {
+            return defaultInstantiationType();
         }
-        String instantiationType = serviceModel.getService().getInstantiationType();
-        if (instantiationType.equals(ToscaParserImpl2.Constants.MACRO)) {
-            return VidNotions.InstantiationType.Macro;
-        }
-        if (instantiationType.equals(ToscaParserImpl2.Constants.A_LA_CARTE)) {
-            return VidNotions.InstantiationType.ALaCarte;
+        if (isEmpty(serviceModel.getService().getInstantiationType())) {
+            if (!featureManager.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND))
+                return InstantiationType.ClientConfig;
+            else return isMacroByInvariantUuid(serviceModel.getService().getInvariantUuid()) ?
+                InstantiationType.Macro :
+                InstantiationType.ALaCarte;
         }
 
-        return VidNotions.InstantiationType.ClientConfig;
+        String instantiationType = serviceModel.getService().getInstantiationType();
+        if (instantiationType.equals(ToscaParserImpl2.Constants.MACRO)) {
+            return InstantiationType.Macro;
+        }
+        if (instantiationType.equals(ToscaParserImpl2.Constants.A_LA_CARTE)) {
+            return InstantiationType.ALaCarte;
+        }
+
+        return defaultInstantiationType();
+    }
+
+    @NotNull
+    private InstantiationType defaultInstantiationType() {
+        return featureManager.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND) ?
+            InstantiationType.ALaCarte :
+            InstantiationType.ClientConfig;
     }
 
     //UI route a-la-carte services to old UI only if InstantiationUI is LEGACY

@@ -74,6 +74,9 @@ import org.togglz.core.manager.FeatureManager;
 
 public class VidNotionsBuilderTest {
 
+    private static final String MACRO_SERVICE_INVARIANT_UUID = "2efab359-cdd4-4da2-9b79-61df990796c2";
+    private static final String NOT_MACRO_SERVICE_INVARIANT_UUID = "5d854f6b-759c-4aa6-b472-7e4bb1c003d4";
+
     @InjectMocks
     VidNotionsBuilder vidNotionsBuilder;
 
@@ -116,6 +119,60 @@ public class VidNotionsBuilderTest {
         when(csarHelper.getServiceVlList()).thenReturn(ImmutableList.of(nodeTemplate));
         when(featureManagerMock.isActive(Features.FLAG_5G_IN_NEW_INSTANTIATION_UI)).thenReturn(true);
         return csarHelper;
+    }
+
+    @DataProvider
+    public static Object[][] identifyInvariantFeatureFlagDataProvider() {
+        return new Object[][] {
+            {false, null, InstantiationType.ClientConfig},
+            {false, mock(ServiceModel.class), InstantiationType.ClientConfig},
+            {true, null, InstantiationType.ALaCarte},
+            {true, mock(ServiceModel.class), InstantiationType.ALaCarte},
+        };
+    }
+
+    @Test(dataProvider = "identifyInvariantFeatureFlagDataProvider")
+    public void whenCsarIsEmpty_suggestInstantiationType_returnALaCarte_byFeatureFlag(
+        boolean isFlagActive, ServiceModel serviceModel, InstantiationType expectedType) {
+        when(featureManagerMock.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND)).thenReturn(isFlagActive);
+        if (serviceModel!=null) {
+            when(serviceModel.getService()).thenReturn(null);
+        }
+        assertEquals(expectedType, vidNotionsBuilder.suggestInstantiationType(serviceModel, null));
+    }
+
+    @Test
+    public void givenNoInstantiationType_when_FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND_isOff_then_suggestInstantiationType_ClientConfig() {
+        ServiceModel serviceModel = mockServiceModelWithoutInstantiationType(MACRO_SERVICE_INVARIANT_UUID);
+        when(featureManagerMock.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND)).thenReturn(false);
+        assertEquals(InstantiationType.ClientConfig , vidNotionsBuilder.suggestInstantiationType(serviceModel, null));
+    }
+
+    @NotNull
+    private ServiceModel mockServiceModelWithoutInstantiationType(String invariantUUID) {
+        ServiceModel serviceModel = mock(ServiceModel.class);
+        Service service = mock(Service.class);
+        when(serviceModel.getService()).thenReturn(service);
+        when(service.getInstantiationType()).thenReturn(null);
+        when(service.getInvariantUuid()).thenReturn(invariantUUID);
+        return serviceModel;
+    }
+
+    @DataProvider
+    public static Object[][] instantiationTypeByInvariantDataProvider() {
+        return new Object[][] {
+            {MACRO_SERVICE_INVARIANT_UUID, InstantiationType.Macro},
+            {NOT_MACRO_SERVICE_INVARIANT_UUID, InstantiationType.ALaCarte},
+        };
+    }
+
+    @Test(dataProvider = "instantiationTypeByInvariantDataProvider")
+    public void givenNoInstantiationType_givenFlagIsOn_suggestInstantiationTypeByInvariant(
+        String invariantUUID, InstantiationType expectedType
+    ) {
+        when(featureManagerMock.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND)).thenReturn(true);
+        ServiceModel serviceModel = mockServiceModelWithoutInstantiationType(invariantUUID);
+        assertEquals(expectedType, vidNotionsBuilder.suggestInstantiationType(serviceModel, null));
     }
 
     @DataProvider
@@ -540,10 +597,10 @@ public class VidNotionsBuilderTest {
         return new Object[][]{
             {"117f5f1a-1b47-4ae1-ae04-489c9a7ada28", true},
             {"117F5f1a-1b47-4AE1-ae04-489C9A7ada28", true},
-            {"2efab359-cdd4-4da2-9b79-61df990796c2", true},
+            {MACRO_SERVICE_INVARIANT_UUID, true},
             {"67e09a1f-9e42-4b63-8dee-bc60bae50de1", false},
             {"67e09A1F-9E42-4b63-8Dee-bc60bae50de1", false},
-            {"5d854f6b-759c-4aa6-b472-7e4bb1c003d4", false},
+            {NOT_MACRO_SERVICE_INVARIANT_UUID, false},
             {"I'm not a uuid", false},
             {null, false},
         };
