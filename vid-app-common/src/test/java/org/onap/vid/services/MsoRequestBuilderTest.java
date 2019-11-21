@@ -22,6 +22,7 @@ package org.onap.vid.services;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -610,23 +611,34 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     }
 
     @Test
+    public void generateReplaceVfModuleRequest_whenRetainVolumeGroupIsTrue_rebuildVolumeGroupIsFalse() {
+        assertThat(generatedVfModuleInstantiationRequest(true),
+            jsonPartEquals("requestDetails.requestParameters.rebuildVolumeGroups", false));
+    }
+
+    @Test
     public void generateReplaceVfModuleRequest_verifyResultAsExpected() {
         String expected = TestUtils.readFileAsString("/payload_jsons/vfmodule/replace_vfmodule__payload_to_mso.json");
+        assertThat(generatedVfModuleInstantiationRequest(null), jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
+    }
+
+    private RequestDetailsWrapper<VfModuleInstantiationRequestDetails> generatedVfModuleInstantiationRequest(
+        Boolean retainVolumeGroups) {
         when(featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)).thenReturn(true);
         when(aaiClient.getCloudOwnerByCloudRegionId("regionOne")).thenReturn("irma-aic");
 
         ModelInfo vfModuleModelInfo = createVfModuleModelInfo("newest-model-name-vfm", "newest-model-version-vfm", "newest-model-uuid-vfm",
                 "f7a867f2-596b-4f4a-a128-421e825a6190", "newest-model-customization-uuid-vfm","newest-model-customization-name-vfm" );
 
-        VfModule vfModuleDetails = createVfModuleForReplace(vfModuleModelInfo, "replace_module", "regionOne", "0422ffb57ba042c0800a29dc85ca70f8");
+        VfModule vfModuleDetails = createVfModuleForReplace(vfModuleModelInfo, "replace_module", "regionOne", "0422ffb57ba042c0800a29dc85ca70f8",
+            retainVolumeGroups);
 
         ModelInfo serviceModelInfo = createServiceModelInfo("newest-model-name-service", "newest-model-version-service", "newest-model-uuid-service", "b16a9398-ffa3-4041-b78c-2956b8ad9c7b", null, null );
 
         ModelInfo vnfModelInfo = createVnfModelInfo("newest-model-name-vnf", "newest-model-version-vnf", "newest-model-uuid-vnf", "23122c9b-dd7f-483f-bf0a-e069303db2f7", "newest-model-customization-uuid-vnf", "newest-model-customization-name-vnf" );
 
-        RequestDetailsWrapper<VfModuleInstantiationRequestDetails> result =
-                msoRequestBuilder.generateVfModuleInstantiationRequest(vfModuleDetails, serviceModelInfo, "e9993045-cc96-4f3f-bf9a-71b2a400a956", vnfModelInfo, "5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5", null,"az2016", "GR_API");
-
-        assertThat(result, jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
+        return msoRequestBuilder.generateVfModuleInstantiationRequest(vfModuleDetails, serviceModelInfo, "e9993045-cc96-4f3f-bf9a-71b2a400a956", vnfModelInfo, "5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5", null,
+            "az2016", "GR_API"
+        );
     }
 }

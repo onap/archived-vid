@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobType;
 import org.onap.vid.mso.model.ModelInfo;
@@ -41,6 +42,10 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	@JsonInclude(NON_NULL) private final String volumeGroupInstanceName;
 	@JsonInclude(NON_NULL) private Boolean usePreload;
 	private Map<String, String> supplementaryParams;
+
+	@JsonInclude(NON_NULL)
+	@Nullable
+	private final Boolean retainVolumeGroups;
 
 	public VfModule(@JsonProperty("modelInfo") ModelInfo modelInfo,
 		@JsonProperty("instanceName") String instanceName,
@@ -57,12 +62,14 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		@JsonProperty("trackById") String trackById,
 		@JsonProperty("isFailed") Boolean isFailed,
 		@JsonProperty("statusMessage") String statusMessage,
+		@JsonProperty("retainVolumeGroups") Boolean retainVolumeGroups,
 		@JsonProperty("position") Integer position) {
 		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
 			position);
 		this.volumeGroupInstanceName = volumeGroupInstanceName;
 		this.usePreload = usePreload;
 		this.supplementaryParams = supplementaryParams;
+		this.retainVolumeGroups = retainVolumeGroups;
 	}
 
 	public String getVolumeGroupInstanceName() {
@@ -93,6 +100,11 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		return JobType.VfmoduleInstantiation;
 	}
 
+	@Nullable
+	public Boolean isRetainVolumeGroups() {
+		return retainVolumeGroups;
+	}
+
 	public VfModule cloneWith(ModelInfo modelInfo) {
 		return new VfModule(
 				modelInfo,
@@ -110,6 +122,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 				this.getTrackById(),
 				this.getIsFailed(),
 				this.getStatusMessage(),
+				this.isRetainVolumeGroups(),
 				this.getPosition());
 	}
 }
