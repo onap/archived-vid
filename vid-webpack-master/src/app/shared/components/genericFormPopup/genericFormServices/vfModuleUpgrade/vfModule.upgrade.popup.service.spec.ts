@@ -13,6 +13,8 @@ import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {VfModuleUpgradePopupService} from "./vfModule.upgrade.popuop.service";
+import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
+import {spy} from "ts-mockito";
 
 class MockModalService<T> {
 }
@@ -52,6 +54,7 @@ describe('VFModule popup service', () => {
         AaiService,
         LogService,
         BasicPopupService,
+        SharedTreeService,
         {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},
@@ -71,6 +74,52 @@ describe('VFModule popup service', () => {
 
   test('getTitle should return the correct title', () => {
     expect(service.getTitle()).toBe("Upgrade Module")
+  });
+
+  test('get controls should return retainAssignments control with false if instance do not exist', ()=> {
+    spyOn(service, 'getVfModuleInstance').and.returnValue(null);
+
+    const controls = service.getControls(null, null, null, null);
+
+    const retainAssignmentsControl = controls.find((control)=>{
+      return control.controlName === 'retainAssignments';
+    });
+
+    expect(retainAssignmentsControl).toBeDefined();
+    expect(retainAssignmentsControl.value).toBeFalsy();
+  });
+
+  test('get controls should return retainAssignments control with true if instance exist with retainAssignments=true', ()=> {
+    const retainAssignmentsValue = true;
+    spyOn(service, 'getVfModuleInstance').and.returnValue({
+      retainAssignments : retainAssignmentsValue
+    });
+
+    const controls = service.getControls(null, null, null, null);
+
+    const retainAssignmentsControl = controls.find((control)=>{
+      return control.controlName === 'retainAssignments';
+    });
+
+    expect(retainAssignmentsControl).toBeDefined();
+    expect(retainAssignmentsControl.value).toEqual(retainAssignmentsValue);
+  });
+
+
+  test('get controls should return retainAssignments control with true if instance exist with retainAssignments=false', ()=> {
+    const retainAssignmentsValue = false;
+    spyOn(service, 'getVfModuleInstance').and.returnValue({
+      retainAssignments : retainAssignmentsValue
+    });
+
+    const controls = service.getControls(null, null, null, null);
+
+    const retainAssignmentsControl = controls.find((control)=>{
+      return control.controlName === 'retainAssignments';
+    });
+
+    expect(retainAssignmentsControl).toBeDefined();
+    expect(retainAssignmentsControl.value).toEqual(retainAssignmentsValue);
   });
 
 });

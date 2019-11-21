@@ -20,10 +20,10 @@ import {MessageBoxService} from "../../../../../shared/components/messageBox/mes
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {
-  deleteActionVfModuleInstance,
+  deleteActionVfModuleInstance, deleteVFModuleField,
   removeVfModuleInstance,
   undoDeleteVfModuleInstance,
-  undoUgradeVFModule,
+  undoUgradeVFModule, updateVFModuleField,
   updateVFModulePosition,
   upgradeVFModule
 } from "../../../../../shared/storeUtil/utils/vfModule/vfModule.actions";
@@ -354,7 +354,8 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
       },
       undoDelete: {
         method: (node, serviceModelId) => {
-          this._store.dispatch(undoDeleteVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId))
+          this._store.dispatch(undoDeleteVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId));
+          this._store.dispatch(deleteVFModuleField(node.data.modelName,  node.parent.data.vnfStoreKey, node.data.servicedId ,node.data.dynamicModelName, 'retainAssignments'));
         },
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
         enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
@@ -386,9 +387,6 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   }
 
   private upgradeVFM(serviceModelId, node) {
-    this._sharedTreeService.upgradeBottomUp(node, serviceModelId);
-    this._store.dispatch(upgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceModelId, node.data.dynamicModelName));
-
     if (FeatureFlagsService.getFlagState(Features.FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS, this._store)) {
       this._iframeService.addClassOpenModal('content');
       this._dialogService.addDialog(GenericFormPopupComponent, {
@@ -401,8 +399,9 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
           modelId: node.data.modelId,
           type: node.data.type,
           popupService: this._vfModuleUpgradePopupService,
+          vfModule : _.cloneDeep(node)
         },
-        node: node,
+        node,
         isUpdateMode: false
       });
     }
