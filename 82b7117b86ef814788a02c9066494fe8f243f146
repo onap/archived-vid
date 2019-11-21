@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e340fe97_580aa1c8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T14:05:50Z",
+      "side": 1,
+      "message": "booleanValue",
+      "range": {
+        "startLine": 127,
+        "startChar": 31,
+        "endLine": 127,
+        "endChar": 32
+      },
+      "revId": "82b7117b86ef814788a02c9066494fe8f243f146",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "019cb52f_fbe27778",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-21T14:05:50Z",
+      "side": 1,
+      "message": "add OO relationship",
+      "range": {
+        "startLine": 133,
+        "startChar": 68,
+        "endLine": 133,
+        "endChar": 93
+      },
+      "revId": "82b7117b86ef814788a02c9066494fe8f243f146",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
