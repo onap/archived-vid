@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5fb73eaa_9b0d609b",
+        "filename": "vid-app-common/src/test/resources/macro_services_by_invariant_uuid.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-21T07:36:00Z",
+      "side": 1,
+      "message": "these uuids are fake",
+      "revId": "15cb69da1264f5b5e7b40a7c15c00a0453516fbe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
