@@ -21,6 +21,7 @@
 package org.onap.vid.api;
 
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -130,9 +131,16 @@ public class SdcApiTest extends BaseApiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(buildUri(SDC_GET_SERVICE_MODEL + MACRO_INSTANTIATION_TYPE_UUID), String.class);
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         String emptyInstantiationTypeExpectedResponse = loadResourceAsString(EMPTY_INSTANTIATION_TYPE_EXPECTED_RESPONSE);
-        assertThat(response.getBody(), jsonEquals(emptyInstantiationTypeExpectedResponse)
+
+        final String body = response.getBody();
+
+        assertThat(body, jsonEquals(emptyInstantiationTypeExpectedResponse)
             .when(IGNORING_ARRAY_ORDER)
-            .whenIgnoringPaths("service.vidNotions.instantiationUI"));
+            .whenIgnoringPaths("service.vidNotions.instantiationUI", "service.vidNotions.instantiationType"));
+
+        assertThat(body, jsonPartEquals("service.vidNotions.instantiationType",
+            Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND.isActive()
+                ? "ALaCarte" : "ClientConfig"));
     }
 
     @Test
@@ -154,7 +162,7 @@ public class SdcApiTest extends BaseApiTest {
         String minMaxInitialExpectedResponse = loadResourceAsString("sdcApiTest/minMaxInitialExpectedResponse.json");
         assertThat(response.getBody(), jsonEquals(minMaxInitialExpectedResponse)
             .when(IGNORING_ARRAY_ORDER)
-            .whenIgnoringPaths("service.vidNotions.instantiationUI"));
+            .whenIgnoringPaths("service.vidNotions.instantiationUI", "service.vidNotions.instantiationType"));
     }
 
     @Test
