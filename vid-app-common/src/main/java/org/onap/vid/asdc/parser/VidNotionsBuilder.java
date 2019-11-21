@@ -23,15 +23,24 @@ package org.onap.vid.asdc.parser;
 import static org.apache.commons.lang3.StringUtils.equalsAnyIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.onap.sdc.tosca.parser.api.ISdcCsarHelper;
 import org.onap.sdc.toscaparser.api.NodeTemplate;
 import org.onap.sdc.toscaparser.api.elements.Metadata;
+import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.VidNotions;
 import org.onap.vid.model.VidNotions.InstantiationUI;
@@ -42,6 +51,7 @@ import org.togglz.core.manager.FeatureManager;
 public class VidNotionsBuilder {
 
     private final FeatureManager featureManager;
+    private final Set<UUID> invariantToMacro;
 
     //map of service type that are always macro services, and their relevant featureFlag
     private static final Map<VidNotions.ModelCategory, Features> macroServicesByModelCategory = ImmutableMap.of(
@@ -52,6 +62,19 @@ public class VidNotionsBuilder {
 
     public VidNotionsBuilder(FeatureManager featureManager) {
         this.featureManager = featureManager;
+        try {
+            invariantToMacro = loadIvariantMacroUUIDsFromFile();
+        } catch (IOException e) {
+            throw new GenericUncheckedException(e);
+        }
+    }
+
+    @NotNull
+    private Set<UUID> loadIvariantMacroUUIDsFromFile() throws IOException {
+        return ((List<String>)JACKSON_OBJECT_MAPPER.readValue(
+                    VidNotionsBuilder.class.getResource("/macro_services_by_invariant_uuid.json"),
+                    new TypeReference<List<String>>() {}
+                )).stream().map(x-> UUID.fromString(x)).collect(Collectors.toSet());
     }
 
     VidNotions buildVidNotions(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
@@ -266,5 +289,14 @@ public class VidNotionsBuilder {
             vnf-> MapUtils.isNotEmpty(vnf.getVfcInstanceGroups())
         );
 
+    }
+
+    protected boolean isMacroByInvariantUuid(String uuid) {
+        try {
+            return invariantToMacro.contains(UUID.fromString(uuid));
+        }
+        catch (IllegalArgumentException | NullPointerException e) { //not a uuid
+            return false;
+        }
     }
 }
