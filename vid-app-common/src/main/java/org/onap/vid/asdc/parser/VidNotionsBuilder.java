@@ -42,6 +42,7 @@ import org.onap.sdc.toscaparser.api.elements.Metadata;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.VidNotions;
+import org.onap.vid.model.VidNotions.InstantiationType;
 import org.onap.vid.model.VidNotions.InstantiationUI;
 import org.onap.vid.model.VidNotions.ModelCategory;
 import org.onap.vid.properties.Features;
@@ -78,11 +79,13 @@ public class VidNotionsBuilder {
 
     VidNotions buildVidNotions(ISdcCsarHelper csarHelper, ServiceModel serviceModel) {
         VidNotions.ModelCategory modelCategory = suggestModelCategory(csarHelper, serviceModel);
+        final InstantiationType instantiationType = suggestInstantiationType(serviceModel, modelCategory);
         return new VidNotions(
-                suggestInstantiationUI(csarHelper, serviceModel, modelCategory),
+                suggestInstantiationUI(csarHelper, serviceModel, modelCategory, instantiationType),
                 modelCategory,
-                suggestViewEditUI(csarHelper, serviceModel, modelCategory),
-                suggestInstantiationType(serviceModel, modelCategory));
+                suggestViewEditUI(csarHelper, serviceModel, modelCategory, instantiationType),
+                instantiationType
+        );
     }
 
     private boolean isMacroTypeByModelCategory(VidNotions.ModelCategory modelCategory) {
@@ -91,34 +94,49 @@ public class VidNotionsBuilder {
         return (featureOfMacroType!=null && featureManager.isActive(featureOfMacroType));
     }
 
-    VidNotions.InstantiationType suggestInstantiationType(ServiceModel serviceModel, VidNotions.ModelCategory modelCategory) {
+    InstantiationType suggestInstantiationType(ServiceModel serviceModel, VidNotions.ModelCategory modelCategory) {
         if (isMacroTypeByModelCategory(modelCategory)) {
-            return VidNotions.InstantiationType.Macro;
+            return InstantiationType.Macro;
         }
-        if (serviceModel==null || serviceModel.getService()==null || isEmpty(serviceModel.getService().getInstantiationType())) {
-            return VidNotions.InstantiationType.ClientConfig;
-        }
-        String instantiationType = serviceModel.getService().getInstantiationType();
-        if (instantiationType.equals(ToscaParserImpl2.Constants.MACRO)) {
-            return VidNotions.InstantiationType.Macro;
-        }
-        if (instantiationType.equals(ToscaParserImpl2.Constants.A_LA_CARTE)) {
-            return VidNotions.InstantiationType.ALaCarte;
+        if (serviceModel==null || serviceModel.getService()==null) {
+            return defaultInstantiationType();
         }
 
-        return VidNotions.InstantiationType.ClientConfig;
+        if (!isEmpty(serviceModel.getService().getInstantiationType())) {
+            String instantiationType = serviceModel.getService().getInstantiationType();
+            if (instantiationType.equals(ToscaParserImpl2.Constants.MACRO)) {
+                return InstantiationType.Macro;
+            }
+            if (instantiationType.equals(ToscaParserImpl2.Constants.A_LA_CARTE)) {
+                return InstantiationType.ALaCarte;
+            }
+        }
+
+        if (!featureManager.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND))
+            return InstantiationType.ClientConfig;
+
+        return isMacroByInvariantUuid(serviceModel.getService().getInvariantUuid()) ?
+            InstantiationType.Macro :
+            InstantiationType.ALaCarte;
+    }
+
+    @NotNull
+    private InstantiationType defaultInstantiationType() {
+        return featureManager.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND) ?
+            InstantiationType.ALaCarte :
+            InstantiationType.ClientConfig;
     }
 
     //UI route a-la-carte services to old UI only if InstantiationUI is LEGACY
     //So any other value for InstantiationUI other than LEGACY make UI to route
     //a-la-carte services to new UI
-    VidNotions.InstantiationUI suggestInstantiationUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel, ModelCategory modelCategory) {
+    VidNotions.InstantiationUI suggestInstantiationUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel, ModelCategory modelCategory, InstantiationType instantiationType) {
         if(featureManager.isActive(Features.FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI) && isALaCarte(csarHelper)) {
             return VidNotions.InstantiationUI.ANY_ALACARTE_NEW_UI;
         }
 
         if (featureManager.isActive(Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI) &&
-            !isMacro(serviceModel) &&
+            !isMacro(instantiationType) &&
             !isAlacarteExcludedByCategory(modelCategory)) {
             return InstantiationUI.ANY_ALACARTE_WHICH_NOT_EXCLUDED;
         }
@@ -206,13 +224,13 @@ public class VidNotionsBuilder {
         return VidNotions.ModelCategory.OTHER;
     }
 
-    VidNotions.InstantiationUI suggestViewEditUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel, ModelCategory modelCategory) {
+    VidNotions.InstantiationUI suggestViewEditUI(ISdcCsarHelper csarHelper, ServiceModel serviceModel, ModelCategory modelCategory, InstantiationType instantiationType) {
         if (featureManager.isActive(Features.FLAG_1902_VNF_GROUPING) && isGrouping(csarHelper)) {
             return VidNotions.InstantiationUI.SERVICE_WITH_VNF_GROUPING;
         }
 
         if (featureManager.isActive(Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT) &&
-            isMacro(serviceModel) &&
+            isMacro(instantiationType) &&
             !isTransportService(csarHelper) &&
             //till new view/edit would support fabric service activation
             !hasFabricConfiguration(csarHelper)) {
@@ -220,7 +238,7 @@ public class VidNotionsBuilder {
         }
 
         if (featureManager.isActive(Features.FLAG_1902_NEW_VIEW_EDIT)) {
-            VidNotions.InstantiationUI instantiationUISuggestion = suggestInstantiationUI(csarHelper, serviceModel, modelCategory);
+            VidNotions.InstantiationUI instantiationUISuggestion = suggestInstantiationUI(csarHelper, serviceModel, modelCategory, instantiationType);
             if (instantiationUISuggestion!=VidNotions.InstantiationUI.LEGACY) {
                 return instantiationUISuggestion;
             }
@@ -229,8 +247,8 @@ public class VidNotionsBuilder {
         return VidNotions.InstantiationUI.LEGACY;
     }
 
-    private boolean isMacro(ServiceModel serviceModel) {
-        return ToscaParserImpl2.Constants.MACRO.equals(serviceModel.getService().getInstantiationType());
+    private boolean isMacro(InstantiationType instantiationType) {
+        return instantiationType==InstantiationType.Macro;
     }
 
     private boolean isUuidExactlyHardCoded1ffce89fef3f(ISdcCsarHelper csarHelper) {

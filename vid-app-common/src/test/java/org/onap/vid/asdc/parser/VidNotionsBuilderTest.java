@@ -74,6 +74,9 @@ import org.togglz.core.manager.FeatureManager;
 
 public class VidNotionsBuilderTest {
 
+    private static final String MACRO_SERVICE_INVARIANT_UUID = "2efab359-cdd4-4da2-9b79-61df990796c2";
+    private static final String NOT_MACRO_SERVICE_INVARIANT_UUID = "5d854f6b-759c-4aa6-b472-7e4bb1c003d4";
+
     @InjectMocks
     VidNotionsBuilder vidNotionsBuilder;
 
@@ -98,7 +101,7 @@ public class VidNotionsBuilderTest {
     public void VLNetworkWithPropertyNetworkTechnologyOVS_UIHintIsPositive() {
         ISdcCsarHelper csarHelper = mockForNonLegacyInstantiationUI();
 
-        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER), is(InstantiationUI.NETWORK_WITH_PROPERTY_NETWORK_TECHNOLOGY_EQUALS_STANDARD_SRIOV_OR_OVS));
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ALaCarte), is(InstantiationUI.NETWORK_WITH_PROPERTY_NETWORK_TECHNOLOGY_EQUALS_STANDARD_SRIOV_OR_OVS));
         assertThat(vidNotionsBuilder.suggestModelCategory(csarHelper, serviceModel) , is(ModelCategory.IS_5G_PROVIDER_NETWORK_MODEL));
     }
 
@@ -119,20 +122,88 @@ public class VidNotionsBuilderTest {
     }
 
     @DataProvider
+    public static Object[][] identifyInvariantFeatureFlagDataProvider() {
+        return new Object[][] {
+            {false, null, InstantiationType.ClientConfig},
+            {false, mock(ServiceModel.class), InstantiationType.ClientConfig},
+            {true, null, InstantiationType.ALaCarte},
+            {true, mock(ServiceModel.class), InstantiationType.ALaCarte},
+        };
+    }
+
+    @Test(dataProvider = "identifyInvariantFeatureFlagDataProvider")
+    public void whenCsarIsEmpty_suggestInstantiationType_returnALaCarte_byFeatureFlag(
+        boolean isFlagActive, ServiceModel serviceModel, InstantiationType expectedType) {
+        when(featureManagerMock.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND)).thenReturn(isFlagActive);
+        if (serviceModel!=null) {
+            when(serviceModel.getService()).thenReturn(null);
+        }
+        assertEquals(expectedType, vidNotionsBuilder.suggestInstantiationType(serviceModel, null));
+    }
+
+    @DataProvider
+    public static Object[][] noMacroNoAlaCarteDataProvider() {
+        return new Object[][] {
+            {Constants.CLIENT_CONFIG},
+            {Constants.BOTH},
+            {"don't know you"},
+            {null},
+        };
+    }
+
+    @Test(dataProvider = "noMacroNoAlaCarteDataProvider")
+    public void givenNoMacroNorALaCarte_when_FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND_isOff_then_suggestInstantiationType_ClientConfig(String instantiationType) {
+        ServiceModel serviceModel = mockServiceModelInstantiationTypeAndInvariant(MACRO_SERVICE_INVARIANT_UUID, instantiationType);
+        when(featureManagerMock.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND)).thenReturn(false);
+        assertEquals(InstantiationType.ClientConfig , vidNotionsBuilder.suggestInstantiationType(serviceModel, null));
+    }
+
+    @NotNull
+    private ServiceModel mockServiceModelInstantiationTypeAndInvariant(String invariantUUID, String instantiationType) {
+        ServiceModel serviceModel = mock(ServiceModel.class);
+        Service service = mock(Service.class);
+        when(serviceModel.getService()).thenReturn(service);
+        when(service.getInstantiationType()).thenReturn(instantiationType);
+        when(service.getInvariantUuid()).thenReturn(invariantUUID);
+        return serviceModel;
+    }
+
+    @DataProvider
+    public static Object[][] instantiationTypeByInvariantDataProvider() {
+        return new Object[][] {
+            {null, MACRO_SERVICE_INVARIANT_UUID, InstantiationType.Macro},
+            {null, NOT_MACRO_SERVICE_INVARIANT_UUID, InstantiationType.ALaCarte},
+            {Constants.CLIENT_CONFIG, MACRO_SERVICE_INVARIANT_UUID, InstantiationType.Macro},
+            {Constants.BOTH, NOT_MACRO_SERVICE_INVARIANT_UUID, InstantiationType.ALaCarte},
+        };
+    }
+
+    @Test(dataProvider = "instantiationTypeByInvariantDataProvider")
+    public void givenNoMacroNorALaCarte_givenFlagIsOn_suggestInstantiationTypeByInvariant(
+        String givenInstantiationType, String invariantUUID, InstantiationType expectedType
+    ) {
+        when(featureManagerMock.isActive(Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND)).thenReturn(true);
+        ServiceModel serviceModel = mockServiceModelInstantiationTypeAndInvariant(invariantUUID, givenInstantiationType);
+        assertEquals(expectedType, vidNotionsBuilder.suggestInstantiationType(serviceModel, null));
+    }
+
+    @DataProvider
     public static Object[][] anyAlacarteDataProvider() {
         return new Object[][] {
-                {"A-La-Carte", InstantiationUI.ANY_ALACARTE_NEW_UI},
-                {"Macro", InstantiationUI.LEGACY},
+                {InstantiationType.ALaCarte, InstantiationUI.ANY_ALACARTE_NEW_UI},
+                {InstantiationType.Macro, InstantiationUI.LEGACY},
         };
     }
 
     @Test(dataProvider = "anyAlacarteDataProvider")
-    public void FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI_is_active_UIHintIsPositive(String instantiationType, InstantiationUI expectedInstantiationUI) {
+    public void FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI_is_active_UIHintIsPositive(InstantiationType instantiationType, InstantiationUI expectedInstantiationUI) {
         initServiceModelAndscarHelperWithMocks();
+
+        String instantiationTypeAsString = instantiationType==InstantiationType.ALaCarte ? "A-La-Carte" : "Macro";
 
         when(featureManagerMock.isActive(Features.FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI)).thenReturn(true);
         when(csarHelper.getServiceMetadata()).thenReturn(new Metadata(ImmutableMap.of(
-                "instantiationType", instantiationType
+                "instantiationType", instantiationTypeAsString
         )));
         NodeTemplate nodeTemplate = mock(NodeTemplate.class);
 
@@ -143,7 +214,7 @@ public class VidNotionsBuilderTest {
 
         when(csarHelper.getServiceVlList()).thenReturn(ImmutableList.of(nodeTemplate));
 
-        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER), is(expectedInstantiationUI));
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, instantiationType), is(expectedInstantiationUI));
     }
 
     @Test
@@ -159,7 +230,7 @@ public class VidNotionsBuilderTest {
 
         when(csarHelper.getServiceVlList()).thenReturn(ImmutableList.of(nodeTemplate));
 
-        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER), is(InstantiationUI.LEGACY));
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ALaCarte), is(InstantiationUI.LEGACY));
         assertThat(vidNotionsBuilder.suggestModelCategory(csarHelper, serviceModel) , is(ModelCategory.OTHER));
     }
 
@@ -169,7 +240,7 @@ public class VidNotionsBuilderTest {
         assertThat(vidNotionsBuilder.isALaCarte(csarHelper), is(false));
         assertThat(vidNotionsBuilder.hasAnyNetworkWithPropertyEqualsToAnyOf(csarHelper, "unexpected_property_name"), is(false));
         assertThat(vidNotionsBuilder.hasAnyNetworkWithPropertyEqualsToAnyOf(csarHelper, "network_technology","Standard-SR-IOV"), is(true));
-        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER), is(InstantiationUI.LEGACY));
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ClientConfig), is(InstantiationUI.LEGACY));
     }
 
     @Test
@@ -177,7 +248,7 @@ public class VidNotionsBuilderTest {
         initServiceModelAndscarHelperWithRealCsar("/csars/service-fabric-configuration.zip");
         assertThat(vidNotionsBuilder.isALaCarte(csarHelper), is(false));
         assertThat(vidNotionsBuilder.hasFabricConfiguration(csarHelper), is(true));
-        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER), is(InstantiationUI.LEGACY));
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ClientConfig), is(InstantiationUI.LEGACY));
     }
 
     @Test(dataProvider = "trueAndFalse", dataProviderClass = TestUtils.class)
@@ -187,7 +258,7 @@ public class VidNotionsBuilderTest {
         when(featureManagerMock.isActive(Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI)).thenReturn(flagValue);
 
         assertThat(vidNotionsBuilder.isALaCarte(csarHelper), is(false));
-        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER), is(flagValue ? InstantiationUI.TRANSPORT_SERVICE : InstantiationUI.LEGACY));
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ClientConfig), is(flagValue ? InstantiationUI.TRANSPORT_SERVICE : InstantiationUI.LEGACY));
         assertThat(vidNotionsBuilder.suggestModelCategory(csarHelper, serviceModel), is(ModelCategory.Transport));
     }
 
@@ -195,7 +266,7 @@ public class VidNotionsBuilderTest {
     public void withoutMocks_givenZippedToscaFileOfInfraStructureVpn_InstantiationUIIsRight(boolean flagValue) throws SdcToscaParserException, IOException {
         initServiceModelAndscarHelperWithRealCsar("/csars/service-Infravpn-csar.zip");
         when(featureManagerMock.isActive(Features.FLAG_1908_INFRASTRUCTURE_VPN)).thenReturn(flagValue);
-        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER), is(flagValue ? InstantiationUI.INFRASTRUCTURE_VPN : InstantiationUI.LEGACY));
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ClientConfig), is(flagValue ? InstantiationUI.INFRASTRUCTURE_VPN : InstantiationUI.LEGACY));
         assertThat(vidNotionsBuilder.suggestModelCategory(csarHelper, serviceModel), is(ModelCategory.INFRASTRUCTURE_VPN));
     }
 
@@ -232,21 +303,20 @@ public class VidNotionsBuilderTest {
     @DataProvider
     public static Object[][] anyAlaCarteDataProvider() {
         return new Object[][] {
-            {true, Constants.A_LA_CARTE, InstantiationUI.ANY_ALACARTE_WHICH_NOT_EXCLUDED},
-            {false, Constants.A_LA_CARTE, InstantiationUI.LEGACY},
-            {true, Constants.MACRO, InstantiationUI.LEGACY},
-            {true, Constants.CLIENT_CONFIG, InstantiationUI.ANY_ALACARTE_WHICH_NOT_EXCLUDED},
+            {true, InstantiationType.ALaCarte, InstantiationUI.ANY_ALACARTE_WHICH_NOT_EXCLUDED},
+            {false, InstantiationType.ALaCarte, InstantiationUI.LEGACY},
+            {true, InstantiationType.Macro, InstantiationUI.LEGACY},
+            {true, InstantiationType.ClientConfig, InstantiationUI.ANY_ALACARTE_WHICH_NOT_EXCLUDED},
             {true, null, InstantiationUI.ANY_ALACARTE_WHICH_NOT_EXCLUDED},
-            {true, "", InstantiationUI.ANY_ALACARTE_WHICH_NOT_EXCLUDED}
         };
     }
 
     @Test(dataProvider = "anyAlaCarteDataProvider")
-    public void testAnyAlaCarteNewUI_byInstantiationTypeAndFeatureFlag(boolean flag, String instantiationType, InstantiationUI expected) {
+    public void testAnyAlaCarteNewUI_byInstantiationTypeAndFeatureFlag(boolean flag, InstantiationType instantiationType, InstantiationUI expected) {
         initServiceModelAndscarHelperWithMocks();
-        mockInstantiationType(serviceModel, instantiationType);
+        //mockInstantiationType(serviceModel, instantiationType);
         when(featureManagerMock.isActive(Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI)).thenReturn(flag);
-        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER), is(expected));
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, instantiationType), is(expected));
     }
 
     @Test
@@ -257,7 +327,7 @@ public class VidNotionsBuilderTest {
                 "UUID", "95eb2c44-bff2-4e8b-ad5d-8266870b7717"
         )));
         when(featureManagerMock.isActive(Features.FLAG_5G_IN_NEW_INSTANTIATION_UI)).thenReturn(true);
-        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER), is(InstantiationUI.SERVICE_UUID_IS_1ffce89f_ef3f_4cbb_8b37_82134590c5de));
+        assertThat(vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ClientConfig), is(InstantiationUI.SERVICE_UUID_IS_1ffce89f_ef3f_4cbb_8b37_82134590c5de));
     }
 
     @Test(dataProvider = "trueAndFalse", dataProviderClass = TestUtils.class)
@@ -290,7 +360,7 @@ public class VidNotionsBuilderTest {
                 "serviceRole", serviceRole
         )));
 
-        assertThat(vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel, ModelCategory.OTHER), is(expectedViewEditUI));
+        assertThat(vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ClientConfig), is(expectedViewEditUI));
     }
 
     @DataProvider
@@ -316,7 +386,7 @@ public class VidNotionsBuilderTest {
         ServiceModel serviceModel = mock(ServiceModel.class);
         mockInstantiationType(serviceModel, Constants.A_LA_CARTE);
 
-        InstantiationUI result = vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel, ModelCategory.OTHER);
+        InstantiationUI result = vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ClientConfig);
         assertEquals(expectedViewEditUi, result);
     }
 
@@ -470,7 +540,7 @@ public class VidNotionsBuilderTest {
                 emptyMap() : ImmutableMap.of(ToscaParserImpl2.Constants.SERVICE_ROLE, serviceRole)
         ));
 
-        assertEquals(expectedViewEditUi, vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER));
+        assertEquals(expectedViewEditUi, vidNotionsBuilder.suggestInstantiationUI(csarHelper, serviceModel, ModelCategory.OTHER, InstantiationType.ALaCarte));
     }
 
     private static NodeTemplate mockNodeTemplateChild(boolean withFabricConfiguration) {
@@ -524,15 +594,14 @@ public class VidNotionsBuilderTest {
         initServiceModelAndscarHelperWithMocks();
         Service service = mock(Service.class);
 
-        String instantiationType = isMacro ? ToscaParserImpl2.Constants.MACRO : ToscaParserImpl2.Constants.A_LA_CARTE;
+        InstantiationType instantiationType = isMacro ? InstantiationType.Macro : InstantiationType.ALaCarte;
         when(serviceModel.getService()).thenReturn(service);
-        when(service.getInstantiationType()).thenReturn(instantiationType);
         when(featureManagerMock.isActive(Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT)).thenReturn(flagActive);
         when(featureManagerMock.isActive(Features.FLAG_1902_NEW_VIEW_EDIT)).thenReturn(false);
         when(csarHelper.getServiceMetadata()).thenReturn(new Metadata(isTransport ? ImmutableMap.of(ToscaParserImpl2.Constants.SERVICE_TYPE, "TRANSPORT") : emptyMap()
         ));
 
-        assertEquals(expectedViewEditUi, vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel, ModelCategory.OTHER));
+        assertEquals(expectedViewEditUi, vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel, ModelCategory.OTHER, instantiationType));
     }
 
     @DataProvider
@@ -540,10 +609,10 @@ public class VidNotionsBuilderTest {
         return new Object[][]{
             {"117f5f1a-1b47-4ae1-ae04-489c9a7ada28", true},
             {"117F5f1a-1b47-4AE1-ae04-489C9A7ada28", true},
-            {"2efab359-cdd4-4da2-9b79-61df990796c2", true},
+            {MACRO_SERVICE_INVARIANT_UUID, true},
             {"67e09a1f-9e42-4b63-8dee-bc60bae50de1", false},
             {"67e09A1F-9E42-4b63-8Dee-bc60bae50de1", false},
-            {"5d854f6b-759c-4aa6-b472-7e4bb1c003d4", false},
+            {NOT_MACRO_SERVICE_INVARIANT_UUID, false},
             {"I'm not a uuid", false},
             {null, false},
         };
