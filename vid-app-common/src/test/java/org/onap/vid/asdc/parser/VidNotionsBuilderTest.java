@@ -534,4 +534,19 @@ public class VidNotionsBuilderTest {
 
         assertEquals(expectedViewEditUi, vidNotionsBuilder.suggestViewEditUI(csarHelper, serviceModel, ModelCategory.OTHER));
     }
+
+    @DataProvider
+    public static Object[][] invariantUuidToMacroDataProvider() {
+        return new Object[][]{
+            {"117f5f1a-1b47-4ae1-ae04-489c9a7ada28", true},
+            {"2efab359-cdd4-4da2-9b79-61df990796c2", true},
+            {"67e09a1f-9e42-4b63-8dee-bc60bae50de1", false},
+            {"5d854f6b-759c-4aa6-b472-7e4bb1c003d4", false},
+        };
+    }
+
+    @Test(dataProvider = "invariantUuidToMacroDataProvider")
+    public void testIsMacroByInvariantUuid(String uuid, boolean expectedIsMacro) {
+        assertEquals(expectedIsMacro, vidNotionsBuilder.isMacroByInvariantUuid(uuid));
+    }
 }
