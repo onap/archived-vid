@@ -11,7 +11,7 @@ import org.onap.vid.changeManagement.RequestDetailsWrapper
 import org.onap.vid.model.serviceInstantiation.*
 import org.onap.vid.mso.model.*
 import org.onap.vid.mso.model.BaseResourceInstantiationRequestDetails.*
-import org.onap.vid.mso.model.VfModuleInstantiationRequestDetails.UserParamMap
+import org.onap.vid.mso.model.VfModuleOrVolumeGroupRequestDetails.UserParamMap
 import org.onap.vid.mso.rest.SubscriberInfo
 import org.onap.vid.properties.Features
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
@@ -99,20 +99,15 @@ class MsoRequestBuilder
         return RequestDetailsWrapper(VnfInstantiationRequestDetails(vnfDetails.modelInfo, cloudConfiguration, requestInfo, null, null, null, null))
     }
 
-    fun generateVfModuleInstantiationRequest(
+    protected fun generateVfModuleRequestWithRequestParams(
             vfModuleDetails: VfModule, serviceModelInfo: ModelInfo,
             serviceInstanceId: String, vnfModelInfo: ModelInfo, vnfInstanceId: String,
-            vgInstanceId: String?, userId: String, testApi: String?
-    ): RequestDetailsWrapper<VfModuleInstantiationRequestDetails> {
+            vgInstanceId: String?, userId: String, requestParameters: VfModuleOrVolumeGroupRequestDetails.RequestParametersVfModuleOrVolumeGroup
+    ): RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> {
         val requestInfo = generateRequestInfo(vfModuleDetails.instanceName, ResourceType.VF_MODULE, vfModuleDetails.isRollbackOnFailure, null, userId)
 
         //cloud configuration
         val cloudConfiguration = generateCloudConfiguration(vfModuleDetails.lcpCloudRegionId, vfModuleDetails.tenantId)
-
-        //request parameters
-        val userParams = aggregateAllInstanceParams(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
-        val requestParameters = VfModuleInstantiationRequestDetails.RequestParametersVfModule(
-                userParams, vfModuleDetails.isUsePreload, testApi, nullSafeNegate(vfModuleDetails.isRetainVolumeGroups))
 
         //related instance list
         val relatedInstanceList = generateRelatedInstances(mapOf(serviceInstanceId to serviceModelInfo, vnfInstanceId to vnfModelInfo))
@@ -121,7 +116,34 @@ class MsoRequestBuilder
             volumeGroupModel.modelType = "volumeGroup"
             relatedInstanceList.add(RelatedInstance(volumeGroupModel, vgInstanceId, vfModuleDetails.volumeGroupInstanceName))
         }
-        return RequestDetailsWrapper(VfModuleInstantiationRequestDetails(vfModuleDetails.modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters))
+
+        return RequestDetailsWrapper(VfModuleOrVolumeGroupRequestDetails(vfModuleDetails.modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters))
+    }
+
+    fun generateVfModuleInstantiationRequest(
+            vfModuleDetails: VfModule, serviceModelInfo: ModelInfo,
+            serviceInstanceId: String, vnfModelInfo: ModelInfo, vnfInstanceId: String,
+            vgInstanceId: String?, userId: String, testApi: String?
+    ): RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> {
+        val userParams = aggregateAllInstanceParams(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
+        val requestParameters = VfModuleOrVolumeGroupRequestDetails.RequestParametersVfModuleOrVolumeGroupInstantiation(
+                userParams, vfModuleDetails.isUsePreload, testApi)
+
+        return generateVfModuleRequestWithRequestParams(vfModuleDetails, serviceModelInfo, serviceInstanceId,
+                vnfModelInfo, vnfInstanceId, vgInstanceId, userId, requestParameters)
+    }
+
+    fun generateVfModuleReplaceRequest(
+            vfModuleDetails: VfModule, serviceModelInfo: ModelInfo,
+            serviceInstanceId: String, vnfModelInfo: ModelInfo, vnfInstanceId: String,
+            vgInstanceId: String?, userId: String, testApi: String?
+    ): RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> {
+        val userParams = aggregateAllInstanceParams(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
+        val requestParameters = VfModuleOrVolumeGroupRequestDetails.RequestParametersVfModuleUpgrade(
+                userParams, vfModuleDetails.isUsePreload, testApi, nullSafeNegate(vfModuleDetails.isRetainVolumeGroups))
+
+        return generateVfModuleRequestWithRequestParams(vfModuleDetails, serviceModelInfo, serviceInstanceId,
+                vnfModelInfo, vnfInstanceId, vgInstanceId, userId, requestParameters)
     }
 
     private fun nullSafeNegate(booleanValue: Boolean?): Boolean? = booleanValue?.not()
@@ -130,7 +152,7 @@ class MsoRequestBuilder
         val requestInfo = generateRequestInfo(vfModuleDetails.volumeGroupInstanceName, ResourceType.VOLUME_GROUP, vfModuleDetails.isRollbackOnFailure, null, userId)
         val cloudConfiguration = generateCloudConfiguration(vfModuleDetails.lcpCloudRegionId, vfModuleDetails.tenantId)
         val userParams = aggregateAllInstanceParams(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
-        val requestParameters = VfModuleInstantiationRequestDetails.RequestParametersVfModule(userParams, vfModuleDetails.isUsePreload, testApi, null)
+        val requestParameters = VfModuleOrVolumeGroupRequestDetails.RequestParametersVfModuleOrVolumeGroupInstantiation(userParams, vfModuleDetails.isUsePreload, testApi)
         val relatedInstances = generateRelatedInstances(mapOf(serviceInstanceId to serviceModelInfo, vnfInstanceId to vnfModelInfo))
 
         vfModuleDetails.modelInfo.modelType = "volumeGroup"
@@ -158,10 +180,10 @@ class MsoRequestBuilder
         return RequestDetailsWrapper(NetworkInstantiationRequestDetails(networkDetails.modelInfo, cloudConfiguration, requestInfo, null, null, null, null))
     }
 
-    fun generateDeleteVfModuleRequest(vfModuleDetails: VfModule, userId: String): RequestDetailsWrapper<VfModuleInstantiationRequestDetails> {
+    fun generateDeleteVfModuleRequest(vfModuleDetails: VfModule, userId: String): RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> {
         val requestInfo = generateRequestInfo(null, null, null, null, userId)
         val cloudConfiguration = generateCloudConfiguration(vfModuleDetails.lcpCloudRegionId, vfModuleDetails.tenantId)
-        return RequestDetailsWrapper(VfModuleInstantiationRequestDetails(vfModuleDetails.modelInfo, cloudConfiguration, requestInfo, null, null))
+        return RequestDetailsWrapper(VfModuleOrVolumeGroupRequestDetails(vfModuleDetails.modelInfo, cloudConfiguration, requestInfo, null, null))
     }
 
     private fun generateServiceName(jobId: UUID?, payload: ServiceInstantiation, optimisticUniqueServiceInstanceName: String): String? {
@@ -271,7 +293,7 @@ class MsoRequestBuilder
         }.collect(Collectors.toList<VfModuleMacro>())
     }
 
-    fun aggregateAllInstanceParams(instanceParams: Map<String, String>?, supplementaryParams: Map<String, String>?): List<VfModuleInstantiationRequestDetails.UserParamMap<String, String>> {
+    fun aggregateAllInstanceParams(instanceParams: Map<String, String>?, supplementaryParams: Map<String, String>?): List<VfModuleOrVolumeGroupRequestDetails.UserParamMap<String, String>> {
         var instanceParamsFinal: Map<String, String> = instanceParams ?: emptyMap()
         val supplementaryParamsFinal: Map<String, String> = supplementaryParams ?: emptyMap()
 
