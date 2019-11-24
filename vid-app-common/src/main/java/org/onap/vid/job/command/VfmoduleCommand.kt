@@ -90,7 +90,7 @@ class VfmoduleCommand @Autowired constructor(
 
         val originalRequestWithNewestVfmModelInfo = getRequest().cloneWith(vfmModelInfo)
 
-        val requestDetailsWrapper = msoRequestBuilder.generateVfModuleInstantiationRequest(
+        val requestDetailsWrapper = msoRequestBuilder.generateVfModuleReplaceRequest(
                 originalRequestWithNewestVfmModelInfo, serviceModelInfo, serviceInstanceId,
                 vnfModelInfo, vnfInstanceId, null, sharedData.userId, sharedData.testApi)
 

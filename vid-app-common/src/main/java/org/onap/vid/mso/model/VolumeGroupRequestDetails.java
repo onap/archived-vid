@@ -21,8 +21,8 @@
 package org.onap.vid.mso.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
+import org.onap.vid.mso.model.VfModuleOrVolumeGroupRequestDetails.RequestParametersVfModuleOrVolumeGroup;
 
 public class VolumeGroupRequestDetails extends BaseResourceInstantiationRequestDetails {
 
@@ -31,7 +31,7 @@ public class VolumeGroupRequestDetails extends BaseResourceInstantiationRequestD
             @JsonProperty(value = "cloudConfiguration", required = true) CloudConfiguration cloudConfiguration,
             @JsonProperty(value = "requestInfo", required = true) RequestInfo requestInfo,
             @JsonProperty(value = "relatedInstanceList", required = true) List<RelatedInstance> relatedInstanceList,
-            @JsonProperty(value = "requestParameters", required = true) VfModuleInstantiationRequestDetails.RequestParametersVfModule requestParameters)
+            @JsonProperty(value = "requestParameters", required = true) RequestParametersVfModuleOrVolumeGroup requestParameters)
     {
         super(modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters);
     }
