@@ -44,8 +44,10 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	private Map<String, String> supplementaryParams;
 
 	@JsonInclude(NON_NULL)
-	@Nullable
 	private final Boolean retainVolumeGroups;
+
+	@JsonInclude(NON_NULL)
+	private Boolean retainAssignments;
 
 	public VfModule(@JsonProperty("modelInfo") ModelInfo modelInfo,
 		@JsonProperty("instanceName") String instanceName,
@@ -62,13 +64,15 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		@JsonProperty("trackById") String trackById,
 		@JsonProperty("isFailed") Boolean isFailed,
 		@JsonProperty("statusMessage") String statusMessage,
-		@JsonProperty("retainVolumeGroups") Boolean retainVolumeGroups,
+		@Nullable @JsonProperty("retainAssignments") Boolean retainAssignments,
+		@Nullable @JsonProperty("retainVolumeGroups") Boolean retainVolumeGroups,
 		@JsonProperty("position") Integer position) {
 		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
 			position);
 		this.volumeGroupInstanceName = volumeGroupInstanceName;
 		this.usePreload = usePreload;
 		this.supplementaryParams = supplementaryParams;
+		this.retainAssignments = retainAssignments;
 		this.retainVolumeGroups = retainVolumeGroups;
 	}
 
@@ -101,6 +105,11 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	}
 
 	@Nullable
+	public Boolean isRetainAssignments() {
+		return retainAssignments;
+	}
+
+	@Nullable
 	public Boolean isRetainVolumeGroups() {
 		return retainVolumeGroups;
 	}
@@ -122,6 +131,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 				this.getTrackById(),
 				this.getIsFailed(),
 				this.getStatusMessage(),
+				this.isRetainAssignments(),
 				this.isRetainVolumeGroups(),
 				this.getPosition());
 	}

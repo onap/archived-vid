@@ -611,24 +611,32 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
         assertThat(result, jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
     }
 
+    @Test(dataProvider = "trueAndFalse", dataProviderClass = TestUtils.class)
+    public void generateReplaceVfModuleRequest_whenRetainAssignmentsProvidedFromFrontend_retainAssignmentsToMsoIsTheSame(boolean retainAssignments) {
+
+        assertThat(generatedVfModuleReplaceRequest(retainAssignments, null),
+            jsonPartEquals("requestDetails.requestParameters.retainAssignments", retainAssignments));
+    }
+
     @Test
     public void generateReplaceVfModuleRequest_whenRetainVolumeGroupIsTrue_rebuildVolumeGroupIsFalse() {
         boolean retainVolumeGroups = true;
 
-        assertThat(generatedVfModuleReplaceRequest(retainVolumeGroups),
+        assertThat(generatedVfModuleReplaceRequest(null, retainVolumeGroups),
             jsonPartEquals("requestDetails.requestParameters.rebuildVolumeGroups", false));
     }
 
     @Test
     public void generateReplaceVfModuleRequest_verifyResultAsExpected() {
         Boolean retainVolumeGroups = null;
+        Boolean retainAssignments = null;
 
         String expected = TestUtils.readFileAsString("/payload_jsons/vfmodule/replace_vfmodule__payload_to_mso.json");
-        assertThat(generatedVfModuleReplaceRequest(retainVolumeGroups), jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
+        assertThat(generatedVfModuleReplaceRequest(retainAssignments, retainVolumeGroups), jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
     }
 
     private RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> generatedVfModuleReplaceRequest(
-        Boolean retainVolumeGroups) {
+        Boolean retainAssignments, Boolean retainVolumeGroups) {
         when(featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)).thenReturn(true);
         when(aaiClient.getCloudOwnerByCloudRegionId("regionOne")).thenReturn("irma-aic");
 
@@ -636,7 +644,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
                 "f7a867f2-596b-4f4a-a128-421e825a6190", "newest-model-customization-uuid-vfm","newest-model-customization-name-vfm" );
 
         VfModule vfModuleDetails = createVfModuleForReplace(vfModuleModelInfo, "replace_module", "regionOne", "0422ffb57ba042c0800a29dc85ca70f8",
-            retainVolumeGroups);
+            retainAssignments, retainVolumeGroups);
 
         ModelInfo serviceModelInfo = createServiceModelInfo("newest-model-name-service", "newest-model-version-service", "newest-model-uuid-service", "b16a9398-ffa3-4041-b78c-2956b8ad9c7b", null, null );
 

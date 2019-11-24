@@ -117,6 +117,7 @@ class RequestParametersVfModuleUpgrade(
         userParams: List<UserParamTypes>,
         usePreload: Boolean?,
         testApi: String?,
+        @get:JsonInclude(NON_NULL) val retainAssignments: Boolean?,
         @get:JsonInclude(NON_NULL) val rebuildVolumeGroups: Boolean?
 ) : RequestParametersVfModuleOrVolumeGroup(userParams, usePreload, testApi)
 
