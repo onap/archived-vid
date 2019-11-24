@@ -1,11 +1,12 @@
 package vid.automation.test.test;
 
+import java.io.IOException;
+import java.util.List;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.Features;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.Service;
@@ -16,23 +17,14 @@ import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
 
-import java.io.IOException;
-import java.util.List;
-
 public class CreateNewInstanceTest extends CreateInstanceDialogBaseTest {
     private ServicesService servicesService = new ServicesService();
 
     public CreateNewInstanceTest() throws IOException {
     }
 
-    @Test
+    @Test(groups = { "underDevelopment" })
     private void testCreateNewServiceInstance() throws Exception {
-
-        if (!Features.CREATE_INSTANCE_TEST.isActive()) {
-
-            // time bomb, as it fails on pipeline and I don't know how to fix it
-            return;
-        }
 
         SimulatorApi.clearAll();
         BulkRegistration.createNewServiceInstance("SILVIA ROBBINS");

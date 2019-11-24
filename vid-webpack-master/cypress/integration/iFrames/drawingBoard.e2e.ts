@@ -582,7 +582,6 @@ describe('Drawing board', function () {
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SERVICE_MODEL_CACHE": true,
-          "CREATE_INSTANCE_TEST": false,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
           "FLAG_1906_COMPONENT_INFO" : false
         },
@@ -2211,7 +2210,6 @@ describe('Drawing board', function () {
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SHOW_VERIFY_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": true,
-          "CREATE_INSTANCE_TEST": false,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": true,
           "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true
@@ -3864,7 +3862,6 @@ describe('Drawing board', function () {
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SHOW_VERIFY_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": true,
-          "CREATE_INSTANCE_TEST": false,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": true,
           "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true
@@ -5603,7 +5600,6 @@ describe('Drawing board', function () {
         "name": null,
         "type": "UPDATE_DRAWING_BOARD_STATUS",
         "flags": {
-          "CREATE_INSTANCE_TEST": false,
           "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true,
@@ -6303,7 +6299,6 @@ describe('Drawing board', function () {
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SHOW_VERIFY_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": true,
-          "CREATE_INSTANCE_TEST": false,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
           "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true,
