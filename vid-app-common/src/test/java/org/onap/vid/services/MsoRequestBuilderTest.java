@@ -75,8 +75,8 @@ import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.model.NetworkInstantiationRequestDetails;
 import org.onap.vid.mso.model.ServiceDeletionRequestDetails;
 import org.onap.vid.mso.model.ServiceInstantiationRequestDetails;
-import org.onap.vid.mso.model.VfModuleInstantiationRequestDetails;
 import org.onap.vid.mso.model.VfModuleMacro;
+import org.onap.vid.mso.model.VfModuleOrVolumeGroupRequestDetails;
 import org.onap.vid.mso.model.VnfInstantiationRequestDetails;
 import org.onap.vid.mso.model.VolumeGroupRequestDetails;
 import org.onap.vid.properties.Features;
@@ -371,7 +371,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
         when(aaiClient.isNodeTypeExistsByName(eq("vmxnjr001_AVPN_base_vRE_BV_expansion"), eq(ResourceType.VF_MODULE))).thenReturn(false);
 
         String expected = IOUtils.toString(this.getClass().getResource(fileName), "UTF-8");
-        final RequestDetailsWrapper<VfModuleInstantiationRequestDetails> result = msoRequestBuilder.generateVfModuleInstantiationRequest(
+        final RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> result = msoRequestBuilder.generateVfModuleInstantiationRequest(
                 vfModule, siModelInfo, serviceInstanceId,
                 vnfModelInfo, vnfInstanceId, volumeGroupInstanceId, "pa0916", "VNF_API");
         MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
@@ -391,8 +391,8 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     }
 
     @Test(dataProvider = "expectedAggregatedParams")
-    public void testAggregateInstanceParamsAndSuppFile(Map<String, String> instanceParams, Map<String, String> suppParams, List<VfModuleInstantiationRequestDetails.UserParamMap<String, String>> expected) {
-        List<VfModuleInstantiationRequestDetails.UserParamMap<String, String>> aggParams = msoRequestBuilder.aggregateAllInstanceParams(instanceParams, suppParams);
+    public void testAggregateInstanceParamsAndSuppFile(Map<String, String> instanceParams, Map<String, String> suppParams, List<VfModuleOrVolumeGroupRequestDetails.UserParamMap<String, String>> expected) {
+        List<VfModuleOrVolumeGroupRequestDetails.UserParamMap<String, String>> aggParams = msoRequestBuilder.aggregateAllInstanceParams(instanceParams, suppParams);
         assertThat("Aggregated params are not as expected", aggParams, equalTo(expected));
     }
 
@@ -566,7 +566,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
                         "  }" +
                         "}";
         VfModule vfModuleDetails = createVfModule("201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0", VF_MODULE_0_MODEL_VERSION_ID, VF_MODULE_0_MODEL_CUSTOMIZATION_NAME, null, new HashMap<>(), "vmxnjr001_AVPN_base_vPE_BV_base", null, true);
-        RequestDetailsWrapper<VfModuleInstantiationRequestDetails> result =
+        RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> result =
                 msoRequestBuilder.generateDeleteVfModuleRequest(vfModuleDetails, "az2018");
         MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
     }
@@ -612,17 +612,21 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
 
     @Test
     public void generateReplaceVfModuleRequest_whenRetainVolumeGroupIsTrue_rebuildVolumeGroupIsFalse() {
-        assertThat(generatedVfModuleInstantiationRequest(true),
+        boolean retainVolumeGroups = true;
+
+        assertThat(generatedVfModuleReplaceRequest(retainVolumeGroups),
             jsonPartEquals("requestDetails.requestParameters.rebuildVolumeGroups", false));
     }
 
     @Test
     public void generateReplaceVfModuleRequest_verifyResultAsExpected() {
+        Boolean retainVolumeGroups = null;
+
         String expected = TestUtils.readFileAsString("/payload_jsons/vfmodule/replace_vfmodule__payload_to_mso.json");
-        assertThat(generatedVfModuleInstantiationRequest(null), jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
+        assertThat(generatedVfModuleReplaceRequest(retainVolumeGroups), jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
     }
 
-    private RequestDetailsWrapper<VfModuleInstantiationRequestDetails> generatedVfModuleInstantiationRequest(
+    private RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> generatedVfModuleReplaceRequest(
         Boolean retainVolumeGroups) {
         when(featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)).thenReturn(true);
         when(aaiClient.getCloudOwnerByCloudRegionId("regionOne")).thenReturn("irma-aic");
@@ -637,8 +641,9 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
 
         ModelInfo vnfModelInfo = createVnfModelInfo("newest-model-name-vnf", "newest-model-version-vnf", "newest-model-uuid-vnf", "23122c9b-dd7f-483f-bf0a-e069303db2f7", "newest-model-customization-uuid-vnf", "newest-model-customization-name-vnf" );
 
-        return msoRequestBuilder.generateVfModuleInstantiationRequest(vfModuleDetails, serviceModelInfo, "e9993045-cc96-4f3f-bf9a-71b2a400a956", vnfModelInfo, "5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5", null,
-            "az2016", "GR_API"
+        return msoRequestBuilder.generateVfModuleReplaceRequest(vfModuleDetails, serviceModelInfo,
+            "e9993045-cc96-4f3f-bf9a-71b2a400a956", vnfModelInfo,
+            "5c9c2896-1fe6-4055-b7ec-d0a01e5f9bf5", null, "az2016", "GR_API"
         );
     }
 }
