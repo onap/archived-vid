@@ -22,7 +22,6 @@ package org.onap.vid.mso.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import org.onap.vid.mso.model.VfModuleOrVolumeGroupRequestDetails.RequestParametersVfModuleOrVolumeGroup;
 
 public class VolumeGroupRequestDetails extends BaseResourceInstantiationRequestDetails {
 

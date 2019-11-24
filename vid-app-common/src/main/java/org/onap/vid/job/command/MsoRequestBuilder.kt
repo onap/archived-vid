@@ -11,7 +11,6 @@ import org.onap.vid.changeManagement.RequestDetailsWrapper
 import org.onap.vid.model.serviceInstantiation.*
 import org.onap.vid.mso.model.*
 import org.onap.vid.mso.model.BaseResourceInstantiationRequestDetails.*
-import org.onap.vid.mso.model.VfModuleOrVolumeGroupRequestDetails.*
 import org.onap.vid.mso.rest.SubscriberInfo
 import org.onap.vid.properties.Features
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
@@ -295,7 +294,7 @@ class MsoRequestBuilder
         }.collect(Collectors.toList<VfModuleMacro>())
     }
 
-    fun aggregateAllInstanceParams(instanceParams: Map<String, String>?, supplementaryParams: Map<String, String>?): List<VfModuleOrVolumeGroupRequestDetails.UserParamMap<String, String>> {
+    fun aggregateAllInstanceParams(instanceParams: Map<String, String>?, supplementaryParams: Map<String, String>?): List<UserParamMap<String, String>> {
         var instanceParamsFinal: Map<String, String> = instanceParams ?: emptyMap()
         val supplementaryParamsFinal: Map<String, String> = supplementaryParams ?: emptyMap()
 
