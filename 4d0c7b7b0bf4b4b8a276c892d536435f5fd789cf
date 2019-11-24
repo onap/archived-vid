@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b24f4909_498caef1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-24T09:08:24Z",
+      "side": 1,
+      "message": "this line is the only difference between these 2 methods.\nMaybe we can have common one, which get some lambada (like Supplier or Function) ?",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 130,
+        "endChar": 66
+      },
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3c90f41_313e24c9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-24T09:08:24Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b223237d_ac5b28d7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/model/VfModuleOrVolumeGroupRequestDetails.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-24T09:08:24Z",
+      "side": 1,
+      "message": "what about migrating it to Kotlin, so we will have couple of classes in same KT file ?\nWe can avoid the inner static class this way.",
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e76c70b_2232fddb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/model/VfModuleOrVolumeGroupRequestDetails.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-24T09:08:24Z",
+      "side": 1,
+      "message": "we will need it soon also in RequestParametersVfModuleUpgrade",
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86ca703a_f95860da",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-24T09:08:24Z",
+      "side": 1,
+      "message": "why do you need this extraction ?",
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
