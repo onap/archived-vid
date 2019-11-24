@@ -84,7 +84,6 @@ describe('Network step service', () => {
         "genericModalCriteria": {"roles": ["-- select an option --", "network role 1", "network role 2", "network role 3", "network role 4", "network role 5"]},
         "name": null,
         "flags": {
-          "CREATE_INSTANCE_TEST": false,
           "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
           "FLAG_ENABLE_WEBPACK_MODERN_UI": true,

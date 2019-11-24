@@ -6,11 +6,7 @@ import {BasicControlGenerator} from "../basic.control.generator";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
-import {
-  FormControlModel,
-  ValidatorModel,
-  ValidatorOptions
-} from "../../../../models/formControlModels/formControl.model";
+import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {VnfGroupControlGenerator} from "./vnfGroup.control.generator";
 import {Observable} from "rxjs";
@@ -25,7 +21,6 @@ class MockAppStore<T> {
         "type": "UPDATE_DRAWING_BOARD_STATUS",
         "drawingBoardStatus": "CREATE",
         "flags": {
-          "CREATE_INSTANCE_TEST": false,
           "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true,

@@ -1463,7 +1463,6 @@ function initDrawingBoardWithFourPnf(serviceModelId: string, pnfName: string) {
           "FLAG_SERVICE_MODEL_CACHE": true,
           "FLAG_1902_RETRY_JOB": true,
           "FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI": true,
-          "CREATE_INSTANCE_TEST": false,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": true,
           "FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH": true,
           "FLAG_VF_MODULE_RESUME_STATUS_CREATE": true,
