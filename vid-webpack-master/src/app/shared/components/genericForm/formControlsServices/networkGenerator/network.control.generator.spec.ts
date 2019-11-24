@@ -7,11 +7,7 @@ import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
 import {LogService} from "../../../../utils/log/log.service";
 import {FormControlNames, NetworkControlGenerator} from "./network.control.generator";
-import {
-  FormControlModel,
-  ValidatorModel,
-  ValidatorOptions
-} from "../../../../models/formControlModels/formControl.model";
+import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 
 class MockAppStore<T> {
@@ -25,7 +21,6 @@ class MockAppStore<T> {
       "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
       "FLAG_SHOW_VERIFY_SERVICE": false,
       "FLAG_SERVICE_MODEL_CACHE": true,
-      "CREATE_INSTANCE_TEST": false,
       "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
       "EMPTY_DRAWING_BOARD_TEST": false,
       "FLAG_ADD_MSO_TESTAPI_FIELD": true
