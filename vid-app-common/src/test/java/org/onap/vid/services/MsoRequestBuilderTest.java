@@ -75,6 +75,7 @@ import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.model.NetworkInstantiationRequestDetails;
 import org.onap.vid.mso.model.ServiceDeletionRequestDetails;
 import org.onap.vid.mso.model.ServiceInstantiationRequestDetails;
+import org.onap.vid.mso.model.UserParamMap;
 import org.onap.vid.mso.model.VfModuleMacro;
 import org.onap.vid.mso.model.VfModuleOrVolumeGroupRequestDetails;
 import org.onap.vid.mso.model.VnfInstantiationRequestDetails;
@@ -391,8 +392,8 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     }
 
     @Test(dataProvider = "expectedAggregatedParams")
-    public void testAggregateInstanceParamsAndSuppFile(Map<String, String> instanceParams, Map<String, String> suppParams, List<VfModuleOrVolumeGroupRequestDetails.UserParamMap<String, String>> expected) {
-        List<VfModuleOrVolumeGroupRequestDetails.UserParamMap<String, String>> aggParams = msoRequestBuilder.aggregateAllInstanceParams(instanceParams, suppParams);
+    public void testAggregateInstanceParamsAndSuppFile(Map<String, String> instanceParams, Map<String, String> suppParams, List<UserParamMap<String, String>> expected) {
+        List<UserParamMap<String, String>> aggParams = msoRequestBuilder.aggregateAllInstanceParams(instanceParams, suppParams);
         assertThat("Aggregated params are not as expected", aggParams, equalTo(expected));
     }
 
