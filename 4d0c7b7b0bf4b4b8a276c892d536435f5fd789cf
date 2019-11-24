@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "eb76aaea_8a8425db",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-24T15:22:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b24f4909_498caef1",
+      "range": {
+        "startLine": 129,
+        "startChar": 8,
+        "endLine": 130,
+        "endChar": 66
+      },
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e3c90f41_313e24c9",
         "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
         "patchSetId": 1
@@ -39,6 +63,24 @@
       "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c8fdf01_7cbfbabf",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-24T15:22:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e3c90f41_313e24c9",
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -76,6 +118,24 @@
     },
     {
       "key": {
+        "uuid": "0eae396b_2ef231d1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/model/VfModuleOrVolumeGroupRequestDetails.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-24T15:22:49Z",
+      "side": 1,
+      "message": "shwaye shwaye",
+      "parentUuid": "7e76c70b_2232fddb",
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "86ca703a_f95860da",
         "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
         "patchSetId": 1
@@ -87,6 +147,24 @@
       "writtenOn": "2019-11-24T09:08:24Z",
       "side": 1,
       "message": "why do you need this extraction ?",
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d38904bf_f3021073",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-24T15:22:49Z",
+      "side": 1,
+      "message": "to have a literal \"retainVolumeGroups\" parameter below. just for readability.",
+      "parentUuid": "86ca703a_f95860da",
       "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
