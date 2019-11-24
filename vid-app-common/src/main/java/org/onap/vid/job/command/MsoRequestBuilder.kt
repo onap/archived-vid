@@ -140,7 +140,8 @@ class MsoRequestBuilder
             vgInstanceId: String?, userId: String, testApi: String?
     ): RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> {
         val requestParameters = { userParams: List<UserParamTypes> ->
-            RequestParametersVfModuleUpgrade(userParams, vfModuleDetails.isUsePreload, testApi, nullSafeNegate(vfModuleDetails.isRetainVolumeGroups))
+            RequestParametersVfModuleUpgrade(userParams, vfModuleDetails.isUsePreload, testApi,
+                    vfModuleDetails.isRetainAssignments, nullSafeNegate(vfModuleDetails.isRetainVolumeGroups))
         }
 
         return generateVfModuleRequestWithRequestParams(vfModuleDetails, serviceModelInfo, serviceInstanceId,
