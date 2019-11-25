@@ -127,6 +127,24 @@
     },
     {
       "key": {
+        "uuid": "879f9ab9_cc20e875",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T12:56:32Z",
+      "side": 1,
+      "message": "the test name says it returnALaCarte_byFeatureFlag. If the feature flag is off, it won\u0027t return ALaCarte",
+      "parentUuid": "441f15b2_2ebe892b",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c32e70c9_30782263",
         "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
         "patchSetId": 3
@@ -144,6 +162,24 @@
     },
     {
       "key": {
+        "uuid": "0f37da77_68118610",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T12:56:32Z",
+      "side": 1,
+      "message": "I don\u0027t think so, but our code support it...",
+      "parentUuid": "c32e70c9_30782263",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "357a5ccd_8caf9a57",
         "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
         "patchSetId": 3
@@ -155,6 +191,24 @@
       "writtenOn": "2019-11-25T09:57:39Z",
       "side": 1,
       "message": "The first option along with the mock place the system in a position where it is checking instantiation type and it doesn\u0027t equals macro or alcarte - but the business function still goes on and checks the flag status, only if it\u0027s false - it returns Client Config.\nTherefor, my question is: Can we set the function to return client config regardless to the flag\u0027s status in such a scenario?",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa29b2ca_ecc56156",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T12:56:32Z",
+      "side": 1,
+      "message": "The answer is no. If the feature flag is true, we want the default to be aLACarte",
+      "parentUuid": "357a5ccd_8caf9a57",
       "revId": "2727a38609435e8483d79d0b423829d351e402b4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
