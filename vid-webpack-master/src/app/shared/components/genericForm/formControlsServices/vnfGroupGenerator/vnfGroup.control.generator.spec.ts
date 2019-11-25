@@ -25,7 +25,6 @@ class MockAppStore<T> {
         "type": "UPDATE_DRAWING_BOARD_STATUS",
         "drawingBoardStatus": "CREATE",
         "flags": {
-          "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true,
           "FLAG_SERVICE_MODEL_CACHE": false,

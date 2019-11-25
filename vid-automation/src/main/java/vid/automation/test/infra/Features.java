@@ -5,7 +5,6 @@ import org.togglz.core.context.FeatureContext;
 
 public enum Features implements Feature {
 
-    EMPTY_DRAWING_BOARD_TEST,
     FLAG_ADD_MSO_TESTAPI_FIELD,
     FLAG_SERVICE_MODEL_CACHE,
     FLAG_NETWORK_TO_ASYNC_INSTANTIATION,
