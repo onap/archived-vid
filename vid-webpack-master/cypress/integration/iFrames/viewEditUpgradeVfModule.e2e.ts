@@ -105,7 +105,9 @@ describe('View Edit Page: Upgrade VFModule', function () {
       initServicePlanning("EDIT",
         '../vid-automation/src/test/resources/viewEdit/ServiceTreeWithMultipleChildren_serviceInstance_withUpdatedLatestVersion.json');
       upgradeTheVFM();
+      assertVfModuleActionInRedux("None_Upgrade");
       undoUpgradeForVFM();
+      assertVfModuleActionInRedux("None");
       upgradeTheVFM();
       cy.getDrawingBoardDeployBtn().click();
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
@@ -229,5 +231,14 @@ describe('View Edit Page: Upgrade VFModule', function () {
   function changeServiceModel(serviceModel: ServiceModel) {
     serviceModel.service.uuid = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
     return serviceModel;
+  }
+
+  function assertVfModuleActionInRedux(expectedState:string) {
+    cy.getReduxState().then((state) => {
+      const vfModule = state.service.serviceInstance['6e59c5de-f052-46fa-aa7e-2fca9d674c44']
+        .vnfs["VNF2_INSTANCE_ID"]
+        .vfModules["vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1"]["2c1ca484-cbc2-408b-ab86-25a2c15ce280"];
+      expect(vfModule.action).to.equal(expectedState)
+    });
   }
 });
