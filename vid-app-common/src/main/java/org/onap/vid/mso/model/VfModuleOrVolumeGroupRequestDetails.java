@@ -98,30 +98,44 @@ import java.util.Map;
 
  */
 
-public class VfModuleInstantiationRequestDetails extends BaseResourceInstantiationRequestDetails {
+public class VfModuleOrVolumeGroupRequestDetails extends BaseResourceInstantiationRequestDetails {
 
-    public VfModuleInstantiationRequestDetails(
+    public VfModuleOrVolumeGroupRequestDetails(
             @JsonProperty(value = "modelInfo", required = true) ModelInfo modelInfo,
             @JsonProperty(value = "cloudConfiguration", required = true) CloudConfiguration cloudConfiguration,
             @JsonProperty(value = "requestInfo", required = true) RequestInfo requestInfo,
             @JsonProperty(value = "relatedInstanceList", required = true) List<RelatedInstance> relatedInstanceList,
-            @JsonProperty(value = "requestParameters", required = true) RequestParametersVfModule requestParameters)
+            @JsonProperty(value = "requestParameters", required = true) RequestParametersVfModuleOrVolumeGroup requestParameters)
     {
         super(modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters);
     }
 
-    public static class RequestParametersVfModule extends BaseResourceInstantiationRequestDetails.RequestParameters {
+    public static class RequestParametersVfModuleOrVolumeGroup extends BaseResourceInstantiationRequestDetails.RequestParameters {
         @JsonInclude(NON_NULL) private final Boolean usePreload;
-        @JsonInclude(NON_NULL) private final Boolean rebuildVolumeGroups;
 
-        public RequestParametersVfModule(List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi, Boolean rebuildVolumeGroups) {
+        private RequestParametersVfModuleOrVolumeGroup(List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi) {
             super(userParams, testApi);
             this.usePreload = usePreload;
-            this.rebuildVolumeGroups = rebuildVolumeGroups;
         }
 
         public Boolean isUsePreload() {
             return usePreload;
+        }
+    }
+
+    public static class RequestParametersVfModuleOrVolumeGroupInstantiation extends RequestParametersVfModuleOrVolumeGroup {
+        public RequestParametersVfModuleOrVolumeGroupInstantiation(
+            List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi) {
+            super(userParams, usePreload, testApi);
+        }
+    }
+
+    public static class RequestParametersVfModuleUpgrade extends RequestParametersVfModuleOrVolumeGroup {
+        @JsonInclude(NON_NULL) private final Boolean rebuildVolumeGroups;
+
+        public RequestParametersVfModuleUpgrade(List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi, Boolean rebuildVolumeGroups) {
+            super(userParams, usePreload, testApi);
+            this.rebuildVolumeGroups = rebuildVolumeGroups;
         }
 
         public Boolean getRebuildVolumeGroups() {
@@ -130,7 +144,6 @@ public class VfModuleInstantiationRequestDetails extends BaseResourceInstantiati
     }
 
     public static class UserParamMap<K,V> extends HashMap<K,V> implements UserParamTypes, Map<K,V>  {
-
         public UserParamMap() {
             super();
         }
