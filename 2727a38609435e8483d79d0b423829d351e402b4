@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ce98b069_d818d795",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T13:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d354e983_be9efafb",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "159453a1_bf9cb3ea",
         "filename": "features.properties.md",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "2727a38609435e8483d79d0b423829d351e402b4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "068da8d3_02113260",
+        "filename": "features.properties.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T13:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "159453a1_bf9cb3ea",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "fd2807e8_4e1f56d8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T13:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f284c22_966efe8c",
+      "range": {
+        "startLine": 105,
+        "startChar": 12,
+        "endLine": 105,
+        "endChar": 20
+      },
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a8d8c07_4c8dc7ac",
         "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
         "patchSetId": 3
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "573e1358_8a5aed3e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T13:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a8d8c07_4c8dc7ac",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5fcc5ff8_9c5d0e2e",
         "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
         "patchSetId": 3
@@ -90,6 +168,24 @@
       "revId": "2727a38609435e8483d79d0b423829d351e402b4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99e95c44_cbf2c550",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T13:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fcc5ff8_9c5d0e2e",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -145,6 +241,24 @@
     },
     {
       "key": {
+        "uuid": "e7a8284d_76abc227",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T13:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "879f9ab9_cc20e875",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c32e70c9_30782263",
         "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
         "patchSetId": 3
@@ -177,6 +291,24 @@
       "revId": "2727a38609435e8483d79d0b423829d351e402b4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ad3b895_ae0e5e94",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T13:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f37da77_68118610",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
