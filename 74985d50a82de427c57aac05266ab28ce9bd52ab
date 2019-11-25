@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c081488_a8c3bf48",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/model/VfModuleOrVolumeGroupRequestDetails.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T06:55:11Z",
+      "side": 1,
+      "message": "I wonder if Intellij did it all automatically ?",
+      "revId": "74985d50a82de427c57aac05266ab28ce9bd52ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1340fd9_c4cc6690",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/model/VfModuleOrVolumeGroupRequestDetails.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T06:55:11Z",
+      "side": 1,
+      "message": "27 lines instead of 51. nice",
+      "revId": "74985d50a82de427c57aac05266ab28ce9bd52ab",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
