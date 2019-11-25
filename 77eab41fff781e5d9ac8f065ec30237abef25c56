@@ -1,0 +1,468 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "893a8965_c3be7813",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "change the commit message to something moe descriptive",
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b273af34_1f946e8e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "don\u0027t use random issue VID-584; if no relevant issue -- please create one",
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2378519c_36b44233",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "Feature is \"Enable multiple platform values for VNF instantiation\" -\u003e VNF, not a-la-carte",
+      "range": {
+        "startLine": 83,
+        "startChar": 9,
+        "endLine": 83,
+        "endChar": 19
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f39c615_0539c884",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "Please document the toggle in a few words in the file features.properties.md",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 8
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56a43eb0_a66dde62",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "please rename to have the context field; e.g. FLAG_2002_A_LA_CARTE_PLATFORM_MULTI_SELECT",
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a0cfcc3_eb908689",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/ala-carte.e2e.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "please rename the test.\nat least it should contain the flag name, as this is the only place which this feature is tested.",
+      "range": {
+        "startLine": 93,
+        "startChar": 8,
+        "endLine": 93,
+        "endChar": 22
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5929925_a91c8403",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/ala-carte.e2e.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "file was renamed to \"flags.cypress.json\"",
+      "range": {
+        "startLine": 94,
+        "startChar": 60,
+        "endLine": 94,
+        "endChar": 70
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "915cb001_537bd923",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/ala-carte.e2e.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "why the test is doing\n* select platform\n* set\n* edit\n* select another platform\n\nCan\u0027t the tests simply select two platforms, then submit?",
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52ad413e_469c7653",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/ala-carte.e2e.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "no need to modify this field, as this is the value in the file already",
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33b4a340_29762abc",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "why the default is false? isn\u0027t selelctPlatformValue sufficient for all cases?",
+      "range": {
+        "startLine": 23,
+        "startChar": 3,
+        "endLine": 23,
+        "endChar": 40
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a34340ab_38f0ae5a",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "add a trailing comma",
+      "range": {
+        "startLine": 23,
+        "startChar": 44,
+        "endLine": 23,
+        "endChar": 49
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d21edde6_52f1d501",
+        "filename": "vid-webpack-master/src/app/shared/components/formControls/component/multiselect/multiselect.formControl.component.html",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "is this text intentional? i don\u0027t think there is a criteria here for platforms to cahnge.",
+      "range": {
+        "startLine": 25,
+        "startChar": 34,
+        "endLine": 25,
+        "endChar": 85
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb16caef_471d5d2c",
+        "filename": "vid-webpack-master/src/app/shared/components/formControls/component/multiselect/multiselect.formControl.service.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "must add for all these functions some documentation of a simple in/out example, or just explanation of what it does",
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a99b43b2_797d0610",
+        "filename": "vid-webpack-master/src/app/shared/components/formControls/component/multiselect/multiselect.formControl.service.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "i don\u0027t find any unit test for these reducers.\nmaybe it will resolve the documentation issue?",
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d1d51ca_c1840229",
+        "filename": "vid-webpack-master/src/app/shared/components/formControls/component/multiselect/multiselect.model.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "Can rename MultiSelectItem to MultiSelectOption, to better distinguish between a possibility (\"option\") and an actual selected item.",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 1,
+        "endChar": 29
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9525de4f_1b04d06c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "maybe \"getPlatformSingleSelectControl\"?",
+      "range": {
+        "startLine": 147,
+        "startChar": 13,
+        "endLine": 147,
+        "endChar": 21
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da37c43d_c53eb857",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "looks like this is not in use",
+      "range": {
+        "startLine": 165,
+        "startChar": 50,
+        "endLine": 165,
+        "endChar": 78
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "091dda1a_f04c779b",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "looks like this is not in use",
+      "range": {
+        "startLine": 192,
+        "startChar": 39,
+        "endLine": 192,
+        "endChar": 67
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "503435ed_0fe4824b",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "if \"isMultiSelect\" won\u0027t be optinally null, this \"if\" will be much simpler.",
+      "range": {
+        "startLine": 193,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 91
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed2bcfa3_851c2a55",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/generic-form.component.html",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "i think can assume \"formControl?\" is allways non-null",
+      "range": {
+        "startLine": 12,
+        "startChar": 56,
+        "endLine": 12,
+        "endChar": 68
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e9d1340_a535f7f2",
+        "filename": "vid-webpack-master/src/app/shared/models/formControlModels/multiselectFormControl.model.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "wouldn\u0027t it be simpler if will be a string[], instead of any?",
+      "range": {
+        "startLine": 10,
+        "startChar": 19,
+        "endLine": 10,
+        "endChar": 22
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f9d2b40_a23e6f1f",
+        "filename": "vid-webpack-master/src/app/shared/models/formControlModels/multiselectFormControl.model.ts",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T16:24:56Z",
+      "side": 1,
+      "message": "I think the implementation for convertOriginalDataToArray should be part of the multi-select, not a part of getPlatformMultiselectControl() method.\n\nat least, a sample split/join implementation should be given here, and only referenced from the vnf.control.generator?\nthese sample-implementation can also be used in the control unit-tests, to expect the in/out results of MultiselectFormControlService.",
+      "range": {
+        "startLine": 10,
+        "startChar": 2,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "77eab41fff781e5d9ac8f065ec30237abef25c56",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
