@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e4dc1049_f4c918df",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/basic.control.generator.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T17:04:43Z",
+      "side": 1,
+      "message": "I prefer full verbosity, e.g. \"onDeleteSupplementaryFile\"",
+      "range": {
+        "startLine": 271,
+        "startChar": 24,
+        "endLine": 271,
+        "endChar": 31
+      },
+      "revId": "a614cacccd3ea7519f5b4d543fda3a585047fc6d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62ef98df_97c88267",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/basic.control.generator.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T17:04:43Z",
+      "side": 1,
+      "message": "I prefer full verbosity, e.g. \"onChangeSupplementaryFile\"",
+      "range": {
+        "startLine": 278,
+        "startChar": 24,
+        "endLine": 278,
+        "endChar": 31
+      },
+      "revId": "a614cacccd3ea7519f5b4d543fda3a585047fc6d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
