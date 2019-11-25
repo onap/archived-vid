@@ -17,16 +17,11 @@
  * limitations under the License.
  * ============LICENSE_END=========================================================
  */
+package org.onap.vid.mso.model
 
-package org.onap.vid.mso.model;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
+import java.util.*
 
 /* Based on this model:
 
@@ -98,55 +93,32 @@ import java.util.Map;
 
  */
 
-public class VfModuleOrVolumeGroupRequestDetails extends BaseResourceInstantiationRequestDetails {
+data class VfModuleOrVolumeGroupRequestDetails(
+        val modelInfo: ModelInfo,
+        val cloudConfiguration: CloudConfiguration,
+        val requestInfo: RequestInfo,
+        val relatedInstanceList: List<RelatedInstance>?,
+        val requestParameters: RequestParametersVfModuleOrVolumeGroup?)
+    : BaseResourceInstantiationRequestDetails(modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters)
 
-    public VfModuleOrVolumeGroupRequestDetails(
-            @JsonProperty(value = "modelInfo", required = true) ModelInfo modelInfo,
-            @JsonProperty(value = "cloudConfiguration", required = true) CloudConfiguration cloudConfiguration,
-            @JsonProperty(value = "requestInfo", required = true) RequestInfo requestInfo,
-            @JsonProperty(value = "relatedInstanceList", required = true) List<RelatedInstance> relatedInstanceList,
-            @JsonProperty(value = "requestParameters", required = true) RequestParametersVfModuleOrVolumeGroup requestParameters)
-    {
-        super(modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters);
-    }
+open class RequestParametersVfModuleOrVolumeGroup internal constructor(
+        userParams: List<UserParamTypes>,
+        @get:JsonInclude(NON_NULL) val isUsePreload: Boolean?,
+        testApi: String?
+) : BaseResourceInstantiationRequestDetails.RequestParameters(userParams, testApi)
 
-    public static class RequestParametersVfModuleOrVolumeGroup extends BaseResourceInstantiationRequestDetails.RequestParameters {
-        @JsonInclude(NON_NULL) private final Boolean usePreload;
+class RequestParametersVfModuleOrVolumeGroupInstantiation(
+        userParams: List<UserParamTypes>,
+        usePreload: Boolean?,
+        testApi: String?
+) : RequestParametersVfModuleOrVolumeGroup(userParams, usePreload, testApi)
 
-        private RequestParametersVfModuleOrVolumeGroup(List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi) {
-            super(userParams, testApi);
-            this.usePreload = usePreload;
-        }
+class RequestParametersVfModuleUpgrade(
+        userParams: List<UserParamTypes>,
+        usePreload: Boolean?,
+        testApi: String?,
+        @get:JsonInclude(NON_NULL) val rebuildVolumeGroups: Boolean?
+) : RequestParametersVfModuleOrVolumeGroup(userParams, usePreload, testApi)
 
-        public Boolean isUsePreload() {
-            return usePreload;
-        }
-    }
-
-    public static class RequestParametersVfModuleOrVolumeGroupInstantiation extends RequestParametersVfModuleOrVolumeGroup {
-        public RequestParametersVfModuleOrVolumeGroupInstantiation(
-            List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi) {
-            super(userParams, usePreload, testApi);
-        }
-    }
-
-    public static class RequestParametersVfModuleUpgrade extends RequestParametersVfModuleOrVolumeGroup {
-        @JsonInclude(NON_NULL) private final Boolean rebuildVolumeGroups;
-
-        public RequestParametersVfModuleUpgrade(List<? extends UserParamTypes> userParams, Boolean usePreload, String testApi, Boolean rebuildVolumeGroups) {
-            super(userParams, usePreload, testApi);
-            this.rebuildVolumeGroups = rebuildVolumeGroups;
-        }
-
-        public Boolean getRebuildVolumeGroups() {
-            return rebuildVolumeGroups;
-        }
-    }
-
-    public static class UserParamMap<K,V> extends HashMap<K,V> implements UserParamTypes, Map<K,V>  {
-        public UserParamMap() {
-            super();
-        }
-    }
-}
+class UserParamMap<K, V> : HashMap<K, V>(), UserParamTypes, MutableMap<K, V>
 
