@@ -49,6 +49,29 @@
     },
     {
       "key": {
+        "uuid": "211d1775_452e248d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T06:51:56Z",
+      "side": 1,
+      "message": "Sorry I\u0027m snoozing, but the methods are still kind of duplication.\nI would think about one method that generate the request, so generateVfModuleReplaceRequest generateVfModuleRequestWithRequestParams both call it, but they will supply only the \n(userParams: List\u003cUserParamTypes\u003e) -\u003e RequestParametersVfModuleOrVolumeGroup method",
+      "range": {
+        "startLine": 145,
+        "startChar": 15,
+        "endLine": 145,
+        "endChar": 55
+      },
+      "revId": "4d0c7b7b0bf4b4b8a276c892d536435f5fd789cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e3c90f41_313e24c9",
         "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
         "patchSetId": 1
