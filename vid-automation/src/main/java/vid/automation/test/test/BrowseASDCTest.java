@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static vid.automation.test.infra.Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND;
 import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_NETWORK_TO_ASYNC_INSTANTIATION;
 import static vid.automation.test.infra.Features.FLAG_SHOW_ORCHESTRATION_TYPE;
@@ -29,7 +30,7 @@ import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessi
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.TimeBombSkipException;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -181,9 +182,9 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
     @Test
     private void browseServiceModel_deployServiceMacroByMACRO_SERVICESConfig_creationPopupIsOldMacro()  {
-        if (FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI.isActive() ) {
-            throw new TimeBombSkipException("skipping identify macro by uuid for awhile", "2019/11/25");
-            //also need to handle the simulator preset by using good ModelInfo instance
+        if (FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI.isActive() &&
+        ! FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND.isActive()) {
+            throw new SkipException("some 2002 flags shall come along together");
         }
         deployServiceAndAssertInstantiationType(
                 "csar15782222_invariantUUIDMacro.zip",

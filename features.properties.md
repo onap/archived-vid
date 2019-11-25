@@ -184,3 +184,7 @@
 
 * FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS
   When flag is true the new popup will be opened with additional options to perform on VFM.
+  
+* FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND,
+  When flag is true, VID use macro_services_by_invariant_uuid.json file to identify if csar without instantiation type is macro service.  
+  Otherwise, MACRO_SERVICES list in vidConfiguration.js is used to identify if it's a macro service (in ng1 code)
