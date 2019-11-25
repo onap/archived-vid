@@ -21,6 +21,8 @@ import {FormGeneralErrorsService} from "../../formGeneralErrors/formGeneralError
 import {Observable, of} from "rxjs";
 import {NodeModel} from "../../../models/nodeModel";
 import {Constants} from "../../../utils/constants";
+import {FileUnit} from "../../formControls/component/file/fileUnit.enum";
+import {FormControlNames} from "./vfModuleGenerator/vfModule.control.generator";
 
 
 @Injectable()
@@ -237,4 +239,56 @@ export class BasicControlGenerator {
     return initialInstanceName;
   }
 
+  getSupplementaryFile(instance: any): FileFormControl {
+    return new FileFormControl({
+      controlName: FormControlNames.SUPPLEMENTARY_FILE,
+      displayName: 'Supplementary Data File (JSON format)',
+      dataTestId: 'SupplementaryFile',
+      placeHolder: 'Choose file',
+      selectedFile:  !_.isNil(instance) ? instance.supplementaryFileName: null,
+      isVisible: true,
+      acceptedExtentions: "application/json",
+      hiddenFile : [new InputFormControl({
+        controlName: FormControlNames.SUPPLEMENTARY_FILE + "_hidden",
+        isVisible: false,
+        validations: [new ValidatorModel(CustomValidatorOptions.isFileTooBig, "File size exceeds 5MB.", [FileUnit.MB, 5])]
+      }),
+        new InputFormControl({
+          controlName: FormControlNames.SUPPLEMENTARY_FILE + "_hidden_content",
+          isVisible: false,
+          validations: [new ValidatorModel(CustomValidatorOptions.isValidJson,
+            "File is invalid, please make sure a legal JSON file is uploaded using name:value pairs.",[]),
+            new ValidatorModel(CustomValidatorOptions.isStringContainTags,
+              "File is invalid, please remove tags <>.",[])],
+          value: !_.isNil(instance) ? (instance.supplementaryFile_hidden_content): null,
+        })
+      ],
+      onDelete : this.getOnDeleteForSupFile(),
+      onChange : this.getOnChangeForSupFile()
+    })
+  };
+
+  private getOnDeleteForSupFile() {
+    return (form: FormGroup) => {
+      form.controls[FormControlNames.SUPPLEMENTARY_FILE + "_hidden"].setValue(null);
+      form.controls[FormControlNames.SUPPLEMENTARY_FILE + "_hidden_content"].setValue(null);
+    };
+  }
+
+  private getOnChangeForSupFile() {
+    return (files: FileList, form: FormGroup) => {
+      if (files.length > 0) {
+        const file = files.item(0);
+        let reader = new FileReader();
+        reader.onload = function (event) {
+          form.controls[FormControlNames.SUPPLEMENTARY_FILE + "_hidden_content"].setValue(reader.result);
+          form.controls[FormControlNames.SUPPLEMENTARY_FILE + "_hidden"].setValue(file);
+        };
+        reader.readAsText(file);
+      } else {
+        form.controls[FormControlNames.SUPPLEMENTARY_FILE + "_hidden"].setValue(null);
+        form.controls[FormControlNames.SUPPLEMENTARY_FILE + "_hidden_content"].setValue(null);
+      }
+    };
+  }
 }
