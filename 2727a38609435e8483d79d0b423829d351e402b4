@@ -2,6 +2,97 @@
   "comments": [
     {
       "key": {
+        "uuid": "d354e983_be9efafb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T12:21:20Z",
+      "side": 1,
+      "message": "vid-705",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "159453a1_bf9cb3ea",
+        "filename": "features.properties.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T12:21:20Z",
+      "side": 1,
+      "message": "please add:\nOtherwise, VIDCONFIGURATION.MACRO_SERVICES is used.",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f284c22_966efe8c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T12:21:20Z",
+      "side": 1,
+      "message": "StringUtils.isNotEmpty",
+      "range": {
+        "startLine": 105,
+        "startChar": 12,
+        "endLine": 105,
+        "endChar": 20
+      },
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a8d8c07_4c8dc7ac",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T12:21:20Z",
+      "side": 1,
+      "message": "maybe switch/case will be more readable here, and it does String.equals() by default.",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5fcc5ff8_9c5d0e2e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/parser/VidNotionsBuilder.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T12:21:20Z",
+      "side": 1,
+      "message": "i\u0027d suggest the \"default\" case here, which should be, IMO, A_LA_CARTE.\neven if intentional, I don\u0027t think we need to stream into next tests when instantiation type is unexpected.",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1d4c5158_2340b4d8",
         "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
         "patchSetId": 3
@@ -81,6 +172,23 @@
       "writtenOn": "2019-11-25T09:57:39Z",
       "side": 1,
       "message": "I didn\u0027t get the whole idea of this test - lets talk about this one",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "422d6c17_083db443",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/SdcApiTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-25T12:21:20Z",
+      "side": 1,
+      "message": "suggestion: ignore also `instantiationType`, and add another assertion:\n\nassertThat(response.getBody(), hasJsonPath(\"service.vidNotions.instantiationType\", \n    Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND.isActive()\n        ? \"ALaCarte\" : \"ClientConfig\"\n)",
       "revId": "2727a38609435e8483d79d0b423829d351e402b4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
