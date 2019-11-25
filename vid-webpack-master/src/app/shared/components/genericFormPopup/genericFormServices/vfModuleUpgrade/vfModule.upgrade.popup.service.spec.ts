@@ -84,6 +84,6 @@ describe('VFModule popup service', () => {
     });
 
     expect(retainAssignmentsControl).toBeDefined();
-    expect(retainAssignmentsControl.value).toBeFalsy();
+    expect(retainAssignmentsControl.value).toBeTruthy();
   });
 });

@@ -46,7 +46,7 @@ export class VfModuleUpgradePopupService extends VfModulePopuopService {
         controlName: 'retainAssignments',
         displayName: 'Retain Assignments',
         dataTestId: 'retainAssignments',
-        value: false,
+        value: true,
         validations: []
       })
     ];
