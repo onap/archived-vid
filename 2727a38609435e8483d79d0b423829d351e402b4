@@ -378,6 +378,24 @@
       "revId": "2727a38609435e8483d79d0b423829d351e402b4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7688bf28_43662767",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/SdcApiTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-25T13:32:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "422d6c17_083db443",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
