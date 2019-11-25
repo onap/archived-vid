@@ -33,7 +33,6 @@ class MockReduxStore<T> {
           "FLAG_ADVANCED_PORTS_FILTER": true,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
           "FLAG_REGION_ID_FROM_REMOTE": true,
-          "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true
         },
         "type": "[FLAGS] Update"

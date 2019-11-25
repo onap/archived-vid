@@ -1447,7 +1447,6 @@ function initDrawingBoardWithFourPnf(serviceModelId: string, pnfName: string) {
           "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST": true,
           "FLAG_SHOW_VERIFY_SERVICE": true,
           "FLAG_1902_NEW_VIEW_EDIT": true,
-          "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true,
           "FLAG_1906_INSTANTIATION_API_USER_VALIDATION": true,
           "FLAG_EXP_CREATE_RESOURCES_IN_PARALLEL": false,

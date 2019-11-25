@@ -26,7 +26,6 @@ class MockAppStore<T> {
           "FLAG_SHOW_VERIFY_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": true,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
-          "EMPTY_DRAWING_BOARD_TEST": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true
         },
         "type": "[FLAGS] Update"
