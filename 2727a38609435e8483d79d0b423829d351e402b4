@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1d4c5158_2340b4d8",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-11-25T09:57:39Z",
+      "side": 1,
+      "message": "Instead of inserting a flag through the method signature, we can use\nautomation\u0027s decorator: @FeatureTogglingTest\nI think it would make it easier for us to handle UT as well, right?",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "441f15b2_2ebe892b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-11-25T09:57:39Z",
+      "side": 1,
+      "message": "When running the first 2 options (false, null..) - the expected result is ClientConfig, while the\ntest suggests that result should be ALaCarte - which is not necessarily the case",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c32e70c9_30782263",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-11-25T09:57:39Z",
+      "side": 1,
+      "message": "Is there a real option/scenario of both macro and alacarte?",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "357a5ccd_8caf9a57",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-11-25T09:57:39Z",
+      "side": 1,
+      "message": "The first option along with the mock place the system in a position where it is checking instantiation type and it doesn\u0027t equals macro or alcarte - but the business function still goes on and checks the flag status, only if it\u0027s false - it returns Client Config.\nTherefor, my question is: Can we set the function to return client config regardless to the flag\u0027s status in such a scenario?",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9adde28a_e88c2d42",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/VidNotionsBuilderTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-11-25T09:57:39Z",
+      "side": 1,
+      "message": "I didn\u0027t get the whole idea of this test - lets talk about this one",
+      "revId": "2727a38609435e8483d79d0b423829d351e402b4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
