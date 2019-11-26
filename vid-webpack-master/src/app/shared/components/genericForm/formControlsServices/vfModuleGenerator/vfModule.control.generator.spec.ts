@@ -1062,7 +1062,6 @@ describe('VFModule Control Generator', () => {
       FormControlNames.LEGACY_REGION,
       FormControlNames.TENANT_ID,
       FormControlNames.ROLLBACK_ON_FAILURE,
-      FormControlNames.SDN_C_PRE_LOAD
     ];
 
     expect(controls.length).toEqual(7);
@@ -1097,7 +1096,6 @@ describe('VFModule Control Generator', () => {
       FormControlNames.TENANT_ID, // TENANT_ID must be after LEGACY_REGION
       FormControlNames.LEGACY_REGION,
       FormControlNames.ROLLBACK_ON_FAILURE,
-      FormControlNames.SDN_C_PRE_LOAD
     ];
 
     for(let i = 0 ; i < orderedControls.length ; i++) {
@@ -1154,7 +1152,6 @@ describe('VFModule Control Generator', () => {
       FormControlNames.LEGACY_REGION,
       FormControlNames.TENANT_ID,
       FormControlNames.ROLLBACK_ON_FAILURE,
-      FormControlNames.SDN_C_PRE_LOAD
     ];
 
     for(let i = 0 ; i < orderedControls.length ; i++) {
