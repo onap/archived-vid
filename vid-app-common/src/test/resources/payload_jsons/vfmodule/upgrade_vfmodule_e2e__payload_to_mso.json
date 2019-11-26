@@ -35,6 +35,7 @@
     "requestParameters": {
       "retainAssignments": false,
       "rebuildVolumeGroups":true,
+      "usePreload" : true,
       "userParams": [],
       "testApi": "VNF_API"
     },

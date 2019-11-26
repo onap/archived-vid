@@ -20,24 +20,18 @@ import {GeneralActions} from "../../../../storeUtil/utils/general/general.action
 import {VfModuleActions} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 import {ServiceActions} from "../../../../storeUtil/utils/service/service.actions";
 
-class MockModalService<T> {
-}
+class MockModalService<T> {}
 
-class MockAppStore<T> {
-}
-
-let uuidData = {};
+class MockAppStore<T> {}
 
 class MockReduxStore<T> {
   getState() {
     return {};
   }
-
   dispatch() {}
 }
 
-class MockFeatureFlagsService {
-}
+class MockFeatureFlagsService {}
 
 describe('VFModule popup service', () => {
   let injector;
@@ -77,17 +71,16 @@ describe('VFModule popup service', () => {
     fb = injector.get(FormBuilder);
     iframeService = injector.get(IframeService);
     store = injector.get(NgRedux);
-
   })().then(done).catch(done.fail));
 
   test('getTitle should return the correct title', () => {
     expect(service.getTitle()).toBe("Upgrade Module")
   });
 
-  test('get controls should return retainAssignments control with false i', ()=> {
+  test('get controls should return retainAssignments control with true i', ()=> {
 
-    const controls = service.getControls('a', 'b', 'c', true);
-    expect(controls.length).toEqual(2);
+    const controls = service.getControls();
+    expect(controls.length).toEqual(3);
 
     const retainAssignmentsControl = controls.find((control)=>{
       return control.controlName === UpgradeFormControlNames.RETAIN_ASSIGNMENTS;
@@ -95,7 +88,6 @@ describe('VFModule popup service', () => {
 
     expect(retainAssignmentsControl).toBeDefined();
     expect(retainAssignmentsControl.value).toBeTruthy();
-
 
     const retainVolumeGroup = controls.find((control)=>{
       return control.controlName === UpgradeFormControlNames.RETAIN_VOLUME_GROUPS;
@@ -106,9 +98,6 @@ describe('VFModule popup service', () => {
   });
 
   test('on submit should call merge action of form value to vfModule', () => {
-
-    //given
-
     const serviceId = "serviceId5";
     const vnfStoreKey = 'vnfStoreKey3';
     const modelName = 'modelA';
@@ -136,10 +125,10 @@ describe('VFModule popup service', () => {
 
     let mockFrom: FormGroup = mock(FormGroup);
     let form = instance(mockFrom);
-    form.value = {
+    form.setValue({
       a: "value",
       b: "another"
-    };
+    });
 
     spyOn(store, 'dispatch');
 
@@ -153,5 +142,15 @@ describe('VFModule popup service', () => {
       {type: VfModuleActions.UPGRADE_VFMODULE, dynamicModelName: "dynamicModel", modelName: "modelA", serviceId: "serviceId5", vnfStoreKey: "vnfStoreKey3"});
     expect(store.dispatch).toBeCalledWith({type: ServiceActions.UPGRADE_SERVICE_ACTION, serviceUuid: "serviceId5"});
 
+  });
+
+
+  test( 'get controls should return usePreload with false value', () => {
+    const controls = service.getControls();
+    const usePreloadControl = controls.find((control)=>{
+      return control.controlName === 'sdncPreLoad';
+    });
+    expect(usePreloadControl).toBeDefined();
+    expect(usePreloadControl.value).toBeFalsy();
   });
 });

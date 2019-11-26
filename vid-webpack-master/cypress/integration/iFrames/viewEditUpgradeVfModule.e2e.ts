@@ -220,6 +220,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
     cy.getElementByDataTestsId('retainAssignments').click();
     cy.getElementByDataTestsId('retainVolumeGroups').click();
+    cy.getElementByDataTestsId('sdncPreLoad').click();
     cy.screenshot();
     cy.getElementByDataTestsId('form-set').click();
   }

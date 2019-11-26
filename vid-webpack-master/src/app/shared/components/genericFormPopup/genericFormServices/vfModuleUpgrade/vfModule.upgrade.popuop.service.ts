@@ -20,6 +20,7 @@ import {mergeObjectByPathAction} from "../../../../storeUtil/utils/general/gener
 export enum UpgradeFormControlNames {
   RETAIN_VOLUME_GROUPS = 'retainVolumeGroups',
   RETAIN_ASSIGNMENTS = 'retainAssignments',
+  SDN_C_PRE_LOAD = 'sdncPreLoad',
 }
 
 @Injectable()
@@ -29,20 +30,22 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
               protected _iframeService: IframeService,
               protected _defaultDataGeneratorService: DefaultDataGeneratorService,
               protected _aaiService: AaiService,
-              protected _basicPopupService : BasicPopupService,
+              protected _basicPopupService: BasicPopupService,
               protected _store: NgRedux<AppState>,
-              private _sharedTreeService : SharedTreeService){
-    super(_basicControlGenerator, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService,_store);
+              private _sharedTreeService: SharedTreeService) {
+    super(_basicControlGenerator, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
   }
+
   node: ITreeNode;
 
   getDynamicInputs = () => null;
 
-  getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean)  {
-    let result: FormControlModel[] = [];
-    result.push(this.getRetainVolumeGroupsControl());
-    result.push(this.getRetainAssignmentsControl());
-    return result;
+  getControls = (): FormControlModel[] => {
+    return [
+      this.getRetainAssignmentsControl(),
+      this.getRetainVolumeGroupsControl(),
+      this._basicControlGenerator.getSDNCControl(null)
+    ]
   };
 
   getTitle = (): string => 'Upgrade Module';
@@ -54,8 +57,8 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
     const modelName = node.data.modelName;
     const dynamicModelName = node.data.dynamicModelName;
 
-    this._store.dispatch(upgradeVFModule(modelName,  vnfStoreKey, serviceInstanceId ,dynamicModelName));
-    this._store.dispatch(mergeObjectByPathAction(['serviceInstance',serviceInstanceId, 'vnfs', vnfStoreKey, 'vfModules', modelName, dynamicModelName], form.value));
+    this._store.dispatch(upgradeVFModule(modelName, vnfStoreKey, serviceInstanceId, dynamicModelName));
+    this._store.dispatch(mergeObjectByPathAction(['serviceInstance', serviceInstanceId, 'vnfs', vnfStoreKey, 'vfModules', modelName, dynamicModelName], form.value));
     this._sharedTreeService.upgradeBottomUp(node, serviceInstanceId);
 
     this.postSubmitIframeMessage(that);
@@ -83,5 +86,4 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
       validations: []
     })
   };
-
 }
