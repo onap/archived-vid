@@ -12,7 +12,7 @@ import {VfModuleControlGenerator} from "../../../genericForm/formControlsService
 import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
-import {VfModuleUpgradePopupService} from "./vfModule.upgrade.popuop.service";
+import {UpgradeFormControlNames, VfModuleUpgradePopupService} from "./vfModule.upgrade.popuop.service";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 
 class MockModalService<T> {
@@ -78,12 +78,21 @@ describe('VFModule popup service', () => {
   test('get controls should return retainAssignments control with false i', ()=> {
 
     const controls = service.getControls();
+    expect(controls.length).toEqual(2);
 
     const retainAssignmentsControl = controls.find((control)=>{
-      return control.controlName === 'retainAssignments';
+      return control.controlName === UpgradeFormControlNames.RETAIN_ASSIGNMENTS;
     });
 
     expect(retainAssignmentsControl).toBeDefined();
     expect(retainAssignmentsControl.value).toBeTruthy();
+
+
+    const retainVolumeGroup = controls.find((control)=>{
+      return control.controlName === UpgradeFormControlNames.RETAIN_VOLUME_GROUP;
+    });
+
+    expect(retainVolumeGroup).toBeDefined();
+    expect(retainVolumeGroup.value).toBeTruthy();
   });
 });
