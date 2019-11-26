@@ -21,8 +21,7 @@ import {FormControlModel} from "../../../../models/formControlModels/formControl
 import * as _ from 'lodash';
 import {createVFModuleInstance, updateVFModuleInstance} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 
-@Injectable()
-export class VfModulePopuopService implements GenericPopupInterface {
+export abstract class VfModulePopupServiceBase {
   dynamicInputs: any;
   instance: any;
   model: any;
@@ -31,16 +30,27 @@ export class VfModulePopuopService implements GenericPopupInterface {
   uuidData: Object;
   closeDialogEvent: Subject<any> = new Subject<any>();
   isUpdateMode: boolean;
+  storeVFModule = (that, formValues: any): void => {
+    formValues.modelInfo = new ModelInfo(that.model);
+    formValues.uuid = formValues.modelInfo.uuid;
+    formValues.isMissingData = false;
+    const vnf = that._store.getState().service.serviceInstance[that.uuidData.serviceId].vnfs[that.uuidData.vnfStoreKey];
 
+    if (!that.uuidData.vFModuleStoreKey) {
+      this._store.dispatch(createVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, 0, that.uuidData.vnfStoreKey));
+    } else {
+      this._store.dispatch(updateVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, that.uuidData.vFModuleStoreKey, that.uuidData.vnfStoreKey));
+    }
+  };
 
-  constructor(protected _basicControlGenerator: BasicControlGenerator,
-              protected _vfModuleControlGenerator: VfModuleControlGenerator,
-              protected _iframeService: IframeService,
-              protected _defaultDataGeneratorService: DefaultDataGeneratorService,
-              protected _aaiService: AaiService,
-              protected _basicPopupService : BasicPopupService,
-              protected _store: NgRedux<AppState>) {
-
+  protected constructor(
+    protected _basicControlGenerator: BasicControlGenerator,
+    protected _vfModuleControlGenerator: VfModuleControlGenerator,
+    protected _iframeService: IframeService,
+    protected _defaultDataGeneratorService: DefaultDataGeneratorService,
+    protected _aaiService: AaiService,
+    protected _basicPopupService: BasicPopupService,
+    protected _store: NgRedux<AppState>) {
   }
 
   getInstance(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string): any {
@@ -49,45 +59,6 @@ export class VfModulePopuopService implements GenericPopupInterface {
     }
     const vfModules = this._store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey].vfModules;
     return vfModules[this.uuidData['modelName']][vfModuleStoreKey];
-  }
-
-  getDynamicInputs(UUIDData : Object) : FormControlModel[]{
-    let dynamic = this._defaultDataGeneratorService.getArbitraryInputs(this._store.getState().service.serviceHierarchy[UUIDData['serviceId']].vfModules[UUIDData['modelName']].inputs);
-    return this.getVFModuleDynamicInputs(dynamic, UUIDData);
-  }
-
-  getVFModuleDynamicInputs(dynamicInputs : any, UUIDData : Object) : FormControlModel[] {
-    let result : FormControlModel[] = [];
-    if(dynamicInputs) {
-      let vfModuleInstance = null;
-      if (_.has(this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs, UUIDData['vnfStoreKey']) &&
-        _.has(this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs[UUIDData['vnfStoreKey']].vfModules, UUIDData['modelName'])) {
-        vfModuleInstance = Object.assign({},this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs[UUIDData['vnfStoreKey']].vfModules[UUIDData['modelName']][UUIDData['vfModuleStoreKey']]);
-      }
-      result = this._basicControlGenerator.getDynamicInputs(dynamicInputs, vfModuleInstance);
-    }
-    return result;
-  }
-
-
-  getGenericFormPopupDetails(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, node: ITreeNode, uuidData: Object, isUpdateMode: boolean): FormPopupDetails {
-
-    this.uuidData = uuidData;
-    this.instance = this.getInstance(serviceId, vnfStoreKey, vfModuleStoreKey);
-    this.getModelInformation(serviceId, uuidData['modelName']);
-
-    return new FormPopupDetails(this,
-      PopupType.VFMODULE,
-      uuidData,
-      this.getTitle(isUpdateMode),
-      this.getSubLeftTitle(),
-      this.getSubRightTitle(),
-      this.getControls(serviceId, vnfStoreKey, vfModuleStoreKey, isUpdateMode),
-      this.getDynamicInputs(uuidData),
-      this.modelInformations,
-      (that, form: FormGroup) => {that.onSubmit(that, form);},
-      (that: any, form: FormGroup) => {that.onCancel(that, form); }
-    );
   }
 
   getModelInformation(serviceId: string, modelName: string) {
@@ -115,6 +86,92 @@ export class VfModulePopuopService implements GenericPopupInterface {
       ];
     });
   }
+
+  protected postSubmitIframeMessage(that) {
+    window.parent.postMessage({
+      eventId: 'submitIframe',
+      data: {
+        serviceModelId: that.serviceModel.uuid
+      }
+    }, "*");
+  }
+
+  onCancel(that, form) {
+    form.reset();
+    that._iframeService.removeClassCloseModal('content');
+    this.closeDialogEvent.next(that);
+  }
+
+  getSubLeftTitle(): string {
+    return this.model.name;
+  }
+
+  getSubRightTitle(): string {
+    return "Module (Heat stack) Instance Details";
+  }
+
+  abstract getTitle(isUpdateMode : boolean) : string;
+  abstract getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean);
+  abstract getDynamicInputs(UUIDData : Object) : FormControlModel[];
+
+  getGenericFormPopupDetails(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, node: ITreeNode, uuidData: Object, isUpdateMode: boolean): FormPopupDetails {
+
+    this.uuidData = uuidData;
+    this.instance = this.getInstance(serviceId, vnfStoreKey, vfModuleStoreKey);
+    this.getModelInformation(serviceId, uuidData['modelName']);
+
+    return new FormPopupDetails(this,
+      PopupType.VFMODULE,
+      uuidData,
+      this.getTitle(isUpdateMode),
+      this.getSubLeftTitle(),
+      this.getSubRightTitle(),
+      this.getControls(serviceId, vnfStoreKey, vfModuleStoreKey, isUpdateMode),
+      this.getDynamicInputs(uuidData),
+      this.modelInformations,
+      (that, form: FormGroup) => {
+        that.onSubmit(that, form);
+      },
+      (that: any, form: FormGroup) => {
+        that.onCancel(that, form);
+      }
+    );
+  }
+}
+
+@Injectable()
+export class VfModulePopuopService extends VfModulePopupServiceBase implements GenericPopupInterface {
+
+
+  constructor(_basicControlGenerator: BasicControlGenerator,
+              _vfModuleControlGenerator: VfModuleControlGenerator,
+              _iframeService: IframeService,
+              _defaultDataGeneratorService: DefaultDataGeneratorService,
+              _aaiService: AaiService,
+              _basicPopupService : BasicPopupService,
+              _store: NgRedux<AppState>) {
+    super(_basicControlGenerator, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
+
+  }
+
+  getDynamicInputs(UUIDData : Object) : FormControlModel[]{
+    let dynamic = this._defaultDataGeneratorService.getArbitraryInputs(this._store.getState().service.serviceHierarchy[UUIDData['serviceId']].vfModules[UUIDData['modelName']].inputs);
+    return this.getVFModuleDynamicInputs(dynamic, UUIDData);
+  }
+
+  getVFModuleDynamicInputs(dynamicInputs : any, UUIDData : Object) : FormControlModel[] {
+    let result : FormControlModel[] = [];
+    if(dynamicInputs) {
+      let vfModuleInstance = null;
+      if (_.has(this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs, UUIDData['vnfStoreKey']) &&
+        _.has(this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs[UUIDData['vnfStoreKey']].vfModules, UUIDData['modelName'])) {
+        vfModuleInstance = Object.assign({},this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs[UUIDData['vnfStoreKey']].vfModules[UUIDData['modelName']][UUIDData['vfModuleStoreKey']]);
+      }
+      result = this._basicControlGenerator.getDynamicInputs(dynamicInputs, vfModuleInstance);
+    }
+    return result;
+  }
+
 
   getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean) {
     if (this._store.getState().service.serviceHierarchy[serviceId].service.vidNotions.instantiationType === 'Macro') {
@@ -145,44 +202,8 @@ export class VfModulePopuopService implements GenericPopupInterface {
     this.onCancel(that, form);
   }
 
-
-  protected postSubmitIframeMessage(that) {
-    window.parent.postMessage({
-      eventId: 'submitIframe',
-      data: {
-        serviceModelId: that.serviceModel.uuid
-      }
-    }, "*");
-  }
-
-  onCancel(that, form) {
-    form.reset();
-    that._iframeService.removeClassCloseModal('content');
-    this.closeDialogEvent.next(that);
-  }
-
-  storeVFModule = (that, formValues: any): void => {
-    formValues.modelInfo = new ModelInfo(that.model);
-    formValues.uuid = formValues.modelInfo.uuid;
-    formValues.isMissingData = false;
-    const vnf =  that._store.getState().service.serviceInstance[that.uuidData.serviceId].vnfs[that.uuidData.vnfStoreKey];
-
-    if (!that.uuidData.vFModuleStoreKey) {
-      this._store.dispatch(createVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, 0, that.uuidData.vnfStoreKey));
-    } else {
-      this._store.dispatch(updateVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, that.uuidData.vFModuleStoreKey, that.uuidData.vnfStoreKey));
-    }
-  };
-
   getTitle(isUpdateMode : boolean) : string {
     return isUpdateMode ? 'Edit Module (Heat stack)' : 'Set new Module (Heat stack)';
   }
 
-  getSubLeftTitle(): string {
-    return this.model.name;
-  }
-
-  getSubRightTitle(): string {
-    return "Module (Heat stack) Instance Details";
-  }
 }

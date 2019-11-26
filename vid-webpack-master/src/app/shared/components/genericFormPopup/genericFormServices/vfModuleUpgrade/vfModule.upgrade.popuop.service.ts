@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {FormGroup} from "@angular/forms";
-import {VfModulePopuopService} from "../vfModule/vfModule.popuop.service";
-import {FormPopupDetails} from "../../../../models/formControlModels/formPopupDetails.model";
+import {VfModulePopupServiceBase} from "../vfModule/vfModule.popuop.service";
 import {updateVFModuleField, upgradeVFModule} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 import {NgRedux} from "@angular-redux/store";
@@ -13,9 +12,7 @@ import {IframeService} from "../../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {BasicPopupService} from "../basic.popup.service";
-import {
-  FormControlModel
-} from "../../../../models/formControlModels/formControl.model";
+import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
 
@@ -25,8 +22,7 @@ export enum UpgradeFormControlNames {
 }
 
 @Injectable()
-export class VfModuleUpgradePopupService extends VfModulePopuopService {
-
+export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
   constructor(protected _basicControlGenerator: BasicControlGenerator,
               protected _vfModuleControlGenerator: VfModuleControlGenerator,
               protected _iframeService: IframeService,
@@ -39,14 +35,13 @@ export class VfModuleUpgradePopupService extends VfModulePopuopService {
   }
   node: ITreeNode;
 
-  getGenericFormPopupDetails(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, node: ITreeNode, uuidData: Object, isUpdateMode: boolean): FormPopupDetails {
-    return super.getGenericFormPopupDetails(serviceId, vnfStoreKey, vfModuleStoreKey, node, uuidData, isUpdateMode);
-  }
-
   getDynamicInputs = () => [];
 
-  getControls = () : FormControlModel[] => {
-    return this.getUpgradeFormControls()
+  getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean)  {
+    let result: FormControlModel[] = [];
+    result.push(this.getRetainVolumeGroupsControl());
+    result.push(this.getRetainAssignmentsControl());
+    return result;
   };
 
   getTitle = (): string => 'Upgrade Module';
@@ -92,10 +87,4 @@ export class VfModuleUpgradePopupService extends VfModulePopuopService {
     })
   };
 
-  getUpgradeFormControls = (): FormControlModel[] => {
-    let result: FormControlModel[] = [];
-    result.push(this.getRetainVolumeGroupsControl());
-    result.push(this.getRetainAssignmentsControl());
-    return result;
-  }
 }
