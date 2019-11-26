@@ -219,6 +219,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
     // The following is needed when enabling FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS
 
     cy.getElementByDataTestsId('retainAssignments').click();
+    cy.getElementByDataTestsId('retainVolumeGroups').click();
     cy.screenshot();
     cy.getElementByDataTestsId('form-set').click();
   }

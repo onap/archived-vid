@@ -19,8 +19,14 @@ import {
 import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
 
+export enum UpgradeFormControlNames {
+  RETAIN_VOLUME_GROUPS = 'retainVolumeGroups',
+  RETAIN_ASSIGNMENTS = 'retainAssignments',
+}
+
 @Injectable()
 export class VfModuleUpgradePopupService extends VfModulePopuopService {
+
   constructor(protected _basicControlGenerator: BasicControlGenerator,
               protected _vfModuleControlGenerator: VfModuleControlGenerator,
               protected _iframeService: IframeService,
@@ -40,18 +46,8 @@ export class VfModuleUpgradePopupService extends VfModulePopuopService {
   getDynamicInputs = () => [];
 
   getControls = () : FormControlModel[] => {
-    return [
-      new CheckboxFormControl({
-        type: FormControlType.CHECKBOX,
-        controlName: 'retainAssignments',
-        displayName: 'Retain Assignments',
-        dataTestId: 'retainAssignments',
-        value: true,
-        validations: []
-      })
-    ];
+    return this.getUpgradeFormControls()
   };
-
 
   getTitle = (): string => 'Upgrade Module';
 
@@ -61,10 +57,45 @@ export class VfModuleUpgradePopupService extends VfModulePopuopService {
 
     this._store.dispatch(upgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceInstanceId ,node.data.dynamicModelName));
     this._sharedTreeService.upgradeBottomUp(node, serviceInstanceId);
-    this._store.dispatch(updateVFModuleField(node.data.modelName,  node.parent.data.vnfStoreKey, serviceInstanceId ,node.data.dynamicModelName, 'retainAssignments', form.controls['retainAssignments'].value));
+
+    this.updateVFModuleField(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,node, serviceInstanceId, form);
+    this.updateVFModuleField(UpgradeFormControlNames.RETAIN_ASSIGNMENTS,node, serviceInstanceId, form);
 
     this.postSubmitIframeMessage(that);
     this.onCancel(that, form);
   }
 
+  private updateVFModuleField(fieldName: string, node, serviceInstanceId: string, form: FormGroup) {
+    this._store.dispatch(updateVFModuleField(node.data.modelName, node.parent.data.vnfStoreKey, serviceInstanceId, node.data.dynamicModelName, fieldName, form.controls[fieldName].value));
+  }
+
+
+  getRetainVolumeGroupsControl = (): CheckboxFormControl => {
+    return new CheckboxFormControl({
+      type: FormControlType.CHECKBOX,
+      controlName: UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,
+      displayName: 'Retain Volume Groups',
+      dataTestId: UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,
+      value: true,
+      validations: []
+    })
+  };
+
+  getRetainAssignmentsControl = (): CheckboxFormControl => {
+    return new CheckboxFormControl({
+      type: FormControlType.CHECKBOX,
+      controlName: UpgradeFormControlNames.RETAIN_ASSIGNMENTS,
+      displayName: 'Retain Assignments',
+      dataTestId: UpgradeFormControlNames.RETAIN_ASSIGNMENTS,
+      value: true,
+      validations: []
+    })
+  };
+
+  getUpgradeFormControls = (): FormControlModel[] => {
+    let result: FormControlModel[] = [];
+    result.push(this.getRetainVolumeGroupsControl());
+    result.push(this.getRetainAssignmentsControl());
+    return result;
+  }
 }
