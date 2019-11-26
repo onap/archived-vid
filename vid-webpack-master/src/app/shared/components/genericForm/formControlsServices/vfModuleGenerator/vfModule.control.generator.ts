@@ -105,9 +105,7 @@ export class VfModuleControlGenerator {
       result = this.pushInstanceAndVGToForm(result, vfModuleInstance, serviceId, vnfModel, false);
     }
     if(this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
-      let suppFileInput:FileFormControl = <FileFormControl>(this._basicControlGenerator.getSupplementaryFile(vfModuleInstance));
-      result.push(suppFileInput);
-      result = result.concat(suppFileInput.hiddenFile);
+      result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }
     return result;
   }
@@ -142,12 +140,9 @@ export class VfModuleControlGenerator {
     result.push(this.getRollbackOnFailureControl(vfModuleInstance, result));
     result.push(this.getSDNCControl(vfModuleInstance, result));
     if(this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
-      let suppFileInput:FileFormControl = <FileFormControl>(this._basicControlGenerator.getSupplementaryFile(vfModuleInstance));
-      result.push(suppFileInput);
-      result = result.concat(suppFileInput.hiddenFile);
+      result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }
     return result;
-
   }
 
   getInstanceName(instance: any, serviceId: string, isEcompGeneratedNaming: boolean): FormControlModel {
