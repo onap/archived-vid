@@ -5,6 +5,7 @@ import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.s
 import {BasicControlGenerator} from "./basic.control.generator";
 import {NgRedux} from '@angular-redux/store';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {FileFormControl} from "../../../models/formControlModels/fileFormControl.model";
 
 class MockAppStore<T> {}
 
@@ -43,6 +44,14 @@ describe('Basic Control Generator', () => {
     const instance = {lcpCloudRegionId : 'olson3'};
     const legacyRegionControl: FormControlModel = service.getLegacyRegion(instance);
     expect(legacyRegionControl.isVisible).toBeFalsy();
+  });
+
+  test('given instance, get supp file from getSupplementaryFile ', () => {
+    const instance = {};
+    const suppFileForInstance: FileFormControl = service.getSupplementaryFile(instance);
+    expect(suppFileForInstance.isVisible).toBeTruthy();
+    expect(suppFileForInstance.hiddenFile.length).toBeGreaterThanOrEqual(1);
+    expect(suppFileForInstance.hiddenFile[0].validations[0].validatorName).toEqual("isFileTooBig");
   });
 });
 
