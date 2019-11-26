@@ -246,9 +246,8 @@ export class BasicControlGenerator {
     return originalArray.concat([suppFileInput], suppFileInput.hiddenFile);
   }
 
-  getSDNCControl = (instance: any): FileFormControl => {
-    return new FileFormControl({
-      type: FormControlType.CHECKBOX,
+  getSDNCControl = (instance: any): FormControlModel => {
+    return new CheckboxFormControl({
       controlName: SDN_C_PRE_LOAD,
       displayName: 'SDN-C pre-load',
       dataTestId: 'sdncPreLoad',

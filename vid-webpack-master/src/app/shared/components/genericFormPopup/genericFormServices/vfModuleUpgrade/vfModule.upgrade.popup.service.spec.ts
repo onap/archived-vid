@@ -75,10 +75,10 @@ describe('VFModule popup service', () => {
     expect(service.getTitle()).toBe("Upgrade Module")
   });
 
-  test('get controls should return retainAssignments control with false i', ()=> {
+  test('get controls should return retainAssignments control with true i', ()=> {
 
     const controls = service.getControls();
-    expect(controls.length).toEqual(2);
+    expect(controls.length).toEqual(3);
 
     const retainAssignmentsControl = controls.find((control)=>{
       return control.controlName === UpgradeFormControlNames.RETAIN_ASSIGNMENTS;
@@ -94,5 +94,15 @@ describe('VFModule popup service', () => {
 
     expect(retainVolumeGroup).toBeDefined();
     expect(retainVolumeGroup.value).toBeTruthy();
+  });
+
+
+  test( 'get controls should return usePreload with false value', () => {
+    const controls = service.getControls();
+    const usePreloadControl = controls.find((control)=>{
+      return control.controlName === 'sdncPreLoad';
+    });
+    expect(usePreloadControl).toBeDefined();
+    expect(usePreloadControl.value).toBeFalsy();
   });
 });

@@ -1062,6 +1062,7 @@ describe('VFModule Control Generator', () => {
       FormControlNames.LEGACY_REGION,
       FormControlNames.TENANT_ID,
       FormControlNames.ROLLBACK_ON_FAILURE,
+
     ];
 
     expect(controls.length).toEqual(7);
@@ -1152,6 +1153,7 @@ describe('VFModule Control Generator', () => {
       FormControlNames.LEGACY_REGION,
       FormControlNames.TENANT_ID,
       FormControlNames.ROLLBACK_ON_FAILURE,
+
     ];
 
     for(let i = 0 ; i < orderedControls.length ; i++) {

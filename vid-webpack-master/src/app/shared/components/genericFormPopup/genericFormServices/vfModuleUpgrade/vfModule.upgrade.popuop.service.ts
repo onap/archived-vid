@@ -15,10 +15,14 @@ import {BasicPopupService} from "../basic.popup.service";
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
+import {VfModule} from "../../../../models/vfModule";
+import {VfModuleInstance} from "../../../../models/vfModuleInstance";
+import {FormPopupDetails} from "../../../../models/formControlModels/formPopupDetails.model";
 
 export enum UpgradeFormControlNames {
   RETAIN_VOLUME_GROUPS = 'retainVolumeGroups',
   RETAIN_ASSIGNMENTS = 'retainAssignments',
+  SDN_C_PRE_LOAD = 'sdncPreLoad',
 }
 
 @Injectable()
@@ -35,13 +39,15 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
   }
   node: ITreeNode;
 
-  getDynamicInputs = () => [];
 
-  getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean)  {
-    let result: FormControlModel[] = [];
-    result.push(this.getRetainVolumeGroupsControl());
-    result.push(this.getRetainAssignmentsControl());
-    return result;
+  getGenericFormPopupDetails(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, node: ITreeNode, uuidData: Object, isUpdateMode: boolean): FormPopupDetails {
+    return super.getGenericFormPopupDetails(serviceId, vnfStoreKey, vfModuleStoreKey, node, uuidData, isUpdateMode);
+  }
+
+  getDynamicInputs = () => null;
+
+  getControls = () : FormControlModel[] => {
+    return this.getUpgradeFormControls()
   };
 
   getTitle = (): string => 'Upgrade Module';
@@ -86,5 +92,12 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
       validations: []
     })
   };
-
+  vfModuleInstance = new VfModuleInstance();
+  getUpgradeFormControls = (): FormControlModel[] => {
+    let result: FormControlModel[] = [];
+    result.push(this.getRetainAssignmentsControl());
+    result.push(this.getRetainVolumeGroupsControl());
+    result.push(this._basicControlGenerator.getSDNCControl(this.vfModuleInstance));
+    return result;
+  }
 }

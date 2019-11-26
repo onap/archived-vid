@@ -35,6 +35,7 @@
             "action": "None_Upgrade",
             "retainAssignments" : false,
             "retainVolumeGroups" : false,
+            "sdncPreLoad" : true,
             "instanceName": "PST-VfMod-Replace-5-Vfmod",
             "instanceId": "b0732bed-3ddf-43cc-b193-7f18db84e476",
             "orchStatus": "Active",
