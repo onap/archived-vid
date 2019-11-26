@@ -1,7 +1,7 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {NgRedux} from '@angular-redux/store';
-import {BasicControlGenerator} from "../basic.control.generator";
+import {BasicControlGenerator, SDN_C_PRE_LOAD} from "../basic.control.generator";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
@@ -1062,7 +1062,7 @@ describe('VFModule Control Generator', () => {
       FormControlNames.LEGACY_REGION,
       FormControlNames.TENANT_ID,
       FormControlNames.ROLLBACK_ON_FAILURE,
-      FormControlNames.SDN_C_PRE_LOAD
+      SDN_C_PRE_LOAD,
     ];
 
     expect(controls.length).toEqual(7);
@@ -1097,7 +1097,7 @@ describe('VFModule Control Generator', () => {
       FormControlNames.TENANT_ID, // TENANT_ID must be after LEGACY_REGION
       FormControlNames.LEGACY_REGION,
       FormControlNames.ROLLBACK_ON_FAILURE,
-      FormControlNames.SDN_C_PRE_LOAD
+      SDN_C_PRE_LOAD,
     ];
 
     for(let i = 0 ; i < orderedControls.length ; i++) {
@@ -1154,7 +1154,8 @@ describe('VFModule Control Generator', () => {
       FormControlNames.LEGACY_REGION,
       FormControlNames.TENANT_ID,
       FormControlNames.ROLLBACK_ON_FAILURE,
-      FormControlNames.SDN_C_PRE_LOAD
+      SDN_C_PRE_LOAD
+
     ];
 
     for(let i = 0 ; i < orderedControls.length ; i++) {
