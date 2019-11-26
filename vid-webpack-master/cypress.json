@@ -9,6 +9,7 @@
   "video": false,
   "viewportWidth": 1920,
   "viewportHeight": 1080,
+  "baseUrl": "http://localhost:8080/vid",
 	"reporterOptions": {
 		"mochaFile": "cypress/reports/TEST-cypress-[hash].xml",
 		"toConsole": true,

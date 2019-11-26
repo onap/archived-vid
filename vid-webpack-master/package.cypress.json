@@ -4,16 +4,16 @@
   "license": "Apache-2.0",
   "scripts": {
     "cypress:open": "cypress open",
-    "cypress": "cypress open --config baseUrl=http://localhost:8080/vid ",
+    "cypress": "cypress open",
     "cypress:run": "cypress run",
-    "cypress:headless": "cypress run --config baseUrl=http://localhost:8080/vid "
+    "cypress:headless": "cypress run"
   },
   "private": true,
   "dependencies": {},
   "devDependencies": {
     "@bahmutov/add-typescript-to-cypress": "2.0.0",
     "@types/lodash": "4.14.121",
-    "cypress": "^3.1.0",
+    "cypress": "3.6.1",
     "typescript": "3.1.6",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3"
