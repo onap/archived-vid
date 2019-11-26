@@ -162,7 +162,7 @@ public class SdcApiTest extends BaseApiTest {
         String minMaxInitialExpectedResponse = loadResourceAsString("sdcApiTest/minMaxInitialExpectedResponse.json");
         assertThat(response.getBody(), jsonEquals(minMaxInitialExpectedResponse)
             .when(IGNORING_ARRAY_ORDER)
-            .whenIgnoringPaths("service.vidNotions.instantiationUI", "service.vidNotions.instantiationType"));
+            .whenIgnoringPaths("service.vidNotions.instantiationUI", "service.vidNotions.instantiationType", "service.vidNotions.viewEditUI"));
     }
 
     @Test
