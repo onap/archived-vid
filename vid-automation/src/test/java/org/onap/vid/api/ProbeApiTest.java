@@ -1,6 +1,19 @@
 package org.onap.vid.api;
 
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.both;
+import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
+import static vid.automation.test.services.SimulatorApi.getSimulatedResponsesPort;
+import static vid.automation.test.services.SimulatorApi.getSimulatorHost;
+
 import com.google.common.collect.ImmutableList;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,13 +23,13 @@ import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGetInvalidResponse;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsManyStatusesGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsManyStatusesInvalidResponseGet;
+import org.onap.simulator.presetGenerator.presets.scheduler.PresetGetSchedulerChangeManagementInvalidResponse;
+import org.onap.simulator.presetGenerator.presets.scheduler.PresetGetSchedulerChangeManagements;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGet;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGetEmptyResult;
 import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaModelGetInvalidResponse;
 import org.onap.vid.model.probe.ExternalComponentStatus;
 import org.onap.vid.model.probe.HttpRequestMetadata;
-import org.onap.simulator.presetGenerator.presets.scheduler.PresetGetSchedulerChangeManagementInvalidResponse;
-import org.onap.simulator.presetGenerator.presets.scheduler.PresetGetSchedulerChangeManagements;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -25,19 +38,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.services.SimulatorApi;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.*;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
-
 public class ProbeApiTest extends BaseApiTest {
 
     private static final String MSO_QUERY_PARAMS = "filter=requestExecutionDate:EQUALS:01-01-2100";
     private static final String AAI_QUERY_PARMAS = "business/customers?subscriber-type=INFRA&depth=0";
     private static final String SDC_PATH_PARAMS = "46401eec-35bd-4e96-ad0d-0356ff6b8c8d/toscaModel";
-    private static final String SCHEDULER_PATH = "http://localhost:1080/scheduler/v1/ChangeManagement/schedules/scheduleDetails/";
+    private static final String SCHEDULER_PATH =
+        String.format("http://%s:%d/scheduler/v1/ChangeManagement/schedules/scheduleDetails/", getSimulatorHost(), getSimulatedResponsesPort());
 
 
     @BeforeClass
