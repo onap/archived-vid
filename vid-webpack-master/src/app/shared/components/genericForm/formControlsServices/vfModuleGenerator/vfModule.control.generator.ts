@@ -37,7 +37,6 @@ export enum FormControlNames {
   LEGACY_REGION = 'legacyRegion',
   TENANT_ID = 'tenantId',
   ROLLBACK_ON_FAILURE = 'rollbackOnFailure',
-  SDN_C_PRE_LOAD = 'sdncPreLoad',
 }
 
 
@@ -138,7 +137,7 @@ export class VfModuleControlGenerator {
     result.push(this._basicControlGenerator.getLegacyRegion(vfModuleInstance));
     result.push(this.getTenantControl(serviceId, vfModuleInstance, result));
     result.push(this.getRollbackOnFailureControl(vfModuleInstance, result));
-    result.push(this.getSDNCControl(vfModuleInstance, result));
+    result.push(this._basicControlGenerator.getSDNCControl(vfModuleInstance));
     if(this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
       result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }
@@ -268,17 +267,6 @@ export class VfModuleControlGenerator {
           form.controls['legacyRegion'].disable();
         }
       }
-    })
-  };
-
-  getSDNCControl = (instance: any, controls: FormControlModel[]): CheckboxFormControl => {
-    return new CheckboxFormControl({
-      type: FormControlType.CHECKBOX,
-      controlName: 'sdncPreLoad',
-      displayName: 'SDN-C pre-load',
-      dataTestId: 'sdncPreLoad',
-      value: instance ? instance.sdncPreLoad : false,
-      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')]
     })
   };
 
