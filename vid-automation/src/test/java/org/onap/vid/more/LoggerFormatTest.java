@@ -42,6 +42,7 @@ public class LoggerFormatTest extends BaseApiTest {
 
     private final static String logChecker = System.getProperty("EELF_LOG_CHECKER", "http://my-logchecker:8888/validate");
     private final Logger logger = LogManager.getLogger(LoggerFormatTest.class);
+    private final int PRIORITY_LAST = 999;
 
     public enum LogName {
         audit2019, error, metrics2019
@@ -57,7 +58,7 @@ public class LoggerFormatTest extends BaseApiTest {
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
     }
 
-    @Test
+    @Test(priority = PRIORITY_LAST)
     public void validateAudit2019LogsFormat() {
         String logLines = validateLogsFormat(LogName.audit2019, "audit-ELS-2019.11");
         moreValidationsForAuditFormat(logLines);
@@ -80,12 +81,12 @@ public class LoggerFormatTest extends BaseApiTest {
         });
     }
 
-    @Test(enabled = false) // no total-score is returned for error-log
+    @Test(priority = PRIORITY_LAST, enabled = false) // no total-score is returned for error-log
     public void validateErrorLogsFormat() {
         validateLogsFormat(LogName.error);
     }
 
-    @Test
+    @Test(priority = PRIORITY_LAST)
     public void validateMetrics2019LogsFormat() {
         validateLogsFormat(LogName.metrics2019, "metric-ELS-2019.11");
     }
