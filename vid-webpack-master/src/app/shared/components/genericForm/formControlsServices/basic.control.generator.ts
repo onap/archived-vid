@@ -239,6 +239,11 @@ export class BasicControlGenerator {
     return initialInstanceName;
   }
 
+  concatSupplementaryFile(originalArray: FormControlModel[], vfModuleInstance): FormControlModel[] {
+    let suppFileInput: FileFormControl = <FileFormControl>(this.getSupplementaryFile(vfModuleInstance));
+    return originalArray.concat([suppFileInput], suppFileInput.hiddenFile);
+  }
+
   getSupplementaryFile(instance: any): FileFormControl {
     return new FileFormControl({
       controlName: SUPPLEMENTARY_FILE,

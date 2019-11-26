@@ -53,5 +53,26 @@ describe('Basic Control Generator', () => {
     expect(suppFileForInstance.hiddenFile.length).toBeGreaterThanOrEqual(1);
     expect(suppFileForInstance.hiddenFile[0].validations[0].validatorName).toEqual("isFileTooBig");
   });
+
+  test('concatSupplementaryFile add SupplementaryFile control and hidden file', () => {
+
+    //given
+    const instance = {};
+    const controls = [service.getLegacyRegion(instance)];
+    expect(controls).toHaveLength(1);
+
+    //when
+    const result = service.concatSupplementaryFile(controls, instance);
+
+    //then
+    expect(controls).toHaveLength(1); //original controls remain the same
+
+    expect(result.map((control) => {return control.controlName})).toEqual([
+      "legacyRegion",
+      "supplementaryFile",
+      "supplementaryFile_hidden",
+      "supplementaryFile_hidden_content"
+    ]);
+  });
 });
 
