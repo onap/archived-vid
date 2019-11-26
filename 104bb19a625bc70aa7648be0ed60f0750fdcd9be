@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "318cbd89_69f22dec",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/OperationalEnvironment.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2019-11-26T08:24:26Z",
+      "side": 1,
+      "message": "I\u0027d rather have this done as part of a different change. I think that rewriting only the builder in kotlin would introduce a technological inconsistency and other parts (at least the POJOS) need to be considered.",
+      "parentUuid": "077accef_a8239c81",
+      "revId": "104bb19a625bc70aa7648be0ed60f0750fdcd9be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fba58d5c_b1ef4b68",
         "filename": "vid-app-common/src/main/java/org/onap/vid/aai/model/AaiGetOperationalEnvironments/OperationalEnvironmentList.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2019-11-21T15:07:19Z",
       "side": 1,
       "message": "Must have the @JsonAlias(\"operational-environment\"); not sure how it works with the Json-Creator approach.\n\nThe **alias** lets the object serialize to camelCase operationalEnvironment, while deserialize from either dash-separated operational-environment and camelCase.\n\nThis is because AAI responds with dash-separated names, but object is forwarded to front-end with camelCase field names.",
+      "revId": "104bb19a625bc70aa7648be0ed60f0750fdcd9be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9730411b_e231bbba",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/model/AaiGetOperationalEnvironments/OperationalEnvironmentList.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 2815
+      },
+      "writtenOn": "2019-11-26T08:24:26Z",
+      "side": 1,
+      "message": "Thanks for the explanation. I have resolved this by keeping the @JsonProperty and setting its access \u003d Access.WRITE. So now the dash-separated names will only be used during deserialization (json2pojo) while still supporting camelcase. As for serialization everything will work as previously - output json will have camelcase names.\nI have added additional unit tests that verify all the above ser/deser scenarios.",
+      "parentUuid": "fba58d5c_b1ef4b68",
       "revId": "104bb19a625bc70aa7648be0ed60f0750fdcd9be",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
