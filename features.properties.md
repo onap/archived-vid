@@ -188,3 +188,6 @@
 * FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND,
   When flag is true, VID use macro_services_by_invariant_uuid.json file to identify if csar without instantiation type is macro service.  
   Otherwise, MACRO_SERVICES list in vidConfiguration.js is used to identify if it's a macro service (in ng1 code)
+
+* FLAG_2002_VNF_PLATFORM_MULTI_SELECT
+  When flag is true the platform will appear as a multi select field, if false the platform will be dropdown list.
