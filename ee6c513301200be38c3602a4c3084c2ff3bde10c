@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dc0ffdf0_71b48f1a",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-26T10:46:37Z",
+      "side": 0,
+      "message": "why did you need to remove these lines?",
+      "revId": "ee6c513301200be38c3602a4c3084c2ff3bde10c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
