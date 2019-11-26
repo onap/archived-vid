@@ -46,6 +46,13 @@ describe('Basic Control Generator', () => {
     expect(legacyRegionControl.isVisible).toBeFalsy();
   });
 
+  test('sdn-preload checkbox is visible', () => {
+    const instance = {};
+    const sdncPreload: FileFormControl = service.getSDNCControl(instance);
+    expect (sdncPreload.displayName).toEqual('SDN-C pre-load');
+    expect (sdncPreload.value).toBeFalsy();
+  });
+
   test('given instance, get supp file from getSupplementaryFile ', () => {
     const instance = {};
     const suppFileForInstance: FileFormControl = service.getSupplementaryFile(instance);
