@@ -34,6 +34,41 @@
       "revId": "5bb5133084a16bccd04fe8c07d4ddeb108de53e9",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40a90d12_82a7fe8c",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/general/general.reducers.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-27T10:03:07Z",
+      "side": 1,
+      "message": "oh, i misunderstood the test\nmaybe a description/name will be helpful here.",
+      "parentUuid": "479eecd6_d8fb5faf",
+      "revId": "5bb5133084a16bccd04fe8c07d4ddeb108de53e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab3b1580_c655f064",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/general/general.reducers.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-27T10:03:07Z",
+      "side": 1,
+      "message": "reducer will silently fail. maybe write to console.error?",
+      "revId": "5bb5133084a16bccd04fe8c07d4ddeb108de53e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
