@@ -22,8 +22,10 @@ import {Observable, of} from "rxjs";
 import {NodeModel} from "../../../models/nodeModel";
 import {Constants} from "../../../utils/constants";
 import {FileUnit} from "../../formControls/component/file/fileUnit.enum";
+import {CheckboxFormControl} from "../../../models/formControlModels/checkboxFormControl.model";
 
 const SUPPLEMENTARY_FILE = 'supplementaryFile';
+export const SDN_C_PRE_LOAD = 'sdncPreLoad';
 
 @Injectable()
 export class BasicControlGenerator {
@@ -243,6 +245,16 @@ export class BasicControlGenerator {
     let suppFileInput: FileFormControl = <FileFormControl>(this.getSupplementaryFile(vfModuleInstance));
     return originalArray.concat([suppFileInput], suppFileInput.hiddenFile);
   }
+
+  getSDNCControl = (instance: any): FormControlModel => {
+    return new CheckboxFormControl({
+      controlName: SDN_C_PRE_LOAD,
+      displayName: 'SDN-C pre-load',
+      dataTestId: 'sdncPreLoad',
+      value: instance ? instance.sdncPreLoad : false,
+      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')]
+    })
+  };
 
   getSupplementaryFile(instance: any): FileFormControl {
     return new FileFormControl({
