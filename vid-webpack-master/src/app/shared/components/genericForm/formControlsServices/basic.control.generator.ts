@@ -1,12 +1,7 @@
 import {Injectable} from "@angular/core";
 import {DropdownFormControl} from "../../../models/formControlModels/dropdownFormControl.model";
 import {FormGroup} from "@angular/forms";
-import {
-  CustomValidatorOptions,
-  FormControlModel,
-  ValidatorModel,
-  ValidatorOptions
-} from "../../../models/formControlModels/formControl.model";
+import {CustomValidatorOptions, FormControlModel, ValidatorModel, ValidatorOptions} from "../../../models/formControlModels/formControl.model";
 import {InputFormControl} from "../../../models/formControlModels/inputFormControl.model";
 import {AppState} from "../../../store/reducers";
 import {NgRedux} from "@angular-redux/store";
@@ -24,7 +19,7 @@ import {Constants} from "../../../utils/constants";
 import {FileUnit} from "../../formControls/component/file/fileUnit.enum";
 import {CheckboxFormControl} from "../../../models/formControlModels/checkboxFormControl.model";
 
-const SUPPLEMENTARY_FILE = 'supplementaryFile';
+export const SUPPLEMENTARY_FILE = 'supplementaryFile';
 export const SDN_C_PRE_LOAD = 'sdncPreLoad';
 
 @Injectable()
