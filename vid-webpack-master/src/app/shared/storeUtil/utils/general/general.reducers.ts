@@ -92,6 +92,9 @@ export function generalReducer(state: ServiceState, action: Action) : ServiceSta
       if (targetObject) {
         targetObject = _.merge(targetObject, mergeObjectByPathAction.payload);
       }
+      else {
+        console.error(`Can't find object at ${mergeObjectByPathAction.path.join()}`)
+      }
       return newState;
     }
 
