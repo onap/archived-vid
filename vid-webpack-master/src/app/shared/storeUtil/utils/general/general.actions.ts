@@ -5,6 +5,7 @@ import {ServiceType} from "../../../models/serviceType";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 
 export enum GeneralActions {
+  MERGE_OBJECT_BY_PATH = "MERGE_OBJECT_BY_PATH",
   UPDATE_LCP_REGIONS_AND_TENANTS = "UPDATE_LCP_REGIONS_AND_TENANTS",
   UPDATE_SUBSCRIBERS = "UPDATE_SUBSCRIBERS",
   UPDATE_PRODUCT_FAMILIES = "UPDATE_PRODUCT_FAMILIES",
@@ -78,6 +79,11 @@ export interface UpdateServiceTypesAction extends Action {
   subscriberId: string;
 }
 
+export interface MergeObjectByPathAction extends Action{
+  path: String[];
+  payload: object;
+}
+
 export const updateLcpRegionsAndTenants: ActionCreator<UpdateLcpRegionsAndTenantsAction> = lcpRegionsAndTenants => ({
   type: GeneralActions.UPDATE_LCP_REGIONS_AND_TENANTS,
   lcpRegionsAndTenants: lcpRegionsAndTenants
@@ -145,6 +151,12 @@ export const updateServiceTypes: ActionCreator<UpdateServiceTypesAction> = (serv
   type: GeneralActions.UPDATE_SERVICE_TYPES,
   serviceTypes: serviceTypes,
   subscriberId: subscriberId
+});
+
+export const mergeObjectByPathAction : ActionCreator<MergeObjectByPathAction> = (path, payload) => ({
+  type: GeneralActions.MERGE_OBJECT_BY_PATH,
+  path,
+  payload
 });
 
 
