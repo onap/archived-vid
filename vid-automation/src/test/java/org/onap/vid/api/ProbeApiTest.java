@@ -6,9 +6,9 @@ import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
-import static vid.automation.test.services.SimulatorApi.getSimulatedResponsesPort;
-import static vid.automation.test.services.SimulatorApi.getSimulatorHost;
 
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Method;
@@ -17,7 +17,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.junit.Assert;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGetInvalidResponse;
@@ -43,8 +42,7 @@ public class ProbeApiTest extends BaseApiTest {
     private static final String MSO_QUERY_PARAMS = "filter=requestExecutionDate:EQUALS:01-01-2100";
     private static final String AAI_QUERY_PARMAS = "business/customers?subscriber-type=INFRA&depth=0";
     private static final String SDC_PATH_PARAMS = "46401eec-35bd-4e96-ad0d-0356ff6b8c8d/toscaModel";
-    private static final String SCHEDULER_PATH =
-        String.format("http://%s:%d/scheduler/v1/ChangeManagement/schedules/scheduleDetails/", getSimulatorHost(), getSimulatedResponsesPort());
+    private static final String SCHEDULER_PATH = "/scheduler/v1/ChangeManagement/schedules/scheduleDetails/";
 
 
     @BeforeClass
@@ -210,7 +208,7 @@ public class ProbeApiTest extends BaseApiTest {
                 new ParameterizedTypeReference<List<ExternalComponentStatus>>() {
                 });
         List<ExternalComponentStatus> probeResults = response.getBody();
-        Assert.assertEquals(5, probeResults.size());
+        assertEquals(5, probeResults.size());
         assertResultAsExpected(ExternalComponentStatus.Component.AAI, probeResults, expectedStatuses);
         assertResultAsExpected(ExternalComponentStatus.Component.SDC, probeResults, expectedStatuses);
         assertResultAsExpected(ExternalComponentStatus.Component.MSO, probeResults, expectedStatuses);
@@ -223,16 +221,16 @@ public class ProbeApiTest extends BaseApiTest {
         ExternalComponentStatus componentStatus = probeResults.stream().filter(x -> x.getComponent() == component)
                 .findFirst().orElseThrow(() -> new AssertionError(component.name()+" result not found in response"));
 
-        Assert.assertThat("wrong metadata for " + component, requestMetadataReflected(componentStatus.getMetadata()),
+        assertThat("wrong metadata for " + component, requestMetadataReflected(componentStatus.getMetadata()),
                 is(requestMetadataReflected(expectedStatus.getMetadata())));
 
-        Assert.assertThat("wrong url for " + component, componentStatus.getMetadata().getUrl(),
+        assertThat("wrong url for " + component, componentStatus.getMetadata().getUrl(),
                 both(endsWith(expectedStatus.getMetadata().getUrl())).and(startsWith("http")));
 
-        Assert.assertThat("wrong description for " + component, componentStatus.getMetadata().getDescription(),
+        assertThat("wrong description for " + component, componentStatus.getMetadata().getDescription(),
                 anyOf(equalTo(expectedStatus.getMetadata().getDescription()), startsWith(expectedStatus.getMetadata().getDescription())));
 
-        Assert.assertThat("wrong status for " + component, componentStatus.isAvailable(), is(expectedStatus.isAvailable()));
+        assertThat("wrong status for " + component, componentStatus.isAvailable(), is(expectedStatus.isAvailable()));
     }
 
     //serialize fields except of fields we cannot know ahead of time
