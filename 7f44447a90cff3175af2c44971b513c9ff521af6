@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "79a99dac_b6111d26",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WebConfig.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-27T05:23:07Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "7f44447a90cff3175af2c44971b513c9ff521af6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2401069b_2b3bafaa",
+        "filename": "vid-automation/src/test/java/org/onap/vid/more/LoggerFormatTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-11-27T05:23:07Z",
+      "side": 1,
+      "message": "why debug.log is only 0.65 ?",
+      "revId": "7f44447a90cff3175af2c44971b513c9ff521af6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
