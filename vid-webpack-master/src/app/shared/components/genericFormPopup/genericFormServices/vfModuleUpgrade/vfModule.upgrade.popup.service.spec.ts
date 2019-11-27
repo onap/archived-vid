@@ -1,6 +1,6 @@
 import {LogService} from "../../../../utils/log/log.service";
 import {NgRedux} from "@angular-redux/store";
-import {BasicControlGenerator} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {BasicControlGenerator, SDN_C_PRE_LOAD, SUPPLEMENTARY_FILE} from "../../../genericForm/formControlsServices/basic.control.generator";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {HttpClient} from "@angular/common/http";
 import {GenericFormService} from "../../../genericForm/generic-form.service";
@@ -26,8 +26,20 @@ class MockAppStore<T> {}
 
 class MockReduxStore<T> {
   getState() {
-    return {};
+    return {
+      service: {
+        serviceInstance : {
+          serviceId : {
+            vnfs : {
+              vnfStoreKey : {
+                vfModules: {
+                  vfModuleName: {
+                    vfModuleId : {
+                      supplementaryFileName: "myFileName"
+                    }}}}}}}}
+    };
   }
+
   dispatch() {}
 }
 
@@ -71,33 +83,53 @@ describe('VFModule popup service', () => {
     fb = injector.get(FormBuilder);
     iframeService = injector.get(IframeService);
     store = injector.get(NgRedux);
+    service.uuidData = {
+      modelName: 'vfModuleName',
+      vFModuleStoreKey: 'vfModuleId'
+    };
+
   })().then(done).catch(done.fail));
 
   test('getTitle should return the correct title', () => {
     expect(service.getTitle()).toBe("Upgrade Module")
   });
 
-  test('get controls should return retainAssignments control with true i', ()=> {
-
-    const controls = service.getControls();
-    expect(controls.length).toEqual(3);
-
-    const retainAssignmentsControl = controls.find((control)=>{
-      return control.controlName === UpgradeFormControlNames.RETAIN_ASSIGNMENTS;
+  function findControlByName(controls, controlName) {
+    return controls.find((control) => {
+      return control.controlName === controlName;
     });
+  }
 
-    expect(retainAssignmentsControl).toBeDefined();
-    expect(retainAssignmentsControl.value).toBeTruthy();
-
-    const retainVolumeGroup = controls.find((control)=>{
-      return control.controlName === UpgradeFormControlNames.RETAIN_VOLUME_GROUPS;
-    });
-
+  function getControlByNameAndCheckValue(controlName, expectedValue ) {
+    const controls = service.getControls('serviceId', 'vnfStoreKey', 'vfModuleId', true);
+    const retainVolumeGroup = findControlByName(controls, controlName);
     expect(retainVolumeGroup).toBeDefined();
-    expect(retainVolumeGroup.value).toBeTruthy();
+    expect(retainVolumeGroup.value).toEqual(expectedValue);
+  }
+
+  test('get controls should return retainAssignments control with true value', ()=> {
+    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_ASSIGNMENTS, true);
+  });
+
+  test('get controls should return retainVolumeGroup control with true value', ()=> {
+    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, true);
+  });
+
+  test('get controls should contain SUPPLEMENTARY_FILE controller', ()=> {
+
+    //when
+    const controls = service.getControls('serviceId', 'vnfStoreKey', 'vfModuleId', true);
+
+    //then
+    const control = findControlByName(controls, SUPPLEMENTARY_FILE);
+    expect(control).toBeDefined();
+    expect(control.selectedFile).toBe("myFileName");
   });
 
   test('on submit should call merge action of form value to vfModule', () => {
+
+    //given
+
     const serviceId = "serviceId5";
     const vnfStoreKey = 'vnfStoreKey3';
     const modelName = 'modelA';
@@ -125,10 +157,27 @@ describe('VFModule popup service', () => {
 
     let mockFrom: FormGroup = mock(FormGroup);
     let form = instance(mockFrom);
-    form.setValue({
+    form.value = {
       a: "value",
       b: "another"
-    });
+    };
+    form.controls = {
+      supplementaryFile_hidden_content : {
+        value: '{"c": "c", "d": 1}'
+        },
+      supplementaryFile_hidden : {
+        value: {
+          name: "name"
+        }
+      }
+    };
+
+    let expectedMergePayload = {
+      a: "value",
+      b: "another",
+      supplementaryFileContent: {c: "c", d: 1},
+      supplementaryFileName: "name"
+    };
 
     spyOn(store, 'dispatch');
 
@@ -137,7 +186,7 @@ describe('VFModule popup service', () => {
 
     //then
     expect(store.dispatch).toBeCalledWith(
-      {type: GeneralActions.MERGE_OBJECT_BY_PATH, path: ['serviceInstance', serviceId, 'vnfs', vnfStoreKey, 'vfModules',modelName, dynamicModelName], payload:form.value});
+      {type: GeneralActions.MERGE_OBJECT_BY_PATH, path: ['serviceInstance', serviceId, 'vnfs', vnfStoreKey, 'vfModules',modelName, dynamicModelName], payload:expectedMergePayload});
     expect(store.dispatch).toBeCalledWith(
       {type: VfModuleActions.UPGRADE_VFMODULE, dynamicModelName: "dynamicModel", modelName: "modelA", serviceId: "serviceId5", vnfStoreKey: "vnfStoreKey3"});
     expect(store.dispatch).toBeCalledWith({type: ServiceActions.UPGRADE_SERVICE_ACTION, serviceUuid: "serviceId5"});
@@ -146,11 +195,6 @@ describe('VFModule popup service', () => {
 
 
   test( 'get controls should return usePreload with false value', () => {
-    const controls = service.getControls();
-    const usePreloadControl = controls.find((control)=>{
-      return control.controlName === 'sdncPreLoad';
-    });
-    expect(usePreloadControl).toBeDefined();
-    expect(usePreloadControl.value).toBeFalsy();
+    getControlByNameAndCheckValue(SDN_C_PRE_LOAD, false);
   });
 });

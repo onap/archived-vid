@@ -137,6 +137,20 @@ export abstract class VfModulePopupServiceBase {
       }
     );
   }
+
+  updateFormValueWithSupplementaryFile(form: FormGroup, that) {
+    if (!_.isNil(form.controls['supplementaryFile_hidden_content']) && form.controls['supplementaryFile_hidden_content'].value) {
+      form.value['supplementaryFileContent'] = JSON.parse(form.controls['supplementaryFile_hidden_content'].value);
+      if (!_.isNil(form.controls['supplementaryFile_hidden'].value)) {
+        form.value['supplementaryFileName'] = form.controls['supplementaryFile_hidden'].value.name;
+      } else {
+        form.value['supplementaryFileName'] = that.instance.supplementaryFileName;
+      }
+    } else {
+      delete form.value['supplementaryFileContent'];
+      delete form.value['supplementaryFileName'];
+    }
+  }
 }
 
 @Injectable()
@@ -184,19 +198,7 @@ export class VfModulePopuopService extends VfModulePopupServiceBase implements G
 
   onSubmit(that, form: FormGroup) {
     form.value['instanceParams'] = form.value['instanceParams'] && [form.value['instanceParams']];
-    if (!_.isNil(form.controls['supplementaryFile_hidden_content']) && form.controls['supplementaryFile_hidden_content'].value) {
-      form.value['supplementaryFileContent'] = JSON.parse(form.controls['supplementaryFile_hidden_content'].value);
-      if (!_.isNil(form.controls['supplementaryFile_hidden'].value)) {
-        form.value['supplementaryFileName'] = form.controls['supplementaryFile_hidden'].value.name;
-      }
-      else {
-        form.value['supplementaryFileName'] = that.instance.supplementaryFileName;
-      }
-    }
-    else {
-      delete form.value['supplementaryFileContent'];
-      delete form.value['supplementaryFileName'];
-    }
+    this.updateFormValueWithSupplementaryFile(form, that);
     that.storeVFModule(that, form.value);
     this.postSubmitIframeMessage(that);
     this.onCancel(that, form);

@@ -60,7 +60,10 @@
             "platformName": null,
             "trackById": "b0732bed-3ddf-43cc-b193-7f18db84e476",
             "isBase": true,
-            "volumeGroupName": null
+            "volumeGroupName": null,
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content" : null
           }
         }
       },

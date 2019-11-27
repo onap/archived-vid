@@ -40,12 +40,16 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
 
   getDynamicInputs = () => null;
 
-  getControls = (): FormControlModel[] => {
-    return [
+  getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean)  {
+    let result: FormControlModel[] =[
       this.getRetainAssignmentsControl(),
       this.getRetainVolumeGroupsControl(),
       this._basicControlGenerator.getSDNCControl(null)
     ]
+
+    const vfModuleInstance = this._vfModuleControlGenerator.getVfModuleInstance(serviceId, vnfStoreKey, this.uuidData, isUpdateMode);
+    result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
+    return result;
   };
 
   getTitle = (): string => 'Upgrade Module';
@@ -56,6 +60,8 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
     const vnfStoreKey = node.parent.data.vnfStoreKey;
     const modelName = node.data.modelName;
     const dynamicModelName = node.data.dynamicModelName;
+
+    this.updateFormValueWithSupplementaryFile(form, that);
 
     this._store.dispatch(upgradeVFModule(modelName, vnfStoreKey, serviceInstanceId, dynamicModelName));
     this._store.dispatch(mergeObjectByPathAction(['serviceInstance', serviceInstanceId, 'vnfs', vnfStoreKey, 'vfModules', modelName, dynamicModelName], form.value));
