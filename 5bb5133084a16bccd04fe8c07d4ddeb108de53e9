@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "43a4785b_78c0c14b",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/general/general.reducers.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-11-27T08:37:00Z",
+      "side": 1,
+      "message": "would add a check that an existing field is not removed.",
+      "revId": "5bb5133084a16bccd04fe8c07d4ddeb108de53e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
