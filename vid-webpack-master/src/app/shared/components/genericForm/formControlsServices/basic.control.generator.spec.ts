@@ -48,7 +48,7 @@ describe('Basic Control Generator', () => {
 
   test('sdn-preload checkbox is visible', () => {
     const instance = {};
-    const sdncPreload: FileFormControl = service.getSDNCControl(instance);
+    const sdncPreload: FormControlModel = service.getSDNCControl(instance);
     expect (sdncPreload.displayName).toEqual('SDN-C pre-load');
     expect (sdncPreload.value).toBeFalsy();
   });
