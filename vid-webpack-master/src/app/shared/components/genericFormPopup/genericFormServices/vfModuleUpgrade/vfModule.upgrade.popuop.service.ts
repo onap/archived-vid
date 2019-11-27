@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {FormGroup} from "@angular/forms";
 import {VfModulePopupServiceBase} from "../vfModule/vfModule.popuop.service";
-import {updateVFModuleField, upgradeVFModule} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
+import {upgradeVFModule} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../store/reducers";
@@ -15,6 +15,7 @@ import {BasicPopupService} from "../basic.popup.service";
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
+import {mergeObjectByPathAction} from "../../../../storeUtil/utils/general/general.actions";
 
 export enum UpgradeFormControlNames {
   RETAIN_VOLUME_GROUPS = 'retainVolumeGroups',
@@ -35,7 +36,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
   }
   node: ITreeNode;
 
-  getDynamicInputs = () => [];
+  getDynamicInputs = () => null;
 
   getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean)  {
     let result: FormControlModel[] = [];
@@ -49,21 +50,17 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
   onSubmit(that, form: FormGroup) {
     const node = that.uuidData.vfModule;
     const serviceInstanceId: string = that.uuidData.serviceId;
+    const vnfStoreKey = node.parent.data.vnfStoreKey;
+    const modelName = node.data.modelName;
+    const dynamicModelName = node.data.dynamicModelName;
 
-    this._store.dispatch(upgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceInstanceId ,node.data.dynamicModelName));
+    this._store.dispatch(upgradeVFModule(modelName,  vnfStoreKey, serviceInstanceId ,dynamicModelName));
+    this._store.dispatch(mergeObjectByPathAction(['serviceInstance',serviceInstanceId, 'vnfs', vnfStoreKey, 'vfModules', modelName, dynamicModelName], form.value));
     this._sharedTreeService.upgradeBottomUp(node, serviceInstanceId);
-
-    this.updateVFModuleField(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,node, serviceInstanceId, form);
-    this.updateVFModuleField(UpgradeFormControlNames.RETAIN_ASSIGNMENTS,node, serviceInstanceId, form);
 
     this.postSubmitIframeMessage(that);
     this.onCancel(that, form);
   }
-
-  private updateVFModuleField(fieldName: string, node, serviceInstanceId: string, form: FormGroup) {
-    this._store.dispatch(updateVFModuleField(node.data.modelName, node.parent.data.vnfStoreKey, serviceInstanceId, node.data.dynamicModelName, fieldName, form.controls[fieldName].value));
-  }
-
 
   getRetainVolumeGroupsControl = (): CheckboxFormControl => {
     return new CheckboxFormControl({
