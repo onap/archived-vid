@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "383124d1_76926bb0",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ProbeApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-27T09:43:46Z",
+      "side": 1,
+      "message": "aren\u0027t we missing the \"http://localhost:1080/ here?",
+      "range": {
+        "startLine": 45,
+        "startChar": 48,
+        "endLine": 45,
+        "endChar": 57
+      },
+      "revId": "1ac78d5aa795ab3b7a49a16c062b82d51d1b3600",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96e568ee_80aa158c",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ProbeApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-11-27T09:43:46Z",
+      "side": 1,
+      "message": "here the relative path is enough?",
+      "range": {
+        "startLine": 106,
+        "startChar": 39,
+        "endLine": 106,
+        "endChar": 55
+      },
+      "revId": "1ac78d5aa795ab3b7a49a16c062b82d51d1b3600",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
