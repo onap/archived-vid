@@ -420,7 +420,8 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
         GeneralUIUtils.findAndWaitByText("Missing data", 5);
 
-        Click.onFirstSelectOptionById(Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
+//        Click.onFirstSelectOptionById(Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
+        SelectOption.selectFirstTwoOptionsFromMultiselectById("multi-selectPlatform");
 
         viewEditPage.clickConfirmButton();
         assertSuccessfulVNFCreation();

@@ -198,4 +198,54 @@ describe('VFModule popup service', () => {
   test( 'get controls should return usePreload with false value', () => {
     getControlByNameAndCheckValue(SDN_C_PRE_LOAD, false);
   });
+
+  test('on submit should call merge action of form value to vfModule', () => {
+
+    //given
+
+    const serviceId = "serviceId5";
+    const vnfStoreKey = 'vnfStoreKey3';
+    const modelName = 'modelA';
+    const dynamicModelName = 'dynamicModel';
+    const that = {
+      uuidData : {
+        vfModule : {
+          data : {
+            modelName,
+            dynamicModelName
+          },
+          parent : {
+            data: {
+              vnfStoreKey
+            }}},
+        serviceId
+      },
+      serviceModel: {
+        uuid : "someUuid"
+      },
+      _iframeService: {
+        removeClassCloseModal : jest.fn()
+      }
+    };
+
+    let mockFrom: FormGroup = mock(FormGroup);
+    let form = instance(mockFrom);
+    form.value = {
+      a: "value",
+      b: "another"
+    };
+
+    spyOn(store, 'dispatch');
+
+    //when
+    service.onSubmit(that, form);
+
+    //then
+    expect(store.dispatch).toBeCalledWith(
+      {type: GeneralActions.MERGE_OBJECT_BY_PATH, path: ['serviceInstance', serviceId, 'vnfs', vnfStoreKey, 'vfModules',modelName, dynamicModelName], payload:form.value});
+    expect(store.dispatch).toBeCalledWith(
+      {type: VfModuleActions.UPGRADE_VFMODULE, dynamicModelName: "dynamicModel", modelName: "modelA", serviceId: "serviceId5", vnfStoreKey: "vnfStoreKey3"});
+    expect(store.dispatch).toBeCalledWith({type: ServiceActions.UPGRADE_SERVICE_ACTION, serviceUuid: "serviceId5"});
+
+  });
 });

@@ -64,7 +64,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
     this.updateFormValueWithSupplementaryFile(form, that);
 
     this._store.dispatch(upgradeVFModule(modelName, vnfStoreKey, serviceInstanceId, dynamicModelName));
-    this._store.dispatch(mergeObjectByPathAction(['serviceInstance', serviceInstanceId, 'vnfs', vnfStoreKey, 'vfModules', modelName, dynamicModelName], form.value));
+    this._store.dispatch(mergeObjectByPathAction(['serviceInstance',serviceInstanceId, 'vnfs', vnfStoreKey, 'vfModules', modelName, dynamicModelName], form.value));
     this._sharedTreeService.upgradeBottomUp(node, serviceInstanceId);
 
     this.postSubmitIframeMessage(that);
