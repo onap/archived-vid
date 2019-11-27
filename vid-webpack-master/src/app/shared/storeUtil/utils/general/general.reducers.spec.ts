@@ -1,22 +1,12 @@
 import {LcpRegion} from "../../../models/lcpRegion";
 import {Tenant} from "../../../models/tenant";
 import {generalReducer} from "./general.reducers";
-import {
-  ChangeInstanceCounterAction,
-  RemoveInstanceAction,
-  DuplicateBulkInstancesAction,
-  GeneralActions,
-  UpdateAicZonesAction,
-  UpdateCategoryParametersAction,
-  UpdateProductFamiliesAction,
-  UpdateServiceTypesAction,
-  UpdateSubscribersAction,
-  UpdateUserIdAction, UpdateNetworkCollectionFunction,
-} from "./general.actions";
+import {ChangeInstanceCounterAction, DuplicateBulkInstancesAction, GeneralActions, MergeObjectByPathAction, RemoveInstanceAction, UpdateAicZonesAction, UpdateCategoryParametersAction, UpdateNetworkCollectionFunction, UpdateProductFamiliesAction, UpdateServiceTypesAction, UpdateSubscribersAction, UpdateUserIdAction,} from "./general.actions";
 import {SelectOption} from "../../../models/selectOption";
 import {ServiceType} from "../../../models/serviceType";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {VnfInstance} from "../../../models/vnfInstance";
+import each from "jest-each";
 
 describe('generalReducer', () => {
   test('#UPDATE_LCP_REGIONS_AND_TENANTS : should update lcp region and tenants', () => {
@@ -369,6 +359,45 @@ describe('generalReducer', () => {
 
     expect(state).toBeDefined();
     expect(state['networkFunctions']).toBeDefined();
+  });
+
+  const originalMockObject = {
+    remain: 'forever',
+    obsolete: 'toBeChange'
+  };
+
+  each([
+    [
+      ['serviceInstance', 'serviceModelId', 'vnfs'],
+      {
+        remain: 'forever',
+        obsolete: 'newValue',
+        newField: 'newValue2'
+      }
+    ],
+    [
+      ['serviceInstance', 'nowhere', 'somewhere'],
+      originalMockObject
+    ],
+  ]).
+  test('#MERGE_OBJECT_BY_PATH: should update some object by path %s', (path, expected) => {
+    let state = generalReducer(<any>{serviceInstance : {
+          'serviceModelId' : {
+            vnfs : originalMockObject,
+            existingVNFCounterMap : {}
+          }
+        }},
+      <MergeObjectByPathAction>{
+        type: GeneralActions.MERGE_OBJECT_BY_PATH,
+        path,
+        payload: {
+          obsolete: 'newValue',
+          newField: 'newValue2'
+        }
+      });
+
+    expect(state).toBeDefined();
+    expect(state.serviceInstance['serviceModelId'].vnfs).toEqual(expected);
   });
 });
 

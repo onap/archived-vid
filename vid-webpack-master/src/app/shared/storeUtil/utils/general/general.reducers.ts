@@ -1,12 +1,5 @@
 import {Action} from "redux";
-import {
-  ChangeInstanceCounterAction, RemoveInstanceAction, DuplicateBulkInstancesAction,
-  GeneralActions,
-  UpdateAicZonesAction, UpdateCategoryParametersAction,
-  UpdateLcpRegionsAndTenantsAction, UpdateNetworkCollectionFunction,
-  UpdateProductFamiliesAction, UpdateServiceTypesAction,
-  UpdateSubscribersAction, UpdateUserIdAction
-} from "./general.actions";
+import {ChangeInstanceCounterAction, DuplicateBulkInstancesAction, GeneralActions, MergeObjectByPathAction, RemoveInstanceAction, UpdateAicZonesAction, UpdateCategoryParametersAction, UpdateLcpRegionsAndTenantsAction, UpdateNetworkCollectionFunction, UpdateProductFamiliesAction, UpdateServiceTypesAction, UpdateSubscribersAction, UpdateUserIdAction} from "./general.actions";
 import {TypeNodeInformation} from "../../../../drawingBoard/service-planning/typeNodeInformation.model";
 import * as _ from "lodash";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
@@ -89,6 +82,16 @@ export function generalReducer(state: ServiceState, action: Action) : ServiceSta
       let newState = _.cloneDeep(state);
       newState.serviceInstance[serviceId].existingNames = createInstanceAction.existingNames;
       newState.serviceInstance[serviceId][typeNodeInformation.hierarchyName] = Object.assign({}, newState.serviceInstance[serviceId][typeNodeInformation.hierarchyName], objects);
+      return newState;
+    }
+
+    case GeneralActions.MERGE_OBJECT_BY_PATH : {
+      const mergeObjectByPathAction = <MergeObjectByPathAction>action;
+      let newState = _.cloneDeep(state);
+      let targetObject = _.get(newState, <any>mergeObjectByPathAction.path);
+      if (targetObject) {
+        targetObject = _.merge(targetObject, mergeObjectByPathAction.payload);
+      }
       return newState;
     }
 
