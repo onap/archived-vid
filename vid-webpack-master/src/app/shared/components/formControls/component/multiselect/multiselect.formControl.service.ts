@@ -7,13 +7,13 @@ import * as _ from "lodash";
 @Injectable()
 export class MultiselectFormControlService {
 
-  convertOriginalItems = (data : MultiselectFormControl) : Promise<MultiSelectItem[]> => {
+  convertOriginalItems = (control : MultiselectFormControl) : Promise<MultiSelectItem[]> => {
     return new Promise<MultiSelectItem[]>((resolve) =>{
       let result: MultiSelectItem[] = [];
-      if(data.options$) {
+      if(control.options$) {
         let index: number = 1;
-        data.options$.map((originalItems: any) => {
-          result.push(new MultiSelectItem(index, originalItems[data.ngValue], originalItems[data.selectedFieldName]));
+        control.options$.map((originalItems: any) => {
+          result.push(new MultiSelectItem(index, originalItems[control.ngValue], originalItems[control.selectedFieldName]));
           index++;
         });
       }
@@ -32,16 +32,16 @@ export class MultiselectFormControlService {
     }, {});
   };
 
-  convertSelectedItems(data : MultiselectFormControl) : Promise<MultiSelectItem[]>{
+  convertSelectedItems(control : MultiselectFormControl) : Promise<MultiSelectItem[]>{
     return new Promise<MultiSelectItem[]>((resolve) =>{
       let result: MultiSelectItem[] = [];
-      const hashMap = this.convertOptionsToHashMap(data);
+      const hashMap = this.convertOptionsToHashMap(control);
 
-      if(data.options$ && data.value) {
-        const convertArray = data.convertOriginalDataToArray ? data.convertOriginalDataToArray(data.value) : data.value;
+      if(control.options$ && control.value) {
+        const convertArray = control.convertOriginalDataToArray ? control.convertOriginalDataToArray(control.value) : control.value;
         convertArray.map((itemId) => {
           const uniqueIdentifier = itemId.trim();
-          result.push(new MultiSelectItem(hashMap[uniqueIdentifier].index, hashMap[uniqueIdentifier][data.ngValue], hashMap[uniqueIdentifier][data.selectedFieldName]));
+          result.push(new MultiSelectItem(hashMap[uniqueIdentifier].index, hashMap[uniqueIdentifier][control.ngValue], hashMap[uniqueIdentifier][control.selectedFieldName]));
         });
       }
       resolve(result);
