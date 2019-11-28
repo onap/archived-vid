@@ -5608,7 +5608,6 @@ describe('Drawing board', function () {
           "FLAG_A_LA_CARTE_AUDIT_INFO": true,
           "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST": true,
           "FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS": true,
-          "FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE": false,
           "FLAG_1902_NEW_VIEW_EDIT": false,
           "FLAG_1810_IDENTIFY_SERVICE_FOR_NEW_UI": false,
           "FLAG_1902_VNF_GROUPING": false,

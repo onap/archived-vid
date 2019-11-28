@@ -6,11 +6,7 @@ import {BasicControlGenerator} from "../basic.control.generator";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
-import {
-  FormControlModel,
-  ValidatorModel,
-  ValidatorOptions
-} from "../../../../models/formControlModels/formControl.model";
+import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {VnfGroupControlGenerator} from "./vnfGroup.control.generator";
 import {Observable} from "rxjs";
@@ -35,7 +31,6 @@ class MockAppStore<T> {
           "FLAG_A_LA_CARTE_AUDIT_INFO": true,
           "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST": true,
           "FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS": true,
-          "FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE": true,
           "FLAG_1902_NEW_VIEW_EDIT": true
         }
       },

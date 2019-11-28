@@ -1,24 +1,14 @@
 package vid.automation.test.test;
 
-import com.google.common.collect.ImmutableMap;
-import org.hamcrest.MatcherAssert;
-import org.junit.Assert;
-import org.junit.Before;
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
-import vid.automation.test.model.User;
-import vid.automation.test.sections.VidBasePage;
-import vid.automation.test.sections.ViewEditPage;
-import vid.automation.test.services.BulkRegistration;
-import vid.automation.test.services.SimulatorApi;
+import static org.apache.logging.log4j.core.util.Assert.isNonEmpty;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.testng.AssertJUnit.assertEquals;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
+import com.google.common.collect.ImmutableMap;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -27,15 +17,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.apache.logging.log4j.core.util.Assert.isNonEmpty;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.testng.AssertJUnit.assertEquals;
-import static vid.automation.test.infra.Features.FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE;
-import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import org.hamcrest.MatcherAssert;
+import org.junit.Assert;
+import org.junit.Before;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import vid.automation.test.Constants;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Wait;
+import vid.automation.test.model.User;
+import vid.automation.test.sections.VidBasePage;
+import vid.automation.test.sections.ViewEditPage;
+import vid.automation.test.services.BulkRegistration;
+import vid.automation.test.services.SimulatorApi;
 
 public class ViewEditServiceInstanceTest extends VidBaseTestCase {
 
@@ -115,7 +118,6 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
         deleteInstance(Constants.ViewEdit.DELETE_VF_MODULE_BUTTON_TEST_ID + "aa", Constants.ViewEdit.VF_MODULE_DELETED_SUCCESSFULLY_TEXT);
     }
 
-    @FeatureTogglingTest(value = FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE)
     @Test
     public void softDeleteAndResumeVfModuleInstance_deleteDialogAppears_msoResponseIsOk() {
         SimulatorApi.clearAll();

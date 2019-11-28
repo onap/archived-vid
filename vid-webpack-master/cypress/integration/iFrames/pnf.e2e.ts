@@ -1453,7 +1453,6 @@ function initDrawingBoardWithFourPnf(serviceModelId: string, pnfName: string) {
           "FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS": true,
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
           "FLAG_DEFAULT_VNF": true,
-          "FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE": true,
           "FLAG_ASYNC_ALACARTE_VFMODULE": true,
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_ASYNC_ALACARTE_VNF": true,
