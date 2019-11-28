@@ -239,7 +239,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
 
         createVfModule(serviceData, serviceInstanceName, false, false);
 
@@ -294,7 +294,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         });
 
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () ->
-                createVnf(serviceData, false, true, serviceInstanceName)
+                createVnf(serviceData, false, serviceInstanceName)
         );
 
         final String vnfInstanceName2 = randomAlphabetic + "instanceName";
@@ -302,7 +302,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () ->
                 createVnf(new VnfData(vnfName2 + " 0", "afacccf6-397d-45d6-b5ae-94c39734b168", vnfInstanceName2, false),
-                        false, Features.FLAG_DEFAULT_VNF.isActive(), serviceInstanceName)
+                        false, serviceInstanceName)
         );
 
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () ->
@@ -555,7 +555,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
         createVfModule(serviceData, serviceInstanceName, true, false);
 
     }
@@ -572,7 +572,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
         createVfModule(serviceData, serviceInstanceName, true, false);
 
     }
@@ -589,7 +589,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
         clickRemoveVfModule(vfModule0UUID, vfModule0Name);
         createVfModule(serviceData, serviceInstanceName, false, true);
 
@@ -700,7 +700,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         loadServicePopup(serviceModelInfo.modelVersionId);
         fillALaCarteServicePopup(serviceInstanceName);
 
-        createVnf(vnfData, false, true, serviceInstanceName);
+        createVnf(vnfData, false, serviceInstanceName);
         createVfModule(serviceData, serviceInstanceName, true, false);
         serviceData.vfData =  new VfData("vocg_1804_vf0..Vocg1804Vf..ocgmgr..module-1", true, 0, 1, emptyList(), "9c219e70-1177-494b-8977-1395c9f9168c", vgName);
         createVfModule(serviceData, serviceInstanceName, false, false);
@@ -776,7 +776,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
         clickRemoveVfModule(vfModule0UUID, vfModule0Name);
         createVfModule(serviceData, serviceInstanceName, false, false);
 
@@ -1143,16 +1143,16 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     //@Step("create vnf")
-    private void createVnf(ServiceData serviceData, boolean tryCancelsAndReentries, boolean addedByDefault, String serviceInstanceName) {
-        createVnf(serviceData.vnfData, tryCancelsAndReentries, addedByDefault, serviceInstanceName);
+    private void createVnf(ServiceData serviceData, boolean tryCancelsAndReentries, String serviceInstanceName) {
+        createVnf(serviceData.vnfData, tryCancelsAndReentries, serviceInstanceName);
     }
 
     private void createNetwork(VnfData vnfData, boolean tryCancelsAndReentries, boolean addedByDefault, String serviceInstanceName) {
         createVnf(vnfData, tryCancelsAndReentries, addedByDefault, serviceInstanceName, true);
     }
 
-    private void createVnf(VnfData vnfData, boolean tryCancelsAndReentries, boolean addedByDefault, String serviceInstanceName) {
-        createVnf(vnfData, tryCancelsAndReentries, addedByDefault, serviceInstanceName, false);
+    private void createVnf(VnfData vnfData, boolean tryCancelsAndReentries, String serviceInstanceName) {
+        createVnf(vnfData, tryCancelsAndReentries, true, serviceInstanceName, false);
     }
 
     private void createVnf(VnfData vnfData, boolean tryCancelsAndReentries, boolean addedByDefault, String serviceInstanceName, boolean isNetwork) {

@@ -473,7 +473,6 @@ function getStore() {
         "FLAG_SERVICE_MODEL_CACHE": true,
         "FLAG_SHOW_ASSIGNMENTS": true,
         "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
-        "FLAG_DEFAULT_VNF": true,
         "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": true,
         "FLAG_A_LA_CARTE_AUDIT_INFO": true,
         "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST": true,

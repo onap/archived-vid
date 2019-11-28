@@ -4,7 +4,6 @@
     "flags": {
       "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
       "FLAG_SHOW_ASSIGNMENTS": true,
-      "FLAG_DEFAULT_VNF": true,
       "FLAG_A_LA_CARTE_AUDIT_INFO": true,
       "FLAG_SHOW_VERIFY_SERVICE": true,
       "FLAG_ASYNC_ALACARTE_VFMODULE": false,

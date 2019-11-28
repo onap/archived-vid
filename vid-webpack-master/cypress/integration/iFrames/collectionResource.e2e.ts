@@ -1591,7 +1591,6 @@ describe('Drawing board : Collection resource', function () {
           "FLAG_EXP_CREATE_RESOURCES_IN_PARALLEL": false,
           "FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS": true,
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
-          "FLAG_DEFAULT_VNF": true,
           "FLAG_ASYNC_ALACARTE_VFMODULE": true,
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_ASYNC_ALACARTE_VNF": true,
