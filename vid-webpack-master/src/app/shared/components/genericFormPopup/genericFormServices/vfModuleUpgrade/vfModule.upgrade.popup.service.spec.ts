@@ -19,6 +19,7 @@ import {instance, mock} from "ts-mockito";
 import {GeneralActions} from "../../../../storeUtil/utils/general/general.actions";
 import {VfModuleActions} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 import {ServiceActions} from "../../../../storeUtil/utils/service/service.actions";
+import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 
 class MockModalService<T> {}
 
@@ -94,13 +95,13 @@ describe('VFModule popup service', () => {
     expect(service.getTitle()).toBe("Upgrade Module")
   });
 
-  function findControlByName(controls, controlName) {
+  function findControlByName(controls: FormControlModel[], controlName: string) : FormControlModel {
     return controls.find((control) => {
       return control.controlName === controlName;
     });
   }
 
-  function getControlByNameAndCheckValue(controlName, expectedValue ) {
+  function getControlByNameAndCheckValue(controlName: string, expectedValue: any) {
     const controls = service.getControls('serviceId', 'vnfStoreKey', 'vfModuleId', true);
     const control = findControlByName(controls, controlName);
     expect(control).toBeDefined();
