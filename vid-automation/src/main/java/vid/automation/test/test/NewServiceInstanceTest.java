@@ -534,11 +534,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     //@Step("edit vf module and just set name")
     private void editVfModuleAndJustSetName(String vfModuleName, String vfModuleUUID) {
-        if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
-            hoverAndClickEditButton(vfModuleUUID + "-" + vfModuleName);
-        } else {
-            drawingBoardPage.clickAddButtonByNodeName(vfModuleName);
-        }
+        hoverAndClickEditButton(vfModuleUUID + "-" + vfModuleName);
         Input.text("VF instance name ZERO", "instanceName");
         Click.byTestId(VNF_SET_BUTTON_TEST_ID);
     }
@@ -1159,11 +1155,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
 
         String nodeToEdit = extractNodeToEdit(vnfData);
-        if (addedByDefault && Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
-            hoverAndClickEditButton(nodeToEdit);
-        } else {
-            drawingBoardPage.clickAddButtonByNodeName(vnfData.vnfName);
-        }
+        hoverAndClickEditButton(nodeToEdit);
 
         GeneralUIUtils.ultimateWait();
 
@@ -1335,13 +1327,11 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     private void clickEditVfModule(ServiceData serviceData) {
-        if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
-            hoverAndClickEditButton(serviceData.vfData.uuid + "-" + serviceData.vfData.vfName);
-        }
+        hoverAndClickEditButton(serviceData.vfData.uuid + "-" + serviceData.vfData.vfName);
     }
 
     private void clickAddVfModule(ServiceData serviceData, boolean addedByDefault) {
-        if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive() && addedByDefault) {
+        if (addedByDefault) {
             return;
         }
         System.out.println("VFModule should be added 'manually'");
@@ -1356,10 +1346,8 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     private void clickRemoveVfModule(String vfModuleId, String vfModuleName) {
-        if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
-            System.out.println("will remove " + vfModule0Name);
-            hoverAndClickDeleteButton(vfModuleId + "-" + vfModuleName);
-        }
+        System.out.println("will remove " + vfModule0Name);
+        hoverAndClickDeleteButton(vfModuleId + "-" + vfModuleName);
     }
 
     private void assertPauseOnPausePointsVisibility(boolean visibility) {

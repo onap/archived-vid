@@ -581,7 +581,6 @@ describe('Drawing board', function () {
           "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SERVICE_MODEL_CACHE": true,
-          "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
           "FLAG_1906_COMPONENT_INFO" : false
         },
         "type": "[FLAGS] Update"
@@ -2209,7 +2208,6 @@ describe('Drawing board', function () {
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SHOW_VERIFY_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": true,
-          "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": true,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true
         },
         "type": "[FLAGS] Update"
@@ -3860,7 +3858,6 @@ describe('Drawing board', function () {
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SHOW_VERIFY_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": true,
-          "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": true,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true
         },
         "type": "[FLAGS] Update"
@@ -5603,7 +5600,6 @@ describe('Drawing board', function () {
           "FLAG_SERVICE_MODEL_CACHE": true,
           "FLAG_SHOW_ASSIGNMENTS": true,
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
-          "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": true,
           "FLAG_A_LA_CARTE_AUDIT_INFO": true,
           "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST": true,
           "FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS": true,
@@ -6294,7 +6290,6 @@ describe('Drawing board', function () {
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SHOW_VERIFY_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": true,
-          "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true,
           "FLAG_SUPPLEMENTARY_FILE": true
         },
