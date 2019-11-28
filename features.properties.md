@@ -71,11 +71,6 @@
     * Delete Macro service
 
  
-* FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE
-
-  Enable soft delete for vf-module in view/edit page for a-la-carte only.
-
-  
 * FLAG_1810_AAI_LOCAL_CACHE
 
   Enables the caching of selected AAI responses.

@@ -83,7 +83,6 @@ describe('Soft delete tests', function () {
             status :  200,
             url : Cypress.config('baseUrl') + "/flags**",
             response : {
-              "FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE": true,
               "FLAG_VF_MODULE_RESUME_STATUS_CREATE": false
             }
           }).as('initFlags');

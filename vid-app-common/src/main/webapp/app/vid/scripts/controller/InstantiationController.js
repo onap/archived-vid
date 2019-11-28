@@ -361,24 +361,14 @@
 
             populate_popup_vfModule(serviceObject, vfModule, vnf);
 
-            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE))  {
-
-                if (DataService.getLoggedInUserId())  {
-                    openVfModuleWithHomingDataModal(COMPONENT.DELETE, vfModule);
-                }
-                else {
-                    AaiService.getLoggedInUserID(function (response) {
-                        var userID = response.data;
-                        DataService.setLoggedInUserId(userID);
-                        openVfModuleWithHomingDataModal(COMPONENT.DELETE, vfModule);
-                    });
-                }
+            if (DataService.getLoggedInUserId())  {
+                openVfModuleWithHomingDataModal(COMPONENT.DELETE, vfModule);
             }
             else {
-                $scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
-                    componentId: COMPONENT.VF_MODULE,
-                    callbackFunction: deleteOrResumeCallback,
-                    dialogMethod: COMPONENT.DELETE
+                AaiService.getLoggedInUserID(function (response) {
+                    var userID = response.data;
+                    DataService.setLoggedInUserId(userID);
+                    openVfModuleWithHomingDataModal(COMPONENT.DELETE, vfModule);
                 });
             }
             console.log("Removing VF-Module", vfModule);
@@ -1245,25 +1235,14 @@
             DataService.setVfModuleInstanceName(vfModule.object[FIELD.ID.VF_MODULE_NAME]);
             setCurrentServiceModelInfoFromScope();
 
-            if (featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE))  {
-
-                if (DataService.getLoggedInUserId())  {
-                    openVfModuleWithHomingDataModal(COMPONENT.RESUME, vfModule);
-                }
-                else {
-                    AaiService.getLoggedInUserID(function (response) {
-                        var userID = response.data;
-                        DataService.setLoggedInUserId(userID);
-                        openVfModuleWithHomingDataModal(COMPONENT.RESUME, vfModule);
-                    });
-                }
+            if (DataService.getLoggedInUserId())  {
+                openVfModuleWithHomingDataModal(COMPONENT.RESUME, vfModule);
             }
             else {
-                $scope.$broadcast(COMPONENT.DELETE_RESUME_COMPONENT, {
-                    componentId: COMPONENT.VF_MODULE,
-                    volumeGroups: vfModule.volumeGroups,
-                    callbackFunction: deleteOrResumeCallback,
-                    dialogMethod: COMPONENT.RESUME
+                AaiService.getLoggedInUserID(function (response) {
+                    var userID = response.data;
+                    DataService.setLoggedInUserId(userID);
+                    openVfModuleWithHomingDataModal(COMPONENT.RESUME, vfModule);
                 });
             }
         };
