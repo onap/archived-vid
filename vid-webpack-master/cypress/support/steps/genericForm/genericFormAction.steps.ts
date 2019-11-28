@@ -6,17 +6,10 @@ declare namespace Cypress {
 }
 
 
-
-
-function selelctPlatformValue(isDropdown: boolean, selectOption: string){
-  if (isDropdown) {
-    cy.selectDropdownOptionByText('platform', selectOption);
-  } else {
-    cy.getElementByDataTestsId("multi-selectPlatform").get('.c-btn').click({force: true})
-      .getElementByDataTestsId(`multi-selectPlatform-${selectOption}`).click()
-      .getElementByDataTestsId("multi-selectPlatform").get('.c-btn').click({force: true});
-
-  }
+function selelctPlatformValue(selectOption: string) {
+      cy.getElementByDataTestsId("multi-selectPlatform").get('.c-btn').click({force: true});
+      cy.getElementByDataTestsId(`multi-selectPlatform-${selectOption}`).click();
+      cy.getElementByDataTestsId("multi-selectPlatform").get('.c-btn').click({force: true});
 }
 
 

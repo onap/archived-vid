@@ -226,12 +226,6 @@ public class VidBasePage {
         return this;
     }
 
-    public VidBasePage selectPlatform(String platform) {
-        SelectOption.byValue(platform, Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
-        return this;
-    }
-
-
     public void assertButtonState(String dataTestId, boolean shouldBeEnabled) {
         assertButtonStateInternal(dataTestId, shouldBeEnabled,
                 (dataTestIdInner) -> GeneralUIUtils.getWebElementByTestID(dataTestIdInner, 60));

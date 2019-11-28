@@ -132,9 +132,4 @@ public class ViewEditPage extends VidBasePage {
 //        //TODO multi SelectOption.byValue(lineOfBusiness, Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID);
 //        return this;
 //    }
-
-    public ViewEditPage selectPlatform(String platform) {
-        SelectOption.byValue(platform, Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
-        return this;
-    }
 }
