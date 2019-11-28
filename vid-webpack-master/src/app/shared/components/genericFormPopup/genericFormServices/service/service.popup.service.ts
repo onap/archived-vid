@@ -164,7 +164,7 @@ export class ServicePopupService implements GenericPopupInterface {
       this._store.dispatch(updateServiceInstance(formValues, serviceModel.modelVersionId));
     }
 
-    if (this._store.getState().global.flags['FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD'] && isCreateMode) {
+    if (isCreateMode) {
       this._defaultDataGeneratorService.updateReduxOnFirstSet(serviceModel.modelVersionId, formValues);
     }
   };
