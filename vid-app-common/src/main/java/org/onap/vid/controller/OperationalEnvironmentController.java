@@ -20,10 +20,21 @@
  */
 package org.onap.vid.controller;
 
+import static org.onap.vid.utils.Logging.getMethodCallerName;
+import static org.onap.vid.utils.Logging.getMethodName;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 import io.joshworks.restclient.http.HttpResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -42,19 +53,13 @@ import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.onap.vid.utils.Logging.getMethodCallerName;
-import static org.onap.vid.utils.Logging.getMethodName;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("operationalEnvironment")
@@ -64,7 +69,7 @@ public class OperationalEnvironmentController extends VidRestrictedBaseControlle
     private final MsoBusinessLogic msoBusinessLogic;
     private final SystemPropertiesWrapper systemPropertiesWrapper;
 
-    private static final Pattern RECOVERY_ACTION_MESSAGE_PATTERN = Pattern.compile("from String \"(.*)\": value not");
+    private static final Pattern RECOVERY_ACTION_MESSAGE_PATTERN = Pattern.compile("from String \"(.*)\": not one");
 
 
     @Autowired

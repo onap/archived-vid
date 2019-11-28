@@ -1,6 +1,13 @@
 package vid.automation.test.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static vid.automation.test.Constants.TestEnvironments.REFRESH_BUTTON;
+
 import com.google.common.collect.ImmutableMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
@@ -9,19 +16,19 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
 import vid.automation.test.model.Environment;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.sections.TestEnvironmentPage;
 import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.utils.ReadFile;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
-import static vid.automation.test.Constants.TestEnvironments.REFRESH_BUTTON;
 
 
 /*
@@ -349,7 +356,7 @@ public class EnvironmentsTest extends VidBaseTestCase {
     }
 
     @Test
-    public void testApplicationEnvironmentActivationBadManifestStructure() throws Exception {
+    public void testApplicationEnvironmentActivationBadManifestStructure() {
         testApplicationEnvironmentActivationBadManifestStructure("bad_manifest_structure.json", "Manifest structure is wrong");
         testApplicationEnvironmentActivationBadManifestStructure("manifest_with_wrong_recovery_action.json",
                 "Wrong value for RecoveryAction in manifest. Allowed options are: abort, retry, skip. Wrong value is: leave");

@@ -20,8 +20,25 @@
 
 package org.onap.vid.services;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toSet;
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.inject.Inject;
+import javax.ws.rs.core.Response;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.util.AAITreeConverter;
@@ -35,19 +52,6 @@ import org.onap.vid.model.aaiTree.ServiceInstance;
 import org.onap.vid.utils.Tree;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-import javax.ws.rs.core.Response;
-import java.util.*;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ExecutorService;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toSet;
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
 @Component
 public class AAIServiceTree {
@@ -207,12 +211,14 @@ public class AAIServiceTree {
         Map<String, String> modelNameByModelVersionId = new HashMap<>();
 
         JsonNode models = getModels(aaiClient, invariantIDs);
-        for (JsonNode model: models) {
-            JsonNode modelVersions = model.get("model-vers").get("model-ver");
-            for (JsonNode modelVersion: modelVersions) {
-                final String modelVersionId = modelVersion.get("model-version-id").asText();
-                modelVersionByModelVersionId.put(modelVersionId, modelVersion.get("model-version").asText());
-                modelNameByModelVersionId.put(modelVersionId, modelVersion.get("model-name").asText());
+        if (models!=null) {
+            for (JsonNode model : models) {
+                JsonNode modelVersions = model.get("model-vers").get("model-ver");
+                for (JsonNode modelVersion : modelVersions) {
+                    final String modelVersionId = modelVersion.get("model-version-id").asText();
+                    modelVersionByModelVersionId.put(modelVersionId, modelVersion.get("model-version").asText());
+                    modelNameByModelVersionId.put(modelVersionId, modelVersion.get("model-name").asText());
+                }
             }
         }
 
