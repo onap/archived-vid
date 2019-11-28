@@ -103,6 +103,7 @@ import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.ServicesService;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.test.NewServiceInstanceTest.ServiceData.IS_GENERATED_NAMING;
+import vid.automation.test.utils.ManageMultiselectOrDropdown;
 import vid.automation.test.utils.ReadFile;
 
 @FeatureTogglingTest(FLAG_ENABLE_WEBPACK_MODERN_UI)
@@ -1189,7 +1190,12 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         assertSetButtonDisabled(VNF_SET_BUTTON_TEST_ID);
 
-        browseASDCPage.selectPlatform("platform");
+        boolean isMultiSelect = Features.FLAG_2002_VNF_PLATFORM_MULTI_SELECT.isActive();
+        String platfromDataTestId = isMultiSelect ? "multi-selectPlatform" :Constants.OwningEntity.PLATFORM_SELECT_TEST_ID;
+        ManageMultiselectOrDropdown managePlatformMultiselectOrDropdown = new ManageMultiselectOrDropdown(
+            isMultiSelect);
+
+        managePlatformMultiselectOrDropdown.selectItemByDataTestId(platfromDataTestId, ImmutableList.of("platform"));
 
         browseASDCPage.selectLineOfBusiness("ONAP");
         assertSetButtonEnabled(VNF_SET_BUTTON_TEST_ID);

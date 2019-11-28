@@ -69,6 +69,7 @@ export class VnfControlGenerator {
 
   getMacroFormControls(serviceId: string, vnfStoreKey: string, vnfName: string, dynamicInputs?: any[]): FormControlModel[] {
     vnfStoreKey = _.isNil(vnfStoreKey) ? vnfName : vnfStoreKey;
+    const flags = this.store.getState().global.flags;
 
     if (_.isNil(serviceId) || _.isNil(vnfStoreKey) || _.isNil(vnfName)) {
       this._logService.error('should provide serviceId, vnfName, vnfStoreKey', serviceId);
@@ -85,7 +86,7 @@ export class VnfControlGenerator {
       result.push(this.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._basicControlGenerator.getLegacyRegion(vnfInstance));
       result.push(this.getTenantControl(serviceId, vnfInstance, result));
-      result.push(this.getPlatformControl(vnfInstance, result));
+      result.push(this.getPlatformControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
       result.push(this.getLineOfBusinessControl(vnfInstance, result));
     }
     return result;

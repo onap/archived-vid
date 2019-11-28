@@ -325,7 +325,7 @@ describe('Drawing board', function () {
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
         cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP');
-        cy.selectDropdownOptionByText('platform', 'platform');
+        cy.selelctPlatformValue(!getReduxWith2VNFS().global.flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'], 'platform');
         cy.genericFormSubmitForm();
 
         cy.getElementByDataTestsId('node-afacccf6-397d-45d6-b5ae-94c39734b168-2017-388_PASQUALE-vPE 0').contains('<Automatically Assigned>');
@@ -345,8 +345,9 @@ describe('Drawing board', function () {
         cy.selectDropdownOptionByText('productFamily', 'ERICA');
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
-        cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP');
-        cy.selectDropdownOptionByText('platform', 'platform');
+        cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP')
+        cy.selelctPlatformValue(!getReduxWith2VNFS().global.flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'], 'platform');
+
         cy.genericFormSubmitForm();
 
         cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').contains(vnfModelName);
@@ -582,7 +583,8 @@ describe('Drawing board', function () {
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SERVICE_MODEL_CACHE": true,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
-          "FLAG_1906_COMPONENT_INFO" : false
+          "FLAG_1906_COMPONENT_INFO" : false,
+          "FLAG_2002_VNF_PLATFORM_MULTI_SELECT" : false,
         },
         "type": "[FLAGS] Update"
       },

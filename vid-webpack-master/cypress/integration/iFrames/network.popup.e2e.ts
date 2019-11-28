@@ -59,7 +59,7 @@ describe('Network popup', function () {
             cy.checkIsOptionSelected('lineOfBusiness', 'zzz1');
             cy.checkIsOptionSelected('platform', 'xxx1');
             //change platform value
-            cy.selectDropdownOptionByText('platform', 'platform');
+            cy.selelctPlatformValue(!getReduxWithVNFSAndNetwork().global.flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'], 'platform');
             cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
               cy.getElementByDataTestsId('numberButton').contains('1');
               cy.getElementByDataTestsId('node-ddc3f20c-08b5-40fd-af72-c6d14636b986-ExtVL 0-menu-btn').click({force: true})
@@ -130,7 +130,7 @@ describe('Network popup', function () {
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-STTest2');
         cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
-        cy.selectDropdownOptionByText('platform', 'xxx1');
+        cy.selelctPlatformValue(!getReduxWithVNFSAndNetwork().global.flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'], 'xxx1');
         cy.getElementByDataTestsId('form-set').should('not.have.attr', 'disabled');
 
         // clear required dynamic input.
@@ -215,7 +215,8 @@ describe('Network popup', function () {
             "FLAG_ADVANCED_PORTS_FILTER": true,
             "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
             "FLAG_REGION_ID_FROM_REMOTE": true,
-            "FLAG_ADD_MSO_TESTAPI_FIELD": true
+            "FLAG_ADD_MSO_TESTAPI_FIELD": true,
+            "FLAG_2002_VNF_PLATFORM_MULTI_SELECT" : false,
           },
           "type": "[FLAGS] Update"
         },

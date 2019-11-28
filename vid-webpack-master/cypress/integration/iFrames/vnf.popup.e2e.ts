@@ -81,8 +81,7 @@ describe('Vnf popup', function () {
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-STTest2');
         cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
-        cy.selectDropdownOptionByText('platform', 'xxx1');
-
+        cy.selelctPlatformValue(!getReduxWithVNFS().global.flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'], 'xxx1');
       })
     });
 
@@ -97,7 +96,8 @@ describe('Vnf popup', function () {
             "FLAG_SHOW_VERIFY_SERVICE": false,
             "FLAG_SERVICE_MODEL_CACHE": true,
             "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
-            "FLAG_ADD_MSO_TESTAPI_FIELD": true
+            "FLAG_ADD_MSO_TESTAPI_FIELD": true,
+            "FLAG_2002_VNF_PLATFORM_MULTI_SELECT": false
           },
           "type": "[FLAGS] Update"
         },
