@@ -25,7 +25,7 @@ describe('Drawing board', function () {
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').get('i').should('have.class', 'fa-plus-circle');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
-        cy.fillVnfPopup().then(() => {
+        cy.fillVnfPopup(true).then(() => {
           cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
           cy.fillVnfPopup().then(() => {
             cy.drawingBoardNumberOfExistingElementsShouldContains(2);
@@ -43,7 +43,7 @@ describe('Drawing board', function () {
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').get('i').should('have.class', 'fa-plus-circle');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
-        cy.fillVnfPopup().then(() => {
+        cy.fillVnfPopup(true).then(() => {
           cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
           cy.fillVnfPopup().then(() => {
             cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
@@ -61,7 +61,7 @@ describe('Drawing board', function () {
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').get('i').should('have.class', 'fa-plus-circle')
           .drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
-        cy.fillVnfPopup().then(() => {
+        cy.fillVnfPopup(true).then(() => {
           cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0')
             .drawingBoardTreeClickOnContextMenuOptionByName('Duplicate')
             .get('.quantity-select option').should('have.length', 9)
@@ -325,7 +325,7 @@ describe('Drawing board', function () {
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
         cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP');
-        cy.selectDropdownOptionByText('platform', 'platform');
+        cy.selelctPlatformValue('platform');
         cy.genericFormSubmitForm();
 
         cy.getElementByDataTestsId('node-afacccf6-397d-45d6-b5ae-94c39734b168-2017-388_PASQUALE-vPE 0').contains('<Automatically Assigned>');
@@ -345,8 +345,9 @@ describe('Drawing board', function () {
         cy.selectDropdownOptionByText('productFamily', 'ERICA');
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
-        cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP');
-        cy.selectDropdownOptionByText('platform', 'platform');
+        cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP')
+        cy.selelctPlatformValue('platform');
+
         cy.genericFormSubmitForm();
 
         cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').contains(vnfModelName);
@@ -582,7 +583,8 @@ describe('Drawing board', function () {
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SERVICE_MODEL_CACHE": true,
           "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
-          "FLAG_1906_COMPONENT_INFO" : false
+          "FLAG_1906_COMPONENT_INFO" : false,
+          "FLAG_2002_VNF_PLATFORM_MULTI_SELECT" : false,
         },
         "type": "[FLAGS] Update"
       },

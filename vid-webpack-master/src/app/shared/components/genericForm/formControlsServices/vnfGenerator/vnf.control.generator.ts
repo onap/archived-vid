@@ -15,7 +15,6 @@ import {AppState} from "../../../../store/reducers";
 import {FormGroup} from "@angular/forms";
 import {DropdownFormControl} from "../../../../models/formControlModels/dropdownFormControl.model";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
-import {InputFormControl} from "../../../../models/formControlModels/inputFormControl.model";
 import {Observable, of} from "rxjs";
 import {SelectOption} from "../../../../models/selectOption";
 import * as _ from 'lodash';
@@ -78,6 +77,7 @@ export class VnfControlGenerator {
     const vnfInstance = this.getVnfInstance(serviceId, vnfStoreKey);
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
     let result: FormControlModel[] = [];
+    const flags = this.store.getState().global.flags;
 
     if (!_.isNil(vnfModel)) {
       result.push(this.getInstanceName(vnfInstance, serviceId, vnfName, vnfModel.isEcompGeneratedNaming));
@@ -85,7 +85,7 @@ export class VnfControlGenerator {
       result.push(this.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._basicControlGenerator.getLegacyRegion(vnfInstance));
       result.push(this.getTenantControl(serviceId, vnfInstance, result));
-      result.push(this.getPlatformControl(vnfInstance, result));
+      result.push(this.getPlatformMultiselectControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
       result.push(this.getLineOfBusinessControl(vnfInstance, result));
     }
     return result;
@@ -109,7 +109,7 @@ export class VnfControlGenerator {
       result.push(this.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._basicControlGenerator.getLegacyRegion(vnfInstance));
       result.push(this.getTenantControl(serviceId, vnfInstance, result));
-      result.push(this.getPlatformControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
+      result.push(this.getPlatformMultiselectControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
       result.push(this.getLineOfBusinessControl(vnfInstance, result));
       result.push(this.getRollbackOnFailureControl(vnfInstance, result));
     }
@@ -144,25 +144,7 @@ export class VnfControlGenerator {
 
 
 
-  getPlatformDropdownControl = (instance: any, controls: FormControlModel[]) : DropdownFormControl => {
-    return new DropdownFormControl({
-      type: FormControlType.DROPDOWN ,
-      controlName: 'platformName',
-      displayName: 'Platform',
-      dataTestId: 'platform',
-      selectedFieldName :  null ,
-      ngValue :  null,
-      placeHolder: 'Select Platform',
-      isDisabled: false,
-      name: "platform",
-      value: instance ? instance.platformName : null,
-      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
-      onInitSelectedField: ['platformList'],
-      onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters),
-    });
-  };
-
-  getPlatformMultiselectControl = (instance: any, controls: FormControlModel[]) : MultiselectFormControl => {
+  getPlatformMultiselectControl = (instance: any, controls: FormControlModel[], isMultiSelected: boolean) : MultiselectFormControl => {
     return new MultiselectFormControl({
       type: FormControlType.MULTI_SELECT ,
       controlName: 'platformName',
@@ -174,6 +156,7 @@ export class VnfControlGenerator {
       isDisabled: false,
       name: "platform",
       value: instance ? instance.platformName : '',
+      limitSelection : isMultiSelected ? 1000 : 1,
       validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
       onInitSelectedField: ['platformList'],
       onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters),
@@ -187,14 +170,6 @@ export class VnfControlGenerator {
         return value.split(',');
       }
     });
-  };
-
-  getPlatformControl = (instance: any, controls: FormControlModel[], isMultiSelect?: boolean): MultiselectFormControl | DropdownFormControl => {
-    const shouldGenerateDropdown =  isMultiSelect === undefined || isMultiSelect === false;
-    if(shouldGenerateDropdown){
-      return this.getPlatformDropdownControl(instance, controls);
-    }
-    return this.getPlatformMultiselectControl(instance, controls);
   };
 
   getTenantControl = (serviceId: string, instance: any, controls: FormControlModel[]): DropdownFormControl => {
