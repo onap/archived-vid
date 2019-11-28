@@ -98,6 +98,11 @@ public class Get {
     }
 
 
+    public static Boolean isOptionSelectedInMultiSelect(String dataTestId, String option) {
+        return GeneralUIUtils.isOptionSelectedInMultiSelect(dataTestId, option);
+    }
+
+
     public static List<WebElement> byClass(String className) {
         return GeneralUIUtils.getWebElementsListByContainsClassName(className);
     }
