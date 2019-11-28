@@ -14,6 +14,7 @@ export class MultiselectFormControl extends FormControlModel{
   settings: {};
   onInitSelectedField?: string[];
   convertOriginalDataToArray? : (values)=> void;
+  limitSelection?: number;
 
 
   constructor(data) {
@@ -28,6 +29,7 @@ export class MultiselectFormControl extends FormControlModel{
     this.settings = data.settings || {};
     this.onInitSelectedField = data.onInitSelectedField ? data.onInitSelectedField : null;
     this.convertOriginalDataToArray = data.convertOriginalDataToArray ? data.convertOriginalDataToArray : null
+    this.limitSelection = data.limitSelection ? data.limitSelection : 1000;
   }
 
 }
