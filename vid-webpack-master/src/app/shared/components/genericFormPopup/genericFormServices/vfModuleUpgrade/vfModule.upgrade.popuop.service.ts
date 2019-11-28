@@ -40,7 +40,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
 
   getDynamicInputs = () => null;
 
-  getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean)  {
+  getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean): FormControlModel[]  {
     let result: FormControlModel[] =[
       this.getRetainAssignmentsControl(),
       this.getRetainVolumeGroupsControl(),
