@@ -26,16 +26,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <epsdk.version>2.5.0</epsdk.version>
-        <springframework.version>5.1.9.RELEASE</springframework.version>
+        <springframework.version>5.2.0.RELEASE</springframework.version>
         <springframework.orm.version>4.3.22.RELEASE</springframework.orm.version>
         <!-- epsdk-core is importing this class, which is only on spring-orm 4 but not in orm 5:
          org.springframework.orm.hibernate4.HibernateTransactionManager
          so following orm.version lets epsdk-core find it -->
         <hibernate.version>4.3.11.Final</hibernate.version>
-        <jackson.version>2.9.9</jackson.version>
-        <jackson.databind.version>2.9.9.3</jackson.databind.version>
+        <jackson.version>2.10.1</jackson.version>
+        <jackson.databind.version>2.10.1</jackson.databind.version>
         <onap.logging.version>1.6.1</onap.logging.version>
-        <jersey.version>2.29</jersey.version>
+        <jersey.version>2.29.1</jersey.version>
         <surefire.version>2.22.1</surefire.version>
         <selenium.version>3.141.59</selenium.version>
         <sonar.coverage.exclusions>**/webapp/**/*,**/*.js</sonar.coverage.exclusions>
@@ -54,7 +54,7 @@
         <sitePath>content/sites/site/org/onap/vid/${project.version}</sitePath>
 
         <aspectj.version>1.8.9</aspectj.version>
-        <kotlin.version>1.3.30</kotlin.version>
+        <kotlin.version>1.3.60</kotlin.version>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
 
         <eirslett.version>1.6</eirslett.version>
