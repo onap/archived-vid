@@ -59,11 +59,15 @@ import static org.onap.vid.job.Job.JobStatus.STOPPED;
 import static org.onap.vid.job.impl.JobSchedulerInitializer.WORKERS_TOPICS;
 import static org.onap.vid.model.JobAuditStatus.SourceStatus.VID;
 import static org.onap.vid.testUtils.TestUtils.readJsonResourceFileAsObject;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertFalse;
 import static org.testng.AssertJUnit.assertTrue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
@@ -199,6 +203,18 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         List<ServiceInfo> serviceInfoList = asyncInstantiationBL.getAllServicesInfo();
         assertThat( serviceInfoList, everyItem(hasProperty("jobStatus", is(PENDING))));
     }
+
+    @Test
+    public void jsonSchema() {
+        JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(JACKSON_OBJECT_MAPPER);
+        try {
+            JsonSchema schema = schemaGen.generateSchema(ServiceInstantiation.class);
+            JACKSON_OBJECT_MAPPER.writeValueAsString(schema);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private List<UUID> pushMacroBulk() {
         ServiceInstantiation serviceInstantiation = generateMockMacroServiceInstantiationPayload(false,
