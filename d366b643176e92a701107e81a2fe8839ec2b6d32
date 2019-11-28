@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9fffe673_7613218d",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popup.service.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2019-11-28T07:40:15Z",
+      "side": 1,
+      "message": "1) add type of control : FormControl\n2) add return type : FormControl",
+      "revId": "d366b643176e92a701107e81a2fe8839ec2b6d32",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a977c858_f6398eaa",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popup.service.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2019-11-28T07:40:15Z",
+      "side": 1,
+      "message": "1) controlName : string\n2) expectedValue : ?",
+      "revId": "d366b643176e92a701107e81a2fe8839ec2b6d32",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
