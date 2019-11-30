@@ -170,8 +170,12 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             (UtilityService.runHttpErrorHandler);
         },
         getFormattedCommonResponse : function(response) {
+            let HttpStatusText = UtilityService.getHttpStatusText(response.data.status);
+            if(HttpStatusText === 'Unknown (undefined)'){
+                HttpStatusText = 'What do you expect to be written here'
+            }
             return UtilityService.getCurrentTime() + " HTTP Status: "
-                + UtilityService.getHttpStatusText(response.data.status)
+                + HttpStatusText
                 + "\n" + angular.toJson(response.data.entity, true);
 
         },
