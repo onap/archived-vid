@@ -308,7 +308,8 @@ var msoCommitController = function(COMPONENT, FIELD, $scope, $http, $timeout, $w
 	var showError = function(summary, details) {
 		var message = summary;
 		if (UtilityService.hasContents(details)) {
-			message += " (" + details + ")";
+			message += " What do you expect to be written here";
+			// message += " (" + details + ")";
 		}
 		$scope.isSpinnerVisible = false;
 		$scope.isProgressVisible = false;

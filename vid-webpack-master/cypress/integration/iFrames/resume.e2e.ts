@@ -74,7 +74,7 @@ describe('Resume tests', function () {
       });
      });
 
-    it(`Resume Defect 710619 - with flag FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE is OFF`, function () {
+    it.only(`Resume Defect 16261 - VID system failure error in a case the junction close expired transaction`, function () {
 
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json').then((res) => {
         cy.server()
@@ -83,12 +83,8 @@ describe('Resume tests', function () {
             delay :  0,
             status :  200,
             url : Cypress.config('baseUrl') + "/flags**",
-            response : {
-              "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST" : true,
-              "FLAG_ADD_MSO_TESTAPI_FIELD": true,
-              "FLAG_1810_CR_SOFT_DELETE_ALACARTE_VF_MODULE": false
-            }
-          }).as('initFlags');
+            //no response in order to simulate no response from BE
+          });
       });
 
       cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=dedd680f-f3bd-46d8-97c7-b6fc28db9317&aaiModelVersionId=4b60252a-bf6c-40df-9db5-98b4c363fdf4&isPermitted=true');
