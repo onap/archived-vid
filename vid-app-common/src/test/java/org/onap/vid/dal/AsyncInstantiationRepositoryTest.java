@@ -20,18 +20,21 @@
 
 package org.onap.vid.dal;
 
+import static java.util.stream.Collectors.toList;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED;
 
 import com.google.common.collect.ImmutableList;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
@@ -39,6 +42,7 @@ import org.onap.vid.config.DataSourceConfig;
 import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
 import org.onap.vid.job.Job;
 import org.onap.vid.model.ResourceInfo;
+import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.RequestStatus;
@@ -57,6 +61,30 @@ public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest
     @BeforeClass
     void initServicesInfoService() {
         createInstanceParamsMaps();
+    }
+
+    private void createNewTestServicesInfoWithServiceModelID() {
+
+        LocalDateTime NOW = LocalDateTime.now();
+
+        addNewServiceInfo(UUID.randomUUID(), "abc", "1", NOW.minusDays(1L), NOW, COMPLETED, false, false,
+            MODEL_UUID);
+        addNewServiceInfo(UUID.randomUUID(), "abc", "2", NOW, NOW, COMPLETED, false, false,
+            MODEL_UUID_2);
+        addNewServiceInfo(UUID.randomUUID(), "abc", "3", NOW, NOW, COMPLETED, false, false,
+            MODEL_UUID);
+        addNewServiceInfo(UUID.randomUUID(), "abc", "hidden", NOW, NOW, COMPLETED, true, false,
+            MODEL_UUID);
+    }
+
+    @Test
+    public void testListServicesByServiceModelId() {
+        AsyncInstantiationRepository underTest = new AsyncInstantiationRepository(dataAccessService);
+        createNewTestServicesInfoWithServiceModelID();
+        List<ServiceInfo> serviceInfoListResult = underTest.listServicesByServiceModelId(UUID.fromString(MODEL_UUID));
+
+        assertThat(serviceInfoListResult.stream().map(ServiceInfo::getServiceInstanceName).collect(toList()),
+            contains("3", "1"));
     }
 
     @Test
@@ -98,6 +126,8 @@ public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest
         assertThat(storedByTrackId.get("cccccc").getErrorMessage().request.requestStatus.getStatusMessage(), equalTo("MSO failed resource"));
         assertThat(storedByTrackId.get("cccccc").getErrorMessage().request.requestStatus.getRequestState(), equalTo("FAILED"));
         assertThat(storedByTrackId.get("dddddd").getErrorMessage(), equalTo(null));
-        assertThat(storedByTrackId.values(),  jsonEquals(requestInfoList.stream().filter(i-> i.getRootJobId().equals(jobId1)).collect(Collectors.toList())).when(IGNORING_ARRAY_ORDER));
+        assertThat(storedByTrackId.values(),
+            jsonEquals(requestInfoList.stream().filter(i -> i.getRootJobId().equals(jobId1)).collect(
+                toList())).when(IGNORING_ARRAY_ORDER));
     }
 }

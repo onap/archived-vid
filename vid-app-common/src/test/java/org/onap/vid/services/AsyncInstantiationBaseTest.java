@@ -22,6 +22,8 @@ package org.onap.vid.services;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -32,9 +34,12 @@ import static org.onap.vid.model.VidNotions.ModelCategory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,9 +48,14 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+import org.hibernate.SessionFactory;
+import org.onap.portalsdk.core.domain.FusionObject;
+import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
+import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.model.Action;
+import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.VidNotions;
 import org.onap.vid.model.serviceInstantiation.InstanceGroup;
 import org.onap.vid.model.serviceInstantiation.Network;
@@ -57,12 +67,18 @@ import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.RequestStatus;
 import org.onap.vid.properties.Features;
+import org.onap.vid.services.AsyncInstantiationBusinessLogicTest.ServiceInfoComparator;
+import org.onap.vid.utils.DaoUtils;
 import org.onap.vid.utils.TimeUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.togglz.core.manager.FeatureManager;
 
 public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests {
+
+    public static final String MODEL_UUID = "337be3fc-293e-43ec-af0b-cf932dad07e6";
+    public static final String MODEL_UUID_2 = "ce052844-22ba-4030-a838-822f2b39eb9b";
 
     public static final String OWNING_ENTITY_ID = "038d99af-0427-42c2-9d15-971b99b9b489";
     public static final String JULIO_ERICKSON = "JULIO ERICKSON";
@@ -90,6 +106,12 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
     protected HashMap<String, String> vfModuleInstanceParamsMapWithParamsToRemove;
     protected HashMap<String, String> vnfInstanceParamsMapWithParamsToRemove;
 
+    protected int serviceCount = 0;
+
+
+    @Inject
+    protected DataAccessService dataAccessService;
+
     @Inject
     protected FeatureManager featureManager;
 
@@ -98,6 +120,56 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
 
     @Inject
     protected CloudOwnerService cloudOwnerService;
+
+    @Autowired
+    protected SessionFactory sessionFactory;
+
+
+    protected static Date toDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    protected HashMap<String, Object> getPropsMap() {
+        HashMap<String, Object> props = new HashMap<>();
+        props.put(FusionObject.Parameters.PARAM_USERID, 0);
+        return props;
+    }
+
+
+    private void setCreateDateToServiceInfo(UUID jobUuid, LocalDateTime createDate) {
+        List<ServiceInfo> serviceInfoList = dataAccessService.getList(ServiceInfo.class, getPropsMap());
+        DaoUtils.tryWithSessionAndTransaction(sessionFactory, session -> {
+            serviceInfoList.stream()
+                .filter(serviceInfo -> jobUuid.equals(serviceInfo.getJobId()))
+                .forEach(serviceInfo -> {
+                    serviceInfo.setCreated(toDate(createDate));
+                    session.saveOrUpdate(serviceInfo);
+                });
+            return 1;
+        });
+    }
+
+    protected void addNewServiceInfo(UUID uuid, String userId, String serviceName, LocalDateTime createDate,
+        LocalDateTime statusModifiedDate, JobStatus status, boolean isHidden, boolean retryEnabled,
+        String modelUUID) {
+        ServiceInfo serviceInfo = new ServiceInfo();
+        serviceInfo.setJobId(uuid);
+        serviceInfo.setUserId(userId);
+        serviceInfo.setServiceInstanceName(serviceName);
+        serviceInfo.setStatusModifiedDate(toDate(statusModifiedDate));
+        serviceInfo.setJobStatus(status);
+        serviceInfo.setPause(false);
+        serviceInfo.setOwningEntityId("1234");
+        serviceInfo.setCreatedBulkDate(toDate(createDate));
+        serviceInfo.setRetryEnabled(retryEnabled);
+        serviceInfo.setServiceModelId(modelUUID);
+        serviceInfo.setHidden(isHidden);
+        dataAccessService.saveDomainObject(serviceInfo, getPropsMap());
+        setCreateDateToServiceInfo(uuid, createDate);
+        serviceCount++;
+
+    }
+
 
     public ServiceInstantiation generateMockMacroServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure) {
         return generateMockServiceInstantiationPayload(isPause, vnfs, Collections.EMPTY_MAP, Collections.EMPTY_MAP, bulkSize, isUserProvidedNaming, projectName, rollbackOnFailure, false, null, Action.Create, null);
