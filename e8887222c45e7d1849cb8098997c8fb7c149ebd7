@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0bcd3b11_fd19c09a",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-12-01T20:25:04Z",
+      "side": 1,
+      "message": "why not REUSE?",
+      "range": {
+        "startLine": 23,
+        "startChar": 34,
+        "endLine": 23,
+        "endChar": 42
+      },
+      "revId": "e8887222c45e7d1849cb8098997c8fb7c149ebd7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75c789d0_e943fa55",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__instance_template.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-12-01T20:25:04Z",
+      "side": 1,
+      "message": "Why the null position?\nand in general what are out intentions regarding ordering using templates?",
+      "range": {
+        "startLine": 115,
+        "startChar": 2,
+        "endLine": 115,
+        "endChar": 18
+      },
+      "revId": "e8887222c45e7d1849cb8098997c8fb7c149ebd7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61097303_20877bce",
+        "filename": "vid-webpack-master/src/app/drawingBoard/drawingBoard.routing.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-12-01T20:25:04Z",
+      "side": 1,
+      "message": "not sure recreate is the best terminology.\nMaybe REUSE?",
+      "range": {
+        "startLine": 30,
+        "startChar": 15,
+        "endLine": 30,
+        "endChar": 23
+      },
+      "revId": "e8887222c45e7d1849cb8098997c8fb7c149ebd7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
