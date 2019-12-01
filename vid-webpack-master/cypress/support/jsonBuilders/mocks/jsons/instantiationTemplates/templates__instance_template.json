@@ -1,0 +1,116 @@
+{
+  "action": "None_Create",
+  "instanceName": "vProbe_NC_Service_DG_new_SI",
+  "productFamilyId": null,
+  "lcpCloudRegionId": null,
+  "tenantId": null,
+  "modelInfo": {
+    "modelInvariantId": "90a32d31-8a01-4de2-a91f-7e2414d6f5aa",
+    "modelVersionId": "6cfeeb18-c2b0-49df-987a-da47493c8e38",
+    "modelName": "vProbe_NC_Service",
+    "modelType": "service",
+    "modelVersion": "1.0"
+  },
+  "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "subscriptionServiceType": "Emanuel",
+  "owningEntityId": "10c645f5-9924-4b89-bec0-b17cf49d3cad",
+  "owningEntityName": "EMANUEL-CORE",
+  "tenantName": null,
+  "aicZoneId": null,
+  "aicZoneName": null,
+  "projectName": "Kennedy",
+  "subscriberName": "Emanuel",
+  "rollbackOnFailure": true,
+  "isALaCarte": true,
+  "testApi": "GR_API",
+  "trackById": "36601560-f8e3-4020-bdef-3e4709c51e84",
+  "vnfs": {
+    "vProbe_NC_VNF 0": {
+      "modelInfo": {
+        "modelCustomizationName": "vProbe_NC_VNF 0",
+        "modelCustomizationId": "024a417d-ca46-40bf-95ce-809c6a269011",
+        "modelInvariantId": "a6a96924-b9c5-4c85-ae18-cbfca848095e",
+        "modelVersionId": "21ae311e-432f-4c54-b855-446d0b8ded72",
+        "modelName": "vProbe_NC_VNF",
+        "modelType": "vnf",
+        "modelVersion": "1.0"
+      },
+      "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "instanceName": "zolson57arlba007",
+      "action": "Create",
+      "platformName": "NETWORK-CLOUD",
+      "lcpCloudRegionId": "olson57a",
+      "tenantId": "dcb28ad99c7341748830c9dc307f85eb",
+      "instanceParams": [
+        {}
+      ],
+      "rollbackOnFailure": true,
+      "vfModules": {
+        "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0": {
+          "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg": {
+            "modelInfo": {
+              "modelCustomizationName": "VprobeNcVnf..FE_base_module..module-0",
+              "modelCustomizationId": "4d0818cf-eaa9-4a3f-89c2-639953089e14",
+              "modelInvariantId": "29b6fa3c-aeb3-4103-b3f7-6f98e097b005",
+              "modelVersionId": "c5b26cc1-a66f-4b69-aa23-6abc7c647c88",
+              "modelName": "VprobeNcVnf..FE_base_module..module-0",
+              "modelType": "vfModule",
+              "modelVersion": "1"
+            },
+            "instanceName": "zolson57arlba007_lba_Base_01",
+            "action": "Create",
+            "lcpCloudRegionId": "olson57a",
+            "tenantId": "dcb28ad99c7341748830c9dc307f85eb",
+            "instanceParams": [
+              {}
+            ],
+            "rollbackOnFailure": true,
+            "trackById": "ea2879a6-10bc-4697-90d7-7bc3e71da0fd"
+          }
+        },
+        "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
+          "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi": {
+            "modelInfo": {
+              "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+              "modelCustomizationId": "9b99d340-a80b-45ef-9ff1-993fa3e4c001",
+              "modelInvariantId": "1bcc4824-6c1a-4b51-af7c-076b7fc14d05",
+              "modelVersionId": "c09e4530-8fd8-418f-9483-2f57ce927b05",
+              "modelName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+              "modelType": "vfModule",
+              "modelVersion": "1"
+            },
+            "instanceName": "zolson57arlba007_lba_dj_01",
+            "action": "Create",
+            "lcpCloudRegionId": "olson57a",
+            "tenantId": "dcb28ad99c7341748830c9dc307f85eb",
+            "instanceParams": [
+              {}
+            ],
+            "rollbackOnFailure": true,
+            "trackById": "b134410e-3bc0-478e-883e-1b6bdf8a28df",
+            "volumeGroupInstanceName": "zolson57arlba007_lba_dj_01_vol",
+            "usePreload": true
+          }
+        }
+      },
+      "trackById": "1d2848a0-3573-4d29-b3dd-60bb263260ea",
+      "position": null,
+      "lineOfBusiness": "EMANUEL-CONSUMER"
+    }
+  },
+  "networks": {},
+  "vrfs": {},
+  "vnfGroups": {},
+  "instanceParams": [
+    {}
+  ],
+  "pause": false,
+  "bulkSize": 1,
+  "vidNotions": {
+    "instantiationUI": "anyAlacarteWhichNotExcluded",
+    "modelCategory": "5G Fabric Configuration",
+    "viewEditUI": "legacy",
+    "instantiationType": "ALaCarte"
+  },
+  "position": null
+}
