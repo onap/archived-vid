@@ -93,10 +93,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.mockito.ArgumentCaptor;
@@ -104,8 +102,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.stubbing.Answer;
-import org.onap.portalsdk.core.domain.FusionObject;
-import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.model.ResourceType;
@@ -143,7 +139,6 @@ import org.onap.vid.properties.Features;
 import org.onap.vid.testUtils.TestUtils;
 import org.onap.vid.utils.DaoUtils;
 import org.onap.vid.utils.TimeUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -155,8 +150,7 @@ import org.testng.annotations.Test;
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, MockedAaiClientAndFeatureManagerConfig.class})
 public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseTest {
 
-    @Inject
-    private DataAccessService dataAccessService;
+
 
     @Mock
     private JobAdapter jobAdapterMock;
@@ -168,14 +162,10 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
 
     private AuditService auditService;
 
-    @Autowired
-    private SessionFactory sessionFactory;
 
     private AsyncInstantiationBusinessLogicImpl asyncInstantiationBL;
 
     protected MsoRequestBuilder msoRequestBuilder;
-
-    private int serviceCount = 0;
 
     private static final String UPDATE_SERVICE_INFO_EXCEPTION_MESSAGE =
             "Failed to retrieve class .*ServiceInfo with jobId .* from table. no resource found";
@@ -236,13 +226,15 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         uuid = UUID.randomUUID();
         addNewJob(uuid);
         createdDate = NOW.minusYears(1);
-        addNewServiceInfo(uuid, userId, "Old", createdDate, createdDate, COMPLETED, false, false);
+        addNewServiceInfo(uuid, userId, "Old", createdDate, createdDate, COMPLETED, false, false,
+            MODEL_UUID);
 
         uuid = UUID.randomUUID();
         addNewJob(uuid);
         createdDate = NOW.minusDays(20);
         modifiedDate = NOW.minusDays(19);
-        addNewServiceInfo(uuid, userId, "Hidden", createdDate, modifiedDate, PAUSE, true, false);
+        addNewServiceInfo(uuid, userId, "Hidden", createdDate, modifiedDate, PAUSE, true, false,
+            MODEL_UUID);
 
         createNewTestServicesInfo(String.valueOf(userId));
     }
@@ -257,20 +249,26 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         addNewJob(uuid);
 
         createdDate = NOW.minusDays(40);
-        addNewServiceInfo(uuid, userId, "service instance 5", createdDate, createdDate, COMPLETED, false, false);
-        addNewServiceInfo(uuid, userId, "service instance 6", createdDate, createdDate, STOPPED, false, false);
+        addNewServiceInfo(uuid, userId, "service instance 5", createdDate, createdDate, COMPLETED, false, false,
+            MODEL_UUID);
+        addNewServiceInfo(uuid, userId, "service instance 6", createdDate, createdDate, STOPPED, false, false,
+            MODEL_UUID);
 
         uuid = UUID.randomUUID();
         addNewJob(uuid);
 
         createdDate = NOW.minusDays(20);
         modifiedDate = NOW.minusDays(10);
-        addNewServiceInfo(uuid, userId, "service instance 4", createdDate, modifiedDate, STOPPED, false, false);
-        addNewServiceInfo(uuid, userId, "service instance 2", createdDate, modifiedDate, COMPLETED, false, false);
-        addNewServiceInfo(uuid, userId, "service instance 3", createdDate, modifiedDate, PAUSE, false, false);
+        addNewServiceInfo(uuid, userId, "service instance 4", createdDate, modifiedDate, STOPPED, false, false,
+            MODEL_UUID);
+        addNewServiceInfo(uuid, userId, "service instance 2", createdDate, modifiedDate, COMPLETED, false, false,
+            MODEL_UUID);
+        addNewServiceInfo(uuid, userId, "service instance 3", createdDate, modifiedDate, PAUSE, false, false,
+            MODEL_UUID);
 
         modifiedDate = NOW.minusDays(19);
-        addNewServiceInfo(uuid, userId, "service instance 1", createdDate, modifiedDate, FAILED, false, false);
+        addNewServiceInfo(uuid, userId, "service instance 1", createdDate, modifiedDate, FAILED, false, false,
+            MODEL_UUID);
 
 
         // Job to a different user
@@ -278,9 +276,12 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         addNewJob(uuid);
 
         createdDate = NOW.minusMonths(2);
-        addNewServiceInfo(uuid, "2221", "service instance 7", createdDate, createdDate, COMPLETED, false, false);
+        addNewServiceInfo(uuid, "2221", "service instance 7", createdDate, createdDate, COMPLETED, false, false,
+            MODEL_UUID);
 
     }
+
+
 
     private UUID createServicesInfoWithDefaultValues(Job.JobStatus status) {
 
@@ -290,7 +291,8 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         uuid = UUID.randomUUID();
         addNewJob(uuid, status);
 
-        addNewServiceInfo(uuid, null, "service instance 1", NOW, NOW, status, false, false);
+        addNewServiceInfo(uuid, null, "service instance 1", NOW, NOW, status, false, false,
+            MODEL_UUID);
 
         return uuid;
 
@@ -303,33 +305,12 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         return expectedOrderServiceInfo;
     }
 
-    private static Date toDate(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
+
 
     private LocalDateTime fromDate(Date date) {
         return Instant.ofEpochMilli(date.getTime())
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
-    }
-
-    private void addNewServiceInfo(UUID uuid, String userId, String serviceName, LocalDateTime createDate, LocalDateTime statusModifiedDate, JobStatus status, boolean isHidden, boolean retryEnabled) {
-        ServiceInfo serviceInfo = new ServiceInfo();
-        serviceInfo.setJobId(uuid);
-        serviceInfo.setUserId(userId);
-        serviceInfo.setServiceInstanceName(serviceName);
-        serviceInfo.setStatusModifiedDate(toDate(statusModifiedDate));
-        serviceInfo.setJobStatus(status);
-        serviceInfo.setPause(false);
-        serviceInfo.setOwningEntityId("1234");
-        serviceInfo.setCreatedBulkDate(toDate(createDate));
-        serviceInfo.setRetryEnabled(retryEnabled);
-
-        serviceInfo.setHidden(isHidden);
-        dataAccessService.saveDomainObject(serviceInfo, getPropsMap());
-        setCreateDateToServiceInfo(uuid, createDate);
-        serviceCount++;
-
     }
 
     private void setCreateDateToServiceInfo(UUID jobUuid, LocalDateTime createDate) {
@@ -357,7 +338,9 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     }
 
     private ServiceInstantiation addOriginalService(UUID jobId, String userID){
-        addNewServiceInfo(jobId, userID, "name", LocalDateTime.now(), LocalDateTime.now(), COMPLETED_WITH_ERRORS, false, true);
+        addNewServiceInfo(jobId, userID, "name", LocalDateTime.now(), LocalDateTime.now(), COMPLETED_WITH_ERRORS, false,
+            true,
+            MODEL_UUID);
         assertThat(asyncInstantiationRepository.getServiceInfoByJobId(jobId).isRetryEnabled(), is(true));
         ServiceInstantiation originalServiceInstantiation = prepareServiceInstantiation(true, 1);
         doReturn(originalServiceInstantiation).when(asyncInstantiationRepository).getJobRequest(jobId);
@@ -469,11 +452,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         when(aaiClient.isNodeTypeExistsByName(uniqueName, serviceInstance)).thenReturn(true);
     }
 
-    private HashMap<String, Object> getPropsMap() {
-        HashMap<String, Object> props = new HashMap<>();
-        props.put(FusionObject.Parameters.PARAM_USERID, 0);
-        return props;
-    }
+
 
 
     @DataProvider
