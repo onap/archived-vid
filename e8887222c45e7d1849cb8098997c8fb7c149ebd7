@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "e6b3319f_eb67e6e3",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__instance_template.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:36:10Z",
+      "side": 1,
+      "message": "it is a real payload derived from our current APIs, with small tweaks.\nI considered changing the position to nice ones, but git stuck when realized vfmodules did not got derived with a position (even not a null).\nsure this should get attention, but should not get in our way, imo.",
+      "parentUuid": "75c789d0_e943fa55",
+      "range": {
+        "startLine": 115,
+        "startChar": 2,
+        "endLine": 115,
+        "endChar": 18
+      },
+      "revId": "e8887222c45e7d1849cb8098997c8fb7c149ebd7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "61097303_20877bce",
         "filename": "vid-webpack-master/src/app/drawingBoard/drawingBoard.routing.ts",
         "patchSetId": 2
@@ -59,6 +83,30 @@
       "writtenOn": "2019-12-01T20:25:04Z",
       "side": 1,
       "message": "not sure recreate is the best terminology.\nMaybe REUSE?",
+      "range": {
+        "startLine": 30,
+        "startChar": 15,
+        "endLine": 30,
+        "endChar": 23
+      },
+      "revId": "e8887222c45e7d1849cb8098997c8fb7c149ebd7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fad0ad11_3d48dc22",
+        "filename": "vid-webpack-master/src/app/drawingBoard/drawingBoard.routing.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:36:10Z",
+      "side": 1,
+      "message": "I thought about the basic action called CREATE. Maybe REDEPLOY? REPLAY?",
+      "parentUuid": "61097303_20877bce",
       "range": {
         "startLine": 30,
         "startChar": 15,
