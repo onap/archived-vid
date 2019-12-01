@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac666a76_5a5d496e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/dal/AsyncInstantiationRepositoryTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T13:21:53Z",
+      "side": 1,
+      "message": "describe what is tested",
+      "range": {
+        "startLine": 81,
+        "startChar": 16,
+        "endLine": 81,
+        "endChar": 48
+      },
+      "revId": "c4c9b3b399036c71f80abe3cb2ba53e8eb8fefd4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
