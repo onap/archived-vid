@@ -6,11 +6,7 @@ import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
 import {LogService} from "../../../../utils/log/log.service";
-import {
-  FormControlModel,
-  ValidatorModel,
-  ValidatorOptions
-} from "../../../../models/formControlModels/formControl.model";
+import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
 import {FormControlNames, VfModuleControlGenerator} from "./vfModule.control.generator";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {VfModuleInstance} from "../../../../models/vfModuleInstance";
@@ -27,7 +23,6 @@ class MockAppStore<T> {
           "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
           "FLAG_SHOW_VERIFY_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": true,
-          "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true
         },
         "type": "[FLAGS] Update"

@@ -96,7 +96,6 @@ describe('Vnf popup', function () {
             "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
             "FLAG_SHOW_VERIFY_SERVICE": false,
             "FLAG_SERVICE_MODEL_CACHE": true,
-            "FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD": false,
             "FLAG_ADD_MSO_TESTAPI_FIELD": true
           },
           "type": "[FLAGS] Update"

@@ -150,7 +150,7 @@ export class AvailableModelsTreeComponent {
     let isAlaCarte: boolean = Utils.isALaCarte(this.serviceHierarchy.service.vidNotions.instantiationType);
     let isEcompGeneratedNaming: boolean = data.isEcompGeneratedNaming;
     let type: string = data.type;
-    if (!this.store.getState().global.flags['FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD'] || node.data.type === ServiceNodeTypes.VF ||
+    if (node.data.type === ServiceNodeTypes.VF ||
       this._availableModelsTreeService.shouldOpenDialog(type, dynamicInputs, isEcompGeneratedNaming)) {
       this._iframeService.addClassOpenModal(this.parentElementClassName);
       node.data.onAddClick(node, serviceId);

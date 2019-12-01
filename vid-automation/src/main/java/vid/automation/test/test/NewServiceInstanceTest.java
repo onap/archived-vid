@@ -239,7 +239,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
 
         createVfModule(serviceData, serviceInstanceName, false, false);
 
@@ -294,7 +294,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         });
 
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () ->
-                createVnf(serviceData, false, true, serviceInstanceName)
+                createVnf(serviceData, false, serviceInstanceName)
         );
 
         final String vnfInstanceName2 = randomAlphabetic + "instanceName";
@@ -302,7 +302,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () ->
                 createVnf(new VnfData(vnfName2 + " 0", "afacccf6-397d-45d6-b5ae-94c39734b168", vnfInstanceName2, false),
-                        false, Features.FLAG_DEFAULT_VNF.isActive(), serviceInstanceName)
+                        false, serviceInstanceName)
         );
 
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () ->
@@ -534,11 +534,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
     //@Step("edit vf module and just set name")
     private void editVfModuleAndJustSetName(String vfModuleName, String vfModuleUUID) {
-        if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
-            hoverAndClickEditButton(vfModuleUUID + "-" + vfModuleName);
-        } else {
-            drawingBoardPage.clickAddButtonByNodeName(vfModuleName);
-        }
+        hoverAndClickEditButton(vfModuleUUID + "-" + vfModuleName);
         Input.text("VF instance name ZERO", "instanceName");
         Click.byTestId(VNF_SET_BUTTON_TEST_ID);
     }
@@ -555,7 +551,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
         createVfModule(serviceData, serviceInstanceName, true, false);
 
     }
@@ -572,7 +568,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
         createVfModule(serviceData, serviceInstanceName, true, false);
 
     }
@@ -589,7 +585,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
         clickRemoveVfModule(vfModule0UUID, vfModule0Name);
         createVfModule(serviceData, serviceInstanceName, false, true);
 
@@ -700,7 +696,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         loadServicePopup(serviceModelInfo.modelVersionId);
         fillALaCarteServicePopup(serviceInstanceName);
 
-        createVnf(vnfData, false, true, serviceInstanceName);
+        createVnf(vnfData, false, serviceInstanceName);
         createVfModule(serviceData, serviceInstanceName, true, false);
         serviceData.vfData =  new VfData("vocg_1804_vf0..Vocg1804Vf..ocgmgr..module-1", true, 0, 1, emptyList(), "9c219e70-1177-494b-8977-1395c9f9168c", vgName);
         createVfModule(serviceData, serviceInstanceName, false, false);
@@ -776,7 +772,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         prepareServicePreset(macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails, false);
 
         final String serviceInstanceName = createMacroService(serviceData, true);
-        createVnf(serviceData, true, true, serviceInstanceName);
+        createVnf(serviceData, true, serviceInstanceName);
         clickRemoveVfModule(vfModule0UUID, vfModule0Name);
         createVfModule(serviceData, serviceInstanceName, false, false);
 
@@ -1143,23 +1139,23 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     //@Step("create vnf")
-    private void createVnf(ServiceData serviceData, boolean tryCancelsAndReentries, boolean addedByDefault, String serviceInstanceName) {
-        createVnf(serviceData.vnfData, tryCancelsAndReentries, addedByDefault, serviceInstanceName);
+    private void createVnf(ServiceData serviceData, boolean tryCancelsAndReentries, String serviceInstanceName) {
+        createVnf(serviceData.vnfData, tryCancelsAndReentries, serviceInstanceName);
     }
 
     private void createNetwork(VnfData vnfData, boolean tryCancelsAndReentries, boolean addedByDefault, String serviceInstanceName) {
         createVnf(vnfData, tryCancelsAndReentries, addedByDefault, serviceInstanceName, true);
     }
 
-    private void createVnf(VnfData vnfData, boolean tryCancelsAndReentries, boolean addedByDefault, String serviceInstanceName) {
-        createVnf(vnfData, tryCancelsAndReentries, addedByDefault, serviceInstanceName, false);
+    private void createVnf(VnfData vnfData, boolean tryCancelsAndReentries, String serviceInstanceName) {
+        createVnf(vnfData, tryCancelsAndReentries, true, serviceInstanceName, false);
     }
 
     private void createVnf(VnfData vnfData, boolean tryCancelsAndReentries, boolean addedByDefault, String serviceInstanceName, boolean isNetwork) {
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
 
         String nodeToEdit = extractNodeToEdit(vnfData);
-        if (addedByDefault && Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
+        if (addedByDefault) {
             hoverAndClickEditButton(nodeToEdit);
         } else {
             drawingBoardPage.clickAddButtonByNodeName(vnfData.vnfName);
@@ -1335,13 +1331,11 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     private void clickEditVfModule(ServiceData serviceData) {
-        if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
-            hoverAndClickEditButton(serviceData.vfData.uuid + "-" + serviceData.vfData.vfName);
-        }
+        hoverAndClickEditButton(serviceData.vfData.uuid + "-" + serviceData.vfData.vfName);
     }
 
     private void clickAddVfModule(ServiceData serviceData, boolean addedByDefault) {
-        if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive() && addedByDefault) {
+        if (addedByDefault) {
             return;
         }
         System.out.println("VFModule should be added 'manually'");
@@ -1356,10 +1350,8 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     }
 
     private void clickRemoveVfModule(String vfModuleId, String vfModuleName) {
-        if (Features.FLAG_SETTING_DEFAULTS_IN_DRAWING_BOARD.isActive()) {
-            System.out.println("will remove " + vfModule0Name);
-            hoverAndClickDeleteButton(vfModuleId + "-" + vfModuleName);
-        }
+        System.out.println("will remove " + vfModule0Name);
+        hoverAndClickDeleteButton(vfModuleId + "-" + vfModuleName);
     }
 
     private void assertPauseOnPausePointsVisibility(boolean visibility) {

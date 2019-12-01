@@ -186,7 +186,7 @@ export class DefaultDataGeneratorService {
       for (let networkUUID in serviceHierarchy.networks) {
         const isEcompGeneratedNaming = this.getIsEcompGeneratedNaming(serviceHierarchy.networks[networkUUID]);
         let min_vnf_instances_greater_than_0 = serviceHierarchy.networks[networkUUID].properties['min_instances'] && serviceHierarchy.networks[networkUUID].properties['min_instances'] > 0;
-        if(this.store.getState().global.flags['FLAG_DEFAULT_VNF'] &&  min_vnf_instances_greater_than_0)
+        if(min_vnf_instances_greater_than_0)
         {
           this.createNetworkInstanceReduxIfNotExist(
             serviceId,
@@ -203,7 +203,7 @@ export class DefaultDataGeneratorService {
       for (let vnfGroupUUID in serviceHierarchy.vnfGroups) {
         const isEcompGeneratedNaming = this.getIsEcompGeneratedNaming(serviceHierarchy.vnfGroups[vnfGroupUUID]);
         let min_vnf_group_instances_greater_than_0 = serviceHierarchy.vnfGroups[vnfGroupUUID].properties['min_instances'] && serviceHierarchy.vnfGroups[vnfGroupUUID].properties['min_instances'] > 0;
-        if(this.store.getState().global.flags['FLAG_DEFAULT_VNF'] &&  min_vnf_group_instances_greater_than_0)
+        if(min_vnf_group_instances_greater_than_0)
         {
           this.createVnfGroupInstanceReduxIfNotExist(
             serviceId,
@@ -244,7 +244,7 @@ export class DefaultDataGeneratorService {
         }
 
         let min_vnf_instances_greater_than_0 = serviceHierarchy.vnfs[vnfUUID].properties['min_instances'] && serviceHierarchy.vnfs[vnfUUID].properties['min_instances'] > 0;
-        if(this.store.getState().global.flags['FLAG_DEFAULT_VNF'] &&  min_vnf_instances_greater_than_0)
+        if(min_vnf_instances_greater_than_0)
         {
           this.createVNFInstanceReduxIfNotExist(
             serviceId,
