@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "9a5f39c9_2b578731",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/OperationalEnvironmentController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-12-01T07:35:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "abb74785_7f52e271",
+      "range": {
+        "startLine": 72,
+        "startChar": 109,
+        "endLine": 72,
+        "endChar": 116
+      },
+      "revId": "434c95a0731b5135a1067f76dfaac9a30878d6cb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d24c385d_016926b2",
         "filename": "vid-automation/src/main/java/vid/automation/test/test/HealthStatusTest.java",
         "patchSetId": 3
@@ -93,6 +117,30 @@
       "revId": "434c95a0731b5135a1067f76dfaac9a30878d6cb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75d0e847_08f4ed4d",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/HealthStatusTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-12-01T07:35:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "be70c931_1c2ff7f5",
+      "range": {
+        "startLine": 45,
+        "startChar": 8,
+        "endLine": 45,
+        "endChar": 22
+      },
+      "revId": "434c95a0731b5135a1067f76dfaac9a30878d6cb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
