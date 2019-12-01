@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "321c9b1d_cbc2703d",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1193,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:28:47Z",
+      "side": 1,
+      "message": "so much is going on here. can it be encapsulated into a \"selectPlatform\" method or the ManageMultiselectOrDropdown class?",
+      "revId": "dee5c612ff785201ec5addadfc19de8a8feceba8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eaac038d_afab535a",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1198,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:28:47Z",
+      "side": 1,
+      "message": "shouldn\u0027t this code be affected by the fact the code changed to have the multi-select controller even when toggle is off?",
+      "revId": "dee5c612ff785201ec5addadfc19de8a8feceba8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce27a60a_016c3eef",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/ala-carte.e2e.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:28:47Z",
+      "side": 1,
+      "message": "please remove the \"only\"",
+      "revId": "dee5c612ff785201ec5addadfc19de8a8feceba8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0198b40_42dea191",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/ala-carte.e2e.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:28:47Z",
+      "side": 1,
+      "message": "when is selelctPlatformValue is used and when selectDropdownOptionByText(\"platform\", ...)? I don\u0027t get it.",
+      "revId": "dee5c612ff785201ec5addadfc19de8a8feceba8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "615d3fc2_a3369136",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:28:47Z",
+      "side": 1,
+      "message": "should this be true?",
+      "revId": "dee5c612ff785201ec5addadfc19de8a8feceba8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "522ca164_f26fb173",
+        "filename": "vid-webpack-master/cypress/support/steps/genericForm/genericFormAction.steps.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:28:47Z",
+      "side": 1,
+      "message": "is the \"force\" needed here? doesn\u0027t it bypass actions a user cannot really click? i.e. a hover is needed or so?",
+      "revId": "dee5c612ff785201ec5addadfc19de8a8feceba8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61172444_eb1b5cc7",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:28:47Z",
+      "side": 1,
+      "message": "I like this",
+      "revId": "dee5c612ff785201ec5addadfc19de8a8feceba8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc2c2338_151ebfc5",
+        "filename": "vid-webpack-master/src/app/shared/models/formControlModels/multiselectFormControl.model.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-01T20:28:47Z",
+      "side": 1,
+      "message": "why nullable?",
+      "revId": "dee5c612ff785201ec5addadfc19de8a8feceba8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
