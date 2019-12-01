@@ -86,12 +86,21 @@ class AsyncInstantiationRepository @Autowired constructor(val dataAccessService:
     private fun filterByCreationDateAndNotDeleted(): String {
         val minus3Months = LocalDateTime.now().minusMonths(3)
         val filterDate = Timestamp.valueOf(minus3Months)
-        return " WHERE" +
-                "   hidden = false" +
-                "   and deleted_at is null" +  // don't fetch deleted
-
+        return filterServicesByNotHiddenAndNotDeleted() +
                 "   and created >= '" + filterDate + "' "
     }
+
+    private fun filterByServiceModelId(serviceModelUuid: UUID): String {
+        return filterServicesByNotHiddenAndNotDeleted() +
+                " and SERVICE_MODEL_ID = '$serviceModelUuid'"
+    }
+
+    private fun filterServicesByNotHiddenAndNotDeleted(): String {
+        return " WHERE" +
+                "   hidden = false" +
+                "   and deleted_at is null" // don't fetch deleted
+    }
+
 
     private fun orderByCreatedDateAndStatus(): String {
         return " createdBulkDate DESC ,\n" +
@@ -144,4 +153,7 @@ class AsyncInstantiationRepository @Autowired constructor(val dataAccessService:
                 .joinToString(" $conditionType ")
         return dataAccessService.getList(className, " WHERE $condition", orderBy, null) as List<T>
     }
+
+    fun listServicesByServiceModelId(modelUuid: UUID): List<ServiceInfo> =
+            dataAccessService.getList(ServiceInfo::class.java, filterByServiceModelId(modelUuid), orderByCreatedDateAndStatus(), null) as List<ServiceInfo>;
 }
