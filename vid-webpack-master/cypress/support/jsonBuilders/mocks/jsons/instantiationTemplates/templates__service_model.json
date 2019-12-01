@@ -1,0 +1,199 @@
+{
+  "service": {
+    "uuid": "6cfeeb18-c2b0-49df-987a-da47493c8e38",
+    "invariantUuid": "90a32d31-8a01-4de2-a91f-7e2414d6f5aa",
+    "name": "vProbe_NC_Service",
+    "version": "1.0",
+    "toscaModelURL": null,
+    "category": "Emanuel",
+    "serviceType": "INFRASTRUCTURE",
+    "serviceRole": "VNF",
+    "description": "vProbe_NC_Service",
+    "serviceEcompNaming": "false",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "anyAlacarteWhichNotExcluded",
+      "modelCategory": "5G Fabric Configuration",
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
+    }
+  },
+  "vnfs": {
+    "vProbe_NC_VNF 0": {
+      "uuid": "21ae311e-432f-4c54-b855-446d0b8ded72",
+      "invariantUuid": "a6a96924-b9c5-4c85-ae18-cbfca848095e",
+      "description": "vProbe",
+      "name": "vProbe_NC_VNF",
+      "version": "1.0",
+      "customizationUuid": "024a417d-ca46-40bf-95ce-809c6a269011",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "nf_naming": "{naming_policy=SDNC_Policy.Config_MS_VNFVMVNFCNamingPolicyEmanuel, ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "nf_function": "VPMS-UP-VLBA",
+        "nf_naming_code": "RLBA",
+        "availability_zone_max_count": "1",
+        "ecomp_generated_naming": "true",
+        "security_group_name": "rlba01-sec_grp",
+        "version_number": "11.04.02.000.02",
+        "vlbagent_version_name": "vProbe.r.107056",
+        "nf_type": "PROBE",
+        "vlbagent_eph_flavor_name": "p1.c16r80d80e2000.n0i2",
+        "vlbagent_eph_volume_size_1": "5.0",
+        "vlbagent_eph_volume_size_0": "5.0",
+        "ntp_timezone": "UTC",
+        "nf_role": "VLBA-FE",
+        "vlbagent_eph_image_name": "PROBE_VPROBE_11.3.7.02_NC.qcow2",
+        "vlbagent_eph_volume_type_0": "rbd1",
+        "vlbagent_eph_volume_name_0": "log",
+        "vlbagent_eph_volume_type_1": "rbd1",
+        "vlbagent_eph_volume_name_1": "config"
+      },
+      "type": "VF",
+      "modelCustomizationName": "vProbe_NC_VNF 0",
+      "vfModules": {
+        "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0": {
+          "uuid": "c5b26cc1-a66f-4b69-aa23-6abc7c647c88",
+          "invariantUuid": "29b6fa3c-aeb3-4103-b3f7-6f98e097b005",
+          "customizationUuid": "4d0818cf-eaa9-4a3f-89c2-639953089e14",
+          "description": null,
+          "name": "VprobeNcVnf..FE_base_module..module-0",
+          "version": "1",
+          "modelCustomizationName": "VprobeNcVnf..FE_base_module..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "FE_base_module",
+            "baseModule": true
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        },
+        "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
+          "uuid": "c09e4530-8fd8-418f-9483-2f57ce927b05",
+          "invariantUuid": "1bcc4824-6c1a-4b51-af7c-076b7fc14d05",
+          "customizationUuid": "9b99d340-a80b-45ef-9ff1-993fa3e4c001",
+          "description": null,
+          "name": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+          "version": "1",
+          "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "FE_Add_On_Module_vlbagent_eph",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": true
+        }
+      },
+      "volumeGroups": {
+        "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
+          "uuid": "c09e4530-8fd8-418f-9483-2f57ce927b05",
+          "invariantUuid": "1bcc4824-6c1a-4b51-af7c-076b7fc14d05",
+          "customizationUuid": "9b99d340-a80b-45ef-9ff1-993fa3e4c001",
+          "description": null,
+          "name": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+          "version": "1",
+          "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "FE_Add_On_Module_vlbagent_eph",
+            "baseModule": false
+          },
+          "inputs": {}
+        }
+      },
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {
+    "Fabric Configuration 0": {
+      "uuid": "fa069a04-cb85-4915-8ca0-df372dde6a3c",
+      "invariantUuid": "58fa0e1f-f8db-4dce-8972-b8ee630288cf",
+      "description": "A fabric Configuration object",
+      "name": "Fabric Configuration",
+      "version": "9.0",
+      "customizationUuid": "a41997f7-e019-47b2-a6b4-cd20154cfe46",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "role": "Fabric Config",
+        "function": "Network Cloud",
+        "ecomp_generated_naming": "false",
+        "type": "5G"
+      },
+      "type": "Configuration"
+    }
+  },
+  "serviceProxies": {},
+  "vfModules": {
+    "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0": {
+      "uuid": "c5b26cc1-a66f-4b69-aa23-6abc7c647c88",
+      "invariantUuid": "29b6fa3c-aeb3-4103-b3f7-6f98e097b005",
+      "customizationUuid": "4d0818cf-eaa9-4a3f-89c2-639953089e14",
+      "description": null,
+      "name": "VprobeNcVnf..FE_base_module..module-0",
+      "version": "1",
+      "modelCustomizationName": "VprobeNcVnf..FE_base_module..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "FE_base_module",
+        "baseModule": true
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
+      "uuid": "c09e4530-8fd8-418f-9483-2f57ce927b05",
+      "invariantUuid": "1bcc4824-6c1a-4b51-af7c-076b7fc14d05",
+      "customizationUuid": "9b99d340-a80b-45ef-9ff1-993fa3e4c001",
+      "description": null,
+      "name": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+      "version": "1",
+      "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "FE_Add_On_Module_vlbagent_eph",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": true
+    }
+  },
+  "volumeGroups": {
+    "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
+      "uuid": "c09e4530-8fd8-418f-9483-2f57ce927b05",
+      "invariantUuid": "1bcc4824-6c1a-4b51-af7c-076b7fc14d05",
+      "customizationUuid": "9b99d340-a80b-45ef-9ff1-993fa3e4c001",
+      "description": null,
+      "name": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+      "version": "1",
+      "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "FE_Add_On_Module_vlbagent_eph",
+        "baseModule": false
+      },
+      "inputs": {}
+    }
+  },
+  "pnfs": {},
+  "vnfGroups": {},
+  "vrfs": {}
+}

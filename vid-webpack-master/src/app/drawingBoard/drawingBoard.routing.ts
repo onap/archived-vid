@@ -27,6 +27,14 @@ export const DrawingBoardRoutes: Route[] = [
         }
       },
       {
+        path: 'RECREATE',
+        component: ServicePlanningComponent,
+        resolve: {
+          flags: FlagsResolve,
+          viewEditResolver: RetryResolver
+        }
+      },
+      {
         path: 'RETRY_EDIT',
         component: ServicePlanningComponent,
         resolve: {
