@@ -58,6 +58,15 @@ describe('Instantiation status', function () {
     }
   });
 
+  it.only('should filter rows by search text', function () {
+    cy.openIframe('app/ui/#/instantiationStatus')
+    cy.getElementByDataTestsId("instantiationStatusSearch").type("ComplexService");
+
+    cy.get('table#instantiation-status tbody tr').should((elements) => {
+      expect(elements).to.have.length(3);
+    });
+  });
+
   it('should enable correct menu items', function () {
         cy.openIframe('app/ui/#/instantiationStatus');
 

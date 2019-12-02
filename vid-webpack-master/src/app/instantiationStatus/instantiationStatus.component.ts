@@ -11,7 +11,6 @@ import {LogService} from '../shared/utils/log/log.service';
 import {AppState} from "../shared/store/reducers";
 import {NgRedux} from '@angular-redux/store';
 import {JobStatus, ServiceAction} from "../shared/models/serviceInstanceActions";
-import {DrawingBoardModes} from "../drawingBoard/service-planning/drawing-board.modes";
 
 export interface MenuAction{
   name: string;
@@ -85,6 +84,7 @@ export class InstantiationStatusComponent {
   ];
 
   flags: any;
+  searchText: string;
   constructor(private _serviceInfoService: ServiceInfoService,
               private _instantiationStatusComponentService : InstantiationStatusComponentService,
               private _contextMenuService: ContextMenuService,
@@ -144,7 +144,7 @@ export class InstantiationStatusComponent {
       this.refreshData();
     });
   }
-  
+
   retryItem(item: ServiceInfoModel) : void {
     if (item.isRetryEnabled) {
       this._instantiationStatusComponentService.retry(item);
