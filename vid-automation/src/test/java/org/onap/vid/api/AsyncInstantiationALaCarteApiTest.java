@@ -2,6 +2,7 @@ package org.onap.vid.api;
 
 import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -50,6 +51,9 @@ import org.onap.vid.model.asyncInstantiation.JobAuditStatus.SourceStatus;
 import org.onap.vid.model.asyncInstantiation.ServiceInfo;
 import org.onap.vid.more.LoggerFormatTest;
 import org.onap.vid.more.LoggerFormatTest.LogName;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -120,6 +124,27 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
         assertServiceInfoSpecific1(jobId, JobStatus.COMPLETED, names.get(SERVICE_NAME));
         assertAuditStatuses(jobId, vidAuditStatusesCompleted(jobId), msoAuditStatusesCompleted(jobId));
     }
+
+    @Test
+    public void deployTwoServicesGetServicesFilterByModelId() {
+        final ImmutableMap<PresetMSOServiceInstanceGen2WithNames.Keys, String> names = ImmutableMap
+            .of(SERVICE_NAME, "calazixide85");
+
+        final List<String> uuids1 = createBulkOfInstances(false, 2, names, CREATE_BULK_OF_ALACARTE_REQUEST);
+        final List<String> uuids2 = createBulkOfInstances(false, 1, names, DELETE_BULK_OF_ALACARTE_REQUEST);
+
+        String SERVICE_MODEL_UUID = "e3c34d88-a216-4f1d-a782-9af9f9588705";
+        ResponseEntity<List<ServiceInfo>> response = restTemplate.exchange(
+            getServiceInfoUrl() + "?serviceModelId=" + SERVICE_MODEL_UUID,
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<ServiceInfo>>() {
+            });
+        assertThat(response.getBody().stream().map(x -> x.serviceModelId).collect(toSet()),
+            contains(SERVICE_MODEL_UUID));
+
+    }
+
 
     @Test
     public void deleteServiceWithTwoVnfGroups_andRetry() {
