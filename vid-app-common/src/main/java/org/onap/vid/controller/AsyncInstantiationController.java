@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.exceptions.AccessDeniedException;
 import org.onap.vid.model.JobAuditStatus;
 import org.onap.vid.model.ServiceInfo;
@@ -54,6 +55,7 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
     public static final String ASYNC_INSTANTIATION = "asyncInstantiation";
 
     protected final AsyncInstantiationBusinessLogic asyncInstantiationBL;
+    protected final AsyncInstantiationRepository asyncInstantiationRepository;
     private final SystemPropertiesWrapper systemPropertiesWrapper;
 
     private final RoleProvider roleProvider;
@@ -64,8 +66,11 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
     protected AuditService auditService;
 
     @Autowired
-    public AsyncInstantiationController(AsyncInstantiationBusinessLogic asyncInstantiationBL, RoleProvider roleProvider, FeatureManager featureManager, SystemPropertiesWrapper systemPropertiesWrapper) {
+    public AsyncInstantiationController(AsyncInstantiationBusinessLogic asyncInstantiationBL,
+        AsyncInstantiationRepository asyncInstantiationRepository, RoleProvider roleProvider,
+        FeatureManager featureManager, SystemPropertiesWrapper systemPropertiesWrapper) {
         this.asyncInstantiationBL = asyncInstantiationBL;
+        this.asyncInstantiationRepository = asyncInstantiationRepository;
         this.roleProvider = roleProvider;
         this.featureManager = featureManager;
         this.systemPropertiesWrapper = systemPropertiesWrapper;
@@ -77,8 +82,13 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
      * @return the services list
      */
     @RequestMapping(method = RequestMethod.GET)
-    public List<ServiceInfo> getServicesInfo(HttpServletRequest request) {
-        return asyncInstantiationBL.getAllServicesInfo();
+    public List<ServiceInfo> getServicesInfo(HttpServletRequest request,
+        @RequestParam(value = "serviceModelId", required = false) UUID serviceModelId) {
+        if (serviceModelId == null) {
+            return asyncInstantiationBL.getAllServicesInfo();
+        } else {
+            return  asyncInstantiationRepository.listServicesByServiceModelId(serviceModelId);
+        }
     }
 
     @RequestMapping(value = "bulk", method = RequestMethod.POST)
