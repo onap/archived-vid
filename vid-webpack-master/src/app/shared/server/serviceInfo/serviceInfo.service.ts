@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ServiceInfoModel} from './serviceInfo.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import {Constants} from '../../utils/constants';
 import {forkJoin} from "rxjs/observable/forkJoin";
 import * as _ from 'lodash';
@@ -14,10 +12,11 @@ export class ServiceInfoService {
   constructor(private _http: HttpClient) {
   }
 
-  getServicesJobInfo(filterByUser : boolean, showSpinner: boolean = true): Observable<ServiceInfoModel[]> {
+  getServicesJobInfo(showSpinner: boolean = true, serviceModelId: string = null): Observable<ServiceInfoModel[]> {
     let pathQuery = Constants.Path.SERVICES_JOB_INFO_PATH;
     let headers = new HttpHeaders({'x-show-spinner': showSpinner.toString()});
-    return this._http.get<ServiceInfoModel[]>(pathQuery, { headers: headers }).map(res => res );
+    let params = serviceModelId ? {serviceModelId} : {};
+    return this._http.get<ServiceInfoModel[]>(pathQuery, { headers: headers, params });
   }
 
   deleteJob(jobId: string): Observable<any> {
