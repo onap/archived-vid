@@ -11,7 +11,6 @@ import {LogService} from '../shared/utils/log/log.service';
 import {AppState} from "../shared/store/reducers";
 import {NgRedux} from '@angular-redux/store';
 import {JobStatus, ServiceAction} from "../shared/models/serviceInstanceActions";
-import {DrawingBoardModes} from "../drawingBoard/service-planning/drawing-board.modes";
 
 export interface MenuAction{
   name: string;
@@ -115,7 +114,7 @@ export class InstantiationStatusComponent {
 
   refreshData(): void {
     this.dataIsReady = false;
-    this._serviceInfoService.getServicesJobInfo(true, this.lastUpdatedDate === null)
+    this._serviceInfoService.getServicesJobInfo(this.lastUpdatedDate === null)
       .subscribe((res: ServiceInfoModel[]) => {
         this._instantiationStatusComponentService.convertObjectToArray(res).subscribe((res) => {
           this._logService.info('refresh instantiation status table', res);
@@ -144,7 +143,7 @@ export class InstantiationStatusComponent {
       this.refreshData();
     });
   }
-  
+
   retryItem(item: ServiceInfoModel) : void {
     if (item.isRetryEnabled) {
       this._instantiationStatusComponentService.retry(item);

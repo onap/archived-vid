@@ -92,6 +92,7 @@ export module Constants {
     public static WELCOME_PATH = 'welcome.htm';
     public static IS_PERMITTED_SUB_PATH = '&isPermitted=';
     public static SERVICES_JOB_INFO_PATH = '../../asyncInstantiation';
+    public static SERVICE_MODEL_ID = 'serviceModelId';
     public static SERVICES_RETRY_TOPOLOGY = '../../asyncInstantiation/bulkForRetry';
     public static CONFIGURATION_PATH = '../../get_property/{name}/defaultvalue';
     public static SERVICES_JOB_AUDIT_PATH = '/auditStatus';

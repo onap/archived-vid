@@ -37,6 +37,25 @@ describe('Service Info Service', () => {
     });
   });
 
+  describe('#getServicesJobInfo', ()=> {
+    test('should call without serviceModelId', ()=>{
+      let job: ServiceInfoModel = new ServiceInfoModel();
+
+      service.getServicesJobInfo().subscribe();
+      const req = httpMock.expectOne(Constants.Path.SERVICES_JOB_INFO_PATH);
+
+      expect(req.request.method).toBe('GET');
+    });
+
+    test('should call with serviceModelId', ()=>{
+      let job: ServiceInfoModel = new ServiceInfoModel();
+
+      service.getServicesJobInfo(true, "123").subscribe();
+      const req = httpMock.expectOne(`${Constants.Path.SERVICES_JOB_INFO_PATH}?${Constants.Path.SERVICE_MODEL_ID}=123`);
+      expect(req.request.method).toBe('GET');
+    });
+  });
+
   describe('#getALaCarteJobAuditStatus Without params', ()=> {
     test('should return Observable<Object[]>', ()=>{
       let job: ServiceInfoModel = new ServiceInfoModel();
