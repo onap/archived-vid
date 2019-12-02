@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c774970f_343e95b9",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/template.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-02T19:32:06Z",
+      "side": 1,
+      "message": "does this preset (redux state) needed?",
+      "revId": "508f96ad5783f44cc0518f06a7c630d1809b448a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aaf8d0b1_89c5f13e",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/generic-form-popup.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-02T19:32:06Z",
+      "side": 1,
+      "message": "can this double check be replaced with a \"!!\" idiom?",
+      "revId": "508f96ad5783f44cc0518f06a7c630d1809b448a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
