@@ -20,6 +20,10 @@
 
 package org.onap.vid.services;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.impl.JobSharedData;
@@ -27,11 +31,6 @@ import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Consumer;
 
 public interface AsyncInstantiationBusinessLogic {
 
@@ -108,6 +107,8 @@ public interface AsyncInstantiationBusinessLogic {
     void updateResourceInfo(JobSharedData sharedData, Job.JobStatus jobStatus, AsyncRequestStatus message);
 
     ServiceInstantiation getBulkForRetry(UUID jobId);
+
+    ServiceInstantiation getJobRequestAsTemplate(UUID jobId);
 
     String getResumeRequestPath(String requestId);
 }

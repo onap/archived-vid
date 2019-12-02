@@ -37,6 +37,7 @@ import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -156,6 +157,11 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
         List<UUID> uuids =  asyncInstantiationBL.retryJob(jobId, userId);
 
         return new MsoResponseWrapper2(200, uuids);
+    }
+
+    @GetMapping("templateTopology/{jobId}")
+    public ServiceInstantiation getTemplateTopology(HttpServletRequest request, @PathVariable(value="jobId") UUID jobId) {
+        return asyncInstantiationBL.getJobRequestAsTemplate(jobId);
     }
 
     @RequestMapping(value = "/auditStatusForRetry/{trackById}", method = RequestMethod.GET)

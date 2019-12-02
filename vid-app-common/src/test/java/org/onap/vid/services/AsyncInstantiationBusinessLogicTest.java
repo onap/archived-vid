@@ -35,15 +35,16 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Every.everyItem;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.spy;
@@ -199,6 +200,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         Mockito.reset(aaiClient);
         Mockito.reset(jobAdapterMock);
         Mockito.reset(jobsBrokerServiceMock);
+        Mockito.reset(asyncInstantiationRepository);
         mockAaiClientAnyNameFree();
         enableAddCloudOwnerOnMsoRequest();
     }
@@ -1364,6 +1366,18 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     {
         String path = asyncInstantiationBL.getVfModuleReplacePath("myService", "myVNF", "myVFModule");
         assertThat(path, equalTo("/serviceInstantiation/v7/serviceInstances/myService/vnfs/myVNF/vfModules/myVFModule/replace"));
+
+    }
+
+    @Test
+    public void getJobRequestAsTemplate_whenIsCalled_asyncInstantiationRepositoryGetJobRequestIsDelegated() {
+        UUID jobId = UUID.randomUUID();
+        ServiceInstantiation expected = mock(ServiceInstantiation.class);
+        doReturn(expected).when(asyncInstantiationRepository).getJobRequest(jobId);
+
+        ServiceInstantiation jobRequestAsTemplate = asyncInstantiationBL.getJobRequestAsTemplate(jobId);
+
+        assertThat(jobRequestAsTemplate, is(sameInstance(expected)));
 
     }
 }
