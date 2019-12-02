@@ -43,6 +43,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   dynamicForm : FormGroup;
   type : PopupType;
   uuidData : UUIDData;
+  showTemplateBtn : boolean = false;
   isUpdateMode : boolean;
   node : ITreeNode = null;
   hasGeneralApiError : boolean = false;
@@ -88,6 +89,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
               serviceId: serviceModelId,
               popupService: this._servicePopupService,
             };
+            this.showTemplateBtn = !_.isNil(this._store.getState().global.flags["FLAG_2002_ENABLE_SERVICE_TEMPLATE"]) && this._store.getState().global.flags["FLAG_2002_ENABLE_SERVICE_TEMPLATE"];
 
             this.uuidData.popupService.closeDialogEvent.subscribe((that)=>{
               this.closeDialog(that);

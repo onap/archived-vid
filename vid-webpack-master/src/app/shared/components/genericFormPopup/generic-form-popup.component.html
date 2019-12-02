@@ -10,7 +10,6 @@
       </span>
     </div>
     <div class="modal-body popup-content">
-
       <div class="header-left">
         <div>MODEL: <span>"{{formPopupDetails?.leftSubTitle}}"</span></div>
       </div>
@@ -53,6 +52,11 @@
         </div>
       </div>
       <div class="col-md-6" style="padding: 15px;padding-right: 35px;">
+        <button
+          *ngIf="showTemplateBtn"
+          [attr.data-tests-id]="'templateButton'"
+          type="button" class="btn btn-success submit"
+        ><span>Template</span></button>
         <button
           [attr.data-tests-id]="'cancelButton'"
           type="button" class="btn btn-default cancel"
