@@ -154,6 +154,6 @@ class AsyncInstantiationRepository @Autowired constructor(val dataAccessService:
         return dataAccessService.getList(className, " WHERE $condition", orderBy, null) as List<T>
     }
 
-    fun listServicesByServiceModelId(modelUuid: UUID): List<ServiceInfo> =
-            dataAccessService.getList(ServiceInfo::class.java, filterByServiceModelId(modelUuid), orderByCreatedDateAndStatus(), null) as List<ServiceInfo>;
+    fun listServicesByServiceModelId(serviceModelId: UUID): List<ServiceInfo> =
+            dataAccessService.getList(ServiceInfo::class.java, filterByServiceModelId(serviceModelId), orderByCreatedDateAndStatus(), null) as List<ServiceInfo>;
 }
