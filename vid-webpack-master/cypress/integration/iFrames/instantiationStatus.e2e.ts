@@ -58,6 +58,24 @@ describe('Instantiation status', function () {
     }
   });
 
+  it('should filter rows by search text', function () {
+    cy.openIframe('app/ui/#/instantiationStatus');
+    cy.getElementByDataTestsId("instantiationStatusSearch").type("ComplexService");
+
+    cy.get('table#instantiation-status tbody tr').should((elements) => {
+      expect(elements).to.have.length(3);
+    });
+  });
+
+  it('should filter rows by url search text', function () {
+    cy.openIframe('app/ui/#/instantiationStatus?searchText=ComplexService');
+    cy.getElementByDataTestsId("instantiationStatusSearch").contains('ComplexService');
+
+    cy.get('table#instantiation-status tbody tr').should((elements) => {
+      expect(elements).to.have.length(3);
+    });
+  });
+
   it('should enable correct menu items', function () {
         cy.openIframe('app/ui/#/instantiationStatus');
 

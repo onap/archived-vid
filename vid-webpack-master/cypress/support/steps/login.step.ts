@@ -34,8 +34,8 @@ function login(): void {
   }
 }
 
-function openIframe(iframeUrl : string): void {
-  cy.visit(iframeUrl);
+function openIframe(iframeUrl : string): Chainable<Window> {
+  return cy.visit(iframeUrl);
 }
 
 Cypress.Commands.add('login', login);
