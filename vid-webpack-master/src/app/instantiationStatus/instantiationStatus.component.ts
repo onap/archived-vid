@@ -11,7 +11,7 @@ import {LogService} from '../shared/utils/log/log.service';
 import {AppState} from "../shared/store/reducers";
 import {NgRedux} from '@angular-redux/store';
 import {JobStatus, ServiceAction} from "../shared/models/serviceInstanceActions";
-import {DrawingBoardModes} from "../drawingBoard/service-planning/drawing-board.modes";
+import {ActivatedRoute} from "@angular/router";
 
 export interface MenuAction{
   name: string;
@@ -85,12 +85,14 @@ export class InstantiationStatusComponent {
   ];
 
   flags: any;
+  searchText: string;
   constructor(private _serviceInfoService: ServiceInfoService,
               private _instantiationStatusComponentService : InstantiationStatusComponentService,
               private _contextMenuService: ContextMenuService,
               private _configurationService : ConfigurationService,
               private _scrollToService: ScrollToService,
               private _logService : LogService,
+              private route: ActivatedRoute,
               private _store: NgRedux<AppState>) {
     this.instantiationStatusComponentService = _instantiationStatusComponentService;
     this.configurationService = this._configurationService;
@@ -99,6 +101,11 @@ export class InstantiationStatusComponent {
       this.activateInterval();
       this.refreshData();
     });
+  }
+
+  ngOnInit() {
+    let searchTextParam =  this.route.snapshot.queryParams["searchText"];
+    this.searchText = searchTextParam ? searchTextParam : "" ;
   }
 
   activateInterval() {
@@ -144,7 +151,7 @@ export class InstantiationStatusComponent {
       this.refreshData();
     });
   }
-  
+
   retryItem(item: ServiceInfoModel) : void {
     if (item.isRetryEnabled) {
       this._instantiationStatusComponentService.retry(item);

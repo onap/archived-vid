@@ -18,6 +18,14 @@
         </div>
       </div>
     </div>
+
+    <div>
+      <input
+          [attr.data-tests-id]="'instantiationStatusSearch'"
+          class="form-control input-text"
+          [placeholder]="'search'"
+          [(ngModel)]="searchText">
+    </div>
   </div>
   <div class="instantiation-status-data table-responsive">
     <table id="instantiation-status" class="table table-bordered">
@@ -41,7 +49,7 @@
       </tr>
       </thead>
       <tbody >
-        <tr *ngFor="let data of serviceInfoData; trackBy: trackByFn; let i = index" [ngClass]="{'odd' : data.serviceIndex%2 == 1}" [id]="data.jobId">
+        <tr *ngFor="let data of serviceInfoData | searchFilter: searchText ; trackBy: trackByFn; let i = index" [ngClass]="{'odd' : data.serviceIndex%2 == 1}" [id]="data.jobId">
           <td class="smallTd" id="userId"><custom-ellipsis [id]="data.userId" [value]="data.userId"></custom-ellipsis></td>
           <td class="smallTd" id="action"><custom-ellipsis [id]="data.action" [value]="data.action | capitalizeAndFormat"></custom-ellipsis></td>
           <td class="normal" id="serviceModelName"><custom-ellipsis [id]="data.serviceModelName" [value]="data.serviceModelName"></custom-ellipsis></td>
