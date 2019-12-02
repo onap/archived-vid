@@ -74,6 +74,7 @@ import {DynamicInputsComponent} from "./components/dynamic-inputs/dynamic-inputs
 import {DynamicInputLabelPipe} from "./pipes/dynamicInputLabel/dynamic-input-label.pipe";
 import {ModelInformationService} from "./components/model-information/model-information.service";
 import {MultiselectFormControlService} from "./components/formControls/component/multiselect/multiselect.formControl.service";
+import {SearchFilterPipe} from "./pipes/searchFilter/search-filter.pipe";
 
 
 @NgModule({
@@ -114,6 +115,7 @@ import {MultiselectFormControlService} from "./components/formControls/component
     SafePipe,
     ObjectToArrayPipe,
     DataFilterPipe,
+    SearchFilterPipe,
     InputFormControlComponent,
     FormControlMessageErrorComponent,
     GenericFormPopupComponent,
@@ -145,6 +147,7 @@ import {MultiselectFormControlService} from "./components/formControls/component
     SafePipe,
     ObjectToArrayPipe,
     DataFilterPipe,
+    SearchFilterPipe,
     InputFormControlComponent,
     FormControlMessageErrorComponent,
     GenericFormPopupComponent,
@@ -196,6 +199,7 @@ import {MultiselectFormControlService} from "./components/formControls/component
     ElementsTableService,
     ErrorMsgService,
     DataFilterPipe,
+    SearchFilterPipe,
     ModelInformationService,
     MultiselectFormControlService
   ]
