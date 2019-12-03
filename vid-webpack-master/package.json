@@ -56,6 +56,7 @@
     "install": "0.12.2",
     "jest-image-snapshot": "2.8.1",
     "jest-preset-angular": "6.0.2",
+    "moment": "^2.24.0",
     "ng-multiselect-dropdown": "0.1.3",
     "ng2-bootstrap-modal": "1.0.1",
     "ngx-bootstrap": "^2.0.2",

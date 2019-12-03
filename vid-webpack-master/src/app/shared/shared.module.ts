@@ -74,6 +74,8 @@ import {DynamicInputsComponent} from "./components/dynamic-inputs/dynamic-inputs
 import {DynamicInputLabelPipe} from "./pipes/dynamicInputLabel/dynamic-input-label.pipe";
 import {ModelInformationService} from "./components/model-information/model-information.service";
 import {MultiselectFormControlService} from "./components/formControls/component/multiselect/multiselect.formControl.service";
+import {InstantiationTemplatesModalComponent} from "./components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component";
+import {InstantiationTemplatesModalService} from "./components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.service";
 import {SearchFilterPipe} from "./pipes/searchFilter/search-filter.pipe";
 import {RecreateResolver} from "./resolvers/recreate/recreate.resolver";
 import {InstantiationTemplatesService} from "./services/templateService/instantiationTemplates.service";
@@ -129,7 +131,8 @@ import {InstantiationTemplatesService} from "./services/templateService/instanti
     SvgComponent,
     ErrorMsgComponent,
     DynamicInputsComponent,
-    DynamicInputLabelPipe
+    DynamicInputLabelPipe,
+    InstantiationTemplatesModalComponent
   ],
   exports: [
     PopoverComponent,
@@ -165,7 +168,8 @@ import {InstantiationTemplatesService} from "./services/templateService/instanti
   ],
   entryComponents : [
     GenericFormPopupComponent,
-    SearchElementsModalComponent
+    SearchElementsModalComponent,
+    InstantiationTemplatesModalComponent
   ],
   providers: [
     ServiceInfoService,
@@ -205,7 +209,8 @@ import {InstantiationTemplatesService} from "./services/templateService/instanti
     DataFilterPipe,
     SearchFilterPipe,
     ModelInformationService,
-    MultiselectFormControlService
+    MultiselectFormControlService,
+    InstantiationTemplatesModalService
   ]
 })
 export class SharedModule {
