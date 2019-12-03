@@ -85,7 +85,7 @@ public class DeleteOldJobsSchedulerInitializer {
     Trigger createTrigger() {
         int minutes = new Random(System.nanoTime()).nextInt(59);
         int hours = 6;
-        logger.info("trigger for DeleteOldJobs is {}:{} ", hours, minutes);
+        logger.info(EELFLoggerDelegate.debugLogger, "trigger for DeleteOldJobs is {}:{} ", hours, minutes);
 
         return TriggerBuilder.newTrigger()
                 .withIdentity("DeleteOldJobsTrigger")
