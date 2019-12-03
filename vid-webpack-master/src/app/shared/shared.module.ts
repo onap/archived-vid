@@ -75,6 +75,8 @@ import {DynamicInputLabelPipe} from "./pipes/dynamicInputLabel/dynamic-input-lab
 import {ModelInformationService} from "./components/model-information/model-information.service";
 import {MultiselectFormControlService} from "./components/formControls/component/multiselect/multiselect.formControl.service";
 import {SearchFilterPipe} from "./pipes/searchFilter/search-filter.pipe";
+import {RecreateResolver} from "./resolvers/recreate/recreate.resolver";
+import {InstantiationTemplatesService} from "./services/templateService/instantiationTemplates.service";
 
 
 @NgModule({
@@ -178,6 +180,8 @@ import {SearchFilterPipe} from "./pipes/searchFilter/search-filter.pipe";
     FlagsResolve,
     ViewEditResolver,
     RetryResolver,
+    RecreateResolver,
+    InstantiationTemplatesService,
     ServiceControlGenerator,
     ServicePopupService,
     VnfControlGenerator,

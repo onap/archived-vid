@@ -94,6 +94,7 @@ export module Constants {
     public static SERVICES_JOB_INFO_PATH = '../../asyncInstantiation';
     public static SERVICE_MODEL_ID = 'serviceModelId';
     public static SERVICES_RETRY_TOPOLOGY = '../../asyncInstantiation/bulkForRetry';
+    public static INSTANTIATION_TEMPLATE_TOPOLOGY = '../../asyncInstantiation/templateTopology';
     public static CONFIGURATION_PATH = '../../get_property/{name}/defaultvalue';
     public static SERVICES_JOB_AUDIT_PATH = '/auditStatus';
     public static SERVICES_PROBE_PATH = "../../probe";
