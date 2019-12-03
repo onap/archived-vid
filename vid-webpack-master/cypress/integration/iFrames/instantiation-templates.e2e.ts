@@ -21,7 +21,7 @@ describe('Drawing Board: Instantiation Templates', function () {
       const templateUuid = "46390edd-7100-46b2-9f18-419bd24fb60b";
 
       const drawingBoardAction = `RECREATE`;
-      const templateTopologyEndpoint = "bulkForRetry"; // will be: "templateTopology"
+      const templateTopologyEndpoint = "templateTopology";
 
       // Given...
 
