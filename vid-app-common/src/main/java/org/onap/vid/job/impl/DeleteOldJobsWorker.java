@@ -34,7 +34,7 @@ public class DeleteOldJobsWorker extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
-        LOGGER.info("delete old final jobs that has finished before {} seconds", secondsAgo);
+        LOGGER.info(EELFLoggerDelegate.debugLogger, "delete old final jobs that has finished before {} seconds", secondsAgo);
         jobsBrokerService.deleteOldFinalJobs(secondsAgo);
     }
 

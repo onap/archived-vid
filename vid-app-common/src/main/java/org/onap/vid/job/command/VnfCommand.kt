@@ -61,7 +61,7 @@ class VnfCommand @Autowired constructor(
             try {
                 childJobs = pushChildrenJobsToBroker(vfModules.filter { filterModuleByNeedToCreateBase(it) }, dataForChild, JobType.VolumeGroupInstantiation)
             } catch (e: AsdcCatalogException) {
-                LOGGER.error("Failed to retrieve service definitions from SDC, for VfModule is BaseModule.. Error: " + e.message , e)
+                LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to retrieve service definitions from SDC, for VfModule is BaseModule.. Error: " + e.message , e)
                 //return Job.JobStatus.FAILED
                 throw e;
             }
