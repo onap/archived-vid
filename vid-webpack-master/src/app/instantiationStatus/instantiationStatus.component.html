@@ -16,6 +16,13 @@
             <span class="icon-refresh"></span>
           </div>
         </div>
+        <div class="instantiationStatusFilter" *ngIf=isInstantiationStatusFilterFlagOn()>
+          <input
+            [attr.data-tests-id]="'instantiationStatusFilter'"
+            class="form-control input-text"
+            [placeholder]="'filter'"
+            [(ngModel)]="filterText">
+        </div>
       </div>
     </div>
   </div>
@@ -41,51 +48,51 @@
       </tr>
       </thead>
       <tbody >
-        <tr *ngFor="let data of serviceInfoData; trackBy: trackByFn; let i = index" [ngClass]="{'odd' : data.serviceIndex%2 == 1}" [id]="data.jobId">
-          <td class="smallTd" id="userId"><custom-ellipsis [id]="data.userId" [value]="data.userId"></custom-ellipsis></td>
-          <td class="smallTd" id="action"><custom-ellipsis [id]="data.action" [value]="data.action | capitalizeAndFormat"></custom-ellipsis></td>
-          <td class="normal" id="serviceModelName"><custom-ellipsis [id]="data.serviceModelName" [value]="data.serviceModelName"></custom-ellipsis></td>
-          <td class="normal" id="serviceInstanceName"><custom-ellipsis [id]="data.serviceInstanceName" [value]="data.serviceInstanceName"></custom-ellipsis></td>
-          <td class="smallTd" id="serviceModelVersion"><custom-ellipsis [id]="data.serviceModelVersion" [value]="data.serviceModelVersion"></custom-ellipsis></td>
-          <td class="normal" id="subscriberName"><custom-ellipsis [id]="data.subscriberName" [value]="data.subscriberName"></custom-ellipsis></td>
-          <td class="mediumTd" id="serviceType"><custom-ellipsis [id]="data.serviceType" [value]="data.serviceType"></custom-ellipsis></td>
-          <td class="normal" id="regionId"><custom-ellipsis [id]="data.regionId" [value]="data.regionId"></custom-ellipsis></td>
-          <td class="mediumTd" id="tenantName"><custom-ellipsis [id]="data.tenantName" [value]="data.tenantName"></custom-ellipsis></td>
-          <td class="mediumTd" id="aicZoneName"><custom-ellipsis [id]="data.aicZoneName" [value]="data.aicZoneName"></custom-ellipsis></td>
-          <td class="mediumTd" id="project"><custom-ellipsis [id]="data.project" [value]="data.project"></custom-ellipsis></td>
-          <td class="mediumTd" id="owningEntityName"><custom-ellipsis [id]="data.owningEntityName" [value]="data.owningEntityName"></custom-ellipsis></td>
-          <td class="smallTd" id="pause"><custom-ellipsis [id]="data.pause" [value]="data.pause"></custom-ellipsis></td>
-          <td class="mediumTd" id="created"><custom-ellipsis [id]="data.created" [value]="data.created | date:'MMM. dd, yyyy HH:mm'"></custom-ellipsis></td>
-          <td class="last" id="jobStatus" [ngClass]="data.jobStatus">
-            <custom-popover [value]="data.serviceStatus.tooltip"  [popoverType]="data?.serviceStatus?.color" style="float: left;">
-              <svg-icon
-                id="jobStatusIcon-{{i}}"
-                (click)="auditInfo(data)"
-                [mode]="data.serviceStatus.color"
-                [size]="'large'"
-                [name]="data.serviceStatus.iconClassName">
-              </svg-icon>
+      <tr *ngFor="let data of serviceInfoData | searchFilter: filterText ; trackBy: trackByFn; let i = index" [ngClass]="{'odd' : data.serviceIndex%2 == 1}" [id]="data.jobId">
+        <td class="smallTd" id="userId"><custom-ellipsis [id]="data.userId" [value]="data.userId"></custom-ellipsis></td>
+        <td class="smallTd" id="action"><custom-ellipsis [id]="data.action" [value]="data.action | capitalizeAndFormat"></custom-ellipsis></td>
+        <td class="normal" id="serviceModelName"><custom-ellipsis [id]="data.serviceModelName" [value]="data.serviceModelName"></custom-ellipsis></td>
+        <td class="normal" id="serviceInstanceName"><custom-ellipsis [id]="data.serviceInstanceName" [value]="data.serviceInstanceName"></custom-ellipsis></td>
+        <td class="smallTd" id="serviceModelVersion"><custom-ellipsis [id]="data.serviceModelVersion" [value]="data.serviceModelVersion"></custom-ellipsis></td>
+        <td class="normal" id="subscriberName"><custom-ellipsis [id]="data.subscriberName" [value]="data.subscriberName"></custom-ellipsis></td>
+        <td class="mediumTd" id="serviceType"><custom-ellipsis [id]="data.serviceType" [value]="data.serviceType"></custom-ellipsis></td>
+        <td class="normal" id="regionId"><custom-ellipsis [id]="data.regionId" [value]="data.regionId"></custom-ellipsis></td>
+        <td class="mediumTd" id="tenantName"><custom-ellipsis [id]="data.tenantName" [value]="data.tenantName"></custom-ellipsis></td>
+        <td class="mediumTd" id="aicZoneName"><custom-ellipsis [id]="data.aicZoneName" [value]="data.aicZoneName"></custom-ellipsis></td>
+        <td class="mediumTd" id="project"><custom-ellipsis [id]="data.project" [value]="data.project"></custom-ellipsis></td>
+        <td class="mediumTd" id="owningEntityName"><custom-ellipsis [id]="data.owningEntityName" [value]="data.owningEntityName"></custom-ellipsis></td>
+        <td class="smallTd" id="pause"><custom-ellipsis [id]="data.pause" [value]="data.pause"></custom-ellipsis></td>
+        <td class="mediumTd" id="created"><custom-ellipsis [id]="data.created" [value]="data.created | date:'MMM. dd, yyyy HH:mm'"></custom-ellipsis></td>
+        <td class="last" id="jobStatus" [ngClass]="data.jobStatus">
+          <custom-popover [value]="data.serviceStatus.tooltip"  [popoverType]="data?.serviceStatus?.color" style="float: left;">
+            <svg-icon
+              id="jobStatusIcon-{{i}}"
+              (click)="auditInfo(data)"
+              [mode]="data.serviceStatus.color"
+              [size]="'large'"
+              [name]="data.serviceStatus.iconClassName">
+            </svg-icon>
 
-            </custom-popover>
-            <div class="menu-div" (click)="onContextMenu($event, data)">
-                <span class="icon-menu"></span>
-                <context-menu>
-                  <ng-template *ngFor="let action of contextMenuActions" contextMenuItem let-item
-                               [visible]="action.visible"
-                               [enabled]="action.enabled"
-                               (execute)="action.click($event.item)">
-                    <div [attr.data-tests-id]="action.dataTestId"
-                         [tooltip]="action?.tooltip"
-                         [tooltipDisabled]="!action.tooltip">
+          </custom-popover>
+          <div class="menu-div" (click)="onContextMenu($event, data)">
+            <span class="icon-menu"></span>
+            <context-menu>
+              <ng-template *ngFor="let action of contextMenuActions" contextMenuItem let-item
+                           [visible]="action.visible"
+                           [enabled]="action.enabled"
+                           (execute)="action.click($event.item)">
+                <div [attr.data-tests-id]="action.dataTestId"
+                     [tooltip]="action?.tooltip"
+                     [tooltipDisabled]="!action.tooltip">
                       <span class="context-menu-icon">
                         <i class="fa {{action.className}}" aria-hidden="true"></i>
                       </span>
-                      {{action.name}}
-                    </div>
-                  </ng-template>
-              </context-menu>
-            </div>
-          </td>
+                  {{action.name}}
+                </div>
+              </ng-template>
+            </context-menu>
+          </div>
+        </td>
       </tr>
       </tbody>
     </table>

@@ -17,7 +17,10 @@ import {FeatureFlagsService} from "../shared/services/featureFlag/feature-flags.
 import {JobStatus, ServiceAction} from "../shared/models/serviceInstanceActions";
 import each from 'jest-each';
 import {ServiceInfoModel} from "../shared/server/serviceInfo/serviceInfo.model";
-import { TooltipModule } from 'ngx-tooltip';
+import {TooltipModule} from 'ngx-tooltip';
+import {SearchFilterPipe} from "../shared/pipes/searchFilter/search-filter.pipe";
+import {ActivatedRoute} from "@angular/router";
+import {FormsModule} from "@angular/forms";
 
 class MockAppStore<T> {
 
@@ -36,10 +39,21 @@ class MockAppStore<T> {
   }
 }
 
+class ActivatedRouteMock<T>{
+  queryParams() {
+    return {}
+  };
+
+  snapshot = {
+    queryParams : {}
+  }
+}
+
 describe('Instantiation Status Component', () => {
   let component: InstantiationStatusComponent;
   let fixture: ComponentFixture<InstantiationStatusComponent>;
-let item = new ServiceInfoModel();
+  let item = new ServiceInfoModel();
+
   beforeAll(done => (async () => {
 
     TestBed.configureTestingModule({
@@ -48,7 +62,8 @@ let item = new ServiceInfoModel();
         ContextMenuModule,
         ScrollToModule.forRoot(),
         RouterTestingModule,
-        TooltipModule
+        TooltipModule,
+        FormsModule,
       ],
       providers: [
         ServiceInfoService,
@@ -59,9 +74,10 @@ let item = new ServiceInfoModel();
         FeatureFlagsService,
         ConfigurationService,
         LogService,
+        {provide: ActivatedRoute, useClass: ActivatedRouteMock},
         {provide: NgRedux, useClass: MockAppStore}
       ],
-      declarations: [InstantiationStatusComponent, CapitalizeAndFormatPipe],
+      declarations: [InstantiationStatusComponent, CapitalizeAndFormatPipe, SearchFilterPipe],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     });
     await TestBed.compileComponents();
