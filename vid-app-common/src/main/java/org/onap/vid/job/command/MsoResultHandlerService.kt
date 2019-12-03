@@ -68,11 +68,11 @@ class MsoResultHandlerService
     fun handleResponse(sharedData: JobSharedData, msoResponse: RestObject<RequestReferencesContainer>, actionDescription: String): MsoResult {
         return if (msoResponse.statusCode in 200..399) {
             val msoResourceIds = MsoResourceIds(msoResponse.get().requestReferences.requestId, msoResponse.get().requestReferences.instanceId)
-            LOGGER.debug("Successfully sent $actionDescription. Request id: ${msoResourceIds.requestId}")
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "Successfully sent $actionDescription. Request id: ${msoResourceIds.requestId}")
             asyncInstantiationBL.addResourceInfo(sharedData, Job.JobStatus.IN_PROGRESS, msoResourceIds.instanceId)
             MsoResult(Job.JobStatus.COMPLETED_WITH_NO_ACTION, msoResourceIds)
         } else {
-            LOGGER.debug("Failed to $actionDescription. Details: ${msoResponse.raw}")
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "Failed to $actionDescription. Details: ${msoResponse.raw}")
             asyncInstantiationBL.addFailedResourceInfo(sharedData, msoResponse)
             MsoResult(Job.JobStatus.FAILED)
         }

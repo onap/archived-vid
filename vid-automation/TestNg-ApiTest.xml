@@ -20,6 +20,10 @@
                             "underDevelopment"
                         };
 
+                        String [] testClassesToRunAlways = new String [] {
+                            "LoggerFormatTest"
+                        };
+
                         String [] classes1 = new String [] {
                             "AsyncInstantiationALaCarteApiTest"
                         };
@@ -33,6 +37,10 @@
                         methodClass = method.getDeclaringClass().toString();
 
                         if (methodClass.contains("org.onap.vid.api.Base")) return true;
+
+                        for (c: testClassesToRunAlways) {
+                            if (methodClass.endsWith(c)) return true; // repeat in any selectPart value
+                        }
 
                         for (c: classes1) {
                             if (methodClass.endsWith(c)) return selectPart==1;

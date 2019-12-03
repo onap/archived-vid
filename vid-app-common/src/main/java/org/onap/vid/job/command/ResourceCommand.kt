@@ -112,7 +112,7 @@ abstract class ResourceCommand(
         jobStatus = comulateStatusAndUpdatePropertyIfFinal(jobStatus)
 
         try {
-            Logger.debug("job: ${this.javaClass.simpleName} ${sharedData.jobUuid} $actionPhase ${getActionType()} $internalState $jobStatus $childJobs")
+            Logger.debug(EELFLoggerDelegate.debugLogger, "job: ${this.javaClass.simpleName} ${sharedData.jobUuid} $actionPhase ${getActionType()} $internalState $jobStatus $childJobs")
         } catch (e:Exception) { /* do nothing. Just failed to log...*/}
 
         if (shallStopJob(jobStatus)) {
@@ -121,7 +121,7 @@ abstract class ResourceCommand(
         }
 
         val (nextActionPhase, nextInternalState) = calcNextInternalState(jobStatus, internalState, actionPhase)
-        Logger.debug("next state for job ${sharedData.jobUuid} is $nextInternalState")
+        Logger.debug(EELFLoggerDelegate.debugLogger, "next state for job ${sharedData.jobUuid} is $nextInternalState")
         actionPhase = nextActionPhase
         internalState = nextInternalState
 
@@ -131,7 +131,7 @@ abstract class ResourceCommand(
         }
 
         jobStatus = getExternalInProgressStatus()
-        Logger.debug("next status for job ${sharedData.jobUuid} is $jobStatus")
+        Logger.debug(EELFLoggerDelegate.debugLogger, "next status for job ${sharedData.jobUuid} is $jobStatus")
 //        if (internalState.immediate) return call() //shortcut instead of execute another command
         return NextCommand(jobStatus, this)
     }
@@ -153,7 +153,7 @@ abstract class ResourceCommand(
             JobStatus.IN_PROGRESS
         }
         catch (exception: AbortingException) {
-            Logger.error("caught AbortingException. Set job status to FAILED")
+            Logger.error(EELFLoggerDelegate.errorLogger, "caught AbortingException. Set job status to FAILED")
             JobStatus.FAILED;
         }
     }
