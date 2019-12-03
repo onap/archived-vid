@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ServiceInfoService} from '../shared/server/serviceInfo/serviceInfo.service';
 import {ServiceInfoModel} from '../shared/server/serviceInfo/serviceInfo.model';
 import {InstantiationStatusComponentService} from './instantiationStatus.component.service';
@@ -11,6 +11,8 @@ import {LogService} from '../shared/utils/log/log.service';
 import {AppState} from "../shared/store/reducers";
 import {NgRedux} from '@angular-redux/store';
 import {JobStatus, ServiceAction} from "../shared/models/serviceInstanceActions";
+import {ActivatedRoute} from "@angular/router";
+import {FeatureFlagsService, Features} from "../shared/services/featureFlag/feature-flags.service";
 
 export interface MenuAction{
   name: string;
@@ -27,7 +29,7 @@ export interface MenuAction{
   templateUrl : './instantiationStatus.component.html',
   styleUrls : ['./instantiationStatus.component.scss']
 })
-export class InstantiationStatusComponent {
+export class InstantiationStatusComponent implements OnInit {
 
   TIMER_TIME_IN_SECONDS : number = 0;
   timer = null;
@@ -84,12 +86,14 @@ export class InstantiationStatusComponent {
   ];
 
   flags: any;
+  filterText: string;
   constructor(private _serviceInfoService: ServiceInfoService,
               private _instantiationStatusComponentService : InstantiationStatusComponentService,
               private _contextMenuService: ContextMenuService,
               private _configurationService : ConfigurationService,
               private _scrollToService: ScrollToService,
               private _logService : LogService,
+              private route: ActivatedRoute,
               private _store: NgRedux<AppState>) {
     this.instantiationStatusComponentService = _instantiationStatusComponentService;
     this.configurationService = this._configurationService;
@@ -98,6 +102,11 @@ export class InstantiationStatusComponent {
       this.activateInterval();
       this.refreshData();
     });
+  }
+
+  ngOnInit() {
+    let filterTextParam =  this.route.snapshot.queryParams["filterText"];
+    this.filterText = filterTextParam ? filterTextParam : "" ;
   }
 
   activateInterval() {
@@ -228,5 +237,9 @@ export class InstantiationStatusComponent {
         this._scrollToService.scrollTo(config);
       }, 0)
     }
+  }
+
+  isInstantiationStatusFilterFlagOn() {
+    return FeatureFlagsService.getFlagState(Features.FLAG_2004_INSTANTIATION_STATUS_FILTER, this._store);
   }
 }
