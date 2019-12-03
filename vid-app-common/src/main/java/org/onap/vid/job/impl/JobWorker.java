@@ -20,22 +20,25 @@
 
 package org.onap.vid.job.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.job.*;
-import org.onap.vid.job.command.JobCommandFactory;
-import org.quartz.JobExecutionContext;
-import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-import java.util.UUID;
-
 import static org.onap.vid.job.Job.JobStatus.FAILED;
 import static org.onap.vid.job.Job.JobStatus.STOPPED;
 import static org.onap.vid.job.command.ResourceCommandKt.ACTION_PHASE;
 import static org.onap.vid.job.command.ResourceCommandKt.INTERNAL_STATE;
+
+import java.util.Optional;
+import java.util.UUID;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.vid.job.Job;
+import org.onap.vid.job.JobCommand;
+import org.onap.vid.job.JobException;
+import org.onap.vid.job.JobsBrokerService;
+import org.onap.vid.job.NextCommand;
+import org.onap.vid.job.command.JobCommandFactory;
+import org.quartz.JobExecutionContext;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JobWorker extends QuartzJobBean {
@@ -102,7 +105,7 @@ public class JobWorker extends QuartzJobBean {
             final JobCommand jobCommand = jobCommandFactory.toCommand(job);
             nextCommand = jobCommand.call();
         } catch (Exception e) {
-            LOGGER.error("error while executing job from queue: {}", e);
+            LOGGER.error(EELFLoggerDelegate.errorLogger, "error while executing job from queue: {}", e);
             nextCommand = new NextCommand(FAILED);
         }
 
