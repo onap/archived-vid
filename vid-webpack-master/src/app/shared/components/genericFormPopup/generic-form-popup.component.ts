@@ -13,16 +13,17 @@ import {AaiService} from "../../services/aaiService/aai.service";
 import {GenericFormPopupService} from "./generic-form-popup.service";
 import {FormControlModel} from "../../models/formControlModels/formControl.model";
 import {FormGeneralErrorsService} from "../formGeneralErrors/formGeneralErrors.service";
+import {InstantiationTemplatesModalComponent} from "./instantiationTemplatesModal/instantiation.templates.modal.component";
 
 
 export interface PopupModel {
-  type : PopupType;
-  uuidData : UUIDData;
-  node : ITreeNode;
-  isUpdateMode : boolean;
+  type: PopupType;
+  uuidData: UUIDData;
+  node: ITreeNode;
+  isUpdateMode: boolean;
 }
 
-export enum PopupType{
+export enum PopupType {
   SERVICE = 'service',
   VNF = 'vnf',
   NETWORK = 'network',
@@ -33,36 +34,39 @@ export enum PopupType{
 
 
 @Component({
-  selector : 'generic-form-popup',
-  templateUrl : 'generic-form-popup.component.html',
-  styleUrls : ['generic-form-popup.component.scss']
+  selector: 'generic-form-popup',
+  templateUrl: 'generic-form-popup.component.html',
+  styleUrls: ['generic-form-popup.component.scss']
 })
 
-export class GenericFormPopupComponent extends DialogComponent<PopupModel, boolean> implements OnInit, OnDestroy{
-  formPopupDetails : FormPopupDetails = null;
-  dynamicForm : FormGroup;
-  type : PopupType;
-  uuidData : UUIDData;
-  isUpdateMode : boolean;
-  node : ITreeNode = null;
-  hasGeneralApiError : boolean = false;
+export class GenericFormPopupComponent extends DialogComponent<PopupModel, boolean> implements OnInit, OnDestroy {
+  formPopupDetails: FormPopupDetails = null;
+  dynamicForm: FormGroup;
+  type: PopupType;
+  uuidData: UUIDData;
+  showTemplateBtn: boolean = false;
+  isUpdateMode: boolean;
+  node: ITreeNode = null;
+  hasGeneralApiError: boolean = false;
   parentElementClassName = 'content';
   errorMsg = 'Page contains errors. Please see details next to the relevant fields.';
 
   servicesQty = 1;
   quantityOptions = _.range(1, 51)
-  constructor(dialogService:  DialogService ,
-              private _iframeService : IframeService,
+
+  constructor(dialogService: DialogService,
+              private _iframeService: IframeService,
               private _store: NgRedux<AppState>,
-              private _servicePopupService : ServicePopupService,
-              private _activatedRoute : ActivatedRoute,
-              private _aaiService : AaiService,
+              private _servicePopupService: ServicePopupService,
+              private _activatedRoute: ActivatedRoute,
+              private _aaiService: AaiService,
+              private _dialogService: DialogService,
               private _route: ActivatedRoute,
-              private _genericFormPopupService : GenericFormPopupService){
+              private _genericFormPopupService: GenericFormPopupService) {
     super(dialogService);
   }
 
-  closeDialog(that) : void{
+  closeDialog(that): void {
     this._iframeService.removeClassCloseModal(that.parentElementClassName);
     this.dialogService.removeDialog(this);
     setTimeout(() => {
@@ -70,7 +74,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
     }, 15);
   }
 
-  shouldShowNotification() : boolean {
+  shouldShowNotification(): boolean {
     return this.formPopupDetails && this.formPopupDetails.UUIDData['bulkSize'] > 1
   }
 
@@ -79,17 +83,18 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
       .queryParams
       .subscribe(params => {
         console.log('changed');
-        if(params['serviceModelId'] && params['isCreate']=="true"){
-          this._genericFormPopupService.initReduxOnCreateNewService().then((serviceModelId : string)=>{
+        if (params['serviceModelId'] && params['isCreate'] == "true") {
+          this._genericFormPopupService.initReduxOnCreateNewService().then((serviceModelId: string) => {
             this.uuidData = <any>{
-              bulkSize : 1,
-              isMacro : this._store.getState().service.serviceHierarchy[serviceModelId].service.vidNotions.instantiationType === 'Macro',
-              type : PopupType.SERVICE,
+              bulkSize: 1,
+              isMacro: this._store.getState().service.serviceHierarchy[serviceModelId].service.vidNotions.instantiationType === 'Macro',
+              type: PopupType.SERVICE,
               serviceId: serviceModelId,
               popupService: this._servicePopupService,
             };
+            this.showTemplateBtn = !!this._store.getState().global.flags["FLAG_2004_INSTANTIATION_TEMPLATES_POPUP"];
 
-            this.uuidData.popupService.closeDialogEvent.subscribe((that)=>{
+            this.uuidData.popupService.closeDialogEvent.subscribe((that) => {
               this.closeDialog(that);
             });
 
@@ -105,12 +110,12 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
         }
       });
 
-    FormGeneralErrorsService.checkForErrorTrigger.subscribe(()=>{
+    FormGeneralErrorsService.checkForErrorTrigger.subscribe(() => {
       this.hasSomeError(this.formPopupDetails, this.dynamicForm);
     });
-    
-    if(!_.isNil(this.uuidData)){
-      this.uuidData.popupService.closeDialogEvent.subscribe((that)=>{
+
+    if (!_.isNil(this.uuidData)) {
+      this.uuidData.popupService.closeDialogEvent.subscribe((that) => {
         this.closeDialog(that);
       });
 
@@ -119,28 +124,33 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
     }
   }
 
-  hasSomeError(formPopupDetails : FormPopupDetails, form : FormGroup) : boolean{
-    if(_.isNil(formPopupDetails)) return false;
+  hasSomeError(formPopupDetails: FormPopupDetails, form: FormGroup): boolean {
+    if (_.isNil(formPopupDetails)) return false;
     else {
-      for(let controlName in form.controls){
-        if(form.controls[controlName].errors){
+      for (let controlName in form.controls) {
+        if (form.controls[controlName].errors) {
           let error: string[] = Object.keys(form.controls[controlName].errors);
-          if(error.length === 1 && error[0] === 'required'){
+          if (error.length === 1 && error[0] === 'required') {
             continue;
-          }else if(Object.keys(form.controls[controlName].errors).length > 0  ){
+          } else if (Object.keys(form.controls[controlName].errors).length > 0) {
             return true;
           }
         }
       }
     }
 
-    return formPopupDetails.formControlList.filter((item : FormControlModel) => item.type === 'DROPDOWN' && item['hasEmptyOptions'] && item.isRequired()).length > 0
+    return formPopupDetails.formControlList.filter((item: FormControlModel) => item.type === 'DROPDOWN' && item['hasEmptyOptions'] && item.isRequired()).length > 0
+  }
+
+
+  openTemplateModal = (): void => {
+    this._dialogService.addDialog(InstantiationTemplatesModalComponent, {});
   }
 }
 
 
-export class UUIDData extends Object{
-  type : string;
-  popupService : any;
+export class UUIDData extends Object {
+  type: string;
+  popupService: any;
 }
 

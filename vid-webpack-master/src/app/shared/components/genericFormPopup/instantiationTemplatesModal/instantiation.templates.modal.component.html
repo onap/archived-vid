@@ -1,0 +1,161 @@
+<div id="template-popup" class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button"
+              class="close"
+              (click)="closeModal()">&times;
+      </button>
+      <span [attr.data-tests-id]="'template-modal-title'"
+            class="modal-title">Templates
+      </span>
+    </div>
+    <div class="modal-body templateModalBody">
+      <div class="row description-section">
+        <div class="col-md-6">
+          <div [attr.data-tests-id]="'description-part-1'">The following list presents previous instantiations done for
+            this model in this version.
+          </div>
+          <div [attr.data-tests-id]="'description-part-2'">You may use one of them as a baseline for your instantiation
+            or start from scratch.
+          </div>
+          <div [attr.data-tests-id]="'description-part-3'">Once you selecting one allows you to change the data before
+            start instantiating.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <input
+            (keypress)="onFilterKeypress($event)"
+            class="filter-input form-control input-text"
+            placeholder="Filter...">
+        </div>
+
+      </div>
+      <div class="row" style="margin-left: 0;margin-right: 0;padding: 20px;">
+        <table id="member-table" class="table table-bordered" style="table-layout: fixed">
+          <thead class="thead-dark">
+          <tr>
+            <th class="header-title" id="header-userId">User ID</th>
+            <th class="header-title" id="header-createDate" style="width: 21ch;">Date</th>
+            <th class="header-title" id="header-instanceName" style="max-width: 50ch;">Instance Name</th>
+            <th class="header-title" id="header-instantiationStatus">Instantiation Status</th>
+            <th class="header-title" id="header-summary">Summary</th>
+            <th class="header-title" id="header-region">Region</th>
+            <th class="header-title" id="header-tenant">Tenant</th>
+            <th class="header-title" id="header-aicZone">AIC Zone</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="member-table-row"
+              *ngFor="let item of filterTableData;"
+              (click)="selectedJobId = item.jobId"
+              [ngClass]="{'selected' : selectedJobId === item.jobId}"
+              [attr.data-tests-id]="'row-' + item.jobId">
+            <td>
+              <div>
+                <custom-ellipsis
+                  [dataTestId]="'userId-' + item.jobId"
+                  [id]="item.userId"
+                  [value]="item.userId"
+                  [breakWord]="true">
+                </custom-ellipsis>
+              </div>
+            </td>
+            <td style="width: 21ch;">
+              <div>
+                <custom-ellipsis
+                  [dataTestId]="'createDate-' + item.jobId"
+                  [id]="item.createDate"
+                  [value]="item.createDate"
+                  [breakWord]="true">
+                </custom-ellipsis>
+              </div>
+            </td>
+            <td style="max-width: 50ch;">
+              <div>
+                <custom-ellipsis
+                  [showDots]="true"
+                  [dataTestId]="'instanceName-' + item.jobId"
+                  [id]="item.instanceName"
+                  [value]="item.instanceName"
+                  [breakWord]="true">
+                </custom-ellipsis>
+              </div>
+            </td>
+            <td>
+              <div>
+                <custom-ellipsis
+                  [showDots]="true"
+                  [dataTestId]="'instantiationStatus-' + item.jobId"
+                  [id]="item.instantiationStatus"
+                  [value]="item.instantiationStatus"
+                  [breakWord]="true">
+                </custom-ellipsis>
+              </div>
+            </td>
+            <td>
+              <div>
+                <custom-ellipsis
+                  [dataTestId]="'summary-' + item.jobId"
+                  [id]="item.summary"
+                  [value]="item.summary"
+                  [breakWord]="true">
+                </custom-ellipsis>
+              </div>
+            </td>
+            <td>
+              <div>
+                <custom-ellipsis
+                  [showDots]="true"
+                  [dataTestId]="'region-' + item.jobId"
+                  [id]="item.region"
+                  [value]="item.region"
+                  [breakWord]="true">
+                </custom-ellipsis>
+              </div>
+            </td>
+            <td>
+              <div>
+                <custom-ellipsis
+                  [showDots]="true"
+                  [dataTestId]="'tenant-' + item.jobId"
+                  [id]="item.tenant"
+                  [value]="item.tenant"
+                  [breakWord]="true">
+                </custom-ellipsis>
+              </div>
+            </td>
+            <td>
+              <div>
+                <custom-ellipsis
+                  [dataTestId]="'aicZone-' + item.jobId"
+                  [id]="item.aicZone"
+                  [value]="item.aicZone"
+                  [breakWord]="true">
+                </custom-ellipsis>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="modal-footer row" style="padding: 0">
+      <div class="col-md-6">
+      </div>
+      <div class="col-md-6" style="padding: 15px;padding-right: 35px;">
+        <button
+          [disabled]="selectedJobId === null"
+          [attr.data-tests-id]="'LoadTemplateButton'"
+          type="button" class="btn btn-primary submit"
+          (click)="loadTemplate()"><span>Load Template</span>
+        </button>
+        <button
+          [attr.data-tests-id]="'startFromScratchButton'"
+          type="button" class="btn btn-success submit startFromScratchButton"
+          (click)="closeModal()"><span>Start from Scratch</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
