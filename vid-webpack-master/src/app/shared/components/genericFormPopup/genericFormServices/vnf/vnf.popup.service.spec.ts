@@ -30,7 +30,6 @@ class MockReduxStore<T> {
           "FLAG_SHOW_VERIFY_SERVICE": false,
           "FLAG_SERVICE_MODEL_CACHE": true,
           "FLAG_ADVANCED_PORTS_FILTER": true,
-          MERGE_OBJECT_BY_PATH
           "FLAG_REGION_ID_FROM_REMOTE": true,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true
         },
