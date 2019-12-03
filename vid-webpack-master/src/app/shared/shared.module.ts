@@ -74,6 +74,8 @@ import {DynamicInputsComponent} from "./components/dynamic-inputs/dynamic-inputs
 import {DynamicInputLabelPipe} from "./pipes/dynamicInputLabel/dynamic-input-label.pipe";
 import {ModelInformationService} from "./components/model-information/model-information.service";
 import {MultiselectFormControlService} from "./components/formControls/component/multiselect/multiselect.formControl.service";
+import {TemplateModalComponent} from "./components/genericFormPopup/templateModal/template.modal.component";
+import {TemplateModalComponentService} from "./components/genericFormPopup/templateModal/template.modal.component.service";
 
 
 @NgModule({
@@ -125,7 +127,8 @@ import {MultiselectFormControlService} from "./components/formControls/component
     SvgComponent,
     ErrorMsgComponent,
     DynamicInputsComponent,
-    DynamicInputLabelPipe
+    DynamicInputLabelPipe,
+    TemplateModalComponent
   ],
   exports: [
     PopoverComponent,
@@ -160,7 +163,8 @@ import {MultiselectFormControlService} from "./components/formControls/component
   ],
   entryComponents : [
     GenericFormPopupComponent,
-    SearchElementsModalComponent
+    SearchElementsModalComponent,
+    TemplateModalComponent
   ],
   providers: [
     ServiceInfoService,
@@ -197,7 +201,8 @@ import {MultiselectFormControlService} from "./components/formControls/component
     ErrorMsgService,
     DataFilterPipe,
     ModelInformationService,
-    MultiselectFormControlService
+    MultiselectFormControlService,
+    TemplateModalComponentService
   ]
 })
 export class SharedModule {
