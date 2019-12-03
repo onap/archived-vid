@@ -74,6 +74,8 @@ import {DynamicInputsComponent} from "./components/dynamic-inputs/dynamic-inputs
 import {DynamicInputLabelPipe} from "./pipes/dynamicInputLabel/dynamic-input-label.pipe";
 import {ModelInformationService} from "./components/model-information/model-information.service";
 import {MultiselectFormControlService} from "./components/formControls/component/multiselect/multiselect.formControl.service";
+import {RecreateResolver} from "./resolvers/recreate/recreate.resolver";
+import {InstantiationTemplatesService} from "./services/templateService/instantiationTemplates.service";
 
 
 @NgModule({
@@ -175,6 +177,8 @@ import {MultiselectFormControlService} from "./components/formControls/component
     FlagsResolve,
     ViewEditResolver,
     RetryResolver,
+    RecreateResolver,
+    InstantiationTemplatesService,
     ServiceControlGenerator,
     ServicePopupService,
     VnfControlGenerator,
