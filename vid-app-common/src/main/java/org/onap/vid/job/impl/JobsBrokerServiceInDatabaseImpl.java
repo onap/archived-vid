@@ -20,6 +20,21 @@
 
 package org.onap.vid.job.impl;
 
+import static org.onap.vid.job.Job.JobStatus.CREATING;
+import static org.onap.vid.job.Job.JobStatus.FINAL_STATUS;
+import static org.onap.vid.job.Job.JobStatus.IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.PENDING_RESOURCE;
+import static org.onap.vid.job.Job.JobStatus.RESOURCE_IN_PROGRESS;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.jetbrains.annotations.NotNull;
@@ -36,14 +51,6 @@ import org.onap.vid.utils.DaoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.onap.vid.job.Job.JobStatus.*;
 
 @Service
 public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
@@ -252,7 +259,10 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
         Integer age = jobDao.getAge();
         jobDao.setAge(age + 1);
 
-        logger.debug(EELFLoggerDelegate.debugLogger, "{}/{}", jobDao.getStatus(), jobDao.getType());
+        logger.debug(EELFLoggerDelegate.debugLogger, "pushing back jobDao {} of {}: {}/{}",
+            StringUtils.substring(String.valueOf(jobDao.getUuid()), 0, 8),
+            StringUtils.substring(String.valueOf(jobDao.getTemplateId()), 0, 8),
+            jobDao.getStatus(), jobDao.getType());
 
         dataAccessService.saveDomainObject(jobDao, DaoUtils.getPropsMap());
     }

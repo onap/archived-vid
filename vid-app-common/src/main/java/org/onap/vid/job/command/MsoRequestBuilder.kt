@@ -209,7 +209,7 @@ class MsoRequestBuilder
         try {
             asyncInstantiationBL.updateServiceInfo(jobId) { x -> x.serviceInstanceName = serviceInstanceName }
         } catch (e: Exception) {
-            LOGGER.error("Failed updating service name {} in serviceInfo", serviceInstanceName, e)
+            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed updating service name {} in serviceInfo", serviceInstanceName, e)
         }
 
         return serviceInstanceName
