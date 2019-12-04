@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0aed2f0a_51a803ad",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component.html",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-04T15:07:07Z",
+      "side": 1,
+      "message": "typo: should be filter with trailing \"r\"",
+      "range": {
+        "startLine": 49,
+        "startChar": 34,
+        "endLine": 49,
+        "endChar": 49
+      },
+      "revId": "2ecb46b0aef96ae4dfd1c73c3cf69d48aa64b301",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
