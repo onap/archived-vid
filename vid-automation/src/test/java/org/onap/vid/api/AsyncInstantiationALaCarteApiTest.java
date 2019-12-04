@@ -481,7 +481,7 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
         final String UUID_REGEX = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}";
 
-        final String msoURL = "/mso/serviceInstantiation/v";
+        final String msoURL = "/mso";
 
         deploy1ServiceFromCypress__verifyStatusAndMsoCalls_andRetry("none", emptyMap(), emptyMap(), true);
         List<String> logLines =  LoggerFormatTest.getLogLinesAsList(LogName.metrics2019, 200, 1, restTemplate, uri);

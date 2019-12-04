@@ -20,22 +20,27 @@
 
 package org.onap.vid.job.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.job.*;
-import org.onap.vid.job.command.JobCommandFactory;
-import org.quartz.JobExecutionContext;
-import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-import java.util.UUID;
-
 import static org.onap.vid.job.Job.JobStatus.FAILED;
 import static org.onap.vid.job.Job.JobStatus.STOPPED;
 import static org.onap.vid.job.command.ResourceCommandKt.ACTION_PHASE;
 import static org.onap.vid.job.command.ResourceCommandKt.INTERNAL_STATE;
+
+import java.util.Optional;
+import java.util.UUID;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.onap.logging.ref.slf4j.ONAPLogConstants;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.onap.vid.job.Job;
+import org.onap.vid.job.JobCommand;
+import org.onap.vid.job.JobException;
+import org.onap.vid.job.JobsBrokerService;
+import org.onap.vid.job.NextCommand;
+import org.onap.vid.job.command.JobCommandFactory;
+import org.quartz.JobExecutionContext;
+import org.slf4j.MDC;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JobWorker extends QuartzJobBean {
@@ -80,6 +85,8 @@ public class JobWorker extends QuartzJobBean {
     }
 
     protected Job executeJobAndGetNext(Job job) {
+        setThreadWithRandomRequestId();
+
         Object internalState = job.getData().get(INTERNAL_STATE);
         Object actionPhase = job.getData().get(ACTION_PHASE);
         LOGGER.debug(EELFLoggerDelegate.debugLogger, "going to execute job {} of {}: {}/{}  {}/{}",
@@ -94,6 +101,11 @@ public class JobWorker extends QuartzJobBean {
         NextCommand nextCommand = executeCommandAndGetNext(job);
 
         return setNextCommandInJob(nextCommand, job);
+    }
+
+    private void setThreadWithRandomRequestId() {
+        //make sure requestIds in outgoing requests are not reused
+        MDC.put(ONAPLogConstants.MDCs.REQUEST_ID, UUID.randomUUID().toString());
     }
 
     private NextCommand executeCommandAndGetNext(Job job) {
