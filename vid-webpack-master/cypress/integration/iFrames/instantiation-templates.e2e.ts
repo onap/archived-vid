@@ -47,8 +47,9 @@ describe('Drawing Board: Instantiation Templates', function () {
       // Then...
 
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
-        // cy.readFile('cypress/support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__instance_template.json').then((expectedResult) => {
-        //   cy.deepCompare(xhr.request.body, expectedResult);
+        //  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__instance_template.json').then((expectedResult) => {
+        //    convertRollbackOnFailureValueFromStringToBoolean(expectedResult);
+        //     cy.deepCompare(xhr.request.body, expectedResult);
         // });
       });
 
@@ -56,6 +57,11 @@ describe('Drawing Board: Instantiation Templates', function () {
 
   });
 
+  //We use this function because the deployService() on drawing-board-header.component class
+  // changes rollbackOnFailure value from string type to boolean.
+  function convertRollbackOnFailureValueFromStringToBoolean(expectedResult: any) {
+    expectedResult.rollbackOnFailure = Boolean(expectedResult.rollbackOnFailure);
+  }
 
   function mockAsyncBulkResponse() {
     cy.server().route({

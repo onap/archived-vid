@@ -20,7 +20,7 @@
   "aicZoneName": null,
   "projectName": "Kennedy",
   "subscriberName": "Emanuel",
-  "rollbackOnFailure": true,
+  "rollbackOnFailure": "true",
   "isALaCarte": true,
   "testApi": "GR_API",
   "trackById": "36601560-f8e3-4020-bdef-3e4709c51e84",
