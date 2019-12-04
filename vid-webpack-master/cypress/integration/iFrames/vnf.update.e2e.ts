@@ -52,9 +52,11 @@ describe('Delete vnf instance', function () {
       res.instanceId = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
 
       const vnf = res.vnfs['2017-488_PASQUALE-vPE 0'];
+
       vnf.instanceId = "VNF_INSTANCE_ID";
       vnf.vfModules['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0']['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot'].instanceId = "VF_MODULE_BASE_INSTANCE_ID";
       vnf.vfModules['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1']['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1fshmc'].instanceId = "VF_MODULE_INSTANCE_ID";
+
 
       jsonBuilderAndMock.basicJson(
         res,
@@ -69,7 +71,7 @@ describe('Delete vnf instance', function () {
     // add a vnf on update mode
     cy.drawingBoardPressAddButtonByElementName('node-2017-388_PASQUALE-vPE 0').click({force: true});
     cy.selectDropdownOptionByText('rollback', 'Rollback');
-    cy.fillVnfPopup();
+    cy.fillVnfPopup(true);
 
     // delete VNF
     cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0', 0)
@@ -83,6 +85,7 @@ describe('Delete vnf instance', function () {
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
         cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/vidRequestDelete1Create1Vnf.json').then((expectedResult) => {
           expectedResult.vnfs["2017-388_PASQUALE-vPE 0_1"].trackById = vnf.trackById;
+          expectedResult.vnfs["2017-388_PASQUALE-vPE 0_1"].platformName = 'platform,xxx1';
           cy.deepCompare(expectedResult, xhr.request.body);
         });
       });

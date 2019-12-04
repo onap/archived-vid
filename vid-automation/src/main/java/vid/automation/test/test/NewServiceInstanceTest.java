@@ -1185,7 +1185,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         assertSetButtonDisabled(VNF_SET_BUTTON_TEST_ID);
 
-        browseASDCPage.selectPlatform("platform");
+        SelectOption.selectOptionsFromMultiselectById("multi-selectPlatform", ImmutableList.of("platform"));
 
         browseASDCPage.selectLineOfBusiness("ONAP");
         assertSetButtonEnabled(VNF_SET_BUTTON_TEST_ID);
@@ -1214,7 +1214,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             assertThat(Get.selectedOptionText(Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID), startsWith("AAIAIC25"));
             Assert.assertEquals(Get.selectedOptionText(Constants.ViewEdit.TENANT_SELECT_TESTS_ID), "USP-SIP-IC-24335-T-01");
             Assert.assertEquals(Get.selectedOptionText(Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID), "ONAP");
-            Assert.assertEquals(Get.selectedOptionText(Constants.OwningEntity.PLATFORM_SELECT_TEST_ID), "platform");
+            Assert.assertTrue(Get.isOptionSelectedInMultiSelect(Constants.OwningEntity.PLATFORM_MULTI_SELECT_TEST_ID, "platform"));
             Click.byTestId(Constants.CANCEL_BUTTON_TEST_ID);
             GeneralUIUtils.ultimateWait();
         } else {

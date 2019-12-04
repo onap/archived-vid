@@ -67,14 +67,29 @@ public class SelectOption {
     }
 
     public static void selectOptionsFromMultiselectById(String multiSelectId, List<String> options) {
-        Click.byId(multiSelectId);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        for(String option:options) {
-            Click.byClassAndVisibleText(Constants.MULTI_SELECT_UNSELECTED_CLASS, option);
+        WebElement multiselectComponent = Get.byXpath("//*[@data-tests-id='" + multiSelectId +"']//div[contains(@class, 'c-btn')]");
+        if(multiselectComponent != null){
+            multiselectComponent.click();
+            try {
+                Thread.sleep(1000);
+                for(String option:options) {
+                    String multiSelectOptionPath = "//label[@data-tests-id='" + multiSelectId + "-" + option + "']";
+                    WebElement multiSelelctOption = Get.byXpath(multiSelectOptionPath);
+                    if(multiSelelctOption != null){
+                        multiSelelctOption.click();
+                    }
+                }
+                multiselectComponent.click();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
+
+   public static void selectFirstOptionsFromMultiselect(String multiSelectId){
+       WebElement multiSelectOption = Get.byXpath("//*[@data-tests-id='" + multiSelectId +"']//label[contains(@class, 'multiSelectOption')]");
+       if(multiSelectOption != null){
+           SelectOption.selectOptionsFromMultiselectById(multiSelectId, ImmutableList.of(multiSelectOption.getText()));
+       }
+   }
 }
