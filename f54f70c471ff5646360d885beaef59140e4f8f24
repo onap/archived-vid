@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b156003_17f9a852",
+        "filename": "vid-automation/TestNg-ApiTest.xml",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-04T12:55:30Z",
+      "side": 1,
+      "message": "please rename",
+      "revId": "f54f70c471ff5646360d885beaef59140e4f8f24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
