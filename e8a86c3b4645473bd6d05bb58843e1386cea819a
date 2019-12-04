@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cc26c7ce_5e2d2002",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/template.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-04T11:48:28Z",
+      "side": 1,
+      "message": "reduce to single row",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 32
+      },
+      "revId": "e8a86c3b4645473bd6d05bb58843e1386cea819a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec0f3b33_bc4c94e9",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/template.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-04T11:48:28Z",
+      "side": 1,
+      "message": "no need to force",
+      "range": {
+        "startLine": 458,
+        "startChar": 55,
+        "endLine": 458,
+        "endChar": 68
+      },
+      "revId": "e8a86c3b4645473bd6d05bb58843e1386cea819a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4929da27_8390b15f",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/templateModal/template.modal.component.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-04T11:48:28Z",
+      "side": 1,
+      "message": "can remove?",
+      "revId": "e8a86c3b4645473bd6d05bb58843e1386cea819a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37ab3872_a32912da",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/templateModal/template.modal.component.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-04T11:48:28Z",
+      "side": 1,
+      "message": "fix description",
+      "revId": "e8a86c3b4645473bd6d05bb58843e1386cea819a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6391b2a0_3989ff2c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/templateModal/template.modal.component.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-04T11:48:28Z",
+      "side": 1,
+      "message": "can remove?",
+      "revId": "e8a86c3b4645473bd6d05bb58843e1386cea819a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

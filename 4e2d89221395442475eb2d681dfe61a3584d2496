@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f55ce1e9_5b2b1586",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/template.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-04T11:48:28Z",
+      "side": 0,
+      "message": "rename to \"instantiation-templates\" or similar.",
+      "revId": "4e2d89221395442475eb2d681dfe61a3584d2496",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
