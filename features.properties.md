@@ -186,3 +186,6 @@
 
 * FLAG_2002_VNF_PLATFORM_MULTI_SELECT
   When flag is true the platform will appear as a multi select field, if false the platform will be dropdown list.
+  
+* FLAG_2004_INSTANTIATION_STATUS_FILTER
+  when flag is true the user can filter rows in instantiation status by using text input 
