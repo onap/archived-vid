@@ -180,7 +180,7 @@ export class DrawingBoardHeader {
     }
   }
 
-  extractOwningEntityNameAccordingtoId(id:String): string {
+  extractOwningEntityNameAccordingToId(id:String): string {
     let owningEntityName;
     _.forEach(this.store.getState().service.categoryParameters.owningEntityList,(owningEntity: OwningEntity) => {
       if (owningEntity.id === id) {
@@ -190,12 +190,20 @@ export class DrawingBoardHeader {
     return owningEntityName;
   }
 
+  private extractSubscriberNameByGlobalSubscriberId(globalSubscriberId: string) {
+    return this.store.getState().service.subscribers.find(sub => sub.id === globalSubscriberId).name;
+  }
+
   extractServiceFields(): any {
     let instanceFields : ServiceInstance;
     instanceFields = this.store.getState().service.serviceInstance[this.serviceModelId];
     if (instanceFields.action === ServiceInstanceActions.Create) {
-      instanceFields.subscriberName = this.store.getState().service.subscribers.find(sub => sub.id === instanceFields.globalSubscriberId).name;
-      instanceFields.owningEntityName = this.extractOwningEntityNameAccordingtoId(instanceFields.owningEntityId);
+      if(_.isNil(instanceFields.subscriberName)) {
+        instanceFields.subscriberName = this.extractSubscriberNameByGlobalSubscriberId(instanceFields.globalSubscriberId);
+      }
+      if (_.isNil(instanceFields.owningEntityName)) {
+        instanceFields.owningEntityName = this.extractOwningEntityNameAccordingToId(instanceFields.owningEntityId);
+      }
     }
     return _.omit(instanceFields,['optionalGroupMembersMap', 'upgradedVFMSonsCounter', 'isUpgraded', 'latestAvailableVersion']);
   }
