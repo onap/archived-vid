@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset.DEFAULT_INSTANCE_ID;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
@@ -26,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
@@ -127,22 +129,45 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
     @Test
     public void deployTwoServicesGetServicesFilterByModelId() {
-        final ImmutableMap<PresetMSOServiceInstanceGen2WithNames.Keys, String> names = ImmutableMap
-            .of(SERVICE_NAME, "calazixide85");
+        List<String> uuids = new LinkedList<>();
+        try {
+            //given
+            final ImmutableMap<PresetMSOServiceInstanceGen2WithNames.Keys, String> names = ImmutableMap
+                .of(SERVICE_NAME, "calazixide85");
 
-        final List<String> uuids1 = createBulkOfInstances(false, 2, names, CREATE_BULK_OF_ALACARTE_REQUEST);
-        final List<String> uuids2 = createBulkOfInstances(false, 1, names, DELETE_BULK_OF_ALACARTE_REQUEST);
+            String SERVICE_MODEL_UUID = "e3c34d88-a216-4f1d-a782-9af9f9588705";
 
-        String SERVICE_MODEL_UUID = "e3c34d88-a216-4f1d-a782-9af9f9588705";
-        ResponseEntity<List<ServiceInfo>> response = restTemplate.exchange(
-            getServiceInfoUrl() + "?serviceModelId=" + SERVICE_MODEL_UUID,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<List<ServiceInfo>>() {
-            });
-        assertThat(response.getBody().stream().map(x -> x.serviceModelId).collect(toSet()),
-            contains(SERVICE_MODEL_UUID));
+            uuids = Stream.of(
+                createBulkOfInstances(false, 1, names, CREATE_BULK_OF_ALACARTE_REQUEST).get(0),
+                createBulkOfInstances(false, 1, names, CREATE_BULK_OF_ALACARTE_REQUEST).get(0),
+                createBulkOfInstances(false, 1, names, CREATE_BULK_OF_MACRO_REQUEST).get(0)
+            ).collect(toList());
 
+            //when
+            ResponseEntity<List<ServiceInfo>> response = restTemplate.exchange(
+                getServiceInfoUrl() + "?serviceModelId=" + SERVICE_MODEL_UUID,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<ServiceInfo>>() {
+                });
+
+            //then
+            final List<ServiceInfo> body = response.getBody();
+
+            //assert that service info list contains only services with desired modelId
+            assertThat(body.stream().map(x -> x.serviceModelId).collect(toSet()),
+                contains(SERVICE_MODEL_UUID));
+            //assert that service info list contains the 2 first jobs
+            assertThat(body.stream().map(x -> x.jobId).collect(toList()),
+                hasItems(uuids.get(0), uuids.get(1)));
+            //assert that service info list doesn't contains last jobs
+            assertThat(body.stream().map(x -> x.jobId).collect(toList()),
+                not(hasItems(uuids.get(2))));
+        }
+        finally {
+            //clear jobs to not disturb next tests
+            uuids.forEach(uuid->new AsyncJobsService().muteAsyncJobById(uuid));
+        }
     }
 
 

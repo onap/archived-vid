@@ -1,15 +1,17 @@
 package vid.automation.test.services;
 
 import com.google.common.collect.ImmutableList;
-import vid.automation.test.utils.DB_CONFIG;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import vid.automation.test.utils.DB_CONFIG;
 
 public class AsyncJobsService {
+
+    private static final String MUTE_JOB_STATEMENT =
+        "UPDATE `vid_job` SET `TAKEN_BY`='muteAllAsyncJobs', `JOB_STATUS`=CONCAT('MUTED_', `JOB_STATUS`), `AGE`=`AGE`+5 ";
 
     public void dropAllAsyncJobs() {
         runStatementsInDb(ImmutableList.of(
@@ -44,7 +46,11 @@ public class AsyncJobsService {
 
 
     public void muteAllAsyncJobs() {
-        runStatementInDb("UPDATE `vid_job` SET `TAKEN_BY`='muteAllAsyncJobs', `JOB_STATUS`=CONCAT('MUTED_', `JOB_STATUS`), `AGE`=`AGE`+5 WHERE `TAKEN_BY` is NULL or `TAKEN_BY`<>'muteAllAsyncJobs'");
+        runStatementInDb(MUTE_JOB_STATEMENT + "WHERE `TAKEN_BY` is NULL or `TAKEN_BY`<>'muteAllAsyncJobs'");
+    }
+
+    public void muteAsyncJobById(String uuid) {
+        runStatementInDb(MUTE_JOB_STATEMENT + String.format("WHERE JOB_ID='%s'",uuid));
     }
 
     public void dropAllFromNameCounter() {
