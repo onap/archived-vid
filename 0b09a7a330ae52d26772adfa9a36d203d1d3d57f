@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d0b7ee95_dcc3b3a2",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/creationDialogController.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-05T12:26:31Z",
+      "side": 1,
+      "message": "please undo the change that make all the file change.\nSo it would be only the actual change.",
+      "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97924695_df2db021",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/generic-form-popup.component.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-05T12:26:31Z",
+      "side": 1,
+      "message": "please remove",
+      "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "249e87b3_3f584855",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/service/service.popup.service.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2154,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-05T12:26:31Z",
+      "side": 1,
+      "message": "expectedMessage",
+      "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "453d9f55_fc58c2dd",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/service/service.popup.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-05T12:26:31Z",
+      "side": 1,
+      "message": "extract method",
+      "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe3ecae2_8397b1a4",
+        "filename": "vid-webpack-master/src/app/shared/models/formControlModels/formPopupDetails.model.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-05T12:26:31Z",
+      "side": 1,
+      "message": "maybe named it with more generic name like onOtherAction ?\nYou can consult with Yoav about it",
+      "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
