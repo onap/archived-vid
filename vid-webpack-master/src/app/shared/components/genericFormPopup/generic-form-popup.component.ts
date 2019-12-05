@@ -13,6 +13,7 @@ import {AaiService} from "../../services/aaiService/aai.service";
 import {GenericFormPopupService} from "./generic-form-popup.service";
 import {FormControlModel} from "../../models/formControlModels/formControl.model";
 import {FormGeneralErrorsService} from "../formGeneralErrors/formGeneralErrors.service";
+import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
 import {InstantiationTemplatesModalComponent} from "./instantiationTemplatesModal/instantiation.templates.modal.component";
 
 
@@ -145,6 +146,10 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
 
   openTemplateModal = (): void => {
     this._dialogService.addDialog(InstantiationTemplatesModalComponent, {});
+  }
+
+  isInstantiationStatusFilterFlagOn() {
+    return FeatureFlagsService.getFlagState(Features.FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER, this._store);
   }
 }
 
