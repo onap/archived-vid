@@ -1,16 +1,5 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
-import {
-  COMPLETED_WITH_ERRORS,
-  INPROGRESS,
-  InstantiationStatusComponentService,
-  PAUSE,
-  PENDING,
-  ServiceStatus,
-  STOPPED,
-  SUCCESS_CIRCLE,
-  UNKNOWN,
-  X_O
-} from './instantiationStatus.component.service';
+import {COMPLETED_WITH_ERRORS, INPROGRESS, InstantiationStatusComponentService, PAUSE, PENDING, ServiceStatus, STOPPED, SUCCESS_CIRCLE, UNKNOWN, X_O} from './instantiationStatus.component.service';
 import {ServiceInfoModel} from '../shared/server/serviceInfo/serviceInfo.model';
 import {AaiService} from "../shared/services/aaiService/aai.service";
 import {MsoService} from "../shared/services/msoService/mso.service";
@@ -101,33 +90,48 @@ describe('Instantiation Status Service', () => {
     });
   });
 
-  test('click on "Open" button should open new view edit' , ()=>{
-    const item = {
-      serviceModelId : 'serviceModelId',
-      serviceInstanceId : 'serviceInstanceId',
-      serviceType : 'serviceType',
-      subscriberId : 'subscriberId'
-    };
-    let params:UrlTree = service.getNewViewEditUrlTree(<any>item, DrawingBoardModes.VIEW);
-    expect(params.toString().startsWith('/servicePlanning/VIEW')).toBeTruthy();
-    expect(params.queryParams).toEqual(
-      {
-        serviceModelId: item.serviceModelId,
-        serviceInstanceId: item.serviceInstanceId,
-        serviceType : item.serviceType,
-        subscriberId : item.subscriberId
-      });
-  });
+  describe('navigations tests:', () => {
 
-  test('build the View Edit url' , ()=>{
     const item = {
-      serviceModelId : '28aeb8f6-5620-4148-8bfb-a5fb406f0309',
+      serviceModelId: '28aeb8f6-5620-4148-8bfb-a5fb406f0309',
+      serviceInstanceId: 'myInstanceId',
+      serviceType: 'myService',
+      subscriberId: 'mySubscriber',
+      jobId: 'aJobId'
     };
-    let serviceModelUrl: string = '/servicePlanning/EDIT?serviceModelId=28aeb8f6-5620-4148-8bfb-a5fb406f0309';
-    let suffix:string = '../../serviceModels.htm#';
-    let tree:UrlTree = service.getNewViewEditUrlTree(<any>item, DrawingBoardModes.EDIT);
-    let result = service.getViewEditUrl(tree);
-    expect (suffix + serviceModelUrl).toEqual(result);
+
+    test('click on "Open" button should open new view edit', () => {
+      let params: UrlTree = service.getNewViewEditUrlTree(<any>item, DrawingBoardModes.VIEW);
+      expect(params.toString().startsWith('/servicePlanning/VIEW')).toBeTruthy();
+      expect(params.queryParams).toEqual(
+        {
+          serviceModelId: item.serviceModelId,
+          serviceInstanceId: item.serviceInstanceId,
+          serviceType: item.serviceType,
+          subscriberId: item.subscriberId,
+          jobId: item.jobId
+        });
+    });
+
+    test('build the View Edit url', () => {
+
+      let serviceModelUrl: string = '/servicePlanning/EDIT?serviceModelId=28aeb8f6-5620-4148-8bfb-a5fb406f0309' +
+        '&serviceInstanceId=myInstanceId&serviceType=myService&subscriberId=mySubscriber&jobId=aJobId';
+      let prefix: string = '../../serviceModels.htm#';
+      let tree: UrlTree = service.getNewViewEditUrlTree(<any>item, DrawingBoardModes.EDIT);
+      let result = service.getViewEditUrl(tree);
+      expect(result).toEqual(prefix + serviceModelUrl);
+    });
+
+    test('recreate url shall contains mode RECREATE and only jobId and serviceModelId', () =>{
+      let params: UrlTree = service.getNewViewEditUrlTree(<any>item, DrawingBoardModes.RECREATE);
+      expect(params.toString().startsWith('/servicePlanning/RECREATE')).toBeTruthy();
+      expect(params.queryParams).toEqual(
+        {
+          serviceModelId: item.serviceModelId,
+          jobId: item.jobId
+        });
+    });
   });
 
   for (let [status, tooltip] of Object.entries({

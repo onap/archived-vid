@@ -122,19 +122,31 @@ export class InstantiationStatusComponentService {
       ['/servicePlanning/' + mode],
       {
         queryParams:
-          {
-            serviceModelId: item.serviceModelId,
-            serviceInstanceId: item.serviceInstanceId,
-            serviceType : item.serviceType,
-            subscriberId : item.subscriberId,
-            jobId: item.jobId
-          }
+        mode==DrawingBoardModes.RECREATE ?
+          this.getRecreateQueryParams(item) :
+          this.getDefaultViewEditQueryParams(item)
       });
+  }
+
+  private getDefaultViewEditQueryParams(item: ServiceInfoModel) {
+    return {
+      serviceModelId: item.serviceModelId,
+      serviceInstanceId: item.serviceInstanceId,
+      serviceType: item.serviceType,
+      subscriberId: item.subscriberId,
+      jobId: item.jobId
+    };
+  }
+
+  private getRecreateQueryParams(item: ServiceInfoModel) {
+    return {
+      serviceModelId: item.serviceModelId,
+      jobId: item.jobId
+    };
   }
 
   getViewEditUrl(viewEditUrlTree:UrlTree): string {
     return '../../serviceModels.htm#' + viewEditUrlTree.toString();
-
   }
 
   getStatus(status : string) : ServiceStatus {
@@ -162,6 +174,7 @@ export class InstantiationStatusComponentService {
   retry(item: ServiceInfoModel): void {
       this.navigateToNewViewEdit(item, DrawingBoardModes.RETRY_EDIT);
   }
+
 }
 
 
