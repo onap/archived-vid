@@ -17,8 +17,8 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
   selectedJobId : string = null;
   templateModalComponentService: InstantiationTemplatesModalService;
   originalTableData: InstantiationTemplatesRowModel[] = [];
-  filterTableData : InstantiationTemplatesRowModel[] = [];
 
+  filterText : string = '';
   constructor(dialogService: DialogService,
               private _iframeService: IframeService,
               private _serviceInfoService: ServiceInfoService,
@@ -34,7 +34,7 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
       .subscribe(params => {
         this._serviceInfoService.getServicesJobInfo(true, params['serviceModelId']).subscribe((jobs) => {
           this.originalTableData = this._templateModalComponentService.convertResponseToUI(jobs);
-          this.filterTableData = this.originalTableData;
+          this.filterText = '';
         });
       });
   }

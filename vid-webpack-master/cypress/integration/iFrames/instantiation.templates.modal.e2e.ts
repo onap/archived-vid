@@ -67,6 +67,43 @@ describe('Template', () => {
         "serviceModelVersion": "1.0",
         "createdBulkDate": 1525075968000,
         "isRetryEnabled": true
+      },
+      {
+        "id": 10,
+        "created": 1524663233000,
+        "modified": 1524663236000,
+        "action": "UPDATE",
+        "createdId": null,
+        "modifiedId": null,
+        "rowNum": null,
+        "auditUserId": null,
+        "auditTrail": null,
+        "jobId": "850dc7d2-5240-437f-9bcd-b1ed7dc339c1",
+        "templateId": "262fccc5-cae9-4258-b522-540c4010e0a9",
+        "userId": "16807000",
+        "aLaCarte": true,
+        "msoRequestId": "c0011670-0e1a-4b74-945d-8bf5aede1d45",
+        "jobStatus": "COMPLETED",
+        "statusModifiedDate": 1524663233000,
+        "hidden": false,
+        "pause": false,
+        "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+        "owningEntityName": "WayneHolland",
+        "project": "WATKINS",
+        "aicZoneId": "NFT1",
+        "aicZoneName": "NFTJSSSS-NFT1",
+        "tenantId": "bae71557c5bb4d5aac6743a4e5f1d054",
+        "tenantName": "AIN Web Tool-15-D-testalexandria",
+        "regionId": "hvf6",
+        "regionName": null,
+        "serviceType": "TYLER SILVIA",
+        "subscriberName": "e433710f-9217-458d-a79d-1c7aff376d89",
+        "serviceInstanceId": null,
+        "serviceInstanceName": "sPenLiZXXpqzsVck instance name_01",
+        "serviceModelId": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+        "serviceModelName": "action-data",
+        "serviceModelVersion": "1.0",
+        "createdBulkDate": 1524663233000
       }
     ];
 
@@ -101,9 +138,17 @@ describe('Template', () => {
 
 
     //check load button is disabled
-    cy.getElementByDataTestsId('LoadTemplateButton').should('be.disabled')
+    cy.getElementByDataTestsId('LoadTemplateButton').should('be.disabled');
     cy.getElementByDataTestsId('row-5c2cd8e5-27d0-42e3-85a1-85db5eaba459').click();
-    cy.getElementByDataTestsId('LoadTemplateButton').should('not.be.disabled')
+    cy.getElementByDataTestsId('LoadTemplateButton').should('not.be.disabled');
+
+
+    //check filter input
+    cy.get('tr.member-table-row').should('have.length', 2);
+    cy.getElementByDataTestsId('filterInput').type('COMPLETED');
+    cy.get('tr.member-table-row').should('have.length', 1);
+    cy.getElementByDataTestsId('filterInput').clear();
+    cy.get('tr.member-table-row').should('have.length', 2);
 
   });
 });
