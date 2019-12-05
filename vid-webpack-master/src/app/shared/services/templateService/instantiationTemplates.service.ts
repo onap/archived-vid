@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {ServiceInstance} from "../../models/serviceInstance";
 import {Constants} from "../../utils/constants";
 import {createServiceInstance} from "../../storeUtil/utils/service/service.actions";
+import {createServiceInstanceFromTemplate} from "../../storeUtil/utils/useTemplate/useTemplate.action";
 
 @Injectable()
 export class InstantiationTemplatesService {
@@ -19,7 +20,7 @@ export class InstantiationTemplatesService {
 
   public retrieveAndStoreInstantiationTemplateTopology(jobId: string, serviceModelId: string): Observable<ServiceInstance> {
     return this.retrieveInstantiationTemplateTopology(jobId).do((instantiationTemplate: ServiceInstance) => {
-      this.store.dispatch(createServiceInstance(instantiationTemplate, serviceModelId));
+      this.store.dispatch(createServiceInstanceFromTemplate(instantiationTemplate, serviceModelId));
     });
   };
 
