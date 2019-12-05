@@ -59,7 +59,12 @@ export class ServicePopupService implements GenericPopupInterface {
       this.getDynamicInputs(serviceId),
       this.modelInformations,
       (that, form: FormGroup) => {that.onSubmit(that, form);},
-      (that: any, form: FormGroup) => {that.onCancel(that, form); }
+      (that: any, form: FormGroup) => {
+        that.onCancel(that, form);
+      },
+      (that: any, form: FormGroup) => {
+        that.showPreviousInstantiations(that, form);
+      }
     );
   }
 
@@ -123,12 +128,24 @@ export class ServicePopupService implements GenericPopupInterface {
   onSubmit(that, form: FormGroup, ...args): void {
     form = that.updateExtraValues(that, form);
     that.storeServiceInstance(form.value, args[0], [], new ModelInfo(that.serviceModel), that.serviceModel);
-    window.parent.postMessage( {
-      eventId: 'submitIframe',
+    const eventId = 'submitIframe';
+    this.postMessageToWindowParent(eventId, that.serviceModel.uuid);
+    this.onCancel(that, form);
+  }
+
+  private postMessageToWindowParent(eventId: string, serviceModelUuid:string) {
+    window.parent.postMessage({
+      eventId: eventId,
       data: {
-        serviceModelId: that.serviceModel.uuid
+        serviceModelId: serviceModelUuid
       }
     }, "*");
+  }
+
+  showPreviousInstantiations(that, form: FormGroup,): void {
+    const serviceModelId = that.serviceModel.uuid;
+    const eventId = 'showPreviousInstantiations';
+    this.postMessageToWindowParent(eventId, that.serviceModel.uuid);
     this.onCancel(that, form);
   }
 

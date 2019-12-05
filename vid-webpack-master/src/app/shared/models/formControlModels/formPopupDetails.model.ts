@@ -14,6 +14,8 @@ export class FormPopupDetails {
   modelInformationItems: ModelInformationItem[];
   onSubmit : (that : any, form: FormGroup , ...args) =>  void;
   onCancel : (that : any, form: FormGroup) => void;
+  onOtherAction: (that: any, form: FormGroup) => void;
+
 
   constructor(that : any,
               popupTypeName : PopupType ,
@@ -25,7 +27,8 @@ export class FormPopupDetails {
               dynamicInputsControlList : FormControlModel[],
               modelInformationItems : ModelInformationItem[],
               onSubmit : (that : any, form : FormGroup, ...args) =>  void,
-              onCancel : (that : any, form : FormGroup) => void){
+              onCancel: (that: any, form: FormGroup) => void,
+              onOtherAction?: (that: any, form: FormGroup) => void) {
     this.title = title;
     this.leftSubTitle = leftSubTitle;
     this.rightSubTitle = rightSubTitle;
@@ -34,6 +37,7 @@ export class FormPopupDetails {
     this.modelInformationItems = modelInformationItems;
     this.onSubmit = onSubmit;
     this.onCancel = onCancel;
+    this.onOtherAction = onOtherAction;
     this.popupTypeName = popupTypeName;
     this.UUIDData = UUIDData;
     this.that = that;

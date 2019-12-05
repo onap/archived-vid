@@ -42,7 +42,7 @@ describe('A la carte', function () {
       });
     });
 
-    it(`Service a-la-carte`, () => {
+    it.only(`Service a-la-carte`, () => {
 
       const subscriptionServiceType: string = "TYLER SILVIA";
       const owningEntityName: string = "WayneHolland";
