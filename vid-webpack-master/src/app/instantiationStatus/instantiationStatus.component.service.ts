@@ -12,6 +12,7 @@ import {updateDrawingBoardStatus} from "../shared/storeUtil/utils/global/global.
 import {Router, UrlTree} from "@angular/router";
 import {of} from "rxjs";
 import {MsoService} from "../shared/services/msoService/mso.service";
+import {ServiceAction} from "../shared/models/serviceInstanceActions";
 
 export let PENDING : string = "pending";
 export let INPROGRESS : string = "in_progress";
@@ -173,6 +174,14 @@ export class InstantiationStatusComponentService {
 
   retry(item: ServiceInfoModel): void {
       this.navigateToNewViewEdit(item, DrawingBoardModes.RETRY_EDIT);
+  }
+
+  recreate(item: ServiceInfoModel): void {
+    this.navigateToNewViewEdit(item, DrawingBoardModes.RECREATE);
+  }
+
+  isRecreateEnabled(item: ServiceInfoModel): boolean {
+    return item.action === ServiceAction.INSTANTIATE;
   }
 
 }

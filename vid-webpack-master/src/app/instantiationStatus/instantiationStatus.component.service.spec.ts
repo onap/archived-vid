@@ -10,6 +10,8 @@ import {DrawingBoardModes} from "../drawingBoard/service-planning/drawing-board.
 import {RouterTestingModule} from "@angular/router/testing";
 import {of} from "rxjs";
 import {UrlTree} from "@angular/router";
+import each from "jest-each";
+import {ServiceAction} from "../shared/models/serviceInstanceActions";
 
 class MockAppStore<T> {
 
@@ -156,6 +158,18 @@ describe('Instantiation Status Service', () => {
     const statusResult = service.getStatus(undefined);
     expect(statusResult.tooltip).toEqual('Unexpected status: "undefined"');
     expect(statusResult.iconClassName).toEqual(UNKNOWN);
+  });
+
+
+  each([
+      [true, ServiceAction.INSTANTIATE],
+      [false, ServiceAction.UPDATE],
+      [false, ServiceAction.DELETE],
+  ]).
+  test('isRecreateEnabled: should be %s if action is %s', (expected:boolean, action:ServiceAction) => {
+    let serviceInfoModel = new ServiceInfoModel();
+    serviceInfoModel.action = action;
+    expect(service.isRecreateEnabled(serviceInfoModel)).toBe(expected);
   });
 
   test('getStatusTooltip should return correct icon per job status', () => {
