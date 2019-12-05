@@ -19,8 +19,10 @@ export class MultiselectFormControlComponent implements OnChanges{
   constructor(private _multiselectFormControlService : MultiselectFormControlService){
     this.multiselectFormControlService = _multiselectFormControlService;
   }
+
   dropdownSettings = {
-    singleSelection : false
+    singleSelection : false,
+    limitSelection : 1000
   };
 
   options : MultiSelectItem[];
@@ -36,10 +38,10 @@ export class MultiselectFormControlComponent implements OnChanges{
             this.form.controls[this.data.controlName].setValue(this.selectedItems);
           })
       });
-
     }
     if (changes["data"] !== undefined && changes["data"].currentValue !== changes["data"].previousValue && changes["data"].firstChange) {
       if (this.data.onInit) {
+        this.dropdownSettings.limitSelection = this.data.limitSelection;
         this.data.onInit(this.data, this.form);
       }
     }

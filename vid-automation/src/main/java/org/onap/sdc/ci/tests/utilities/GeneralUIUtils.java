@@ -475,6 +475,18 @@ public final class GeneralUIUtils {
 	   return element;
     }
 
+	public static boolean isOptionSelectedInMultiSelect(String dataTestId, String option) {
+		GeneralUIUtils.ultimateWait();
+		List<WebElement> selectedElements = getDriver().findElements(By.xpath("//*[@data-tests-id='" + dataTestId + "']//span[@class='c-label']"));
+
+
+		for (WebElement selectedElement : selectedElements) {
+			if (selectedElement.getText().equals(option)) {
+				return true;
+			}
+		}
+		return false;
+	}
     public static WebElement getSelectedElementFromDropDown(String dataTestId){
     	GeneralUIUtils.ultimateWait();;
     	WebElement selectedElement = new Select (getDriver().findElement(By.xpath("//*[@data-tests-id='" + dataTestId + "']"))).getFirstSelectedOption();

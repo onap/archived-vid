@@ -506,6 +506,7 @@ public class Constants {
         public static final String PROJECT_SELECT_TEST_ID = "project";
         public static final String OWNING_ENTITY_SELECT_TEST_ID = "owningEntity";
         public static final String PLATFORM_SELECT_TEST_ID = "platform";
+        public static final String PLATFORM_MULTI_SELECT_TEST_ID = "multi-selectPlatform";
         public static final String LOB_SELECT_TEST_ID = "lineOfBusiness";
     }
 
