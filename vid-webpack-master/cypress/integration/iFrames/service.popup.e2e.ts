@@ -82,6 +82,14 @@ describe('Service popup', function () {
         cy.get('form-general-error').contains('Page contains errors. Please see details next to the relevant fields.');
       });
     });
+
+    it('when open service popup should show showPrevious button', () => {
+      cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+      cy.getElementByDataTestsId('ShowPreviousInstancesButton').contains('Previous Instantiation').click();
+
+    })
+
+
   });
 });
 
