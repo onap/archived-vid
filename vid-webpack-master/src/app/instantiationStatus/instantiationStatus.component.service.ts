@@ -9,7 +9,7 @@ import {ServiceModel} from "../shared/models/serviceModel";
 import {FeatureFlagsService, Features} from "../shared/services/featureFlag/feature-flags.service";
 import {DrawingBoardModes} from "../drawingBoard/service-planning/drawing-board.modes";
 import {updateDrawingBoardStatus} from "../shared/storeUtil/utils/global/global.actions";
-import {Router, UrlTree} from "@angular/router";
+import {Params, Router, UrlTree} from "@angular/router";
 import {of} from "rxjs";
 import {MsoService} from "../shared/services/msoService/mso.service";
 
@@ -118,19 +118,35 @@ export class InstantiationStatusComponentService {
   }
 
   getNewViewEditUrlTree(item: ServiceInfoModel, mode: DrawingBoardModes): UrlTree {
+    return this.getServicePlanningUrlTree(
+      mode,
+        {
+          serviceModelId: item.serviceModelId,
+          serviceInstanceId: item.serviceInstanceId,
+          serviceType : item.serviceType,
+          subscriberId : item.subscriberId,
+          jobId: item.jobId
+        }
+    );
+  }
+
+  getServicePlanningUrlTree(mode: DrawingBoardModes,queryParams:Params): UrlTree {
     return this._router.createUrlTree(
       ['/servicePlanning/' + mode],
-      {
-        queryParams:
-          {
-            serviceModelId: item.serviceModelId,
-            serviceInstanceId: item.serviceInstanceId,
-            serviceType : item.serviceType,
-            subscriberId : item.subscriberId,
-            jobId: item.jobId
-          }
-      });
+      {queryParams}
+    );
   }
+
+  getRecreateUrlTree(item: ServiceInfoModel): UrlTree {
+    return this.getServicePlanningUrlTree(
+      DrawingBoardModes.RECREATE,
+      {
+        serviceModelId: item.serviceModelId,
+        jobId: item.jobId
+      }
+    );
+  }
+
 
   getViewEditUrl(viewEditUrlTree:UrlTree): string {
     return '../../serviceModels.htm#' + viewEditUrlTree.toString();
