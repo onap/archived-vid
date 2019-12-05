@@ -9,9 +9,11 @@ import {VNFActions} from "./vnf/vnf.actions";
 import {vnfReducer} from "./vnf/vnf.reducers";
 import {generalReducer} from "./general/general.reducers";
 import {serviceReducer} from "./service/service.reducers";
+import {useTemplateReducer} from "./useTemplate/useTemplate.reducer";
 import {networkReducer} from "./network/network.reducers";
 import {vfModuleReducer} from "./vfModule/vfModule.reducers";
 import {ServiceInstance} from "../../models/serviceInstance";
+import {UseTemplateActions} from "./useTemplate/useTemplate.action";
 import {SelectOptionInterface} from "../../models/selectOption";
 import {ServiceType} from "../../models/serviceType";
 import {VnfGroupActions} from "./vnfGroup/vnfGroup.actions";
@@ -72,6 +74,8 @@ export const MainReducer = function (state: ServiceState = initialState, action:
       return crReducer(state, action);
   }else if(Object.values(NcfActions).includes(action.type)){
       return ncfReducer(state, action);
+  } else if(Object.values(UseTemplateActions).includes(action.type)) {
+    return useTemplateReducer(state, action);
   } else {
     return Object.assign({}, state);
   }
