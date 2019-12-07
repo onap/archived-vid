@@ -30,7 +30,7 @@ describe('Drawing Board: Instantiation Templates', function () {
       .as('serviceModel');
 
       cy.route(`**/asyncInstantiation/${templateTopologyEndpoint}/${templateUuid}`,
-        'fixture:../support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__instance_template.json')
+        'fixture:../../../vid-automation/src/test/resources/asyncInstantiation/templates__instance_template.json')
       .as('templateTopology');
 
       // When...
@@ -47,7 +47,7 @@ describe('Drawing Board: Instantiation Templates', function () {
       // Then...
 
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
-         cy.readFile('cypress/support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__instance_template.json').then((expectedResult) => {
+         cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/templates__instance_template.json').then((expectedResult) => {
            convertRollbackOnFailureValueFromStringToBoolean(expectedResult);
             cy.deepCompare(xhr.request.body, expectedResult);
         });
