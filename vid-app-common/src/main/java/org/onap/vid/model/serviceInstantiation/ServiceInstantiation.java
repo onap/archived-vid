@@ -21,18 +21,19 @@
 package org.onap.vid.model.serviceInstantiation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.lang3.ObjectUtils;
-import org.onap.vid.job.JobAdapter;
-import org.onap.vid.job.JobType;
-import org.onap.vid.model.VidNotions;
-import org.onap.vid.mso.model.ModelInfo;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.ObjectUtils;
+import org.onap.vid.job.JobAdapter;
+import org.onap.vid.job.JobType;
+import org.onap.vid.model.VidNotions;
+import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.utils.jackson.BooleanAsStringSerializer;
 
 public class ServiceInstantiation extends BaseResource implements JobAdapter.AsyncJobRequest {
 
@@ -127,6 +128,13 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
         this.vidNotions = vidNotions;
     }
 
+    @Override
+    @JsonSerialize(using=BooleanAsStringSerializer.class)
+    public boolean isRollbackOnFailure() {
+        // this override is for the BooleanAsStringSerializer annotation,
+        // but for Service-Instance level only
+        return super.isRollbackOnFailure();
+    }
 
     public String getOwningEntityId() {
         return owningEntityId;
