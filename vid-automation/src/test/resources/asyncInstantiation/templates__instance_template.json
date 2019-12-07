@@ -46,6 +46,7 @@
         {}
       ],
       "rollbackOnFailure": true,
+      "instanceId": null,
       "vfModules": {
         "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0": {
           "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg": {
@@ -66,7 +67,8 @@
               {}
             ],
             "rollbackOnFailure": true,
-            "trackById": "ea2879a6-10bc-4697-90d7-7bc3e71da0fd"
+            "trackById": "ea2879a6-10bc-4697-90d7-7bc3e71da0fd",
+            "isFailed": false
           }
         },
         "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
@@ -89,12 +91,15 @@
             ],
             "rollbackOnFailure": true,
             "trackById": "b134410e-3bc0-478e-883e-1b6bdf8a28df",
+            "isFailed": false,
             "volumeGroupInstanceName": "zolson57arlba007_lba_dj_01_vol",
             "usePreload": true
           }
         }
       },
       "trackById": "1d2848a0-3573-4d29-b3dd-60bb263260ea",
+      "isFailed": false,
+      "statusMessage": null,
       "position": null,
       "lineOfBusiness": "EMANUEL-CONSUMER"
     }
@@ -107,6 +112,9 @@
   ],
   "pause": false,
   "bulkSize": 1,
+  "instanceId": null,
+  "isFailed": false,
+  "statusMessage": null,
   "vidNotions": {
     "instantiationUI": "anyAlacarteWhichNotExcluded",
     "modelCategory": "5G Fabric Configuration",
