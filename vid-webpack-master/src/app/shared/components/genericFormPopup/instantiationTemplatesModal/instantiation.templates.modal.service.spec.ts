@@ -97,7 +97,7 @@ describe('instantiation templates modal service', () => {
     const tableRows: InstantiationTemplatesRowModel[] = service.convertResponseToUI(jobs);
     expect(tableRows).toHaveLength(1);
     expect(tableRows[0].userId).toEqual('16807000');
-    expect(tableRows[0].createDate).toEqual('2018-04-29 12:52:35');
+    expect((new Date(tableRows[0].createDate)).toISOString()).toEqual('2018-04-29T09:52:35.000Z');
     expect(tableRows[0].instanceName).toEqual('serviceInstanceName');
     expect(tableRows[0].instantiationStatus).toEqual('FAILED');
     expect(tableRows[0].region).toEqual('hvf6 (AAA1)');
