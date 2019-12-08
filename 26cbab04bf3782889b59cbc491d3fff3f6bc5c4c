@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bfbf642a_98276507",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T10:17:41Z",
+      "side": 1,
+      "message": "Please move to line 44 so it would be tested before clicking the deploy",
+      "revId": "26cbab04bf3782889b59cbc491d3fff3f6bc5c4c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3e814f7_24b787c5",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T10:17:41Z",
+      "side": 1,
+      "message": "what should contain this element node-name ?\nWhere are you looking for it ?",
+      "range": {
+        "startLine": 55,
+        "startChar": 33,
+        "endLine": 55,
+        "endChar": 44
+      },
+      "revId": "26cbab04bf3782889b59cbc491d3fff3f6bc5c4c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
