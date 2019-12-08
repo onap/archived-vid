@@ -507,6 +507,7 @@ public class Constants {
         public static final String OWNING_ENTITY_SELECT_TEST_ID = "owningEntity";
         public static final String PLATFORM_SELECT_TEST_ID = "platform";
         public static final String LOB_SELECT_TEST_ID = "lineOfBusiness";
+        public static final String SHOW_PREVIOUS_INSTANCES_BUTTON = "ShowPreviousInstancesButton";
     }
 
     public class Users {
