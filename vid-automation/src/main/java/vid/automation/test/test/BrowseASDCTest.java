@@ -6,6 +6,7 @@ import static org.testng.Assert.assertFalse;
 import static vid.automation.test.infra.Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_2002_IDENTIFY_INVARIANT_MACRO_UUID_BY_BACKEND;
+import static vid.automation.test.infra.Features.FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER;
 import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_NETWORK_TO_ASYNC_INSTANTIATION;
 import static vid.automation.test.infra.Features.FLAG_SHOW_ORCHESTRATION_TYPE;
@@ -45,6 +46,7 @@ import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.Service;
 import vid.automation.test.model.User;
 import vid.automation.test.sections.BrowseASDCPage;
+import vid.automation.test.sections.InstantiationStatusPage;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.sections.deploy.DeployDialogBase;
@@ -314,14 +316,33 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
     @Test
     private void testCategoryParamsDropdownsExistsInCreationDialog() throws Exception {
-        BrowseASDCPage browseASDCPage = registerSimulatorAndGoToBrowseSDC();
-        Service service = servicesService.getService("2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd");
-        browseASDCPage.clickDeployServiceButtonByServiceUUID(service.uuid);
-        DeployModernUIMacroDialog deployMacroDialog = new DeployModernUIMacroDialog();
-        deployMacroDialog.waitForDialogToLoad();
+        String serviceId = "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd";
+
+        DeployModernUIMacroDialog deployMacroDialog = getDeployModernUIMacroDialog(serviceId);
         deployMacroDialog.assertDialog();
         deployMacroDialog.clickProjectSelect();
         deployMacroDialog.clickOwningEntitySelect();
+    }
+
+    private DeployModernUIMacroDialog getDeployModernUIMacroDialog(String serviceId) {
+        BrowseASDCPage browseASDCPage = registerSimulatorAndGoToBrowseSDC();
+        Service service = servicesService.getService(serviceId);
+        browseASDCPage.clickDeployServiceButtonByServiceUUID(service.uuid);
+        DeployModernUIMacroDialog deployMacroDialog = new DeployModernUIMacroDialog();
+        deployMacroDialog.waitForDialogToLoad();
+        return deployMacroDialog;
+    }
+
+    @Test
+    @FeatureTogglingTest(FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER)
+    private void testClickPreviousInstantiationsInCreationDialog() throws Exception {
+
+        String serviceId = "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd";
+        DeployModernUIMacroDialog deployMacroDialog = getDeployModernUIMacroDialog(serviceId);
+        deployMacroDialog.clickPreviousInstantiationButton();
+
+        InstantiationStatusPage.verifyUrlMatchInstantiationStatusWithFilterSearchParam(serviceId);
+
     }
 
     private BrowseASDCPage registerSimulatorAndGoToBrowseSDC() {
