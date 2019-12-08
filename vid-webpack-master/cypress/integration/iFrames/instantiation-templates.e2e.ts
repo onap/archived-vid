@@ -41,6 +41,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       cy.wait('@serviceModel');
       cy.wait('@templateTopology');
+      cy.getElementByDataTestsId("node-vProbe_NC_VNF 0").should('be.visible');
 
       cy.getDrawingBoardDeployBtn().click();
 
