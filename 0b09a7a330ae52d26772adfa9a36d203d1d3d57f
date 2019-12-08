@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "e39882f9_ad19c66c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/generic-form-popup.component.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-08T06:08:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97924695_df2db021",
+      "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "249e87b3_3f584855",
         "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/service/service.popup.service.spec.ts",
         "patchSetId": 1
@@ -50,6 +68,24 @@
       "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "454deeae_35584f90",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/service/service.popup.service.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2154,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-08T06:08:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "249e87b3_3f584855",
+      "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "91b8c37b_fa32b3d8",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/service/service.popup.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-08T06:08:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "453d9f55_fc58c2dd",
+      "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fe3ecae2_8397b1a4",
         "filename": "vid-webpack-master/src/app/shared/models/formControlModels/formPopupDetails.model.ts",
         "patchSetId": 1
@@ -84,6 +138,24 @@
       "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02af8a2d_8c5dbce7",
+        "filename": "vid-webpack-master/src/app/shared/models/formControlModels/formPopupDetails.model.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-08T06:08:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe3ecae2_8397b1a4",
+      "revId": "0b09a7a330ae52d26772adfa9a36d203d1d3d57f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
