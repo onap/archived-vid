@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b8f463e_3aae0b80",
+        "filename": "vid-automation/src/main/java/org/onap/sdc/ci/tests/utilities/GeneralUIUtils.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T11:30:33Z",
+      "side": 1,
+      "message": "boolean",
+      "revId": "2783f9466a7ec8bc154cc68948ac75a0e0d8647d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87dc1e50_9f2a2b63",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 1221,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T11:30:33Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "2783f9466a7ec8bc154cc68948ac75a0e0d8647d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17e8fd50_0b751164",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T11:30:33Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "2783f9466a7ec8bc154cc68948ac75a0e0d8647d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dcbfcab5_9dedd2b9",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T11:30:33Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "2783f9466a7ec8bc154cc68948ac75a0e0d8647d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b71fbe5f_eaec87b3",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 2214,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T11:30:33Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "2783f9466a7ec8bc154cc68948ac75a0e0d8647d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa89dbc3_a4967677",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 3865,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T11:30:33Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "2783f9466a7ec8bc154cc68948ac75a0e0d8647d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c51f9749_da8b295a",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 5608,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T11:30:33Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "2783f9466a7ec8bc154cc68948ac75a0e0d8647d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1c96eac_38483023",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 5609,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T11:30:33Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "2783f9466a7ec8bc154cc68948ac75a0e0d8647d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c2be764_6df40931",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 6301,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T11:30:33Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "2783f9466a7ec8bc154cc68948ac75a0e0d8647d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
