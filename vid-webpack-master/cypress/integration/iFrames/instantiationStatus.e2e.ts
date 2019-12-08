@@ -61,13 +61,13 @@ describe('Instantiation status', function () {
 
   it('should filter rows by filter text', function () {
     cy.openIframe('app/ui/#/instantiationStatus');
-    cy.getElementByDataTestsId("instantiationStatusFilter").type("ComplexService");
+    cy.getElementByDataTestsId("instantiation-status-filter").type("ComplexService");
     cy.get('table#instantiation-status tbody tr').should('have.length', 2);
   });
 
   it('should filter rows by url filter text', function () {
     cy.openIframe('app/ui/#/instantiationStatus?filterText=ComplexService');
-    cy.getElementByDataTestsId("instantiationStatusFilter").should('have.value','ComplexService');
+    cy.getElementByDataTestsId("instantiation-status-filter").should('have.value','ComplexService');
     cy.get('table#instantiation-status tbody tr').should('have.length', 2);
   });
 

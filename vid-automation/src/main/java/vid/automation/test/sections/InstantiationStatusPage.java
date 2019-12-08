@@ -40,6 +40,13 @@ public abstract class InstantiationStatusPage extends VidBasePage {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//*[table]//tbody/tr"))).size();
     }
 
+    public static void verifyUrlMatchInstantiationStatusWithFilterSearchParam(String serviceModelId) {
+
+        Map<String, String> paramsMap = extractQueryParamsFromCurrentURL("instantiationStatus?");
+        assertEquals(paramsMap.get("filterText"), serviceModelId);
+
+    }
+
     public static WebElement assertInstantiationStatusRow(String spanIdSelector, Map<String, String> fieldsIdsAndExpected) {
         try {
             WebElement newTrRow = getInstantiationStatusRow(spanIdSelector);
