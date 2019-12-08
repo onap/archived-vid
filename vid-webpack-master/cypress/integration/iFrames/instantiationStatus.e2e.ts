@@ -70,34 +70,46 @@ describe('Instantiation status', function () {
     cy.get('table#instantiation-status tbody tr').should('have.length', 3);
   });
 
+  function getDropDownMenuByDataTestId(testId:String) {
+    return cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='${testId}']`);
+  }
+
+  function clickOnTitleAndThenOnMenuWithJobId(jobId: string) {
+    cy.getElementByDataTestsId("instantiation-status-title").click();
+    cy.get('#' + jobId).find('.menu-div').click();
+  }
+
   it('should enable correct menu items', function () {
-        cy.openIframe('app/ui/#/instantiationStatus');
 
-        // Instantiate action with Job status FAILED - isRetry = true
-        cy.get( '#5c2cd8e5-27d0-42e3-85a1-85db5eaba459').find('.menu-div').click();
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-retry']`).should('not.exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-remove']`).should('exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-open']`).should('exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-hide']`).should('not.exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-audit-info']`).should('not.exist');
+    cy.openIframe('app/ui/#/instantiationStatus');
 
-        // Instantiate action with Job status FAILED - isRetry = false
-        cy.get( '#e1db03c3-6274-4ff7-84cf-7bd3a3946de7').find('.menu-div').click();
-        cy.get('.dropdown-menu').find(`[data-tests-id='context-menu-retry']`).should('not.be.visible');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-open']`).should('exist');
+    // Instantiate action with Job status FAILED - isRetry = true
 
-        //Delete action with Job status IN_PROGRESS
-        cy.get( '#850dc7d2-5240-437f-9bcd-b1ed7dc339c2').find('.menu-div').click();
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-remove']`).should('exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-open']`).should('exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-hide']`).should('exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-audit-info']`).should('not.exist');
-        //Update action with Job status COMPLETED
-        cy.get( '#850dc7d2-5240-437f-9bcd-b1ed7dc339c1').find('.menu-div').click();
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-remove']`).should('exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-open']`).should('not.exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-hide']`).should('not.exist');
-        cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='context-menu-audit-info']`).should('not.exist');
+    clickOnTitleAndThenOnMenuWithJobId('5c2cd8e5-27d0-42e3-85a1-85db5eaba459');
+    getDropDownMenuByDataTestId('context-menu-retry').should('not.exist');
+    getDropDownMenuByDataTestId('context-menu-remove').should('exist');
+    getDropDownMenuByDataTestId('context-menu-open').should('exist');
+    getDropDownMenuByDataTestId('context-menu-hide').should('not.exist');
+    getDropDownMenuByDataTestId('context-menu-audit-info').should('not.exist');
+
+    // Instantiate action with Job status FAILED - isRetry = false
+    clickOnTitleAndThenOnMenuWithJobId('e1db03c3-6274-4ff7-84cf-7bd3a3946de7');
+    getDropDownMenuByDataTestId('context-menu-retry').should('not.be.visible');
+    getDropDownMenuByDataTestId('context-menu-open').should('exist');
+
+    //Delete action with Job status IN_PROGRESS
+    clickOnTitleAndThenOnMenuWithJobId('850dc7d2-5240-437f-9bcd-b1ed7dc339c2');
+    getDropDownMenuByDataTestId('context-menu-remove').should('exist');
+    getDropDownMenuByDataTestId('context-menu-open').should('exist');
+    getDropDownMenuByDataTestId('context-menu-hide').should('exist');
+    getDropDownMenuByDataTestId('context-menu-audit-info').should('not.exist');
+
+    //Update action with Job status COMPLETED
+    clickOnTitleAndThenOnMenuWithJobId('850dc7d2-5240-437f-9bcd-b1ed7dc339c1');
+    getDropDownMenuByDataTestId('context-menu-remove').should('exist');
+    getDropDownMenuByDataTestId('context-menu-open').should('not.exist');
+    getDropDownMenuByDataTestId('context-menu-hide').should('not.exist');
+    getDropDownMenuByDataTestId('context-menu-audit-info').should('not.exist');
   });
 
 });
