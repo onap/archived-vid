@@ -5,36 +5,25 @@ import {AaiService} from "../shared/services/aaiService/aai.service";
 import {MsoService} from "../shared/services/msoService/mso.service";
 import {NgRedux} from "@angular-redux/store";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {FeatureFlagsService} from "../shared/services/featureFlag/feature-flags.service";
+import {FeatureFlagsService, Features} from "../shared/services/featureFlag/feature-flags.service";
 import {DrawingBoardModes} from "../drawingBoard/service-planning/drawing-board.modes";
 import {RouterTestingModule} from "@angular/router/testing";
 import {of} from "rxjs";
 import {UrlTree} from "@angular/router";
 import each from "jest-each";
 import {ServiceAction} from "../shared/models/serviceInstanceActions";
+import {instance, mock, when} from "ts-mockito";
 
 class MockAppStore<T> {
-
-  getState() {
-    return {
-      global: {
-        flags: {
-          'FLAG_1902_NEW_VIEW_EDIT': true,
-
-        }
-      }
-    }
-  }
-
-  dispatch() {
-
-  }
+  dispatch() {}
 }
+
 describe('Instantiation Status Service', () => {
   let injector;
   let aaiService: AaiService;
   let msoService: MsoService;
   let service: InstantiationStatusComponentService;
+  let mockFeatureFlagsService: FeatureFlagsService = mock(FeatureFlagsService);
 
 
   beforeAll(done => (async () => {
@@ -48,7 +37,9 @@ describe('Instantiation Status Service', () => {
         AaiService,
         MsoService,
         FeatureFlagsService,
-        {provide: NgRedux, useClass: MockAppStore}]
+        {provide: NgRedux, useClass: MockAppStore},
+        {provide: FeatureFlagsService, useValue: instance(mockFeatureFlagsService)}
+      ]
     });
     await TestBed.compileComponents();
 
@@ -170,6 +161,15 @@ describe('Instantiation Status Service', () => {
     let serviceInfoModel = new ServiceInfoModel();
     serviceInfoModel.action = action;
     expect(service.isRecreateEnabled(serviceInfoModel)).toBe(expected);
+  });
+
+  each([
+    [true, true],
+    [false, false],
+  ]).
+  test('isRecreateVisible: should be %s if flag is %s', (expected:boolean, flag:boolean) => {
+    when(mockFeatureFlagsService.getFlagState(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)).thenReturn(flag);
+    expect(service.isRecreateVisible()).toEqual(expected);
   });
 
   test('getStatusTooltip should return correct icon per job status', () => {

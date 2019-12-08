@@ -29,7 +29,8 @@ export class InstantiationStatusComponentService {
   constructor( private _aaiService: AaiService,
                private _msoService: MsoService,
                private _router : Router,
-               private _store: NgRedux<AppState>) {
+               private _store: NgRedux<AppState>,
+               private _featureFlagsService:FeatureFlagsService) {
   }
 
   generateServiceInfoDataMapping(arr: ServiceInfoModel[]) : { [serviceInstanceId: string]: ServiceInfoModel[]}{
@@ -70,7 +71,7 @@ export class InstantiationStatusComponentService {
   }
 
   open(item: ServiceInfoModel): void {
-    if (FeatureFlagsService.getFlagState(Features.FLAG_1902_VNF_GROUPING, this._store)) {
+    if (this._featureFlagsService.getFlagState(Features.FLAG_1902_VNF_GROUPING)) {
       this._aaiService.getServiceModelById(item['serviceModelId']).subscribe((result)=>{
         const serviceModel =  new ServiceModel(result);
 
@@ -92,7 +93,7 @@ export class InstantiationStatusComponentService {
   }
 
   navigateToNewViewOnlyOrOldEditView(item: ServiceInfoModel) {
-    if (FeatureFlagsService.getFlagState(Features.FLAG_1902_NEW_VIEW_EDIT, this._store)) {
+    if (this._featureFlagsService.getFlagState(Features.FLAG_1902_NEW_VIEW_EDIT)) {
       this.navigateToNewViewEdit(item, DrawingBoardModes.VIEW);
     }
     else {
@@ -184,6 +185,9 @@ export class InstantiationStatusComponentService {
     return item.action === ServiceAction.INSTANTIATE;
   }
 
+  isRecreateVisible(): boolean {
+    return this._featureFlagsService.getFlagState(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE);
+  }
 }
 
 
