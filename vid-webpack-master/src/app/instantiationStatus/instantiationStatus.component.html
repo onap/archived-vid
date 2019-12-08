@@ -74,7 +74,7 @@
             </svg-icon>
 
           </custom-popover>
-          <div class="menu-div" (click)="onContextMenu($event, data)">
+          <div class="menu-div" (click)="onContextMenu($event, data)" [attr.data-tests-id]="'menu-'+data.jobId">
             <span class="icon-menu"></span>
             <context-menu>
               <ng-template *ngFor="let action of contextMenuActions" contextMenuItem let-item

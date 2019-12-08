@@ -59,6 +59,14 @@ export class InstantiationStatusComponent implements OnInit {
       visible: () =>  true,
     },
     {
+      name: "Recreate",
+      dataTestId: "context-menu-recreate",
+      className: "fa-clone",
+      click: (item: ServiceInfoModel) => this.instantiationStatusComponentService.recreate(item),
+      enabled: (item: ServiceInfoModel) =>  this.instantiationStatusComponentService.isRecreateEnabled(item),
+      visible: () =>  this.instantiationStatusComponentService.isRecreateVisible(),
+    },
+    {
       name: "Audit info",
       dataTestId: "context-menu-audit-info",
       className: "fa-info-circle",
