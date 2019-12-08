@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8c8d3391_3ce7fa66",
+        "filename": "vid-webpack-master/cypress/support/steps/genericForm/genericFormAction.steps.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T13:04:53Z",
+      "side": 1,
+      "message": "remove force",
+      "range": {
+        "startLine": 10,
+        "startChar": 77,
+        "endLine": 10,
+        "endChar": 90
+      },
+      "revId": "77dd486269bb11f1e206114b87033a7dcc58c012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d042b6a4_a0d23b0f",
+        "filename": "vid-webpack-master/cypress/support/steps/genericForm/genericFormAction.steps.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T13:04:53Z",
+      "side": 1,
+      "message": "remove force",
+      "range": {
+        "startLine": 12,
+        "startChar": 77,
+        "endLine": 12,
+        "endChar": 90
+      },
+      "revId": "77dd486269bb11f1e206114b87033a7dcc58c012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f090f5c3_616a277b",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-08T13:04:53Z",
+      "side": 1,
+      "message": "const flagMultiSelect \u003d FeatureFlagsService.getFlagState(FLAG_2002_VNF_PLATFORM_MULTI_SELECT)\n\nAlso add FLAG_2002_VNF_PLATFORM_MULTI_SELECT to feature-flags.service.ts.Features",
+      "revId": "77dd486269bb11f1e206114b87033a7dcc58c012",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
