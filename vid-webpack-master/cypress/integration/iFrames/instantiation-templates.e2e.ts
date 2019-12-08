@@ -52,6 +52,7 @@ describe('Drawing Board: Instantiation Templates', function () {
             cy.deepCompare(xhr.request.body, expectedResult);
         });
       });
+      cy.getElementByDataTestsId("node-name").should('be.visible');
 
     });
 

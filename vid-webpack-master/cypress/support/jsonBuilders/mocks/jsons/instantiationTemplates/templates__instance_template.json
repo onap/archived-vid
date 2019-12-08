@@ -24,6 +24,7 @@
   "isALaCarte": true,
   "testApi": "GR_API",
   "trackById": "36601560-f8e3-4020-bdef-3e4709c51e84",
+  "existingVNFCounterMap": "024a417d-ca46-40bf-95ce-809c6a269011",
   "vnfs": {
     "vProbe_NC_VNF 0": {
       "modelInfo": {
