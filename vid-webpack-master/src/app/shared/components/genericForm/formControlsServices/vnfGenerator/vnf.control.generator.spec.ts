@@ -935,25 +935,8 @@ describe('VNF Control Generator', () => {
   })().then(done).catch(done.fail));
 
 
-
-  test('should call platform dropdown control', ()=>{
-    spyOn(service, 'getPlatformDropdownControl');
-
-    service.getPlatformControl(null, [], false);
-
-    expect(service.getPlatformDropdownControl).toBeCalledWith(null, []);
-  });
-
-  test('should call platform multi select control', ()=>{
-    spyOn(service, 'getPlatformMultiselectControl');
-
-    service.getPlatformControl(null, [], true);
-
-    expect(service.getPlatformMultiselectControl).toBeCalledWith(null, []);
-  });
-
   test('should generate platform multi select control', ()=>{
-    const control = service.getPlatformMultiselectControl(null, []);
+    const control = service.getPlatformMultiselectControl(null, [],false);
     expect(control.type).toEqual(FormControlType.MULTI_SELECT);
     expect(control.controlName).toEqual('platformName');
     expect(control.displayName).toEqual('Platform');
