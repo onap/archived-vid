@@ -188,4 +188,10 @@
   When flag is true the platform will appear as a multi select field, if false the platform will be dropdown list.
   
 * FLAG_2004_INSTANTIATION_STATUS_FILTER
-  when flag is true the user can filter rows in instantiation status by using text input 
+  When flag is true the user can filter rows in instantiation status by using text input
+  
+* FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE
+  When flag is true, the user see in instantiation status page, an option to recreate another instance.
+  This option is enabled only for instantiate jobs.
+  IF the user click on this option, the previous instantiation is opened in drawing board, 
+  and the user can create another one from this template.

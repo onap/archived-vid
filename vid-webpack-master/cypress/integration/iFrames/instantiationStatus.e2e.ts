@@ -7,6 +7,7 @@ import {AsyncInstantiationModel} from '../../support/jsonBuilders/models/asyncIn
 describe('Instantiation status', function () {
   var jsonBuilderInstantiationBuilder : JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
   var asyncRes: Array<any>;
+  const contextMenuCreateAnotherOne = 'context-menu-recreate';
 
   beforeEach(() => {
       cy.clearSessionStorage();
@@ -70,7 +71,7 @@ describe('Instantiation status', function () {
     cy.get('table#instantiation-status tbody tr').should('have.length', 2);
   });
 
-  function getDropDownMenuByDataTestId(testId:String) {
+  function getDisabledDropDownItemByDataTestId(testId:String) {
     return cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='${testId}']`);
   }
 
@@ -79,37 +80,56 @@ describe('Instantiation status', function () {
     cy.get('#' + jobId).find('.menu-div').click();
   }
 
-  it('should enable correct menu items', function () {
+  it('should disabled correct menu items', function () {
 
     cy.openIframe('app/ui/#/instantiationStatus');
 
     // Instantiate action with Job status FAILED - isRetry = true
 
     clickOnTitleAndThenOnMenuWithJobId('5c2cd8e5-27d0-42e3-85a1-85db5eaba459');
-    getDropDownMenuByDataTestId('context-menu-retry').should('not.exist');
-    getDropDownMenuByDataTestId('context-menu-remove').should('exist');
-    getDropDownMenuByDataTestId('context-menu-open').should('exist');
-    getDropDownMenuByDataTestId('context-menu-hide').should('not.exist');
-    getDropDownMenuByDataTestId('context-menu-audit-info').should('not.exist');
+    getDisabledDropDownItemByDataTestId('context-menu-retry').should('not.exist');
+    getDisabledDropDownItemByDataTestId('context-menu-remove').should('exist');
+    getDisabledDropDownItemByDataTestId('context-menu-open').should('exist');
+    getDisabledDropDownItemByDataTestId('context-menu-hide').should('not.exist');
+    getDisabledDropDownItemByDataTestId('context-menu-audit-info').should('not.exist');
+    getDisabledDropDownItemByDataTestId(contextMenuCreateAnotherOne).should('not.exist');
 
     // Instantiate action with Job status FAILED - isRetry = false
     clickOnTitleAndThenOnMenuWithJobId('e1db03c3-6274-4ff7-84cf-7bd3a3946de7');
-    getDropDownMenuByDataTestId('context-menu-retry').should('not.be.visible');
-    getDropDownMenuByDataTestId('context-menu-open').should('exist');
+    getDisabledDropDownItemByDataTestId('context-menu-retry').should('not.be.visible');
+    getDisabledDropDownItemByDataTestId('context-menu-open').should('exist');
+    getDisabledDropDownItemByDataTestId(contextMenuCreateAnotherOne).should('not.exist');
 
     //Delete action with Job status IN_PROGRESS
     clickOnTitleAndThenOnMenuWithJobId('850dc7d2-5240-437f-9bcd-b1ed7dc339c2');
-    getDropDownMenuByDataTestId('context-menu-remove').should('exist');
-    getDropDownMenuByDataTestId('context-menu-open').should('exist');
-    getDropDownMenuByDataTestId('context-menu-hide').should('exist');
-    getDropDownMenuByDataTestId('context-menu-audit-info').should('not.exist');
+    getDisabledDropDownItemByDataTestId('context-menu-remove').should('exist');
+    getDisabledDropDownItemByDataTestId('context-menu-open').should('exist');
+    getDisabledDropDownItemByDataTestId('context-menu-hide').should('exist');
+    getDisabledDropDownItemByDataTestId('context-menu-audit-info').should('not.exist');
+    getDisabledDropDownItemByDataTestId(contextMenuCreateAnotherOne).should('exist');
 
     //Update action with Job status COMPLETED
     clickOnTitleAndThenOnMenuWithJobId('850dc7d2-5240-437f-9bcd-b1ed7dc339c1');
-    getDropDownMenuByDataTestId('context-menu-remove').should('exist');
-    getDropDownMenuByDataTestId('context-menu-open').should('not.exist');
-    getDropDownMenuByDataTestId('context-menu-hide').should('not.exist');
-    getDropDownMenuByDataTestId('context-menu-audit-info').should('not.exist');
+    getDisabledDropDownItemByDataTestId('context-menu-remove').should('exist');
+    getDisabledDropDownItemByDataTestId('context-menu-open').should('not.exist');
+    getDisabledDropDownItemByDataTestId('context-menu-hide').should('not.exist');
+    getDisabledDropDownItemByDataTestId('context-menu-audit-info').should('not.exist');
+    getDisabledDropDownItemByDataTestId(contextMenuCreateAnotherOne).should('exist');
+  });
+
+  it('clicking on create another one item, go to expected url', function () {
+    //see cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json id:8
+    const jobId = '5c2cd8e5-27d0-42e3-85a1-85db5eaba459';
+    const serviceModelId = 'e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0';
+    const vidBaseUrl = `http://localhost:8080/vid/serviceModels.htm`;
+
+    cy.openIframe('app/ui/#/instantiationStatus');
+
+    clickOnTitleAndThenOnMenuWithJobId(jobId);
+    cy.get('.dropdown-menu').getElementByDataTestsId(contextMenuCreateAnotherOne).click();
+    cy.location().should((loc) => {
+      expect(loc.toString()).to.eq(`${vidBaseUrl}#/servicePlanning/RECREATE?serviceModelId=${serviceModelId}&jobId=${jobId}`);
+    });
   });
 
 });
