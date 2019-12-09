@@ -74,7 +74,7 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
         return uri.toASCIIString() + "/asyncInstantiation/templateTopology/" + jobId;
     }
 
-    @Test(groups = "underDevelopment")
+    @Test
     public void templateTopology_givenDeployFromCypressE2E_getTemplateTopologyDataIsEquivalent() throws IOException {
         templateTopology_givenDeploy_templateTopologyIsEquivalent(objectMapper.readValue(
             convertRequest(objectMapper, "asyncInstantiation/templates__instance_template.json"),
