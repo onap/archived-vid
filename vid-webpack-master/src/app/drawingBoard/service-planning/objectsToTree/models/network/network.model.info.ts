@@ -30,6 +30,7 @@ import {
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
+import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 
 export class NetworkModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -39,6 +40,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
               private _duplicateService: DuplicateService,
               private modalService: SdcUiServices.ModalService,
               private _iframeService: IframeService,
+              private _featureFlagsService: FeatureFlagsService,
               private _store: NgRedux<AppState>) {
   }
 
@@ -70,7 +72,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
    ************************************************************/
   getModel = (networkModelId: string, instance: NetworkInstance, serviceHierarchy): NetworkModel => {
     const originalModelName = instance.originalName ? instance.originalName : networkModelId;
-    return new NetworkModel(serviceHierarchy[this.name][originalModelName]);
+    return new NetworkModel(serviceHierarchy[this.name][originalModelName], this._featureFlagsService.getAllFlags());
   };
 
 
@@ -164,8 +166,8 @@ export class NetworkModelInfo implements ILevelNodeInfo {
     counter -= this._sharedTreeService.getExistingInstancesWithDeleteMode(node, serviceModelId, 'networks');
 
     const properties = this._store.getState().service.serviceHierarchy[serviceModelId].networks[node.data.name].properties;
-    const maxInstances: number = !_.isNil(properties) ? (properties.max_instances || 1) : 1;
-    const isReachedLimit = !(maxInstances > counter);
+    const flags = this._store.getState().global.flags;
+    const isReachedLimit: boolean = this._sharedTreeService.getMax(properties, counter, flags);
     const showAddIcon = this._sharedTreeService.shouldShowAddIcon() && !isReachedLimit;
 
     return new AvailableNodeIcons(showAddIcon, isReachedLimit)

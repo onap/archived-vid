@@ -3,11 +3,13 @@ import {ILevelNodeInfo} from "../models/basic.model.info";
 import {ObjectToTreeService} from "../objectToTree.service";
 import * as _ from "lodash";
 import {IModelTreeNodeModel} from "../../../objectsToTree/objectToModelTree/modelTreeNode.model";
+import {FeatureFlagsService} from "../../../../shared/services/featureFlag/feature-flags.service";
 
 @Injectable()
 export class ObjectToModelTreeService {
   numberOfPlusButton: number;
-  constructor(private _objectToTreeService: ObjectToTreeService) {
+
+  constructor(private _objectToTreeService: ObjectToTreeService, private _featureFlagsService: FeatureFlagsService) {
   }
 
   /***********************************************************
@@ -18,9 +20,10 @@ export class ObjectToModelTreeService {
     let _this = this;
     const firstLevelOptions: ILevelNodeInfo[] = _this._objectToTreeService.getFirstLevelOptions();
     let nodes = [];
+    let flags = this._featureFlagsService.getAllFlags();
     for (let option of firstLevelOptions) {
       _.forOwn(serviceModel[option.name], function (item, key) {
-        nodes.push(_this.addFirstLevelModel(serviceModel.service.uuid, key, item, item.type, serviceModel, option));
+        nodes.push(_this.addFirstLevelModel(serviceModel.service.uuid, key, item, item.type, serviceModel, option, flags));
       });
     }
 
@@ -30,10 +33,10 @@ export class ObjectToModelTreeService {
     return nodes;
   }
 
-  calculateNumberOfNodesWithPlusIcon(serviceModel, nodes) : void {
-    this.numberOfPlusButton = nodes.reduce((sum, node)=>{
-      let showNodeIconResult = node.showNodeIcons({data : node}, serviceModel.service.uuid);
-      return (!_.isNil(showNodeIconResult) && showNodeIconResult.addIcon && !showNodeIconResult.vIcon) ?  sum + 1 : sum;
+  calculateNumberOfNodesWithPlusIcon(serviceModel, nodes): void {
+    this.numberOfPlusButton = nodes.reduce((sum, node) => {
+      let showNodeIconResult = node.showNodeIcons({data: node}, serviceModel.service.uuid);
+      return (!_.isNil(showNodeIconResult) && showNodeIconResult.addIcon && !showNodeIconResult.vIcon) ? sum + 1 : sum;
     }, 0);
   }
 
@@ -47,9 +50,9 @@ export class ObjectToModelTreeService {
    * @param parentModel - current parent Model object
    * @param levelNodeInfo - current level node information
    ************************************************************/
-  private addFirstLevelModel(serviceId: string, name, currentModel, type, parentModel, levelNodeInfo: ILevelNodeInfo) {
-    let node = ObjectToModelTreeService.convertItemToTreeNode(serviceId, name, currentModel, type, null, levelNodeInfo);
-    node.children = this.addNextLevelNodes(serviceId, currentModel, parentModel, levelNodeInfo, node);
+  private addFirstLevelModel(serviceId: string, name, currentModel, type, parentModel, levelNodeInfo: ILevelNodeInfo, flags?: { [key: string]: boolean }) {
+    let node = ObjectToModelTreeService.convertItemToTreeNode(serviceId, name, currentModel, type, null, levelNodeInfo, flags);
+    node.children = this.addNextLevelNodes(serviceId, currentModel, parentModel, levelNodeInfo, node, flags);
     return node;
   }
 
@@ -61,13 +64,13 @@ export class ObjectToModelTreeService {
    * @param levelNodeInfo - current level node information
    * @param parentNode - parent node.
    ************************************************************/
-  addNextLevelNodes(serviceId: string, currentModel, parentModel, levelNodeInfo: ILevelNodeInfo, parentNode): any[] {
+  addNextLevelNodes(serviceId: string, currentModel, parentModel, levelNodeInfo: ILevelNodeInfo, parentNode, flags?: { [key: string]: boolean }): any[] {
     if (!_.isNil(levelNodeInfo.childNames) && levelNodeInfo.childNames.length > 0) {
       levelNodeInfo.childNames.forEach(function (childName) {
         if (!_.isNil(currentModel[childName])) {
           let nextLevelNodeInfo = levelNodeInfo.getNextLevelObject.apply(this, [childName]);
           parentNode.children = Object.keys(currentModel[childName]).map((key) =>
-            ObjectToModelTreeService.convertItemToTreeNode(serviceId, key, currentModel[childName][key], childName, currentModel, nextLevelNodeInfo));
+            ObjectToModelTreeService.convertItemToTreeNode(serviceId, key, currentModel[childName][key], childName, currentModel, nextLevelNodeInfo, flags));
         }
       })
     }
@@ -84,17 +87,18 @@ export class ObjectToModelTreeService {
    * @param parentModel - current parent model
    * @param levelNodeInfo - current levelNodeInfo object
    ************************************************************/
-  static convertItemToTreeNode(serviceId: string, name: string, currentModel: any, valueType: string, parentModel: string, levelNodeInfo: ILevelNodeInfo) {
-    let node : IModelTreeNodeModel = {
+  static convertItemToTreeNode(serviceId: string, name: string, currentModel: any, valueType: string, parentModel: string, levelNodeInfo: ILevelNodeInfo, flags?: { [key: string]: boolean }) {
+    const type: string = levelNodeInfo.getType();
+    let node: IModelTreeNodeModel = {
       id: currentModel.customizationUuid || currentModel.uuid,
-      modelCustomizationId : currentModel.customizationUuid,
-      modelVersionId:  currentModel.uuid,
-      modelUniqueId : currentModel.customizationUuid || currentModel.uuid,
+      modelCustomizationId: currentModel.customizationUuid,
+      modelVersionId: currentModel.uuid,
+      modelUniqueId: currentModel.customizationUuid || currentModel.uuid,
       name: name,
       tooltip: levelNodeInfo.getTooltip(),
-      type: levelNodeInfo.getType(),
+      type,
       count: currentModel.count || 0,
-      max: currentModel.max || 1,
+      max: ObjectToModelTreeService.getMax(currentModel, type, flags),
       children: [],
       disabled: false,
       dynamicInputs: levelNodeInfo.updateDynamicInputsDataFromModel(currentModel),
@@ -105,15 +109,24 @@ export class ObjectToModelTreeService {
     return node;
   }
 
+  static getMax(currentModel, type, flags: { [key: string]: boolean }) {
+    if (flags && !!flags['FLAG_2002_UNLIMITED_MAX'] && (type === 'VF' || type === 'Network' || type === 'VFmodule')) {
+      return !_.isNil(currentModel.max) ? currentModel.max : null;
+    } else {
+      return currentModel.max || 1
+    }
+  }
 
-  static addExtraFunctionality(node, serviceId: string, name: string, currentModel: any, valueType: string, parentModel: string, levelNodeInfo: ILevelNodeInfo){
+
+  static addExtraFunctionality(node, serviceId: string, name: string, currentModel: any, valueType: string, parentModel: string, levelNodeInfo: ILevelNodeInfo) {
     node.onAddClick = (node, serviceId) => levelNodeInfo.onClickAdd(node, serviceId);
     node.getNodeCount = (node, serviceId) => levelNodeInfo.getNodeCount(node, serviceId);
     node.getMenuAction = (node, serviceId) => levelNodeInfo.getMenuAction(node, serviceId);
     node.showNodeIcons = (node, serviceId) => levelNodeInfo.showNodeIcons(node, serviceId);
     node.typeName = levelNodeInfo.typeName;
     node.getModel = levelNodeInfo.getModel.bind(levelNodeInfo);
-    node.getInfo = !_.isNil(levelNodeInfo.getInfo) ? levelNodeInfo.getInfo.bind(levelNodeInfo) : ()=>{};
+    node.getInfo = !_.isNil(levelNodeInfo.getInfo) ? levelNodeInfo.getInfo.bind(levelNodeInfo) : () => {
+    };
     node.componentInfoType = levelNodeInfo.componentInfoType;
     return node;
   }
