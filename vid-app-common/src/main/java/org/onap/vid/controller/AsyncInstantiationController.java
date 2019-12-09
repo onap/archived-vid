@@ -36,6 +36,7 @@ import org.onap.vid.properties.Features;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
+import org.onap.vid.services.InstantiationTemplatesService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +56,7 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
     public static final String ASYNC_INSTANTIATION = "asyncInstantiation";
 
     protected final AsyncInstantiationBusinessLogic asyncInstantiationBL;
+    protected final InstantiationTemplatesService instantiationTemplates;
     protected final AsyncInstantiationRepository asyncInstantiationRepository;
     private final SystemPropertiesWrapper systemPropertiesWrapper;
 
@@ -62,18 +64,21 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
 
     private final FeatureManager featureManager;
 
-    @Autowired
-    protected AuditService auditService;
+    protected final AuditService auditService;
 
     @Autowired
     public AsyncInstantiationController(AsyncInstantiationBusinessLogic asyncInstantiationBL,
+        InstantiationTemplatesService instantiationTemplates,
         AsyncInstantiationRepository asyncInstantiationRepository, RoleProvider roleProvider,
-        FeatureManager featureManager, SystemPropertiesWrapper systemPropertiesWrapper) {
+        FeatureManager featureManager, SystemPropertiesWrapper systemPropertiesWrapper,
+        AuditService auditService) {
         this.asyncInstantiationBL = asyncInstantiationBL;
+        this.instantiationTemplates = instantiationTemplates;
         this.asyncInstantiationRepository = asyncInstantiationRepository;
         this.roleProvider = roleProvider;
         this.featureManager = featureManager;
         this.systemPropertiesWrapper = systemPropertiesWrapper;
+        this.auditService = auditService;
     }
 
     /**
@@ -171,7 +176,7 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
 
     @GetMapping("templateTopology/{jobId}")
     public ServiceInstantiation getTemplateTopology(HttpServletRequest request, @PathVariable(value="jobId") UUID jobId) {
-        return asyncInstantiationBL.getJobRequestAsTemplate(jobId);
+        return instantiationTemplates.getJobRequestAsTemplate(jobId);
     }
 
     @RequestMapping(value = "/auditStatusForRetry/{trackById}", method = RequestMethod.GET)

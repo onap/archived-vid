@@ -534,11 +534,6 @@ public class AsyncInstantiationBusinessLogicImpl implements
     }
 
     @Override
-    public ServiceInstantiation getJobRequestAsTemplate(UUID jobId) {
-         return asyncInstantiationRepository.getJobRequest(jobId);
-    }
-
-    @Override
     public void addResourceInfo(JobSharedData sharedData, Job.JobStatus jobStatus, String instanceId) {
         String trackById = ((BaseResource) sharedData.getRequest()).getTrackById();
         ResourceInfo resourceInfo = new ResourceInfo(trackById, sharedData.getRootJobId(), instanceId, jobStatus, null);

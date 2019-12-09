@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.onap.vid.mso.model.ModelInfo;
 
-public class ServiceInstance extends AbstractNode {
+public class ServiceInstance extends AbstractNode implements ExistingElementsCounterMaps {
 
     private String globalSubscriberId;
     private String subscriptionServiceType;
@@ -198,6 +198,7 @@ public class ServiceInstance extends AbstractNode {
         this.validationCounter = validationCounter;
     }
 
+    @Override
     public Map<String, Long> getExistingVNFCounterMap() {
         return existingVNFCounterMap;
     }
@@ -206,6 +207,7 @@ public class ServiceInstance extends AbstractNode {
         this.existingVNFCounterMap = existingVNFCounterMap;
     }
 
+    @Override
     public Map<String, Long> getExistingNetworksCounterMap() {
         return existingNetworksCounterMap;
     }
@@ -214,6 +216,7 @@ public class ServiceInstance extends AbstractNode {
         this.existingNetworksCounterMap = existingNetworksCounterMap;
     }
 
+    @Override
     public Map<String, Long> getExistingVnfGroupCounterMap() {
         return existingVnfGroupCounterMap;
     }
@@ -230,6 +233,7 @@ public class ServiceInstance extends AbstractNode {
         this.vrfs = vrfs;
     }
 
+    @Override
     public Map<String, Long> getExistingVRFCounterMap() {
         return existingVRFCounterMap;
     }
