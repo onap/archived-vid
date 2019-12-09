@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9115095f_a37d812f",
+        "filename": "vid-automation/src/main/java/vid/automation/test/Constants.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-09T07:43:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "598c5c26_9980be00",
+      "revId": "b0ba9240175f712664a69709eca97ab05982fa4b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "976b96cd_35fa89be",
         "filename": "vid-automation/src/main/java/vid/automation/test/sections/InstantiationStatusPage.java",
         "patchSetId": 1
@@ -50,6 +68,24 @@
       "revId": "b0ba9240175f712664a69709eca97ab05982fa4b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "383d4ef9_91f3d808",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-09T07:43:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ba5da7f_82eca406",
+      "revId": "b0ba9240175f712664a69709eca97ab05982fa4b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
