@@ -51,6 +51,7 @@ import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.util.AAITreeConverter;
 import org.onap.vid.asdc.parser.ServiceModelInflator;
 import org.onap.vid.asdc.parser.ServiceModelInflator.Names;
+import org.onap.vid.model.ModelUtil;
 import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.mso.model.CloudConfiguration;
@@ -201,7 +202,7 @@ public class AAIServiceTreeTest {
         AAIServiceTree aaiServiceTree = new AAIServiceTree(
                 aaiClientMock,
                 new AAITreeNodeBuilder(aaiClientMock, new Logging()),
-                new AAITreeConverter(),
+                new AAITreeConverter(new ModelUtil()),
                 null,
                 null,
                 executorService

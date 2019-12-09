@@ -50,6 +50,7 @@ import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.parser.ServiceModelInflator;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.Action;
+import org.onap.vid.model.ModelUtil;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.model.aaiTree.FailureAAITreeNode;
@@ -83,7 +84,7 @@ public class AAIServiceTreeIntegrativeTest {
 
     private AAITreeNodeBuilder aaiTreeNodeBuilder;
 
-    private AAITreeConverter aaiTreeConverter = new AAITreeConverter();
+    private AAITreeConverter aaiTreeConverter = new AAITreeConverter(new ModelUtil());
 
     private ExecutorService executorService = Executors.newFixedThreadPool(10);
 

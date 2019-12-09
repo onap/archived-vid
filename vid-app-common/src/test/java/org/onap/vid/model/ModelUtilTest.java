@@ -20,49 +20,76 @@
 
 package org.onap.vid.model;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anEmptyMap;
+
+import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Function;
+import org.onap.vid.mso.model.ModelInfo;
+import org.testng.annotations.Test;
 
 
 public class ModelUtilTest {
 
-	private ModelUtil createTestSubject() {
-		return new ModelUtil();
+	private final ModelUtil testSubject = new ModelUtil();
+
+	private final Function<Integer, ModelInfo> intToModelInfo = n -> {
+		// yields a model info with a single id, or null if n==0
+		ModelInfo result = new ModelInfo();
+		if (n > 0) {
+			result.setModelCustomizationId("model_" + n);
+		} else if (n<0) {
+			result.setModelVersionId("model_" + (n * -1));
+		} else {
+			// keep nulls
+		}
+		return result;
+	};
+
+	@Test
+	public void getExistingCounterMap_trivialCase() {
+		Map<String, Long> existingCounterMap =
+			testSubject.getExistingCounterMap(
+				ImmutableMap.of(
+					"a", 1,
+					"b", 1,
+					"c", 2
+				),
+				intToModelInfo
+			);
+
+		assertThat(existingCounterMap, jsonEquals(ImmutableMap.of(
+			"model_1", 2,
+			"model_2", 1
+		)));
 	}
 
-	
 	@Test
-	public void testGetTags() throws Exception {
-		String[] namespaces;
-		String constantValue = "test";
-		String[] result;
+	public void getExistingCounterMap_givenMixOfIdsAndNulls_resultContainsIdsAndOmitsNulls() {
+		Map<String, Long> existingCounterMap =
+			testSubject.getExistingCounterMap(
+				ImmutableMap.of(
+					"a", 1,
+					"b", -1, // ModelVersionId instead of customizationId
+					"c", -2,
+					"d", 0  // skip nulls
+				),
+				intToModelInfo
+			);
 
-		// test 1
-		namespaces = null;
-		result = ModelUtil.getTags(namespaces, constantValue);
-		Assert.assertNull(result);
-
-		// test 2
-		namespaces = new String[] { "" };
-		result = ModelUtil.getTags(namespaces, constantValue);
-		Assert.assertArrayEquals(new String[] { constantValue }, result);
+		assertThat(existingCounterMap, jsonEquals(ImmutableMap.of(
+			"model_1", 2,
+			"model_2", 1
+		)));
 	}
 
-	
 	@Test
-	public void testIsType() throws Exception {
-		String type = "a";
-		String[] tags;
-		boolean result;
-
-		// test 1
-		tags = null;
-		result = ModelUtil.isType(type, tags);
-		Assert.assertEquals(false, result);
-
-		// test 2
-		tags = new String[] { "a" };
-		result = ModelUtil.isType(type, tags);
-		Assert.assertEquals(true, result);
+	public void getExistingCounterMap_handleEmptyCollections() {
+		Map<String, Integer> emptyNodeList = Collections.emptyMap();
+		assertThat(testSubject.getExistingCounterMap(emptyNodeList, intToModelInfo), is(anEmptyMap()));
 	}
 }
