@@ -584,6 +584,7 @@ describe('Drawing board', function () {
           "FLAG_SERVICE_MODEL_CACHE": true,
           "FLAG_1906_COMPONENT_INFO" : false,
           "FLAG_2002_VNF_PLATFORM_MULTI_SELECT" : false,
+          "FLAG_2002_UNLIMITED_MAX" : true
         },
         "type": "[FLAGS] Update"
       },

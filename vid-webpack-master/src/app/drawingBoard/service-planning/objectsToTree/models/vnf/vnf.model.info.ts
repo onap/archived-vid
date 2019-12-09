@@ -39,6 +39,7 @@ import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ComponentInfoService} from "../../../component-info/component-info.service";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 
 export class VnfModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -47,11 +48,12 @@ export class VnfModelInfo implements ILevelNodeInfo {
               private _dialogService: DialogService,
               private _vnfPopupService: VnfPopupService,
               private _vfModulePopupService: VfModulePopuopService,
-              private _vfModuleUpgradePopupService : VfModuleUpgradePopupService,
+              private _vfModuleUpgradePopupService: VfModuleUpgradePopupService,
               private _duplicateService: DuplicateService,
               private modalService: SdcUiServices.ModalService,
               private _iframeService: IframeService,
               private _componentInfoService: ComponentInfoService,
+              private _featureFlagsService: FeatureFlagsService,
               private _store: NgRedux<AppState>) {
   }
 
@@ -87,7 +89,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
    ************************************************************/
   getModel = (vnfModelId: string, instance: VnfInstance, serviceHierarchy): VNFModel => {
     const originalModelName = instance.originalName ? instance.originalName : vnfModelId;
-    return new VNFModel(serviceHierarchy[this.name][originalModelName]);
+    return new VNFModel(serviceHierarchy[this.name][originalModelName], this._featureFlagsService.getAllFlags());
   };
 
 
@@ -104,7 +106,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
     node.typeName = this.typeName;
     node.menuActions = this.getMenuAction(<any>node, model.uuid);
     node.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
-    node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage: "";
+    node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
     node = this._sharedTreeService.addingStatusProperty(node);
     return node;
   };
@@ -113,7 +115,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
    * return next level object (VFModule)
    ************************************************************/
   getNextLevelObject = (): VFModuleModelInfo => {
-    return new VFModuleModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._vfModulePopupService, this._vfModuleUpgradePopupService, this._iframeService, this._store, this._componentInfoService);
+    return new VFModuleModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._vfModulePopupService, this._vfModuleUpgradePopupService, this._iframeService, this._featureFlagsService, this._store, this._componentInfoService);
   };
 
   /***********************************************************
@@ -181,8 +183,8 @@ export class VnfModelInfo implements ILevelNodeInfo {
     counter -= this._sharedTreeService.getExistingInstancesWithDeleteMode(node, serviceModelId, 'vnfs');
 
     const properties = this._store.getState().service.serviceHierarchy[serviceModelId].vnfs[node.data.name].properties;
-    const maxInstances: number = !_.isNil(properties) ? (properties.max_instances || 1) : 1;
-    const isReachedLimit = !(maxInstances > counter);
+    const flags = FeatureFlagsService.getAllFlags(this._store);
+    const isReachedLimit: boolean = this._sharedTreeService.isReachedToMaxInstances(properties, counter, flags);
     const showAddIcon = this._sharedTreeService.shouldShowAddIcon() && !isReachedLimit;
     return new AvailableNodeIcons(showAddIcon, isReachedLimit)
   }
@@ -211,9 +213,9 @@ export class VnfModelInfo implements ILevelNodeInfo {
       },
       showAuditInfo: {
         method: (node, serviceModelId) => {
-            const instance = this._store.getState().service.serviceInstance[serviceModelId].vnfs[node.data.vnfStoreKey];
-            this._sharedTreeService.openAuditInfoModal(node, serviceModelId, instance, 'VNF', this);
-          },
+          const instance = this._store.getState().service.serviceInstance[serviceModelId].vnfs[node.data.vnfStoreKey];
+          this._sharedTreeService.openAuditInfoModal(node, serviceModelId, instance, 'VNF', this);
+        },
         visible: (node) => this._sharedTreeService.shouldShowAuditInfo(node),
         enable: (node) => this._sharedTreeService.shouldShowAuditInfo(node)
       },
@@ -324,8 +326,8 @@ export class VnfModelInfo implements ILevelNodeInfo {
 
   getInfo(model, instance): ModelInformationItem[] {
     const modelInformation = !_.isEmpty(model) ? [
-      ModelInformationItem.createInstance("Min instances",  !_.isNull(model.min)? String(model.min): null),
-      ModelInformationItem.createInstance("Max instances",  !_.isNull(model.max)? String(model.max): null)
+      ModelInformationItem.createInstance("Min instances", !_.isNull(model.min) ? String(model.min) : null),
+      ModelInformationItem.createInstance("Max instances", !_.isNull(model.max) ? String(model.max) : null)
     ] : [];
 
     const instanceInfo = !_.isEmpty(instance) ? [
