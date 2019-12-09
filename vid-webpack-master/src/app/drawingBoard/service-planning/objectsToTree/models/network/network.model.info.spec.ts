@@ -12,6 +12,7 @@ import {DrawingBoardModes} from "../../../drawing-board.modes";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {DuplicateService} from "../../../duplicate/duplicate.service";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
+import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 
 class MockAppStore<T> {
   getState() {
@@ -19,27 +20,27 @@ class MockAppStore<T> {
       global: {
         'drawingBoardStatus': DrawingBoardModes.CREATE
       },
-      service : {
-        serviceHierarchy : {
-          'servicedId' : {
-            'networks' : {
-              'networkName' : {
-                'properties' : {
-                  'max_instances' : 1
+      service: {
+        serviceHierarchy: {
+          'servicedId': {
+            'networks': {
+              'networkName': {
+                'properties': {
+                  'max_instances': 1
                 }
               }
             }
           }
         },
-        serviceInstance : {
-          'servicedId' : {
-            'existingNetworksCounterMap' : {
-              'networkId' : 1
+        serviceInstance: {
+          'servicedId': {
+            'existingNetworksCounterMap': {
+              'networkId': 1
             },
-            'networks' : {
-              'networkName' :{
+            'networks': {
+              'networkName': {
                 'action': 'Create',
-                'originalName' : 'networkName'
+                'originalName': 'networkName'
               }
             }
           }
@@ -48,15 +49,24 @@ class MockAppStore<T> {
     }
   }
 }
+
+class MockFeatureFlagsService extends FeatureFlagsService {
+  getAllFlags(): { [p: string]: boolean } {
+    return {};
+  }
+}
+
+
 describe('Network Model Info', () => {
   let injector;
-  let  _dynamicInputsService : DynamicInputsService;
-  let  _sharedTreeService : SharedTreeService;
+  let _dynamicInputsService: DynamicInputsService;
+  let _sharedTreeService: SharedTreeService;
   let networkModel: NetworkModelInfo;
-  let _dialogService : DialogService;
-  let _networkPopupService :  NetworkPopupService;
-  let _duplicateService : DuplicateService;
-  let _iframeService : IframeService;
+  let _dialogService: DialogService;
+  let _networkPopupService: NetworkPopupService;
+  let _duplicateService: DuplicateService;
+  let _iframeService: IframeService;
+  let _featureFlagsService: FeatureFlagsService;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -69,13 +79,16 @@ describe('Network Model Info', () => {
         IframeService,
         DuplicateService,
         {provide: NgRedux, useClass: MockAppStore},
+        {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         MockNgRedux]
     });
     await TestBed.compileComponents();
 
     injector = getTestBed();
     _sharedTreeService = injector.get(SharedTreeService);
-    networkModel = new NetworkModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _networkPopupService, _duplicateService, null, _iframeService, MockNgRedux.getInstance());
+    _featureFlagsService = injector.get(FeatureFlagsService);
+
+    networkModel = new NetworkModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _networkPopupService, _duplicateService, null, _iframeService, _featureFlagsService, MockNgRedux.getInstance());
   })().then(done).catch(done.fail));
 
   test('NetworkModelInfo should be defined', () => {
@@ -137,39 +150,37 @@ describe('Network Model Info', () => {
     expect(model.type).toEqual('VL');
   });
 
-  test('showNodeIcons should return false if reachLimit of max', ()=>{
-    let serviceId : string = 'servicedId';
+  test('showNodeIcons should return false if reachLimit of max', () => {
+    let serviceId: string = 'servicedId';
     let node = {
-      data : {
-        id : 'networkId',
-        name : 'networkName',
-        modelCustomizationId : 'modelCustomizationId'
+      data: {
+        id: 'networkId',
+        name: 'networkName',
+        modelCustomizationId: 'modelCustomizationId'
       }
     };
     jest.spyOn(_sharedTreeService, 'getExistingInstancesWithDeleteMode').mockReturnValue(0);
     jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
-      global : {},
-      service : {
-        serviceHierarchy : {
-          'servicedId' : {
-            'networks' : {
-              'networkName' : {
-                'properties' : {
-                  'max_instances' : 1
+      global: {},
+      service: {
+        serviceHierarchy: {
+          'servicedId': {
+            'networks': {
+              'networkName': {
+                'properties': {
+                  'max_instances': 1
                 }
               }
             }
           }
         },
-        serviceInstance : {
-          'servicedId' : {
-            'existingNetworksCounterMap' : {
-              'modelCustomizationId' : 1
+        serviceInstance: {
+          'servicedId': {
+            'existingNetworksCounterMap': {
+              'modelCustomizationId': 1
             },
-            'networks' : {
-              'networkName' :{
-
-              }
+            'networks': {
+              'networkName': {}
             }
           }
         }
@@ -177,41 +188,39 @@ describe('Network Model Info', () => {
     });
 
     let result = networkModel.showNodeIcons(<any>node, serviceId);
-    expect(result).toEqual(new AvailableNodeIcons(true , false));
+    expect(result).toEqual(new AvailableNodeIcons(true, false));
   });
 
-  test('showNodeIcons should return true if not reachLimit of max', ()=>{
-    let serviceId : string = 'servicedId';
+  test('showNodeIcons should return true if not reachLimit of max', () => {
+    let serviceId: string = 'servicedId';
     let node = {
-      data : {
-        id : 'networkId',
-        name : 'networkName'
+      data: {
+        id: 'networkId',
+        name: 'networkName'
       }
     };
     jest.spyOn(_sharedTreeService, 'getExistingInstancesWithDeleteMode').mockReturnValue(0);
     jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
-      global : {},
-      service : {
-        serviceHierarchy : {
-          'servicedId' : {
-            'networks' : {
-              'networkName' : {
-                'properties' : {
-                  'max_instances' : 2
+      global: {},
+      service: {
+        serviceHierarchy: {
+          'servicedId': {
+            'networks': {
+              'networkName': {
+                'properties': {
+                  'max_instances': 2
                 }
               }
             }
           }
         },
-        serviceInstance : {
-          'servicedId' : {
-            'existingNetworksCounterMap' : {
-              'networkId' : 1
+        serviceInstance: {
+          'servicedId': {
+            'existingNetworksCounterMap': {
+              'networkId': 1
             },
-            'networks' : {
-              'networkName' :{
-
-              }
+            'networks': {
+              'networkName': {}
             }
           }
         }
@@ -219,34 +228,34 @@ describe('Network Model Info', () => {
     });
 
     let result = networkModel.showNodeIcons(<any>node, serviceId);
-    expect(result).toEqual(new AvailableNodeIcons(true , false));
+    expect(result).toEqual(new AvailableNodeIcons(true, false));
   });
 
-  test('getNodeCount should return number of nodes', ()=>{
-    let serviceId : string = 'servicedId';
+  test('getNodeCount should return number of nodes', () => {
+    let serviceId: string = 'servicedId';
     jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
-      global : {},
-      service : {
-        serviceHierarchy : {
-          'servicedId' : {
-            'networks' : {
-              'networkName' : {
-                'properties' : {
-                  'max_instances' : 1
+      global: {},
+      service: {
+        serviceHierarchy: {
+          'servicedId': {
+            'networks': {
+              'networkName': {
+                'properties': {
+                  'max_instances': 1
                 }
               }
             }
           }
         },
-        serviceInstance : {
-          'servicedId' : {
-            'existingNetworksCounterMap' : {
-              'modelCustomizationId' : 1
+        serviceInstance: {
+          'servicedId': {
+            'existingNetworksCounterMap': {
+              'modelCustomizationId': 1
             },
-            'networks' : {
-              'networkName' :{
+            'networks': {
+              'networkName': {
                 'action': 'Create',
-                'originalName' : 'networkName'
+                'originalName': 'networkName'
               }
             }
           }
@@ -255,24 +264,24 @@ describe('Network Model Info', () => {
     });
 
     let node = {
-      data : {
-        id : 'networkId',
-        name : 'networkName',
+      data: {
+        id: 'networkId',
+        name: 'networkName',
         action: 'Create',
-        modelCustomizationId : "modelCustomizationId",
+        modelCustomizationId: "modelCustomizationId",
         modelUniqueId: "modelCustomizationId"
       }
     };
-    let result = networkModel.getNodeCount(<any>node , serviceId);
+    let result = networkModel.getNodeCount(<any>node, serviceId);
     expect(result).toEqual(1);
 
     node.data.modelCustomizationId = 'networkId_notExist';
     node.data.modelUniqueId = 'networkId_notExist';
-    result = networkModel.getNodeCount(<any>node , serviceId);
+    result = networkModel.getNodeCount(<any>node, serviceId);
     expect(result).toEqual(0);
   });
 
-  test('getMenuAction: showAuditInfoNetwork', ()=>{
+  test('getMenuAction: showAuditInfoNetwork', () => {
 
     jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
       global: {
@@ -281,7 +290,7 @@ describe('Network Model Info', () => {
     });
     jest.spyOn(_sharedTreeService, 'isRetryMode').mockReturnValue(true);
     let node = {
-      data : {
+      data: {
         "modelId": "6b528779-44a3-4472-bdff-9cd15ec93450",
         "action": "Create",
         "isFailed": true,
@@ -300,7 +309,7 @@ describe('Network Model Info', () => {
   test('Info for network should be correct', () => {
     const model = getNetworkModel();
     const instance = getNetworkInstance();
-    let actualNetworkInfo = networkModel.getInfo(model,instance);
+    let actualNetworkInfo = networkModel.getInfo(model, instance);
     let expectedNetworkInfo = [
       ModelInformationItem.createInstance('Network role', "network role 1, network role 2"),
       ModelInformationItem.createInstance("Route target id", null),
@@ -309,26 +318,27 @@ describe('Network Model Info', () => {
     expect(actualNetworkInfo).toEqual(expectedNetworkInfo);
   });
 
-  function getNetworkModel(){
+  function getNetworkModel() {
     return {
-      "customizationUuid":"94fdd893-4a36-4d70-b16a-ec29c54c184f",
-      "name":"ExtVL",
-      "version":"37.0",
-      "description":"ECOMP generic virtual link (network) base type for all other service-level and global networks",
-      "uuid":"ddc3f20c-08b5-40fd-af72-c6d14636b986",
-      "invariantUuid":"379f816b-a7aa-422f-be30-17114ff50b7c",
-      "max":1,
-      "min":0,
-      "isEcompGeneratedNaming":false,
-      "type":"VL",
-      "modelCustomizationName":"ExtVL 0",
-      "roles":["network role 1"," network role 2"],
-      "properties":{
-        "network_role":"network role 1, network role 2",
+      "customizationUuid": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
+      "name": "ExtVL",
+      "version": "37.0",
+      "description": "ECOMP generic virtual link (network) base type for all other service-level and global networks",
+      "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
+      "invariantUuid": "379f816b-a7aa-422f-be30-17114ff50b7c",
+      "max": 1,
+      "min": 0,
+      "isEcompGeneratedNaming": false,
+      "type": "VL",
+      "modelCustomizationName": "ExtVL 0",
+      "roles": ["network role 1", " network role 2"],
+      "properties": {
+        "network_role": "network role 1, network role 2",
         "network_assignments":
           "{is_external_network=false, ipv4_subnet_default_assignment={min_subnets_count=1}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={min_subnets_count=1}}",
-        "exVL_naming":"{ecomp_generated_naming=true}","network_flows":"{is_network_policy=false, is_bound_to_vpn=false}",
-        "network_homing":"{ecomp_selected_instance_node_target=false}"
+        "exVL_naming": "{ecomp_generated_naming=true}",
+        "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
+        "network_homing": "{ecomp_selected_instance_node_target=false}"
       }
     };
 
@@ -370,9 +380,7 @@ describe('Network Model Info', () => {
   }
 
 
-
-
-  function getServiceHierarchy(){
+  function getServiceHierarchy() {
     return {
       "service": {
         "uuid": "6b528779-44a3-4472-bdff-9cd15ec93450",

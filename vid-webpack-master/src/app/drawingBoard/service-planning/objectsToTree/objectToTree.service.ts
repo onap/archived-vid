@@ -25,6 +25,7 @@ import {VrfModelInfo} from "./models/vrf/vrf.model.info";
 import {NetworkStepService} from "./models/vrf/vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "./models/vrf/vrfModal/vpnStep/vpn.step.service";
 import { VfModuleUpgradePopupService } from "../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
 
 @Injectable()
 export class ObjectToTreeService {
@@ -44,6 +45,7 @@ export class ObjectToTreeService {
               private _networkStepService : NetworkStepService,
               private _vpnStepService : VpnStepService,
               private _aaiService : AaiService,
+              private _featureFlagsService: FeatureFlagsService,
               private _store : NgRedux<AppState>) {
   }
 
@@ -54,10 +56,10 @@ export class ObjectToTreeService {
    * return all first optional first level of the model tree
    ************************************************************/
   getFirstLevelOptions(): ILevelNodeInfo[] {
-    return [new VnfModelInfo(this._dynamicInputsService, this._sharedTreeService, this._defaultDataGeneratorService, this._dialogService, this._vnfPopupService, this._vfModulePopupService, this._vfModuleUpgradePopupService,this._duplicateService, this._modalService, this._iframeService, this._componentInfoService, this._store)
-      , new NetworkModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._networkPopupService, this._duplicateService, this._modalService, this._iframeService,  this._store),
+    return [new VnfModelInfo(this._dynamicInputsService, this._sharedTreeService, this._defaultDataGeneratorService, this._dialogService, this._vnfPopupService, this._vfModulePopupService, this._vfModuleUpgradePopupService,this._duplicateService, this._modalService, this._iframeService, this._componentInfoService, this._featureFlagsService, this._store)
+      , new NetworkModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._networkPopupService, this._duplicateService, this._modalService, this._iframeService,  this._featureFlagsService, this._store),
       new PnfModelInfo(),
-      new VrfModelInfo(this._store, this._sharedTreeService, this._dialogService, this._iframeService, this._networkStepService, this._vpnStepService),
+      new VrfModelInfo(this._store, this._sharedTreeService, this._dialogService, this._iframeService, this._featureFlagsService, this._networkStepService, this._vpnStepService),
       new CollectionResourceModelInfo(this._store, this._sharedTreeService),
       new ConfigurationModelInfo(this._dynamicInputsService, this._sharedTreeService),
       new VnfGroupingModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._vnfGroupPopupService, this._iframeService, this._aaiService, this._store)];

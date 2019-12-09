@@ -27,6 +27,10 @@ export class FeatureFlagsService {
     return FeatureFlagsService.getFlagState(flag, this.store);
   }
 
+  public getAllFlags():  { [key: string]: boolean}{
+    return this.store.getState().global.flags;
+  }
+
   /*static method for easy refactoring of code, so no injection of FeatureFlagsService is needed*/
   public static getFlagState(flag: Features, store: NgRedux<AppState>):boolean {
     let storeStateGlobalFields = store.getState().global;

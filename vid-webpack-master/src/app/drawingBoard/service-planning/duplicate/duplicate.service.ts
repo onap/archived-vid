@@ -45,10 +45,16 @@ export class DuplicateService {
     if(!_.isNil(node) && !_.isNil(node.data.menuActions['duplicate'])){
       if(this.hasMissingData(node)) return false;
       const typeNodeInformation : TypeNodeInformation = new TypeNodeInformation(node);
-      const max : number = store.getState().service.serviceHierarchy[serviceId][typeNodeInformation.hierarchyName][node.data.modelName].properties['max_instances'] || 1;
-      const currentExisting: number = store.getState().service.serviceInstance[serviceId][typeNodeInformation.existingMappingCounterName][node.data.modelUniqueId];
+      const flags = store.getState().global.flags;
+      if (flags && !!flags['FLAG_2002_UNLIMITED_MAX']) {
+        return true;
+      }else {
+        const max : number = store.getState().service.serviceHierarchy[serviceId][typeNodeInformation.hierarchyName][node.data.modelName].properties['max_instances'] || 1;
+        const currentExisting: number = store.getState().service.serviceInstance[serviceId][typeNodeInformation.existingMappingCounterName][node.data.modelUniqueId];
 
-      return max - currentExisting > 0;
+        return max - currentExisting > 0;
+      }
+
     }else {
       return false;
     }
@@ -73,8 +79,18 @@ export class DuplicateService {
     const typeNodeInformation : TypeNodeInformation = new TypeNodeInformation(node);
     const properties  = store.getState().service.serviceHierarchy[serviceId][typeNodeInformation.hierarchyName][modelName].properties;
     const currentExisting : number = store.getState().service.serviceInstance[serviceId][typeNodeInformation.existingMappingCounterName][modelId];
-    return (!_.isNil(properties) && !_.isNil(properties['max_instances'])) ? properties['max_instances'] - currentExisting : null;
+
+
+    const flags = store.getState().global.flags;
+    if (flags && !!flags['FLAG_2002_UNLIMITED_MAX']) {
+      return !_.isNil(properties) && !_.isNil(properties['max_instances']) ? properties['max_instances'] - currentExisting : 10;
+    }else {
+      return (!_.isNil(properties) && !_.isNil(properties['max_instances'])) ? properties['max_instances'] - currentExisting : null;
+    }
   }
+
+
+
 
 
 

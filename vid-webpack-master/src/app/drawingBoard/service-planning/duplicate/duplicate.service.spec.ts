@@ -3,9 +3,10 @@ import {LogService} from '../../../shared/utils/log/log.service';
 import {NgRedux} from '@angular-redux/store';
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {SdcUiServices} from "onap-ui-angular";
-import {IModalConfig} from "onap-ui-angular/dist/components/common";
+import {IModalConfig} from 'onap-ui-angular/dist/components/common';
 import {AppState} from "../../../shared/store/reducers";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
 
 class MockAppStore<T> {
   getState(){
@@ -52,15 +53,23 @@ class MockAppStore<T> {
 
 class MockModalService<T> {}
 
+class MockFeatureFlagsService extends  FeatureFlagsService{
+  getAllFlags(): { [p: string]: boolean } {
+    return {};
+  }
+}
+
 describe('Drawing board tree service', () => {
   let injector;
   let service: DuplicateService;
   let store : NgRedux<AppState>;
+  let featureFlagsService : FeatureFlagsService;
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       providers : [
         DuplicateService,
         LogService,
+        {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockAppStore},
         {provide: SdcUiServices.ModalService, useClass: MockModalService}
       ]
@@ -70,6 +79,7 @@ describe('Drawing board tree service', () => {
     injector = getTestBed();
     service = injector.get(DuplicateService);
     store = injector.get(NgRedux);
+    featureFlagsService = injector.get(FeatureFlagsService);
 
   })().then(done).catch(done.fail));
 
@@ -416,6 +426,11 @@ describe('Drawing board tree service', () => {
                   "vnfModelId3" : 0
                 }
               }
+
+            }
+          },
+          global : {
+            flags : {
 
             }
           }

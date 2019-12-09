@@ -239,6 +239,22 @@ export class SharedTreeService {
     const mode = this._store.getState().global.drawingBoardStatus;
     return mode === DrawingBoardModes.EDIT || mode=== DrawingBoardModes.CREATE;
   }
+
+
+  getMax(properties, counter, flags): boolean{
+    let isReachedLimit: boolean;
+    let maxInstances : number;
+
+    if (flags && !!flags['FLAG_2002_UNLIMITED_MAX']) {
+      maxInstances = !_.isNil(properties) && !_.isNil(properties.max_instances) ? properties.max_instances  : null;
+      isReachedLimit = maxInstances !== null ?  !(maxInstances > counter) : false;
+    }else {
+      maxInstances = !_.isNil(properties) ? (properties.max_instances || 1) : 1;
+      isReachedLimit = !(maxInstances > counter);
+    }
+
+    return isReachedLimit;
+  }
   /************************************************
    return number of instances with action Delete
    @type: vnfs networks, vngGroups (not vfModule)

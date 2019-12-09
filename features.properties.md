@@ -195,3 +195,8 @@
   This option is enabled only for instantiate jobs.
   IF the user click on this option, the previous instantiation is opened in drawing board, 
   and the user can create another one from this template.
+  
+* FLAG_2002_UNLIMITED_MAX 
+  when flag is true and max_instances is not declare than user can add unlimited VND, NETWORK, VFMODULE,
+  User can duplicate up to 10 record in single time.
+  If the flag is false and max_instances is not declare the max will be 1 else max_instances value.
