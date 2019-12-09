@@ -44,6 +44,7 @@ import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.AAITreeConverter;
 import org.onap.vid.aai.util.CacheProvider;
 import org.onap.vid.aai.util.TestWithAaiClient;
+import org.onap.vid.model.ModelUtil;
 import org.onap.vid.model.aaiTree.Network;
 import org.onap.vid.model.aaiTree.VpnBinding;
 import org.onap.vid.testUtils.TestUtils;
@@ -65,7 +66,7 @@ public class AAIServiceIntegrativeTest extends TestWithAaiClient {
         AAIServiceTree aaiServiceTree = new AAIServiceTree(
                 aaiClient,
                 new AAITreeNodeBuilder(aaiClient, logging),
-                new AAITreeConverter(),
+                new AAITreeConverter(new ModelUtil()),
                 null,
                 null,
                 executorService

@@ -20,14 +20,12 @@
 
 package org.onap.vid.aai.util;
 
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
 import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.A_LA_CARTE;
 
 import java.util.Map;
-import java.util.Objects;
+import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
+import org.onap.vid.model.ModelUtil;
 import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.model.aaiTree.CollectionResource;
 import org.onap.vid.model.aaiTree.Network;
@@ -55,6 +53,13 @@ public class AAITreeConverter {
     public static final String SERVICE_INSTANCE_SERVICE_INSTANCE_NAME = "service-instance.service-instance-name";
     public static final String SERVICE_INSTANCE_SERVICE_INSTANCE_ID = "service-instance.service-instance-id";
     public static final String TENANT_TENANT_NAME = "tenant.tenant-name";
+
+    private final ModelUtil modelUtil;
+
+    @Inject
+    public AAITreeConverter(ModelUtil modelUtil) {
+        this.modelUtil = modelUtil;
+    }
 
     public ServiceInstance convertTreeToUIModel(AAITreeNode rootNode, String globalCustomerId, String serviceType, String instantiationType, String instanceRole, String instanceType) {
         ServiceInstance serviceInstance = new ServiceInstance();
@@ -107,13 +112,7 @@ public class AAITreeConverter {
     }
 
     private <T extends Node> Map<String, Long> getExistingCounterMap(Map<String, T> nodeList) {
-        return nodeList.entrySet().stream()
-                .map(k -> {
-                    ModelInfo modelInfo = k.getValue().getModelInfo();
-                    return StringUtils.defaultIfEmpty(modelInfo.getModelCustomizationId(), modelInfo.getModelVersionId());
-                })
-                .filter(Objects::nonNull)
-                .collect(groupingBy(identity(), counting()));
+        return modelUtil.getExistingCounterMap(nodeList, Node::getModelInfo);
     }
 
     private static ModelInfo createModelInfo(AAITreeNode aaiNode) {

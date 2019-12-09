@@ -20,39 +20,26 @@
 
 package org.onap.vid.model;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import org.apache.commons.lang3.StringUtils;
+import org.onap.vid.mso.model.ModelInfo;
+import org.springframework.stereotype.Component;
+
+@Component
 public class ModelUtil {
-	/**
-	 * Gets the tags for the given element according to the configured namespace
-	 * @param namespaces the namespace list from the configuration
-	 * @param constantValue the constant portion of the tag name, i.e. resource.vf...
-	 * @return the tags
-	 */
-	public static String[] getTags ( String[] namespaces, String constantValue ) {
-		String[] tags;
-		if ( namespaces == null || namespaces.length == 0 ) {
-			return null;
-		}
-		int le = namespaces.length;
-		tags = new String[le];
-		for ( int i = 0; i < le; i++ ) {
-			tags[i] = namespaces[i] + constantValue;
-		}
-		return (tags);
-	}
-	/**
-	 * Determine if a note template type matches a set of configurable tags
-	 * @param type the node template type
-	 * @param tags the model configurable namespaces
-	 * @return true if type starts with a tag in the array, false otherwise
-	 */
-	public static boolean isType ( String type, String[] tags ) {
-		if ( (tags != null) && (tags.length > 0) ) {
-			for ( int i = 0; i < tags.length; i++ ) {
-				if ( type.startsWith (tags[i]) ) {
-					return (true);
-				}
-			}
-		}
-		return (false);
+	public <T> Map<String, Long> getExistingCounterMap(Map<String, T> nodeList, Function<T, ModelInfo> modelInfoExtractor) {
+		return nodeList.values().stream()
+			.map(it -> {
+				ModelInfo modelInfo = modelInfoExtractor.apply(it);
+				return StringUtils.defaultIfEmpty(modelInfo.getModelCustomizationId(), modelInfo.getModelVersionId());
+			})
+			.filter(Objects::nonNull)
+			.collect(groupingBy(identity(), counting()));
 	}
 }
