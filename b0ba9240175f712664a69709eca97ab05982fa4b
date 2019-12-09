@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "598c5c26_9980be00",
+        "filename": "vid-automation/src/main/java/vid/automation/test/Constants.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-09T06:27:43Z",
+      "side": 1,
+      "message": "Why OwningEntity ? How it relates to OwningEntity  ?\n\nAnd if you use this constant only once, why do you need a constant ? you can use the sting as is in clickPreviousInstantiationButton",
+      "revId": "b0ba9240175f712664a69709eca97ab05982fa4b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "976b96cd_35fa89be",
+        "filename": "vid-automation/src/main/java/vid/automation/test/sections/InstantiationStatusPage.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-09T06:27:43Z",
+      "side": 1,
+      "message": "Please add assertion that the filter input text contains the expected text.\nThe assertion is depended on FLAG_2004_INSTANTIATION_STATUS_FILTER",
+      "revId": "b0ba9240175f712664a69709eca97ab05982fa4b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ba5da7f_82eca406",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/BrowseASDCTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-09T06:27:43Z",
+      "side": 1,
+      "message": "please add FeatureTogglingTest annotation",
+      "revId": "b0ba9240175f712664a69709eca97ab05982fa4b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2357152_b677f981",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiationStatus.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-09T06:27:43Z",
+      "side": 1,
+      "message": "please rebase it shall be 2 now",
+      "range": {
+        "startLine": 64,
+        "startChar": 72,
+        "endLine": 64,
+        "endChar": 73
+      },
+      "revId": "b0ba9240175f712664a69709eca97ab05982fa4b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb2658ee_a4f3ae71",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiationStatus.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-09T06:27:43Z",
+      "side": 1,
+      "message": "please rebase it shall be 2 now",
+      "range": {
+        "startLine": 70,
+        "startChar": 72,
+        "endLine": 70,
+        "endChar": 73
+      },
+      "revId": "b0ba9240175f712664a69709eca97ab05982fa4b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
