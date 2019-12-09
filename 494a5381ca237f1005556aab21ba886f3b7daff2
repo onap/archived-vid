@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "34ca0488_0cc1c27f",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/InstantiationTemplatesApiTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-09T06:14:29Z",
+      "side": 1,
+      "message": "why is needed if Option.TREATING_NULL_AS_ABSENT ?",
+      "revId": "494a5381ca237f1005556aab21ba886f3b7daff2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d96f03bc_d4b26a78",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/InstantiationTemplatesApiTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-09T06:14:29Z",
+      "side": 1,
+      "message": "don\u0027t we already have such king of post async ?\nWhy do we need another one ?",
+      "revId": "494a5381ca237f1005556aab21ba886f3b7daff2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
