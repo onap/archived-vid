@@ -13,6 +13,7 @@ import {ModelInformationItem} from "../../../shared/components/model-information
 import {undoUpgradeService, upgradeService} from "../../../shared/storeUtil/utils/service/service.actions";
 import {VNFMethods} from "../../../shared/storeUtil/utils/vnf/vnf.actions";
 import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
+import {Utils} from "../../../shared/utils/utils";
 
 @Injectable()
 export class SharedTreeService {
@@ -238,6 +239,16 @@ export class SharedTreeService {
   shouldShowAddIcon(): boolean{
     const mode = this._store.getState().global.drawingBoardStatus;
     return mode === DrawingBoardModes.EDIT || mode=== DrawingBoardModes.CREATE;
+  }
+
+
+  isReachedToMaxInstances(properties, counter, flags): boolean{
+    let maxInstances  = Utils.getMaxFirstLevel(properties, flags);
+    if(_.isNil(maxInstances)){
+      return true;
+    }else {
+      return !(maxInstances > counter);
+    }
   }
   /************************************************
    return number of instances with action Delete

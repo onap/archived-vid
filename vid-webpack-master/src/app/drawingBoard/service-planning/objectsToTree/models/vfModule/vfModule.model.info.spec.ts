@@ -28,6 +28,12 @@ class MockAppStore<T> {
   }
 }
 
+class MockFeatureFlagsService extends  FeatureFlagsService{
+  getAllFlags(): { [p: string]: boolean } {
+    return {};
+  }
+}
+
 describe('VFModule Model Info', () => {
   let injector;
   let  _dynamicInputsService : DynamicInputsService;
@@ -38,6 +44,8 @@ describe('VFModule Model Info', () => {
   let _vfModuleUpgradePopupService : VfModuleUpgradePopupService;
   let _iframeService : IframeService;
   let _componentInfoService : ComponentInfoService;
+  let _featureFlagsService : FeatureFlagsService;
+
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -54,7 +62,7 @@ describe('VFModule Model Info', () => {
         AaiService,
         HttpClient,
         HttpHandler,
-        FeatureFlagsService,
+        {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         ComponentInfoService
       ]
     });
@@ -63,7 +71,8 @@ describe('VFModule Model Info', () => {
     injector = getTestBed();
     _sharedTreeService = injector.get(SharedTreeService);
     _componentInfoService = injector.get(ComponentInfoService)
-    vfModuleModel = new VFModuleModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vfModulePopupService, _vfModuleUpgradePopupService, _iframeService, MockNgRedux.getInstance(),_componentInfoService);
+    _featureFlagsService = injector.get(FeatureFlagsService);
+    vfModuleModel = new VFModuleModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vfModulePopupService, _vfModuleUpgradePopupService, _iframeService,_featureFlagsService,  MockNgRedux.getInstance(),_componentInfoService);
 
   })().then(done).catch(done.fail));
 

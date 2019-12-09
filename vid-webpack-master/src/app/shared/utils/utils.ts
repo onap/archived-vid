@@ -2,6 +2,14 @@ import * as _ from 'lodash'
 
 export class Utils {
 
+  static getMaxFirstLevel(properties, flags: { [key: string]: boolean }) : number | null{
+    if (flags && !!flags['FLAG_2002_UNLIMITED_MAX']) {
+      return !_.isNil(properties) && !_.isNil(properties.max_instances) ? properties.max_instances : null;
+    } else {
+      return properties.max_instances || 1;
+    }
+  }
+
   public static clampNumber = (number, min, max) => {
     return Math.max(min, Math.min(number, max));
   };

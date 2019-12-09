@@ -40,6 +40,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
               private _vfModulePopupService: VfModulePopuopService,
               private _vfModuleUpgradePopupService: VfModuleUpgradePopupService,
               private _iframeService: IframeService,
+              private _featureFlagsService: FeatureFlagsService,
               private _store: NgRedux<AppState>,
               private _componentInfoService: ComponentInfoService) {
   }
@@ -306,7 +307,6 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
       maxNodes = vnfModules[node.data.name].properties.maxCountInstances || 1;
     }
     return !(maxNodes > currentNodeCount);
-
   }
 
   getMenuAction(node: ITreeNode, serviceModelId: string): { [methodName: string]: { method: Function, visible: Function, enable: Function } } {

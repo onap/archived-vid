@@ -26,12 +26,14 @@ import {
   undoDeleteActionVrfInstance
 } from "../../../../../shared/storeUtil/utils/vrf/vrf.actions";
 import * as _ from "lodash";
+import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 
 export class VrfModelInfo implements ILevelNodeInfo {
   constructor(private _store: NgRedux<AppState>,
               private _sharedTreeService: SharedTreeService,
               private _dialogService: DialogService,
               private _iframeService: IframeService,
+              private _featureFlagsService : FeatureFlagsService,
               private _networkStepService: NetworkStepService,
               private _vpnStepService: VpnStepService) {
   }
@@ -70,7 +72,7 @@ export class VrfModelInfo implements ILevelNodeInfo {
       return new VpnModelInfo(this._store, this._sharedTreeService);
     } else {
       if (nextLevelType === 'networks') {
-        return new NetworkModelInfo(null, this._sharedTreeService, null, null, null, null, null, this._store);
+        return new NetworkModelInfo(null, this._sharedTreeService, null, null, null, null, null,this._featureFlagsService,  this._store);
       }
     }
   };
