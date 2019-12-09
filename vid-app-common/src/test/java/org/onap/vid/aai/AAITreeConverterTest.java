@@ -20,31 +20,40 @@
  */
 package org.onap.vid.aai;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.A_LA_CARTE;
+import static org.testng.Assert.assertNull;
+
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.onap.vid.aai.util.AAITreeConverter;
 import org.onap.vid.model.Action;
-import org.onap.vid.model.aaiTree.*;
+import org.onap.vid.model.ModelUtil;
+import org.onap.vid.model.aaiTree.AAITreeNode;
+import org.onap.vid.model.aaiTree.CollectionResource;
+import org.onap.vid.model.aaiTree.Network;
+import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.model.aaiTree.ServiceInstance;
+import org.onap.vid.model.aaiTree.VfModule;
+import org.onap.vid.model.aaiTree.Vnf;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.onap.vid.asdc.parser.ToscaParserImpl2.Constants.A_LA_CARTE;
-import static org.testng.Assert.assertNull;
-
 public class AAITreeConverterTest {
+
+    @Spy
+    private ModelUtil modelUtil;
 
     @InjectMocks
     private AAITreeConverter aaiTreeConverter;
