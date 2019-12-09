@@ -23,6 +23,11 @@ import {AaiService} from "../../../../../shared/services/aaiService/aai.service"
 import {HttpClient, HttpHandler} from "@angular/common/http";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+class MockFeatureFlagsService extends  FeatureFlagsService{
+  getAllFlags(): { [p: string]: boolean } {
+    return {};
+  }
+}
 
 describe('Vnf Model Info', () => {
  let injector;
@@ -38,6 +43,7 @@ describe('Vnf Model Info', () => {
  let _duplicateService : DuplicateService;
  let _iframeService : IframeService;
  let _componentInfoService : ComponentInfoService;
+ let _featureFlagsService : FeatureFlagsService;
 
   let _store : NgRedux<AppState>;
   let vnfModel: VnfModelInfo;
@@ -57,7 +63,7 @@ describe('Vnf Model Info', () => {
         AaiService,
         HttpClient,
         HttpHandler,
-        FeatureFlagsService,
+        {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         ComponentInfoService,
         IframeService]
     }).compileComponents();
@@ -65,7 +71,7 @@ describe('Vnf Model Info', () => {
     injector = getTestBed();
     _sharedTreeService = injector.get(SharedTreeService);
     _store = injector.get(NgRedux);
-    _componentInfoService = injector.get(ComponentInfoService);
+    _featureFlagsService = injector.get(FeatureFlagsService);
 
     vnfModel = new VnfModelInfo(
       _dynamicInputsService,
@@ -79,6 +85,7 @@ describe('Vnf Model Info', () => {
       null,
       _iframeService,
       _componentInfoService,
+      _featureFlagsService,
       _store);
 
 
