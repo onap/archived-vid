@@ -2079,7 +2079,7 @@ describe('VFModule popup service', () => {
     expect(service.modelInformations[12].values).toEqual(['0']);
 
     expect(service.modelInformations[13].label).toEqual("Maximum to instantiate");
-    expect(service.modelInformations[13].values).toEqual(['1']);
+    expect(service.modelInformations[13].values).toEqual(['1000']);
   });
 
 

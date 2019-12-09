@@ -31,8 +31,8 @@ export class VfModule extends NodeModel {
       this.volumeGroupAllowed = vf.volumeGroupAllowed || false;
     }
     if (vf && vf.properties) {
-      this.min = vf.properties.minCountInstances;
-      this.max = vf.properties.maxCountInstances;
+      this.min = vf.properties.minCountInstances || 0;
+      this.max = vf.properties.maxCountInstances || 1000;
       this.initial = vf.properties.initialCount;
       this.rollbackOnFailure = true
     }

@@ -80,7 +80,7 @@ export class Level1Model extends NodeModel{
       this.min = 0;
       if (nodeJson.properties) {
         this.min = nodeJson.properties.min_instances || 0;
-        this.max = nodeJson.properties.max_instances || 1;
+        this.max = nodeJson.properties.max_instances || 1000;
       }
 
 
