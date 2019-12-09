@@ -108,7 +108,5 @@ public interface AsyncInstantiationBusinessLogic {
 
     ServiceInstantiation getBulkForRetry(UUID jobId);
 
-    ServiceInstantiation getJobRequestAsTemplate(UUID jobId);
-
     String getResumeRequestPath(String requestId);
 }

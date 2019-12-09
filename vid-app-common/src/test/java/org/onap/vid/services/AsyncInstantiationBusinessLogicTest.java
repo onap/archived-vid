@@ -35,7 +35,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Every.everyItem;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
@@ -1369,15 +1368,4 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
 
     }
 
-    @Test
-    public void getJobRequestAsTemplate_whenIsCalled_asyncInstantiationRepositoryGetJobRequestIsDelegated() {
-        UUID jobId = UUID.randomUUID();
-        ServiceInstantiation expected = mock(ServiceInstantiation.class);
-        doReturn(expected).when(asyncInstantiationRepository).getJobRequest(jobId);
-
-        ServiceInstantiation jobRequestAsTemplate = asyncInstantiationBL.getJobRequestAsTemplate(jobId);
-
-        assertThat(jobRequestAsTemplate, is(sameInstance(expected)));
-
-    }
 }
