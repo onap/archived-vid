@@ -27,7 +27,7 @@
   "pause": false,
   "productFamilyId": "ddf9cc0f-6331-4d35-bed0-a37f2d5e9cb3",
   "projectName": "zasaki",
-  "rollbackOnFailure": false,
+  "rollbackOnFailure": "false",
   "statusMessage": "The service instantiation is failed.",
   "subscriberName": "SILVIA ROBBINS",
   "subscriptionServiceType": "TYLER SILVIA",

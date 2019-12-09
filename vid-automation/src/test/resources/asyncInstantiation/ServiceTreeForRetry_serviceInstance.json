@@ -55,7 +55,7 @@
   "instanceParams": [],
   "pause": false,
   "bulkSize": 1,
-  "rollbackOnFailure": false,
+  "rollbackOnFailure": "false",
   "isALaCarte": true,
   "testApi": "VNF_API",
   "instanceId": "INSTANCE_ID",
