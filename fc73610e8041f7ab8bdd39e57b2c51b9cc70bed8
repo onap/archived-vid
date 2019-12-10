@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d2ba76b_39cef435",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/duplicate/duplicate.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-10T08:28:14Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "fc73610e8041f7ab8bdd39e57b2c51b9cc70bed8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cbac908e_fdb6cd37",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/duplicate/duplicate.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-10T08:28:14Z",
+      "side": 1,
+      "message": "too much lines space",
+      "revId": "fc73610e8041f7ab8bdd39e57b2c51b9cc70bed8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
