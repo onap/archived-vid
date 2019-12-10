@@ -155,7 +155,7 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
 
       return clonedState;
     }
-    case VfModuleActions.DELETE_VFMODULE_FEILD : {
+    case VfModuleActions.DELETE_VFMODULE_FIELD : {
       let clonedState = _.cloneDeep(state);
       let deleteAction =  <DeleteVFModuleField> action;
 

@@ -16,11 +16,11 @@ import {FormControlModel} from "../../../../models/formControlModels/formControl
 import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
 import {mergeObjectByPathAction} from "../../../../storeUtil/utils/general/general.actions";
+import * as _ from "lodash";
 
 export enum UpgradeFormControlNames {
   RETAIN_VOLUME_GROUPS = 'retainVolumeGroups',
   RETAIN_ASSIGNMENTS = 'retainAssignments',
-  SDN_C_PRE_LOAD = 'sdncPreLoad',
 }
 
 @Injectable()
@@ -43,11 +43,12 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
   getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean): FormControlModel[]  {
     let result: FormControlModel[] =[
       this.getRetainAssignmentsControl(),
-      this.getRetainVolumeGroupsControl(),
       this._basicControlGenerator.getSDNCControl(null)
     ];
-
     const vfModuleInstance = this._vfModuleControlGenerator.getVfModuleInstance(serviceId, vnfStoreKey, this.uuidData, isUpdateMode);
+    if(!(_.isNil(vfModuleInstance.volumeGroupName))){
+      result.push(this.getRetainVolumeGroupsControl());
+    }
     result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     return result;
   };
