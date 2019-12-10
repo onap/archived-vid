@@ -13,7 +13,7 @@ import {
   PopupType
 } from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from "ng2-bootstrap-modal";
-import {VfModulePopuopService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {AppState} from "../../../../../shared/store/reducers";
 import {MessageBoxData} from "../../../../../shared/components/messageBox/messageBox.data";
 import {MessageBoxService} from "../../../../../shared/components/messageBox/messageBox.service";
@@ -37,7 +37,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
               private _sharedTreeService: SharedTreeService,
               private _dialogService: DialogService,
-              private _vfModulePopupService: VfModulePopuopService,
+              private _vfModulePopupService: VfModulePopupService,
               private _vfModuleUpgradePopupService: VfModuleUpgradePopupService,
               private _iframeService: IframeService,
               private _featureFlagsService: FeatureFlagsService,
@@ -402,9 +402,9 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
           vfModule : _.cloneDeep(node)
         },
         node,
-        isUpdateMode: false
+        isUpdateMode: true
       });
-    }else {
+    } else {
       this._sharedTreeService.upgradeBottomUp(node, serviceModelId);
       this._store.dispatch(upgradeVFModule(node.data.modelName,  node.parent.data.vnfStoreKey, serviceModelId ,node.data.dynamicModelName));
     }

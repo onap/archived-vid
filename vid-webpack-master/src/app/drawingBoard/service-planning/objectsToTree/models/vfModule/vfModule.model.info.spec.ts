@@ -4,7 +4,7 @@ import {MockNgRedux, NgReduxTestingModule} from "@angular-redux/store/testing";
 import {VFModuleModelInfo} from "./vfModule.model.info";
 import {DynamicInputsService} from "../../dynamicInputs.service";
 import {SharedTreeService} from "../../shared.tree.service";
-import {VfModulePopuopService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {DialogService} from "ng2-bootstrap-modal";
 import {NgRedux} from "@angular-redux/store";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
@@ -40,7 +40,7 @@ describe('VFModule Model Info', () => {
   let  _sharedTreeService : SharedTreeService;
   let  vfModuleModel: VFModuleModelInfo;
   let _dialogService : DialogService;
-  let _vfModulePopupService : VfModulePopuopService;
+  let _vfModulePopupService : VfModulePopupService;
   let _vfModuleUpgradePopupService : VfModuleUpgradePopupService;
   let _iframeService : IframeService;
   let _componentInfoService : ComponentInfoService;
@@ -53,7 +53,7 @@ describe('VFModule Model Info', () => {
       providers: [
         DynamicInputsService,
         DialogService,
-        VfModulePopuopService,
+        VfModulePopupService,
         VfModuleUpgradePopupService,
         SharedTreeService,
         IframeService,

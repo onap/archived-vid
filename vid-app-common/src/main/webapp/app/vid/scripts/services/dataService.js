@@ -75,9 +75,6 @@ var DataService = function($log, DataService) {
 		setModelId : function(modelId) {
 			_this.modelId = modelId;
 		},
-		getModelInstanceName : function() {
-			return _this.modelInstanceName;
-		},
 		setModelInstanceName : function(modelInstanceName) {
 			_this.modelInstanceName = modelInstanceName;
 		},
@@ -108,12 +105,9 @@ var DataService = function($log, DataService) {
 		getAicZones : function(){
 			return _this.aicZones;
 		},
-        setAicZoneForPNF: function(aicZone) {
-            _this.aicZone = aicZone;
-        },
-        getAicZoneForPNF : function(){
-            return _this.aicZone;
-        },
+		getAicZoneForPNF : function(){
+				return _this.aicZone;
+		},
 		getServiceInstanceId : function() {
 			return _this.serviceInstanceId;
 		},
@@ -144,42 +138,6 @@ var DataService = function($log, DataService) {
 		setServiceUuid : function(serviceUuid) {
 			_this.serviceUuid = serviceUuid;
 		},
-		getServiceTypeName : function() {
-			return _this.serviceTypeName;
-		},
-		setServiceTypeName : function(serviceTypeName) {
-			_this.serviceTypeName = serviceTypeName;
-		},
-		getCreateSubscriberName : function() {
-			return _this.createSubscriberName;
-		},
-		setCreateSubscriberName : function(createSubscriberName) {
-			_this.createSubscriberName = createSubscriberName;
-		},
-		getSdncPreload : function() {
-			return _this.sdncPreload;
-		},
-		setSdncPreload : function(sdncPreload) {
-			_this.sdncPreload = sdncPreload;
-		},
-		getUploadSupplementoryDataFile : function() {
-			return _this.uploadSupplementoryDataFile;
-		},
-		setUploadSupplementoryDataFile : function(uploadSupplementoryDataFile) {
-			_this.uploadSupplementoryDataFile = uploadSupplementoryDataFile;
-		},
-		getSupplementoryDataFile : function() {
-			return _this.supplementoryDataFile;
-		},
-		setSupplementoryDataFile : function(supplementoryDataFile) {
-			_this.supplementoryDataFile = supplementoryDataFile;
-		},
-		getSubscriberId : function() {
-			return _this.subscriberId;
-		},
-		setSubscriberId : function(subscriberId) {
-			_this.subscriberId = subscriberId;
-		},
 		getLoggedInUserId : function() {
 			return _this.loggedInUserId;
 		},
@@ -204,15 +162,6 @@ var DataService = function($log, DataService) {
 		setSubscriptionServiceTypeList : function(subscriptionServiceTypeList) {
 			_this.subscriptionServiceTypeList = subscriptionServiceTypeList;
 		},
-		getUserParams : function() {
-			return _this.userParams;
-		},
-		setUserParams : function(userParams) {
-			_this.userParams = userParams;
-		},
-		getUserServiceInstanceName : function() {
-			return _this.userServiceInstanceName;
-		},
 		setUserServiceInstanceName : function(userServiceInstanceName) {
 			_this.userServiceInstanceName = userServiceInstanceName;
 		},
@@ -228,12 +177,12 @@ var DataService = function($log, DataService) {
 		setVnfInstanceId : function(vnfInstanceId) {
 			_this.vnfInstanceId = vnfInstanceId;
 		},
-        getVfModuleInstanceName : function() {
-            return _this.vfModuleInstanceName;
-        },
-        setVfModuleInstanceName : function(vfModuleInstanceName) {
-            _this.vfModuleInstanceName = vfModuleInstanceName;
-        },
+		getVfModuleInstanceName : function() {
+				return _this.vfModuleInstanceName;
+		},
+		setVfModuleInstanceName : function(vfModuleInstanceName) {
+				_this.vfModuleInstanceName = vfModuleInstanceName;
+		},
 		getVolumeGroupInstanceId : function() {
 			return _this.volumeGroupInstanceId;
 		},
@@ -252,21 +201,12 @@ var DataService = function($log, DataService) {
 		setTenant : function(tenant) {
 			_this.tenant = tenant;
 		},
-		getTreeHandle : function() {
-			return _this.treeHandle;
-		},
-		setTreeHandle : function(treeHandle) {
-			_this.treeHandle = treeHandle;
-		},
 		setServiceInstanceToCustomer : function(serviceInstanceToCustomer) {
 			_this.serviceInstanceToCustomer = [];
 			_this.serviceInstanceToCustomer = serviceInstanceToCustomer;
 		},
-		getServiceInstanceToCustomer : function() {
-			return _this.serviceInstanceToCustomer;
-		},
-        getMsoRequestParametersTestApi: function(){
-            return sessionStorage.getItem("msoRequestParametersTestApiValue");
+		getMsoRequestParametersTestApi: function(){
+			return sessionStorage.getItem("msoRequestParametersTestApiValue");
 		},
 		setALaCarte : function(aval) {
 			_this.aLaCarte = aval;
@@ -278,15 +218,15 @@ var DataService = function($log, DataService) {
 			}
 			return _this.aLaCarte;
 		},
-        setShouldIncludeInAsyncInstantiationFlow: function (val) {
-            _this.shouldIncludeInAsyncInstantiationFlow = val;
-        },
-        getShouldIncludeInAsyncInstantiationFlow: function(){
-            if (_this.shouldIncludeInAsyncInstantiationFlow === undefined) {
-                return false;
-            }
-            return _this.shouldIncludeInAsyncInstantiationFlow;
-        },
+		setShouldIncludeInAsyncInstantiationFlow: function (val) {
+				_this.shouldIncludeInAsyncInstantiationFlow = val;
+		},
+		getShouldIncludeInAsyncInstantiationFlow: function(){
+			if (_this.shouldIncludeInAsyncInstantiationFlow === undefined) {
+					return false;
+			}
+			return _this.shouldIncludeInAsyncInstantiationFlow;
+		},
 		setMacro : function(aval) {
 			_this.macro = aval;
 		},
@@ -334,77 +274,52 @@ var DataService = function($log, DataService) {
 		},
 		getServiceProxies:function(){
             return _this.serviceProxies;
-        },
-        setServiceProxies:function(serviceProxies){
-             _this.serviceProxies = serviceProxies;
-        },
-        getSourceServiceProxies:function(){
-            return _this.sourceServiceProxies;
-        },
-        setSourceServiceProxies:function(sourceServiceProxies){
-            _this.sourceServiceProxies = sourceServiceProxies;
-        },
-        getCollectorServiceProxies:function(){
-            return _this.collectorServiceProxies;
-        },
-        setCollectorServiceProxies:function(collectorServiceProxies){
-            _this.collectorServiceProxies = collectorServiceProxies;
-        },
+		},
+		setServiceProxies:function(serviceProxies){
+				 _this.serviceProxies = serviceProxies;
+		},
+		getSourceServiceProxies:function(){
+				return _this.sourceServiceProxies;
+		},
+		setSourceServiceProxies:function(sourceServiceProxies){
+				_this.sourceServiceProxies = sourceServiceProxies;
+		},
+		getCollectorServiceProxies:function(){
+				return _this.collectorServiceProxies;
+		},
+		setCollectorServiceProxies:function(collectorServiceProxies){
+				_this.collectorServiceProxies = collectorServiceProxies;
+		},
 		getConfigurationByPolicy:function() {
         	return _this.configurationByPolicy;
 		},
-        setConfigurationByPolicy:function (configurationByPolicy) {
+		setConfigurationByPolicy:function (configurationByPolicy) {
 			_this.configurationByPolicy = configurationByPolicy;
-        },
-        getSuppressRollback:function(){
-            return _this.suppressRollback;
-        },
-        setSuppressRollback:function(suppressRollback){
-            _this.suppressRollback = suppressRollback;
-        },
-        getPortMirroningConfigFields:function(){
-            return _this.portMirroningConfigFields;
-        },
-        setPortMirroningConfigFields:function(portMirroningConfigFields){
-            _this.portMirroningConfigFields = portMirroningConfigFields;
-        },
-        getConfigurationInstanceId : function() {
-            return _this.configurationInstanceId;
-        },
-        setConfigurationInstanceId : function(configurationInstanceId) {
-            _this.configurationInstanceId = configurationInstanceId;
-        },
-		getConfigurationStatus: function () {
-			return _this.configurationStatus;
-        },
-        setConfigurationStatus: function (configurationStatus) {
-			_this.configurationStatus = configurationStatus;
-        },
-        getPortStatus: function () {
-            return _this.portStatus;
-        },
-        setPortStatus: function (portStatus) {
-            _this.portStatus = portStatus;
-        },
-        getPortId: function () {
-            return _this.portId;
-        },
-        setPortId: function (portId) {
-            _this.portId = portId;
-        },
-        getPnf: function () {
-            return _this.pnf;
-        },
-        setPnf: function (pnf) {
-            _this.pnf = pnf;
-        },
-        getOwningEntityProperties: function () {
-            return _this.owningEntityProperties;
-        },
-        setOwningEntityProperties: function (properties) {
-            _this.owningEntityProperties = properties;
-        }
-
+				},
+		getPortMirroningConfigFields:function(){
+				return _this.portMirroningConfigFields;
+		},
+		setPortMirroningConfigFields:function(portMirroningConfigFields){
+				_this.portMirroningConfigFields = portMirroningConfigFields;
+		},
+		getConfigurationInstanceId : function() {
+				return _this.configurationInstanceId;
+		},
+		setConfigurationInstanceId : function(configurationInstanceId) {
+				_this.configurationInstanceId = configurationInstanceId;
+		},
+		getPnf: function () {
+				return _this.pnf;
+		},
+		setPnf: function (pnf) {
+				_this.pnf = pnf;
+		},
+		getOwningEntityProperties: function () {
+				return _this.owningEntityProperties;
+		},
+		setOwningEntityProperties: function (properties) {
+				_this.owningEntityProperties = properties;
+		}
 	};
 };
 

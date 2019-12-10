@@ -12,7 +12,7 @@ import {BasicControlGenerator} from "../../../shared/components/genericForm/form
 import {AaiService} from "../../../shared/services/aaiService/aai.service";
 import {NetworkPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
 import {NetworkControlGenerator} from "../../../shared/components/genericForm/formControlsServices/networkGenerator/network.control.generator";
-import {VfModulePopuopService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {VfModuleControlGenerator} from "../../../shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {VnfGroupControlGenerator} from "../../../shared/components/genericForm/formControlsServices/vnfGroupGenerator/vnfGroup.control.generator";
 import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
@@ -96,7 +96,7 @@ describe('Shared Tree Service', () => {
         DynamicInputsService,
         NetworkPopupService,
         NetworkControlGenerator,
-        VfModulePopuopService,
+        VfModulePopupService,
         VfModuleUpgradePopupService,
         VfModuleControlGenerator,
         VnfGroupControlGenerator,

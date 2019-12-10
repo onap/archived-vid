@@ -154,7 +154,7 @@ export abstract class VfModulePopupServiceBase {
 }
 
 @Injectable()
-export class VfModulePopuopService extends VfModulePopupServiceBase implements GenericPopupInterface {
+export class VfModulePopupService extends VfModulePopupServiceBase implements GenericPopupInterface {
 
 
   constructor(_basicControlGenerator: BasicControlGenerator,

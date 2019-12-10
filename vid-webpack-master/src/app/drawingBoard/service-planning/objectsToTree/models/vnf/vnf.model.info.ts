@@ -15,7 +15,7 @@ import {
 } from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from 'ng2-bootstrap-modal';
 import {VnfPopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
-import {VfModulePopuopService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {DuplicateService} from "../../../duplicate/duplicate.service";
@@ -47,7 +47,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
               private _defaultDataGeneratorService: DefaultDataGeneratorService,
               private _dialogService: DialogService,
               private _vnfPopupService: VnfPopupService,
-              private _vfModulePopupService: VfModulePopuopService,
+              private _vfModulePopupService: VfModulePopupService,
               private _vfModuleUpgradePopupService: VfModuleUpgradePopupService,
               private _duplicateService: DuplicateService,
               private modalService: SdcUiServices.ModalService,

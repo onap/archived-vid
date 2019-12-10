@@ -10,7 +10,7 @@ import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../../shared/store/reducers";
 import {DefaultDataGeneratorService} from "../../../../../shared/services/defaultDataServiceGenerator/default.data.generator.service";
 import {DialogService} from "ng2-bootstrap-modal";
-import {VfModulePopuopService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {VnfPopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {DuplicateService} from "../../../duplicate/duplicate.service";
@@ -37,7 +37,7 @@ describe('Vnf Model Info', () => {
  let _serviceInfoService: ServiceInfoService;
  let _defaultDataGeneratorService : DefaultDataGeneratorService;
  let _dialogService : DialogService;
- let _vfModulePopupService : VfModulePopuopService;
+ let _vfModulePopupService : VfModulePopupService;
  let _vfModuleUpgradePopupService : VfModuleUpgradePopupService;
  let _vnfPopupService : VnfPopupService;
  let _duplicateService : DuplicateService;
@@ -54,7 +54,7 @@ describe('Vnf Model Info', () => {
         MockNgRedux,
         DynamicInputsService,
         DialogService,
-        VfModulePopuopService,
+        VfModulePopupService,
         VfModuleUpgradePopupService,
         VnfPopupService,
         DefaultDataGeneratorService,

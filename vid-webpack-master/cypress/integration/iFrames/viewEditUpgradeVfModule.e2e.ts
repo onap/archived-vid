@@ -100,7 +100,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
         `servicePlanning/EDIT?serviceModelId=${serviceUuid}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
     });
 
-    it(`Upgrade a VFModule`, function () {
+    it(`Upgrade a VF Module`, function () {
       cy.initDrawingBoardUserPermission();
       initServicePlanning("EDIT",
         '../vid-automation/src/test/resources/viewEdit/ServiceTreeWithMultipleChildren_serviceInstance_withUpdatedLatestVersion.json');
@@ -113,7 +113,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
         const requestBody = Object(xhr.request.body);
         const vfModuleRequest = requestBody.vnfs['VNF2_INSTANCE_ID'].vfModules['vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1']['2c1ca484-cbc2-408b-ab86-25a2c15ce280'];
-          expect(requestBody.action).to.equal("None_Upgrade");
+        expect(requestBody.action).to.equal("None_Upgrade");
         expect(requestBody.vnfs['VNF2_INSTANCE_ID'].action).to.equal("None_Upgrade");
         expect(vfModuleRequest.action).to.equal("None_Upgrade");
       });

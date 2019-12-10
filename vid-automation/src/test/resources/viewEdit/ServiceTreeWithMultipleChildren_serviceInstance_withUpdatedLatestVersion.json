@@ -138,7 +138,7 @@
             "lineOfBusiness": null,
             "platformName": null,
             "isBase": false,
-            "volumeGroupName": null
+            "volumeGroupName": "puwesovabe_vol"
           }
         },
         "dc229cd8-c132-4455-8517-5c1787c18b14": {
@@ -166,7 +166,7 @@
             "lineOfBusiness": null,
             "platformName": null,
             "isBase": true,
-            "volumeGroupName": null
+            "volumeGroupName": "puwesovabe1_vol"
           }
         }
       },
