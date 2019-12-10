@@ -11,7 +11,7 @@ import {IframeService} from "../../../shared/utils/iframe.service";
 import {DuplicateService} from '../duplicate/duplicate.service';
 import {DrawingBoardTreeService, TreeNodeContextMenuModel} from "./drawing-board-tree.service";
 import {NetworkPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
-import {VfModulePopuopService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {VnfPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
 import {SdcUiServices} from "onap-ui-angular";
 import {HighlightPipe} from "../../../shared/pipes/highlight/highlight-filter.pipe";
@@ -63,7 +63,7 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
               private modalService: SdcUiServices.ModalService,
               private _drawingBoardTreeService: DrawingBoardTreeService,
               private _networkPopupService: NetworkPopupService,
-              private _vfModulePopuopService: VfModulePopuopService,
+              private _vfModulePopuopService: VfModulePopupService,
               private _vnfPopupService: VnfPopupService,
               private _vnfGroupPopupService: VnfGroupPopupService,
               private _errorMsgService: ErrorMsgService,

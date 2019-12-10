@@ -331,7 +331,7 @@
         "baseModule": false
       },
       "inputs": {},
-      "volumeGroupAllowed": false
+      "volumeGroupAllowed": true
     },
     "vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2": {
       "uuid": "41708296-e443-4c71-953f-d9a010f059e1",
@@ -367,18 +367,18 @@
         "baseModule": true
       },
       "inputs": {},
-      "volumeGroupAllowed": true
+      "volumeGroupAllowed": false
     }
   },
   "volumeGroups": {
-    "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0": {
+    "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-1": {
       "uuid": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
       "invariantUuid": "a6f9e51a-2b35-416a-ae15-15e58d61f36d",
       "customizationUuid": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
       "description": null,
-      "name": "VfVgeraldine..base_vflorence..module-0",
+      "name": "VfVgeraldine..base_vflorence..module-1",
       "version": "2",
-      "modelCustomizationName": "VfVgeraldine..base_vflorence..module-0",
+      "modelCustomizationName": "VfVgeraldine..base_vflorence..module-1",
       "properties": {
         "minCountInstances": 1,
         "maxCountInstances": 1,

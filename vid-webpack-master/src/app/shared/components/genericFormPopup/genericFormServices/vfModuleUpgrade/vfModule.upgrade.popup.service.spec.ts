@@ -1,6 +1,10 @@
 import {LogService} from "../../../../utils/log/log.service";
 import {NgRedux} from "@angular-redux/store";
-import {BasicControlGenerator, SDN_C_PRE_LOAD, SUPPLEMENTARY_FILE} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {
+  BasicControlGenerator,
+  SDN_C_PRE_LOAD,
+  SUPPLEMENTARY_FILE
+} from "../../../genericForm/formControlsServices/basic.control.generator";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {HttpClient} from "@angular/common/http";
 import {GenericFormService} from "../../../genericForm/generic-form.service";
@@ -20,6 +24,7 @@ import {GeneralActions} from "../../../../storeUtil/utils/general/general.action
 import {VfModuleActions} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 import {ServiceActions} from "../../../../storeUtil/utils/service/service.actions";
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
+import * as _ from "lodash";
 
 class MockModalService<T> {}
 
@@ -29,6 +34,15 @@ class MockReduxStore<T> {
   getState() {
     return {
       service: {
+        serviceHierarchy: {
+          serviceId: {
+            vfModules: {
+              vfModuleName: {
+                volumeGroupAllowed: true
+              }
+            }
+          }
+        },
         serviceInstance : {
           serviceId : {
             vnfs : {
@@ -40,7 +54,6 @@ class MockReduxStore<T> {
                     }}}}}}}}
     };
   }
-
   dispatch() {}
 }
 
@@ -101,19 +114,31 @@ describe('VFModule popup service', () => {
     });
   }
 
-  function getControlByNameAndCheckValue(controlName: string, expectedValue: any) {
+  function getControlByNameAndCheckValue(controlName: string, expectedValue: any, shouldControllerExist: boolean) {
     const controls = service.getControls('serviceId', 'vnfStoreKey', 'vfModuleId', true);
     const control = findControlByName(controls, controlName);
-    expect(control).toBeDefined();
-    expect(control.value).toEqual(expectedValue);
+    if(shouldControllerExist){
+      expect(control).toBeDefined();
+      expect(control.value).toEqual(expectedValue);
+    }
+    else{
+      expect(control).toBeUndefined();
+    }
   }
 
   test('get controls should return retainAssignments control with true value', ()=> {
-    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_ASSIGNMENTS, true);
+    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_ASSIGNMENTS, true, true);
   });
 
   test('get controls should return retainVolumeGroup control with true value', ()=> {
-    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, true);
+    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, true, true);
+  });
+
+  test('get controls should NOT return retainVolumeGroup control with true value', ()=> {
+    let stateCopy =_.cloneDeep(store.getState());
+    stateCopy.service.serviceHierarchy['serviceId'].vfModules['vfModuleName'].volumeGroupAllowed = false;
+    jest.spyOn(store, 'getState').mockReturnValue(stateCopy);
+    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, null, false);
   });
 
   test('get controls should contain SUPPLEMENTARY_FILE controller', ()=> {
@@ -196,6 +221,6 @@ describe('VFModule popup service', () => {
 
 
   test( 'get controls should return usePreload with false value', () => {
-    getControlByNameAndCheckValue(SDN_C_PRE_LOAD, false);
+    getControlByNameAndCheckValue(SDN_C_PRE_LOAD, false, true);
   });
 });

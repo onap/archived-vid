@@ -17,7 +17,7 @@ import {UUIDData} from "./generic-form-popup.component";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {NetworkPopupService} from "./genericFormServices/network/network.popup.service";
 import {NetworkControlGenerator} from "../genericForm/formControlsServices/networkGenerator/network.control.generator";
-import {VfModulePopuopService} from "./genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "./genericFormServices/vfModule/vfModule.popup.service";
 import {VfModuleControlGenerator} from "../genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {FeatureFlagsService} from "../../services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "./genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
@@ -946,7 +946,7 @@ describe('Generic Form popup Service', () => {
   let form : FormGroup;
   let fb : FormBuilder;
   let netwokPopupService : NetworkPopupService;
-  let vfModulePopupService : VfModulePopuopService;
+  let vfModulePopupService : VfModulePopupService;
   let servicePopupService : ServicePopupService;
   let _aaiService : AaiService;
   let _activatedRoute : ActivatedRoute;
@@ -967,7 +967,7 @@ describe('Generic Form popup Service', () => {
         AaiService,
         NetworkPopupService,
         NetworkControlGenerator,
-        VfModulePopuopService,
+        VfModulePopupService,
         VfModuleUpgradePopupService,
         VfModuleControlGenerator,
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
@@ -981,7 +981,7 @@ describe('Generic Form popup Service', () => {
     httpMock = injector.get(HttpTestingController);
     fb = injector.get(FormBuilder);
     netwokPopupService = injector.get(NetworkPopupService);
-    vfModulePopupService = injector.get(VfModulePopuopService);
+    vfModulePopupService = injector.get(VfModulePopupService);
     servicePopupService = injector.get(ServicePopupService);
     _aaiService = injector.get(AaiService);
     _activatedRoute = injector.get(ActivatedRoute);

@@ -22,7 +22,7 @@ import {IframeService} from "../../../../shared/utils/iframe.service";
 import {BasicPopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/basic.popup.service";
 import {NetworkPopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
 import {NetworkControlGenerator} from "../../../../shared/components/genericForm/formControlsServices/networkGenerator/network.control.generator";
-import {VfModulePopuopService} from "../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {VfModuleControlGenerator} from "../../../../shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {FeatureFlagsService} from "../../../../shared/services/featureFlag/feature-flags.service";
 import {VnfControlGenerator} from "../../../../shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator";
@@ -98,7 +98,7 @@ describe('Model Tree Generator service', () => {
         BasicPopupService,
         NetworkPopupService,
         NetworkControlGenerator,
-        VfModulePopuopService,
+        VfModulePopupService,
         VfModuleUpgradePopupService,
         VfModuleControlGenerator,
         VnfGroupControlGenerator,
