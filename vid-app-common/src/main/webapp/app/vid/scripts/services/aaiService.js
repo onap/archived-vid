@@ -347,13 +347,9 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
         getJoinedQueryString: getJoinedQueryString,
 
         getServices2: function (successCallback, errorCallback) {
-
             $http.get(FIELD.ID.AAI_GET_SERVICES, {}, {
-
-
                 timeout: PropertyService.getServerResponseTimeoutMsec()
             }).then(function (response) {
-                var customerList = [];
                 if (response.data != null) {
                     var serviceIdList = [];
                     angular.forEach(response.data, function (value, key) {

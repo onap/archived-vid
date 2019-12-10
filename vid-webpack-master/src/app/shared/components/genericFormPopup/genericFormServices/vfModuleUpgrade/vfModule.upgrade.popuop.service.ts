@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {FormGroup} from "@angular/forms";
-import {VfModulePopupServiceBase} from "../vfModule/vfModule.popuop.service";
+import {VfModulePopupServiceBase} from "../vfModule/vfModule.popup.service";
 import {upgradeVFModule} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 import {NgRedux} from "@angular-redux/store";
@@ -16,11 +16,12 @@ import {FormControlModel} from "../../../../models/formControlModels/formControl
 import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
 import {mergeObjectByPathAction} from "../../../../storeUtil/utils/general/general.actions";
+import * as _ from "lodash";
+import {VfModuleInstance} from "../../../../models/vfModuleInstance";
 
 export enum UpgradeFormControlNames {
   RETAIN_VOLUME_GROUPS = 'retainVolumeGroups',
   RETAIN_ASSIGNMENTS = 'retainAssignments',
-  SDN_C_PRE_LOAD = 'sdncPreLoad',
 }
 
 @Injectable()
@@ -43,11 +44,12 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
   getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean): FormControlModel[]  {
     let result: FormControlModel[] =[
       this.getRetainAssignmentsControl(),
-      this.getRetainVolumeGroupsControl(),
       this._basicControlGenerator.getSDNCControl(null)
     ];
-
-    const vfModuleInstance = this._vfModuleControlGenerator.getVfModuleInstance(serviceId, vnfStoreKey, this.uuidData, isUpdateMode);
+    const vfModuleInstance :VfModuleInstance = this._vfModuleControlGenerator.getVfModuleInstance(serviceId, vnfStoreKey, this.uuidData, isUpdateMode);
+    if(this._store.getState().service.serviceHierarchy[serviceId].vfModules[this.uuidData['modelName']].volumeGroupAllowed){
+      result.push(this.getRetainVolumeGroupsControl());
+    }
     result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     return result;
   };

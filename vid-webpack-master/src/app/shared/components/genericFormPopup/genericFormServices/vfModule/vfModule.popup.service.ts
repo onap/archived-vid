@@ -34,7 +34,6 @@ export abstract class VfModulePopupServiceBase {
     formValues.modelInfo = new ModelInfo(that.model);
     formValues.uuid = formValues.modelInfo.uuid;
     formValues.isMissingData = false;
-    const vnf = that._store.getState().service.serviceInstance[that.uuidData.serviceId].vnfs[that.uuidData.vnfStoreKey];
 
     if (!that.uuidData.vFModuleStoreKey) {
       this._store.dispatch(createVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, 0, that.uuidData.vnfStoreKey));
@@ -154,7 +153,7 @@ export abstract class VfModulePopupServiceBase {
 }
 
 @Injectable()
-export class VfModulePopuopService extends VfModulePopupServiceBase implements GenericPopupInterface {
+export class VfModulePopupService extends VfModulePopupServiceBase implements GenericPopupInterface {
 
 
   constructor(_basicControlGenerator: BasicControlGenerator,

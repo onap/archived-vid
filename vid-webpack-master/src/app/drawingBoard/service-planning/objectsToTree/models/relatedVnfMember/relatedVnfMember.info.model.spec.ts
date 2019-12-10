@@ -8,7 +8,7 @@ import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../../shared/store/reducers";
 import {DefaultDataGeneratorService} from "../../../../../shared/services/defaultDataServiceGenerator/default.data.generator.service";
 import {DialogService} from "ng2-bootstrap-modal";
-import {VfModulePopuopService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {VnfPopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
 import {DuplicateService} from "../../../duplicate/duplicate.service";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
@@ -38,7 +38,7 @@ describe('Related Vnf member Model Info', () => {
         MockNgRedux,
         DynamicInputsService,
         DialogService,
-        VfModulePopuopService,
+        VfModulePopupService,
         VfModuleUpgradePopupService,
         VnfPopupService,
         DefaultDataGeneratorService,

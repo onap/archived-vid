@@ -8,7 +8,7 @@ import {FormBuilder} from "@angular/forms";
 import {IframeService} from "../../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {BasicPopupService} from "../basic.popup.service";
-import {VfModulePopuopService} from "./vfModule.popuop.service";
+import {VfModulePopupService} from "./vfModule.popup.service";
 import {VfModuleControlGenerator} from "../../../genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
@@ -1972,7 +1972,7 @@ class MockFeatureFlagsService {}
 
 describe('VFModule popup service', () => {
   let injector;
-  let service: VfModulePopuopService;
+  let service: VfModulePopupService;
   let genericFormService: GenericFormService
   let defaultDataGeneratorService: DefaultDataGeneratorService;
   let fb: FormBuilder;
@@ -1981,7 +1981,7 @@ describe('VFModule popup service', () => {
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       providers : [
-        VfModulePopuopService,
+        VfModulePopupService,
         BasicControlGenerator,
         VfModuleControlGenerator,
         DefaultDataGeneratorService,
@@ -2000,7 +2000,7 @@ describe('VFModule popup service', () => {
     await TestBed.compileComponents();
 
     injector = getTestBed();
-    service = injector.get(VfModulePopuopService);
+    service = injector.get(VfModulePopupService);
     genericFormService = injector.get(GenericFormService);
     defaultDataGeneratorService = injector.get(DefaultDataGeneratorService);
     fb = injector.get(FormBuilder);
