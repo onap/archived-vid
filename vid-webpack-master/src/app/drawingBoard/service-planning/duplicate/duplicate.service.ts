@@ -11,15 +11,18 @@ import {TypeNodeInformation} from "../typeNodeInformation.model";
 import {SdcUiCommon, SdcUiServices} from "onap-ui-angular";
 import {changeInstanceCounter, duplicateBulkInstances} from "../../../shared/storeUtil/utils/general/general.actions";
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
+import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
+import {Utils} from "../../../shared/utils/utils";
 
 @Injectable()
 export class DuplicateService {
 
-  constructor(private _logService : LogService,  private _store: NgRedux<AppState>, modalService: SdcUiServices.ModalService) {
+  constructor(private _logService: LogService, private _store: NgRedux<AppState>, modalService: SdcUiServices.ModalService) {
     this.modalService = modalService;
   }
 
-  numberOfDuplicates:number;
+  numberOfDuplicates: number;
+
   setNumberOfDuplicates(numberOfDuplicates: number) {
     this.numberOfDuplicates = numberOfDuplicates;
   }
@@ -30,10 +33,9 @@ export class DuplicateService {
   storeKey: string = null;
   padding = '0000';
   modalService: SdcUiServices.ModalService;
-  store : NgRedux<AppState>;
-  existingNames : {[key: string] : any};
-  currentNode : ITreeNode = null;
-
+  store: NgRedux<AppState>;
+  existingNames: { [key: string]: any };
+  currentNode: ITreeNode = null;
 
 
   canDuplicate(node: ITreeNode): boolean {
@@ -41,25 +43,31 @@ export class DuplicateService {
     return node.data.type === 'VF' || node.data.type === 'VL';
   }
 
-  isEnabled(node: ITreeNode, store: NgRedux<AppState>, serviceId : string): boolean {
-    if(!_.isNil(node) && !_.isNil(node.data.menuActions['duplicate'])){
-      if(this.hasMissingData(node)) return false;
-      const typeNodeInformation : TypeNodeInformation = new TypeNodeInformation(node);
-      const max : number = store.getState().service.serviceHierarchy[serviceId][typeNodeInformation.hierarchyName][node.data.modelName].properties['max_instances'] || 1;
-      const currentExisting: number = store.getState().service.serviceInstance[serviceId][typeNodeInformation.existingMappingCounterName][node.data.modelUniqueId];
+  isEnabled(node: ITreeNode, store: NgRedux<AppState>, serviceId: string): boolean {
+    if (!_.isNil(node) && !_.isNil(node.data.menuActions['duplicate'])) {
+      if (this.hasMissingData(node)) return false;
+      const typeNodeInformation: TypeNodeInformation = new TypeNodeInformation(node);
+      const flags = FeatureFlagsService.getAllFlags(store);
 
-      return max - currentExisting > 0;
-    }else {
+      const currentExisting: number = store.getState().service.serviceInstance[serviceId][typeNodeInformation.existingMappingCounterName][node.data.modelUniqueId];
+      const maxInstances = Utils.getMaxFirstLevel(store.getState().service.serviceHierarchy[serviceId][typeNodeInformation.hierarchyName][node.data.modelName].properties, flags);
+      if (_.isNil(maxInstances)) {
+        return true;
+      } else {
+        return maxInstances - currentExisting > 0;
+      }
+
+    } else {
       return false;
     }
   }
 
-  hasMissingData(node : ITreeNode): boolean {
-    if(!_.isNil(node)){
-      if(node.data.missingData) return true;
-      if(!_.isNil(node.data.children)){
-        for(let child of node.data.children) {
-          if(child.missingData){
+  hasMissingData(node: ITreeNode): boolean {
+    if (!_.isNil(node)) {
+      if (node.data.missingData) return true;
+      if (!_.isNil(node.data.children)) {
+        for (let child of node.data.children) {
+          if (child.missingData) {
             return true;
           }
         }
@@ -69,16 +77,22 @@ export class DuplicateService {
     return false;
   }
 
-  getRemainsInstance(modelId : string, modelName : string, serviceId : string, store: NgRedux<AppState>, node : ITreeNode) : number {
-    const typeNodeInformation : TypeNodeInformation = new TypeNodeInformation(node);
-    const properties  = store.getState().service.serviceHierarchy[serviceId][typeNodeInformation.hierarchyName][modelName].properties;
-    const currentExisting : number = store.getState().service.serviceInstance[serviceId][typeNodeInformation.existingMappingCounterName][modelId];
-    return (!_.isNil(properties) && !_.isNil(properties['max_instances'])) ? properties['max_instances'] - currentExisting : null;
+  getRemainsInstance(modelId: string, modelName: string, serviceId: string, store: NgRedux<AppState>, node: ITreeNode): number {
+    const typeNodeInformation: TypeNodeInformation = new TypeNodeInformation(node);
+    const properties = store.getState().service.serviceHierarchy[serviceId][typeNodeInformation.hierarchyName][modelName].properties;
+    const currentExisting: number = store.getState().service.serviceInstance[serviceId][typeNodeInformation.existingMappingCounterName][modelId];
+
+    const flags = FeatureFlagsService.getAllFlags(store);
+    const maxInstances = Utils.getMaxFirstLevel(properties, flags);
+    if (_.isNil(maxInstances)) {
+      return 10;
+    } else {
+      return maxInstances - currentExisting;
+    }
   }
 
 
-
-  openDuplicateModal(currentServiceId: string, currentUuid: string, currentId: string, storeKey : string, numberOfDuplicate: number, _store : NgRedux<AppState>, node: ITreeNode): IModalConfig {
+  openDuplicateModal(currentServiceId: string, currentUuid: string, currentId: string, storeKey: string, numberOfDuplicate: number, _store: NgRedux<AppState>, node: ITreeNode): IModalConfig {
     this.currentInstanceId = currentId;
     this.currentServiceId = currentServiceId;
     this.maxNumberOfDuplicate = this.getRemainsInstance(currentUuid, currentId, currentServiceId, _store, node);
@@ -87,7 +101,7 @@ export class DuplicateService {
     this.currentNode = node;
 
 
-    return  {
+    return {
       size: SdcUiCommon.ModalSize.medium,
       title: 'Duplicate Node',
       type: SdcUiCommon.ModalType.custom,
@@ -98,12 +112,12 @@ export class DuplicateService {
     };
   }
 
-  duplicate(node : ITreeNode): void {
-    const typeNodeInformation : TypeNodeInformation = new TypeNodeInformation(node);
+  duplicate(node: ITreeNode): void {
+    const typeNodeInformation: TypeNodeInformation = new TypeNodeInformation(node);
     this.existingNames = this.store.getState().service.serviceInstance[this.currentServiceId].existingNames;
-    const toClone  = this.store.getState().service.serviceInstance[this.currentServiceId][typeNodeInformation.hierarchyName][this.storeKey];
+    const toClone = this.store.getState().service.serviceInstance[this.currentServiceId][typeNodeInformation.hierarchyName][this.storeKey];
     let newObjects = {};
-    for(let i = 0; i < this.numberOfDuplicates; i++) {
+    for (let i = 0; i < this.numberOfDuplicates; i++) {
       const uniqueStoreKey = this.generateUniqueStoreKey(this.currentServiceId, this.currentInstanceId, this.store.getState().service.serviceInstance[this.currentServiceId][typeNodeInformation.hierarchyName], newObjects);
       const clone = this.cloneVnf(toClone, this.currentInstanceId);
       newObjects[uniqueStoreKey] = clone;
@@ -114,12 +128,12 @@ export class DuplicateService {
   }
 
 
-  cloneVnf(vnf : VnfInstance, originalName: string): VnfInstance {
-    let newUniqueVnf : VnfInstance = _.cloneDeep(vnf);
+  cloneVnf(vnf: VnfInstance, originalName: string): VnfInstance {
+    let newUniqueVnf: VnfInstance = _.cloneDeep(vnf);
 
     newUniqueVnf.originalName = originalName;
     newUniqueVnf.trackById = DefaultDataGeneratorService.createRandomTrackById();
-    if (!_.isNil(vnf.instanceName)){
+    if (!_.isNil(vnf.instanceName)) {
       newUniqueVnf.instanceName = this.ensureUniqueNameOrGenerateOne(vnf.instanceName);
     }
 
@@ -127,10 +141,10 @@ export class DuplicateService {
       const vfModuleModel: VfModuleMap = vnf.vfModules[vf_module_model_name];
       for (let vfModule in vfModuleModel) {
         newUniqueVnf.vfModules[vf_module_model_name][vfModule].trackById = DefaultDataGeneratorService.createRandomTrackById();
-        if (!_.isNil(vfModuleModel[vfModule].instanceName)){
+        if (!_.isNil(vfModuleModel[vfModule].instanceName)) {
           newUniqueVnf.vfModules[vf_module_model_name][vfModule].instanceName = this.ensureUniqueNameOrGenerateOne(vfModuleModel[vfModule].instanceName);
         }
-        if (!_.isNil(vfModuleModel[vfModule].volumeGroupName)){
+        if (!_.isNil(vfModuleModel[vfModule].volumeGroupName)) {
           newUniqueVnf.vfModules[vf_module_model_name][vfModule].volumeGroupName = this.ensureUniqueNameOrGenerateOne(vfModuleModel[vfModule].volumeGroupName);
         }
       }
@@ -138,7 +152,7 @@ export class DuplicateService {
     return newUniqueVnf;
   }
 
-  ensureUniqueNameOrGenerateOne(instanceName){
+  ensureUniqueNameOrGenerateOne(instanceName) {
     let uniqueInstanceName = instanceName;
     if (this.isAlreadyExists(instanceName, this.existingNames)) {
       uniqueInstanceName = this.generateNextUniqueName(instanceName, this.existingNames);
@@ -148,33 +162,33 @@ export class DuplicateService {
   }
 
 
-  isAlreadyExists(name : string, existingNames : {[key: string] : any}){
+  isAlreadyExists(name: string, existingNames: { [key: string]: any }) {
     return _.has(existingNames, name.toLowerCase());
   }
 
-  generateNextUniqueName(name : string, existingNames : {[key: string] : any})  :string{
+  generateNextUniqueName(name: string, existingNames: { [key: string]: any }): string {
     let suffix = "000";
     let counter = 1;
-    if (name.match(/^.*_[\d]{3}$/)){
+    if (name.match(/^.*_[\d]{3}$/)) {
       name = name.substring(0, name.length - 4);
     }
 
-    while(true){
-      let paddingNumber : string = this.getNumberAsPaddingString(counter, suffix);
+    while (true) {
+      let paddingNumber: string = this.getNumberAsPaddingString(counter, suffix);
       let candidateUniqueName = name + '_' + paddingNumber;
-      if(!this.isAlreadyExists(candidateUniqueName, existingNames)){
+      if (!this.isAlreadyExists(candidateUniqueName, existingNames)) {
         return candidateUniqueName;
       }
       counter++;
     }
   }
 
-  generateUniqueStoreKey(serviceId : string, objectName : string, existing : any, newObjects: any) : string {
+  generateUniqueStoreKey(serviceId: string, objectName: string, existing: any, newObjects: any): string {
     let counter = 1;
-    while(true){
-      let paddingNumber : string = this.getNumberAsPaddingString(counter, this.padding);
+    while (true) {
+      let paddingNumber: string = this.getNumberAsPaddingString(counter, this.padding);
       const name = objectName + ':' + paddingNumber;
-      if(_.isNil(existing[name]) && _.isNil(newObjects[name])){
+      if (_.isNil(existing[name]) && _.isNil(newObjects[name])) {
         return name;
       }
       counter++;

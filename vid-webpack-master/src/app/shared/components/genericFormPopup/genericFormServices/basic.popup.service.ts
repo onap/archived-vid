@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import {VfModule} from "../../../models/vfModule";
 import {VNFModel} from "../../../models/vnfModel";
 import {VnfGroupModel} from "../../../models/vnfGroupModel";
+import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
 
 @Injectable()
 export class BasicPopupService {
@@ -29,17 +30,18 @@ export class BasicPopupService {
   }
 
   getModelFromResponse(result: any, modelType: string, modelName: string) {
+    let flags = FeatureFlagsService.getAllFlags(this._store);
     let rawModel = result[modelType][modelName];
     if (!rawModel) return;
     switch (modelType){
       case 'vnfs' : {
-        return new VNFModel(rawModel);
+        return new VNFModel(rawModel, flags);
       }
       case 'vfModules' : {
         return new VfModule(rawModel);
       }
       case 'networks' : {
-        return new NetworkModel(rawModel);
+        return new NetworkModel(rawModel, flags);
       }
       case 'vnfGroups' : {
         return new VnfGroupModel(rawModel);
