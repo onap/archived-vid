@@ -1,5 +1,16 @@
 package vid.automation.test.sections;
 
+import static java.util.stream.Collectors.toMap;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
+
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
@@ -10,19 +21,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Click;
 import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
 import vid.automation.test.infra.Wait;
-
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toMap;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.assertEquals;
 
 public abstract class InstantiationStatusPage extends VidBasePage {
 
@@ -40,11 +40,9 @@ public abstract class InstantiationStatusPage extends VidBasePage {
         return wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//*[table]//tbody/tr"))).size();
     }
 
-    public static void verifyUrlMatchInstantiationStatusWithFilterSearchParam(String serviceModelId) {
-
-        Map<String, String> paramsMap = extractQueryParamsFromCurrentURL("instantiationStatus?");
-        assertEquals(paramsMap.get("filterText"), serviceModelId);
-
+    public static void verifyInstantiationStatusFilterValue(String serviceModelId) {
+        final String filterValue = Input.getValueByTestId("instantiation-status-filter");
+        assertEquals(filterValue, serviceModelId);
     }
 
     public static WebElement assertInstantiationStatusRow(String spanIdSelector, Map<String, String> fieldsIdsAndExpected) {

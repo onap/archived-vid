@@ -14,6 +14,8 @@ import static vid.automation.test.infra.ModelInfo.aLaCarteForBrowseSdc;
 import static vid.automation.test.infra.ModelInfo.aLaCarteServiceCreationTest;
 import static vid.automation.test.infra.ModelInfo.instantiationTypeAlacarte_vidNotionsInstantiationUIByUUID;
 import static vid.automation.test.infra.ModelInfo.macroForBrowseSdc;
+import static vid.automation.test.sections.VidBasePage.goOutFromIframe;
+import static vid.automation.test.sections.VidBasePage.goToIframe;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
@@ -299,7 +301,10 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
     @DataProvider
     public static Object[][] filterTexts() {
-        return new Object[][]{{serviceName},{modelInvariantId},{serviceUuid}};
+        return new Object[][]{
+            {serviceName},
+            {modelInvariantId},
+            {serviceUuid}};
     }
 
     @Test(dataProvider = "filterTexts")
@@ -335,14 +340,22 @@ public class BrowseASDCTest extends CreateInstanceDialogBaseTest {
 
     @Test
     @FeatureTogglingTest(FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER)
-    private void testClickPreviousInstantiationsInCreationDialog() throws Exception {
+    public void testClickPreviousInstantiationsInCreationDialog() {
+        try {
+            String serviceId = "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd";
+            DeployModernUIMacroDialog deployMacroDialog = getDeployModernUIMacroDialog(serviceId);
+            deployMacroDialog.clickPreviousInstantiationButton();
 
-        String serviceId = "2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd";
-        DeployModernUIMacroDialog deployMacroDialog = getDeployModernUIMacroDialog(serviceId);
-        deployMacroDialog.clickPreviousInstantiationButton();
+            //exit form deploy dialog
+            goOutFromIframe();
+            //go into Instantiation Status page
+            goToIframe();
 
-        InstantiationStatusPage.verifyUrlMatchInstantiationStatusWithFilterSearchParam(serviceId);
-
+            InstantiationStatusPage.verifyInstantiationStatusFilterValue(serviceId);
+        }
+        finally {
+            goOutFromIframe();
+        }
     }
 
     private BrowseASDCPage registerSimulatorAndGoToBrowseSDC() {
