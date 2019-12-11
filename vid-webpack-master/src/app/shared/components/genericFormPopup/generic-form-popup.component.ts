@@ -46,6 +46,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   type: PopupType;
   uuidData: UUIDData;
   showTemplateBtn: boolean = false;
+  isShowPreviousInstantiationBtn: boolean = false;
   isUpdateMode: boolean;
   node: ITreeNode = null;
   hasGeneralApiError: boolean = false;
@@ -94,6 +95,8 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
               popupService: this._servicePopupService,
             };
             this.showTemplateBtn = !!this._store.getState().global.flags["FLAG_2004_INSTANTIATION_TEMPLATES_POPUP"];
+
+            this.isShowPreviousInstantiationBtn = !!this._store.getState().global.flags["FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER"];
 
             this.uuidData.popupService.closeDialogEvent.subscribe((that) => {
               this.closeDialog(that);
@@ -148,9 +151,6 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
     this._dialogService.addDialog(InstantiationTemplatesModalComponent, {});
   }
 
-  isInstantiationStatusFilterFlagOn() {
-    return FeatureFlagsService.getFlagState(Features.FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER, this._store);
-  }
 }
 
 
