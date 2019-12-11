@@ -6,13 +6,19 @@ import {BasicControlGenerator} from "../basic.control.generator";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
-import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
+import {
+  FormControlModel,
+  ValidatorModel,
+  ValidatorOptions
+} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {VnfControlGenerator} from "./vnf.control.generator";
 import {Observable} from "rxjs";
 import {SelectOption} from "../../../../models/selectOption";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
+import {Utils} from "../../../../utils/utils";
+import {instance, mock} from "ts-mockito";
 
 class MockAppStore<T> {
   getState(){
@@ -905,8 +911,6 @@ class MockAppStore<T> {
   }
 }
 
-class MockFeatureFlagsService {}
-
 describe('VNF Control Generator', () => {
   let injector;
   let service: VnfControlGenerator;
@@ -922,7 +926,8 @@ describe('VNF Control Generator', () => {
         AaiService,
         FormBuilder,
         LogService,
-        {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
+        Utils,
+        {provide: FeatureFlagsService, useValue: instance(mock(FeatureFlagsService))},
         {provide: NgRedux, useClass: MockAppStore}]
     });
     await TestBed.compileComponents();

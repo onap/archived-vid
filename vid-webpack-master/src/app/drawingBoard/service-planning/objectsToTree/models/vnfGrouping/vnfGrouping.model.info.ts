@@ -35,6 +35,7 @@ import {
   SearchFieldItemType
 } from "../../../../../shared/components/searchMembersModal/members-table/element-table-row.model";
 import {CustomTableColumnDefinition} from "../../../../../shared/components/searchMembersModal/members-table/elements-table.component";
+import {Utils} from "../../../../../shared/utils/utils";
 
 export class VnfGroupingModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -43,6 +44,7 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
               private _vnfGroupPopupService: VnfGroupPopupService,
               private _iframeService: IframeService,
               private _aaiService: AaiService,
+              private _utils: Utils,
               private _store: NgRedux<AppState>) {
   }
 
@@ -76,7 +78,7 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
    * return next level object (null because is last level)
    ************************************************************/
   getNextLevelObject = (): RelatedVnfMemberInfoModel => {
-    return new RelatedVnfMemberInfoModel(this._sharedTreeService, this._dynamicInputsService, this._store);
+    return new RelatedVnfMemberInfoModel(this._sharedTreeService, this._dynamicInputsService, this._utils, this._store);
   };
 
   getTooltip = (): string => 'VnfGroup';

@@ -4,6 +4,8 @@ import {NgRedux} from '@angular-redux/store';
 import {DefaultDataGeneratorService} from './default.data.generator.service';
 import {ServiceNodeTypes} from "../../models/ServiceNodeTypes";
 import {VNFModel} from "../../models/vnfModel";
+import {Utils} from "../../utils/utils";
+import {mock} from "ts-mockito";
 
 class MockAppStore<T> {}
 
@@ -155,7 +157,7 @@ describe('Default Data Generator Service', () => {
         isMissingData: false,
         trackById: Math.random().toString(),
         vnfStoreKey: "abc"
-      }, new VNFModel(vnfModel),'VF_vGeraldine 0', 'vnfs');
+      }, new VNFModel(mock(Utils), vnfModel),'VF_vGeraldine 0', 'vnfs');
       expect(newVnf.name).toEqual('VF_vGeraldine 0');
       expect(newVnf.missingData).toEqual(true);
     });

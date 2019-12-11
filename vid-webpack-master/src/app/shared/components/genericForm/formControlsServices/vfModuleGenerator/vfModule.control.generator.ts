@@ -24,10 +24,8 @@ import {VfModuleInstance} from "../../../../models/vfModuleInstance";
 import {VfModule} from "../../../../models/vfModule";
 import {VNFModel} from "../../../../models/vnfModel";
 import {VnfInstance} from "../../../../models/vnfInstance";
-import {FileFormControl} from "../../../../models/formControlModels/fileFormControl.model";
-import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
-import {FileUnit} from "../../../formControls/component/file/fileUnit.enum";
 import {Constants} from "../../../../utils/constants";
+import {Utils} from "../../../../utils/utils";
 
 
 export enum FormControlNames {
@@ -51,6 +49,7 @@ export class VfModuleControlGenerator {
               private store: NgRedux<AppState>,
               private http: HttpClient,
               private _aaiService: AaiService,
+              private _utils: Utils,
               private _logService: LogService) {
     this.aaiService = _aaiService;
   }
@@ -96,7 +95,7 @@ export class VfModuleControlGenerator {
     const vfModuleModel = this.vfModuleModel;
     const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey];
     const vnfModelName: string = vnf.originalName;
-    const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfModelName]);
+    const vnfModel = new VNFModel(this._utils, this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfModelName]);
 
     let result: FormControlModel[] = [];
 
@@ -128,7 +127,7 @@ export class VfModuleControlGenerator {
     }
     const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey];
     const vnfModelName: string = vnf.originalName;
-    const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfModelName]);
+    const vnfModel = new VNFModel(this._utils, this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfModelName]);
 
     const vfModuleInstance = this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode);
     let result: FormControlModel[] = [];

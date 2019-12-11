@@ -14,6 +14,9 @@ import {DuplicateService} from "../../../duplicate/duplicate.service";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {RelatedVnfMemberInfoModel} from "./relatedVnfMember.info.model";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {Utils} from "../../../../../shared/utils/utils";
+import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {instance, mock} from "ts-mockito";
 
 
 class MockAppStore<T> {
@@ -28,6 +31,7 @@ describe('Related Vnf member Model Info', () => {
   let httpMock: HttpTestingController;
   let  _dynamicInputsService : DynamicInputsService;
   let  _sharedTreeService : SharedTreeService;
+  let  _utils : Utils;
 
   let _store : NgRedux<AppState>;
   let relatedVnfMemeber: RelatedVnfMemberInfoModel;
@@ -43,17 +47,21 @@ describe('Related Vnf member Model Info', () => {
         VnfPopupService,
         DefaultDataGeneratorService,
         SharedTreeService,
+        Utils,
+        {provide: FeatureFlagsService, useValue: instance(mock(FeatureFlagsService))},
         DuplicateService,
         IframeService]
     }).compileComponents();
 
     injector = getTestBed();
     _sharedTreeService = injector.get(SharedTreeService);
+    _utils = injector.get(Utils);
     _store = injector.get(NgRedux);
 
     relatedVnfMemeber = new RelatedVnfMemberInfoModel(
       _sharedTreeService,
       _dynamicInputsService,
+      _utils,
       _store);
   });
 

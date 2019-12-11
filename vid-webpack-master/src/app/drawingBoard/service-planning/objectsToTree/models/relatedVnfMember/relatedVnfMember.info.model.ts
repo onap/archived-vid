@@ -17,10 +17,12 @@ import {VnfTreeNode} from "../../../../../shared/models/vnfTreeNode";
 import {InputType} from "../../../../../shared/models/inputTypes";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
+import {Utils} from "../../../../../shared/utils/utils";
 
 export class RelatedVnfMemberInfoModel implements ILevelNodeInfo {
   constructor(private _sharedTreeService: SharedTreeService,
               private _dynamicInputsService : DynamicInputsService,
+              private _utils: Utils,
               private _store: NgRedux<AppState>) {
   }
 
@@ -55,7 +57,7 @@ export class RelatedVnfMemberInfoModel implements ILevelNodeInfo {
    ************************************************************/
   getModel = (vnfModelId: string, instance: VnfInstance, serviceHierarchy): VNFModel => {
     const originalModelName = instance.originalName ? instance.originalName : vnfModelId;
-    return new VNFModel(serviceHierarchy[this.name][originalModelName]);
+    return new VNFModel(this._utils, serviceHierarchy[this.name][originalModelName]);
   };
 
 

@@ -58,12 +58,12 @@ export class ObjectToTreeService {
    * return all first optional first level of the model tree
    ************************************************************/
   getFirstLevelOptions(): ILevelNodeInfo[] {
-    return [new VnfModelInfo(this._dynamicInputsService, this._sharedTreeService, this._defaultDataGeneratorService, this._dialogService, this._vnfPopupService, this._vfModulePopupService, this._vfModuleUpgradePopupService,this._duplicateService, this._modalService, this._iframeService, this._componentInfoService, this._featureFlagsService, this._store)
+    return [new VnfModelInfo(this._dynamicInputsService, this._sharedTreeService, this._defaultDataGeneratorService, this._dialogService, this._vnfPopupService, this._vfModulePopupService, this._vfModuleUpgradePopupService, this._duplicateService, this._modalService, this._iframeService, this._componentInfoService, this._utils, this._featureFlagsService, this._store)
       , new NetworkModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._networkPopupService, this._duplicateService, this._modalService, this._iframeService, this._utils, this._store),
       new PnfModelInfo(),
       new VrfModelInfo(this._store, this._sharedTreeService, this._dialogService, this._iframeService, this._networkStepService, this._utils, this._vpnStepService),
       new CollectionResourceModelInfo(this._store, this._sharedTreeService),
       new ConfigurationModelInfo(this._dynamicInputsService, this._sharedTreeService),
-      new VnfGroupingModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._vnfGroupPopupService, this._iframeService, this._aaiService, this._store)];
+      new VnfGroupingModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._vnfGroupPopupService, this._iframeService, this._aaiService, this._utils, this._store)];
   };
 }

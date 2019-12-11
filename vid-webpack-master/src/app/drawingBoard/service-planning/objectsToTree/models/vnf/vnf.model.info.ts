@@ -40,6 +40,7 @@ import {ComponentInfoService} from "../../../component-info/component-info.servi
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {Utils} from "../../../../../shared/utils/utils";
 
 export class VnfModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -53,6 +54,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
               private modalService: SdcUiServices.ModalService,
               private _iframeService: IframeService,
               private _componentInfoService: ComponentInfoService,
+              private _utils: Utils,
               private _featureFlagsService: FeatureFlagsService,
               private _store: NgRedux<AppState>) {
   }
@@ -89,7 +91,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
    ************************************************************/
   getModel = (vnfModelId: string, instance: VnfInstance, serviceHierarchy): VNFModel => {
     const originalModelName = instance.originalName ? instance.originalName : vnfModelId;
-    return new VNFModel(serviceHierarchy[this.name][originalModelName], this._featureFlagsService.getAllFlags());
+    return new VNFModel(this._utils, serviceHierarchy[this.name][originalModelName]);
   };
 
 

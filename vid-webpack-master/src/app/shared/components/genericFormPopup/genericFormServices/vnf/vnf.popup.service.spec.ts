@@ -16,6 +16,7 @@ import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flag
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {VfModuleUpgradePopupService} from "../vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {Utils} from "../../../../utils/utils";
+import {instance, mock} from "ts-mockito";
 
 class MockAppStore<T> {}
 
@@ -2236,8 +2237,6 @@ class MockReduxStore<T> {
   }
 }
 
-class MockFeatureFlagsService {}
-
 describe('vnf new popup service', () => {
   let injector;
   let service: VnfPopupService;
@@ -2255,7 +2254,7 @@ describe('vnf new popup service', () => {
         GenericFormService,
         FormBuilder,
         IframeService,
-        {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
+        {provide: FeatureFlagsService, useValue: instance(mock(FeatureFlagsService))},
         AaiService,
         LogService,
         Utils,

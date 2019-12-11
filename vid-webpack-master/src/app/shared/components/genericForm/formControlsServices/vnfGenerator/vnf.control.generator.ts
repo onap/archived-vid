@@ -21,6 +21,7 @@ import * as _ from 'lodash';
 import {Constants} from "../../../../utils/constants";
 import {MultiselectFormControl} from "../../../../models/formControlModels/multiselectFormControl.model";
 import {MultiSelectItem} from "../../../formControls/component/multiselect/multiselect.model";
+import {Utils} from "../../../../utils/utils";
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -54,6 +55,7 @@ export class VnfControlGenerator {
               private store: NgRedux<AppState>,
               private http: HttpClient,
               private _aaiService: AaiService,
+              private _utils: Utils,
               private _logService: LogService) {
     this.aaiService = _aaiService;
   }
@@ -75,7 +77,7 @@ export class VnfControlGenerator {
     }
 
     const vnfInstance = this.getVnfInstance(serviceId, vnfStoreKey);
-    const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
+    const vnfModel = new VNFModel(this._utils, this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
     let result: FormControlModel[] = [];
     const flags = this.store.getState().global.flags;
 
@@ -100,7 +102,7 @@ export class VnfControlGenerator {
 
     let result: FormControlModel[] = [];
     const vnfInstance = this.getVnfInstance(serviceId, vnfStoreKey);
-    const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
+    const vnfModel = new VNFModel(this._utils, this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
 
     if (!_.isNil(vnfModel)) {
       const flags = this.store.getState().global.flags;

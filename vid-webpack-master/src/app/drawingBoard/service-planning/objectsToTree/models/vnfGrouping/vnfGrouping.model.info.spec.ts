@@ -14,6 +14,7 @@ import {DrawingBoardModes} from "../../../drawing-board.modes";
 import {AaiService} from "../../../../../shared/services/aaiService/aai.service";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 import {ITableContent} from "../../../../../shared/components/searchMembersModal/members-table/element-table-row.model";
+import {Utils} from "../../../../../shared/utils/utils";
 
 describe('VnfGroupingModelInfo Model Info', () => {
   let injector;
@@ -24,6 +25,7 @@ describe('VnfGroupingModelInfo Model Info', () => {
   let _iframeService : IframeService;
   let vnfGroupModel: VnfGroupingModelInfo;
   let _aaiService : AaiService;
+  let _utils: Utils;
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgReduxTestingModule, RouterTestingModule],
@@ -34,6 +36,7 @@ describe('VnfGroupingModelInfo Model Info', () => {
         SharedTreeService,
         IframeService,
         AaiService,
+        Utils,
         FeatureFlagsService,
         MockNgRedux]
     });
@@ -41,8 +44,9 @@ describe('VnfGroupingModelInfo Model Info', () => {
     injector = getTestBed();
     _sharedTreeService = injector.get(SharedTreeService);
     _aaiService = injector.get(AaiService);
+    _utils = injector.get(Utils);
 
-    vnfGroupModel =  new VnfGroupingModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vnfGroupPopupService, _iframeService,  _aaiService, MockNgRedux.getInstance());
+    vnfGroupModel =  new VnfGroupingModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vnfGroupPopupService, _iframeService, _aaiService, _utils, MockNgRedux.getInstance());
   })().then(done).catch(done.fail));
 
 

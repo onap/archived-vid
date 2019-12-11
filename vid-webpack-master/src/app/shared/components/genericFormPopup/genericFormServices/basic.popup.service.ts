@@ -37,7 +37,7 @@ export class BasicPopupService {
     if (!rawModel) return;
     switch (modelType){
       case 'vnfs' : {
-        return new VNFModel(rawModel, flags);
+        return new VNFModel(this._utils, rawModel);
       }
       case 'vfModules' : {
         return new VfModule(rawModel, flags);

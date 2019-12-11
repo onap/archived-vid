@@ -4,7 +4,11 @@ import {NetworkSelectorComponent} from "./network-selector/network-selector.comp
 import {NgRedux, select} from "@angular-redux/store";
 import {AppState} from "../shared/store/reducers";
 import {ActivatedRoute} from "@angular/router";
-import {loadServiceAccordingToUuid, loadAaiNetworkAccordingToNetworkCF, loadUserId} from "../shared/services/aaiService/aai.actions";
+import {
+  loadAaiNetworkAccordingToNetworkCF,
+  loadServiceAccordingToUuid,
+  loadUserId
+} from "../shared/services/aaiService/aai.actions";
 import {createRequest} from "../factories/mso.factory";
 import {VNFModel} from "../shared/models/vnfModel";
 import {VfcInstanceGroupProperties} from "../shared/models/vfcInstanceGroupProperties";
@@ -115,7 +119,7 @@ export class VlanTaggingComponent implements OnInit {
       this.serviceHierarchyObserable.subscribe(data => {
         this.serviceHirarchy = data;
         if (data && data[this.serviceModelId]) {
-          this.model = new VNFModel(data[this.serviceModelId].vnfs[this.vnfKey]);
+          this.model = new VNFModel(VNFModel.NO_UTILS, data[this.serviceModelId].vnfs[this.vnfKey]);
           this.updateModelInfo(this.model);
         }
       });

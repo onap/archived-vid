@@ -165,9 +165,7 @@ describe('Shared Tree Service', () => {
   test('openAuditInfoModal should open modal for failed instance', () => {
     jest.spyOn(AuditInfoModalComponent.openInstanceAuditInfoModal, 'next');
 
-    let modelInfoServiceMock: ILevelNodeInfo = new VnfModelInfo(null, null,
-      null, null, null, null, null,
-      null, null, null, null, null, null);
+    let modelInfoServiceMock: ILevelNodeInfo = new VnfModelInfo(null, null, null, null, null, null, null, null, null, null, null, this._utils, null, null);
     const modelMock = {"a": "a"};
     const instanceMock = {"instance": "instance", "trackById": "123456789"};
     const instanceTypeMock = "instanceTypeMock";
