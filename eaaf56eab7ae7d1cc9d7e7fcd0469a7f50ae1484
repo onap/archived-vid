@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "89b11a32_33b89fdb",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-11T09:03:44Z",
+      "side": 1,
+      "message": "extract shared method to tests",
+      "range": {
+        "startLine": 65,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 0
+      },
+      "revId": "eaaf56eab7ae7d1cc9d7e7fcd0469a7f50ae1484",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69accf82_0442fef8",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-11T09:03:44Z",
+      "side": 1,
+      "message": "add //then...",
+      "revId": "eaaf56eab7ae7d1cc9d7e7fcd0469a7f50ae1484",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03ae2bb6_3959f5f0",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-11T09:03:44Z",
+      "side": 1,
+      "message": "extract shared method of deployAndAssertResult",
+      "range": {
+        "startLine": 87,
+        "startChar": 7,
+        "endLine": 98,
+        "endChar": 11
+      },
+      "revId": "eaaf56eab7ae7d1cc9d7e7fcd0469a7f50ae1484",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
