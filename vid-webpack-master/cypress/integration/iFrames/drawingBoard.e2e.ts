@@ -238,6 +238,22 @@ describe('Drawing board', function () {
 
   });
 
+  describe('default max instances value', () => {
+    it('when there is no maxCountInstances for vfModule, it can be added unlimited times', () => {
+      let reduxState = getReduxWithVNFS(false);
+      (<any> reduxState.global.flags)['FLAG_2002_UNLIMITED_MAX'] =  true;
+      cy.setReduxState(<any>reduxState);
+      cy.openIframe('app/ui/#/servicePlanning?serviceModelId=6e59c5de-f052-46fa-aa7e-2fca9d674c44');
+      const vfModuleName = 'vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2';
+      const vnfName = "VF_vGeraldine 0";
+      cy.addMacroVfModule(vnfName, vfModuleName, 'module-1');
+      cy.addMacroVfModule(vnfName, vfModuleName, 'module-2');
+      cy.addMacroVfModule(vnfName, vfModuleName, 'module-3');
+      cy.getElementByDataTestsId('node-d6557200-ecf2-4641-8094-5393ae3aae60-VF_vGeraldine 0').click();
+      cy.getElementByDataTestsId('node-41708296-e443-4c71-953f-d9a010f059e1-vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2').should('have.length', 3);
+    });
+  });
+
   describe('multiple tests', () => {
     it('remove vfModule with missing data should update deploy button status', () => {
       let res = getReduxWithVFModuleMissingData();
@@ -6285,7 +6301,7 @@ describe('Drawing board', function () {
     }
   }
 
-  function getReduxWithVNFS(isEcompGeneratedNaming: boolean) {
+  function getReduxWithVNFS(isEcompGeneratedNaming: boolean){
     return {
       "global": {
         "name": null,
