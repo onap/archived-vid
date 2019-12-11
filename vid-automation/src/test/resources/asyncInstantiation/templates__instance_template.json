@@ -44,9 +44,9 @@
       "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
       "instanceName": "zolson57arlba007",
       "action": "Create",
-      "platformName": "NETWORK-CLOUD",
-      "lcpCloudRegionId": "olson57a",
-      "tenantId": "dcb28ad99c7341748830c9dc307f85eb",
+      "platformName": "xxx1",
+      "lcpCloudRegionId": "hvf6",
+      "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
       "instanceParams": [
         {}
       ],
@@ -66,8 +66,8 @@
             },
             "instanceName": "zolson57arlba007_lba_Base_01",
             "action": "Create",
-            "lcpCloudRegionId": "olson57a",
-            "tenantId": "dcb28ad99c7341748830c9dc307f85eb",
+            "lcpCloudRegionId": "hvf6",
+            "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
             "instanceParams": [
               {}
             ],
@@ -89,8 +89,8 @@
             },
             "instanceName": "zolson57arlba007_lba_dj_01",
             "action": "Create",
-            "lcpCloudRegionId": "olson57a",
-            "tenantId": "dcb28ad99c7341748830c9dc307f85eb",
+            "lcpCloudRegionId": "hvf6",
+            "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
             "instanceParams": [
               {}
             ],
@@ -106,7 +106,7 @@
       "isFailed": false,
       "statusMessage": null,
       "position": null,
-      "lineOfBusiness": "EMANUEL-CONSUMER"
+      "lineOfBusiness": "zzz1"
     }
   },
   "networks": {},
