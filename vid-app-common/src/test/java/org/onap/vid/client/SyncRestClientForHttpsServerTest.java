@@ -42,8 +42,8 @@ import com.xebialabs.restito.semantics.Condition;
 import com.xebialabs.restito.server.StubServer;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonNode;
-
-import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -55,13 +55,13 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.glassfish.grizzly.http.Method;
+import org.jetbrains.annotations.NotNull;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.AfterMethod;
@@ -91,12 +91,21 @@ public class SyncRestClientForHttpsServerTest {
         stubServer.stop();
     }
 
+    @NotNull
+    private String getTestUrl(String protocol) {
+        try {
+            return new URI(protocol, null,  "127.0.0.1" , stubServer.getPort(), "/test", null, null).toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Test
     public void testJsonResponseFromGet() throws JsonProcessingException {
         // given
         stubGetCall();
-        String securedUrl = "https://0.0.0.0:" + stubServer.getPort() + "/test";
-        String notSecuredUrl = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String securedUrl = getTestUrl("https");
+        String notSecuredUrl = getTestUrl("http");
         // when
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient
             .get(securedUrl, Collections.emptyMap(), Collections.emptyMap());
@@ -115,8 +124,8 @@ public class SyncRestClientForHttpsServerTest {
         // given
         stubServer.run();
         stubGetCall();
-        String securedUrl = "https://0.0.0.0:" + stubServer.getPort() + "/test";
-        String notSecuredUrl = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String securedUrl = getTestUrl("https");
+        String notSecuredUrl = getTestUrl("http");
         // when
         HttpResponse<SyncRestClientModel.TestModel> testModelHttpResponse = syncRestClient
             .get(securedUrl, Collections.emptyMap(), Collections.emptyMap(), SyncRestClientModel.TestModel.class);

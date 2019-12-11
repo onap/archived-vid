@@ -42,10 +42,13 @@ import com.xebialabs.restito.semantics.Condition;
 import com.xebialabs.restito.server.StubServer;
 import io.joshworks.restclient.http.HttpResponse;
 import io.joshworks.restclient.http.JsonNode;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Map;
 import org.glassfish.grizzly.http.Method;
 import org.glassfish.grizzly.http.util.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.AfterMethod;
@@ -76,11 +79,20 @@ public class SyncRestClientForHttpServerTest {
         syncRestClient.destroy();
     }
 
+    @NotNull
+    private String getTestUrl(String protocol) {
+        try {
+            return new URI(protocol, null,  "127.0.0.1" , stubServer.getPort(), "/test", null, null).toString();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Test
     public void testJsonResponseFromGet() throws JsonProcessingException {
         // given
         stubGetCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient
             .get(url, Collections.emptyMap(), Collections.emptyMap());
@@ -97,7 +109,7 @@ public class SyncRestClientForHttpServerTest {
     public void testObjectResponseFromGet() throws JsonProcessingException {
         // given
         stubGetCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<SyncRestClientModel.TestModel> testModelHttpResponse = syncRestClient
             .get(url, Collections.emptyMap(), Collections.emptyMap(), SyncRestClientModel.TestModel.class);
@@ -114,7 +126,7 @@ public class SyncRestClientForHttpServerTest {
     public void testJsonResponseFromPost() throws JsonProcessingException {
         // given
         stubPostCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient.post(url, Collections.emptyMap(), testObject);
         // then
@@ -130,7 +142,7 @@ public class SyncRestClientForHttpServerTest {
     public void test404JsonResponseFromPost() throws JsonProcessingException {
         // given
         stubPostCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient
             .post(url, Collections.emptyMap(), NOT_EXISTING_OBJECT);
@@ -146,7 +158,7 @@ public class SyncRestClientForHttpServerTest {
         // given
         stubPostCall();
         Map headers = ImmutableMap.<String, String>builder().put("Authorization", "Basic anyHash").build();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient.post(url, headers, testObject);
         // then
@@ -160,7 +172,7 @@ public class SyncRestClientForHttpServerTest {
     public void testFailedJsonResponseFromPost() throws JsonProcessingException {
         // given
         stubPostCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         stubServer.stop();
         syncRestClient.post(url, Collections.emptyMap(), testObject);
@@ -170,7 +182,7 @@ public class SyncRestClientForHttpServerTest {
     public void testObjectResponseFromPost() throws JsonProcessingException {
         // given
         stubPostCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<SyncRestClientModel.TestModel> objectHttpResponse = syncRestClient
             .post(url, Collections.emptyMap(), testObject, SyncRestClientModel.TestModel.class);
@@ -187,7 +199,7 @@ public class SyncRestClientForHttpServerTest {
     public void testJsonResponseFromPut() throws JsonProcessingException {
         // given
         stubPutCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient.put(url, Collections.emptyMap(), testObject);
         // then
@@ -203,7 +215,7 @@ public class SyncRestClientForHttpServerTest {
     public void testObjectResponseFromPut() throws JsonProcessingException {
         // given
         stubPutCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<SyncRestClientModel.TestModel> modelHttpResponse = syncRestClient
             .put(url, Collections.emptyMap(), testObject, SyncRestClientModel.TestModel.class);
@@ -220,7 +232,7 @@ public class SyncRestClientForHttpServerTest {
     public void testJsonResponseFromDelete() throws JsonProcessingException {
         // given
         stubDeleteCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient.delete(url, Collections.emptyMap());
         // then
@@ -236,7 +248,7 @@ public class SyncRestClientForHttpServerTest {
     public void testObjectResponseFromDelete() throws JsonProcessingException {
         // given
         stubDeleteCall();
-        String url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String url = getTestUrl("http");
         // when
         HttpResponse<SyncRestClientModel.TestModel> modelHttpResponse = syncRestClient
             .delete(url, Collections.emptyMap(),  SyncRestClientModel.TestModel.class);
@@ -253,8 +265,8 @@ public class SyncRestClientForHttpServerTest {
     public void testRedirectToHttp() throws JsonProcessingException {
         // given
         stubGetCall();
-        String secured_url = "https://0.0.0.0:" + stubServer.getPort() + "/test";
-        String available_url = "http://0.0.0.0:" + stubServer.getPort() + "/test";
+        String secured_url = getTestUrl("https");;
+        String available_url = getTestUrl("http");
         // when
         HttpResponse<JsonNode> jsonNodeHttpResponse = syncRestClient
             .get(secured_url, Collections.emptyMap(), Collections.emptyMap());
