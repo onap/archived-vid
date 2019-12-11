@@ -3,11 +3,18 @@ import * as _ from 'lodash'
 export class Utils {
 
   static getMaxFirstLevel(properties, flags: { [key: string]: boolean }) : number | null{
-    if (flags && !!flags['FLAG_2002_UNLIMITED_MAX']) {
-      return !_.isNil(properties) && !_.isNil(properties.max_instances) ? properties.max_instances : null;
-    } else {
-      return properties.max_instances || 1;
+    return this.getMaxInstancesAllowed(properties, 'max_instances', flags)
+  }
+
+  static getMaxVfModule(properties, flags: { [key: string]: boolean }) : number | null{
+    return this.getMaxInstancesAllowed(properties, 'maxCountInstances', flags)
+  }
+
+  static getMaxInstancesAllowed(properties, filedName: string, flags: { [key: string]: boolean }) : number | null{
+    if (!_.isNil(properties) && !_.isNil(properties[filedName])) {
+      return properties[filedName];
     }
+    return (flags && !!flags['FLAG_2002_UNLIMITED_MAX']) ? null : 1;
   }
 
   public static clampNumber = (number, min, max) => {
