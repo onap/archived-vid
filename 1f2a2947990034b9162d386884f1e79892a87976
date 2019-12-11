@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "afedc04b_7827e23c",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-11T05:06:30Z",
+      "side": 1,
+      "message": "this flag should be repeated in every Cypress test that is mocking its own flags. or at least in many",
+      "revId": "1f2a2947990034b9162d386884f1e79892a87976",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3cfbfbc_e61ec8f5",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/duplicate/duplicate.service.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-11T05:06:30Z",
+      "side": 1,
+      "message": "shouldn\u0027t it differ between network/vnf and other node types?",
+      "revId": "1f2a2947990034b9162d386884f1e79892a87976",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26db6316_42e64f74",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/duplicate/duplicate.service.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-11T05:06:30Z",
+      "side": 1,
+      "message": "please extract \"10\" to something like MAX_DUPLICATE_WHEN_UNLIMITED_MAX",
+      "revId": "1f2a2947990034b9162d386884f1e79892a87976",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3999929a_8f576735",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/objectToModelTree/objectToModelTree.service.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-11T05:06:30Z",
+      "side": 1,
+      "message": "can we define a type alias to this { [key: string]: boolean } ?",
+      "revId": "1f2a2947990034b9162d386884f1e79892a87976",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6cb2841f_ca084a93",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-11T05:06:30Z",
+      "side": 1,
+      "message": "maybe:\nisFirstLevelReachedToMaxInstances, because it is using a specific getMaxFirstLevel  method call.",
+      "revId": "1f2a2947990034b9162d386884f1e79892a87976",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5eab5b25_0545e18b",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-11T05:06:30Z",
+      "side": 1,
+      "message": "can simplify:\nreturn counter \u003e\u003d maxInstances",
+      "revId": "1f2a2947990034b9162d386884f1e79892a87976",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bbf4ab3e_5a30e85d",
+        "filename": "vid-webpack-master/src/app/shared/utils/utils.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-11T05:06:30Z",
+      "side": 1,
+      "message": "any unit tests for that one?",
+      "revId": "1f2a2947990034b9162d386884f1e79892a87976",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99d3f682_8de52c81",
+        "filename": "vid-webpack-master/src/app/shared/utils/utils.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-11T05:06:30Z",
+      "side": 1,
+      "message": "assuming we have properties.\nwhen flag is on we don\u0027t take it as granted.",
+      "revId": "1f2a2947990034b9162d386884f1e79892a87976",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
