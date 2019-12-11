@@ -2,7 +2,6 @@
 /// <reference types="Cypress" />
 import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
 import {ServiceModel} from '../../support/jsonBuilders/models/service.model';
-import * as _ from 'lodash';
 
 describe('A la carte', function () {
   describe('check service name', () => {
@@ -242,11 +241,11 @@ describe('A la carte', function () {
               '2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2',
             ];
 
-            addVfModule(vnfName, vfModulesNames[0], 'mimazepubi', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, false)
+            cy.addALaCarteVfModule(vnfName, vfModulesNames[0], 'mimazepubi', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, false)
               .then(() => {
-                addVfModule(vnfName, vfModulesNames[1], 'puwesovabe', 'AAIAIC25', 'my region', 'USP-SIP-IC-24335-T-01', true, true, false)
+                cy.addALaCarteVfModule(vnfName, vfModulesNames[1], 'puwesovabe', 'AAIAIC25', 'my region', 'USP-SIP-IC-24335-T-01', true, true, false)
                   .then(() => {
-                    addVfModule(vnfName, vfModulesNames[2], 'bnmgtrx', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, true)
+                    cy.addALaCarteVfModule(vnfName, vfModulesNames[2], 'bnmgtrx', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, true)
                       .then(() => {
                         cy.getReduxState().then((state) => {
                           const vfModules = state.service.serviceInstance['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs[vnfName].vfModules;
@@ -284,28 +283,7 @@ describe('A la carte', function () {
         .get('.error').contains(INSTANCE_NAME_NOT_MANDATORY_MESSAGE);
     }
 
-    function addVfModule(vnfName: string, vfModuleName: string, instanceName: string, lcpRegion: string, legacyRegion: string, tenant: string, rollback: boolean, sdncPreLoad: boolean, deleteVgName: boolean): Chainable<any> {
-      return cy.getElementByDataTestsId('node-' + vnfName).click({force: true}).then(() => {
-        cy.getElementByDataTestsId('node-' + vfModuleName + '-add-btn').click({force: true}).then(() => {
-          cy.getElementByDataTestsId('instanceName').clear().type(instanceName, {force: true}).then(() => {
-            if (deleteVgName) {
-              cy.getElementByDataTestsId('volumeGroupName').clear();
-            }
-          }).then(() => {
-            cy.selectDropdownOptionByText('lcpRegion', lcpRegion);
-            if (!_.isEmpty(legacyRegion)) {
-              cy.typeToInput("lcpRegionText", legacyRegion);
-            }
-            cy.selectDropdownOptionByText('tenant', tenant);
-            cy.selectDropdownOptionByText('rollback', String(rollback));
-            if (sdncPreLoad) {
-              cy.getElementByDataTestsId('sdncPreLoad').check();
-            }
-            cy.getElementByDataTestsId('form-set').click({force: true});
-          });
-        });
-      });
-    }
+
 
 
   });
