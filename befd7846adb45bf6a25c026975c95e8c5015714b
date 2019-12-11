@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b6d4792f_bd3f3a9c",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-11T14:26:35Z",
+      "side": 1,
+      "message": "please remove or fix given-\u003ewhen-\u003ethen",
+      "revId": "befd7846adb45bf6a25c026975c95e8c5015714b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
