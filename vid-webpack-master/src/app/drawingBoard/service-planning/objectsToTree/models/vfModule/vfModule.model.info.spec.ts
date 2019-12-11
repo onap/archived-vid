@@ -17,6 +17,8 @@ import {AaiService} from "../../../../../shared/services/aaiService/aai.service"
 import {HttpClient, HttpHandler} from "@angular/common/http";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {instance, mock, when} from "ts-mockito";
+import each from "jest-each";
 
 class MockAppStore<T> {
   getState() {
@@ -44,7 +46,8 @@ describe('VFModule Model Info', () => {
   let _vfModuleUpgradePopupService : VfModuleUpgradePopupService;
   let _iframeService : IframeService;
   let _componentInfoService : ComponentInfoService;
-  let _featureFlagsService : FeatureFlagsService;
+  let mockFeatureFlagsService: FeatureFlagsService = mock(FeatureFlagsService);
+  let mockFeatureFlagsServiceInstance: FeatureFlagsService = instance(mockFeatureFlagsService);
 
 
   beforeAll(done => (async () => {
@@ -62,7 +65,7 @@ describe('VFModule Model Info', () => {
         AaiService,
         HttpClient,
         HttpHandler,
-        {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
+        {provide: FeatureFlagsService, useValue: mockFeatureFlagsServiceInstance},
         ComponentInfoService
       ]
     });
@@ -70,9 +73,9 @@ describe('VFModule Model Info', () => {
 
     injector = getTestBed();
     _sharedTreeService = injector.get(SharedTreeService);
-    _componentInfoService = injector.get(ComponentInfoService)
-    _featureFlagsService = injector.get(FeatureFlagsService);
-    vfModuleModel = new VFModuleModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vfModulePopupService, _vfModuleUpgradePopupService, _iframeService,_featureFlagsService,  MockNgRedux.getInstance(),_componentInfoService);
+    _componentInfoService = injector.get(ComponentInfoService);
+    vfModuleModel = new VFModuleModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _vfModulePopupService, _vfModuleUpgradePopupService,
+      _iframeService, mockFeatureFlagsServiceInstance,  MockNgRedux.getInstance(),_componentInfoService);
 
   })().then(done).catch(done.fail));
 
@@ -478,6 +481,33 @@ describe('VFModule Model Info', () => {
       ModelInformationItem.createInstance('Initial instances count',"0")
     ];
     expect(actualVNFInfo).toEqual(expectedVNFInfo);
+  });
+
+  each([
+    ["maxCountInstances 3, currentNodeCount 1, flag on",{maxCountInstances:3}, 1, {FLAG_2002_UNLIMITED_MAX: true}, false],
+    ["maxCountInstances 3, currentNodeCount 3, flag on",{maxCountInstances:3}, 3, {FLAG_2002_UNLIMITED_MAX: true}, true],
+    ["no maxCountInstances, currentNodeCount 0, flag off",{}, 0, {FLAG_2002_UNLIMITED_MAX: false}, false],
+    ["no maxCountInstances, currentNodeCount 1, flag off",{}, 1, {FLAG_2002_UNLIMITED_MAX: false}, true],
+    ["no maxCountInstances, currentNodeCount 1, no flags",{}, 1, null, true],
+    ["no maxCountInstances, currentNodeCount 0, flag on",{}, 0, {FLAG_2002_UNLIMITED_MAX: true}, false],
+    ["no maxCountInstances, currentNodeCount 1, flag on",{}, 1, {FLAG_2002_UNLIMITED_MAX: true}, false],
+    ["no maxCountInstances, currentNodeCount 1000, flag on",{}, 1000, {FLAG_2002_UNLIMITED_MAX: true}, false],
+  ]).test('isVFModuleReachedLimit: %s', (desc, properties, currentNodeCount, flags, expected) => {
+
+    const node = { data: {
+        name : 'vfModuleName'
+    }};
+
+    const serviceHierarchy = {
+      servicedId :{
+        vfModules : {
+          vfModuleName : {
+            properties
+     }}}};
+
+    when(mockFeatureFlagsService.getAllFlags()).thenReturn(flags);
+
+    expect(vfModuleModel.isVFModuleReachedLimit(node, serviceHierarchy, 'servicedId', currentNodeCount)).toEqual(expected);
   });
 
   function getVFModule(){

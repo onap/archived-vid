@@ -8,10 +8,7 @@ import {VfModuleInstance} from "../../../../../shared/models/vfModuleInstance";
 import {VfModule} from "../../../../../shared/models/vfModule";
 import {NgRedux} from "@angular-redux/store";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
-import {
-  GenericFormPopupComponent,
-  PopupType
-} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
+import {GenericFormPopupComponent, PopupType} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from "ng2-bootstrap-modal";
 import {VfModulePopuopService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
 import {AppState} from "../../../../../shared/store/reducers";
@@ -19,19 +16,13 @@ import {MessageBoxData} from "../../../../../shared/components/messageBox/messag
 import {MessageBoxService} from "../../../../../shared/components/messageBox/messageBox.service";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
-import {
-  deleteActionVfModuleInstance, deleteVFModuleField,
-  removeVfModuleInstance,
-  undoDeleteVfModuleInstance,
-  undoUgradeVFModule, updateVFModuleField,
-  updateVFModulePosition,
-  upgradeVFModule
-} from "../../../../../shared/storeUtil/utils/vfModule/vfModule.actions";
+import {deleteActionVfModuleInstance, deleteVFModuleField, removeVfModuleInstance, undoDeleteVfModuleInstance, undoUgradeVFModule, updateVFModulePosition, upgradeVFModule} from "../../../../../shared/storeUtil/utils/vfModule/vfModule.actions";
 import {ComponentInfoService} from "../../../component-info/component-info.service";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {FeatureFlagsService, Features} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {Utils} from "../../../../../shared/utils/utils";
 
 export class VFModuleModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -301,12 +292,16 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   }
 
   isVFModuleReachedLimit(node: any, serviceHierarchy: any, serviceModelId: string, currentNodeCount: number): boolean {
-    let maxNodes: number = 1;
+    const flags = this._featureFlagsService.getAllFlags();
     let vnfModules = serviceHierarchy[serviceModelId].vfModules;
-    if (vnfModules[node.data.name]) {
-      maxNodes = vnfModules[node.data.name].properties.maxCountInstances || 1;
+    const maxInstances = vnfModules[node.data.name]
+      ? Utils.getMaxVfModule(vnfModules[node.data.name].properties, flags)
+      : null;
+    if (_.isNil(maxInstances)) {
+      return false;
     }
-    return !(maxNodes > currentNodeCount);
+
+    return !(maxInstances > currentNodeCount);
   }
 
   getMenuAction(node: ITreeNode, serviceModelId: string): { [methodName: string]: { method: Function, visible: Function, enable: Function } } {

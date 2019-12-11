@@ -38,7 +38,7 @@ export class BasicPopupService {
         return new VNFModel(rawModel, flags);
       }
       case 'vfModules' : {
-        return new VfModule(rawModel);
+        return new VfModule(rawModel, flags);
       }
       case 'networks' : {
         return new NetworkModel(rawModel, flags);

@@ -1,4 +1,5 @@
 import {NodeModel, NodeModelResponseInterface} from "./nodeModel";
+import {Utils} from "../utils/utils";
 
 
 export interface Properties{
@@ -23,7 +24,7 @@ export class VfModule extends NodeModel {
   modelCustomizationName: string;
   volumeGroupAllowed : boolean;
 
-  constructor(vf?: VFModuleResponseInterface) {
+  constructor(vf?: VFModuleResponseInterface, flags?: { [key: string]: boolean }) {
     super(vf);
     if(vf){
       this.customizationUuid = vf.customizationUuid;
@@ -32,7 +33,7 @@ export class VfModule extends NodeModel {
     }
     if (vf && vf.properties) {
       this.min = vf.properties.minCountInstances;
-      this.max = vf.properties.maxCountInstances;
+      this.max = Utils.getMaxVfModule(vf.properties, flags);
       this.initial = vf.properties.initialCount;
       this.rollbackOnFailure = true
     }
