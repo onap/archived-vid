@@ -79,6 +79,8 @@ import {InstantiationTemplatesModalService} from "./components/genericFormPopup/
 import {SearchFilterPipe} from "./pipes/searchFilter/search-filter.pipe";
 import {RecreateResolver} from "./resolvers/recreate/recreate.resolver";
 import {InstantiationTemplatesService} from "./services/templateService/instantiationTemplates.service";
+import {Utils} from "./utils/utils";
+import {FeatureFlagsService} from "./services/featureFlag/feature-flags.service";
 
 
 @NgModule({
@@ -199,6 +201,8 @@ import {InstantiationTemplatesService} from "./services/templateService/instanti
     VnfGroupControlGenerator,
     VnfGroupPopupService,
     BasicPopupService,
+    Utils,
+    FeatureFlagsService,
     GenericFormPopupService,
     FormGeneralErrorsService,
     VnfPopupService,

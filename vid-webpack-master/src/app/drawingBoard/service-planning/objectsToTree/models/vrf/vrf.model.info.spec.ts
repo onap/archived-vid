@@ -20,6 +20,7 @@ import each from 'jest-each';
 import {DialogService} from "ng2-bootstrap-modal";
 import {NetworkStepService} from "./vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "./vrfModal/vpnStep/vpn.step.service";
+import {Utils} from "../../../../../shared/utils/utils";
 
 describe('Vrf Model Info', () => {
 
@@ -32,6 +33,7 @@ describe('Vrf Model Info', () => {
   let _iframeService : IframeService;
   let _networkStepService : NetworkStepService;
   let _vpnStepService : VpnStepService;
+  let _utils : Utils;
   let vrfModel: VrfModelInfo;
 
   beforeEach(() => {
@@ -48,6 +50,7 @@ describe('Vrf Model Info', () => {
         FeatureFlagsService,
         ComponentInfoService,
         DialogService,
+        Utils,
         IframeService,
         IframeService,
         NetworkStepService,
@@ -60,10 +63,11 @@ describe('Vrf Model Info', () => {
     _iframeService = injector.get(IframeService);
     _networkStepService = injector.get(NetworkStepService);
     _vpnStepService = injector.get(VpnStepService);
+    _utils = injector.get(Utils);
     _store = injector.get(NgRedux);
     _componentInfoService = injector.get(ComponentInfoService);
 
-    vrfModel = new VrfModelInfo(_store,_sharedTreeService, _dialogService, _iframeService, _networkStepService, _vpnStepService);
+    vrfModel = new VrfModelInfo(_store, _sharedTreeService, _dialogService, _iframeService, _networkStepService, _utils, _vpnStepService);
 
   });
 

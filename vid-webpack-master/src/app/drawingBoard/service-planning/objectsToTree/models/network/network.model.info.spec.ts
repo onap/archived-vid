@@ -13,6 +13,7 @@ import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {DuplicateService} from "../../../duplicate/duplicate.service";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {Utils} from "../../../../../shared/utils/utils";
 
 class MockAppStore<T> {
   getState() {
@@ -66,7 +67,7 @@ describe('Network Model Info', () => {
   let _networkPopupService: NetworkPopupService;
   let _duplicateService: DuplicateService;
   let _iframeService: IframeService;
-  let _featureFlagsService: FeatureFlagsService;
+  let _utils: Utils;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -78,6 +79,7 @@ describe('Network Model Info', () => {
         NetworkPopupService,
         IframeService,
         DuplicateService,
+        Utils,
         {provide: NgRedux, useClass: MockAppStore},
         {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         MockNgRedux]
@@ -86,9 +88,9 @@ describe('Network Model Info', () => {
 
     injector = getTestBed();
     _sharedTreeService = injector.get(SharedTreeService);
-    _featureFlagsService = injector.get(FeatureFlagsService);
+    _utils = injector.get(Utils);
 
-    networkModel = new NetworkModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _networkPopupService, _duplicateService, null, _iframeService, _featureFlagsService, MockNgRedux.getInstance());
+    networkModel = new NetworkModelInfo(_dynamicInputsService, _sharedTreeService, _dialogService, _networkPopupService, _duplicateService, null, _iframeService, _utils, MockNgRedux.getInstance());
   })().then(done).catch(done.fail));
 
   test('NetworkModelInfo should be defined', () => {

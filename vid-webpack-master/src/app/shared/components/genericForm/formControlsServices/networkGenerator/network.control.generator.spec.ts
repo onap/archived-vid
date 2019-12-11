@@ -7,8 +7,14 @@ import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
 import {LogService} from "../../../../utils/log/log.service";
 import {FormControlNames, NetworkControlGenerator} from "./network.control.generator";
-import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
+import {
+  FormControlModel,
+  ValidatorModel,
+  ValidatorOptions
+} from "../../../../models/formControlModels/formControl.model";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
+import {Utils} from "../../../../utils/utils";
+import {instance, mock} from "ts-mockito";
 
 class MockAppStore<T> {
   getState(){
@@ -1800,13 +1806,10 @@ class MockAppStore<T> {
 }
 }
 
-class MockFeatureFlagsService {}
-
 describe('Network Control Generator', () => {
   let injector;
   let service: NetworkControlGenerator;
   let httpMock: HttpTestingController;
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -1816,7 +1819,8 @@ describe('Network Control Generator', () => {
         AaiService,
         FormBuilder,
         LogService,
-        {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
+        Utils,
+        {provide: FeatureFlagsService, useValue: instance(mock(FeatureFlagsService))},
         {provide: NgRedux, useClass: MockAppStore}]
     });
 

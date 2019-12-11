@@ -41,6 +41,7 @@ import {ModelInformationItem} from "../../../shared/components/model-information
 import {VpnStepService} from "./models/vrf/vrfModal/vpnStep/vpn.step.service";
 import {NetworkStepService} from "./models/vrf/vrfModal/networkStep/network.step.service";
 import {VfModuleUpgradePopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {Utils} from "../../../shared/utils/utils";
 
 class MockAppStore<T> {
   getState() {
@@ -106,6 +107,7 @@ describe('Shared Tree Service', () => {
         AaiService,
         DialogService,
         GenericFormService,
+        Utils,
         FormBuilder,
         ErrorMsgService,
         ObjectToInstanceTreeService,
@@ -165,7 +167,7 @@ describe('Shared Tree Service', () => {
 
     let modelInfoServiceMock: ILevelNodeInfo = new VnfModelInfo(null, null,
       null, null, null, null, null,
-      null, null, null, null,null);
+      null, null, null, null, null, null);
     const modelMock = {"a": "a"};
     const instanceMock = {"instance": "instance", "trackById": "123456789"};
     const instanceTypeMock = "instanceTypeMock";

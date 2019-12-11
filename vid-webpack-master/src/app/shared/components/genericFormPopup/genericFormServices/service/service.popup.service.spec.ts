@@ -14,6 +14,7 @@ import {FormControlModel} from "../../../../models/formControlModels/formControl
 import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {Utils} from "../../../../utils/utils";
 
 class MockModalService<T> {}
 
@@ -2061,6 +2062,7 @@ describe('Service popup service', () => {
         IframeService,
         AaiService,
         LogService,
+        Utils,
         BasicPopupService,
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},

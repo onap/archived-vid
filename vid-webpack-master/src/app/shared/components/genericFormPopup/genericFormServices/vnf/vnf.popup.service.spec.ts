@@ -15,6 +15,7 @@ import {UUIDData} from "../../generic-form-popup.component";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {VfModuleUpgradePopupService} from "../vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {Utils} from "../../../../utils/utils";
 
 class MockAppStore<T> {}
 
@@ -2257,6 +2258,7 @@ describe('vnf new popup service', () => {
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         AaiService,
         LogService,
+        Utils,
         BasicPopupService,
         VfModulePopuopService,
         VfModuleUpgradePopupService,

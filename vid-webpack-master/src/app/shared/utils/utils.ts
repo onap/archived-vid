@@ -1,6 +1,17 @@
 import * as _ from 'lodash'
+import {Injectable} from "@angular/core";
+import {FeatureFlagsService} from "../services/featureFlag/feature-flags.service";
 
+@Injectable()
 export class Utils {
+
+  constructor(
+    private _featureFlagsService: FeatureFlagsService,
+  ) {}
+
+  getMaxFirstLevel(properties) : number | null{
+    return Utils.getMaxFirstLevel(properties, this._featureFlagsService.getAllFlags());
+  }
 
   static getMaxFirstLevel(properties, flags: { [key: string]: boolean }) : number | null{
     return this.getMaxInstancesAllowed(properties, 'max_instances', flags)

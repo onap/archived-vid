@@ -31,6 +31,7 @@ import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {Utils} from "../../../../../shared/utils/utils";
 
 export class NetworkModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -40,7 +41,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
               private _duplicateService: DuplicateService,
               private modalService: SdcUiServices.ModalService,
               private _iframeService: IframeService,
-              private _featureFlagsService: FeatureFlagsService,
+              private _utils: Utils,
               private _store: NgRedux<AppState>) {
   }
 
@@ -72,7 +73,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
    ************************************************************/
   getModel = (networkModelId: string, instance: NetworkInstance, serviceHierarchy): NetworkModel => {
     const originalModelName = instance.originalName ? instance.originalName : networkModelId;
-    return new NetworkModel(serviceHierarchy[this.name][originalModelName], this._featureFlagsService.getAllFlags());
+    return new NetworkModel(this._utils, serviceHierarchy[this.name][originalModelName]);
   };
 
 

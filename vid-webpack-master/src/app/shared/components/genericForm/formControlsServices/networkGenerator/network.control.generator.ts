@@ -21,6 +21,7 @@ import {SelectOption} from "../../../../models/selectOption";
 import {NetworkInstance} from "../../../../models/networkInstance";
 import {NetworkModel} from "../../../../models/networkModel";
 import {Constants} from "../../../../utils/constants";
+import {Utils} from "../../../../utils/utils";
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -53,6 +54,7 @@ export class NetworkControlGenerator {
               private store: NgRedux<AppState>,
               private http: HttpClient,
               private _aaiService: AaiService,
+              private _utils: Utils,
               private _logService: LogService) {
     this.aaiService = _aaiService;
   }
@@ -75,7 +77,7 @@ export class NetworkControlGenerator {
     }
 
     const networkInstance = this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode);
-    const networkModel = new NetworkModel(this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
+    const networkModel = new NetworkModel(this._utils, this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
     let result: FormControlModel[] = [];
 
     if (!_.isNil(networkModel)) {
@@ -100,7 +102,7 @@ export class NetworkControlGenerator {
 
     let result: FormControlModel[] = [];
     const networkInstance = this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode);
-    const networkModel = new NetworkModel(this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
+    const networkModel = new NetworkModel(this._utils, this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
 
     if (!_.isNil(networkModel)) {
       result.push(this.getInstanceName(networkInstance, serviceId, networkName, networkModel.isEcompGeneratedNaming));

@@ -13,6 +13,7 @@ import {VfModuleControlGenerator} from "../../../genericForm/formControlsService
 import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {Utils} from "../../../../utils/utils";
 
 class MockModalService<T> {}
 
@@ -1990,6 +1991,7 @@ describe('VFModule popup service', () => {
         IframeService,
         AaiService,
         LogService,
+        Utils,
         BasicPopupService,
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},

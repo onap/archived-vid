@@ -14,6 +14,8 @@ import {BasicPopupService} from "./basic.popup.service";
 import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {Utils} from "../../../utils/utils";
+import {mock, notNull, when} from "ts-mockito";
 
 class MockAppStore<T> {}
 
@@ -1992,6 +1994,7 @@ describe('Basic popup service', () => {
         IframeService,
         AaiService,
         LogService,
+        Utils,
         BasicPopupService,
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},
@@ -2025,6 +2028,9 @@ describe('Basic popup service', () => {
   });
 
   test('getModelFromResponse should return undefined if raw model not exist', () => {
+    let utils: Utils = mock(Utils);
+    const arbitraryNumber = 10;
+    when(utils.getMaxFirstLevel(notNull())).thenReturn(arbitraryNumber);
     const result= service.getModelFromResponse({
       "modelType" : {
         "modelName" : null

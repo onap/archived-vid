@@ -1,6 +1,10 @@
 import {LogService} from "../../../../utils/log/log.service";
 import {NgRedux} from "@angular-redux/store";
-import {BasicControlGenerator, SDN_C_PRE_LOAD, SUPPLEMENTARY_FILE} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {
+  BasicControlGenerator,
+  SDN_C_PRE_LOAD,
+  SUPPLEMENTARY_FILE
+} from "../../../genericForm/formControlsServices/basic.control.generator";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {HttpClient} from "@angular/common/http";
 import {GenericFormService} from "../../../genericForm/generic-form.service";
@@ -20,6 +24,7 @@ import {GeneralActions} from "../../../../storeUtil/utils/general/general.action
 import {VfModuleActions} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 import {ServiceActions} from "../../../../storeUtil/utils/service/service.actions";
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
+import {Utils} from "../../../../utils/utils";
 
 class MockModalService<T> {}
 
@@ -67,6 +72,7 @@ describe('VFModule popup service', () => {
         IframeService,
         AaiService,
         LogService,
+        Utils,
         BasicPopupService,
         SharedTreeService,
         {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},

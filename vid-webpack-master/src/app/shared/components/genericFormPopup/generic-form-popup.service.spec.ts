@@ -21,6 +21,8 @@ import {VfModulePopuopService} from "./genericFormServices/vfModule/vfModule.pop
 import {VfModuleControlGenerator} from "../genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {FeatureFlagsService} from "../../services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "./genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {Utils} from "../../utils/utils";
+import {instance, mock} from "ts-mockito";
 
 class MockAppStore<T>{
   getState() {
@@ -937,8 +939,6 @@ class ActivatedRouteMock<T>{
   }
 }
 
-class MockFeatureFlagsService {}
-
 describe('Generic Form popup Service', () => {
   let injector;
   let service: GenericFormPopupService;
@@ -962,6 +962,7 @@ describe('Generic Form popup Service', () => {
         ServiceControlGenerator,
         GenericFormService,
         LogService,
+        Utils,
         DefaultDataGeneratorService,
         BasicPopupService,
         AaiService,
@@ -970,7 +971,7 @@ describe('Generic Form popup Service', () => {
         VfModulePopuopService,
         VfModuleUpgradePopupService,
         VfModuleControlGenerator,
-        {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
+        {provide: FeatureFlagsService, useValue: instance(mock(FeatureFlagsService))},
         {provide: ActivatedRoute, useClass: ActivatedRouteMock},
         {provide: NgRedux, useClass: MockAppStore}]
     });

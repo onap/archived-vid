@@ -11,11 +11,13 @@ import {VfModule} from "../../../models/vfModule";
 import {VNFModel} from "../../../models/vnfModel";
 import {VnfGroupModel} from "../../../models/vnfGroupModel";
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
+import {Utils} from "../../../utils/utils";
 
 @Injectable()
 export class BasicPopupService {
   constructor(private _store: NgRedux<AppState>,
               private _defaultDataGeneratorService : DefaultDataGeneratorService,
+              private _utils: Utils,
               private _basicControlGenerator : BasicControlGenerator){}
 
   extractSubscriberNameBySubscriberId(subsriberId: string) {
@@ -41,7 +43,7 @@ export class BasicPopupService {
         return new VfModule(rawModel, flags);
       }
       case 'networks' : {
-        return new NetworkModel(rawModel, flags);
+        return new NetworkModel(this._utils, rawModel);
       }
       case 'vnfGroups' : {
         return new VnfGroupModel(rawModel);

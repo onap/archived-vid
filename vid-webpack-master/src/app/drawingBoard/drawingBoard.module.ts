@@ -36,6 +36,7 @@ import {ComponentInfoComponent} from './service-planning/component-info/componen
 import {ComponentInfoService} from "./service-planning/component-info/component-info.service";
 import {NetworkStepService} from "./service-planning/objectsToTree/models/vrf/vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "./service-planning/objectsToTree/models/vrf/vrfModal/vpnStep/vpn.step.service";
+import {Utils} from "../shared/utils/utils";
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import {VpnStepService} from "./service-planning/objectsToTree/models/vrf/vrfMod
   providers: [
     AaiService,
     ObjectToTreeService,
+    Utils,
     AvailableModelsTreeService,
     ContextMenuService,
     DuplicateService,

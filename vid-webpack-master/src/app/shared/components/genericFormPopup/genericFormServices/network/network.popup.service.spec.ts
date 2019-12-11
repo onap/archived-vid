@@ -13,6 +13,8 @@ import {DefaultDataGeneratorService} from "../../../../services/defaultDataServi
 import {BasicPopupService} from "../basic.popup.service";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {Utils} from "../../../../utils/utils";
+import {instance, mock} from "ts-mockito";
 
 class MockAppStore<T> {}
 
@@ -1972,12 +1974,10 @@ class MockReduxStore<T> {
   }
 }
 
-class MockFeatureFlagsService {}
-
 describe('Network popup service', () => {
   let injector;
   let service: NetworkPopupService;
-  let genericFormService: GenericFormService
+  let genericFormService: GenericFormService;
   let defaultDataGeneratorService: DefaultDataGeneratorService;
   let fb: FormBuilder;
   let iframeService: IframeService;
@@ -1996,7 +1996,8 @@ describe('Network popup service', () => {
         AaiService,
         LogService,
         BasicPopupService,
-        {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
+        Utils,
+        {provide: FeatureFlagsService, useValue: instance(mock(FeatureFlagsService))},
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},
         {provide: SdcUiServices.ModalService, useClass: MockModalService}
