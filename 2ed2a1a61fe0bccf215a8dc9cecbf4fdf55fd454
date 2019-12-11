@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f9d99cdc_7a5af9e5",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/models/vfModule/vfModule.model.info.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-11T09:57:31Z",
+      "side": 1,
+      "message": "can simplify",
+      "revId": "2ed2a1a61fe0bccf215a8dc9cecbf4fdf55fd454",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
