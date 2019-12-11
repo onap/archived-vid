@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e023b813_86d4afa9",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-12-11T15:55:41Z",
+      "side": 1,
+      "message": "rename to addSameVnfUnlimitedTime or something. the \"3\" has no meaning.",
+      "range": {
+        "startLine": 20,
+        "startChar": 11,
+        "endLine": 20,
+        "endChar": 27
+      },
+      "revId": "50ad821dd1a330e697e85d7c0143e0a2f422ac1c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
