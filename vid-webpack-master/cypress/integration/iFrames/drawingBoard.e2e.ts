@@ -24,9 +24,9 @@ describe('Drawing board', function () {
     cy.drawingBoardPressAddButtonByElementName(vnfNodeName).click({force: true});
     cy.fillVnfPopup(true).then(() => {
       cy.drawingBoardPressAddButtonByElementName(vnfNodeName).click({force: true});
-      cy.fillVnfPopup().then(() => {
+      cy.fillVnfPopup(true).then(() => {
         cy.drawingBoardPressAddButtonByElementName(vnfNodeName).click({force: true});
-        cy.fillVnfPopup().then(() => {
+        cy.fillVnfPopup(true).then(() => {
           cy.drawingBoardNumberOfExistingElementsShouldContains(3);
         });
       });
@@ -43,7 +43,7 @@ describe('Drawing board', function () {
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
         cy.fillVnfPopup(true).then(() => {
           cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
-          cy.fillVnfPopup().then(() => {
+          cy.fillVnfPopup(true).then(() => {
             cy.drawingBoardNumberOfExistingElementsShouldContains(2);
             cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0', 1)
               .drawingBoardTreeClickOnContextMenuOptionByName('Remove');
