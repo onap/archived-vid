@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac21d42f_581bf422",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation.templates.modal.e2e.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T13:00:17Z",
+      "side": 1,
+      "message": "I understand that nothing has change here.\nJust line moved.\nPlease put the back in their original place.",
+      "revId": "6cfd0fc80ff3e4a02062528bfe003df791a66726",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a88aa89a_3d1ab22c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T13:00:17Z",
+      "side": 1,
+      "message": "Please add unit tests",
+      "revId": "6cfd0fc80ff3e4a02062528bfe003df791a66726",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39bd5056_f328fd9f",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T13:00:17Z",
+      "side": 1,
+      "message": "it\u0027s code duplication of instantiationStatus.component.service.ts",
+      "revId": "6cfd0fc80ff3e4a02062528bfe003df791a66726",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44a72934_84366619",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T13:00:17Z",
+      "side": 1,
+      "message": "it\u0027s code duplication of instantiationStatus.component.service.ts",
+      "revId": "6cfd0fc80ff3e4a02062528bfe003df791a66726",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee75fdc1_f2ca06bd",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T13:00:17Z",
+      "side": 1,
+      "message": "it\u0027s code duplication of instantiationStatus.component.service.ts",
+      "revId": "6cfd0fc80ff3e4a02062528bfe003df791a66726",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
