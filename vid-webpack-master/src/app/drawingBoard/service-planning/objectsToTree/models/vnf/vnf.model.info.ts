@@ -9,10 +9,7 @@ import {SharedTreeService} from "../../shared.tree.service";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../../shared/store/reducers";
 import {DefaultDataGeneratorService} from "../../../../../shared/services/defaultDataServiceGenerator/default.data.generator.service";
-import {
-  GenericFormPopupComponent,
-  PopupType
-} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
+import {GenericFormPopupComponent, PopupType} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from 'ng2-bootstrap-modal';
 import {VnfPopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
 import {VfModulePopuopService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
@@ -26,13 +23,7 @@ import {changeInstanceCounter, removeInstance} from "../../../../../shared/store
 import {MessageBoxData} from "../../../../../shared/components/messageBox/messageBox.data";
 import {MessageBoxService} from "../../../../../shared/components/messageBox/messageBox.service";
 import {ServiceInstanceActions} from "../../../../../shared/models/serviceInstanceActions";
-import {
-  deleteActionVnfInstance,
-  undoDeleteActionVnfInstance,
-  undoUpgradeVnf,
-  updateVnfPosition,
-  upgradeVnf
-} from "../../../../../shared/storeUtil/utils/vnf/vnf.actions";
+import {deleteActionVnfInstance, undoDeleteActionVnfInstance, undoUpgradeVnf, updateVnfPosition, upgradeVnf} from "../../../../../shared/storeUtil/utils/vnf/vnf.actions";
 import * as _ from 'lodash';
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
@@ -326,8 +317,8 @@ export class VnfModelInfo implements ILevelNodeInfo {
 
   getInfo(model, instance): ModelInformationItem[] {
     const modelInformation = !_.isEmpty(model) ? [
-      ModelInformationItem.createInstance("Min instances", !_.isNull(model.min) ? String(model.min) : null),
-      ModelInformationItem.createInstance("Max instances", !_.isNull(model.max) ? String(model.max) : null)
+      ModelInformationItem.createInstance("Min instances", !_.isNil(model.min) ? String(model.min) : null),
+      ModelInformationItem.createInstance("Max instances", !_.isNil(model.max) ? String(model.max) : 'Unlimited (default)')
     ] : [];
 
     const instanceInfo = !_.isEmpty(instance) ? [
