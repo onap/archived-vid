@@ -331,7 +331,7 @@ describe('View only drawing board', function () {
       ['Model version', '2.0'],
       ['Model customization ID', '91415b44-753d-494c-926a-456a9172bbb9'],
       ['Min instances', '0'],
-      //['Max instances', '1']
+      ['Max instances', 'Unlimited (default)']
     ];
     const extraLabelsAndValuesForInstance = [['Instance type', 'VNF2_INSTANCE_TYPE'],['In maintenance','true'], ['Instance ID', 'VNF2_INSTANCE_ID']];
     testComponentInfoByType('node-VF_vGeraldine 0', labelsAndValuesForModel,'VNF INFO',
