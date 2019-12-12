@@ -23,10 +23,24 @@
           </div>
         </div>
         <div class="col-md-6">
-          <input
-            (keypress)="onFilterKeypress($event)"
-            class="filter-input form-control input-text"
-            placeholder="Filter...">
+          <div class="col-md-6">
+            <div class="details-item">
+<!--              <input type="checkbox"-->
+<!--                     [attr.data-tests-id]="'filterByUserIdCheckbox'"-->
+<!--                     [checked]="filterByUserIdCheckboxStatus"-->
+<!--                     data-toggle="toggle">-->
+<!--              <label class="checkbox-label"-->
+<!--                     for="'filterByUserIdCheckbox">Show only mine</label>-->
+            </div>
+          </div>
+          <div class="col-md-6">
+            <input
+              (keypress)="onFilterKeypress($event)"
+              class="filter-input form-control input-text"
+              placeholder="Filter..."
+              [(ngModel)]="filterText">
+          </div>
+
         </div>
 
       </div>
@@ -37,7 +51,7 @@
             <th class="header-title" id="header-userId">User ID</th>
             <th class="header-title" id="header-createDate" style="width: 21ch;">Date</th>
             <th class="header-title" id="header-instanceName" style="max-width: 50ch;">Instance Name</th>
-            <th class="header-title" id="header-instantiationStatus">Instantiation Status</th>
+            <th class="header-title" id="header-instantiationStatus" style="width: 30ch;">Instantiation Status</th>
             <th class="header-title" id="header-summary">Summary</th>
             <th class="header-title" id="header-region">Region</th>
             <th class="header-title" id="header-tenant">Tenant</th>
@@ -46,7 +60,7 @@
           </thead>
           <tbody>
           <tr class="member-table-row"
-              *ngFor="let item of filterTableData;"
+              *ngFor="let item of filterTableData | searchFilter: filterText ;"
               (click)="selectedJobId = item.jobId"
               [ngClass]="{'selected' : selectedJobId === item.jobId}"
               [attr.data-tests-id]="'row-' + item.jobId">

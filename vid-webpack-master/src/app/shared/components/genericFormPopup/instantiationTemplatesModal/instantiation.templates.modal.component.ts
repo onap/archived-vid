@@ -18,7 +18,8 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
   templateModalComponentService: InstantiationTemplatesModalService;
   originalTableData: InstantiationTemplatesRowModel[] = [];
   filterTableData : InstantiationTemplatesRowModel[] = [];
-
+  filterText: string;
+  filterByUserIdCheckboxStatus = false;
   constructor(dialogService: DialogService,
               private _iframeService: IframeService,
               private _serviceInfoService: ServiceInfoService,
@@ -29,6 +30,7 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
   }
 
   ngOnInit(): void {
+    this.filterText = '';
     this._route
       .queryParams
       .subscribe(params => {
@@ -43,6 +45,10 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
 
   };
 
+  filterByUserId = () => {
+
+  }
+
 
   onFilterKeypress = (event : KeyboardEvent) => {
     //event.target.value
@@ -50,6 +56,11 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
   };
 
   closeModal(): void {
+    this._iframeService.removeClassCloseModal('content');
     this.dialogService.removeDialog(this);
+    setTimeout(() => {
+      window.parent.postMessage("closeIframe", "*");
+    }, 15);
+
   }
 }

@@ -166,7 +166,11 @@ $grid-border: 1px #d2d2d2 solid;
 
   .filter-input {
     float: right;
-    width: 25%;
+    width: 50%;
+  }
+
+  .details-item {
+    text-align: right;
   }
 
 
@@ -187,6 +191,6 @@ $grid-border: 1px #d2d2d2 solid;
   }
 
   .member-table-row.selected {
-    background: #009fdbb5 !important;
+    background: #8080808f !important;
   }
 }
