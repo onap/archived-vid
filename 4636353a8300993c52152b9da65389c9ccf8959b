@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "74d499e6_2c90ecf9",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2019-12-12T11:45:46Z",
+      "side": 1,
+      "message": "change to ()\u003d\u003e{\n}",
+      "revId": "4636353a8300993c52152b9da65389c9ccf8959b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ad9a73c_25584339",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2019-12-12T11:45:46Z",
+      "side": 1,
+      "message": "add unit test",
+      "revId": "4636353a8300993c52152b9da65389c9ccf8959b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
