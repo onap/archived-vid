@@ -15,6 +15,7 @@ import {FormControlModel} from "../../models/formControlModels/formControl.model
 import {FormGeneralErrorsService} from "../formGeneralErrors/formGeneralErrors.service";
 import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
 import {InstantiationTemplatesModalComponent} from "./instantiationTemplatesModal/instantiation.templates.modal.component";
+import {updateCurrentModalModeAction} from "../../storeUtil/utils/global/global.actions";
 
 
 export interface PopupModel {
@@ -80,7 +81,12 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
     return this.formPopupDetails && this.formPopupDetails.UUIDData['bulkSize'] > 1
   }
 
+  clearModalIsUpdateMode() : void {
+    this._store.dispatch(updateCurrentModalModeAction(null));
+  }
+
   ngOnInit(): void {
+    this._store.dispatch(updateCurrentModalModeAction(this.isUpdateMode));
     this._route
       .queryParams
       .subscribe(params => {

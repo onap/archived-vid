@@ -52,7 +52,7 @@ export class VnfGroupControlGenerator {
       return [];
     }
 
-    const vnfGroupInstance = this.getVnfGroupInstance(serviceId, vnfGroupStoreKey);
+    const vnfGroupInstance = this.store.getState().global.isUpdateModalMode ? this.getVnfGroupInstance(serviceId, vnfGroupStoreKey) : null;
     const vnfGroupModel = new VnfGroupModel(this.store.getState().service.serviceHierarchy[serviceId].vnfGroups[vnfGroupName]);
     let result: FormControlModel[] = [];
 
@@ -70,7 +70,7 @@ export class VnfGroupControlGenerator {
     }
 
     let result: FormControlModel[] = [];
-    const vnfGroupInstance = this.getVnfGroupInstance(serviceId, vnfGroupStoreKey);
+    const vnfGroupInstance = this.store.getState().global.isUpdateModalMode ?  this.getVnfGroupInstance(serviceId, vnfGroupStoreKey) : null;
     const vnfGroupModel = new VnfGroupModel(this.store.getState().service.serviceHierarchy[serviceId].vnfGroups[vnfGroupName]);
 
     if (!_.isNil(vnfGroupModel)) {
