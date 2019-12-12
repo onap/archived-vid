@@ -13,6 +13,7 @@ import {Router, UrlTree} from "@angular/router";
 import {of} from "rxjs";
 import {MsoService} from "../shared/services/msoService/mso.service";
 import {ServiceAction} from "../shared/models/serviceInstanceActions";
+import {InstantiationBase} from "../shared/models/serviceBase";
 
 export let PENDING : string = "pending";
 export let INPROGRESS : string = "in_progress";
@@ -112,21 +113,21 @@ export class InstantiationStatusComponentService {
     window.parent.location.assign('../../serviceModels.htm#/instantiate?' + query);
   }
 
-  navigateToNewViewEdit(item: ServiceInfoModel, mode: DrawingBoardModes): void{
+  navigateToNewViewEdit(item: InstantiationBase, mode: DrawingBoardModes): void {
     this._store.dispatch(updateDrawingBoardStatus(mode));
     const viewEditUrlTree:UrlTree = this.getNewViewEditUrlTree(item, mode);
     this._router.navigateByUrl(viewEditUrlTree);
     window.parent.location.assign(this.getViewEditUrl(viewEditUrlTree));
   }
 
-  getNewViewEditUrlTree(item: ServiceInfoModel, mode: DrawingBoardModes): UrlTree {
+  getNewViewEditUrlTree(item: InstantiationBase, mode: DrawingBoardModes): UrlTree {
     return this._router.createUrlTree(
       ['/servicePlanning/' + mode],
       {
         queryParams:
         mode==DrawingBoardModes.RECREATE ?
           this.getRecreateQueryParams(item) :
-          this.getDefaultViewEditQueryParams(item)
+          this.getDefaultViewEditQueryParams(<ServiceInfoModel> item)
       });
   }
 
@@ -140,7 +141,7 @@ export class InstantiationStatusComponentService {
     };
   }
 
-  private getRecreateQueryParams(item: ServiceInfoModel) {
+  private getRecreateQueryParams(item: InstantiationBase) {
     return {
       serviceModelId: item.serviceModelId,
       jobId: item.jobId

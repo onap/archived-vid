@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import {InstantiationBase} from "../../../models/serviceBase";
 
-export class InstantiationTemplatesRowModel {
-  readonly jobId: string;
+export class InstantiationTemplatesRowModel extends InstantiationBase{
   readonly userId ?: string;
   readonly createDate ?: string;
   readonly instanceName ?: string;
@@ -13,7 +13,7 @@ export class InstantiationTemplatesRowModel {
   readonly aicZone?: string;
 
   constructor(data) {
-    this.jobId = data.jobId;
+    super(data);
     this.userId = !_.isNil(data.created) ? data.userId : null;
     this.createDate = !_.isNil(data.created) ? moment(data.created).format("YYYY-MM-DD HH:mm:ss") : null;
     this.instanceName = this.getInstanceName(data.serviceInstanceName);
@@ -22,7 +22,6 @@ export class InstantiationTemplatesRowModel {
     this.region = this.getRegion(data.regionId, data.owningEntityName);
     this.tenant = !_.isNil(data.tenantName) ? data.tenantName : null;
     this.aicZone = !_.isNil(data.aicZoneName) ? data.aicZoneName : null;
-
   }
 
 
