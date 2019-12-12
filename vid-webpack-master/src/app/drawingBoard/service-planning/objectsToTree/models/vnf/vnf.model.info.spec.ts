@@ -23,6 +23,7 @@ import {AaiService} from "../../../../../shared/services/aaiService/aai.service"
 import {HttpClient, HttpHandler} from "@angular/common/http";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+
 class MockFeatureFlagsService extends  FeatureFlagsService{
   getAllFlags(): { [p: string]: boolean } {
     return {};
@@ -465,6 +466,12 @@ describe('Vnf Model Info', () => {
       ModelInformationItem.createInstance('Max instances',"1")
     ];
     expect(actualVNFInfo).toEqual(expectedVNFInfo);
+  });
+
+  test('When there is no max Max instances text is: Unlimited (default)', () => {
+    let actualVNFInfo = vnfModel.getInfo({just:"not empty"},null);
+    const maxInstancesItem = actualVNFInfo.filter((item)=> item.label == 'Max instances')[0];
+    expect((maxInstancesItem.values)[0]).toEqual('Unlimited (default)');
   });
 
   function getVNFModel(){
