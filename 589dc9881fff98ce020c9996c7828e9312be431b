@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "480a722c_fedf7859",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/generic-form-popup.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T06:09:26Z",
+      "side": 1,
+      "message": "is it valid only to new service popup ?",
+      "revId": "589dc9881fff98ce020c9996c7828e9312be431b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a0b4637_334c64cf",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/generic-form-popup.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T06:09:26Z",
+      "side": 1,
+      "message": "please extract to method like onInitForCreateNewServicePopup",
+      "range": {
+        "startLine": 89,
+        "startChar": 10,
+        "endLine": 113,
+        "endChar": 13
+      },
+      "revId": "589dc9881fff98ce020c9996c7828e9312be431b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
