@@ -46,6 +46,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   type: PopupType;
   uuidData: UUIDData;
   showTemplateBtn: boolean = false;
+  isShowPreviousInstantiationBtn: boolean = false;
   isUpdateMode: boolean;
   node: ITreeNode = null;
   hasGeneralApiError: boolean = false;
@@ -85,29 +86,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
       .subscribe(params => {
         console.log('changed');
         if (params['serviceModelId'] && params['isCreate'] == "true") {
-          this._genericFormPopupService.initReduxOnCreateNewService().then((serviceModelId: string) => {
-            this.uuidData = <any>{
-              bulkSize: 1,
-              isMacro: this._store.getState().service.serviceHierarchy[serviceModelId].service.vidNotions.instantiationType === 'Macro',
-              type: PopupType.SERVICE,
-              serviceId: serviceModelId,
-              popupService: this._servicePopupService,
-            };
-            this.showTemplateBtn = !!this._store.getState().global.flags["FLAG_2004_INSTANTIATION_TEMPLATES_POPUP"];
-
-            this.uuidData.popupService.closeDialogEvent.subscribe((that) => {
-              this.closeDialog(that);
-            });
-
-            this.formPopupDetails = this.uuidData.popupService.getGenericFormPopupDetails(
-              this.uuidData['serviceId'],
-              null,
-              null,
-              this.node,
-              this.uuidData,
-              false
-            );
-          });
+          this.onInitForCreateNewServicePopup();
         }
       });
 
@@ -123,6 +102,34 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
       this.uuidData['isMacro'] = this._store.getState().service.serviceHierarchy[this.uuidData['serviceId']].service.vidNotions.instantiationType === 'Macro';
       this.formPopupDetails = this._genericFormPopupService.getGenericFormDetails(this.uuidData, this.node, this.isUpdateMode);
     }
+  }
+
+  private onInitForCreateNewServicePopup() {
+    this._genericFormPopupService.initReduxOnCreateNewService().then((serviceModelId: string) => {
+      this.uuidData = <any>{
+        bulkSize: 1,
+        isMacro: this._store.getState().service.serviceHierarchy[serviceModelId].service.vidNotions.instantiationType === 'Macro',
+        type: PopupType.SERVICE,
+        serviceId: serviceModelId,
+        popupService: this._servicePopupService,
+      };
+      this.showTemplateBtn = !!this._store.getState().global.flags["FLAG_2004_INSTANTIATION_TEMPLATES_POPUP"];
+
+      this.isShowPreviousInstantiationBtn = !!this._store.getState().global.flags["FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER"];
+
+      this.uuidData.popupService.closeDialogEvent.subscribe((that) => {
+        this.closeDialog(that);
+      });
+
+      this.formPopupDetails = this.uuidData.popupService.getGenericFormPopupDetails(
+        this.uuidData['serviceId'],
+        null,
+        null,
+        this.node,
+        this.uuidData,
+        false
+      );
+    });
   }
 
   hasSomeError(formPopupDetails: FormPopupDetails, form: FormGroup): boolean {
@@ -148,9 +155,6 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
     this._dialogService.addDialog(InstantiationTemplatesModalComponent, {});
   }
 
-  isInstantiationStatusFilterFlagOn() {
-    return FeatureFlagsService.getFlagState(Features.FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER, this._store);
-  }
 }
 
 
