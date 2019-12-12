@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e7e9a623_6eb5911f",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T09:29:41Z",
+      "side": 1,
+      "message": "please remove",
+      "revId": "0d93bf875be8cb8c447eecdfb0834f82390be3a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97d4073c_844204cf",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T09:29:41Z",
+      "side": 1,
+      "message": "please remove",
+      "revId": "0d93bf875be8cb8c447eecdfb0834f82390be3a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18d170b1_4c68e102",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T09:29:41Z",
+      "side": 1,
+      "message": "duplication of code from :\n generic-form-popup.component.ts\n search-elements-modal.component.ts",
+      "revId": "0d93bf875be8cb8c447eecdfb0834f82390be3a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17dce91e_ad90ef10",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T09:29:41Z",
+      "side": 1,
+      "message": "if we always provide the content as paramerter \nwhy not create this._iframeService.removeClassCloseModal() \nwhich use content by default ?",
+      "revId": "0d93bf875be8cb8c447eecdfb0834f82390be3a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9cc23fa8_c44013ea",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T09:29:41Z",
+      "side": 1,
+      "message": "how do you test it ?",
+      "revId": "0d93bf875be8cb8c447eecdfb0834f82390be3a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
