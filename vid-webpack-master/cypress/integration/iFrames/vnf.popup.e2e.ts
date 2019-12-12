@@ -66,7 +66,7 @@ describe('Vnf popup', function () {
         cy.getElementByDataTestsId('model-item-label-vnf-min').contains('Minimum to instantiate');
         cy.getElementByDataTestsId('model-item-value-vnf-min').contains('0');
         cy.getElementByDataTestsId('model-item-label-vnf-max').contains('Maximum to instantiate');
-        cy.getElementByDataTestsId('model-item-value-vnf-max').contains('1');
+        cy.getElementByDataTestsId('model-item-value-vnf-max').contains('Unlimited (default)');
       })
      });
 
