@@ -71,7 +71,7 @@ describe('Delete vnf instance', function () {
     // add a vnf on update mode
     cy.drawingBoardPressAddButtonByElementName('node-2017-388_PASQUALE-vPE 0').click({force: true});
     cy.selectDropdownOptionByText('rollback', 'Rollback');
-    cy.fillVnfPopup(true);
+    cy.fillVnfPopup();
 
     // delete VNF
     cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0', 0)
@@ -85,7 +85,6 @@ describe('Delete vnf instance', function () {
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
         cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/vidRequestDelete1Create1Vnf.json').then((expectedResult) => {
           expectedResult.vnfs["2017-388_PASQUALE-vPE 0_1"].trackById = vnf.trackById;
-          expectedResult.vnfs["2017-388_PASQUALE-vPE 0_1"].platformName = 'platform,xxx1';
           cy.deepCompare(expectedResult, xhr.request.body);
         });
       });

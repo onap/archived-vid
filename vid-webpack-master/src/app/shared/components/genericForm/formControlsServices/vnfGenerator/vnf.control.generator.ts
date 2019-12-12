@@ -74,7 +74,7 @@ export class VnfControlGenerator {
       return [];
     }
 
-    const vnfInstance = this.getVnfInstance(serviceId, vnfStoreKey);
+    const vnfInstance = this.store.getState().global.isUpdateModalMode ? this.getVnfInstance(serviceId, vnfStoreKey) : null;
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
     let result: FormControlModel[] = [];
     const flags = this.store.getState().global.flags;
@@ -99,7 +99,7 @@ export class VnfControlGenerator {
     }
 
     let result: FormControlModel[] = [];
-    const vnfInstance = this.getVnfInstance(serviceId, vnfStoreKey);
+    const vnfInstance = this.store.getState().global.isUpdateModalMode ? this.getVnfInstance(serviceId, vnfStoreKey): null;
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
 
     if (!_.isNil(vnfModel)) {
