@@ -3,22 +3,41 @@
 VID Release Notes
 =================
 
-Version: El-Alto (5.0.x)
---------------
+Version: El-Alto (6.0.x)
+------------------------
+**Known Issues**
+
 
 **Resolved Issues**
-
-  - `↗ <https://jira.onap.org/browse/VID-520>`_ Remove "Dissociate" button for Macro-orchestrated PNF resources
-  - `↗ <https://jira.onap.org/browse/VID-517>`_ Added liquidBase for follow changes in DB
-  - `↗ <https://jira.onap.org/browse/VID-488>`_ Added "Report" popup for common diagnosable cases
-  - `↗ <https://jira.onap.org/browse/VID-358>`_ vid-mariadb-galera runs in high-availability mode
 
 
 **Security Notes**
 
 *Fixed Security Issues*
 
-  - `↗ <https://jira.onap.org/browse/OJSI-119>`_ Closed plain-text HTTP endpoint, port 30238
+*Known Security Issues*
+
+
+
+Version: El-Alto (5.0.x)
+------------------------
+**Known Issues**
+
+  - `↗ <https://jira.onap.org/browse/VID-659>`__ VID generates always the same VF module name during scale out
+
+**Resolved Issues**
+
+  - `↗ <https://jira.onap.org/browse/VID-520>`__ Remove "Dissociate" button for Macro-orchestrated PNF resources
+  - `↗ <https://jira.onap.org/browse/VID-517>`__ Added liquidBase for follow changes in DB
+  - `↗ <https://jira.onap.org/browse/VID-488>`__ Added "Report" popup for common diagnosable cases
+  - `↗ <https://jira.onap.org/browse/VID-358>`__ vid-mariadb-galera runs in high-availability mode
+
+
+**Security Notes**
+
+*Fixed Security Issues*
+
+  - `↗ <https://jira.onap.org/browse/OJSI-119>`__ Closed plain-text HTTP endpoint, port 30238
 
 *Known Security Issues*
 
@@ -126,9 +145,9 @@ VID code has been formally scanned during build time using NexusIQ and all Criti
 
 Quick Links:
 
-- `VID project page <https://wiki.onap.org/display/DW/Virtual+Infrastructure+Deployment+Project>`_
-- `Passing Badge information for VID <https://bestpractices.coreinfrastructure.org/en/projects/1658>`_
-- `Project Vulnerability Review Table for VID <https://wiki.onap.org/pages/viewpage.action?pageId=45300871>`_
+- `VID project page <https://wiki.onap.org/display/DW/Virtual+Infrastructure+Deployment+Project>`__
+- `Passing Badge information for VID <https://bestpractices.coreinfrastructure.org/en/projects/1658>`__
+- `Project Vulnerability Review Table for VID <https://wiki.onap.org/pages/viewpage.action?pageId=45300871>`__
 
 **Other**
 
@@ -281,7 +300,7 @@ New Features
 
 **Security Notes**
 
-VID code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The VID open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28378623>`_.
+VID code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The VID open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28378623>`__.
 
 Quick Links:
 
