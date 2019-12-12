@@ -11,9 +11,11 @@ export class InstantiationTemplatesRowModel {
   readonly region?: string;
   readonly tenant?: string;
   readonly aicZone?: string;
+  readonly serviceModelId: string;
 
   constructor(data) {
     this.jobId = data.jobId;
+    this.serviceModelId = data.serviceModelId;
     this.userId = !_.isNil(data.created) ? data.userId : null;
     this.createDate = !_.isNil(data.created) ? moment(data.created).format("YYYY-MM-DD HH:mm:ss") : null;
     this.instanceName = this.getInstanceName(data.serviceInstanceName);

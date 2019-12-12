@@ -50,8 +50,8 @@
           <tbody>
           <tr class="member-table-row"
               *ngFor="let item of filterTableData | searchFilter: filterText ;"
-              (click)="selectedJobId = item.jobId"
-              [ngClass]="{'selected' : selectedJobId === item.jobId}"
+              (click)="selectedInstantiation = item"
+              [ngClass]="{'selected' : selectedInstantiation.jobId === item.jobId}"
               [attr.data-tests-id]="'row-' + item.jobId">
             <td>
               <div>
@@ -148,7 +148,7 @@
       </div>
       <div class="col-md-6" style="padding: 15px;padding-right: 35px;">
         <button
-          [disabled]="selectedJobId === null"
+          [disabled]="selectedInstantiation.jobId === null"
           [attr.data-tests-id]="'LoadTemplateButton'"
           type="button" class="btn btn-primary submit"
           (click)="loadTemplate()"><span>Load Template</span>
