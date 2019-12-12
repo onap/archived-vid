@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {ServiceInfoService} from "../../../server/serviceInfo/serviceInfo.service";
 import {InstantiationTemplatesModalService} from "./instantiation.templates.modal.service";
 import {InstantiationTemplatesRowModel} from "./instantiation.templates.row.model";
+import {DrawingBoardModes} from "../../../../drawingBoard/service-planning/drawing-board.modes";
 
 @Component({
   selector: 'template-modal',
@@ -14,7 +15,7 @@ import {InstantiationTemplatesRowModel} from "./instantiation.templates.row.mode
 
 export class InstantiationTemplatesModalComponent extends DialogComponent<string, boolean> implements OnInit, OnDestroy {
 
-  selectedJobId : string = null;
+  selectedInstantiation: InstantiationTemplatesRowModel = null;
   templateModalComponentService: InstantiationTemplatesModalService;
   originalTableData: InstantiationTemplatesRowModel[] = [];
   filterTableData : InstantiationTemplatesRowModel[] = [];
@@ -40,6 +41,7 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
   }
 
   loadTemplate = () => {
+    this._templateModalComponentService.navigateToNewViewEdit(this.selectedInstantiation, DrawingBoardModes.RECREATE)
 
   };
 
