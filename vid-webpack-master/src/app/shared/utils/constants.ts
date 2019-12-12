@@ -297,4 +297,8 @@ export module Constants {
   export class LegacyRegion {
     public static MEGA_REGION = ['AAIAIC25'];
   }
+
+  export class ModelInfo {
+    public static UNLIMITED_DEFAULT = 'Unlimited (default)';
+  }
 }

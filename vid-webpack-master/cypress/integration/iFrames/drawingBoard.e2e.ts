@@ -265,6 +265,10 @@ describe('Drawing board', function () {
         delete reduxState.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'].properties.max_instances;
         cy.setReduxState(<any>reduxState);
         addSameVnfMultipleTimes();
+        cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0')
+          .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
+          .getElementByDataTestsId('model-item-value-vnf-max').contains('Unlimited (default)')
+          .getTagElementContainsText('button', 'Cancel').click({force: true});
       });
     });
   });

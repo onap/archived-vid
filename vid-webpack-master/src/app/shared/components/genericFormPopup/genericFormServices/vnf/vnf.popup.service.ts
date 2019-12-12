@@ -97,9 +97,19 @@ export class VnfPopupService implements GenericPopupInterface{
         new ModelInformationItem("Service type", "serviceType", [this.serviceModel.serviceType]),
         new ModelInformationItem("Service role", "serviceRole", [this.serviceModel.serviceRole]),
         new ModelInformationItem("Minimum to instantiate", "vnf-min", [!_.isNil(this.model.min) ? this.model.min.toString() : '0'], "", false),
-        new ModelInformationItem("Maximum to instantiate", "vnf-max", [!_.isNil(this.model.max) ? this.model.max.toString() : '1'], "", false)
+        (this.createMaximumToInstantiateModelInformationItem(this.model))
         ];
     })
+  }
+
+  createMaximumToInstantiateModelInformationItem(model) {
+    return new ModelInformationItem(
+      "Maximum to instantiate",
+      "vnf-max",
+      [!_.isNil(model.max) ? model.max.toString() : Constants.ModelInfo.UNLIMITED_DEFAULT],
+      "",
+      false
+    );
   }
 
   getSubLeftTitle(): string {
