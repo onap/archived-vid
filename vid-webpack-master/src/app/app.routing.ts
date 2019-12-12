@@ -6,11 +6,19 @@ import {SupportComponent} from "./support/support.component";
 import {HealthStatusRoutes} from "./healthStatus/health-status.routing";
 import {VlanTaggingRoutes} from "./vlanTagging/vlan-tagging.routing";
 import {InstantiationStatusRoutes} from "./instantiationStatus/InstantiationStatus.routing";
+import {InstantiationTemplatesModalComponent} from "./shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component";
 const routes: Routes = [
   ...DrawingBoardRoutes,
   ...HealthStatusRoutes,
   ...VlanTaggingRoutes,
   ...InstantiationStatusRoutes,
+  {
+    path: 'instantiationTemplatesPopup',
+    component: InstantiationTemplatesModalComponent,
+    resolve: {
+      flags: FlagsResolve
+    }
+  },
   {
     path: 'servicePopup',
     component: GenericFormPopupComponent,
