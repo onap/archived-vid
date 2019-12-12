@@ -82,8 +82,6 @@ ENV VID_CONTACT_US_LINK="https://todo_contact_us_link.com" \
 
 # Custom options
 ENV JAVA_OPTS="-Xmx1536m -Xms1536m"
-ENV CATALINA_OPTS="-Dvid.keystore.password=${VID_KEYSTORE_PASSWORD} -Dvid.keyalias=vid@vid.onap.org -Dvid.keystore.filename=${VID_KEYSTORE_FILENAME} -Dcom.att.eelf.logging.file=logback.xml -Dcom.att.eelf.logging.path=/tmp"
-
 
 ADD maven/config/server.xml ${VID_TOMCAT_PATH}
 ADD maven/scripts/*.sh /tmp/vid/
