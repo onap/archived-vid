@@ -42,7 +42,7 @@ function focusInput(id : string) : void {
  test if input with id contains some text
  ****************************************/
 function shouldInputContainsText(id : string, text : string) : void {
-  cy.getElementByDataTestsId(id).contains('text')
+  cy.getElementByDataTestsId(id).contains(text)
 }
 
 Cypress.Commands.add('typeToInput', typeToInput);
