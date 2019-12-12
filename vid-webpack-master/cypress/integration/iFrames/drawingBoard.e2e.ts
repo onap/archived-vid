@@ -17,6 +17,22 @@ describe('Drawing board', function () {
     cy.screenshot();
   });
 
+  function addSameVnfMultipleTimes() {
+    cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
+    const vnfNodeName = 'node-2017-488_PASQUALE-vPE 0';
+    cy.drawingBoardPressAddButtonByElementName(vnfNodeName).get('i').should('have.class', 'fa-plus-circle');
+    cy.drawingBoardPressAddButtonByElementName(vnfNodeName).click({force: true});
+    cy.fillVnfPopup(true).then(() => {
+      cy.drawingBoardPressAddButtonByElementName(vnfNodeName).click({force: true});
+      cy.fillVnfPopup().then(() => {
+        cy.drawingBoardPressAddButtonByElementName(vnfNodeName).click({force: true});
+        cy.fillVnfPopup().then(() => {
+          cy.drawingBoardNumberOfExistingElementsShouldContains(3);
+        });
+      });
+    });
+  }
+
   describe('duplicate', () => {
 
     it('delete vf module reduce the number of vf modules ', function () {
@@ -40,18 +56,7 @@ describe('Drawing board', function () {
     it('create new  vf module  update the number of vf modules ', () => {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setReduxState(<any>res);
-        cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
-        cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').get('i').should('have.class', 'fa-plus-circle');
-        cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
-        cy.fillVnfPopup(true).then(() => {
-          cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
-          cy.fillVnfPopup().then(() => {
-            cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
-            cy.fillVnfPopup().then(() => {
-              cy.drawingBoardNumberOfExistingElementsShouldContains(3);
-            });
-          });
-        });
+        addSameVnfMultipleTimes();
       });
     });
 
@@ -239,6 +244,7 @@ describe('Drawing board', function () {
   });
 
   describe('default max instances value', () => {
+
     it('when there is no maxCountInstances for vfModule, it can be added unlimited times', () => {
       let reduxState = getReduxWithVNFS(false);
       (<any> reduxState.global.flags)['FLAG_2002_UNLIMITED_MAX'] =  true;
@@ -251,6 +257,15 @@ describe('Drawing board', function () {
       cy.addMacroVfModule(vnfName, vfModuleName, 'module-3');
       cy.getElementByDataTestsId('node-d6557200-ecf2-4641-8094-5393ae3aae60-VF_vGeraldine 0').click();
       cy.getElementByDataTestsId('node-41708296-e443-4c71-953f-d9a010f059e1-vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2').should('have.length', 3);
+    });
+
+    it('when there is no max_instances for VNF, it can be added multiple times ', () => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((reduxState) => {
+        reduxState.global['flags'] = { 'FLAG_2002_UNLIMITED_MAX' : true };
+        delete reduxState.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs['2017-488_PASQUALE-vPE 0'].properties.max_instances;
+        cy.setReduxState(<any>reduxState);
+        addSameVnfMultipleTimes();
+      });
     });
   });
 
