@@ -8,7 +8,7 @@ import {
   UpdateGenericModalHelper,
   DeleteGenericModalHelper,
   DeleteGenericModalTabelDataHelper,
-  UpdateGenericModalTableDataHelper
+  UpdateGenericModalTableDataHelper, UpdateCurrentModalModeAction
 } from "./global.actions";
 import * as _ from "lodash";
 
@@ -18,6 +18,7 @@ export interface GlobalState {
   drawingBoardStatus : string;
   genericModalCriteria : { [key: string]: any };
   genericModalHelper : { [key: string]: any };
+  isUpdateModalMode?: boolean;
 
 }
 
@@ -28,7 +29,8 @@ const initialState: GlobalState = {
   genericModalCriteria : {
     roles : []
   },
-  genericModalHelper : {}
+  genericModalHelper : {},
+  isUpdateModalMode : null
 };
 
 export const globalReducer =
@@ -79,6 +81,11 @@ export const globalReducer =
       case GlobalActions.UPDATE_GENERIC_MODAL_TABLE_DATA_HELPER : {
         let newState = _.cloneDeep(state);
         newState.genericModalHelper[(<UpdateGenericModalTableDataHelper>action).field] = (<UpdateGenericModalTableDataHelper>action).values ;
+        return newState;
+      }
+      case GlobalActions.UPDATE_CURRENT_MODAL_MODE : {
+        let newState = {...state}
+        newState.isUpdateModalMode = (<UpdateCurrentModalModeAction>action).isUpdateModalMode;
         return newState;
       }
       default:
