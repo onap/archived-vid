@@ -42,7 +42,7 @@
         "modelVersion": "1.0"
       },
       "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
-      "instanceName": "zolson57arlba007",
+      "instanceName": "hvf6arlba007",
       "action": "Create",
       "platformName": "xxx1",
       "lcpCloudRegionId": "hvf6",
@@ -64,7 +64,7 @@
               "modelType": "vfModule",
               "modelVersion": "1"
             },
-            "instanceName": "zolson57arlba007_lba_Base_01",
+            "instanceName": "hvf6arlba007_lba_Base_01",
             "action": "Create",
             "lcpCloudRegionId": "hvf6",
             "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
@@ -87,7 +87,7 @@
               "modelType": "vfModule",
               "modelVersion": "1"
             },
-            "instanceName": "zolson57arlba007_lba_dj_01",
+            "instanceName": "hvf6arlba007_lba_dj_01",
             "action": "Create",
             "lcpCloudRegionId": "hvf6",
             "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
@@ -97,7 +97,7 @@
             "rollbackOnFailure": true,
             "trackById": "b134410e-3bc0-478e-883e-1b6bdf8a28df",
             "isFailed": false,
-            "volumeGroupInstanceName": "zolson57arlba007_lba_dj_01_vol",
+            "volumeGroupInstanceName": "hvf6arlba007_lba_dj_01_vol",
             "usePreload": true
           }
         }
