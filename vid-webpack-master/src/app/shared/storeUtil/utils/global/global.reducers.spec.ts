@@ -7,7 +7,7 @@ import {
   UpdateGenericModalHelper,
   DeleteGenericModalHelper,
   ClearGenericModalHelper,
-  UpdateGenericModalTableDataHelper
+  UpdateGenericModalTableDataHelper, UpdateCurrentModalModeAction
 } from "./global.actions";
 import {globalReducer} from "./global.reducers";
 
@@ -140,6 +140,31 @@ describe('globalReducer', () => {
         field : keyName
       });
     expect(globalDrawingBoardState.genericModalHelper[keyName]).toBeUndefined();
+  });
+
+
+
+  test('#UPDATE_CURRENT_MODAL_MODE : should update current modal mode: true',  ()=> {
+    let globalDrawingBoardState = globalReducer(<any>{global : {},genericModalHelper : {
+          isUpdateModalMode : null
+        }},
+      <UpdateCurrentModalModeAction>{
+        type: GlobalActions.UPDATE_CURRENT_MODAL_MODE,
+        isUpdateModalMode : true
+      });
+    expect(globalDrawingBoardState.isUpdateModalMode).toBeTruthy();
+  });
+
+
+  test('#UPDATE_CURRENT_MODAL_MODE : should update current modal mode: false',  ()=> {
+    let globalDrawingBoardState = globalReducer(<any>{global : {},genericModalHelper : {
+          isUpdateModalMode : true
+        }},
+      <UpdateCurrentModalModeAction>{
+        type: GlobalActions.UPDATE_CURRENT_MODAL_MODE,
+        isUpdateModalMode : false
+      });
+    expect(globalDrawingBoardState.isUpdateModalMode).toBeFalsy();
   });
 
 });

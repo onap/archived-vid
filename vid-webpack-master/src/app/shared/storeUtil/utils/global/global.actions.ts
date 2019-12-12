@@ -11,8 +11,14 @@ export enum GlobalActions {
   UPDATE_GENERIC_MODAL_TABLE_DATA_HELPER = 'UPDATE_GENERIC_MODAL_TABLE_DATA_HELPER',
   DELETE_GENERIC_MODAL_TABLE_DATA_HELPER = 'DELETE_GENERIC_MODAL_TABLE_DATA_HELPER',
   UPDATE_GENERIC_CURRNT_VRF_HELPER = 'UPDATE_GENERIC_CURRNT_VRF_HELPER',
-  DELETE_GENERIC_CURRNT_VRF_HELPER = 'DELETE_GENERIC_CURRNT_VRF_HELPER'
+  DELETE_GENERIC_CURRNT_VRF_HELPER = 'DELETE_GENERIC_CURRNT_VRF_HELPER',
+  UPDATE_CURRENT_MODAL_MODE = 'UPDATE_CURRENT_MODAL_MODE'
 }
+
+export interface UpdateCurrentModalModeAction extends Action {
+  isUpdateModalMode?: boolean;
+}
+
 
 export interface UpdateGlobalAction extends Action {
   name?: string;
@@ -105,4 +111,9 @@ export const deleteGenericModalTableDataHelper: ActionCreator<DeleteGenericModal
 
 export const clearAllGenericModalhelper: ActionCreator<ClearGenericModalHelper> = (field, uniqObjectField) => ({
   type : GlobalActions.CLEAR_ALL_GENERIC_MODAL_HELPER
+});
+
+export const updateCurrentModalModeAction: ActionCreator<UpdateCurrentModalModeAction> = (isUpdateModalMode? :boolean) => ({
+  type : GlobalActions.UPDATE_CURRENT_MODAL_MODE,
+  isUpdateModalMode
 });
