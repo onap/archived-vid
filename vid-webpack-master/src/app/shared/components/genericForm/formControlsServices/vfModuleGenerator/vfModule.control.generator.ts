@@ -92,7 +92,7 @@ export class VfModuleControlGenerator {
       }
     }
 
-    const vfModuleInstance = this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode);
+    const vfModuleInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode));
     const vfModuleModel = this.vfModuleModel;
     const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey];
     const vnfModelName: string = vnf.originalName;
@@ -126,11 +126,11 @@ export class VfModuleControlGenerator {
         return [];
       }
     }
-    const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey];
+    const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey] ;
     const vnfModelName: string = vnf.originalName;
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfModelName]);
 
-    const vfModuleInstance = this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode);
+    const vfModuleInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode));
     let result: FormControlModel[] = [];
     this.pushInstanceAndVGToForm(result, vfModuleInstance, serviceId, vnfModel, true);
     result.push(this.getLcpRegionControl(serviceId, vfModuleInstance, result));

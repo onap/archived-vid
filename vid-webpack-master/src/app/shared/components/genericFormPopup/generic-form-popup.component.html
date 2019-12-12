@@ -3,7 +3,7 @@
     <div class="modal-header">
       <button type="button"
               class="close"
-              (click)="formPopupDetails?.onCancel(formPopupDetails.that,dynamicForm)">&times;
+              (click)="formPopupDetails?.onCancel(formPopupDetails.that,dynamicForm);clearModalIsUpdateMode()">&times;
       </button>
       <span [attr.data-tests-id]="'create-modal-title'"
             class="modal-title">{{formPopupDetails?.title}}
@@ -70,14 +70,14 @@
         <button
           [attr.data-tests-id]="'cancelButton'"
           type="button" class="btn btn-default cancel"
-          (click)="formPopupDetails.onCancel(formPopupDetails.that, dynamicForm)"><span>Cancel</span></button>
+          (click)="formPopupDetails.onCancel(formPopupDetails.that, dynamicForm); clearModalIsUpdateMode()"><span>Cancel</span></button>
 
         <input type="submit"
                value="Set"
                data-tests-id="form-set"
                class="btn btn-success submit"
                [disabled]="!dynamicForm?.valid"
-               (click)="formPopupDetails.onSubmit(formPopupDetails.that, dynamicForm, servicesQty)">
+               (click)="formPopupDetails.onSubmit(formPopupDetails.that, dynamicForm, servicesQty);clearModalIsUpdateMode()">
       </div>
     </div>
   </div>
