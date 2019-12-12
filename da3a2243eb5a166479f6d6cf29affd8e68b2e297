@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "821a606d_441dbea0",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/basic.popup.service.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2031,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-12T05:41:55Z",
+      "side": 1,
+      "message": "I\u0027m not sure it create an instance of utils.\nI think it just create king of controller of the mock and you need to use instance(utils) to create an instance.",
+      "revId": "da3a2243eb5a166479f6d6cf29affd8e68b2e297",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
