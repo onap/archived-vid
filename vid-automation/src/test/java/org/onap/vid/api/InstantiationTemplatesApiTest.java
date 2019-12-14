@@ -23,6 +23,7 @@ import org.springframework.http.HttpMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
+import vid.automation.test.Constants.Users;
 import vid.automation.test.model.User;
 import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
@@ -59,8 +60,8 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
 
     @Override
     public UserCredentials getUserCredentials() {
-        User user = usersService.getUser(Constants.Users.EMANUEL_EMANUEL);
-        return new UserCredentials(user.credentials.userId, user.credentials.password, Constants.Users.EMANUEL_EMANUEL, "", "");
+        User user = usersService.getUser(Users.SILVIA_ROBBINS_TYLER_SILVIA);
+        return new UserCredentials(user.credentials.userId, user.credentials.password, Users.SILVIA_ROBBINS_TYLER_SILVIA, "", "");
     }
 
     @AfterMethod
