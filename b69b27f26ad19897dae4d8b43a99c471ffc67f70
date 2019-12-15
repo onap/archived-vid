@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d7aa93fc_fbd23bb3",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation.templates.modal.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-15T10:49:07Z",
+      "side": 1,
+      "message": "thank you for putting the test on correct package :)",
+      "revId": "b69b27f26ad19897dae4d8b43a99c471ffc67f70",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
