@@ -187,6 +187,10 @@ describe('Shared Tree Service', () => {
       });
   });
 
+  test('when there is no max instances in model , shell return maximum item with Unlimited text', () =>{
+    expect(service.createMaximumToInstantiateModelInformationItem({}).values[0]).toEqual('Unlimited (default)');
+  });
+
   test('shouldShowDeleteInstanceWithChildrfenModal should not open modal if all childs with action None', () => {
     let foo = () => {
     };
