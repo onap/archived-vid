@@ -1,7 +1,8 @@
 import {ServiceStatus} from '../../../instantiationStatus/instantiationStatus.component.service';
 import {ServiceAction} from "../../models/serviceInstanceActions";
+import {InstantiationBase} from "../../models/serviceBase";
 
-export class ServiceInfoModel {
+export class ServiceInfoModel extends InstantiationBase{
   id: number;
   created: Date;
   modified: Date;
@@ -28,12 +29,10 @@ export class ServiceInfoModel {
   subscriberId: string;
   serviceInstanceId: string;
   serviceInstanceName: string;
-  serviceModelId: string;
   serviceModelName: string;
   serviceModelVersion: string;
   templateId: string;
   auditUserId: string;
-  jobId: string;
   action: ServiceAction;
   isRetryEnabled: boolean;
 }

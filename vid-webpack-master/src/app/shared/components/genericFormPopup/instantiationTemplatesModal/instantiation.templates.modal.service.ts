@@ -3,6 +3,7 @@ import {InstantiationTemplatesRowModel} from "./instantiation.templates.row.mode
 
 @Injectable()
 export class InstantiationTemplatesModalService {
+
   convertResponseToUI = (jobsResponse: any[]): InstantiationTemplatesRowModel[] => {
     let tableRows: InstantiationTemplatesRowModel[] = [];
 
@@ -12,4 +13,5 @@ export class InstantiationTemplatesModalService {
 
     return tableRows;
   };
+
 }
