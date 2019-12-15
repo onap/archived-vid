@@ -14,6 +14,7 @@ import {undoUpgradeService, upgradeService} from "../../../shared/storeUtil/util
 import {VNFMethods} from "../../../shared/storeUtil/utils/vnf/vnf.actions";
 import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
 import {Utils} from "../../../shared/utils/utils";
+import {Constants} from "../../../shared/utils/constants";
 
 @Injectable()
 export class SharedTreeService {
@@ -367,5 +368,10 @@ export class SharedTreeService {
   getComponentInfoModelByModelInformationItems(modelInfoItems: ModelInformationItem[], type: ComponentInfoType, instance){
     const modelInfoItemsWithoutEmpty = _.filter(modelInfoItems, function(item){ return !item.values.every(_.isNil)});
     return new ComponentInfoModel(type, modelInfoItemsWithoutEmpty, [], instance != null);
+  }
+
+  createMaximumToInstantiateModelInformationItem(model): ModelInformationItem {
+    return ModelInformationItem.createInstance("Max instances", !_.isNil(model.max) ? String(model.max) :
+      Constants.ModelInfo.UNLIMITED_DEFAULT);
   }
 }
