@@ -64,9 +64,10 @@ public class LoggerFormatTest extends BaseApiTest {
     @DataProvider
     public static Object[][] logsAndFormats(Method test) {
         return new Object[][]{
-                {LogName.debug, "debug", 0.65 },
+                {LogName.debug, "debug", 0.95 },
                 {LogName.metrics2019, "metric-ELS-2019.11", 0.95},
-                {LogName.audit2019, "audit-ELS-2019.11", 0.95}
+                {LogName.audit2019, "audit-ELS-2019.11", 0.95},
+                {LogName.error, "error", 0.95 }
         };
     }
 
