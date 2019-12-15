@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3774efb6_3f259d96",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation.templates.modal.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-15T11:21:38Z",
+      "side": 1,
+      "message": "why the test care about this flag ?",
+      "revId": "d6c8504a8ec747b9397c84f2d1f81ab656e8e4a2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
