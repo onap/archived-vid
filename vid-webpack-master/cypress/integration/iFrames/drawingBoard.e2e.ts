@@ -257,6 +257,12 @@ describe('Drawing board', function () {
       cy.addMacroVfModule(vnfName, vfModuleName, 'module-3');
       cy.getElementByDataTestsId('node-d6557200-ecf2-4641-8094-5393ae3aae60-VF_vGeraldine 0').click();
       cy.getElementByDataTestsId('node-41708296-e443-4c71-953f-d9a010f059e1-vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2').should('have.length', 3);
+
+      //make sure max instances in model info show Unlimited (default)
+      cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-41708296-e443-4c71-953f-d9a010f059e1-vf_vgeraldine0..VfVgeraldine..vflorence_gpb..module-2', 0)
+        .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
+        .getElementByDataTestsId('model-item-value-max').contains('Unlimited (default)')
+        .getElementByDataTestsId("cancelButton").click();
     });
 
     it('when there is no max_instances for VNF, it can be added multiple times ', () => {

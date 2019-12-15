@@ -2032,4 +2032,8 @@ describe('Basic popup service', () => {
     }, 'modelType', 'modelName');
     expect(result).toBeUndefined();
   });
+
+  test('when there is no max instances in model , shell return maximum item with Unlimited text', () =>{
+    expect(service.createMaximumToInstantiateModelInformationItem({}).values[0]).toEqual('Unlimited (default)');
+  });
 });

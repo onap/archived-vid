@@ -2334,10 +2334,6 @@ describe('vnf new popup service', () => {
     expect(service.modelInformations[13].values).toEqual(['5']);
   });
 
-  test('when there is no max instances in model , shell return maximum item with Unlimited text', () =>{
-    expect(service.createMaximumToInstantiateModelInformationItem({}).values[0]).toEqual('Unlimited (default)');
-  });
-
   test('getSubLeftTitle new vnf popup should return service model name', () => {
     service.uuidData = {
       serviceId: '6e59c5de-f052-46fa-aa7e-2fca9d674c44',

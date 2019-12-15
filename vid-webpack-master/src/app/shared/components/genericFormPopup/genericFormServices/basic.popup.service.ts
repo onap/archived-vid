@@ -11,6 +11,8 @@ import {VfModule} from "../../../models/vfModule";
 import {VNFModel} from "../../../models/vnfModel";
 import {VnfGroupModel} from "../../../models/vnfGroupModel";
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
+import {ModelInformationItem} from "../../model-information/model-information.component";
+import {Constants} from "../../../utils/constants";
 
 @Injectable()
 export class BasicPopupService {
@@ -52,5 +54,15 @@ export class BasicPopupService {
   getDynamicInputs(serviceId : string, modelName : string, storeKey : string, type : string) : FormControlModel[]{
     let dynamic = this._defaultDataGeneratorService.getArbitraryInputs(this._store.getState().service.serviceHierarchy[serviceId][type][modelName].inputs);
       return this._basicControlGenerator.getDynamicInputsByType(dynamic, serviceId, storeKey, type );
+  }
+
+  createMaximumToInstantiateModelInformationItem(model): ModelInformationItem {
+    return new ModelInformationItem(
+      "Maximum to instantiate",
+      "max",
+      [!_.isNil(model.max) ? model.max.toString() : Constants.ModelInfo.UNLIMITED_DEFAULT],
+      "",
+      true
+    );
   }
 }

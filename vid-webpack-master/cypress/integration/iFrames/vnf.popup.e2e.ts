@@ -49,10 +49,10 @@ describe('Vnf popup', function () {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.getElementByDataTestsId('node-2017-488_PASQUALE-vPE 0-add-btn').click({force : true});
-        cy.getElementByDataTestsId('model-item-label-vnf-min').contains('Minimum to instantiate');
-        cy.getElementByDataTestsId('model-item-value-vnf-min').contains('100');
-        cy.getElementByDataTestsId('model-item-label-vnf-max').contains('Maximum to instantiate');
-        cy.getElementByDataTestsId('model-item-value-vnf-max').contains('200');
+        cy.getElementByDataTestsId('model-item-label-min').contains('Minimum to instantiate');
+        cy.getElementByDataTestsId('model-item-value-min').contains('100');
+        cy.getElementByDataTestsId('model-item-label-max').contains('Maximum to instantiate');
+        cy.getElementByDataTestsId('model-item-value-max').contains('200');
       })
     });
 
@@ -63,10 +63,10 @@ describe('Vnf popup', function () {
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.getElementByDataTestsId('node-2017-488_PASQUALE-vPE 0-add-btn').click({force : true});
-        cy.getElementByDataTestsId('model-item-label-vnf-min').contains('Minimum to instantiate');
-        cy.getElementByDataTestsId('model-item-value-vnf-min').contains('0');
-        cy.getElementByDataTestsId('model-item-label-vnf-max').contains('Maximum to instantiate');
-        cy.getElementByDataTestsId('model-item-value-vnf-max').contains('Unlimited (default)');
+        cy.getElementByDataTestsId('model-item-label-min').contains('Minimum to instantiate');
+        cy.getElementByDataTestsId('model-item-value-min').contains('0');
+        cy.getElementByDataTestsId('model-item-label-max').contains('Maximum to instantiate');
+        cy.getElementByDataTestsId('model-item-value-max').contains('Unlimited (default)');
       })
      });
 

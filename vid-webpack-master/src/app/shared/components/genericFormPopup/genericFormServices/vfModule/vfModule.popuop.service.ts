@@ -81,7 +81,7 @@ export abstract class VfModulePopupServiceBase {
         new ModelInformationItem("Service type", "serviceType", [this.serviceModel.serviceType]),
         new ModelInformationItem("Service role", "serviceRole", [this.serviceModel.serviceRole]),
         new ModelInformationItem("Minimum to instantiate", "min", this.model.min == undefined ? ['0'] : [this.model.min.toString()], "", true),
-        new ModelInformationItem("Maximum to instantiate", "max", this.model.max == undefined ? ['1'] : [this.model.max.toString()], "", true),
+        this._basicPopupService.createMaximumToInstantiateModelInformationItem(this.model),
         new ModelInformationItem("Recommended to instantiate", "initial", [this.model.initial])
       ];
     });
