@@ -548,7 +548,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, true, false, true,
                 "2017-488_PASQUALE-vPE 0",
-                vfModule0Name, 1, NO_MAX_INSTANCES_IN_MODEL, new ArrayList<>(), vfModule0UUID, false);
+                vfModule0Name, 1, "1", new ArrayList<>(), vfModule0UUID, false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails, false);
 
@@ -565,7 +565,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
                 new ArrayList<>(),
                 IS_GENERATED_NAMING.FALSE, false, false, false,
                 "2017-488_PASQUALE-vPE 0",
-                vfModule0Name, 1, NO_MAX_INSTANCES_IN_MODEL, new ArrayList<>(), vfModule0UUID, false);
+                vfModule0Name, 1, "1", new ArrayList<>(), vfModule0UUID, false);
 
         prepareServicePreset(macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse, false);
 
