@@ -31,7 +31,6 @@ import {ComponentInfoService} from "../../../component-info/component-info.servi
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
-import {Constants} from "../../../../../shared/utils/constants";
 
 export class VnfModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -319,8 +318,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
   getInfo(model, instance): ModelInformationItem[] {
     const modelInformation = !_.isEmpty(model) ? [
       ModelInformationItem.createInstance("Min instances", !_.isNil(model.min) ? String(model.min) : null),
-      ModelInformationItem.createInstance("Max instances", !_.isNil(model.max) ? String(model.max) :
-        Constants.ModelInfo.UNLIMITED_DEFAULT)
+      this._sharedTreeService.createMaximumToInstantiateModelInformationItem(model)
     ] : [];
 
     const instanceInfo = !_.isEmpty(instance) ? [

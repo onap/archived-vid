@@ -477,7 +477,7 @@ describe('VFModule Model Info', () => {
     let expectedVNFInfo = [
       ModelInformationItem.createInstance('Base module', false),
       ModelInformationItem.createInstance('Min instances', "0"),
-      ModelInformationItem.createInstance("Max instances", null),
+      ModelInformationItem.createInstance("Max instances", 'Unlimited (default)'),
       ModelInformationItem.createInstance('Initial instances count',"0")
     ];
     expect(actualVNFInfo).toEqual(expectedVNFInfo);

@@ -418,7 +418,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     const modelInformation = !_.isEmpty(model) && !_.isEmpty(model.properties) ? [
       ModelInformationItem.createInstance("Base module", model.properties.baseModule),
       ModelInformationItem.createInstance("Min instances", !_.isNull(model.properties.minCountInstances) ? String(model.properties.minCountInstances) : null),
-      ModelInformationItem.createInstance("Max instances", !_.isNull(model.properties.maxCountInstances) ? String(model.properties.maxCountInstances) : null),
+      this._sharedTreeService.createMaximumToInstantiateModelInformationItem(model),
       ModelInformationItem.createInstance("Initial instances count", !_.isNull(model.properties.initialCount) ? String(model.properties.initialCount) : null)
     ] : [];
 

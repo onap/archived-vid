@@ -7,10 +7,7 @@ import {SharedTreeService} from "../../shared.tree.service";
 import {InputType} from "../../../../../shared/models/inputTypes";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../../shared/store/reducers";
-import {
-  GenericFormPopupComponent,
-  PopupType
-} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
+import {GenericFormPopupComponent, PopupType} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from "ng2-bootstrap-modal";
 import {NetworkPopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
 import * as _ from "lodash";
@@ -22,11 +19,7 @@ import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {SdcUiServices} from "onap-ui-angular";
 import {DuplicateService} from "../../../duplicate/duplicate.service";
 import {ServiceInstanceActions} from "../../../../../shared/models/serviceInstanceActions";
-import {
-  deleteActionNetworkInstance,
-  undoDeleteActionNetworkInstance,
-  updateNetworkPosition
-} from "../../../../../shared/storeUtil/utils/network/network.actions";
+import {deleteActionNetworkInstance, undoDeleteActionNetworkInstance, updateNetworkPosition} from "../../../../../shared/storeUtil/utils/network/network.actions";
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
@@ -265,10 +258,15 @@ export class NetworkModelInfo implements ILevelNodeInfo {
   }
 
   getInfo(model, instance): ModelInformationItem[] {
-    const modelInformation = !_.isEmpty(model) && !_.isEmpty(model.properties) ? [
-      ModelInformationItem.createInstance("Network role", model.properties.network_role)] : [];
-    ModelInformationItem.createInstance("Min instances", !_.isNull(model.min) ? String(model.min) : null),
-      ModelInformationItem.createInstance("Max instances", !_.isNull(model.max) ? String(model.max) : null)
+    const modelInformation = !_.isEmpty(model)  ? [
+      ModelInformationItem.createInstance("Min instances", !_.isNull(model.min) ? String(model.min) : null),
+      this._sharedTreeService.createMaximumToInstantiateModelInformationItem(model)
+    ] : [];
+
+    if (!_.isEmpty(model) && !_.isEmpty(model.properties)) {
+      modelInformation.push(ModelInformationItem.createInstance("Network role", model.properties.network_role))
+    }
+
     const instanceInfo = !_.isEmpty(instance) ? [
         ModelInformationItem.createInstance("Route target id", instance.routeTargetId ? instance.routeTargetId : null),
         ModelInformationItem.createInstance("Route target role", instance.routeTargetRole ? instance.routeTargetRole : null)] :
