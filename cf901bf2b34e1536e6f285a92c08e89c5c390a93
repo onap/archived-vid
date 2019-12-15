@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0a678b42_7afdc15b",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/viewOnlyDrawingBoard.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-15T14:06:12Z",
+      "side": 1,
+      "message": "only",
+      "revId": "cf901bf2b34e1536e6f285a92c08e89c5c390a93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ad40b1a_2b5fa2aa",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-15T14:06:12Z",
+      "side": 1,
+      "message": "each [max\u003dnull, \"3\"]",
+      "range": {
+        "startLine": 191,
+        "startChar": 66,
+        "endLine": 191,
+        "endChar": 68
+      },
+      "revId": "cf901bf2b34e1536e6f285a92c08e89c5c390a93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8039c624_0668c2cc",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-15T14:06:12Z",
+      "side": 1,
+      "message": "format to -\u003e\n?\n:",
+      "revId": "cf901bf2b34e1536e6f285a92c08e89c5c390a93",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
