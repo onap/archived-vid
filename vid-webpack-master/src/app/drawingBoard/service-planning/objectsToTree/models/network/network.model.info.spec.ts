@@ -311,11 +311,19 @@ describe('Network Model Info', () => {
     const instance = getNetworkInstance();
     let actualNetworkInfo = networkModel.getInfo(model, instance);
     let expectedNetworkInfo = [
+      ModelInformationItem.createInstance("Min instances", "0"),
+      ModelInformationItem.createInstance("Max instances", "1"),
       ModelInformationItem.createInstance('Network role', "network role 1, network role 2"),
       ModelInformationItem.createInstance("Route target id", null),
-      ModelInformationItem.createInstance("Route target role", null)
+      ModelInformationItem.createInstance("Route target role", null),
     ];
     expect(actualNetworkInfo).toEqual(expectedNetworkInfo);
+  });
+
+  test('When there is no max Max instances text is: Unlimited (default)', () => {
+    let actualVNFInfo = networkModel.getInfo({just:"not empty"},null);
+    const maxInstancesItem = actualVNFInfo.find((item)=> item.label == 'Max instances');
+    expect(maxInstancesItem.values[0]).toEqual('Unlimited (default)');
   });
 
   function getNetworkModel() {
