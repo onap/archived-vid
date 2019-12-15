@@ -186,6 +186,14 @@ describe('Shared Tree Service', () => {
         "type": instanceTypeMock
       });
   });
+  each([
+    ['undefined', 'Unlimited (default)', {}],
+    ['null', 'Unlimited (default)', {max:null}],
+    ['3', '3', {max:3}],
+    ]).
+  test("when there is %s max instances in model , shell return %s text", (desc, expected, model) =>{
+    expect(service.createMaximumToInstantiateModelInformationItem(model).values[0]).toBe(expected);
+  });
 
   test('shouldShowDeleteInstanceWithChildrfenModal should not open modal if all childs with action None', () => {
     let foo = () => {

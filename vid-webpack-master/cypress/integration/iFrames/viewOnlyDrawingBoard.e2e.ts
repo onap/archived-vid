@@ -345,6 +345,7 @@ describe('View only drawing board', function () {
       ['Model customization ID', '55b1be94-671a-403e-a26c-667e9c47d091'],
       ['Base module', 'false'],
       ['Min instances', '0'],
+      ['Max instances', 'Unlimited (default)'],
       ['Initial instances count', '0']
     ];
     const extraLabelsAndValuesForInstance = [['In maintenance','true'], ['Instance ID', '2c1ca484-cbc2-408b-ab86-25a2c15ce280']];
@@ -356,6 +357,8 @@ describe('View only drawing board', function () {
   function testComponentInfoForNetwork(){
     const labelsAndValuesForModel = [
       ['Model version', '37.0'],
+      ['Min instances', '0'],
+      ['Max instances', 'Unlimited (default)'],
       ['Model customization ID', '94fdd893-4a36-4d70-b16a-ec29c54c184f'],
       ['Network role','network role 1, network role 2']
     ];
