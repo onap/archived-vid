@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "07d33ed4_c16991a0",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/vnf.update.e2e.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T06:57:53Z",
+      "side": 1,
+      "message": "why this line was change ?\nHow come platform,xxx1 is not longer now\nAnd why instanceName  is different ?",
+      "revId": "2a80138a252027e3d262df72ec8a4cbb840ee201",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25e27bec_02608a7d",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/networkGenerator/network.control.generator.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T06:57:53Z",
+      "side": 1,
+      "message": "extract static method\n\nI would create some common parent with method getStoredInstanceIfUpdateMode.\nThat will check this condition and call some abstract method like\nretrieveStoredInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode)\nso each generator will implement (instead of getNetworkInstance, getVfModuleInstance, getVfModuleInstance and so on)",
+      "range": {
+        "startLine": 76,
+        "startChar": 28,
+        "endLine": 76,
+        "endChar": 74
+      },
+      "revId": "2a80138a252027e3d262df72ec8a4cbb840ee201",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e093a191_88906ddd",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/global/global.reducers.spec.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T06:57:53Z",
+      "side": 1,
+      "message": "you can use each and 3 cases :\n\n  test(\u0027#UPDATE_CURRENT_MODAL_MODE : should update current modal mode from %s to %s\u0027, \n       (isUpdateModalModeState, isUpdateModalModeAction, expected )\u003d\u003e {\n    let globalDrawingBoardState \u003d globalReducer(\u003cany\u003e{global : {},genericModalHelper : {\n          isUpdateModalMode : isUpdateModalModeState\n        }},\n      \u003cUpdateCurrentModalModeAction\u003e{\n        type: GlobalActions.UPDATE_CURRENT_MODAL_MODE,\n        isUpdateModalMode : isUpdateModalModeAction\n      });\n    expect(globalDrawingBoardState.isUpdateModalMode).toBe(expected);\n  });",
+      "revId": "2a80138a252027e3d262df72ec8a4cbb840ee201",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f0ed25d_fe37b4f4",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/global/global.reducers.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T06:57:53Z",
+      "side": 1,
+      "message": "please add other action for delete",
+      "revId": "2a80138a252027e3d262df72ec8a4cbb840ee201",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
