@@ -30,6 +30,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.onap.vid.services.AAIServiceTree.AAI_TREE_PATHS;
+import static org.onap.vid.testUtils.TestUtils.initMockitoMocks;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
@@ -52,7 +53,6 @@ import java.util.concurrent.Executors;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.stubbing.Answer;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.Relationship;
@@ -66,7 +66,7 @@ import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.Tree;
 import org.onap.vid.utils.Unchecked;
 import org.springframework.http.HttpMethod;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -82,9 +82,9 @@ public class AAITreeNodeBuilderTest {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    @BeforeClass
+    @BeforeMethod
     public void initMocks() {
-        MockitoAnnotations.initMocks(this);
+        initMockitoMocks(this);
         aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClientMock, logging);
         executorService = MoreExecutors.newDirectExecutorService();
     }
