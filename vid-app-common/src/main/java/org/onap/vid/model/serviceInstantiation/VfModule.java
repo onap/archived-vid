@@ -22,6 +22,7 @@ package org.onap.vid.model.serviceInstantiation;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collection;
@@ -39,8 +40,8 @@ import org.onap.vid.mso.model.ModelInfo;
 @JsonInclude(NON_NULL)
 public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest {
 
-	@JsonInclude(NON_NULL) private final String volumeGroupInstanceName;
-	@JsonInclude(NON_NULL) private Boolean usePreload;
+	@JsonInclude(NON_NULL) @JsonProperty("volumeGroupName") private final String volumeGroupInstanceName;
+	@JsonInclude(NON_NULL) @JsonProperty("sdncPreLoad") private Boolean usePreload;
 	private Map<String, String> supplementaryParams;
 
 	@JsonInclude(NON_NULL)
@@ -51,7 +52,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 
 	public VfModule(@JsonProperty("modelInfo") ModelInfo modelInfo,
 		@JsonProperty("instanceName") String instanceName,
-		@JsonProperty("volumeGroupName") String volumeGroupInstanceName,
+		@JsonProperty("volumeGroupName") @JsonAlias("volumeGroupInstanceName") String volumeGroupInstanceName,
 		@JsonProperty("action") String action,
 		@JsonProperty("lcpCloudRegionId") String lcpCloudRegionId,
 		@JsonProperty("legacyRegion") String legacyRegion,
@@ -59,7 +60,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		@JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
 		@JsonProperty("supplementaryFileContent") Map<String, String> supplementaryParams,
 		@JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
-		@JsonProperty("sdncPreLoad") Boolean usePreload,
+		@JsonProperty("sdncPreLoad") @JsonAlias("usePreload") Boolean usePreload,
 		@JsonProperty("instanceId") String instanceId,
 		@JsonProperty("trackById") String trackById,
 		@JsonProperty("isFailed") Boolean isFailed,

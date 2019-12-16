@@ -1,4 +1,5 @@
-import ObjectLike = Cypress.ObjectLike;
+import * as _ from "lodash";
+import {PropertyPath} from "lodash";
 
 describe('Drawing Board: Instantiation Templates', function () {
 
@@ -31,13 +32,12 @@ describe('Drawing Board: Instantiation Templates', function () {
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd();
       });
 
-      it('View a template’s details as expected', ()=> {
+      it('Given a stored template - when "edit" vnf and vfmodules are opened - then template’s details are visible as expected', ()=> {
 
         loadDrawingBoardWithRecreateMode();
 
         // Then...
-        cy.drawingBoardTreeOpenContextMenuByElementDataTestId("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0")
-        .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
+        editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0")
         .getElementByDataTestsId("instanceName").should('have.value', 'hvf6arlba007')
         .getElementByDataTestsId("productFamily").should('contain', 'Emanuel')
         .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
@@ -47,19 +47,20 @@ describe('Drawing Board: Instantiation Templates', function () {
         .checkPlatformValue('xxx1')
          .getElementByDataTestsId("cancelButton").click();
 
-        cy.drawingBoardTreeOpenContextMenuByElementDataTestId("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
-        .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
+        editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
         .getElementByDataTestsId("instanceName").should('have.value', 'hvf6arlba007_lba_Base_01')
         .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
         .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
         .getElementByDataTestsId("rollback").should('contain', 'Rollback')
         .getElementByDataTestsId("cancelButton").click();
 
-        cy.drawingBoardTreeOpenContextMenuByElementDataTestId("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1")
-        .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
+        editNode("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1")
+        .getElementByDataTestsId("instanceName").should('have.value', 'my_hvf6arlba007_lba_dj_01')
+        .getElementByDataTestsId("volumeGroupName").should('have.value', 'my_special_hvf6arlba007_lba_dj_01_vol')
         .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
         .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
         .getElementByDataTestsId("rollback").should('contain', 'Rollback')
+        .getElementByDataTestsId("sdncPreLoad").should('have.value', 'on')
         .getElementByDataTestsId("cancelButton").click();
 
 
@@ -67,7 +68,7 @@ describe('Drawing Board: Instantiation Templates', function () {
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd();
         });
 
-      it(`Edit the service`,  function ()  {
+      it(`Given a stored template - when "edit" service is opened - then template’s details are visible as expected`,  function ()  {
 
         loadDrawingBoardWithRecreateMode();
 
@@ -80,6 +81,7 @@ describe('Drawing Board: Instantiation Templates', function () {
         .getElementByDataTestsId("project").should('contain', 'WATKINS')
         .getElementByDataTestsId("rollback").should('contain', 'Rollback');
 
+      });
 
 
 
@@ -110,6 +112,11 @@ function loadDrawingBoardWithRecreateMode() {
 
   cy.wait('@serviceModel');
   cy.wait('@templateTopology');
+}
+
+function editNode(dataTestId: string) {
+  return cy.drawingBoardTreeOpenContextMenuByElementDataTestId(dataTestId)
+    .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
 }
 
 function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd() {
