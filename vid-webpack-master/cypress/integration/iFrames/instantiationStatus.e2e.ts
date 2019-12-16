@@ -7,7 +7,7 @@ import {AsyncInstantiationModel} from '../../support/jsonBuilders/models/asyncIn
 describe('Instantiation status', function () {
   var jsonBuilderInstantiationBuilder : JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
   var asyncRes: Array<any>;
-  const contextMenuCreateAnotherOne = 'context-menu-recreate';
+  const contextMenuCreateAnotherOne = 'context-menu-create-another-one';
 
   beforeEach(() => {
       cy.clearSessionStorage();
@@ -126,6 +126,7 @@ describe('Instantiation status', function () {
     cy.openIframe('app/ui/#/instantiationStatus');
 
     clickOnTitleAndThenOnMenuWithJobId(jobId);
+    cy.get('.dropdown-menu').getElementByDataTestsId(contextMenuCreateAnotherOne).contains('Create another one');
     cy.get('.dropdown-menu').getElementByDataTestsId(contextMenuCreateAnotherOne).click();
     cy.location().should((loc) => {
       expect(loc.toString()).to.eq(`${vidBaseUrl}#/servicePlanning/RECREATE?serviceModelId=${serviceModelId}&jobId=${jobId}`);
