@@ -20,6 +20,8 @@
 
 package org.onap.vid.model.serviceInstantiation;
 
+import static java.util.Collections.emptyMap;
+
 import java.util.Map;
 import java.util.Objects;
 import org.onap.vid.model.aaiTree.ExistingElementsCounterMaps;
@@ -30,6 +32,7 @@ public class ServiceInstantiationTemplate extends ServiceInstantiation implement
     private final Map<String, Long> existingNetworksCounterMap;
     private final Map<String, Long> existingVnfGroupCounterMap;
     private final Map<String, Long> existingVRFCounterMap;
+    private final Map<String, String> existingNames = emptyMap();
 
     public ServiceInstantiationTemplate(
         ServiceInstantiation baseService,
@@ -78,4 +81,7 @@ public class ServiceInstantiationTemplate extends ServiceInstantiation implement
         return existingVRFCounterMap;
     }
 
+    public Map<String, String> getExistingNames() {
+        return existingNames;
+    }
 }
