@@ -148,7 +148,7 @@
       </div>
       <div class="col-md-6" style="padding: 15px;padding-right: 35px;">
         <button
-          [disabled]="selectedInstantiation && selectedInstantiation.jobId === null"
+          [disabled]="selectedInstantiation === null"
           [attr.data-tests-id]="'LoadTemplateButton'"
           type="button" class="btn btn-primary submit"
           (click)="loadTemplate()"><span>Load Template</span>
