@@ -73,8 +73,7 @@ export class NetworkControlGenerator {
       this._logService.error('should provide serviceId, networkName, networkStoreKey', serviceId);
       return [];
     }
-
-    const networkInstance = this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode);
+    const networkInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode));
     const networkModel = new NetworkModel(this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
     let result: FormControlModel[] = [];
 
@@ -99,7 +98,7 @@ export class NetworkControlGenerator {
     }
 
     let result: FormControlModel[] = [];
-    const networkInstance = this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode);
+    const networkInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode));
     const networkModel = new NetworkModel(this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
 
     if (!_.isNil(networkModel)) {

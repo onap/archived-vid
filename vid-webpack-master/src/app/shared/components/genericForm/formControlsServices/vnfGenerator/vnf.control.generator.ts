@@ -73,8 +73,7 @@ export class VnfControlGenerator {
       this._logService.error('should provide serviceId, vnfName, vnfStoreKey', serviceId);
       return [];
     }
-
-    const vnfInstance = this.getVnfInstance(serviceId, vnfStoreKey);
+    const vnfInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store,this.getVnfInstance(serviceId, vnfStoreKey));
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
     let result: FormControlModel[] = [];
     const flags = this.store.getState().global.flags;
@@ -99,7 +98,7 @@ export class VnfControlGenerator {
     }
 
     let result: FormControlModel[] = [];
-    const vnfInstance = this.getVnfInstance(serviceId, vnfStoreKey);
+    const vnfInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store,this.getVnfInstance(serviceId, vnfStoreKey));
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
 
     if (!_.isNil(vnfModel)) {

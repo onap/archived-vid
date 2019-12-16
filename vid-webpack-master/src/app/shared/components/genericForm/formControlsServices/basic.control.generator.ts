@@ -280,6 +280,10 @@ export class BasicControlGenerator {
     })
   };
 
+  retrieveInstanceIfUpdateMode(store: NgRedux<AppState>, instance: any): any{
+    return store.getState().global.isUpdateModalMode ? instance : null;
+  }
+
   private getOnDeleteForSupplementaryFile() {
     return (form: FormGroup) => {
       form.controls[SUPPLEMENTARY_FILE + "_hidden"].setValue(null);

@@ -22,7 +22,7 @@ describe('Drawing board', function () {
     const vnfNodeName = 'node-2017-488_PASQUALE-vPE 0';
     cy.drawingBoardPressAddButtonByElementName(vnfNodeName).get('i').should('have.class', 'fa-plus-circle');
     cy.drawingBoardPressAddButtonByElementName(vnfNodeName).click({force: true});
-    cy.fillVnfPopup(true).then(() => {
+    cy.fillVnfPopup().then(() => {
       cy.drawingBoardPressAddButtonByElementName(vnfNodeName).click({force: true});
       cy.fillVnfPopup().then(() => {
         cy.drawingBoardPressAddButtonByElementName(vnfNodeName).click({force: true});
@@ -41,7 +41,7 @@ describe('Drawing board', function () {
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').get('i').should('have.class', 'fa-plus-circle');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
-        cy.fillVnfPopup(true).then(() => {
+        cy.fillVnfPopup().then(() => {
           cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
           cy.fillVnfPopup().then(() => {
             cy.drawingBoardNumberOfExistingElementsShouldContains(2);
@@ -66,7 +66,7 @@ describe('Drawing board', function () {
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').get('i').should('have.class', 'fa-plus-circle')
           .drawingBoardPressAddButtonByElementName('node-2017-488_PASQUALE-vPE 0').click({force: true});
-        cy.fillVnfPopup(true).then(() => {
+        cy.fillVnfPopup().then(() => {
           cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0')
             .drawingBoardTreeClickOnContextMenuOptionByName('Duplicate')
             .get('.quantity-select option').should('have.length', 9)

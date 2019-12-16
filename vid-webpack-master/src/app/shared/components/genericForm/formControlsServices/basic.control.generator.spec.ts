@@ -1,9 +1,10 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
 import {AaiService} from "../../../services/aaiService/aai.service";
-import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../models/formControlModels/formControl.model";
+import {FormControlModel} from "../../../models/formControlModels/formControl.model";
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
 import {BasicControlGenerator} from "./basic.control.generator";
 import {NgRedux} from '@angular-redux/store';
+import each from "jest-each";
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {FileFormControl} from "../../../models/formControlModels/fileFormControl.model";
 
@@ -81,5 +82,27 @@ describe('Basic Control Generator', () => {
       "supplementaryFile_hidden_content"
     ]);
   });
-});
+  each([
+    [null, false],
+    [{}, true]
+  ]).
+  test('retrieveInstanceIfUpdateMode returns %s if update mode is %s', (expected, isUpdateModalMode) => {
+    //given
+    const store= <any>{
+      getState() {
+        return {
+          global: {
+            isUpdateModalMode
+          }
+        }}};
+    const instance = {};
 
+    //when
+    let retrievedInstance = service.retrieveInstanceIfUpdateMode (store, instance);
+
+    //then
+    expect(retrievedInstance).toEqual(expected);
+
+  });
+
+});
