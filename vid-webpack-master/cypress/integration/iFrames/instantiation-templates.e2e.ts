@@ -8,6 +8,7 @@ describe('Drawing Board: Instantiation Templates', function () {
       cy.clearSessionStorage();
       cy.setTestApiParamToVNF();
       cy.initAAIMock();
+      cy.initGetAAISubDetails();
       cy.initVidMock();
       cy.initDrawingBoardUserPermission();
       cy.login();
@@ -21,7 +22,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
     describe('Load Page and Deploy', () => {
 
-      it(`Given a stored template - when click "deploy" - then a coherent request should be sent upon deploy`, function () {
+      it(`Given a stored template - when click "deploy" - then a coherent request should be sent upon deploy`,  () => {
 
         loadDrawingBoardWithRecreateMode();
 
@@ -43,9 +44,8 @@ describe('Drawing Board: Instantiation Templates', function () {
         .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
         .getElementByDataTestsId("lineOfBusiness").should('contain', 'zzz1')
         .getElementByDataTestsId("rollback").should('contain', 'Rollback')
-
-
-        .getElementByDataTestsId("cancelButton").click();
+        .checkPlatformValue('.c-btn', 'xxx1')
+         .getElementByDataTestsId("cancelButton").click();
 
         cy.drawingBoardTreeOpenContextMenuByElementDataTestId("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
         .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
@@ -53,7 +53,6 @@ describe('Drawing Board: Instantiation Templates', function () {
         .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
         .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
         .getElementByDataTestsId("rollback").should('contain', 'Rollback')
-
         .getElementByDataTestsId("cancelButton").click();
 
         cy.drawingBoardTreeOpenContextMenuByElementDataTestId("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1")
@@ -68,16 +67,25 @@ describe('Drawing Board: Instantiation Templates', function () {
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd();
         });
 
-      it(`Edit the service`, function () {
+      it(`Edit the service`,  function ()  {
 
         loadDrawingBoardWithRecreateMode();
 
         cy.openServiceContextMenu()
-        .getElementByDataTestsId("context-menu-header-edit-item").click({force : true})
-        });
+        .getElementByDataTestsId("context-menu-header-edit-item").click()
+        .getElementByDataTestsId("instanceName").should('have.value', 'vProbe_NC_Service_DG_new_SI')
+        .getElementByDataTestsId("subscriberName").should('contain', 'SILVIA ROBBINS')
+        .getElementByDataTestsId("serviceType").should('contain', 'TYLER SILVIA')
+        .getElementByDataTestsId("owningEntity").should('contain', 'WayneHolland')
+        .getElementByDataTestsId("project").should('contain', 'WATKINS')
+        .getElementByDataTestsId("rollback").should('contain', 'Rollback');
+
+
+
+
+      });
       });
     });
-
   });
 
 function loadDrawingBoardWithRecreateMode() {

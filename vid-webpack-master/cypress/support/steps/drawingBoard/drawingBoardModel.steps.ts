@@ -3,6 +3,7 @@ declare namespace Cypress {
     drawingBoardPressAddButtonByElementName: typeof drawingBoardPressAddButtonByElementName,
     drawingBoardNumberOfExistingElementsShouldContains: typeof drawingBoardNumberOfExistingElementsShouldContains
     getDrawingBoardDeployBtn: typeof getDrawingBoardDeployBtn
+    checkPlatformValue: typeof checkPlatformValue
   }
 }
 
@@ -18,6 +19,12 @@ function getDrawingBoardDeployBtn() : Chainable<any> {
   return cy.getElementByDataTestsId('deployBtn');
 }
 
+function checkPlatformValue(selector: string, value: string){
+  return cy.get(selector).should("contain", value)
+}
+
 Cypress.Commands.add('drawingBoardPressAddButtonByElementName', drawingBoardPressAddButtonByElementName);
 Cypress.Commands.add('drawingBoardNumberOfExistingElementsShouldContains', drawingBoardNumberOfExistingElementsShouldContains);
 Cypress.Commands.add('getDrawingBoardDeployBtn', getDrawingBoardDeployBtn);
+Cypress.Commands.add('checkPlatformValue', checkPlatformValue);
+
