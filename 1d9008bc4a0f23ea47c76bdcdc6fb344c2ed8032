@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "932cd613_58d790e6",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfmodule/upgrade_vfmodule_e2e__fe_input_cypress.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T12:51:35Z",
+      "side": 1,
+      "message": "remove this change",
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a21f891d_a039733f",
         "filename": "vid-automation/src/test/resources/aaiGetInstanceTopology/ServiceTreeWithMultipleChildren_serviceModel.json",
         "patchSetId": 3
@@ -13,6 +30,40 @@
       "writtenOn": "2019-12-16T12:38:39Z",
       "side": 1,
       "message": "If you can explain the logic of all these JSONs changes",
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7529f356_71fb63a0",
+        "filename": "vid-automation/src/test/resources/viewEdit/ServiceTreeWithMultipleChildren_serviceInstance_withUpdatedLatestVersion.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T12:51:35Z",
+      "side": 1,
+      "message": "remove",
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92315d62_fe790f28",
+        "filename": "vid-automation/src/test/resources/viewEdit/ServiceTreeWithMultipleChildren_serviceInstance_withUpdatedLatestVersion.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T12:51:35Z",
+      "side": 1,
+      "message": "remove",
       "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
