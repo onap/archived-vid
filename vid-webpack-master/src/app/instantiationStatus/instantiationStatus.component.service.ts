@@ -13,7 +13,7 @@ import {Router, UrlTree} from "@angular/router";
 import {of} from "rxjs";
 import {MsoService} from "../shared/services/msoService/mso.service";
 import {ServiceAction} from "../shared/models/serviceInstanceActions";
-import {InstantiationBase} from "../shared/models/serviceBase";
+import {InstantiationBase} from "../shared/models/InstantiationBase";
 
 export let PENDING : string = "pending";
 export let INPROGRESS : string = "in_progress";

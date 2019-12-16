@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {InstantiationBase} from "../../../models/serviceBase";
+import {InstantiationBase} from "../../../models/InstantiationBase";
 
 export class InstantiationTemplatesRowModel extends InstantiationBase{
   readonly userId ?: string;

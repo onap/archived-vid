@@ -1,6 +1,6 @@
 import {ServiceStatus} from '../../../instantiationStatus/instantiationStatus.component.service';
 import {ServiceAction} from "../../models/serviceInstanceActions";
-import {InstantiationBase} from "../../models/serviceBase";
+import {InstantiationBase} from "../../models/InstantiationBase";
 
 export class ServiceInfoModel extends InstantiationBase{
   id: number;
