@@ -30,6 +30,8 @@
   "existingVRFCounterMap": {},
   "existingVnfGroupCounterMap": {},
   "existingNetworksCounterMap": {},
+  "existingNames": {
+  },
   "vnfs": {
     "vProbe_NC_VNF 0": {
       "modelInfo": {
@@ -87,7 +89,7 @@
               "modelType": "vfModule",
               "modelVersion": "1"
             },
-            "instanceName": "hvf6arlba007_lba_dj_01",
+            "instanceName": "my_hvf6arlba007_lba_dj_01",
             "action": "Create",
             "lcpCloudRegionId": "hvf6",
             "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
@@ -97,8 +99,8 @@
             "rollbackOnFailure": true,
             "trackById": "b134410e-3bc0-478e-883e-1b6bdf8a28df",
             "isFailed": false,
-            "volumeGroupInstanceName": "hvf6arlba007_lba_dj_01_vol",
-            "usePreload": true
+            "volumeGroupName": "my_special_hvf6arlba007_lba_dj_01_vol",
+            "sdncPreLoad": true
           }
         }
       },
