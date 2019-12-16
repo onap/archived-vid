@@ -63,6 +63,30 @@ describe('Generate path to old View/Edit ', () => {
 
   })().then(done).catch(done.fail));
 
+  each([
+    ['', DrawingBoardModes.RECREATE, true],
+    ['', DrawingBoardModes.CREATE, true],
+    ['Create', DrawingBoardModes.EDIT, true],
+    ['Create', DrawingBoardModes.RETRY_EDIT, true],
+    ['Create', DrawingBoardModes.VIEW, false],
+    ['Create', DrawingBoardModes.OLD_VIEW_EDIT, false],
+
+
+  ]).
+  test('should show edit button in correct Drawing Board Mode state', (action: string, mode: DrawingBoardModes, expected: boolean) => {
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
+      service: {
+        serviceInstance : {
+          'serviceInstanceId' : {
+            action: action
+          }
+        }
+      }
+    });
+
+  let result = service.showEditService(mode,'serviceInstanceId' );
+    expect (result).toBe(expected);
+  });
 
   test('should generate url to old view/edit ', () => {
     const query: string = 'subscriberId=subscriberId&subscriberName=subscriberName&serviceType=serviceType&serviceInstanceId=serviceInstanceId';
