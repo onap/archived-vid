@@ -96,7 +96,7 @@ export class DrawingBoardHeaderService{
 
   showEditService(mode: DrawingBoardModes, serviceModelId: string): boolean{
     const serviceInstance = this.store.getState().service.serviceInstance;
-    return mode === DrawingBoardModes.CREATE || ((mode === DrawingBoardModes.RETRY_EDIT || mode === DrawingBoardModes.EDIT || mode === DrawingBoardModes.RECREATE )&&
+    return mode === DrawingBoardModes.CREATE || mode === DrawingBoardModes.RECREATE || ((mode === DrawingBoardModes.RETRY_EDIT || mode === DrawingBoardModes.EDIT)&&
       !_.isNil(serviceInstance) && !_.isNil(serviceInstance[serviceModelId])&& serviceInstance[serviceModelId].action === ServiceInstanceActions.Create);
   }
 

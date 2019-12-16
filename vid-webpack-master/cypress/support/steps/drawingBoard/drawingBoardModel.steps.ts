@@ -18,6 +18,7 @@ function getDrawingBoardDeployBtn() : Chainable<any> {
   return cy.getElementByDataTestsId('deployBtn');
 }
 
+
 Cypress.Commands.add('drawingBoardPressAddButtonByElementName', drawingBoardPressAddButtonByElementName);
 Cypress.Commands.add('drawingBoardNumberOfExistingElementsShouldContains', drawingBoardNumberOfExistingElementsShouldContains);
 Cypress.Commands.add('getDrawingBoardDeployBtn', getDrawingBoardDeployBtn);
