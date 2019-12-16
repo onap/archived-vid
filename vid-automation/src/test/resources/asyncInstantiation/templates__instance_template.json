@@ -41,11 +41,11 @@
         "modelType": "vnf",
         "modelVersion": "1.0"
       },
-      "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
       "instanceName": "hvf6arlba007",
       "action": "Create",
       "platformName": "xxx1",
-      "lcpCloudRegionId": "hvf6",
+      "lcpCloudRegionId": "AAIAIC25",
       "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
       "instanceParams": [
         {}
@@ -66,7 +66,7 @@
             },
             "instanceName": "hvf6arlba007_lba_Base_01",
             "action": "Create",
-            "lcpCloudRegionId": "hvf6",
+            "lcpCloudRegionId": "AAIAIC25",
             "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
             "instanceParams": [
               {}
@@ -89,7 +89,7 @@
             },
             "instanceName": "hvf6arlba007_lba_dj_01",
             "action": "Create",
-            "lcpCloudRegionId": "hvf6",
+            "lcpCloudRegionId": "AAIAIC25",
             "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
             "instanceParams": [
               {}
