@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a21f891d_a039733f",
+        "filename": "vid-automation/src/test/resources/aaiGetInstanceTopology/ServiceTreeWithMultipleChildren_serviceModel.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T12:38:39Z",
+      "side": 1,
+      "message": "If you can explain the logic of all these JSONs changes",
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05beaf0b_e32b0a55",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/viewEditUpgradeVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T12:38:39Z",
+      "side": 1,
+      "message": "shouldVGCheckboxExist",
+      "range": {
+        "startLine": 216,
+        "startChar": 45,
+        "endLine": 216,
+        "endChar": 76
+      },
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d631561_2c421364",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/viewEditUpgradeVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T12:38:39Z",
+      "side": 1,
+      "message": "i prefer no default value.\nto be more verbose in our tests",
+      "range": {
+        "startLine": 216,
+        "startChar": 78,
+        "endLine": 216,
+        "endChar": 92
+      },
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1a5a43f_aff4505a",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T12:38:39Z",
+      "side": 1,
+      "message": "consider put the if in getRetainVolumeGroupsControl() and use it with something like concat.\nsee concatSupplementaryFile for example.\n\nit would enable you test the if as part of getRetainVolumeGroupsControl, and you won\u0027t need to test the getControls.",
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "234dba7e_f8d565b6",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popup.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-16T12:38:39Z",
+      "side": 1,
+      "message": "if you test only getRetainVolumeGroupsControl you can provide it your store object without need to mock all of this",
+      "range": {
+        "startLine": 138,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 61
+      },
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
