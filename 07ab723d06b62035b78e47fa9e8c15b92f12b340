@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "02e1acb1_a07d35d6",
+        "filename": "vid-automation/src/test/resources/asyncInstantiation/templates__instance_template.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-16T09:01:12Z",
+      "side": 1,
+      "message": "`AAIAIC25` is not a good option; try reverting to \"hvf6\"",
+      "revId": "07ab723d06b62035b78e47fa9e8c15b92f12b340",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
