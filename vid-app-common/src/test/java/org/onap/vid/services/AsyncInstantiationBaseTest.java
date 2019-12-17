@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import org.hibernate.SessionFactory;
+import org.jetbrains.annotations.NotNull;
 import org.onap.portalsdk.core.domain.FusionObject;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.vid.aai.AaiClientInterface;
@@ -56,6 +57,7 @@ import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.model.Action;
 import org.onap.vid.model.ServiceInfo;
+import org.onap.vid.model.ServiceInfo.ServiceAction;
 import org.onap.vid.model.VidNotions;
 import org.onap.vid.model.serviceInstantiation.InstanceGroup;
 import org.onap.vid.model.serviceInstantiation.Network;
@@ -149,9 +151,19 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         });
     }
 
+
     protected void addNewServiceInfo(UUID uuid, String userId, String serviceName, LocalDateTime createDate,
         LocalDateTime statusModifiedDate, JobStatus status, boolean isHidden, boolean retryEnabled,
         String modelUUID) {
+        ServiceInfo serviceInfo = getServiceInfo(uuid, userId, serviceName, createDate, statusModifiedDate, status,
+            isHidden, retryEnabled, modelUUID);
+        dataAccessService.saveDomainObject(serviceInfo, getPropsMap());
+        setCreateDateToServiceInfo(uuid, createDate);
+        serviceCount++;
+    }
+    @NotNull
+    private ServiceInfo getServiceInfo(UUID uuid, String userId, String serviceName, LocalDateTime createDate,
+        LocalDateTime statusModifiedDate, JobStatus status, boolean isHidden, boolean retryEnabled, String modelUUID) {
         ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.setJobId(uuid);
         serviceInfo.setUserId(userId);
@@ -164,10 +176,18 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         serviceInfo.setRetryEnabled(retryEnabled);
         serviceInfo.setServiceModelId(modelUUID);
         serviceInfo.setHidden(isHidden);
+        return serviceInfo;
+    }
+
+    protected void addNewServiceInfoWithAction(UUID uuid, String userId, String serviceName, LocalDateTime createDate,
+        LocalDateTime statusModifiedDate, JobStatus status, boolean isHidden, boolean retryEnabled,
+        String modelUUID, ServiceAction action) {
+        ServiceInfo serviceInfo = getServiceInfo(uuid, userId, serviceName, createDate, statusModifiedDate, status,
+            isHidden, retryEnabled, modelUUID);
+        serviceInfo.setAction(action);
         dataAccessService.saveDomainObject(serviceInfo, getPropsMap());
         setCreateDateToServiceInfo(uuid, createDate);
         serviceCount++;
-
     }
 
 
