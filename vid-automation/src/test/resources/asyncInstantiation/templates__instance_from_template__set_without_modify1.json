@@ -58,7 +58,7 @@
   "subscriptionServiceType": "TYLER SILVIA",
   "tenantId": null,
   "tenantName": null,
-  "testApi": "VNF_API",
+  "testApi": "GR_API",
   "trackById": "36601560-f8e3-4020-bdef-3e4709c51e84",
   "uuid": "6cfeeb18-c2b0-49df-987a-da47493c8e38",
   "version": "1.0",
@@ -93,8 +93,7 @@
         "modelVersionId": "21ae311e-432f-4c54-b855-446d0b8ded72",
         "uuid": "21ae311e-432f-4c54-b855-446d0b8ded72"
       },
-      "platformName": [
-      ],
+      "platformName": "xxx1",
       "position": null,
       "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
       "rollbackOnFailure": true,
