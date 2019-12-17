@@ -39,6 +39,7 @@ export module Constants {
     public static AAI_GET_ACTIVE_NETWORKS_PATH = '../../aai_get_active_networks/';
     public static AAI_GET_VPNS_PATH = '../../aai_get_vpn_list/';
     public static AAI_GET_SERVICE_GROUP_MEMBERS_PATH = '../../aai_search_group_members/';
+    public static AAI_GET_USER_ID_PATH = '../../getuserID';
     public static AAI_GET_VERSION_BY_INVARIANT_ID = 'aai_get_version_by_invariant_id/';
     public static SEARCH_SERVICE_INSTANCES = 'search_service_instances';
     public static AAI_GET_VNF_BY_CUSTOMERID_AND_SERVICETYPE = 'get_vnf_data_by_globalid_and_service_type/';

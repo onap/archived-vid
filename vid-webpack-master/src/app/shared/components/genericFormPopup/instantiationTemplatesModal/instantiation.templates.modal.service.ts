@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {InstantiationTemplatesRowModel} from "./instantiation.templates.row.model";
+import * as _ from 'lodash';
 
 @Injectable()
 export class InstantiationTemplatesModalService {
@@ -12,6 +13,16 @@ export class InstantiationTemplatesModalService {
     });
 
     return tableRows;
+  };
+
+
+  filterByUserId = (userId: string, originalTableData: InstantiationTemplatesRowModel[]): InstantiationTemplatesRowModel[] => {
+    if (!_.isNil(originalTableData)) {
+      return originalTableData.filter((item: InstantiationTemplatesRowModel) => {
+        return item.userId === userId;
+      });
+    }
+    return [];
   };
 
 }

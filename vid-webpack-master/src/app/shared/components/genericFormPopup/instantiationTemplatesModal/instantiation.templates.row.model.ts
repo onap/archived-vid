@@ -14,7 +14,7 @@ export class InstantiationTemplatesRowModel extends InstantiationBase{
 
   constructor(data) {
     super(data);
-    this.userId = !_.isNil(data.created) ? data.userId : null;
+    this.userId = !_.isNil(data.userId) ? data.userId : null;
     this.createDate = !_.isNil(data.created) ? moment(data.created).format("YYYY-MM-DD HH:mm:ss") : null;
     this.instanceName = this.getInstanceName(data.serviceInstanceName);
     this.instantiationStatus = !_.isNil(data.jobStatus) ? data.jobStatus : null;
