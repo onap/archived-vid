@@ -19,6 +19,7 @@ import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/fe
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {instance, mock, when} from "ts-mockito";
 import each from "jest-each";
+import {VfModule} from "../../../../../shared/models/vfModule";
 
 class MockAppStore<T> {
   getState() {
@@ -510,7 +511,7 @@ describe('VFModule Model Info', () => {
     expect(vfModuleModel.isVFModuleReachedLimit(node, serviceHierarchy, 'servicedId', currentNodeCount)).toEqual(expected);
   });
 
-  function getVFModule(){
+  function getVFModule(): Partial<VfModule>{
     return {
       "uuid":"522159d5-d6e0-4c2a-aa44-5a542a12a830",
       "invariantUuid":"98a7c88b-b577-476a-90e4-e25a5871e02b",
@@ -519,13 +520,10 @@ describe('VFModule Model Info', () => {
       "name":"VfVgeraldine..vflorence_vlc..module-1",
       "version":"2",
       "modelCustomizationName":"VfVgeraldine..vflorence_vlc..module-1",
-      "properties":{
-        "minCountInstances":0,
-        "maxCountInstances":null,
-        "initialCount":0,
-        "vfModuleLabel":"vflorence_vlc",
-        "baseModule":false
-      },
+      "min":0,
+      "max":null,
+      "initial":0,
+      "baseModule":false,
       "inputs":{},
       "volumeGroupAllowed":false
     };

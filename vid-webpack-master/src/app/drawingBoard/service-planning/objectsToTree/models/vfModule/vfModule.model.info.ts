@@ -70,7 +70,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   getModel = (vfModuleModelId: string, instance, serviceHierarchy): any => {
     if (!_.isNil(serviceHierarchy)) {
       if (!_.isNil(serviceHierarchy[this.name]) && !_.isNil(serviceHierarchy[this.name][vfModuleModelId])) {
-        return serviceHierarchy[this.name][vfModuleModelId];
+        return new VfModule(serviceHierarchy[this.name][vfModuleModelId], this._featureFlagsService.getAllFlags());
       }
     }
     return {};
@@ -414,12 +414,12 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     return (!_.isNil(instance) && !_.isNil(instance[deepDynamicName])) ? instance[deepDynamicName].position : null;
   }
 
-  getInfo(model, instance): ModelInformationItem[] {
-    const modelInformation = !_.isEmpty(model) && !_.isEmpty(model.properties) ? [
-      ModelInformationItem.createInstance("Base module", model.properties.baseModule),
-      ModelInformationItem.createInstance("Min instances", !_.isNull(model.properties.minCountInstances) ? String(model.properties.minCountInstances) : null),
+  getInfo(model:Partial<VfModule>, instance): ModelInformationItem[] {
+    const modelInformation = !_.isEmpty(model) ? [
+      ModelInformationItem.createInstance("Base module", model.baseModule),
+      ModelInformationItem.createInstance("Min instances", !_.isNull(model.min) ? String(model.min) : null),
       this._sharedTreeService.createMaximumToInstantiateModelInformationItem(model),
-      ModelInformationItem.createInstance("Initial instances count", !_.isNull(model.properties.initialCount) ? String(model.properties.initialCount) : null)
+      ModelInformationItem.createInstance("Initial instances count", !_.isNull(model.initial) ? String(model.initial) : null)
     ] : [];
 
     const instanceInfo = [];
