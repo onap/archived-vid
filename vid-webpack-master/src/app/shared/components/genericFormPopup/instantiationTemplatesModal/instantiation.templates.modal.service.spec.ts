@@ -130,4 +130,21 @@ describe('instantiation templates modal service', () => {
     expect(result.instanceName).toEqual('<Automatically generated>');
   });
 
+  test('filterByUserId should filter table data by userId: not empty list', () => {
+    const jobs : InstantiationTemplatesRowModel[] = [
+      new InstantiationTemplatesRowModel({userId : 'userId_1'}),
+      new InstantiationTemplatesRowModel({userId : 'userId'}),
+      new InstantiationTemplatesRowModel({userId : 'userId'}),
+      new InstantiationTemplatesRowModel({userId : 'userId_1'})
+    ];
+    let result: InstantiationTemplatesRowModel[] = service.filterByUserId('userId', jobs);
+    expect(result).toHaveLength(2);
+  });
+
+  test('filterByUserId should filter table data by userId:  empty list should return empty list', () => {
+    const jobs : InstantiationTemplatesRowModel[] = [];
+    let result: InstantiationTemplatesRowModel[] = service.filterByUserId('userId', jobs);
+    expect(result).toHaveLength(0);
+  });
+
 });
