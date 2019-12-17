@@ -11,7 +11,7 @@ import {AppState} from "../../../shared/store/reducers";
 import {DialogService} from "ng2-bootstrap-modal";
 import {VnfPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
 import {NetworkPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
-import {VfModulePopuopService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {VnfGroupingModelInfo} from "./models/vnfGrouping/vnfGrouping.model.info";
 import {VnfGroupPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnfGroup/vnfGroup.popup.service";
 import {DuplicateService} from "../duplicate/duplicate.service";
@@ -35,7 +35,7 @@ export class ObjectToTreeService {
               private _dialogService : DialogService,
               private _vnfPopupService : VnfPopupService,
               private  _networkPopupService :  NetworkPopupService,
-              private _vfModulePopupService : VfModulePopuopService,
+              private _vfModulePopupService : VfModulePopupService,
               private _vfModuleUpgradePopupService : VfModuleUpgradePopupService,
               private _vnfGroupPopupService : VnfGroupPopupService,
               private _duplicateService : DuplicateService,

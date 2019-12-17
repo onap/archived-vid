@@ -172,7 +172,7 @@ describe('vfModuleReducer', () => {
       };
       let newState = vfModuleReducer(<any>oldState,
     <DeleteVFModuleField>{
-      type: VfModuleActions.DELETE_VFMODULE_FEILD,
+      type: VfModuleActions.DELETE_VFMODULE_FIELD,
       dynamicModelName: 'dynamicModelName1',
       vnfStoreKey: 'vnfStoreKey',
       serviceId: 'serviceModelId',

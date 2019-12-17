@@ -1,7 +1,7 @@
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {NgRedux} from "@angular-redux/store";
 import {IframeService} from "../../../../utils/iframe.service";
-import {VfModulePopuopService} from "../vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../vfModule/vfModule.popup.service";
 import {FormBuilder} from "@angular/forms";
 import {GenericFormService} from "../../../genericForm/generic-form.service";
 import {BasicPopupService} from "../basic.popup.service";
@@ -2258,7 +2258,7 @@ describe('vnf new popup service', () => {
         AaiService,
         LogService,
         BasicPopupService,
-        VfModulePopuopService,
+        VfModulePopupService,
         VfModuleUpgradePopupService,
         BasicControlGenerator,
         VnfControlGenerator,

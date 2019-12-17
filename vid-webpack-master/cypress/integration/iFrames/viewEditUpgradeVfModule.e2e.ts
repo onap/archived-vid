@@ -100,20 +100,20 @@ describe('View Edit Page: Upgrade VFModule', function () {
         `servicePlanning/EDIT?serviceModelId=${serviceUuid}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
     });
 
-    it(`Upgrade a VFModule`, function () {
+    it(`Upgrade a VF Module`, function () {
       cy.initDrawingBoardUserPermission();
       initServicePlanning("EDIT",
         '../vid-automation/src/test/resources/viewEdit/ServiceTreeWithMultipleChildren_serviceInstance_withUpdatedLatestVersion.json');
-      upgradeTheVFM();
+      upgradeTheVFM('node-522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1', true);
       assertVfModuleActionInRedux("None_Upgrade");
       undoUpgradeForVFM();
       assertVfModuleActionInRedux("None");
-      upgradeTheVFM();
+      upgradeTheVFM('node-522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1',true);
       cy.getDrawingBoardDeployBtn().click();
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
         const requestBody = Object(xhr.request.body);
         const vfModuleRequest = requestBody.vnfs['VNF2_INSTANCE_ID'].vfModules['vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1']['2c1ca484-cbc2-408b-ab86-25a2c15ce280'];
-          expect(requestBody.action).to.equal("None_Upgrade");
+        expect(requestBody.action).to.equal("None_Upgrade");
         expect(requestBody.vnfs['VNF2_INSTANCE_ID'].action).to.equal("None_Upgrade");
         expect(vfModuleRequest.action).to.equal("None_Upgrade");
       });
@@ -129,7 +129,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
   });
 
-  describe('More UI tests', () => {
+  describe('More UI test', () => {
 
     beforeEach(() => {
       cy.clearSessionStorage();
@@ -174,7 +174,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
       cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
 
-      upgradeTheVFM('node-04b21d26-9780-4956-8329-b22b049329f4-xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0');
+      upgradeTheVFM('node-04b21d26-9780-4956-8329-b22b049329f4-xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0', false);
 
       mockAsyncBulkResponse();
       cy.getDrawingBoardDeployBtn().click();
@@ -213,13 +213,18 @@ describe('View Edit Page: Upgrade VFModule', function () {
     }).as("expectLatestServiceModelUpgradeVersion");
   }
 
-  function upgradeTheVFM(treeNodeId = 'node-522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1') {
+  function upgradeTheVFM(treeNodeId: string, shouldVGCheckboxExist :boolean) {
     cy.getElementByDataTestsId(`${treeNodeId}-menu-btn`).click()
     .drawingBoardTreeClickOnContextMenuOptionByName("Upgrade");
     // The following is needed when enabling FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS
 
     cy.getElementByDataTestsId('retainAssignments').click();
-    cy.getElementByDataTestsId('retainVolumeGroups').click();
+    if (shouldVGCheckboxExist) {
+      cy.getElementByDataTestsId('retainVolumeGroups').click();
+    }
+    else {
+      cy.getElementByDataTestsId('retainVolumeGroups').should('not.exist');
+    }
     cy.getElementByDataTestsId('sdncPreLoad').click();
     cy.screenshot();
     cy.getElementByDataTestsId('form-set').click();

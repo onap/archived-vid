@@ -10,7 +10,7 @@ import {AaiService} from '../../../shared/services/aaiService/aai.service';
 import {ServiceNodeTypes} from '../../../shared/models/ServiceNodeTypes';
 import {IframeService} from "../../../shared/utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../shared/services/defaultDataServiceGenerator/default.data.generator.service";
-import {VfModulePopuopService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popuop.service";
+import {VfModulePopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {NetworkPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
 import {createVFModuleInstance} from "../../../shared/storeUtil/utils/vfModule/vfModule.actions";
 import {VnfPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
@@ -56,7 +56,7 @@ export class AvailableModelsTreeComponent {
               private _drawingBoardTreeService: DrawingBoardTreeService,
               private _defaultDataGeneratorService: DefaultDataGeneratorService,
               private _vnfGroupControlGenerator: VnfGroupControlGenerator,
-              private _vfModulePopuopService: VfModulePopuopService,
+              private _vfModulePopuopService: VfModulePopupService,
               private _vnfGroupPopupService: VnfGroupPopupService,
               private _vnfPopupService: VnfPopupService,
               private _networkPopupService: NetworkPopupService,

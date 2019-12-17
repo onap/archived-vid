@@ -17,7 +17,6 @@ export interface VFModuleResponseInterface extends NodeModelResponseInterface {
 
 export class VfModule extends NodeModel {
 
-  vgName:string;
   rollbackOnFailure:boolean;
   initial:number;
   customizationUuid: string;
