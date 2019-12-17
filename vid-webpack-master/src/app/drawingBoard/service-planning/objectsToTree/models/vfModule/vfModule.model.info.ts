@@ -177,12 +177,16 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
    * @param serviceModelId - current service id
    ************************************************************/
   getNodeCount(node: ITreeNode, serviceModelId: string): number {
+    const vnfs = this._store.getState().service.serviceInstance[serviceModelId].vnfs;
     let count: number = 0;
     if (!_.isNil(this._store.getState().service.serviceInstance) && !_.isNil(this._store.getState().service.serviceInstance[serviceModelId])) {
-      const vnfs = this._store.getState().service.serviceInstance[serviceModelId].vnfs;
-
-      for (let vnfKey in vnfs) {
-        count += this.countNumberOfVFModule(vnfs[vnfKey], node);
+      const selectedVNF: string = this._sharedTreeService.getSelectedVNF();
+      if (selectedVNF) {
+        count += this.countNumberOfVFModule(vnfs[selectedVNF], node);
+      }else {
+        for (let vnfKey in vnfs) {
+          count += this.countNumberOfVFModule(vnfs[vnfKey], node);
+        }
       }
       return count;
     }
@@ -206,11 +210,8 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   getCountVFModuleOfSelectedVNF(node: ITreeNode, vnfStoreKey: string, serviceModelId: string): number {
     let count: number = 0;
     if (!_.isNil(this._store.getState().service.serviceInstance) && !_.isNil(this._store.getState().service.serviceInstance[serviceModelId])) {
-      const vnfs = this._store.getState().service.serviceInstance[serviceModelId].vnfs;
-
-      for (let vnfKey in vnfs) {
-        count += this.countNumberOfVFModule(vnfs[vnfKey], node);
-      }
+      const vnf = this._store.getState().service.serviceInstance[serviceModelId].vnfs[vnfStoreKey];
+      count += this.countNumberOfVFModule(vnf, node);
       return count;
     }
     return count;
@@ -238,7 +239,6 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
 
 
   showVFModuleOnSelectedVNF(node: ITreeNode, selectedVNF: string, serviceModelId: string): AvailableNodeIcons {
-
     if (!_.isNil(this._store.getState().service.serviceInstance[serviceModelId].vnfs[selectedVNF]) && node.parent.data.name === this._store.getState().service.serviceInstance[serviceModelId].vnfs[selectedVNF].originalName) {
       const existingVFModules = this.getCountVFModuleOfSelectedVNF(node, selectedVNF, serviceModelId);
       const reachedLimit = this.isVFModuleReachedLimit(node, this._store.getState().service.serviceHierarchy, serviceModelId, existingVFModules);

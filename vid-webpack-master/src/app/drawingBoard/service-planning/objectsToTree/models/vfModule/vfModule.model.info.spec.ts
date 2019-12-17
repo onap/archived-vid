@@ -413,7 +413,33 @@ describe('VFModule Model Info', () => {
                         'modelInfo' : {
                           modelVersionId : 'vfModuleId'
                         }
+                      },
+                      'vnfModuleName_111_1': {
+                        'action': 'Create',
+                        'modelInfo' : {
+                          modelVersionId : 'vfModuleId'
+                        }
                       }
+                  }
+                }
+              },
+              'vnfName_1' :{
+                'action': 'Create',
+                'originalName' : 'vnfName',
+                'vfModules' : {
+                  'vfModuleName' : {
+                    'vnfModuleName_111': {
+                      'action': 'Create',
+                      'modelInfo' : {
+                        modelVersionId : 'vfModuleId'
+                      }
+                    },
+                    'vnfModuleName_111_1': {
+                      'action': 'Create',
+                      'modelInfo' : {
+                        modelVersionId : 'vfModuleId'
+                      }
+                    }
                   }
                 }
               }
@@ -433,6 +459,95 @@ describe('VFModule Model Info', () => {
         data : {
           id : 'vnfId',
           name : 'vnfName',
+          'action': 'Create',
+        }
+      }
+    };
+    let result = vfModuleModel.getNodeCount(<any>node , serviceId);
+    expect(result).toEqual(2);
+  });
+
+
+  test('getNodeCount should return number of nodes : there is selectedVNF', ()=>{
+    let serviceId : string = 'servicedId';
+    jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
+      global : {},
+      service : {
+        serviceHierarchy : {
+          'servicedId' : {
+            'vnfs' : {
+              'vnfName' : {
+                'properties' : {
+                  'max_instances' : 1
+                }
+              }
+            },
+            'vfModules' : {
+              'vfModuleName' : {
+                'properties' : {
+                  maxCountInstances : 2
+                }
+              }
+            }
+          }
+        },
+        serviceInstance : {
+          'servicedId' : {
+            'existingVNFCounterMap' : {
+              'vnfId' : 1
+            },
+            'vnfs' : {
+              'vnfName' :{
+                'action': 'Create',
+                'originalName' : 'vnfName',
+                'vfModules' : {
+                  'vfModuleName' : {
+                    'vnfModuleName_111': {
+                      'action': 'Create',
+                      'modelInfo' : {
+                        modelVersionId : 'vfModuleId'
+                      }
+                    },
+                    'vnfModuleName_111_1': {
+                      'action': 'Create',
+                      'modelInfo' : {
+                        modelVersionId : 'vfModuleId'
+                      }
+                    }
+                  }
+                }
+              },
+              'vnfName_1' :{
+                'action': 'Create',
+                'originalName' : 'vnfName',
+                'vfModules' : {
+                  'vfModuleName' : {
+                    'vnfModuleName_111': {
+                      'action': 'Create',
+                      'modelInfo' : {
+                        modelVersionId : 'vfModuleId'
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+    jest.spyOn(_sharedTreeService, 'getSelectedVNF').mockReturnValue('vnfName_1');
+
+    let node = {
+      data : {
+        id : 'vfModuleId',
+        name : 'vfModuleName',
+        'action': 'Create',
+      },
+      parent : {
+        data : {
+          id : 'vnfId',
+          name : 'vnfName_1',
           'action': 'Create',
         }
       }
