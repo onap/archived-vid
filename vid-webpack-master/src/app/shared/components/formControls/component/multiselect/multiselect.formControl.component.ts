@@ -35,7 +35,7 @@ export class MultiselectFormControlComponent implements OnChanges{
           this.options = options;
           this._multiselectFormControlService.convertSelectedItems(this.data).then((res)=> {
             this.selectedItems = res;
-            this.form.controls[this.data.controlName].setValue(this.selectedItems);
+            this.data.onChange(this.selectedItems ,this.form);
           })
       });
     }
