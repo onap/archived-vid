@@ -22,7 +22,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import vid.automation.test.Constants;
 import vid.automation.test.Constants.Users;
 import vid.automation.test.model.User;
 import vid.automation.test.services.AsyncJobsService;
@@ -77,18 +76,34 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
 
     @Test
     public void templateTopology_givenDeployFromCypressE2E_getTemplateTopologyDataIsEquivalent() throws IOException {
-        templateTopology_givenDeploy_templateTopologyIsEquivalent(objectMapper.readValue(
-            convertRequest(objectMapper, "asyncInstantiation/templates__instance_template.json"),
-            JsonNode.class));
+        templateTopology_givenDeploy_templateTopologyIsEquivalentToBody(
+            fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
     }
 
-    public void templateTopology_givenDeploy_templateTopologyIsEquivalent(JsonNode body) {
+    @Test
+    public void templateTopology_givenDeployFromEditedTemplateCypressE2E_getTemplateTopologyDataIsEquivalentToOriginalTemplate() throws IOException {
+        templateTopology_givenDeploy_templateTopologyIsEquivalent(
+            fileAsJsonNode("asyncInstantiation/templates__edited_instance_from_template.json"),
+            fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
+    }
+
+    private JsonNode fileAsJsonNode(String fileName) throws IOException {
+        return objectMapper.readValue(
+            convertRequest(objectMapper, fileName),
+            JsonNode.class);
+    }
+
+    public void templateTopology_givenDeploy_templateTopologyIsEquivalentToBody(JsonNode body) {
+        templateTopology_givenDeploy_templateTopologyIsEquivalent(body, body);
+    }
+
+    public void templateTopology_givenDeploy_templateTopologyIsEquivalent(JsonNode body, JsonNode expectedTemplateTopology) {
         registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), RegistrationStrategy.CLEAR_THEN_SET);
 
         String uuid1 = postAsyncInstanceRequest(body);
         JsonNode templateTopology1 = restTemplate.getForObject(templateTopologyUri(uuid1), JsonNode.class);
 
-        assertThat(cleanupTemplate(templateTopology1), jsonEquals(cleanupTemplate(body)));
+        assertThat(cleanupTemplate(templateTopology1), jsonEquals(cleanupTemplate(expectedTemplateTopology)));
     }
 
     private JsonNode cleanupTemplate(JsonNode templateTopology) {
