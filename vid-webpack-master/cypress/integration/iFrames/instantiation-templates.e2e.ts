@@ -29,7 +29,7 @@ describe('Drawing Board: Instantiation Templates', function () {
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd();
       });
 
-      it('Given a stored template - when "edit" vnf and vfmodules are opened - then template’s details are visible as expected', ()=> {
+      it('Given a stored template - when "edit" vnf and vfmodules are opened - then template’s details are visible as expected and deploy without changes', () => {
 
         loadDrawingBoardWithRecreateMode();
 
@@ -60,8 +60,6 @@ describe('Drawing Board: Instantiation Templates', function () {
         .getElementByDataTestsId("sdncPreLoad").should('have.value', 'on')
         .getElementByDataTestsId("cancelButton").click();
 
-
-
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd();
         });
 
@@ -81,6 +79,25 @@ describe('Drawing Board: Instantiation Templates', function () {
       });
 
 
+      it('Given a stored template - edit service vnf and vfmodule without changes - deploy request should be without changes', function () {
+
+        loadDrawingBoardWithRecreateMode();
+
+        //open - set edit service
+        cy.openServiceContextMenu()
+        .getElementByDataTestsId("context-menu-header-edit-item").click()
+        .getElementByDataTestsId('form-set').click();
+
+        //open - set edit vnf
+        editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0")
+        .getElementByDataTestsId('form-set').click();
+
+        //open - set edit vf
+        editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
+        .getElementByDataTestsId('form-set').click();
+
+        assertThatBodyFromDeployRequestEqualsToFile();
+      });
 
       });
     });
@@ -124,6 +141,18 @@ function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd() {
       let xhrBodyWithoutIsDirtyField = removeIsDirtyFieldFromXhrRequestBody(xhr);
       cy.deepCompare(xhrBodyWithoutIsDirtyField, expectedResult);
     });
+  });
+}
+
+
+function assertThatBodyFromDeployRequestEqualsToFile() {
+  cy.getDrawingBoardDeployBtn().click();
+  cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
+
+    cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/templates__instance_from_template__set_without_modify1.json').then((expectedResult) => {
+      cy.deepCompare(xhr.request.body, expectedResult);
+    });
+
   });
 }
 
