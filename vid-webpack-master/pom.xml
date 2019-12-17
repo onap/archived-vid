@@ -28,7 +28,7 @@
     <stagingNexusPath>content/repositories/staging/</stagingNexusPath>
     <snapshotNexusPath>content/repositories/snapshots/</snapshotNexusPath>
     <releaseNexusPath>content/repositories/releases/</releaseNexusPath>
-    <NPM_CMD>build</NPM_CMD>
+    <NPM_CMD>ci</NPM_CMD>
   </properties>
 
 
@@ -70,6 +70,7 @@
   </distributionManagement>
 
   <profiles>
+
     <profile>
       <id>if-not-webpack</id>
       <activation>
@@ -107,6 +108,7 @@
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>webpack-npm</id>
       <activation>
