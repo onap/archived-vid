@@ -83,7 +83,7 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
     @Test
     public void templateTopology_givenDeployFromEditedTemplateCypressE2E_getTemplateTopologyDataIsEquivalentToOriginalTemplate() throws IOException {
         templateTopology_givenDeploy_templateTopologyIsEquivalent(
-            fileAsJsonNode("asyncInstantiation/templates__instance_from_template__set_without_modify.json"),
+            fileAsJsonNode("asyncInstantiation/templates__instance_from_template__set_without_modify1.json"),
             fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
     }
 

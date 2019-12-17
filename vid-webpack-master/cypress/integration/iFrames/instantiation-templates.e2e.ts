@@ -4,7 +4,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
     beforeEach(() => {
       cy.clearSessionStorage();
-      cy.setTestApiParamToVNF();
+      cy.setTestApiParamToGR();
       cy.initAAIMock();
       cy.initGetAAISubDetails();
       cy.initVidMock();
