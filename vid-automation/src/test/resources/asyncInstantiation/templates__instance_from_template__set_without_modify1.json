@@ -1,0 +1,162 @@
+{
+  "action": "Create",
+  "aicZoneId": null,
+  "aicZoneName": null,
+  "bulkSize": 1,
+  "category": "Emanuel",
+  "description": "vProbe_NC_Service",
+  "existingNames": {
+    "hvf6arlba007": "",
+    "hvf6arlba007_lba_base_01": "",
+    "vprobe_nc_service_dg_new_si": ""
+  },
+  "existingNetworksCounterMap": {
+  },
+  "existingVNFCounterMap": {
+    "024a417d-ca46-40bf-95ce-809c6a269011": 1
+  },
+  "existingVnfGroupCounterMap": {
+  },
+  "existingVRFCounterMap": {
+  },
+  "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "instanceId": null,
+  "instanceName": "vProbe_NC_Service_DG_new_SI",
+  "instanceParams": [
+    {
+    }
+  ],
+  "invariantUuid": "90a32d31-8a01-4de2-a91f-7e2414d6f5aa",
+  "isALaCarte": true,
+  "isDirty": true,
+  "isEcompGeneratedNaming": false,
+  "isFailed": false,
+  "isMultiStepDesign": false,
+  "lcpCloudRegionId": null,
+  "modelInfo": {
+    "modelInvariantId": "90a32d31-8a01-4de2-a91f-7e2414d6f5aa",
+    "modelName": "vProbe_NC_Service",
+    "modelUniqueId": "6cfeeb18-c2b0-49df-987a-da47493c8e38",
+    "modelVersion": "1.0",
+    "modelVersionId": "6cfeeb18-c2b0-49df-987a-da47493c8e38",
+    "uuid": "6cfeeb18-c2b0-49df-987a-da47493c8e38"
+  },
+  "name": "vProbe_NC_Service",
+  "networks": {
+  },
+  "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+  "owningEntityName": "WayneHolland",
+  "pause": false,
+  "position": null,
+  "productFamilyId": null,
+  "projectName": "WATKINS",
+  "rollbackOnFailure": true,
+  "serviceRole": "VNF",
+  "serviceType": "INFRASTRUCTURE",
+  "statusMessage": null,
+  "subscriberName": "SILVIA ROBBINS",
+  "subscriptionServiceType": "TYLER SILVIA",
+  "tenantId": null,
+  "tenantName": null,
+  "testApi": "VNF_API",
+  "trackById": "36601560-f8e3-4020-bdef-3e4709c51e84",
+  "uuid": "6cfeeb18-c2b0-49df-987a-da47493c8e38",
+  "version": "1.0",
+  "vidNotions": {
+    "instantiationType": "ALaCarte",
+    "instantiationUI": "anyAlacarteWhichNotExcluded",
+    "modelCategory": "5G Fabric Configuration",
+    "viewEditUI": "legacy"
+  },
+  "vnfGroups": {
+  },
+  "vnfs": {
+    "vProbe_NC_VNF 0": {
+      "action": "Create",
+      "instanceId": null,
+      "instanceName": "hvf6arlba007",
+      "instanceParams": [
+        {
+        }
+      ],
+      "isFailed": false,
+      "isMissingData": false,
+      "lcpCloudRegionId": "hvf6",
+      "lineOfBusiness": "zzz1",
+      "modelInfo": {
+        "modelCustomizationId": "024a417d-ca46-40bf-95ce-809c6a269011",
+        "modelCustomizationName": "vProbe_NC_VNF 0",
+        "modelInvariantId": "a6a96924-b9c5-4c85-ae18-cbfca848095e",
+        "modelName": "vProbe_NC_VNF",
+        "modelUniqueId": "024a417d-ca46-40bf-95ce-809c6a269011",
+        "modelVersion": "1.0",
+        "modelVersionId": "21ae311e-432f-4c54-b855-446d0b8ded72",
+        "uuid": "21ae311e-432f-4c54-b855-446d0b8ded72"
+      },
+      "platformName": [
+      ],
+      "position": null,
+      "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "rollbackOnFailure": true,
+      "statusMessage": null,
+      "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
+      "trackById": "1d2848a0-3573-4d29-b3dd-60bb263260ea",
+      "uuid": "21ae311e-432f-4c54-b855-446d0b8ded72",
+      "vfModules": {
+        "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
+          "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi": {
+            "action": "Create",
+            "instanceName": "my_hvf6arlba007_lba_dj_01",
+            "instanceParams": [
+              {
+              }
+            ],
+            "isFailed": false,
+            "lcpCloudRegionId": "hvf6",
+            "modelInfo": {
+              "modelCustomizationId": "9b99d340-a80b-45ef-9ff1-993fa3e4c001",
+              "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+              "modelInvariantId": "1bcc4824-6c1a-4b51-af7c-076b7fc14d05",
+              "modelName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+              "modelType": "vfModule",
+              "modelVersion": "1",
+              "modelVersionId": "c09e4530-8fd8-418f-9483-2f57ce927b05"
+            },
+            "rollbackOnFailure": true,
+            "sdncPreLoad": true,
+            "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
+            "trackById": "b134410e-3bc0-478e-883e-1b6bdf8a28df",
+            "volumeGroupName": "my_special_hvf6arlba007_lba_dj_01_vol"
+          }
+        },
+        "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0": {
+          "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg": {
+            "instanceName": "hvf6arlba007_lba_Base_01",
+            "instanceParams": [
+              {
+              }
+            ],
+            "isMissingData": false,
+            "lcpCloudRegionId": "hvf6",
+            "modelInfo": {
+              "modelCustomizationId": "4d0818cf-eaa9-4a3f-89c2-639953089e14",
+              "modelCustomizationName": "VprobeNcVnf..FE_base_module..module-0",
+              "modelInvariantId": "29b6fa3c-aeb3-4103-b3f7-6f98e097b005",
+              "modelName": "VprobeNcVnf..FE_base_module..module-0",
+              "modelUniqueId": "4d0818cf-eaa9-4a3f-89c2-639953089e14",
+              "modelVersion": "1",
+              "modelVersionId": "c5b26cc1-a66f-4b69-aa23-6abc7c647c88",
+              "uuid": "c5b26cc1-a66f-4b69-aa23-6abc7c647c88"
+            },
+            "rollbackOnFailure": true,
+            "sdncPreLoad": null,
+            "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
+            "uuid": "c5b26cc1-a66f-4b69-aa23-6abc7c647c88"
+          }
+        }
+      }
+    }
+  },
+  "vrfs": {
+  }
+}

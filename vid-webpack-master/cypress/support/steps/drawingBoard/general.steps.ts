@@ -26,8 +26,5 @@ function openServiceContextMenu() :  Chainable<any> {
  return cy.getElementByDataTestsId('openMenuBtn').click({force: true});
 }
 
-
-
-
 Cypress.Commands.add('updateServiceShouldNotOverrideChild', updateServiceShouldNotOverrideChild);
 Cypress.Commands.add('openServiceContextMenu', openServiceContextMenu);
