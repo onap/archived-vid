@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "47a71e4d_a7e6fbe3",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfmodule/upgrade_vfmodule_e2e__fe_input_cypress.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-12-17T09:19:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "932cd613_58d790e6",
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a21f891d_a039733f",
         "filename": "vid-automation/src/test/resources/aaiGetInstanceTopology/ServiceTreeWithMultipleChildren_serviceModel.json",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2019-12-16T12:38:39Z",
       "side": 1,
       "message": "If you can explain the logic of all these JSONs changes",
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15f3ecf2_67600307",
+        "filename": "vid-automation/src/test/resources/aaiGetInstanceTopology/ServiceTreeWithMultipleChildren_serviceModel.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-12-17T09:19:22Z",
+      "side": 1,
+      "message": "was done 1on1",
+      "parentUuid": "a21f891d_a039733f",
       "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -151,6 +187,24 @@
     },
     {
       "key": {
+        "uuid": "2f625d2d_3f9087b1",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-12-17T09:19:22Z",
+      "side": 1,
+      "message": "I have looked at concatSupplementaryFile, I don\u0027t think any change needed.\nI do not wish to test UI terms as part of getRetainVolumeGroupsControl, only the form build up\naccording to business terms.",
+      "parentUuid": "a1a5a43f_aff4505a",
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "234dba7e_f8d565b6",
         "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popup.service.spec.ts",
         "patchSetId": 3
@@ -162,6 +216,30 @@
       "writtenOn": "2019-12-16T12:38:39Z",
       "side": 1,
       "message": "if you test only getRetainVolumeGroupsControl you can provide it your store object without need to mock all of this",
+      "range": {
+        "startLine": 138,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 61
+      },
+      "revId": "1d9008bc4a0f23ea47c76bdcdc6fb344c2ed8032",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdf4196e_0716427e",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popup.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 2331
+      },
+      "writtenOn": "2019-12-17T09:19:22Z",
+      "side": 1,
+      "message": "As written above, I do not test getRetainVolumeGroupsControl - it already existed, the changes are the reasons for it be pushed into the form.",
+      "parentUuid": "234dba7e_f8d565b6",
       "range": {
         "startLine": 138,
         "startChar": 4,
