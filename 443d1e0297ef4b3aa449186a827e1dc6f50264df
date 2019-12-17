@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ee0b13b6_fc5ef2ec",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/model/serviceInstantiation/InstantiationModelSerializationTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5680
+      },
+      "writtenOn": "2019-12-17T07:53:26Z",
+      "side": 1,
+      "message": "assertions not needed",
+      "revId": "443d1e0297ef4b3aa449186a827e1dc6f50264df",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
