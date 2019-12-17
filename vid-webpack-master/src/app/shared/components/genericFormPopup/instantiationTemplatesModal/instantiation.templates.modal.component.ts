@@ -46,16 +46,9 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
 
   loadTemplate = () => {
     this._instantiationStatusComponentService.navigateToNewViewEdit(this.selectedInstantiation, DrawingBoardModes.RECREATE)
-
   };
 
-
   closeModal(): void {
-    this._iframeService.removeClassCloseModal('content');
     this.dialogService.removeDialog(this);
-    setTimeout(() => {
-      window.parent.postMessage("closeIframe", "*");
-    }, 15);
-
   }
 }

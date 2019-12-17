@@ -6,6 +6,7 @@ $grid-border: 1px #d2d2d2 solid;
   thead {
     background: #F8F8F8;
   }
+
   .left-panel {
     background: #f2f2f2;
     border-right: $grid-border;
@@ -161,7 +162,7 @@ $grid-border: 1px #d2d2d2 solid;
 
   .description-section {
     padding: 20px;
-    font-size: 20px;
+    font-size: 13px;
   }
 
   .filter-input {
@@ -173,6 +174,17 @@ $grid-border: 1px #d2d2d2 solid;
     text-align: right;
   }
 
+  .table-container {
+    overflow: auto;
+    width: 97%;
+    margin: auto;
+    max-height: calc(100% - 122px);
+  }
+
+
+  table {
+    font-size: 12px;
+  }
 
   td.loadTemplateButton {
     text-align: center;
