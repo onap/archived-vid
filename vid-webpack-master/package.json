@@ -8,6 +8,7 @@
     "build": "ng build --no-progress --no-aot --output-hashing all",
     "build.prod": "ng build",
     "test": "jest",
+    "ci": "npm run test && npm run build",
     "test:jest": "jest",
     "test:jest:pipeline": "jest --silent --ci --reporters=default --reporters=jest-junit",
     "test:jest:watch": "jest --watch",

@@ -82,6 +82,11 @@ describe('Basic Control Generator', () => {
       "supplementaryFile_hidden_content"
     ]);
   });
+
+  test('always fail', ()=>{
+    fail();
+  });
+
   each([
     [null, false],
     [{}, true]
