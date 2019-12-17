@@ -23,7 +23,6 @@ package org.onap.vid.services;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -49,6 +48,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import org.hibernate.SessionFactory;
+import org.jetbrains.annotations.NotNull;
 import org.onap.portalsdk.core.domain.FusionObject;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.vid.aai.AaiClientInterface;
@@ -56,6 +56,7 @@ import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.model.Action;
 import org.onap.vid.model.ServiceInfo;
+import org.onap.vid.model.ServiceInfo.ServiceAction;
 import org.onap.vid.model.VidNotions;
 import org.onap.vid.model.serviceInstantiation.InstanceGroup;
 import org.onap.vid.model.serviceInstantiation.Network;
@@ -67,7 +68,6 @@ import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.RequestStatus;
 import org.onap.vid.properties.Features;
-import org.onap.vid.services.AsyncInstantiationBusinessLogicTest.ServiceInfoComparator;
 import org.onap.vid.utils.DaoUtils;
 import org.onap.vid.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,9 +149,19 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         });
     }
 
+
     protected void addNewServiceInfo(UUID uuid, String userId, String serviceName, LocalDateTime createDate,
         LocalDateTime statusModifiedDate, JobStatus status, boolean isHidden, boolean retryEnabled,
         String modelUUID) {
+        ServiceInfo serviceInfo = createServiceInfo(uuid, userId, serviceName, createDate, statusModifiedDate, status,
+            isHidden, retryEnabled, modelUUID);
+        dataAccessService.saveDomainObject(serviceInfo, getPropsMap());
+        setCreateDateToServiceInfo(uuid, createDate);
+        serviceCount++;
+    }
+    @NotNull
+    private ServiceInfo createServiceInfo(UUID uuid, String userId, String serviceName, LocalDateTime createDate,
+        LocalDateTime statusModifiedDate, JobStatus status, boolean isHidden, boolean retryEnabled, String modelUUID) {
         ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.setJobId(uuid);
         serviceInfo.setUserId(userId);
@@ -164,10 +174,18 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         serviceInfo.setRetryEnabled(retryEnabled);
         serviceInfo.setServiceModelId(modelUUID);
         serviceInfo.setHidden(isHidden);
+        return serviceInfo;
+    }
+
+    protected void addNewServiceInfoWithAction(UUID uuid, String userId, String serviceName, LocalDateTime createDate,
+        LocalDateTime statusModifiedDate, JobStatus status, boolean isHidden, boolean retryEnabled,
+        String modelUUID, ServiceAction action) {
+        ServiceInfo serviceInfo = createServiceInfo(uuid, userId, serviceName, createDate, statusModifiedDate, status,
+            isHidden, retryEnabled, modelUUID);
+        serviceInfo.setAction(action);
         dataAccessService.saveDomainObject(serviceInfo, getPropsMap());
         setCreateDateToServiceInfo(uuid, createDate);
         serviceCount++;
-
     }
 
 

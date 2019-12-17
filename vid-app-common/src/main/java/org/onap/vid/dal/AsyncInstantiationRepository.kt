@@ -90,9 +90,10 @@ class AsyncInstantiationRepository @Autowired constructor(val dataAccessService:
                 "   and created >= '" + filterDate + "' "
     }
 
-    private fun filterByServiceModelId(serviceModelUuid: UUID): String {
+    private fun filterInstantiatedServiceByServiceModelId(serviceModelUuid: UUID): String {
         return filterServicesByNotHiddenAndNotDeleted() +
-                " and SERVICE_MODEL_ID = '$serviceModelUuid'"
+                " and SERVICE_MODEL_ID = '$serviceModelUuid'" +
+                " and ACTION  = 'INSTANTIATE'"
     }
 
     private fun filterServicesByNotHiddenAndNotDeleted(): String {
@@ -154,6 +155,6 @@ class AsyncInstantiationRepository @Autowired constructor(val dataAccessService:
         return dataAccessService.getList(className, " WHERE $condition", orderBy, null) as List<T>
     }
 
-    fun listServicesByServiceModelId(serviceModelId: UUID): List<ServiceInfo> =
-            dataAccessService.getList(ServiceInfo::class.java, filterByServiceModelId(serviceModelId), orderByCreatedDateAndStatus(), null) as List<ServiceInfo>;
+    fun listInstantiatedServicesByServiceModelId(serviceModelId: UUID): List<ServiceInfo> =
+            dataAccessService.getList(ServiceInfo::class.java, filterInstantiatedServiceByServiceModelId(serviceModelId), orderByCreatedDateAndStatus(), null) as List<ServiceInfo>;
 }

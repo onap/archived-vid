@@ -45,6 +45,7 @@ import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
 import org.onap.vid.job.Job;
 import org.onap.vid.model.ResourceInfo;
 import org.onap.vid.model.ServiceInfo;
+import org.onap.vid.model.ServiceInfo.ServiceAction;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.RequestStatus;
@@ -73,14 +74,16 @@ public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest
 
         LocalDateTime NOW = LocalDateTime.now();
 
-        addNewServiceInfo(UUID.randomUUID(), "abc", "1", NOW.minusYears(1L), NOW, COMPLETED, false, false,
-            MODEL_UUID);
-        addNewServiceInfo(UUID.randomUUID(), "abc", "2", NOW, NOW, COMPLETED, false, false,
-            MODEL_UUID_2);
-        addNewServiceInfo(UUID.randomUUID(), "abc", "3", NOW, NOW, COMPLETED, false, false,
-            MODEL_UUID);
-        addNewServiceInfo(UUID.randomUUID(), "abc", "hidden", NOW, NOW, COMPLETED, true, false,
-            MODEL_UUID);
+        addNewServiceInfoWithAction(UUID.randomUUID(), "abc", "0", NOW.minusYears(1L), NOW, COMPLETED, false, false,
+            MODEL_UUID, ServiceAction.RESUME);
+        addNewServiceInfoWithAction(UUID.randomUUID(), "abc", "1", NOW.minusYears(1L), NOW, COMPLETED, false, false,
+            MODEL_UUID, ServiceAction.INSTANTIATE);
+        addNewServiceInfoWithAction(UUID.randomUUID(), "abc", "2", NOW, NOW, COMPLETED, false, false,
+            MODEL_UUID_2, ServiceAction.INSTANTIATE);
+        addNewServiceInfoWithAction(UUID.randomUUID(), "abc", "3", NOW, NOW, COMPLETED, false, false,
+            MODEL_UUID, ServiceAction.INSTANTIATE);
+        addNewServiceInfoWithAction(UUID.randomUUID(), "abc", "hidden", NOW, NOW, COMPLETED, true, false,
+            MODEL_UUID, ServiceAction.INSTANTIATE);
     }
 
     @DataProvider
@@ -93,14 +96,15 @@ public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest
 
     @Test(dataProvider = "listServicesByServiceModelIdDataProvider")
     public void testListServicesByServiceModelId(String desc, String modelUUID, String... expectedResult) {
-        List<ServiceInfo> serviceInfoListResult = asyncInstantiationRepository.listServicesByServiceModelId(UUID.fromString(modelUUID));
+        List<ServiceInfo> serviceInfoListResult = asyncInstantiationRepository.
+            listInstantiatedServicesByServiceModelId(UUID.fromString(modelUUID));
         assertThat(desc, serviceInfoListResult.stream().map(ServiceInfo::getServiceInstanceName).collect(toList()),
             contains(expectedResult));
     }
 
     @Test
     public void whenFilterServiceByNotExistUUID_emptyListIsReturned() {
-        List<ServiceInfo> serviceInfoListResult = asyncInstantiationRepository.listServicesByServiceModelId(UUID.randomUUID());
+        List<ServiceInfo> serviceInfoListResult = asyncInstantiationRepository.listInstantiatedServicesByServiceModelId(UUID.randomUUID());
         assertThat(serviceInfoListResult, is(empty()));
     }
 
