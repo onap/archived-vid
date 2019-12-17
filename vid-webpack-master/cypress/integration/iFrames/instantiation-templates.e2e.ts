@@ -1,3 +1,6 @@
+import * as _ from "lodash";
+import {PropertyPath} from "lodash";
+
 describe('Drawing Board: Instantiation Templates', function () {
 
   describe('Instantiation templates ', () => {
@@ -78,30 +81,66 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       });
 
+      [
+        {desc: "with changes", modifySomeValues: true},
+        {desc: "without changes", modifySomeValues: false},
+      ].forEach((testCase) => {
 
-      it('Given a stored template - edit service vnf and vfmodule without changes - deploy request should be without changes', function () {
+        it(`Given a stored template - edit service vnf and vfmodule ${testCase.desc} - deploy request should be ${testCase.desc}`, function () {
 
-        loadDrawingBoardWithRecreateMode();
+          loadDrawingBoardWithRecreateMode();
 
-        //open - set edit service
-        cy.openServiceContextMenu()
-        .getElementByDataTestsId("context-menu-header-edit-item").click()
-        .getElementByDataTestsId('form-set').click();
+          //edit service
+          cy.openServiceContextMenu();
+          cy.getElementByDataTestsId("context-menu-header-edit-item").click();
+          if (testCase.modifySomeValues) {
+            cy.clearInput("instanceName");
+            cy.typeToInput("instanceName", "different.instance.name");
+          }
+          cy.getElementByDataTestsId('form-set').click();
 
-        //open - set edit vnf
-        editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0")
-        .getElementByDataTestsId('form-set').click();
+          // edit vnf
+          editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0");
+          if (testCase.modifySomeValues) {
+            cy.selectPlatformValue('platform');
+            cy.selectDropdownOptionByText("tenant", "CESAR-100-D-spjg61909");
+          }
+          cy.getElementByDataTestsId('form-set').click();
 
-        //open - set edit vf
-        editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
-        .getElementByDataTestsId('form-set').click();
+          //edit vf module
+          editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0");
+          if (testCase.modifySomeValues) {
+            cy.getElementByDataTestsId('sdncPreLoad').click();
+          }
+          cy.getElementByDataTestsId('form-set').click();
 
-        assertThatBodyFromDeployRequestEqualsToFile();
+          // Then...
+          let vnfPath = [
+            "vnfs", "vProbe_NC_VNF 0"
+          ];
+          let vfModule_0Path = [
+            ...vnfPath, "vfModules",
+            "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0",
+            "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg",
+          ];
+
+          assertThatBodyFromDeployRequestEqualsToFile(testCase.modifySomeValues ? [
+            {path: ["instanceName"], value: "different.instance.name"},
+            {path: ["existingNames", "vprobe_nc_service_dg_new_si"], value: undefined},
+            {path: ["existingNames", "different.instance.name"], value: ""},
+
+            {path: [...vnfPath, "platformName"], value: "xxx1,platform"},
+            {path: [...vnfPath, "tenantId"], value: "f2f3830e4c984d45bcd00e1a04158a79"},
+
+            {path: [...vfModule_0Path, "sdncPreLoad"], value: true},
+          ] : []);
+        })
+
       });
 
-      });
     });
   });
+});
 
 function loadDrawingBoardWithRecreateMode() {
   const serviceModelId = '6cfeeb18-c2b0-49df-987a-da47493c8e38';
@@ -145,15 +184,22 @@ function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd() {
 }
 
 
-function assertThatBodyFromDeployRequestEqualsToFile() {
+function assertThatBodyFromDeployRequestEqualsToFile(deviationFromExpected: { path: PropertyPath, value: any }[] = []) {
   cy.getDrawingBoardDeployBtn().click();
   cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
 
     cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/templates__instance_from_template__set_without_modify1.json').then((expectedResult) => {
+      setDeviationInExpected(expectedResult, deviationFromExpected);
       cy.deepCompare(xhr.request.body, expectedResult);
     });
 
   });
+}
+
+function setDeviationInExpected(expectedResult: any, deviation: { path: PropertyPath; value: any }[]) {
+  for (const caveat of deviation) {
+    _.set(expectedResult, caveat.path, caveat.value);
+  }
 }
 
   //We use this function because the deployService() on drawing-board-header.component class
