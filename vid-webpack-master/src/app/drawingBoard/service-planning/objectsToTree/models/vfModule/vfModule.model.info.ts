@@ -70,7 +70,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   getModel = (vfModuleModelId: string, instance, serviceHierarchy): any => {
     if (!_.isNil(serviceHierarchy)) {
       if (!_.isNil(serviceHierarchy[this.name]) && !_.isNil(serviceHierarchy[this.name][vfModuleModelId])) {
-        return serviceHierarchy[this.name][vfModuleModelId];
+        return new VfModule(serviceHierarchy[this.name][vfModuleModelId], this._featureFlagsService.getAllFlags());
       }
     }
     return {};
