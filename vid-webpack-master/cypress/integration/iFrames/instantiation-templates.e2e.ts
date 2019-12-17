@@ -1,3 +1,6 @@
+import * as _ from "lodash";
+import {PropertyPath} from "lodash";
+
 describe('Drawing Board: Instantiation Templates', function () {
 
   describe('Instantiation templates ', () => {
@@ -81,10 +84,50 @@ describe('Drawing Board: Instantiation Templates', function () {
       });
 
 
+      it.only(`Given a stored template - when changing sdncPreLoad option and click "deploy" - then sdncPreLoad becomes false`, () => {
 
+        loadDrawingBoardWithRecreateMode();
+
+        editNode("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1")
+        .getElementByDataTestsId('sdncPreLoad').click()
+        .getElementByDataTestsId("form-set").click();
+
+        // Then...
+        let vfModulePath = [
+          "vnfs", "vProbe_NC_VNF 0", "vfModules",
+          "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+          "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi",
+        ];
+
+        assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
+          {path: [...vfModulePath, "sdncPreLoad"], value: false},
+
+          // The following values are modified when clicking "edit"->"set", regardless
+          // of modified values above
+          // ---------------
+
+          // 1) Added values
+          {path: [...vfModulePath, "isMissingData"], value: false},
+
+          // 2) Removed values
+          {path: [...vfModulePath, "action"], value: undefined},
+          {path: [...vfModulePath, "trackById"], value: undefined},
+          {path: [...vfModulePath, "isFailed"], value: undefined},
+          {path: [...vfModulePath, "modelInfo", "modelType"], value: undefined},
+
+          // 3) Updated values
+          {
+            path: ["existingNames"], value: {
+              "my_hvf6arlba007_lba_dj_01": "",
+              "my_special_hvf6arlba007_lba_dj_01_vol": ""
+            }
+          },
+        ]);
       });
+
     });
   });
+});
 
 function loadDrawingBoardWithRecreateMode() {
   const serviceModelId = '6cfeeb18-c2b0-49df-987a-da47493c8e38';
@@ -115,16 +158,25 @@ function editNode(dataTestId: string) {
     .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
 }
 
-function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd() {
+function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd(caveatsFromExpected: { path: PropertyPath, value: any }[] = []) {
   cy.getDrawingBoardDeployBtn().click();
   cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
     cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/templates__instance_template.json').then((expectedResult) => {
       convertRollbackOnFailureValueFromStringToBoolean(expectedResult);
+      setCaveatsInExpected(expectedResult, caveatsFromExpected);
 
       let xhrBodyWithoutIsDirtyField = removeIsDirtyFieldFromXhrRequestBody(xhr);
+      deleteAllFieldsNamed(xhrBodyWithoutIsDirtyField, "uuid");
+      deleteAllFieldsNamed(xhrBodyWithoutIsDirtyField, "modelUniqueId");
       cy.deepCompare(xhrBodyWithoutIsDirtyField, expectedResult);
     });
   });
+}
+
+function setCaveatsInExpected(expectedResult: any, caveats: { path: PropertyPath; value: any }[]) {
+  for (const caveat of caveats) {
+    _.set(expectedResult, caveat.path, caveat.value);
+  }
 }
 
   //We use this function because the deployService() on drawing-board-header.component class
@@ -132,6 +184,16 @@ function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd() {
   function convertRollbackOnFailureValueFromStringToBoolean(expectedResult: any) {
     expectedResult.rollbackOnFailure = Boolean(expectedResult.rollbackOnFailure);
   }
+
+function deleteAllFieldsNamed(obj: any, name: string) {
+  _.keys(obj).forEach(key=> {
+    console.log(key, obj[key]);
+    if (key === name)
+      delete obj[key];
+    else if (typeof obj[key] === typeof {})
+      deleteAllFieldsNamed(obj[key], name);
+  });
+}
 
 function removeIsDirtyFieldFromXhrRequestBody(xhr : any) {
   let xhrTempBody = JSON.parse(JSON.stringify(xhr.request.body));
