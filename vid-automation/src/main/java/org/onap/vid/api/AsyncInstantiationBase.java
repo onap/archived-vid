@@ -105,6 +105,10 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
         return uri.toASCIIString() + "/asyncInstantiation";
     }
 
+    protected String getTemplateInfoUrl() {
+        return uri.toASCIIString() + "/instantiationTemplates";
+    }
+
     protected String getJobAuditUrl() {
         return uri.toASCIIString() + "/asyncInstantiation/auditStatus/{JOB_ID}?source={SOURCE}";
     }

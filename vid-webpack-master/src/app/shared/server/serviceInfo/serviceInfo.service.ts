@@ -12,10 +12,16 @@ export class ServiceInfoService {
   constructor(private _http: HttpClient) {
   }
 
-  getServicesJobInfo(showSpinner: boolean = true, serviceModelId: string = null): Observable<ServiceInfoModel[]> {
+  getServicesJobInfo(showSpinner: boolean = true): Observable<ServiceInfoModel[]> {
     let pathQuery = Constants.Path.SERVICES_JOB_INFO_PATH;
     let headers = new HttpHeaders({'x-show-spinner': showSpinner.toString()});
-    let params = serviceModelId ? {serviceModelId} : {};
+    return this._http.get<ServiceInfoModel[]>(pathQuery, { headers: headers});
+  }
+
+  getTemplatesInfo(showSpinner: boolean = true, serviceModelId: string): Observable<ServiceInfoModel[]> {
+    let pathQuery = Constants.Path.INSTANTIATION_TEMPLATES_PATH;
+    let headers = new HttpHeaders({'x-show-spinner': showSpinner.toString()});
+    let params = {serviceModelId};
     return this._http.get<ServiceInfoModel[]>(pathQuery, { headers: headers, params });
   }
 
