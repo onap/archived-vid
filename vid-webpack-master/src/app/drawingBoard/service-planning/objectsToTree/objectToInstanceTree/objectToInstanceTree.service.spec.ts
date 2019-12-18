@@ -33,6 +33,7 @@ import {ComponentInfoService} from "../../component-info/component-info.service"
 import {NetworkStepService} from "../models/vrf/vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "../models/vrf/vrfModal/vpnStep/vpn.step.service";
 import {VfModuleUpgradePopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {SharedControllersService} from "../../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState() {
@@ -66,6 +67,7 @@ describe('Model Tree Generator service', () => {
         VnfPopupService,
         VnfGroupPopupService,
         BasicControlGenerator,
+        SharedControllersService,
         GenericFormService,
         FormBuilder,
         LogService,

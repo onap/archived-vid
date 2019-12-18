@@ -21,6 +21,7 @@ import {VfModulePopupService} from "./genericFormServices/vfModule/vfModule.popu
 import {VfModuleControlGenerator} from "../genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {FeatureFlagsService} from "../../services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "./genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {SharedControllersService} from "../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T>{
   getState() {
@@ -959,6 +960,7 @@ describe('Generic Form popup Service', () => {
         IframeService,
         ServicePopupService,
         BasicControlGenerator,
+        SharedControllersService,
         ServiceControlGenerator,
         GenericFormService,
         LogService,

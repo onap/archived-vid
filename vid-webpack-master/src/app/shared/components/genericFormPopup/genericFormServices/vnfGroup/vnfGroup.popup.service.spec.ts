@@ -15,6 +15,7 @@ import {VnfGroupPopupService} from "./vnfGroup.popup.service";
 import {VnfGroupControlGenerator} from "../../../genericForm/formControlsServices/vnfGroupGenerator/vnfGroup.control.generator";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {VfModuleUpgradePopupService} from "../vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {}
 
@@ -2258,6 +2259,7 @@ describe('vnf group new popup service', () => {
         VfModulePopupService,
         VfModuleUpgradePopupService,
         BasicControlGenerator,
+        SharedControllersService,
         VnfGroupControlGenerator,
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore}]

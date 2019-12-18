@@ -12,6 +12,7 @@ import {VnfGroupControlGenerator} from "./vnfGroup.control.generator";
 import {Observable} from "rxjs";
 import {SelectOption} from "../../../../models/selectOption";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
+import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState(){
@@ -218,6 +219,7 @@ describe('VNF Group Control Generator', () => {
       providers: [VnfGroupControlGenerator,
         GenericFormService,
         BasicControlGenerator,
+        SharedControllersService,
         AaiService,
         FormBuilder,
         LogService,

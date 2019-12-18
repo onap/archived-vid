@@ -15,6 +15,7 @@ import {SelectOption} from "../../../../models/selectOption";
 import {VnfGroupModel} from "../../../../models/vnfGroupModel";
 import * as _ from 'lodash';
 import {Observable, of} from "rxjs";
+import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
 
 
 export enum FormControlNames {
@@ -22,14 +23,12 @@ export enum FormControlNames {
   ROLLBACK_ON_FAILURE = 'rollbackOnFailure',
 }
 
-enum InputType {
-  ROLLBACK = "rollbackOnFailure"
-}
-
 @Injectable()
 export class VnfGroupControlGenerator {
   aaiService: AaiService;
+
   constructor(private _basicControlGenerator: BasicControlGenerator,
+              private _sharedControllersService: SharedControllersService,
               private store: NgRedux<AppState>,
               private _aaiService: AaiService,
               private _logService: LogService) {
@@ -80,19 +79,14 @@ export class VnfGroupControlGenerator {
     return result;
   }
 
-  isInputShouldBeShown = (inputType: any): boolean => {
-    let vnfGroupInputs = [InputType.ROLLBACK];
-    return vnfGroupInputs.indexOf(inputType) > -1;
-  };
-
-  getDefaultInstanceName(instance : any, serviceId : string, vnfGroupName : string) : string {
+  getDefaultInstanceName(instance: any, serviceId: string, vnfGroupName: string): string {
     const vnfGroupModel: VnfGroupModel = this.store.getState().service.serviceHierarchy[serviceId].vnfGroups[vnfGroupName];
     return this._basicControlGenerator.getDefaultInstanceName(instance, vnfGroupModel);
   }
 
-  getInstanceName(instance : any, serviceId : string, vnfGroupName : string, isEcompGeneratedNaming: boolean): FormControlModel {
-    const vnfGroupModel : VnfGroupModel = this.store.getState().service.serviceHierarchy[serviceId].vnfGroups[vnfGroupName];
-    return this._basicControlGenerator.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, vnfGroupModel);
+  getInstanceName(instance: any, serviceId: string, vnfGroupName: string, isEcompGeneratedNaming: boolean): FormControlModel {
+    const vnfGroupModel: VnfGroupModel = this.store.getState().service.serviceHierarchy[serviceId].vnfGroups[vnfGroupName];
+    return this._sharedControllersService.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, vnfGroupModel);
   }
 
   getRollbackOnFailureControl = (instance: any, controls: FormControlModel[]): DropdownFormControl => {
