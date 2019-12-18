@@ -6,7 +6,7 @@ import {upgradeVFModule} from "../../../../storeUtil/utils/vfModule/vfModule.act
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../store/reducers";
-import {BasicControlGenerator} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {VfModuleControlGenerator} from "../../../genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {IframeService} from "../../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
@@ -18,6 +18,7 @@ import {FormControlType} from "../../../../models/formControlModels/formControlT
 import {mergeObjectByPathAction} from "../../../../storeUtil/utils/general/general.actions";
 import * as _ from "lodash";
 import {VfModuleInstance} from "../../../../models/vfModuleInstance";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 export enum UpgradeFormControlNames {
   RETAIN_VOLUME_GROUPS = 'retainVolumeGroups',
@@ -26,7 +27,8 @@ export enum UpgradeFormControlNames {
 
 @Injectable()
 export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
-  constructor(protected _basicControlGenerator: BasicControlGenerator,
+  constructor(protected _basicControlGenerator: ControlGeneratorUtil,
+              protected _sharedControllersService : SharedControllersService,
               protected _vfModuleControlGenerator: VfModuleControlGenerator,
               protected _iframeService: IframeService,
               protected _defaultDataGeneratorService: DefaultDataGeneratorService,
@@ -34,7 +36,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
               protected _basicPopupService: BasicPopupService,
               protected _store: NgRedux<AppState>,
               private _sharedTreeService: SharedTreeService) {
-    super(_basicControlGenerator, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
+    super(_basicControlGenerator, _sharedControllersService, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
   }
 
   node: ITreeNode;
@@ -44,7 +46,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
   getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean): FormControlModel[]  {
     let result: FormControlModel[] =[
       this.getRetainAssignmentsControl(),
-      this._basicControlGenerator.getSDNCControl(null)
+      this._sharedControllersService.getSDNCControl(null)
     ];
     const vfModuleInstance :VfModuleInstance = this._vfModuleControlGenerator.getVfModuleInstance(serviceId, vnfStoreKey, this.uuidData, isUpdateMode);
     if(this._store.getState().service.serviceHierarchy[serviceId].vfModules[this.uuidData['modelName']].volumeGroupAllowed){

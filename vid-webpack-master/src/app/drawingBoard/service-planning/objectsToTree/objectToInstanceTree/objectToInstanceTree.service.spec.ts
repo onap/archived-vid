@@ -11,7 +11,7 @@ import {ObjectToTreeService} from "../objectToTree.service";
 import {DrawingBoardModes} from "../../drawing-board.modes";
 import {DialogService} from "ng2-bootstrap-modal";
 import {VnfPopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
-import {BasicControlGenerator} from "../../../../shared/components/genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../../shared/components/genericForm/formControlsServices/control.generator.util.service";
 import {AaiService} from "../../../../shared/services/aaiService/aai.service";
 import {FeatureFlagsService} from "../../../../shared/services/featureFlag/feature-flags.service";
 import {VnfControlGenerator} from "../../../../shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator";
@@ -33,6 +33,7 @@ import {ComponentInfoService} from "../../component-info/component-info.service"
 import {NetworkStepService} from "../models/vrf/vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "../models/vrf/vrfModal/vpnStep/vpn.step.service";
 import {VfModuleUpgradePopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {SharedControllersService} from "../../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState() {
@@ -65,7 +66,8 @@ describe('Model Tree Generator service', () => {
         SharedTreeService,
         VnfPopupService,
         VnfGroupPopupService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
+        SharedControllersService,
         GenericFormService,
         FormBuilder,
         LogService,

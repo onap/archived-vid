@@ -2,7 +2,7 @@ import {getTestBed, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {NgRedux} from '@angular-redux/store';
 import {FormControlNames} from "../service.control.generator";
-import {BasicControlGenerator} from "../basic.control.generator";
+import {ControlGeneratorUtil} from "../control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
@@ -12,6 +12,7 @@ import {VnfGroupControlGenerator} from "./vnfGroup.control.generator";
 import {Observable} from "rxjs";
 import {SelectOption} from "../../../../models/selectOption";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
+import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState(){
@@ -217,7 +218,8 @@ describe('VNF Group Control Generator', () => {
       imports: [HttpClientTestingModule],
       providers: [VnfGroupControlGenerator,
         GenericFormService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
+        SharedControllersService,
         AaiService,
         FormBuilder,
         LogService,

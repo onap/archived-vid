@@ -2,7 +2,7 @@ import {NetworkPopupService} from "./network.popup.service";
 import {LogService} from "../../../../utils/log/log.service";
 import {SdcUiServices} from "onap-ui-angular";
 import {NgRedux} from "@angular-redux/store";
-import {BasicControlGenerator} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {HttpClient} from "@angular/common/http";
 import {NetworkControlGenerator} from "../../../genericForm/formControlsServices/networkGenerator/network.control.generator";
@@ -13,6 +13,7 @@ import {DefaultDataGeneratorService} from "../../../../services/defaultDataServi
 import {BasicPopupService} from "../basic.popup.service";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {}
 
@@ -1987,7 +1988,8 @@ describe('Network popup service', () => {
     TestBed.configureTestingModule({
       providers : [
         NetworkPopupService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
+        SharedControllersService,
         NetworkControlGenerator,
         DefaultDataGeneratorService,
         GenericFormService,

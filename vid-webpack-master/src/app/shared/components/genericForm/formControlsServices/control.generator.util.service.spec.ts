@@ -1,27 +1,28 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
 import {AaiService} from "../../../services/aaiService/aai.service";
-import {FormControlModel} from "../../../models/formControlModels/formControl.model";
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
-import {BasicControlGenerator} from "./basic.control.generator";
+import {ControlGeneratorUtil} from "./control.generator.util.service";
 import {NgRedux} from '@angular-redux/store';
 import each from "jest-each";
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {FileFormControl} from "../../../models/formControlModels/fileFormControl.model";
+import {AppState} from "../../../store/reducers";
+import {SelectOption} from "../../../models/selectOption";
+import {SharedControllersService} from "./sharedControlles/shared.controllers.service";
 
-class MockAppStore<T> {}
-
-class MockFeatureFlagsService {}
-
-describe('Basic Control Generator', () => {
+describe('Control Generator Util', () => {
   let injector;
-  let service: BasicControlGenerator;
+  let service: ControlGeneratorUtil;
+  let sharedControllersService : SharedControllersService;
   let httpMock: HttpTestingController;
+  let store: NgRedux<AppState>;
 
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [BasicControlGenerator,
+      providers: [ControlGeneratorUtil,
+        SharedControllersService,
         AaiService,
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockAppStore}]
@@ -29,30 +30,13 @@ describe('Basic Control Generator', () => {
     await TestBed.compileComponents();
 
     injector = getTestBed();
-    service = injector.get(BasicControlGenerator);
+    service = injector.get(ControlGeneratorUtil);
     httpMock = injector.get(HttpTestingController);
+    sharedControllersService = injector.get(SharedControllersService);
+    store = injector.get(NgRedux);
 
   })().then(done).catch(done.fail));
 
-
-  test('getlegacyRegion with AAIAIC25 - isVisible true', () => {
-    const instance = {lcpCloudRegionId : 'AAIAIC25'};
-    const legacyRegionControl: FormControlModel = service.getLegacyRegion(instance);
-    expect(legacyRegionControl.isVisible).toBeTruthy();
-  });
-
-  test('getlegacyRegion without AAIAIC25 - isVisible false', () => {
-    const instance = {lcpCloudRegionId : 'olson3'};
-    const legacyRegionControl: FormControlModel = service.getLegacyRegion(instance);
-    expect(legacyRegionControl.isVisible).toBeFalsy();
-  });
-
-  test('sdn-preload checkbox is visible', () => {
-    const instance = {};
-    const sdncPreload: FormControlModel = service.getSDNCControl(instance);
-    expect (sdncPreload.displayName).toEqual('SDN-C pre-load');
-    expect (sdncPreload.value).toBeFalsy();
-  });
 
   test('given instance, get supp file from getSupplementaryFile ', () => {
     const instance = {};
@@ -66,7 +50,7 @@ describe('Basic Control Generator', () => {
 
     //given
     const instance = {};
-    const controls = [service.getLegacyRegion(instance)];
+    const controls = [sharedControllersService.getLegacyRegion(instance)];
     expect(controls).toHaveLength(1);
 
     //when
@@ -105,4 +89,24 @@ describe('Basic Control Generator', () => {
 
   });
 
+  test('getRollBackOnFailureOptions', async (done)=> {
+    service.getRollBackOnFailureOptions().subscribe((rollBackOnFailureOptions : SelectOption[])=>{
+      expect(rollBackOnFailureOptions[0].id).toEqual('true');
+      expect(rollBackOnFailureOptions[0].name).toEqual('Rollback');
+      expect(rollBackOnFailureOptions[1].id).toEqual('false');
+      expect(rollBackOnFailureOptions[1].name).toEqual('Don\'t Rollback');
+      done();
+    });
+  });
+
+
 });
+
+
+class MockAppStore<T> {
+  getState() {
+    return {}
+  }
+}
+
+class MockFeatureFlagsService {}

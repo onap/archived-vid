@@ -5,7 +5,7 @@ import {AppState} from "../../../store/reducers";
 import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../models/formControlModels/formControl.model";
 import {DropdownFormControl} from "../../../models/formControlModels/dropdownFormControl.model";
 import * as _ from 'lodash';
-import {BasicControlGenerator} from "./basic.control.generator";
+import {ControlGeneratorUtil} from "./control.generator.util.service";
 import {AaiService} from "../../../services/aaiService/aai.service";
 import {FormGroup} from "@angular/forms";
 import {FormControlType} from "../../../models/formControlModels/formControlTypes.enum";
@@ -17,6 +17,7 @@ import {ServiceModel} from "../../../models/serviceModel";
 
 import {CheckboxFormControl} from "../../../models/formControlModels/checkboxFormControl.model";
 import {VidNotions} from "../../../models/vidNotions";
+import {SharedControllersService} from "./sharedControlles/shared.controllers.service";
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -36,7 +37,8 @@ export enum FormControlNames {
 export class  ServiceControlGenerator {
   aaiService : AaiService;
   constructor(private genericFormService : GenericFormService,
-              private _basicControlGenerator : BasicControlGenerator,
+              private _basicControlGenerator : ControlGeneratorUtil,
+              private _sharedControllersService : SharedControllersService,
               private store: NgRedux<AppState>,
               private http: HttpClient,
               private _aaiService : AaiService,
@@ -64,7 +66,7 @@ export class  ServiceControlGenerator {
 
     const serviceModel = new ServiceModel(this.store.getState().service.serviceHierarchy[serviceId]);
     if(!_.isNil(serviceModel)){
-      result.push(this._basicControlGenerator.getInstanceName(serviceInstance, serviceId, serviceModel.isEcompGeneratedNaming));
+      result.push(this._sharedControllersService.getInstanceName(serviceInstance, serviceId, serviceModel.isEcompGeneratedNaming));
       result.push(this.getGlobalSubscriberControl(serviceInstance, result));
       result.push(this.getServiceTypeControl(serviceInstance, result, false));
       result.push(this.getOwningEntityControl(serviceInstance, result));
@@ -87,7 +89,7 @@ export class  ServiceControlGenerator {
     let result : FormControlModel[] = [];
     const serviceModel = new ServiceModel(this.store.getState().service.serviceHierarchy[serviceId]);
     if(!_.isNil(serviceModel)){
-      result.push(this._basicControlGenerator.getInstanceName(serviceInstance, serviceId, serviceModel.isEcompGeneratedNaming));
+      result.push(this._sharedControllersService.getInstanceName(serviceInstance, serviceId, serviceModel.isEcompGeneratedNaming));
       result.push(this.getGlobalSubscriberControl(serviceInstance, result));
       result.push(this.getServiceTypeControl(serviceInstance, result, true));
       result.push(this.getOwningEntityControl(serviceInstance, result));

@@ -2,17 +2,16 @@ import {getTestBed, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {NgRedux} from '@angular-redux/store';
 import {FormControlNames} from "../service.control.generator";
-import {BasicControlGenerator} from "../basic.control.generator";
+import {ControlGeneratorUtil} from "../control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
 import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {VnfControlGenerator} from "./vnf.control.generator";
-import {Observable} from "rxjs";
-import {SelectOption} from "../../../../models/selectOption";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
+import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState(){
@@ -918,7 +917,8 @@ describe('VNF Control Generator', () => {
       imports: [HttpClientTestingModule],
       providers: [VnfControlGenerator,
         GenericFormService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
+        SharedControllersService,
         AaiService,
         FormBuilder,
         LogService,
@@ -1052,16 +1052,6 @@ describe('VNF Control Generator', () => {
     const instanceNameControl: FormControlModel = <FormControlModel>controls.find(item => item.controlName === FormControlNames.INSTANCE_NAME);
     const instanceNameValidator: ValidatorModel = instanceNameControl.validations.find(val => val.validatorName === ValidatorOptions.pattern);
     expect(instanceNameValidator.validatorArg).toEqual(/^[a-zA-Z0-9._-]*$/);
-  });
-
-  test('rollback should return observable of true, false', () => {
-    let result : Observable<SelectOption[]> = service.getRollBackOnFailureOptions();
-    result.subscribe((val)=>{
-      expect(val).toEqual([
-        new SelectOption({id: 'true', name: 'Rollback'}),
-        new SelectOption({id: 'false', name: 'Don\'t Rollback'})
-      ]);
-    });
   });
 });
 

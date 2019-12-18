@@ -8,7 +8,7 @@ import {DefaultDataGeneratorService} from "../../../shared/services/defaultDataS
 import {DynamicInputsService} from "./dynamicInputs.service";
 import {DialogService} from "ng2-bootstrap-modal";
 import {VnfPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
-import {BasicControlGenerator} from "../../../shared/components/genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../shared/components/genericForm/formControlsServices/control.generator.util.service";
 import {AaiService} from "../../../shared/services/aaiService/aai.service";
 import {NetworkPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
 import {NetworkControlGenerator} from "../../../shared/components/genericForm/formControlsServices/networkGenerator/network.control.generator";
@@ -41,6 +41,7 @@ import {ModelInformationItem} from "../../../shared/components/model-information
 import {VpnStepService} from "./models/vrf/vrfModal/vpnStep/vpn.step.service";
 import {NetworkStepService} from "./models/vrf/vrfModal/networkStep/network.step.service";
 import {VfModuleUpgradePopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {SharedControllersService} from "../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState() {
@@ -82,11 +83,12 @@ describe('Shared Tree Service', () => {
       imports: [HttpClientTestingModule, NgReduxTestingModule, SdcUiComponentsModule],
       providers: [
         SharedTreeService,
+        SharedControllersService,
         ObjectToTreeService,
         DefaultDataGeneratorService,
         DialogService,
         VnfPopupService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
         AaiService,
         LogService,
         BasicPopupService,
@@ -165,7 +167,7 @@ describe('Shared Tree Service', () => {
 
     let modelInfoServiceMock: ILevelNodeInfo = new VnfModelInfo(null, null,
       null, null, null, null, null,
-      null, null, null, null,null);
+      null, null, null, null,null, null);
     const modelMock = {"a": "a"};
     const instanceMock = {"instance": "instance", "trackById": "123456789"};
     const instanceTypeMock = "instanceTypeMock";
