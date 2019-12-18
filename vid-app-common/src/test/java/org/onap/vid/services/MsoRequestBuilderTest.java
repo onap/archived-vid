@@ -22,6 +22,7 @@ package org.onap.vid.services;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonNodeAbsent;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -47,7 +48,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import net.javacrumbs.jsonunit.ConfigurableJsonMatcher;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.hibernate.SessionFactory;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -611,19 +614,23 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
         assertThat(result, jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
     }
 
-    @Test(dataProvider = "trueAndFalse", dataProviderClass = TestUtils.class)
-    public void generateReplaceVfModuleRequest_whenRetainAssignmentsProvidedFromFrontend_retainAssignmentsToMsoIsTheSame(boolean retainAssignments) {
-
+    @Test(dataProvider = "trueAndFalseAndNull", dataProviderClass = TestUtils.class)
+    public void generateReplaceVfModuleRequest_whenRetainAssignmentsProvidedFromFrontend_retainAssignmentsToMsoIsTheSame(Boolean retainAssignments) {
         assertThat(generatedVfModuleReplaceRequest(retainAssignments, null, null),
-            jsonPartEquals("requestDetails.requestParameters.retainAssignments", retainAssignments));
+            jsonPartEqualsOrUndefined(
+                "requestDetails.requestParameters.retainAssignments", retainAssignments));
     }
 
-    @Test
-    public void generateReplaceVfModuleRequest_whenRetainVolumeGroupIsTrue_rebuildVolumeGroupIsFalse() {
-        boolean retainVolumeGroups = true;
-
+    @Test(dataProvider = "trueAndFalseAndNull", dataProviderClass = TestUtils.class)
+    public void generateReplaceVfModuleRequest_whenRetainVolumeGroupIsGiven_rebuildVolumeGroupIsNegated(Boolean retainVolumeGroups) {
         assertThat(generatedVfModuleReplaceRequest(null, retainVolumeGroups, null),
-            jsonPartEquals("requestDetails.requestParameters.rebuildVolumeGroups", false));
+            jsonPartEqualsOrUndefined("requestDetails.requestParameters.rebuildVolumeGroups", BooleanUtils.negate(retainVolumeGroups)));
+    }
+
+    private <T> ConfigurableJsonMatcher<T> jsonPartEqualsOrUndefined(String path, Boolean expected) {
+        return (expected != null)
+            ? jsonPartEquals(path, expected)
+            : jsonNodeAbsent(path);
     }
 
     @Test

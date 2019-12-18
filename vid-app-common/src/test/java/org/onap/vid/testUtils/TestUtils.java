@@ -389,4 +389,9 @@ public class TestUtils {
         return new Object[][]{{true}, {false}};
     }
 
+    @DataProvider
+    public static Object[][] trueAndFalseAndNull() {
+        return new Boolean[][]{{Boolean.TRUE}, {Boolean.FALSE}, {null}};
+    }
+
 }
