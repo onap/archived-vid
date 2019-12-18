@@ -22,13 +22,10 @@ export enum FormControlNames {
   ROLLBACK_ON_FAILURE = 'rollbackOnFailure',
 }
 
-enum InputType {
-  ROLLBACK = "rollbackOnFailure"
-}
-
 @Injectable()
 export class VnfGroupControlGenerator {
   aaiService: AaiService;
+
   constructor(private _basicControlGenerator: BasicControlGenerator,
               private store: NgRedux<AppState>,
               private _aaiService: AaiService,
@@ -80,18 +77,13 @@ export class VnfGroupControlGenerator {
     return result;
   }
 
-  isInputShouldBeShown = (inputType: any): boolean => {
-    let vnfGroupInputs = [InputType.ROLLBACK];
-    return vnfGroupInputs.indexOf(inputType) > -1;
-  };
-
-  getDefaultInstanceName(instance : any, serviceId : string, vnfGroupName : string) : string {
+  getDefaultInstanceName(instance: any, serviceId: string, vnfGroupName: string): string {
     const vnfGroupModel: VnfGroupModel = this.store.getState().service.serviceHierarchy[serviceId].vnfGroups[vnfGroupName];
     return this._basicControlGenerator.getDefaultInstanceName(instance, vnfGroupModel);
   }
 
-  getInstanceName(instance : any, serviceId : string, vnfGroupName : string, isEcompGeneratedNaming: boolean): FormControlModel {
-    const vnfGroupModel : VnfGroupModel = this.store.getState().service.serviceHierarchy[serviceId].vnfGroups[vnfGroupName];
+  getInstanceName(instance: any, serviceId: string, vnfGroupName: string, isEcompGeneratedNaming: boolean): FormControlModel {
+    const vnfGroupModel: VnfGroupModel = this.store.getState().service.serviceHierarchy[serviceId].vnfGroups[vnfGroupName];
     return this._basicControlGenerator.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, vnfGroupModel);
   }
 

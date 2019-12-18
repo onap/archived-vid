@@ -9,7 +9,6 @@ import {NumberFormControl} from "../../../models/formControlModels/numberFormCon
 import {FormControlType} from "../../../models/formControlModels/formControlTypes.enum";
 import {FileFormControl} from "../../../models/formControlModels/fileFormControl.model";
 import {SelectOption} from "../../../models/selectOption";
-import * as _ from 'lodash';
 import {DynamicInputLabelPipe} from "../../../pipes/dynamicInputLabel/dynamic-input-label.pipe";
 import {AaiService} from "../../../services/aaiService/aai.service";
 import {FormGeneralErrorsService} from "../../formGeneralErrors/formGeneralErrors.service";
@@ -18,6 +17,7 @@ import {NodeModel} from "../../../models/nodeModel";
 import {Constants} from "../../../utils/constants";
 import {FileUnit} from "../../formControls/component/file/fileUnit.enum";
 import {CheckboxFormControl} from "../../../models/formControlModels/checkboxFormControl.model";
+import * as _ from 'lodash';
 
 export const SUPPLEMENTARY_FILE = 'supplementaryFile';
 export const SDN_C_PRE_LOAD = 'sdncPreLoad';
@@ -94,19 +94,6 @@ export class BasicControlGenerator {
     return false;
   }
 
-  getLegacyRegion(instance: any): FormControlModel {
-    return new InputFormControl({
-      controlName: 'legacyRegion',
-      displayName: 'Legacy Region',
-      dataTestId: 'lcpRegionText',
-      placeHolder: 'Type Legacy Region',
-      validations: [],
-      isVisible: this.isLegacyRegionShouldBeVisible(instance),
-      isDisabled : _.isNil(instance) ? true : Constants.LegacyRegion.MEGA_REGION.indexOf(instance.lcpCloudRegionId),
-      value: instance ? instance.legacyRegion : null
-    });
-  }
-
   private createValidationsForInstanceName(instance: any, serviceId: string, isEcompGeneratedNaming: boolean): ValidatorModel[] {
     let validations: ValidatorModel[] = [
       new ValidatorModel(ValidatorOptions.pattern, 'Instance name may include only alphanumeric characters and underscore.', BasicControlGenerator.INSTANCE_NAME_REG_EX),
@@ -129,23 +116,7 @@ export class BasicControlGenerator {
     return of(optionList);
   };
 
-  getProductFamilyControl = (instance : any, controls : FormControlModel[], isMandatory?: boolean) : DropdownFormControl => {
-    return new DropdownFormControl({
-      type : FormControlType.DROPDOWN,
-      controlName : 'productFamilyId',
-      displayName : 'Product family',
-      dataTestId : 'productFamily',
-      placeHolder : 'Select Product Family',
-      isDisabled : false,
-      name : "product-family-select",
-      value : instance ? instance.productFamilyId : null,
-      validations : _.isNil(isMandatory) || isMandatory === true ? [new ValidatorModel(ValidatorOptions.required, 'is required')]: [],
-      onInit : this.getSubscribeResult.bind(this, this._aaiService.getProductFamilies),
-    })
-  };
-
-
-
+  
   getDynamicInputsByType(dynamicInputs : any, serviceModelId : string, storeKey : string, type: string ) : FormControlModel[] {
     let result : FormControlModel[] = [];
     if(dynamicInputs) {
@@ -157,8 +128,7 @@ export class BasicControlGenerator {
     }
     return result;
   }
-
-
+  
   getServiceDynamicInputs(dynamicInputs : any, serviceModelId : string) : FormControlModel[] {
     let result: FormControlModel[] = [];
     if (dynamicInputs) {
@@ -241,16 +211,6 @@ export class BasicControlGenerator {
     return originalArray.concat([suppFileInput], suppFileInput.hiddenFile);
   }
 
-  getSDNCControl = (instance: any): FormControlModel => {
-    return new CheckboxFormControl({
-      controlName: SDN_C_PRE_LOAD,
-      displayName: 'SDN-C pre-load',
-      dataTestId: 'sdncPreLoad',
-      value: instance ? instance.sdncPreLoad : false,
-      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')]
-    })
-  };
-
   getSupplementaryFile(instance: any): FileFormControl {
     return new FileFormControl({
       controlName: SUPPLEMENTARY_FILE,
@@ -307,4 +267,13 @@ export class BasicControlGenerator {
       }
     };
   }
+
+
+  getRollBackOnFailureOptions = (): Observable<SelectOption[]> => {
+    return of([
+      new SelectOption({id: 'true', name: 'Rollback'}),
+      new SelectOption({id: 'false', name: 'Don\'t Rollback'})
+    ]);
+  };
+
 }
