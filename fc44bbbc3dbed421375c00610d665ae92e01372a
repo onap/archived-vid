@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5b5c72ac_9208227c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/dal/AsyncInstantiationRepositoryTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-18T06:59:58Z",
+      "side": 1,
+      "message": "please make the action INSTANTIATE add another new ServiceInfo with Resume.\nSo we can test the order by",
+      "range": {
+        "startLine": 78,
+        "startChar": 24,
+        "endLine": 78,
+        "endChar": 44
+      },
+      "revId": "fc44bbbc3dbed421375c00610d665ae92e01372a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c084aac8_825f43f7",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/dal/AsyncInstantiationRepositoryTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-18T06:59:58Z",
+      "side": 1,
+      "message": "you are missing the order by newer first part here.",
+      "revId": "fc44bbbc3dbed421375c00610d665ae92e01372a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "404cbcc8_79a441f4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AsyncInstantiationBaseTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-18T06:59:58Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "fc44bbbc3dbed421375c00610d665ae92e01372a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cc42c4c_307bf29e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AsyncInstantiationBaseTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-18T06:59:58Z",
+      "side": 1,
+      "message": "please rename to createServiceInfo",
+      "range": {
+        "startLine": 165,
+        "startChar": 24,
+        "endLine": 165,
+        "endChar": 38
+      },
+      "revId": "fc44bbbc3dbed421375c00610d665ae92e01372a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
