@@ -102,7 +102,7 @@ describe('Template', () => {
       }).as('initFlags');
     });
 
-    cy.route(Cypress.config('baseUrl') + "/asyncInstantiation**", asyncInstantiation);
+    cy.route(Cypress.config('baseUrl') + "/instantiationTemplates**", asyncInstantiation);
     cy.route(Cypress.config('baseUrl') + "/getuserID", '16807000');
 
     cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
