@@ -19,6 +19,7 @@ import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/fe
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {instance, mock, when} from "ts-mockito";
 import each from "jest-each";
+import {VfModule} from "../../../../../shared/models/vfModule";
 
 class MockAppStore<T> {
   getState() {
@@ -27,12 +28,6 @@ class MockAppStore<T> {
         'drawingBoardStatus': DrawingBoardModes.CREATE
       }
     }
-  }
-}
-
-class MockFeatureFlagsService extends  FeatureFlagsService{
-  getAllFlags(): { [p: string]: boolean } {
-    return {};
   }
 }
 
@@ -133,8 +128,16 @@ describe('VFModule Model Info', () => {
   });
 
   test('getModel should return Module model', () => {
-    let model = vfModuleModel.getModel('2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1',{}, getServiceHierarchy());
+    let model = vfModuleModel.getModel('2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1',null, getServiceHierarchy());
     expect(model.uuid).toEqual('25284168-24bb-4698-8cb4-3f509146eca5');
+    expect(model.min).toBe(2);
+    expect(model.max).toBe(3);
+    expect(model.baseModule).toBeFalsy();
+    expect(model.inputs).toEqual(
+      {"vnf_config_template_version": {
+        "type": "string"
+      }});
+    expect(model.volumeGroupAllowed).toBeTruthy();
   });
 
   test('showNodeIcons should return false false if reachLimit of max', ()=>{
@@ -625,7 +628,7 @@ describe('VFModule Model Info', () => {
     expect(vfModuleModel.isVFModuleReachedLimit(node, serviceHierarchy, 'servicedId', currentNodeCount)).toEqual(expected);
   });
 
-  function getVFModule(){
+  function getVFModule(): Partial<VfModule>{
     return {
       "uuid":"522159d5-d6e0-4c2a-aa44-5a542a12a830",
       "invariantUuid":"98a7c88b-b577-476a-90e4-e25a5871e02b",
@@ -634,13 +637,10 @@ describe('VFModule Model Info', () => {
       "name":"VfVgeraldine..vflorence_vlc..module-1",
       "version":"2",
       "modelCustomizationName":"VfVgeraldine..vflorence_vlc..module-1",
-      "properties":{
-        "minCountInstances":0,
-        "maxCountInstances":null,
-        "initialCount":0,
-        "vfModuleLabel":"vflorence_vlc",
-        "baseModule":false
-      },
+      "min":0,
+      "max":null,
+      "initial":0,
+      "baseModule":false,
       "inputs":{},
       "volumeGroupAllowed":false
     };
@@ -1266,7 +1266,7 @@ describe('VFModule Model Info', () => {
           "type": "VF",
           "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
           "vfModules": {
-            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1":{
               "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
               "invariantUuid": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
               "customizationUuid": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
@@ -1275,82 +1275,15 @@ describe('VFModule Model Info', () => {
               "version": "6",
               "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
               "properties": {
-                "minCountInstances": 0,
-                "maxCountInstances": null,
+                "minCountInstances": 2,
+                "maxCountInstances": 3,
                 "initialCount": 0,
                 "vfModuleLabel": "PASQUALE_vRE_BV",
                 "baseModule": false
               },
               "inputs": {
                 "vnf_config_template_version": {
-                  "type": "string",
-                  "description": "VPE Software Version",
-                  "entry_schema": null,
-                  "inputProperties": {
-                    "sourceType": "HEAT",
-                    "vfModuleLabel": "PASQUALE_vRE_BV",
-                    "paramName": "vnf_config_template_version"
-                  },
-                  "fromInputName": "2017488_pasqualevpe0_vnf_config_template_version",
-                  "constraints": null,
-                  "required": true,
-                  "default": "17.2"
-                },
-                "bandwidth_units": {
-                  "type": "string",
-                  "description": "Units of bandwidth",
-                  "entry_schema": null,
-                  "inputProperties": {
-                    "sourceType": "HEAT",
-                    "vfModuleLabel": "PASQUALE_vRE_BV",
-                    "paramName": "bandwidth_units"
-                  },
-                  "fromInputName": "pasqualevpe0_bandwidth_units",
-                  "constraints": null,
-                  "required": true,
-                  "default": "Gbps"
-                },
-                "bandwidth": {
-                  "type": "string",
-                  "description": "Requested VPE bandwidth",
-                  "entry_schema": null,
-                  "inputProperties": {
-                    "sourceType": "HEAT",
-                    "vfModuleLabel": "PASQUALE_vRE_BV",
-                    "paramName": "bandwidth"
-                  },
-                  "fromInputName": "pasqualevpe0_bandwidth",
-                  "constraints": null,
-                  "required": true,
-                  "default": "10"
-                },
-                "AIC_CLLI": {
-                  "type": "string",
-                  "description": "AIC Site CLLI",
-                  "entry_schema": null,
-                  "inputProperties": {
-                    "sourceType": "HEAT",
-                    "vfModuleLabel": "PASQUALE_vRE_BV",
-                    "paramName": "AIC_CLLI"
-                  },
-                  "fromInputName": "2017488_pasqualevpe0_AIC_CLLI",
-                  "constraints": null,
-                  "required": true,
-                  "default": "ATLMY8GA"
-                },
-                "vnf_instance_name": {
-                  "type": "string",
-                  "description": "The hostname assigned to the vpe.",
-                  "entry_schema": null,
-                  "inputProperties": {
-                    "sourceType": "HEAT",
-                    "vfModuleLabel": "PASQUALE_vRE_BV",
-                    "paramName": "vnf_instance_name"
-                  },
-                  "fromInputName": "2017488_pasqualevpe0_vnf_instance_name",
-                  "constraints": null,
-                  "required": true,
-                  "default": "mtnj309me6"
+                  "type": "string"
                 }
               },
               "volumeGroupAllowed": true
@@ -1517,82 +1450,15 @@ describe('VFModule Model Info', () => {
           "version": "6",
           "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
           "properties": {
-            "minCountInstances": 0,
-            "maxCountInstances": null,
+            "minCountInstances": 2,
+            "maxCountInstances": 3,
             "initialCount": 0,
             "vfModuleLabel": "PASQUALE_vRE_BV",
             "baseModule": false
           },
           "inputs": {
             "vnf_config_template_version": {
-              "type": "string",
-              "description": "VPE Software Version",
-              "entry_schema": null,
-              "inputProperties": {
-                "sourceType": "HEAT",
-                "vfModuleLabel": "PASQUALE_vRE_BV",
-                "paramName": "vnf_config_template_version"
-              },
-              "fromInputName": "2017488_pasqualevpe0_vnf_config_template_version",
-              "constraints": null,
-              "required": true,
-              "default": "17.2"
-            },
-            "bandwidth_units": {
-              "type": "string",
-              "description": "Units of bandwidth",
-              "entry_schema": null,
-              "inputProperties": {
-                "sourceType": "HEAT",
-                "vfModuleLabel": "PASQUALE_vRE_BV",
-                "paramName": "bandwidth_units"
-              },
-              "fromInputName": "pasqualevpe0_bandwidth_units",
-              "constraints": null,
-              "required": true,
-              "default": "Gbps"
-            },
-            "bandwidth": {
-              "type": "string",
-              "description": "Requested VPE bandwidth",
-              "entry_schema": null,
-              "inputProperties": {
-                "sourceType": "HEAT",
-                "vfModuleLabel": "PASQUALE_vRE_BV",
-                "paramName": "bandwidth"
-              },
-              "fromInputName": "pasqualevpe0_bandwidth",
-              "constraints": null,
-              "required": true,
-              "default": "10"
-            },
-            "AIC_CLLI": {
-              "type": "string",
-              "description": "AIC Site CLLI",
-              "entry_schema": null,
-              "inputProperties": {
-                "sourceType": "HEAT",
-                "vfModuleLabel": "PASQUALE_vRE_BV",
-                "paramName": "AIC_CLLI"
-              },
-              "fromInputName": "2017488_pasqualevpe0_AIC_CLLI",
-              "constraints": null,
-              "required": true,
-              "default": "ATLMY8GA"
-            },
-            "vnf_instance_name": {
-              "type": "string",
-              "description": "The hostname assigned to the vpe.",
-              "entry_schema": null,
-              "inputProperties": {
-                "sourceType": "HEAT",
-                "vfModuleLabel": "PASQUALE_vRE_BV",
-                "paramName": "vnf_instance_name"
-              },
-              "fromInputName": "2017488_pasqualevpe0_vnf_instance_name",
-              "constraints": null,
-              "required": true,
-              "default": "mtnj309me6"
+              "type": "string"
             }
           },
           "volumeGroupAllowed": true
