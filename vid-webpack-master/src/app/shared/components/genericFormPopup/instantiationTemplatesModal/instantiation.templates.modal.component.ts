@@ -45,7 +45,7 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
       .queryParams
       .subscribe(params => {
 
-        const getServiceJobInfoRoute = this._serviceInfoService.getServicesJobInfo(true, params['serviceModelId']);
+        const getServiceJobInfoRoute = this._serviceInfoService.getTemplatesInfo(true, params['serviceModelId']);
         const getUserIdRoute = this._aaiService.getUserId();
 
         forkJoin([getServiceJobInfoRoute, getUserIdRoute]).subscribe(([jobs]) => {
