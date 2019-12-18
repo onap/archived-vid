@@ -539,6 +539,12 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         var serviceNetworkVlans = [];
         var vnfNetworksAndVlans = [];
 
+        function fetchServiceIfMissing() {
+            if (_.isEmpty(DataService.getServiceIdList())) {
+                $scope.fetchServices();
+            }
+        }
+
         $scope.getComponentList = function (event, request) {
 
             $scope.isSpinnerVisible = true;
@@ -569,6 +575,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             })
                 .then(resolveModelDataIfMissing)
                 .then($scope.prepareScopeWithModel)
+                .then(fetchServiceIfMissing)
                 .then(function () {
                     return AaiService.getVlansByNetworksMapping($scope.globalCustomerId, $scope.serviceType, $scope.serviceInstanceId, $scope.service.model.service.uuid);
                 })

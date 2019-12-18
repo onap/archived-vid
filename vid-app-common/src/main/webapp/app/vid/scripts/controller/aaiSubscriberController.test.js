@@ -223,6 +223,7 @@ describe('aaiSubscriberController testing', () => {
         includes(array, status){
             return array.includes(status);
         },
+        isEmpty(something) {return true;},
     };
 
     let mockedLog = {};
