@@ -24,6 +24,17 @@
         </div>
         <div class="col-md-6">
           <div class="col-md-6">
+            <div class="details-item" style="text-align: center;">
+              <input type="checkbox"
+                     #filterByUserIdCheckbox
+                     id="filterByUserIdCheckbox"
+                     [attr.data-tests-id]="'filterByUserIdTestId'"
+                     [checked]="filterByUserId"
+                     (change)="filterByUserIdChanged(filterByUserIdCheckbox.checked)"
+                     data-toggle="toggle">
+              <label class="checkbox-label"
+                     for="'filterByUserIdTestId'">Show only mine</label>
+            </div>
           </div>
           <div class="col-md-6">
             <input
@@ -49,7 +60,7 @@
           </thead>
           <tbody>
           <tr class="member-table-row"
-              *ngFor="let item of filterTableData | searchFilter: filterText ;"
+              *ngFor="let item of filterTableData | searchFilter: filterText;"
               (click)="selectedInstantiation = item"
               [ngClass]="{'selected' : selectedInstantiation && selectedInstantiation.jobId === item.jobId}"
               [attr.data-tests-id]="'row-' + item.jobId">
