@@ -16,6 +16,7 @@ import static org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPres
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests;
 
@@ -31,6 +32,7 @@ import java.util.stream.Stream;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOAddOrRemoveOneInstanceGroupMember;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOAddOrRemoveOneInstanceGroupMember.InstanceGroupMemberAction;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost;
@@ -129,6 +131,8 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
     @Test
     public void deployTwoServicesGetServicesFilterByModelId() {
+        registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), RegistrationStrategy.CLEAR_THEN_SET);
+
         List<String> uuids = new LinkedList<>();
         try {
             //given
@@ -145,7 +149,7 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
             //when
             ResponseEntity<List<ServiceInfo>> response = restTemplate.exchange(
-                getServiceInfoUrl() + "?serviceModelId=" + SERVICE_MODEL_UUID,
+                getTemplateInfoUrl(SERVICE_MODEL_UUID),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<ServiceInfo>>() {
@@ -169,8 +173,6 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
             uuids.forEach(uuid->new AsyncJobsService().muteAsyncJobById(uuid));
         }
     }
-
-
     @Test
     public void deleteServiceWithTwoVnfGroups_andRetry() {
         String parentServiceInstanceId = "service-instance-id";
