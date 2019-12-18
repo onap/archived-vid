@@ -128,50 +128,6 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
     }
 
     @Test
-    public void deployTwoServicesGetServicesFilterByModelId() {
-        List<String> uuids = new LinkedList<>();
-        try {
-            //given
-            final ImmutableMap<PresetMSOServiceInstanceGen2WithNames.Keys, String> names = ImmutableMap
-                .of(SERVICE_NAME, "calazixide85");
-
-            String SERVICE_MODEL_UUID = "e3c34d88-a216-4f1d-a782-9af9f9588705";
-
-            uuids = Stream.of(
-                createBulkOfInstances(false, 1, names, CREATE_BULK_OF_ALACARTE_REQUEST).get(0),
-                createBulkOfInstances(false, 1, names, CREATE_BULK_OF_ALACARTE_REQUEST).get(0),
-                createBulkOfInstances(false, 1, names, CREATE_BULK_OF_MACRO_REQUEST).get(0)
-            ).collect(toList());
-
-            //when
-            ResponseEntity<List<ServiceInfo>> response = restTemplate.exchange(
-                getServiceInfoUrl() + "?serviceModelId=" + SERVICE_MODEL_UUID,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<ServiceInfo>>() {
-                });
-
-            //then
-            final List<ServiceInfo> body = response.getBody();
-
-            //assert that service info list contains only services with desired modelId
-            assertThat(body.stream().map(x -> x.serviceModelId).collect(toSet()),
-                contains(SERVICE_MODEL_UUID));
-            //assert that service info list contains the 2 first jobs
-            assertThat(body.stream().map(x -> x.jobId).collect(toList()),
-                hasItems(uuids.get(0), uuids.get(1)));
-            //assert that service info list doesn't contains last jobs
-            assertThat(body.stream().map(x -> x.jobId).collect(toList()),
-                not(hasItems(uuids.get(2))));
-        }
-        finally {
-            //clear jobs to not disturb next tests
-            uuids.forEach(uuid->new AsyncJobsService().muteAsyncJobById(uuid));
-        }
-    }
-
-
-    @Test
     public void deleteServiceWithTwoVnfGroups_andRetry() {
         String parentServiceInstanceId = "service-instance-id";
         String firstVnfGroupToDeleteInstanceId = "VNF_GROUP1_INSTANCE_ID";

@@ -50,8 +50,8 @@ describe('Service Info Service', () => {
     test('should call with serviceModelId', ()=>{
       let job: ServiceInfoModel = new ServiceInfoModel();
 
-      service.getServicesJobInfo(true, "123").subscribe();
-      const req = httpMock.expectOne(`${Constants.Path.SERVICES_JOB_INFO_PATH}?${Constants.Path.SERVICE_MODEL_ID}=123`);
+      service.getTemplatesInfo(true, "123").subscribe();
+      const req = httpMock.expectOne(`${Constants.Path.INSTANTIATION_TEMPLATES_PATH}?${Constants.Path.SERVICE_MODEL_ID}=123`);
       expect(req.request.method).toBe('GET');
     });
   });

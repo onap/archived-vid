@@ -1,7 +1,7 @@
 ///<reference path="../../../node_modules/cypress/types/index.d.ts"/>
 describe('Template', () => {
 
-  const asyncInstantiation = [
+  const instantiationTemplates = [
     {
       "id": 8,
       "created": 1525075968000,
@@ -102,7 +102,7 @@ describe('Template', () => {
       }).as('initFlags');
     });
 
-    cy.route(Cypress.config('baseUrl') + "/asyncInstantiation**", asyncInstantiation);
+    cy.route(Cypress.config('baseUrl') + "/instantiationTemplates**", instantiationTemplates);
     cy.route(Cypress.config('baseUrl') + "/getuserID", '16807000');
 
     cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
@@ -135,13 +135,13 @@ describe('Template', () => {
     cy.get(`#header-aicZone`).contains('AIC Zone');
 
     // check table body row
-    cy.getElementByDataTestsId(`userId-${asyncInstantiation[0].jobId}`).contains('16807000');
-    cy.getElementByDataTestsId(`createDate-${asyncInstantiation[0].jobId}`).contains('2018-04-30 11:12:48');
-    cy.getElementByDataTestsId(`instanceName-${asyncInstantiation[0].jobId}`).contains('nWUfl instance name_002');
-    cy.getElementByDataTestsId(`instantiationStatus-${asyncInstantiation[0].jobId}`).contains('FAILED');
-    cy.getElementByDataTestsId(`region-${asyncInstantiation[0].jobId}`).contains('hvf6 (WAYNEHOLLAND)');
-    cy.getElementByDataTestsId(`tenant-${asyncInstantiation[0].jobId}`).contains('AIN Web Tool-15-D-testalexandria');
-    cy.getElementByDataTestsId(`aicZone-${asyncInstantiation[0].jobId}`).contains('NFTJSSSS-NFT1');
+    cy.getElementByDataTestsId(`userId-${instantiationTemplates[0].jobId}`).contains('16807000');
+    cy.getElementByDataTestsId(`createDate-${instantiationTemplates[0].jobId}`).contains('2018-04-30 11:12:48');
+    cy.getElementByDataTestsId(`instanceName-${instantiationTemplates[0].jobId}`).contains('nWUfl instance name_002');
+    cy.getElementByDataTestsId(`instantiationStatus-${instantiationTemplates[0].jobId}`).contains('FAILED');
+    cy.getElementByDataTestsId(`region-${instantiationTemplates[0].jobId}`).contains('hvf6 (WAYNEHOLLAND)');
+    cy.getElementByDataTestsId(`tenant-${instantiationTemplates[0].jobId}`).contains('AIN Web Tool-15-D-testalexandria');
+    cy.getElementByDataTestsId(`aicZone-${instantiationTemplates[0].jobId}`).contains('NFTJSSSS-NFT1');
 
 
     //check load button is disabled
