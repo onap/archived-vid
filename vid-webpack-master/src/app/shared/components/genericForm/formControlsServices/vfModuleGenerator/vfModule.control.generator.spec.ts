@@ -11,6 +11,7 @@ import {FormControlNames, VfModuleControlGenerator} from "./vfModule.control.gen
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {VfModuleInstance} from "../../../../models/vfModuleInstance";
 import {VfModule} from "../../../../models/vfModule";
+import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState() {
@@ -919,6 +920,7 @@ describe('VFModule Control Generator', () => {
       imports: [HttpClientTestingModule],
       providers: [VfModuleControlGenerator,
         GenericFormService,
+        SharedControllersService,
         BasicControlGenerator,
         AaiService,
         FormBuilder,

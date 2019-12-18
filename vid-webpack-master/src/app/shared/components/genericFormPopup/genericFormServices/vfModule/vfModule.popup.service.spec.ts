@@ -13,6 +13,7 @@ import {VfModuleControlGenerator} from "../../../genericForm/formControlsService
 import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockModalService<T> {}
 
@@ -1983,6 +1984,7 @@ describe('VFModule popup service', () => {
       providers : [
         VfModulePopupService,
         BasicControlGenerator,
+        SharedControllersService,
         VfModuleControlGenerator,
         DefaultDataGeneratorService,
         GenericFormService,

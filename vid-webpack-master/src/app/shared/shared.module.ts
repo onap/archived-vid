@@ -79,6 +79,7 @@ import {InstantiationTemplatesModalService} from "./components/genericFormPopup/
 import {SearchFilterPipe} from "./pipes/searchFilter/search-filter.pipe";
 import {RecreateResolver} from "./resolvers/recreate/recreate.resolver";
 import {InstantiationTemplatesService} from "./services/templateService/instantiationTemplates.service";
+import {SharedControllersService} from "./components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 
 @NgModule({
@@ -191,6 +192,7 @@ import {InstantiationTemplatesService} from "./services/templateService/instanti
     VnfControlGenerator,
     VfModuleControlGenerator,
     BasicControlGenerator,
+    SharedControllersService,
     CustomValidators,
     NetworkPopupService,
     VfModulePopupService,

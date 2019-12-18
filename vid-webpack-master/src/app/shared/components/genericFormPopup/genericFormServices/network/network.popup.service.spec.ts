@@ -13,6 +13,7 @@ import {DefaultDataGeneratorService} from "../../../../services/defaultDataServi
 import {BasicPopupService} from "../basic.popup.service";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {}
 
@@ -1988,6 +1989,7 @@ describe('Network popup service', () => {
       providers : [
         NetworkPopupService,
         BasicControlGenerator,
+        SharedControllersService,
         NetworkControlGenerator,
         DefaultDataGeneratorService,
         GenericFormService,
