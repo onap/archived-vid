@@ -20,6 +20,7 @@ import {VfModuleControlGenerator} from "../../../genericForm/formControlsService
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import * as _ from 'lodash';
 import {createVFModuleInstance, updateVFModuleInstance} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 export abstract class VfModulePopupServiceBase {
   dynamicInputs: any;
@@ -44,6 +45,7 @@ export abstract class VfModulePopupServiceBase {
 
   protected constructor(
     protected _basicControlGenerator: BasicControlGenerator,
+    protected _sharedControllersService : SharedControllersService,
     protected _vfModuleControlGenerator: VfModuleControlGenerator,
     protected _iframeService: IframeService,
     protected _defaultDataGeneratorService: DefaultDataGeneratorService,
@@ -157,13 +159,14 @@ export class VfModulePopupService extends VfModulePopupServiceBase implements Ge
 
 
   constructor(_basicControlGenerator: BasicControlGenerator,
+              _sharedControllersService : SharedControllersService,
               _vfModuleControlGenerator: VfModuleControlGenerator,
               _iframeService: IframeService,
               _defaultDataGeneratorService: DefaultDataGeneratorService,
               _aaiService: AaiService,
               _basicPopupService : BasicPopupService,
               _store: NgRedux<AppState>) {
-    super(_basicControlGenerator, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
+    super(_basicControlGenerator, _sharedControllersService, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
 
   }
 

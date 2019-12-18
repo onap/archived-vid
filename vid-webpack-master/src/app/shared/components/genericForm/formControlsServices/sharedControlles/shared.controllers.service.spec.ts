@@ -1,20 +1,17 @@
+import * as _ from "lodash";
 import {getTestBed, TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {NgRedux} from '@angular-redux/store';
-import {FormControlNames} from "../service.control.generator";
-import {BasicControlGenerator} from "../basic.control.generator";
+import {SharedControllersService} from "./shared.controllers.service";
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {AppState} from "../../../../store/reducers";
+import {NgRedux} from "@angular-redux/store";
 import {AaiService} from "../../../../services/aaiService/aai.service";
-import {GenericFormService} from "../../generic-form.service";
-import {FormBuilder} from "@angular/forms";
-import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
-import {LogService} from "../../../../utils/log/log.service";
-import {VnfControlGenerator} from "./vnf.control.generator";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
-import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
-import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
+import {DropdownFormControl} from "../../../../models/formControlModels/dropdownFormControl.model";
+import {FormControlModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
+import {BasicControlGenerator} from "../basic.control.generator";
 
 class MockAppStore<T> {
-  getState(){
+  getState() {
     return {
       "global": {
         "name": null,
@@ -30,9 +27,9 @@ class MockAppStore<T> {
       },
       "service": {
         "serviceHierarchy": {
-          "6e59c5de-f052-46fa-aa7e-2fca9d674c44": {
+          "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc": {
             "service": {
-              "uuid": "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
+              "uuid": "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc",
               "invariantUuid": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
               "name": "ComplexService",
               "version": "1.0",
@@ -411,86 +408,153 @@ class MockAppStore<T> {
           }
         },
         "serviceInstance": {
-          "6e59c5de-f052-46fa-aa7e-2fca9d674c44": {
+          "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc": {
+            "action": "Create",
+            "isDirty": false,
             "vnfs": {
-              "VF_vGeraldine 0": {
+              "2017-388_PASQUALE-vPE 0": {
+                "action": "Create",
+                "inMaint": false,
                 "rollbackOnFailure": "true",
-                "vfModules": {
-                  "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0": {
-                    "vf_vgeraldine0..VfVgeraldine..base_vflorence..module-0vmvzo": {
-                      "isMissingData": false,
-                      "sdncPreReload": null,
-                      "modelInfo": {
-                        "modelType": "VFmodule",
-                        "modelInvariantId": "a6f9e51a-2b35-416a-ae15-15e58d61f36d",
-                        "modelVersionId": "a27f5cfc-7f12-4f99-af08-0af9c3885c87",
-                        "modelName": "VfVgeraldine..base_vflorence..module-0",
-                        "modelVersion": "2",
-                        "modelCustomizationId": "f8c040f1-7e51-4a11-aca8-acf256cfd861",
-                        "modelCustomizationName": "VfVgeraldine..base_vflorence..module-0"
-                      },
-                      "instanceParams": [
-                        {}
-                      ],
-                      "trackById": "wmtm6sy2uj"
-                    }
+                "originalName": "2017-388_PASQUALE-vPE 0",
+                "isMissingData": false,
+                "trackById": "eymgwlevh54",
+                "vfModules": {},
+                "vnfStoreKey": "2017-388_PASQUALE-vPE 0",
+                "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168",
+                "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
+                "lcpCloudRegionId": "AAIAIC25",
+                "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
+                "lineOfBusiness": "ONAP",
+                "platformName": "platform",
+                "modelInfo": {
+                  "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+                  "modelVersionId": "afacccf6-397d-45d6-b5ae-94c39734b168",
+                  "modelName": "2017-388_PASQUALE-vPE",
+                  "modelVersion": "4.0",
+                  "modelCustomizationId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
+                  "modelCustomizationName": "2017-388_PASQUALE-vPE 0",
+                  "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168",
+                  "modelUniqueId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c"
+                },
+                "instanceName": "2017-388_PASQUALE-vPEAjXzainstanceName",
+                "legacyRegion": "some legacy region",
+                "instanceParams": [
+                  {
+                    "vnf_config_template_version": "17.2",
+                    "bandwidth_units": "Gbps",
+                    "bandwidth": "10",
+                    "AIC_CLLI": "ATLMY8GA",
+                    "ASN": "AV_vPE",
+                    "vnf_instance_name": "mtnj309me6"
+                  }
+                ]
+              }
+            },
+            "vrfs": {
+              "VRF Entry Configuration": {
+                "action": "Create",
+                "uuid": "9cac02be-2489-4374-888d-2863b4511a59",
+                "inputs": {},
+                "type": "Configuration",
+                "trackById": "s0z58emiprq",
+                "modelInfo": {
+                  "modelInvariantId": "b67a289b-1688-496d-86e8-1583c828be0a",
+                  "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+                  "modelName": "VRF Entry Configuration",
+                  "modelVersion": "5.0",
+                  "modelCustomizationId": "dd024d73-9bd1-425d-9db5-476338d53433",
+                  "modelUniqueId": "dd024d73-9bd1-425d-9db5-476338d53433",
+                  "modelCustomizationName": "VRF Entry Configuration",
+                  "uuid": "9cac02be-2489-4374-888d-2863b4511a59"
+                },
+                "vpns": {
+                  "VRF Entry Configuration vpns 1": {
+                    "action": "Create",
+                    "instanceId": "46fcb25a-e7ba-4d96-99ba-3bb6eae6aba7",
+                    "instanceName": "LPPVPN",
+                    "platformName": "AVPN",
+                    "instanceType": "SERVICE-INFRASTRUCTURE",
+                    "region": "USA,EMEA",
+                    "customerId": "VPN1271",
+                    "modelInfo": {
+                      "modelCustomizationId": null,
+                      "modelInvariantId": null,
+                      "modelVersionId": null
+                    },
+                    "routeTargets": null,
+                    "isSelected": true
                   }
                 },
-                "isMissingData": true,
-                "originalName": "VF_vGeraldine 0",
-                "vnfStoreKey": "VF_vGeraldine 0",
-                "trackById": "p3wk448m5do",
-                "uuid": "d6557200-ecf2-4641-8094-5393ae3aae60",
-                "productFamilyId": "36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e",
-                "lcpCloudRegionId": null,
-                "tenantId": null,
-                "lineOfBusiness": null,
-                "platformName": null,
-                "modelInfo": {
-                  "modelType": "VF",
-                  "modelInvariantId": "4160458e-f648-4b30-a176-43881ffffe9e",
-                  "modelVersionId": "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
-                  "modelName": "VF_vGeraldine",
-                  "modelVersion": "2.0",
-                  "modelCustomizationName": "VF_vGeraldine 0"
+                "networks": {
+                  "VRF Entry Configuration networks 1": {
+                    "action ": "Create",
+                    "instanceName": "AUK51a_oam_calea_net_0",
+                    "instanceType": "SR-IOV-PROVIDER2-0",
+                    "role": "role-1",
+                    "orchStatus": "Active",
+                    "physicalName": "sriovnet0",
+                    "instanceId": "46fcb25a-e7ba-4d96-99ba-3bb6eae6aba7",
+                    "serviceName": "LPPVPN",
+                    "serv§iceUUID": "VPN1271",
+                    "tenantName": "ecomp_ispt",
+                    "lcpCloudRegionId": "USA,EMEA",
+                    "modelInfo": {
+                      "modelCustomizationId": "46fcb25a-e7ba-4d96-99ba-3bb6eae6aba7",
+                      "modelInvariantId": "46fcb25a-e7ba-4d96-99ba-3bb6eae6aba7",
+                      "modelVersionId": "7010093-df36-4dcb-8428-c3d02bf3f88d",
+                      "modelType": "vpn"
+                    }
+                  }
                 }
               }
             },
-            "instanceParams": [
-              {}
-            ],
-            "validationCounter": 1,
+            "instanceParams": [],
+            "validationCounter": 0,
             "existingNames": {},
-            "existingVNFCounterMap": {
-              "d6557200-ecf2-4641-8094-5393ae3aae60": 1
-            },
-            "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
-            "subscriptionServiceType": "TYLER SILVIA",
-            "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
-            "productFamilyId": "36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e",
-            "lcpCloudRegionId": "hvf6",
-            "tenantId": "229bcdc6eaeb4ca59d55221141d01f8e",
-            "aicZoneId": "JAG1",
-            "projectName": "x1",
-            "rollbackOnFailure": "true",
+            "existingVNFCounterMap": {},
+            "existingVRFCounterMap": {},
+            "existingVnfGroupCounterMap": {},
+            "existingNetworksCounterMap": {},
+            "optionalGroupMembersMap": {},
+            "networks": {},
+            "vnfGroups": {},
             "bulkSize": 1,
-            "modelInfo": {
-              "modelInvariantId": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
-              "modelVersionId": "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
-              "modelName": "ComplexService",
-              "modelVersion": "1.0",
-              "uuid": "6e59c5de-f052-46fa-aa7e-2fca9d674c44"
+            "service": {
+              "vidNotions": {
+                "instantiationUI": "serviceWithVRF",
+                "modelCategory": "other",
+                "viewEditUI": "serviceWithVRF",
+                "instantiationType": "ALaCarte"
+              },
+              "uuid": "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc",
+              "invariantUuid": "7ee41ce4-4827-44b0-a48e-2707a59905d2",
+              "name": "VRF Service for Test",
+              "version": "1.0",
+              "toscaModelURL": null,
+              "category": "Network L4+",
+              "serviceType": "INFRASTRUCTURE",
+              "serviceRole": "Configuration",
+              "description": "xxx",
+              "serviceEcompNaming": "true",
+              "instantiationType": "A-La-Carte",
+              "inputs": {}
             },
-            "isALaCarte": false,
-            "name": "ComplexService",
-            "version": "1.0",
-            "description": "ComplexService",
-            "category": "Emanuel",
-            "uuid": "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
-            "invariantUuid": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
-            "serviceType": "",
-            "serviceRole": "",
-            "isMultiStepDesign": false
+            "collectionResources": {},
+            "configurations": {},
+            "fabricConfigurations": {},
+            "serviceProxies": {},
+            "vfModules": {},
+            "volumeGroups": {},
+            "pnfs": {},
+            "isALaCarte": true,
+            "testApi": "VNF_API",
+            "vidNotions": {
+              "instantiationUI": "serviceWithVVRF",
+              "modelCategory": "other",
+              "viewEditUI": "serviceWithVRF",
+              "instantiationType": "ALaCarte"
+            }
           }
         },
         "lcpRegionsAndTenants": {
@@ -528,6 +592,16 @@ class MockAppStore<T> {
               {
                 "id": "fa45ca53c80b492fa8be5477cd84fc2b",
                 "name": "ro-T112",
+                "isPermitted": true
+              },
+              {
+                "id": "4914ab0ab3a743e58f0eefdacc1dde77",
+                "name": "DN5242-Nov21-T1",
+                "isPermitted": true
+              },
+              {
+                "id": "d0a3e3f2964542259d155a81c41aadc3",
+                "name": "test-hvf6-09",
                 "isPermitted": true
               },
               {
@@ -906,152 +980,112 @@ class MockAppStore<T> {
 
 class MockFeatureFlagsService {}
 
-describe('VNF Control Generator', () => {
+describe('Shared Controllers Service', () => {
   let injector;
-  let service: VnfControlGenerator;
+  let service: SharedControllersService;
   let httpMock: HttpTestingController;
-
+  let store: NgRedux<AppState>;
+  let basicControlGenerator : BasicControlGenerator;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [VnfControlGenerator,
-        GenericFormService,
-        BasicControlGenerator,
-        SharedControllersService,
+      providers: [SharedControllersService,
         AaiService,
-        FormBuilder,
-        LogService,
+        BasicControlGenerator,
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockAppStore}]
     });
     await TestBed.compileComponents();
 
-
     injector = getTestBed();
-    service = injector.get(VnfControlGenerator);
+    service = injector.get(SharedControllersService);
+    basicControlGenerator = injector.get(BasicControlGenerator);
     httpMock = injector.get(HttpTestingController);
+    store = injector.get(NgRedux);
 
   })().then(done).catch(done.fail));
 
 
-  test('should generate platform multi select control', ()=>{
-    const control = service.getPlatformMultiselectControl(null, [],false);
-    expect(control.type).toEqual(FormControlType.MULTI_SELECT);
-    expect(control.controlName).toEqual('platformName');
-    expect(control.displayName).toEqual('Platform');
-    expect(control.dataTestId).toEqual('multi-selectPlatform');
-    expect(control.selectedFieldName).toEqual('name');
-    expect(control.value).toEqual('');
-    expect(control.onChange).toBeDefined();
-    expect(control.convertOriginalDataToArray).toBeDefined();
+
+
+
+  test('getLineOfBusinessControl', ()=> {
+    const lineOfBusinessControl :DropdownFormControl  = service.getLineOfBusinessControl();
+    expect(lineOfBusinessControl.name).toEqual('lineOfBusiness');
+    expect(lineOfBusinessControl.controlName).toEqual('lineOfBusiness');
+    expect(lineOfBusinessControl.displayName).toEqual('Line of business');
+    expect(lineOfBusinessControl.dataTestId).toEqual('lineOfBusiness');
+    expect(lineOfBusinessControl.placeHolder).toEqual('Select Line Of Business');
+    expect(lineOfBusinessControl.onInitSelectedField).toEqual(['lineOfBusinessList']);
+    expect(lineOfBusinessControl.onInit).toBeDefined();
+    expect(lineOfBusinessControl.value).toBeNull();
+    expect(lineOfBusinessControl.validations.find((validation)=> validation.validatorName === ValidatorOptions.required)).toBeDefined();
+    expect(lineOfBusinessControl.isDisabled).toBeFalsy();
   });
 
-  test('getMacroFormControls check for mandatory controls', () => {
-    const serviceId : string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
-    const vnfName : string = "VF_vGeraldine 0";
-    const vnfStoreKey : string = "VF_vGeraldine 0";
-    const controls :FormControlModel[] = service.getMacroFormControls(serviceId, vnfStoreKey, vnfName, []);
+  test('getTenantControl', ()=> {
+    const serviceId : string = Object.keys(store.getState().service.serviceInstance)[0];
+    const vnfs = store.getState().service.serviceInstance[serviceId].vnfs;
+    const currentVnf = vnfs[Object.keys(vnfs)[0]];
 
-    const mandatoryControls : string[] = [
-      FormControlNames.INSTANCE_NAME,
-      FormControlNames.LCPCLOUD_REGION_ID,
-      FormControlNames.TENANT_ID,
-      'platformName'
-    ];
-
-    for(let i = 0 ; i < mandatoryControls.length ; i++){
-      let requiredExist = controls.find(ctrl => ctrl.controlName === mandatoryControls[i]).validations.find(item => item.validatorName === 'required');
-      expect(requiredExist).toBeDefined();
-    }
-  });
-
-  test('should provide empty array on getMacroFormControls when serviceId, vnfName and vnfStoreKey equals to null', () => {
-
-    let vnfStoreKey = null;
-    const serviceId = null;
-    const vnfName : string = null;
-    const result:FormControlModel[] = service.getMacroFormControls(serviceId, vnfStoreKey, vnfName, []);
-    expect(result).toEqual([]);
-  });
-
-  test('should provide empty array on getAlaCarteFormControls when serviceId, vnfName and vnfStoreKey equals to null', () => {
-    let vnfStoreKey = null;
-    const serviceId = null;
-    const vnfName : string = null;
-    const result:FormControlModel[] = service.getAlaCarteFormControls(serviceId, vnfStoreKey, vnfName, []);
-    expect(result).toEqual([]);
-  });
-
-  function getALaCarteFormControls(vnfStoreKey: string): FormControlModel[] {
-    const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
-    const vnfName: string = "VF_vGeraldine 0";
-    const controls: FormControlModel[] = service.getAlaCarteFormControls(serviceId, vnfStoreKey, vnfName, []);
-    return controls;
-  }
-
-  test('getMacroFormControls should return the correct order of controls', () => {
-    const serviceId : string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
-    const vnfName : string = "VF_vGeraldine 0";
-    const vnfStoreKey : string = null;
-    const controls :FormControlModel[] = service.getMacroFormControls(serviceId, vnfStoreKey, vnfName, []);
-
-    const controlsOrderNames = [
-      FormControlNames.INSTANCE_NAME,
-      FormControlNames.PRODUCT_FAMILY_ID,
-      FormControlNames.LCPCLOUD_REGION_ID ,
-      'legacyRegion',
-      'tenantId',
-      'platformName',
-      'lineOfBusiness'];
-
-    expect(controls.length).toEqual(7);
-    for(let i = 0 ; i < controls.length ; i++){
-      expect(controls[i].controlName).toEqual(controlsOrderNames[i]);
-    }
-  });
-
-  test('getAlacartFormControls should return the correct order of controls', () => {
-    const controls = getALaCarteFormControls(null);
-
-    const controlsOrderNames = [
-      FormControlNames.INSTANCE_NAME,
-      FormControlNames.PRODUCT_FAMILY_ID,
-      FormControlNames.LCPCLOUD_REGION_ID,
-      'legacyRegion',
-      'tenantId',
-      'platformName',
-      'lineOfBusiness',
-      'rollbackOnFailure'];
-    expect(controls.length).toEqual(8);
-    for(let i = 0 ; i < controls.length ; i++) {
-      expect(controls[i].controlName).toEqual(controlsOrderNames[i]);
-    }
+    const tanantControl :DropdownFormControl  = service.getTenantControl(serviceId, currentVnf);
+    expect(tanantControl.name).toEqual('tenant');
+    expect(tanantControl.controlName).toEqual('tenantId');
+    expect(tanantControl.displayName).toEqual('Tenant');
+    expect(tanantControl.dataTestId).toEqual('tenant');
+    expect(tanantControl.placeHolder).toEqual('Select Tenant');
+    expect(tanantControl.onInitSelectedField).toEqual(['lcpRegionsTenantsMap', currentVnf.lcpCloudRegionId]);
+    expect(tanantControl.onInit).toBeDefined();
+    expect(tanantControl.validations.find((validation)=> validation.validatorName === ValidatorOptions.required)).toBeDefined();
+    expect(tanantControl.isDisabled).toEqual(_.isNil(currentVnf.lcpCloudRegionId));
   });
 
 
-  test('getAlacartFormControls check for mandatory controls', () => {
-    const controls = getALaCarteFormControls("VF_vGeraldine 0");
-    const mandatoryControls : string[] = [
-      FormControlNames.INSTANCE_NAME,
-      FormControlNames.LCPCLOUD_REGION_ID,
-      'tenantId',
-      'platformName',
-      'lineOfBusiness',
-      'rollbackOnFailure'
-    ];
-    for(let i = 0 ; i < mandatoryControls.length ; i++){
-      let requiredExist = controls.find(ctrl => ctrl.controlName === mandatoryControls[i]).validations.find(item => item.validatorName === 'required');
-      expect(requiredExist).toBeDefined();
-    }
+  test('getRollbackOnFailureControl', ()=> {
+    const rollbackOnFailureControl :DropdownFormControl  = service.getRollbackOnFailureControl();
+    expect(rollbackOnFailureControl.controlName).toEqual('rollbackOnFailure');
+    expect(rollbackOnFailureControl.displayName).toEqual('Rollback on failure');
+    expect(rollbackOnFailureControl.dataTestId).toEqual('rollback');
+    expect(rollbackOnFailureControl.placeHolder).toEqual('Rollback on failure');
+    expect(rollbackOnFailureControl.onInit).toBeDefined();
+    expect(rollbackOnFailureControl.validations.find((validation)=> validation.validatorName === ValidatorOptions.required)).toBeDefined();
+    expect(rollbackOnFailureControl.isDisabled).toBeFalsy();
   });
 
-  test('getAlacartFormControls instance name control validator shall have the expected regex', () => {
-    const controls:FormControlModel[] = getALaCarteFormControls("VF_vGeraldine 0");
-
-    const instanceNameControl: FormControlModel = <FormControlModel>controls.find(item => item.controlName === FormControlNames.INSTANCE_NAME);
-    const instanceNameValidator: ValidatorModel = instanceNameControl.validations.find(val => val.validatorName === ValidatorOptions.pattern);
-    expect(instanceNameValidator.validatorArg).toEqual(/^[a-zA-Z0-9._-]*$/);
+  test('getLcpRegionControl', ()=> {
+    const serviceId : string = Object.keys(store.getState().service.serviceInstance)[0];
+    const vnfs = store.getState().service.serviceInstance[serviceId].vnfs;
+    const currentVnf = vnfs[Object.keys(vnfs)[0]];
+    const lcpRegionControl :DropdownFormControl  = service.getLcpRegionControl(serviceId, currentVnf, []);
+    expect(lcpRegionControl.controlName).toEqual('lcpCloudRegionId');
+    expect(lcpRegionControl.displayName).toEqual('LCP region');
+    expect(lcpRegionControl.dataTestId).toEqual('lcpRegion');
+    expect(lcpRegionControl.placeHolder).toEqual('Select LCP Region');
+    expect(lcpRegionControl.onInit).toBeDefined();
+    expect(lcpRegionControl.onChange).toBeDefined();
+    expect(lcpRegionControl.validations.find((validation)=> validation.validatorName === ValidatorOptions.required)).toBeDefined();
+    expect(lcpRegionControl.isDisabled).toBeFalsy();
   });
+
+  test('sdn-preload checkbox is visible', () => {
+    const instance = {};
+    const sdncPreload: FormControlModel = service.getSDNCControl(instance);
+    expect (sdncPreload.displayName).toEqual('SDN-C pre-load');
+    expect (sdncPreload.value).toBeFalsy();
+  });
+
+  test('getlegacyRegion with AAIAIC25 - isVisible true', () => {
+    const instance = {lcpCloudRegionId : 'AAIAIC25'};
+    const legacyRegionControl: FormControlModel = service.getLegacyRegion(instance);
+    expect(legacyRegionControl.isVisible).toBeTruthy();
+  });
+
+  test('getlegacyRegion without AAIAIC25 - isVisible false', () => {
+    const instance = {lcpCloudRegionId : 'olson3'};
+    const legacyRegionControl: FormControlModel = service.getLegacyRegion(instance);
+    expect(legacyRegionControl.isVisible).toBeFalsy();
+  });
+
+
 });
-

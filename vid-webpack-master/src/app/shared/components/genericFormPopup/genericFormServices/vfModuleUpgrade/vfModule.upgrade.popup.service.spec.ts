@@ -25,6 +25,7 @@ import {VfModuleActions} from "../../../../storeUtil/utils/vfModule/vfModule.act
 import {ServiceActions} from "../../../../storeUtil/utils/service/service.actions";
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import * as _ from "lodash";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockModalService<T> {}
 
@@ -73,6 +74,7 @@ describe('VFModule popup service', () => {
       providers: [
         VfModuleUpgradePopupService,
         BasicControlGenerator,
+        SharedControllersService,
         VfModuleControlGenerator,
         DefaultDataGeneratorService,
         GenericFormService,

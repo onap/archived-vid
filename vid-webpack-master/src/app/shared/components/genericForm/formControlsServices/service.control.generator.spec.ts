@@ -13,6 +13,7 @@ import {DropdownFormControl} from "../../../models/formControlModels/dropdownFor
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
 import each from 'jest-each';
 import {VidNotions} from "../../../models/vidNotions";
+import {SharedControllersService} from "./sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState() {
@@ -913,6 +914,7 @@ describe('Service Control Generator', () => {
       providers: [ServiceControlGenerator,
         GenericFormService,
         BasicControlGenerator,
+        SharedControllersService,
         AaiService,
         FormBuilder,
         LogService,

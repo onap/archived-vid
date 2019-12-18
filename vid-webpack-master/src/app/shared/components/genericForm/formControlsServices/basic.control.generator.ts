@@ -9,7 +9,6 @@ import {NumberFormControl} from "../../../models/formControlModels/numberFormCon
 import {FormControlType} from "../../../models/formControlModels/formControlTypes.enum";
 import {FileFormControl} from "../../../models/formControlModels/fileFormControl.model";
 import {SelectOption} from "../../../models/selectOption";
-import * as _ from 'lodash';
 import {DynamicInputLabelPipe} from "../../../pipes/dynamicInputLabel/dynamic-input-label.pipe";
 import {AaiService} from "../../../services/aaiService/aai.service";
 import {FormGeneralErrorsService} from "../../formGeneralErrors/formGeneralErrors.service";
@@ -17,7 +16,7 @@ import {Observable, of} from "rxjs";
 import {NodeModel} from "../../../models/nodeModel";
 import {Constants} from "../../../utils/constants";
 import {FileUnit} from "../../formControls/component/file/fileUnit.enum";
-import {CheckboxFormControl} from "../../../models/formControlModels/checkboxFormControl.model";
+import * as _ from 'lodash';
 
 export const SUPPLEMENTARY_FILE = 'supplementaryFile';
 export const SDN_C_PRE_LOAD = 'sdncPreLoad';
@@ -28,8 +27,7 @@ export class BasicControlGenerator {
   public static readonly INSTANCE_NAME_REG_EX:RegExp = /^[a-zA-Z0-9._-]*$/;
   public static readonly GENERATED_NAME_REG_EX:RegExp = /[^a-zA-Z0-9._-]/g;
 
-  constructor(private _store : NgRedux<AppState>,
-              private _aaiService : AaiService){}
+  constructor(private _store : NgRedux<AppState>){}
   getSubscribeResult(subscribeFunction : Function, control : DropdownFormControl) : Observable<any>{
     return subscribeFunction(this).subscribe((res) => {
       control.options$ = res;
@@ -58,34 +56,6 @@ export class BasicControlGenerator {
     });
   }
 
-  getInstanceNameController(instance: any, serviceId: string, isEcompGeneratedNaming: boolean, model: NodeModel): FormControlModel {
-    let validations: ValidatorModel[] = this.createValidationsForInstanceName(instance, serviceId, isEcompGeneratedNaming);
-    return new InputFormControl({
-      controlName: 'instanceName',
-      displayName: 'Instance name',
-      dataTestId: 'instanceName',
-      placeHolder: (!isEcompGeneratedNaming) ? 'Instance name' : 'Automatically generated when not provided',
-      validations: validations,
-      isVisible : true,
-      value : (!isEcompGeneratedNaming || (!_.isNil(instance) && !_.isNil(instance.instanceName)))
-        ? this.getDefaultInstanceName(instance, model) : null,
-      onKeypress : (event) => {
-        const pattern:RegExp = BasicControlGenerator.INSTANCE_NAME_REG_EX;
-        if(pattern){
-          if(!pattern.test(event['key'])){
-            event.preventDefault();
-          }
-        }
-        return event;
-      }
-    });
-  }
-
-  getInstanceName(instance : any, serviceId : string, isEcompGeneratedNaming: boolean): FormControlModel {
-    let formControlModel:FormControlModel = this.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, new NodeModel());
-    formControlModel.value = instance ? instance.instanceName : null;
-    return formControlModel;
-  }
 
   isLegacyRegionShouldBeVisible(instance : any) : boolean {
     if(!_.isNil(instance) && !_.isNil(instance.lcpCloudRegionId))  {
@@ -94,20 +64,7 @@ export class BasicControlGenerator {
     return false;
   }
 
-  getLegacyRegion(instance: any): FormControlModel {
-    return new InputFormControl({
-      controlName: 'legacyRegion',
-      displayName: 'Legacy Region',
-      dataTestId: 'lcpRegionText',
-      placeHolder: 'Type Legacy Region',
-      validations: [],
-      isVisible: this.isLegacyRegionShouldBeVisible(instance),
-      isDisabled : _.isNil(instance) ? true : Constants.LegacyRegion.MEGA_REGION.indexOf(instance.lcpCloudRegionId),
-      value: instance ? instance.legacyRegion : null
-    });
-  }
-
-  private createValidationsForInstanceName(instance: any, serviceId: string, isEcompGeneratedNaming: boolean): ValidatorModel[] {
+   createValidationsForInstanceName(instance: any, serviceId: string, isEcompGeneratedNaming: boolean): ValidatorModel[] {
     let validations: ValidatorModel[] = [
       new ValidatorModel(ValidatorOptions.pattern, 'Instance name may include only alphanumeric characters and underscore.', BasicControlGenerator.INSTANCE_NAME_REG_EX),
       new ValidatorModel(CustomValidatorOptions.uniqueInstanceNameValidator, 'some error', [this._store, serviceId, instance && instance.instanceName])
@@ -129,23 +86,7 @@ export class BasicControlGenerator {
     return of(optionList);
   };
 
-  getProductFamilyControl = (instance : any, controls : FormControlModel[], isMandatory?: boolean) : DropdownFormControl => {
-    return new DropdownFormControl({
-      type : FormControlType.DROPDOWN,
-      controlName : 'productFamilyId',
-      displayName : 'Product family',
-      dataTestId : 'productFamily',
-      placeHolder : 'Select Product Family',
-      isDisabled : false,
-      name : "product-family-select",
-      value : instance ? instance.productFamilyId : null,
-      validations : _.isNil(isMandatory) || isMandatory === true ? [new ValidatorModel(ValidatorOptions.required, 'is required')]: [],
-      onInit : this.getSubscribeResult.bind(this, this._aaiService.getProductFamilies),
-    })
-  };
-
-
-
+  
   getDynamicInputsByType(dynamicInputs : any, serviceModelId : string, storeKey : string, type: string ) : FormControlModel[] {
     let result : FormControlModel[] = [];
     if(dynamicInputs) {
@@ -157,8 +98,7 @@ export class BasicControlGenerator {
     }
     return result;
   }
-
-
+  
   getServiceDynamicInputs(dynamicInputs : any, serviceModelId : string) : FormControlModel[] {
     let result: FormControlModel[] = [];
     if (dynamicInputs) {
@@ -241,16 +181,6 @@ export class BasicControlGenerator {
     return originalArray.concat([suppFileInput], suppFileInput.hiddenFile);
   }
 
-  getSDNCControl = (instance: any): FormControlModel => {
-    return new CheckboxFormControl({
-      controlName: SDN_C_PRE_LOAD,
-      displayName: 'SDN-C pre-load',
-      dataTestId: 'sdncPreLoad',
-      value: instance ? instance.sdncPreLoad : false,
-      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')]
-    })
-  };
-
   getSupplementaryFile(instance: any): FileFormControl {
     return new FileFormControl({
       controlName: SUPPLEMENTARY_FILE,
@@ -307,4 +237,13 @@ export class BasicControlGenerator {
       }
     };
   }
+
+
+  getRollBackOnFailureOptions = (): Observable<SelectOption[]> => {
+    return of([
+      new SelectOption({id: 'true', name: 'Rollback'}),
+      new SelectOption({id: 'false', name: 'Don\'t Rollback'})
+    ]);
+  };
+
 }
