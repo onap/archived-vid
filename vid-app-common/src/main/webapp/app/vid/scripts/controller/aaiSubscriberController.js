@@ -539,6 +539,12 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
         var serviceNetworkVlans = [];
         var vnfNetworksAndVlans = [];
 
+        function fetchServiceIfMissing() {
+            if (_.isEmpty(DataService.getServiceIdList())) {
+                $scope.fetchServices();
+            }
+        }
+
         $scope.getComponentList = function (event, request) {
 
             $scope.isSpinnerVisible = true;
@@ -594,7 +600,8 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                             $scope.errorDetails = response.data;
                         }
                     );
-                });
+                })
+                .then(fetchServiceIfMissing);
         };
 
         $scope.handleServerError = function (response, status) {

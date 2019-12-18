@@ -143,6 +143,7 @@ describe('View Edit Page', function () {
       });
       cy.initVidMock();
       cy.mockLatestVersionForService(commonUuid, serviceInvariantId);
+      cy.initAAIServices();
       cy.setReduxState();
       cy.permissionVidMock();
       cy.login();
@@ -165,6 +166,18 @@ describe('View Edit Page', function () {
         cy.getElementByDataTestsId("detailsCloseBtn").click();
       });
     });
+
+    it(`when using direct url should select elements in productFamily dropdown `, function () {
+      cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=3f93c7cb-2fd0-4557-9514-e189b7b04f9d&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d674c44&isPermitted=true');
+      cy.wait('@service-complexService');
+      cy.wait('@aai_getPortMirroringConfigsDate - empty response');
+      cy.wait('@initAAIServices');
+      cy.getElementByDataTestsId('addNetworkButton').click();
+      cy.getElementByDataTestsId('addNetworkOption-MULTI_PROVIDER_PORT_GROUP 0').click();
+      cy.getElementByDataTestsId('productFamily').select('WILKINS');
+    });
+
+
 
     it(`Check fabric configuration service with some configuration with diff orchStatus`, function () {
       cy.visit('/serviceModels.htm#/instantiate?subscriberId=e433710f-9217-458d-a79d-1c7aff376d89&subscriberName=SILVIA%20ROBBINS&serviceType=TYLER%20SILVIA&serviceInstanceId=c187e9fe-40c3-4862-b73e-84ff056205f61234&aaiModelVersionId=6e59c5de-f052-46fa-aa7e-2fca9d671234&isPermitted=true');

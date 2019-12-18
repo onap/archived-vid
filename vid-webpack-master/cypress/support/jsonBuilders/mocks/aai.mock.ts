@@ -8,6 +8,7 @@ declare namespace Cypress {
     initActiveNetworks : typeof  initActiveNetworks;
     initActiveVPNs : typeof  initActiveVPNs;
     initGetAAISubDetails : typeof  initGetAAISubDetails;
+    initAAIServices: typeof initAAIServices;
   }
 }
 
@@ -154,5 +155,7 @@ Cypress.Commands.add('initGetAAISubDetails', initGetAAISubDetails);
 Cypress.Commands.add('initSearchVNFMemebers', initSearchVNFMemebers);
 Cypress.Commands.add('initActiveNetworks', initActiveNetworks);
 Cypress.Commands.add('initActiveVPNs', initActiveVPNs);
+Cypress.Commands.add('initAAIServices', initAAIServices);
+
 
 
