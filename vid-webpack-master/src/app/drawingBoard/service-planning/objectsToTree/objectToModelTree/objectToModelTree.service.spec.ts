@@ -14,7 +14,7 @@ import {
 } from "../../available-models-tree/available-models-tree.service";
 import {DialogService} from "ng2-bootstrap-modal";
 import {VnfPopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
-import {BasicControlGenerator} from "../../../../shared/components/genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../../shared/components/genericForm/formControlsServices/control.generator.util.service";
 import {GenericFormService} from "../../../../shared/components/genericForm/generic-form.service";
 import {FormBuilder} from "@angular/forms";
 import {LogService} from "../../../../shared/utils/log/log.service";
@@ -36,6 +36,7 @@ import {IModelTreeNodeModel} from "../../../objectsToTree/objectToModelTree/mode
 import {VpnStepService} from "../models/vrf/vrfModal/vpnStep/vpn.step.service";
 import {NetworkStepService} from "../models/vrf/vrfModal/networkStep/network.step.service";
 import {VfModuleUpgradePopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {SharedControllersService} from "../../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState() {
@@ -90,7 +91,7 @@ describe('Model Tree Generator service', () => {
         DialogService,
         VnfPopupService,
         VnfGroupPopupService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
         GenericFormService,
         FormBuilder,
         LogService,
@@ -111,6 +112,7 @@ describe('Model Tree Generator service', () => {
         ComponentInfoService,
         NetworkStepService,
         VpnStepService,
+        SharedControllersService,
         {provide: NgRedux, useClass: MockAppStore},
         MockNgRedux ]
     }).compileComponents();

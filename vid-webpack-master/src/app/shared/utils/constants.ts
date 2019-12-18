@@ -93,6 +93,7 @@ export module Constants {
     public static WELCOME_PATH = 'welcome.htm';
     public static IS_PERMITTED_SUB_PATH = '&isPermitted=';
     public static SERVICES_JOB_INFO_PATH = '../../asyncInstantiation';
+    public static TEMPLATE_INFO_PATH = '../../instantiationTemplates';
     public static SERVICE_MODEL_ID = 'serviceModelId';
     public static SERVICES_RETRY_TOPOLOGY = '../../asyncInstantiation/bulkForRetry';
     public static INSTANTIATION_TEMPLATE_TOPOLOGY = '../../instantiationTemplates/templateTopology';

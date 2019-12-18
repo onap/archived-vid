@@ -5,7 +5,7 @@ import {ModelInformationItem} from "../../../model-information/model-information
 import {Subject} from "rxjs";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {FormPopupDetails, PopupType} from "../../../../models/formControlModels/formPopupDetails.model";
-import {BasicControlGenerator} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {IframeService} from "../../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
@@ -35,7 +35,7 @@ export class ServicePopupService implements GenericPopupInterface {
 
 
 
-  constructor(private _basicControlGenerator: BasicControlGenerator,
+  constructor(private _basicControlGenerator: ControlGeneratorUtil,
               private _serviceControlGenerator: ServiceControlGenerator,
               private _iframeService: IframeService,
               private _defaultDataGeneratorService: DefaultDataGeneratorService,

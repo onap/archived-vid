@@ -13,7 +13,7 @@ export class ServiceInfoService {
   }
 
   getServicesJobInfo(showSpinner: boolean = true, serviceModelId: string = null): Observable<ServiceInfoModel[]> {
-    let pathQuery = Constants.Path.SERVICES_JOB_INFO_PATH;
+    let pathQuery = Constants.Path.TEMPLATE_INFO_PATH;
     let headers = new HttpHeaders({'x-show-spinner': showSpinner.toString()});
     let params = serviceModelId ? {serviceModelId} : {};
     return this._http.get<ServiceInfoModel[]>(pathQuery, { headers: headers, params });

@@ -5,7 +5,7 @@ import {AppState} from "../../../store/reducers";
 import {NgRedux} from "@angular-redux/store";
 import {FormControlModel} from "../../../models/formControlModels/formControl.model";
 import {DefaultDataGeneratorService} from "../../../services/defaultDataServiceGenerator/default.data.generator.service";
-import {BasicControlGenerator} from "../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../genericForm/formControlsServices/control.generator.util.service";
 import * as _ from 'lodash';
 import {VfModule} from "../../../models/vfModule";
 import {VNFModel} from "../../../models/vnfModel";
@@ -18,7 +18,7 @@ import {Constants} from "../../../utils/constants";
 export class BasicPopupService {
   constructor(private _store: NgRedux<AppState>,
               private _defaultDataGeneratorService : DefaultDataGeneratorService,
-              private _basicControlGenerator : BasicControlGenerator){}
+              private _basicControlGenerator : ControlGeneratorUtil){}
 
   extractSubscriberNameBySubscriberId(subsriberId: string) {
     let result: string = null;

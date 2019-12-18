@@ -76,20 +76,11 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
         this.auditService = auditService;
     }
 
-    /**
-     * Gets the new services status.
-     * @param request the request
-     * @return the services list
-     */
     @RequestMapping(method = RequestMethod.GET)
-    public List<ServiceInfo> getServicesInfo(HttpServletRequest request,
-        @RequestParam(value = "serviceModelId", required = false) UUID serviceModelId) {
-        if (serviceModelId == null) {
-            return asyncInstantiationBL.getAllServicesInfo();
-        } else {
-            return  asyncInstantiationRepository.listInstantiatedServicesByServiceModelId(serviceModelId);
-        }
+    public List<ServiceInfo> getServicesInfo(HttpServletRequest request) {
+        return asyncInstantiationBL.getAllServicesInfo();
     }
+
     @RequestMapping(value = "bulk", method = RequestMethod.POST)
     public MsoResponseWrapper2<List<String>> createBulkOfServices(@RequestBody ServiceInstantiation request, HttpServletRequest httpServletRequest) {
         //Push to DB according the model
