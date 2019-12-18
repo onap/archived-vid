@@ -1053,15 +1053,5 @@ describe('VNF Control Generator', () => {
     const instanceNameValidator: ValidatorModel = instanceNameControl.validations.find(val => val.validatorName === ValidatorOptions.pattern);
     expect(instanceNameValidator.validatorArg).toEqual(/^[a-zA-Z0-9._-]*$/);
   });
-
-  test('rollback should return observable of true, false', () => {
-    let result : Observable<SelectOption[]> = service.getRollBackOnFailureOptions();
-    result.subscribe((val)=>{
-      expect(val).toEqual([
-        new SelectOption({id: 'true', name: 'Rollback'}),
-        new SelectOption({id: 'false', name: 'Don\'t Rollback'})
-      ]);
-    });
-  });
 });
 
