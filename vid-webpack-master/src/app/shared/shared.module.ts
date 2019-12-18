@@ -32,7 +32,7 @@ import {CheckboxFormControlComponent} from "./components/formControls/component/
 import {GenericFormService} from "./components/genericForm/generic-form.service";
 import {GenericFormComponent} from "./components/genericForm/generic-form.component";
 import {ServiceControlGenerator} from "./components/genericForm/formControlsServices/service.control.generator";
-import {BasicControlGenerator} from "./components/genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "./components/genericForm/formControlsServices/control.generator.util.service";
 import {CustomValidators} from "./validators/uniqueName/uniqueName.validator";
 import {FileFormControlComponent} from "./components/formControls/component/file/file.formControl.component";
 import {NumberFormControlComponent} from "./components/formControls/component/number/number.formControl.component";
@@ -79,6 +79,7 @@ import {InstantiationTemplatesModalService} from "./components/genericFormPopup/
 import {SearchFilterPipe} from "./pipes/searchFilter/search-filter.pipe";
 import {RecreateResolver} from "./resolvers/recreate/recreate.resolver";
 import {InstantiationTemplatesService} from "./services/templateService/instantiationTemplates.service";
+import {SharedControllersService} from "./components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 
 @NgModule({
@@ -190,7 +191,8 @@ import {InstantiationTemplatesService} from "./services/templateService/instanti
     ServicePopupService,
     VnfControlGenerator,
     VfModuleControlGenerator,
-    BasicControlGenerator,
+    ControlGeneratorUtil,
+    SharedControllersService,
     CustomValidators,
     NetworkPopupService,
     VfModulePopupService,

@@ -1,7 +1,7 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {NgRedux} from '@angular-redux/store';
-import {BasicControlGenerator, SDN_C_PRE_LOAD} from "../basic.control.generator";
+import {ControlGeneratorUtil, SDN_C_PRE_LOAD} from "../control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
@@ -11,6 +11,7 @@ import {FormControlNames, VfModuleControlGenerator} from "./vfModule.control.gen
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {VfModuleInstance} from "../../../../models/vfModuleInstance";
 import {VfModule} from "../../../../models/vfModule";
+import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState() {
@@ -919,7 +920,8 @@ describe('VFModule Control Generator', () => {
       imports: [HttpClientTestingModule],
       providers: [VfModuleControlGenerator,
         GenericFormService,
-        BasicControlGenerator,
+        SharedControllersService,
+        ControlGeneratorUtil,
         AaiService,
         FormBuilder,
         LogService,

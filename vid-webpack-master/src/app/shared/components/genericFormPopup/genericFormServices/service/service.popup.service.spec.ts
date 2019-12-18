@@ -1,6 +1,6 @@
 import {LogService} from "../../../../utils/log/log.service";
 import {NgRedux} from "@angular-redux/store";
-import {BasicControlGenerator} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {HttpClient} from "@angular/common/http";
 import {GenericFormService} from "../../../genericForm/generic-form.service";
@@ -14,6 +14,7 @@ import {FormControlModel} from "../../../../models/formControlModels/formControl
 import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockModalService<T> {}
 
@@ -2053,8 +2054,9 @@ describe('Service popup service', () => {
     TestBed.configureTestingModule({
       providers : [
         ServicePopupService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
         ServiceControlGenerator,
+        SharedControllersService,
         DefaultDataGeneratorService,
         GenericFormService,
         FormBuilder,

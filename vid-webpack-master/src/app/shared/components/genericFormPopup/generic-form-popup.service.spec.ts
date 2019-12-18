@@ -5,7 +5,7 @@ import {GenericFormPopupService} from "./generic-form-popup.service";
 import {IframeService} from "../../utils/iframe.service";
 import {NgRedux} from "@angular-redux/store";
 import {ServicePopupService} from "./genericFormServices/service/service.popup.service";
-import {BasicControlGenerator} from "../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../genericForm/formControlsServices/control.generator.util.service";
 import {AaiService} from "../../services/aaiService/aai.service";
 import {ServiceControlGenerator} from "../genericForm/formControlsServices/service.control.generator";
 import {GenericFormService} from "../genericForm/generic-form.service";
@@ -21,6 +21,7 @@ import {VfModulePopupService} from "./genericFormServices/vfModule/vfModule.popu
 import {VfModuleControlGenerator} from "../genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
 import {FeatureFlagsService} from "../../services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "./genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {SharedControllersService} from "../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T>{
   getState() {
@@ -958,7 +959,8 @@ describe('Generic Form popup Service', () => {
         FormBuilder,
         IframeService,
         ServicePopupService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
+        SharedControllersService,
         ServiceControlGenerator,
         GenericFormService,
         LogService,

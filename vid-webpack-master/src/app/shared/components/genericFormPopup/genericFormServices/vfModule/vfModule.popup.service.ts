@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {FormPopupDetails, PopupType} from "../../../../models/formControlModels/formPopupDetails.model";
-import {BasicControlGenerator} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {AppState} from "../../../../store/reducers";
 import {NgRedux} from "@angular-redux/store";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
@@ -20,6 +20,7 @@ import {VfModuleControlGenerator} from "../../../genericForm/formControlsService
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import * as _ from 'lodash';
 import {createVFModuleInstance, updateVFModuleInstance} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 export abstract class VfModulePopupServiceBase {
   dynamicInputs: any;
@@ -43,7 +44,8 @@ export abstract class VfModulePopupServiceBase {
   };
 
   protected constructor(
-    protected _basicControlGenerator: BasicControlGenerator,
+    protected _basicControlGenerator: ControlGeneratorUtil,
+    protected _sharedControllersService : SharedControllersService,
     protected _vfModuleControlGenerator: VfModuleControlGenerator,
     protected _iframeService: IframeService,
     protected _defaultDataGeneratorService: DefaultDataGeneratorService,
@@ -156,14 +158,15 @@ export abstract class VfModulePopupServiceBase {
 export class VfModulePopupService extends VfModulePopupServiceBase implements GenericPopupInterface {
 
 
-  constructor(_basicControlGenerator: BasicControlGenerator,
+  constructor(_basicControlGenerator: ControlGeneratorUtil,
+              _sharedControllersService : SharedControllersService,
               _vfModuleControlGenerator: VfModuleControlGenerator,
               _iframeService: IframeService,
               _defaultDataGeneratorService: DefaultDataGeneratorService,
               _aaiService: AaiService,
               _basicPopupService : BasicPopupService,
               _store: NgRedux<AppState>) {
-    super(_basicControlGenerator, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
+    super(_basicControlGenerator, _sharedControllersService, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
 
   }
 

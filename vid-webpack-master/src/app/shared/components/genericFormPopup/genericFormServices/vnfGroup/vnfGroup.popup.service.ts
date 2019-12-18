@@ -6,7 +6,7 @@ import {FormGroup} from "@angular/forms";
 import {ModelInformationItem} from "../../../model-information/model-information.component";
 import {ServiceModel} from "../../../../models/serviceModel";
 import {Subject} from "rxjs/Subject";
-import {BasicControlGenerator} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {IframeService} from "../../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
@@ -34,7 +34,7 @@ export class VnfGroupPopupService implements GenericPopupInterface{
   isUpdateMode: boolean;
 
   constructor(
-    private _basicControlGenerator: BasicControlGenerator,
+    private _basicControlGenerator: ControlGeneratorUtil,
     private _vnfGroupControlGenerator: VnfGroupControlGenerator,
     private _iframeService: IframeService,
     private _defaultDataGeneratorService: DefaultDataGeneratorService,

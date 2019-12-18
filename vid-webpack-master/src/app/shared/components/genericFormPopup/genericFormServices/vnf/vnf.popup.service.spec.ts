@@ -9,12 +9,13 @@ import {AaiService} from "../../../../services/aaiService/aai.service";
 import {LogService} from "../../../../utils/log/log.service";
 import {HttpClient} from "@angular/common/http";
 import {VnfPopupService} from "./vnf.popup.service";
-import {BasicControlGenerator} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {VnfControlGenerator} from "../../../genericForm/formControlsServices/vnfGenerator/vnf.control.generator";
 import {UUIDData} from "../../generic-form-popup.component";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {VfModuleUpgradePopupService} from "../vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {}
 
@@ -2260,7 +2261,8 @@ describe('vnf new popup service', () => {
         BasicPopupService,
         VfModulePopupService,
         VfModuleUpgradePopupService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
+        SharedControllersService,
         VnfControlGenerator,
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},

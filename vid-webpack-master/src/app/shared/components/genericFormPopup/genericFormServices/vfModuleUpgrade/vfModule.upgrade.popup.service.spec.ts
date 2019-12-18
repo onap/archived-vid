@@ -1,10 +1,10 @@
 import {LogService} from "../../../../utils/log/log.service";
 import {NgRedux} from "@angular-redux/store";
 import {
-  BasicControlGenerator,
+  ControlGeneratorUtil,
   SDN_C_PRE_LOAD,
   SUPPLEMENTARY_FILE
-} from "../../../genericForm/formControlsServices/basic.control.generator";
+} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {HttpClient} from "@angular/common/http";
 import {GenericFormService} from "../../../genericForm/generic-form.service";
@@ -25,6 +25,7 @@ import {VfModuleActions} from "../../../../storeUtil/utils/vfModule/vfModule.act
 import {ServiceActions} from "../../../../storeUtil/utils/service/service.actions";
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import * as _ from "lodash";
+import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
 class MockModalService<T> {}
 
@@ -72,7 +73,8 @@ describe('VFModule popup service', () => {
     TestBed.configureTestingModule({
       providers: [
         VfModuleUpgradePopupService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
+        SharedControllersService,
         VfModuleControlGenerator,
         DefaultDataGeneratorService,
         GenericFormService,

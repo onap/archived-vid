@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {FormPopupDetails, PopupType} from "../../../../models/formControlModels/formPopupDetails.model";
-import {BasicControlGenerator} from "../../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {NetworkInstance} from "../../../../models/networkInstance";
 import {AppState} from "../../../../store/reducers";
 import {NgRedux} from "@angular-redux/store";
@@ -33,7 +33,7 @@ export class NetworkPopupService implements GenericPopupInterface {
   isUpdateMode: boolean;
 
 
-  constructor(private _basicControlGenerator: BasicControlGenerator,
+  constructor(private _basicControlGenerator: ControlGeneratorUtil,
               private _networkControlGenerator: NetworkControlGenerator,
               private _iframeService: IframeService,
               private _defaultDataGeneratorService: DefaultDataGeneratorService,

@@ -1,7 +1,7 @@
 import {NetworkPopupService} from "./network/network.popup.service";
 import {LogService} from "../../../utils/log/log.service";
 import {NgRedux} from "@angular-redux/store";
-import {BasicControlGenerator} from "../../genericForm/formControlsServices/basic.control.generator";
+import {ControlGeneratorUtil} from "../../genericForm/formControlsServices/control.generator.util.service";
 import {AaiService} from "../../../services/aaiService/aai.service";
 import {HttpClient} from "@angular/common/http";
 import {NetworkControlGenerator} from "../../genericForm/formControlsServices/networkGenerator/network.control.generator";
@@ -1984,7 +1984,7 @@ describe('Basic popup service', () => {
     TestBed.configureTestingModule({
       providers : [
         NetworkPopupService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
         NetworkControlGenerator,
         DefaultDataGeneratorService,
         GenericFormService,

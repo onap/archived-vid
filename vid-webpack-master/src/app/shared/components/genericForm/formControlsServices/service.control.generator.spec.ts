@@ -2,7 +2,7 @@ import {getTestBed, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {NgRedux} from '@angular-redux/store';
 import {FormControlNames, ServiceControlGenerator} from "./service.control.generator";
-import {BasicControlGenerator} from "./basic.control.generator";
+import {ControlGeneratorUtil} from "./control.generator.util.service";
 import {AaiService} from "../../../services/aaiService/aai.service";
 import {GenericFormService} from "../generic-form.service";
 import {FormBuilder} from "@angular/forms";
@@ -13,6 +13,7 @@ import {DropdownFormControl} from "../../../models/formControlModels/dropdownFor
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
 import each from 'jest-each';
 import {VidNotions} from "../../../models/vidNotions";
+import {SharedControllersService} from "./sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
   getState() {
@@ -912,7 +913,8 @@ describe('Service Control Generator', () => {
       imports: [HttpClientTestingModule],
       providers: [ServiceControlGenerator,
         GenericFormService,
-        BasicControlGenerator,
+        ControlGeneratorUtil,
+        SharedControllersService,
         AaiService,
         FormBuilder,
         LogService,
