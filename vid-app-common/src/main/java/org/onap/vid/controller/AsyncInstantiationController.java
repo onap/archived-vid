@@ -92,7 +92,7 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
         if (serviceModelId == null) {
             return asyncInstantiationBL.getAllServicesInfo();
         } else {
-            return  asyncInstantiationRepository.listServicesByServiceModelId(serviceModelId);
+            return  asyncInstantiationRepository.listInstantiatedServicesByServiceModelId(serviceModelId);
         }
     }
 
