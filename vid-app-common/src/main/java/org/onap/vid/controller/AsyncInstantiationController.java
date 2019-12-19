@@ -36,10 +36,8 @@ import org.onap.vid.properties.Features;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
-import org.onap.vid.services.InstantiationTemplatesService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,7 +54,6 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
     public static final String ASYNC_INSTANTIATION = "asyncInstantiation";
 
     protected final AsyncInstantiationBusinessLogic asyncInstantiationBL;
-    protected final InstantiationTemplatesService instantiationTemplates;
     protected final AsyncInstantiationRepository asyncInstantiationRepository;
     private final SystemPropertiesWrapper systemPropertiesWrapper;
 
@@ -68,12 +65,10 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
 
     @Autowired
     public AsyncInstantiationController(AsyncInstantiationBusinessLogic asyncInstantiationBL,
-        InstantiationTemplatesService instantiationTemplates,
         AsyncInstantiationRepository asyncInstantiationRepository, RoleProvider roleProvider,
         FeatureManager featureManager, SystemPropertiesWrapper systemPropertiesWrapper,
         AuditService auditService) {
         this.asyncInstantiationBL = asyncInstantiationBL;
-        this.instantiationTemplates = instantiationTemplates;
         this.asyncInstantiationRepository = asyncInstantiationRepository;
         this.roleProvider = roleProvider;
         this.featureManager = featureManager;
@@ -95,7 +90,6 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
             return  asyncInstantiationRepository.listInstantiatedServicesByServiceModelId(serviceModelId);
         }
     }
-
     @RequestMapping(value = "bulk", method = RequestMethod.POST)
     public MsoResponseWrapper2<List<String>> createBulkOfServices(@RequestBody ServiceInstantiation request, HttpServletRequest httpServletRequest) {
         //Push to DB according the model
@@ -172,11 +166,6 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
         List<UUID> uuids =  asyncInstantiationBL.retryJob(jobId, userId);
 
         return new MsoResponseWrapper2(200, uuids);
-    }
-
-    @GetMapping("templateTopology/{jobId}")
-    public ServiceInstantiation getTemplateTopology(HttpServletRequest request, @PathVariable(value="jobId") UUID jobId) {
-        return instantiationTemplates.getJobRequestAsTemplate(jobId);
     }
 
     @RequestMapping(value = "/auditStatusForRetry/{trackById}", method = RequestMethod.GET)
