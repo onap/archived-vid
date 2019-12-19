@@ -30,11 +30,15 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -176,6 +180,37 @@ public class AsyncInstantiationBusinessLogicImpl implements
             jobService.add(job);
         }
         return uuids;
+    }
+
+    public  HashMap<String, Long> getSummarizedChildrenMap(ServiceInstantiation serviceInstantiation){
+        List<String> existingTypesList = new ArrayList<>();
+        HashMap<String, Long> existingTypesMap;
+        try {
+            BaseResource clonedServiceInstantiation = JACKSON_OBJECT_MAPPER.readValue(JACKSON_OBJECT_MAPPER.writeValueAsBytes(serviceInstantiation), ServiceInstantiation.class);
+
+            existingTypesList = getChildrenList(clonedServiceInstantiation, existingTypesList);
+            existingTypesMap =  (HashMap<String, Long>) existingTypesList.stream().collect(
+                Collectors.groupingBy(
+                    Function.identity(), Collectors.counting()
+                )
+            );
+        }
+        catch (IOException e) {
+            throw new GenericUncheckedException(e);
+        }
+        return existingTypesMap;
+    }
+
+    private List<String> getChildrenList(BaseResource resource, List<String> list){
+        Collection<BaseResource> children = (Collection<BaseResource>) resource.getChildren();
+        if (children.size() != 0){
+            children.forEach( child -> {
+                String childType = child.getModelInfo().getModelType();
+                getChildrenList(child, list);
+                list.add(childType);
+            });
+        }
+        return list;
     }
 
     private ServiceInfo.ServiceAction getAction(ServiceInstantiation request) {

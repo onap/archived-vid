@@ -118,7 +118,6 @@ import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobType;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.command.MsoRequestBuilder;
-import org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator;
 import org.onap.vid.job.impl.JobDaoImpl;
 import org.onap.vid.job.impl.JobSharedData;
 import org.onap.vid.model.Action;
@@ -491,6 +490,17 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         return prepareServiceInstantiation(PROJECT_NAME, isUserProvidedNaming, bulkSize);
     }
 
+    @Test
+    public void getSummarizedMap(){
+        ServiceInstantiation serviceInstantiation = TestUtils.readJsonResourceFileAsObject(
+            "/payload_jsons/templateSummarize4vnfs6vfmodules.json", ServiceInstantiation.class);
+        HashMap<String, Long> childrenMap =  asyncInstantiationBL.getSummarizedChildrenMap(serviceInstantiation);
+        HashMap<String, Long> expectedMap = new HashMap<>();
+        expectedMap.put("vnf", Long.valueOf(4));
+        expectedMap.put("vfModule", Long.valueOf(6));
+        assertEquals(childrenMap,expectedMap);
+
+    }
 
 
     @Test
@@ -1093,14 +1103,6 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         assertEquals(expectedIsRetry, serviceInfo.isRetryEnabled());
     }
 
-    @Test
-    public void givenServiceWithNullTrackByIds_whenReplaceTrackByIds_thenAllLevelsHasTrackByIdWithUUID() {
-        ServiceInstantiation serviceInstantiation = FakeResourceCreator.createServiceWith2InstancesInEachLevel(Action.Create);
-        //assert for the given that all trackById are null
-        assertTrackByIdRecursively(serviceInstantiation, is(nullValue()), new HashSet<>());
-        ServiceInstantiation modifiedServiceInstantiation = asyncInstantiationBL.prepareServiceToBeUnique(serviceInstantiation);
-        assertTrackByIdRecursively(modifiedServiceInstantiation, uuidRegexMatcher, new HashSet<>());
-    }
 
     private void assertTrackByIdRecursively(BaseResource baseResource, org.hamcrest.Matcher matcher, Set<String> usedUuids) {
         assertThat(baseResource.getTrackById(), matcher);
