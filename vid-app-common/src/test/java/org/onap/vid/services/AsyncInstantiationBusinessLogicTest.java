@@ -491,6 +491,17 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         return prepareServiceInstantiation(PROJECT_NAME, isUserProvidedNaming, bulkSize);
     }
 
+    @Test
+    public void getSummarizedMap(){
+        ServiceInstantiation serviceInstantiation = TestUtils.readJsonResourceFileAsObject(
+            "/payload_jsons/templateSummarize4vnfs6vfmodules.json", ServiceInstantiation.class);
+        Map<String, Long> childrenMap =  asyncInstantiationBL.getSummarizedChildrenMap(serviceInstantiation);
+        HashMap<String, Long> expectedMap = new HashMap<>();
+        expectedMap.put("vnf", Long.valueOf(4));
+        expectedMap.put("vfModule", Long.valueOf(6));
+        assertEquals(childrenMap,expectedMap);
+
+    }
 
 
     @Test
