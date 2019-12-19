@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f2b35b7_f4aae8c3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AsyncInstantiationBusinessLogicTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1096,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-19T09:32:27Z",
+      "side": 0,
+      "message": "please restore the test",
+      "revId": "5f8ce4adff724009dad903887cd320a0095c1437",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

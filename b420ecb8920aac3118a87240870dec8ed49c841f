@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b6c336a_fa2d6a40",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AsyncInstantiationBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-19T09:32:27Z",
+      "side": 1,
+      "message": "Return type can be `Map`",
+      "range": {
+        "startLine": 185,
+        "startChar": 12,
+        "endLine": 185,
+        "endChar": 16
+      },
+      "revId": "b420ecb8920aac3118a87240870dec8ed49c841f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9427cd1_6bb76fce",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AsyncInstantiationBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-19T09:32:27Z",
+      "side": 1,
+      "message": "JSON seralization is not needed.",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 177
+      },
+      "revId": "b420ecb8920aac3118a87240870dec8ed49c841f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8884faba_a1464083",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AsyncInstantiationBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-19T09:32:27Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 192,
+        "startChar": 32,
+        "endLine": 192,
+        "endChar": 56
+      },
+      "revId": "b420ecb8920aac3118a87240870dec8ed49c841f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5959add_2515e092",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AsyncInstantiationBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-19T09:32:27Z",
+      "side": 1,
+      "message": "existingTypesCounters",
+      "range": {
+        "startLine": 192,
+        "startChar": 25,
+        "endLine": 192,
+        "endChar": 28
+      },
+      "revId": "b420ecb8920aac3118a87240870dec8ed49c841f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9aba8108_e847e4d6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AsyncInstantiationBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-19T09:32:27Z",
+      "side": 1,
+      "message": "If Collectors is static-imported, then can do:\n\nimport static java.util.stream.Collectors.counting;\nimport static java.util.function.Function.identity;\n\n\nexistingTypesMap \u003d existingTypesList.stream().collect(groupingBy(identity(), counting()));",
+      "range": {
+        "startLine": 193,
+        "startChar": 16,
+        "endLine": 193,
+        "endChar": 26
+      },
+      "revId": "b420ecb8920aac3118a87240870dec8ed49c841f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5d394ee_eecf8ca7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AsyncInstantiationBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-19T09:32:27Z",
+      "side": 1,
+      "message": "why casting?",
+      "range": {
+        "startLine": 205,
+        "startChar": 44,
+        "endLine": 205,
+        "endChar": 70
+      },
+      "revId": "b420ecb8920aac3118a87240870dec8ed49c841f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9108667d_cb599479",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AsyncInstantiationBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-19T09:32:27Z",
+      "side": 1,
+      "message": "CollectinUtils.isNotEmpty() for null-safety",
+      "range": {
+        "startLine": 206,
+        "startChar": 12,
+        "endLine": 206,
+        "endChar": 32
+      },
+      "revId": "b420ecb8920aac3118a87240870dec8ed49c841f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
