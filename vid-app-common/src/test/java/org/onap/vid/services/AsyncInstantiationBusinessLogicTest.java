@@ -496,9 +496,10 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         ServiceInstantiation serviceInstantiation = TestUtils.readJsonResourceFileAsObject(
             "/payload_jsons/templateSummarize4vnfs6vfmodules.json", ServiceInstantiation.class);
         Map<String, Long> childrenMap =  asyncInstantiationBL.getSummarizedChildrenMap(serviceInstantiation);
-        HashMap<String, Long> expectedMap = new HashMap<>();
-        expectedMap.put("vnf", Long.valueOf(4));
-        expectedMap.put("vfModule", Long.valueOf(6));
+        Map<String, Long> expectedMap = ImmutableMap.of(
+            "vnf", 4L,
+            "vfModule", 6L
+        );
         assertEquals(childrenMap,expectedMap);
 
     }
