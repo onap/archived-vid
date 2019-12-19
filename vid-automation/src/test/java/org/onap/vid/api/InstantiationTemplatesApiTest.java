@@ -71,7 +71,7 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
     }
 
     protected String templateTopologyUri(String jobId) {
-        return uri.toASCIIString() + "/asyncInstantiation/templateTopology/" + jobId;
+        return uri.toASCIIString() + "/instantiationTemplates/templateTopology/" + jobId;
     }
 
     @Test
