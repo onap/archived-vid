@@ -152,7 +152,7 @@ function loadDrawingBoardWithRecreateMode() {
     'fixture:../support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__service_model.json')
   .as('serviceModel');
 
-  cy.route(`**/asyncInstantiation/${templateTopologyEndpoint}/${templateUuid}`,
+  cy.route(`**/instantiationTemplates/${templateTopologyEndpoint}/${templateUuid}`,
     'fixture:../../../vid-automation/src/test/resources/asyncInstantiation/templates__instance_template.json')
   .as('templateTopology');
 
