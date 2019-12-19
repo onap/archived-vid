@@ -20,9 +20,10 @@
 
 package org.onap.vid.services;
 
-import static java.util.stream.Collectors.counting;
 import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Stream.concat;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
 import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
@@ -33,16 +34,13 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import org.apache.commons.collections.CollectionUtils;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
@@ -69,6 +67,7 @@ import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.MsoUtil;
 import org.onap.vid.mso.RestObject;
+import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.RequestStatus;
 import org.onap.vid.properties.Features;
@@ -186,26 +185,25 @@ public class AsyncInstantiationBusinessLogicImpl implements
         return uuids;
     }
 
-    public  Map<String, Long> getSummarizedChildrenMap(ServiceInstantiation serviceInstantiation){
-        List<String> existingTypesList = new ArrayList<>();
-        Map<String, Long> existingTypesCounters;
+    public Map<String, Long> getSummarizedChildrenMap(ServiceInstantiation serviceInstantiation){
+        Stream<String> existingTypesStream =
+            allDeepChildResources(serviceInstantiation)
+                .map(BaseResource::getModelInfo)
+                .filter(Objects::nonNull)
+                .map(ModelInfo::getModelType);
 
-        existingTypesList = getChildrenList(serviceInstantiation, existingTypesList);
-        existingTypesCounters =  existingTypesList.stream().collect(groupingBy(identity(), counting()));
+        Map<String, Long> existingTypesCounters =
+            existingTypesStream.collect(groupingBy(identity(), counting()));
 
         return existingTypesCounters;
     }
 
-    private List<String> getChildrenList(BaseResource resource, List<String> list){
-        Collection<? extends BaseResource> children =  resource.getChildren();
-        if (CollectionUtils.isNotEmpty(children)){
-            children.forEach( child -> {
-                String childType = child.getModelInfo().getModelType();
-                getChildrenList(child, list);
-                list.add(childType);
-            });
-        }
-        return list;
+    private Stream<BaseResource> allDeepChildResources(BaseResource resource) {
+        return resource
+            .getChildren()
+            .stream()
+            .map(it -> concat(Stream.of(it), allDeepChildResources(it)))
+            .flatMap(identity());
     }
 
     private ServiceInfo.ServiceAction getAction(ServiceInstantiation request) {
