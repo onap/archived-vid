@@ -204,6 +204,7 @@ public class AsyncInstantiationBusinessLogicImpl implements
             .stream()
             .map(it -> concat(Stream.of(it), allDeepChildResources(it)))
             .flatMap(identity());
+
     }
 
     private ServiceInfo.ServiceAction getAction(ServiceInstantiation request) {

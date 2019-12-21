@@ -73,5 +73,21 @@
         "modelType": "vnf"
       }
     }
+  },
+  "networks": {
+    "Network-1": {
+      "instanceName": "myBestNetwork",
+      "instanceId": "884b373f-41c0-4a96-9785-7f075cb4ae9d",
+      "modelInfo": {
+        "modelType": "network"
+      }
+    },
+    "Network-2": {
+      "instanceName": "myBestNetwork2",
+      "instanceId": "884b373f-41c0-4a96-9785-7f075cb4ae9d",
+      "modelInfo": {
+        "modelType": "network"
+      }
+    }
   }
 }
