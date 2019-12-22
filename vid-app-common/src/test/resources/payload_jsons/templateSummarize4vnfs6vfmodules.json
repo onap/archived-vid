@@ -21,7 +21,8 @@
           "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi": {
             "modelInfo": {
               "modelType": "vfModule"
-            }
+            },
+            "volumeGroupName": "my_special_hvf6arlba007_lba_dj_01_vol"
           }
         }
       }
