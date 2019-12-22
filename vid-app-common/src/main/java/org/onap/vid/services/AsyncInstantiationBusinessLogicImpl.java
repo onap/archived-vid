@@ -20,11 +20,13 @@
 
 package org.onap.vid.services;
 
+import static com.google.common.collect.Streams.concat;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Stream.concat;
+import static java.util.stream.Stream.empty;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.onap.vid.controller.MsoController.SVC_INSTANCE_ID;
 import static org.onap.vid.controller.MsoController.VNF_INSTANCE_ID;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
@@ -41,7 +43,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SessionFactory;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.AaiClientInterface;
@@ -63,6 +64,7 @@ import org.onap.vid.model.ResourceInfo;
 import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.serviceInstantiation.BaseResource;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
+import org.onap.vid.model.serviceInstantiation.VfModule;
 import org.onap.vid.mso.MsoBusinessLogicImpl;
 import org.onap.vid.mso.MsoProperties;
 import org.onap.vid.mso.MsoUtil;
@@ -188,14 +190,35 @@ public class AsyncInstantiationBusinessLogicImpl implements
     public Map<String, Long> getSummarizedChildrenMap(ServiceInstantiation serviceInstantiation){
         Stream<String> existingTypesStream =
             allDeepChildResources(serviceInstantiation)
-                .map(BaseResource::getModelInfo)
-                .filter(Objects::nonNull)
-                .map(ModelInfo::getModelType);
+                .map(this::getModelTypes)
+                .flatMap(identity());
 
         Map<String, Long> existingTypesCounters =
             existingTypesStream.collect(groupingBy(identity(), counting()));
 
         return existingTypesCounters;
+    }
+
+    private Stream<String> getModelTypes(BaseResource resource) {
+        return concat(
+            Stream.of(resource)
+                .map(BaseResource::getModelInfo)
+                .filter(Objects::nonNull)
+                .map(ModelInfo::getModelType),
+            streamVolumeGroups(resource)
+        );
+    }
+
+    private Stream<String> streamVolumeGroups(BaseResource resource) {
+        return hasVolumeGroup(resource)
+            ? Stream.of("volumeGroup")
+            : empty();
+    }
+
+    private boolean hasVolumeGroup(BaseResource resource) {
+        return
+            resource instanceof VfModule
+            && isNotEmpty(((VfModule) resource).getVolumeGroupInstanceName());
     }
 
     private Stream<BaseResource> allDeepChildResources(BaseResource resource) {
@@ -216,7 +239,7 @@ public class AsyncInstantiationBusinessLogicImpl implements
 
 
     private String getOptimisticUniqueServiceInstanceName(String instanceName) {
-        return StringUtils.isNotEmpty(instanceName) ? getUniqueNameFromDbOnly(instanceName) : instanceName;
+        return isNotEmpty(instanceName) ? getUniqueNameFromDbOnly(instanceName) : instanceName;
     }
 
     protected ServiceInfo createServiceInfo(String userId, ServiceInstantiation serviceInstantiation, UUID jobId, UUID templateId, Date createdBulkDate, String optimisticUniqueServiceInstanceName, ServiceInfo.ServiceAction serviceAction) {

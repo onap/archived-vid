@@ -499,6 +499,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         Map<String, Long> expectedMap = ImmutableMap.of(
             "vnf", 4L,
             "vfModule", 6L,
+            "volumeGroup", 1L,
             "network", 2L
         );
         assertEquals(childrenMap,expectedMap);
