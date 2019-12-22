@@ -1,0 +1,89 @@
+{
+  "action": "Create",
+  "instanceName": "vProbe_NC_Service_DG_new_SI",
+  "modelInfo": {
+    "modelType": "service"
+  },
+  "vnfs": {
+    "vProbe_NC_VNF 0": {
+      "modelInfo": {
+        "modelType": "vnf"
+      },
+      "vfModules": {
+        "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0": {
+          "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg": {
+            "modelInfo": {
+              "modelType": "vfModule"
+            }
+          }
+        },
+        "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
+          "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi": {
+            "modelInfo": {
+              "modelType": "vfModule"
+            },
+            "volumeGroupName": "my_first_volume_group"
+          }
+        }
+      }
+    },
+    "2017-488_PASQUALE-vPE 0:0001": {
+      "vfModules": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot": {
+            "modelInfo": {
+              "modelType": "vfModule"
+            }
+          }
+        },
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1fshmc": {
+            "modelInfo": {
+              "modelType": "vfModule"
+            },
+            "volumeGroupName": "my_second_volume_group"
+
+          }
+        }
+      },
+      "modelInfo": {
+        "modelType": "vnf"
+      }
+    },
+    "2017-488_PASQUALE-vPE 0:0002": {
+      "vfModules": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot": {
+            "modelInfo": {
+              "modelType": "vfModule"
+            }
+          }
+        },
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1fshmc": {
+            "modelInfo": {
+              "modelType": "vfModule"
+            }
+          }
+        },
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-2": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1fshmc": {
+            "modelInfo": {
+              "modelType": "vfModule"
+            }
+          }
+        },
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-3": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1fshmc": {
+            "modelInfo": {
+              "modelType": "vfModule"
+            }
+          }
+        }
+      },
+      "modelInfo": {
+        "modelType": "vnf"
+      }
+    }
+  }
+}

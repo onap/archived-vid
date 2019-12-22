@@ -1,0 +1,13 @@
+{
+  "action": "Create",
+  "instanceName": "vProbe_NC_Service_DG_new_SI",
+  "modelInfo": {
+    "modelType": "service"
+  },
+  "vrfs": {
+    "vrf-1": {
+      "vpns": {
+      }
+    }
+  }
+}

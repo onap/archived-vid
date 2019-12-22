@@ -1,0 +1,27 @@
+{
+  "action": "Create",
+  "instanceName": "vProbe_NC_Service_DG_new_SI",
+  "modelInfo": {
+    "modelType": "service"
+  },
+  "networks": {
+    "Network-1": {
+      "instanceName": "myBestNetwork",
+      "modelInfo": {
+        "modelType": "network"
+      }
+    },
+     "Network-2": {
+      "instanceName": "myBestNetwork2",
+      "modelInfo": {
+        "modelType": "network"
+      }
+    },
+     "Network-3": {
+      "instanceName": "myBestNetwork3",
+      "modelInfo": {
+        "modelType": "network"
+      }
+    }
+  }
+}

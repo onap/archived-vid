@@ -491,17 +491,21 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         return prepareServiceInstantiation(PROJECT_NAME, isUserProvidedNaming, bulkSize);
     }
 
-    @Test
-    public void getSummarizedMap(){
+    @DataProvider
+    public static Object[][] dataProviderSummarizedMap() {
+        return new Object[][]{
+            {"/payload_jsons/templateSummarize4vnfs6vfmodules.json", ImmutableMap.of("vnf", 4L, "vfModule", 6L, "volumeGroup", 1L, "network", 2L)},
+            {"/payload_jsons/templateSummarize3Vnfs8Vfmodule2VolumeGroups.json", ImmutableMap.of("vnf", 3L, "vfModule", 8L, "volumeGroup", 2L)},
+            {"/payload_jsons/templateSummarize3Networks.json", ImmutableMap.of("network", 3L)},
+
+        };
+    }
+
+    @Test(dataProvider = "dataProviderSummarizedMap")
+    public void getSummarizedMap(String pathInResource, Map<String, Long> expectedMap){
         ServiceInstantiation serviceInstantiation = TestUtils.readJsonResourceFileAsObject(
-            "/payload_jsons/templateSummarize4vnfs6vfmodules.json", ServiceInstantiation.class);
+            pathInResource, ServiceInstantiation.class);
         Map<String, Long> childrenMap =  asyncInstantiationBL.getSummarizedChildrenMap(serviceInstantiation);
-        Map<String, Long> expectedMap = ImmutableMap.of(
-            "vnf", 4L,
-            "vfModule", 6L,
-            "volumeGroup", 1L,
-            "network", 2L
-        );
         assertEquals(childrenMap,expectedMap);
 
     }
