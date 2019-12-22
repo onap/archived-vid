@@ -10,7 +10,7 @@ import {ServiceInstanceActions} from "../../../shared/models/serviceInstanceActi
 export class  DrawingBoardTreeService {
   constructor(private store: NgRedux<AppState>){}
   isVFModuleMissingData(node: ITreeNode, serviceModelId : string): boolean {
-    if(node.data.type === 'VFmodule' &&!_.isNil(this.store.getState().service.serviceInstance[serviceModelId].vnfs) &&  !_.isNil(this.store.getState().service.serviceInstance[serviceModelId].vnfs[node.parent.data.vnfStoreKey])){
+    if(node.data.type === 'VFmodule' &&!_.isNil(this.store.getState().service.serviceInstance[serviceModelId].vnfs) &&  node.parent && !_.isNil(this.store.getState().service.serviceInstance[serviceModelId].vnfs[node.parent.data.vnfStoreKey])){
       if(!_.isNil(this.store.getState().service.serviceInstance[serviceModelId].vnfs[node.parent.data.vnfStoreKey].vfModules)
         && !_.isNil(this.store.getState().service.serviceInstance[serviceModelId].vnfs[node.parent.data.vnfStoreKey].vfModules[node.data.modelName])
         && !_.isNil(this.store.getState().service.serviceInstance[serviceModelId].vnfs[node.parent.data.vnfStoreKey].vfModules[node.data.modelName][node.data.dynamicModelName])){
