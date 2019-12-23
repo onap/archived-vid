@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c07ab1c0_a74b766e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/utils/DaoUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2019-12-23T11:07:03Z",
+      "side": 1,
+      "message": "should be static",
+      "revId": "c7658c97d88bd6c9c9d051283b3e999d3f77b073",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
