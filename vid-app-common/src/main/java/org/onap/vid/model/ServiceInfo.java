@@ -24,10 +24,12 @@ package org.onap.vid.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -41,6 +43,8 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 import org.hibernate.annotations.Type;
 import org.onap.portalsdk.core.domain.support.DomainVo;
 import org.onap.vid.job.Job;
+import org.onap.vid.job.Job.JobStatus;
+import org.onap.vid.utils.DaoUtils.StringToLongMapAttributeConverter;
 
 /*
  The following 2 annotations let hibernate to update only fields that actually have been changed.
@@ -91,17 +95,19 @@ public class ServiceInfo extends DomainVo {
     private String serviceModelVersion;
     private Date createdBulkDate;
     private ServiceAction action;
+    private Map<String, Long> requestSummary;
 
     public ServiceInfo(){
 
     }
 
-    public ServiceInfo(String userId, Boolean aLaCarte, Job.JobStatus jobStatus, boolean pause, UUID jobId, UUID templateId,
-                       String owningEntityId, String owningEntityName, String project, String aicZoneId, String aicZoneName,
-                       String tenantId, String tenantName, String regionId, String regionName, String serviceType,
-                       String subscriberName, String subscriberId, String serviceInstanceId, String serviceInstanceName,
-                       String serviceModelId, String serviceModelName, String serviceModelVersion, Date createdBulkDate,
-                       ServiceAction action, boolean retryEnabled) {
+    public ServiceInfo(String userId, Boolean aLaCarte, JobStatus jobStatus, boolean pause, UUID jobId,
+        UUID templateId,
+        String owningEntityId, String owningEntityName, String project, String aicZoneId, String aicZoneName,
+        String tenantId, String tenantName, String regionId, String regionName, String serviceType,
+        String subscriberName, String subscriberId, String serviceInstanceId, String serviceInstanceName,
+        String serviceModelId, String serviceModelName, String serviceModelVersion, Date createdBulkDate,
+        ServiceAction action, boolean retryEnabled, Map<String, Long> requestSummary) {
         this.userId = userId;
         this.aLaCarte = aLaCarte;
         this.jobStatus = jobStatus;
@@ -128,6 +134,7 @@ public class ServiceInfo extends DomainVo {
         this.createdBulkDate = createdBulkDate;
         this.action = action;
         this.retryEnabled = retryEnabled;
+        this.requestSummary = requestSummary;
     }
 
     @Column(name = "JOB_ID", columnDefinition = "CHAR(36)")
@@ -285,6 +292,12 @@ public class ServiceInfo extends DomainVo {
     @Enumerated(EnumType.STRING)
     public ServiceAction getAction() {
         return action;
+    }
+
+    @Column(name="REQUEST_SUMMARY")
+    @Convert(converter = StringToLongMapAttributeConverter.class)
+    public Map<String, Long> getRequestSummary() {
+        return requestSummary;
     }
 
     @Id
@@ -454,6 +467,10 @@ public class ServiceInfo extends DomainVo {
 
     public void setAction(ServiceAction action) { this.action = action; }
 
+    public void setRequestSummary(Map<String, Long> requestSummary) {
+        this.requestSummary = requestSummary;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -488,6 +505,7 @@ public class ServiceInfo extends DomainVo {
                 Objects.equals(getServiceModelName(), that.getServiceModelName()) &&
                 Objects.equals(getServiceModelVersion(), that.getServiceModelVersion()) &&
                 Objects.equals(getCreatedBulkDate(), that.getCreatedBulkDate()) &&
+                Objects.equals(getRequestSummary(), that.getRequestSummary()) &&
                 getAction() == that.getAction();
     }
 
@@ -497,6 +515,6 @@ public class ServiceInfo extends DomainVo {
                 getStatusModifiedDate(), isHidden(), isPause(), isRetryEnabled(), getDeletedAt(), getOwningEntityId(), getOwningEntityName(),
                 getProject(), getAicZoneId(), getAicZoneName(), getTenantId(), getTenantName(), getRegionId(), getRegionName(), getServiceType(),
                 getSubscriberName(), getSubscriberId(), getServiceInstanceId(), getServiceInstanceName(), getServiceModelId(), getServiceModelName(),
-                getServiceModelVersion(), getCreatedBulkDate(), getAction());
+                getServiceModelVersion(), getCreatedBulkDate(), getAction(), getRequestSummary());
     }
 }
