@@ -1331,13 +1331,6 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             Assert.assertEquals(Get.byTestId("model-item-value-serviceName").getText(), serviceInstanceName, "Service name should be shown in vf module");
         }
 
-        if (serviceData.isALaCarte) {
-            String lcpRegion = "hvf6";
-            Wait.waitByClassAndText("lcpRegionOption", lcpRegion, 30);
-            viewEditPage.selectLcpRegion(lcpRegion, AIC);
-            browseASDCPage.selectTenant("bae71557c5bb4d5aac6743a4e5f1d054");
-        }
-
         validateDynamicFields(serviceData.vfData.dynamicFields);
 
         uploadSupplementaryFile("invalid-file.json", false, browseASDCPage, setButtonTestId);

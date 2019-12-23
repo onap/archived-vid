@@ -215,7 +215,7 @@ describe('A la carte', function () {
       });
     });
 
-    it(`VFModule a-la-carte`, () => {
+    it.only(`VFModule a-la-carte`, () => {
       var timeBomb = new Date('12/09/2018');
       if (new Date() < timeBomb) {
         return;

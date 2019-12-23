@@ -964,8 +964,6 @@ describe('VFModule Control Generator', () => {
 
     const mandatoryControls : string[] = [
       FormControlNames.INSTANCE_NAME,
-      FormControlNames.LCPCLOUD_REGION_ID,
-      FormControlNames.TENANT_ID,
       FormControlNames.ROLLBACK_ON_FAILURE,
     ];
 
@@ -1055,14 +1053,12 @@ describe('VFModule Control Generator', () => {
     const orderedControls : string[] = [
       FormControlNames.INSTANCE_NAME,
       FormControlNames.VOLUME_GROUP_NAME,
-      FormControlNames.LCPCLOUD_REGION_ID,
       FormControlNames.LEGACY_REGION,
-      FormControlNames.TENANT_ID,
       FormControlNames.ROLLBACK_ON_FAILURE,
       SDN_C_PRE_LOAD,
     ];
 
-    expect(controls.length).toEqual(7);
+    expect(controls.length).toEqual(5);
     for(let i = 0 ; i < orderedControls.length ; i++) {
      expect(controls[i].controlName).toEqual(orderedControls[i]);
     }
@@ -1083,26 +1079,6 @@ describe('VFModule Control Generator', () => {
     const controls: FormControlModel[] = service.getAlaCarteFormControls(serviceId, vnfStoreKey, vfModuleUUID, uuidData, true);
     return controls;
   }
-
-  test('getAlaCarteFormControls responce with wrong order of controls', () => {
-    const controls:FormControlModel[] = getAlaCarteFormControls();
-
-    const orderedControls : string[] = [
-      FormControlNames.INSTANCE_NAME,
-      FormControlNames.VOLUME_GROUP_NAME,
-      FormControlNames.LCPCLOUD_REGION_ID,
-      FormControlNames.TENANT_ID, // TENANT_ID must be after LEGACY_REGION
-      FormControlNames.LEGACY_REGION,
-      FormControlNames.ROLLBACK_ON_FAILURE,
-      SDN_C_PRE_LOAD,
-    ];
-
-    for(let i = 0 ; i < orderedControls.length ; i++) {
-      if (controls[i].controlName === 'legacyRegion') {
-        expect(orderedControls[i]).toEqual('tenantId');
-      }
-    }
-  });
 
   test('getMacroFormControls should return the correct order of controls', () => {
     const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
@@ -1142,18 +1118,17 @@ describe('VFModule Control Generator', () => {
 
   test(' getAlaCarteFormControls gets null service', () => {
     const controls:FormControlModel[] = getAlaCarteFormControls();
-    expect(controls.length).toEqual(7);
+
 
     const orderedControls : string[] = [
       FormControlNames.INSTANCE_NAME,
       FormControlNames.VOLUME_GROUP_NAME,
-      FormControlNames.LCPCLOUD_REGION_ID,
       FormControlNames.LEGACY_REGION,
-      FormControlNames.TENANT_ID,
       FormControlNames.ROLLBACK_ON_FAILURE,
       SDN_C_PRE_LOAD,
     ];
 
+    expect(controls.length).toEqual(5);
     for(let i = 0 ; i < orderedControls.length ; i++) {
       expect(controls[i].controlName).toEqual(orderedControls[i]);
     }
