@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b7fce64_4232f974",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/InstantiationTemplatesController.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-23T11:35:38Z",
+      "side": 1,
+      "message": "IMO, replace the annotation with @GetMapping(\"templatesInfo\").\n\nThis will change the URI from the suggested\n   GET /vid/instantiationTemplates?serviceModelId\u003d...\nto\n   GET /vid/instantiationTemplates/templatesInfo?serviceModelId\u003d...\n\nThis will also should be reflected in the value of TEMPLATE_INFO_PATH.",
+      "revId": "e2a8162b9c6b70e75a432fe30e9e058f48ccceeb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6d80d00_a6532432",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation.templates.modal.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-23T11:35:38Z",
+      "side": 1,
+      "message": "please rename variable to \"instantiationTemplates\"",
+      "range": {
+        "startLine": 4,
+        "startChar": 8,
+        "endLine": 4,
+        "endChar": 27
+      },
+      "revId": "e2a8162b9c6b70e75a432fe30e9e058f48ccceeb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e708957f_fd088439",
+        "filename": "vid-webpack-master/src/app/shared/server/serviceInfo/serviceInfo.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-23T11:35:38Z",
+      "side": 1,
+      "message": "I suppose this is a mistake? getServicesJobInfo should use SERVICES_JOB_INFO_PATH",
+      "range": {
+        "startLine": 45,
+        "startChar": 52,
+        "endLine": 45,
+        "endChar": 70
+      },
+      "revId": "e2a8162b9c6b70e75a432fe30e9e058f48ccceeb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ee78568_f67d12ba",
+        "filename": "vid-webpack-master/src/app/shared/server/serviceInfo/serviceInfo.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-23T11:35:38Z",
+      "side": 1,
+      "message": "This method should be:\n1) Separated to two, reflecting the backend change:\n    a) getServicesJobInfo without serviceModelId param.\n    b) getTemplatesInfo with a serviceModelId param.\n\n2) The \"getTemplatesInfo\" part should be moved to instantiationTemplates.service.ts. (can be in a different commit.)",
+      "range": {
+        "startLine": 15,
+        "startChar": 2,
+        "endLine": 15,
+        "endChar": 20
+      },
+      "revId": "e2a8162b9c6b70e75a432fe30e9e058f48ccceeb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d35533a1_164db024",
+        "filename": "vid-webpack-master/src/app/shared/utils/constants.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-23T11:35:38Z",
+      "side": 1,
+      "message": "PLease name it consistently, i.e. INSTANTIATION_TEMPLATES_PATH",
+      "range": {
+        "startLine": 96,
+        "startChar": 18,
+        "endLine": 96,
+        "endChar": 37
+      },
+      "revId": "e2a8162b9c6b70e75a432fe30e9e058f48ccceeb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
