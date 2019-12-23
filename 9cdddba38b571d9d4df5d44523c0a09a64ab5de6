@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d84c4697_199c3702",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/AsyncInstantiationALaCarteApiTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-23T20:15:19Z",
+      "side": 0,
+      "message": "why did you delete this test ?",
+      "revId": "9cdddba38b571d9d4df5d44523c0a09a64ab5de6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
