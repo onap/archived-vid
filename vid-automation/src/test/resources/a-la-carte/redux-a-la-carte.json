@@ -13,7 +13,7 @@
           "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
             "instanceName": "mimazepubi",
             "lcpCloudRegionId": "hvf6",
-            "tenantId": "624eb554b0d147c19ff8885341760481",
+            "tenantId": "229bcdc6eaeb4ca59d55221141d01f8e",
             "rollbackOnFailure": "false",
             "sdncPreLoad": false,
             "instanceParams": [{}
@@ -36,9 +36,8 @@
           "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
             "instanceName": "puwesovabe",
             "volumeGroupName": "puwesovabe_vol",
-            "lcpCloudRegionId": "AAIAIC25",
-            "legacyRegion": "my region",
-            "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
+            "lcpCloudRegionId": "hvf6",
+            "tenantId": "229bcdc6eaeb4ca59d55221141d01f8e",
             "rollbackOnFailure": "true",
             "sdncPreLoad": true,
             "instanceParams": [{
@@ -68,7 +67,7 @@
             "instanceName": "bnmgtrx",
             "volumeGroupName": "",
             "lcpCloudRegionId": "hvf6",
-            "tenantId": "624eb554b0d147c19ff8885341760481",
+            "tenantId": "229bcdc6eaeb4ca59d55221141d01f8e",
             "rollbackOnFailure": "false",
             "sdncPreLoad": false,
             "instanceParams": [{}
