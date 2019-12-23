@@ -266,7 +266,8 @@ public class AsyncInstantiationBusinessLogicImpl implements
                 serviceInstantiation.getModelInfo().getModelVersion(),
                 createdBulkDate,
                 serviceAction,
-                false);
+                false,
+                null);
     }
 
     @Override

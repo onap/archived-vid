@@ -20,14 +20,20 @@
 
 package org.onap.vid.utils;
 
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import javax.persistence.AttributeConverter;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.portalsdk.core.domain.FusionObject;
-
-import java.util.HashMap;
-import java.util.function.Function;
+import org.onap.vid.exceptions.GenericUncheckedException;
 
 public class DaoUtils {
 
@@ -69,5 +75,39 @@ public class DaoUtils {
         HashMap<String, Object> props = new HashMap<>();
         props.put(FusionObject.Parameters.PARAM_USERID, 0);
         return props;
+    }
+
+    public static class StringToLongMapAttributeConverter extends JsonAttributeConverter<Map<String, Long>> {
+        @Override
+        public TypeReference<Map<String, Long>> getTypeReference() {
+            return new TypeReference<Map<String, Long>>() {};
+        }
+    }
+
+    private static abstract class JsonAttributeConverter<T> implements AttributeConverter<T, String> {
+
+        abstract public TypeReference<T> getTypeReference();
+
+        @Override
+        public String convertToDatabaseColumn(T attribute) {
+            try {
+                return attribute == null
+                    ? null
+                    : JACKSON_OBJECT_MAPPER.writeValueAsString(attribute);
+            } catch (JsonProcessingException e) {
+                return ExceptionUtils.rethrow(e);
+            }
+        }
+
+        @Override
+        public T convertToEntityAttribute(String dbData) {
+            try {
+                return dbData == null
+                    ? null
+                    : JACKSON_OBJECT_MAPPER.readValue(dbData, getTypeReference());
+            } catch (JsonProcessingException e) {
+                return ExceptionUtils.rethrow(e);
+            }
+        }
     }
 }

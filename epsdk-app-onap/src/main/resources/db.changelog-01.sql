@@ -318,3 +318,8 @@ INSERT IGNORE `fn_user_role` VALUES (1,20,NULL,1);
 INSERT IGNORE `fn_user_role` VALUES (1,21,NULL,1);
 INSERT IGNORE `fn_user_role` VALUES (1,22,NULL,1);
 UPDATE `fn_app` SET `APP_IMAGE_URL`=null,`APP_URL`=null,`APP_ALTERNATE_URL`=null WHERE `APP_ID`=1;
+
+
+--changeset vid:service_info_request_summary
+ALTER TABLE `vid_openecomp_epsdk`.`vid_service_info`
+  ADD COLUMN `REQUEST_SUMMARY` VARCHAR(400) NULL DEFAULT NULL COLLATE 'utf8_bin';
