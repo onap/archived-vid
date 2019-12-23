@@ -42,11 +42,6 @@ function addALaCarteVfModule(vnfName: string, vfModuleName: string, instanceName
           cy.getElementByDataTestsId('volumeGroupName').clear();
         }
       }).then(() => {
-        cy.selectDropdownOptionByText('lcpRegion', lcpRegion);
-        if (legacyRegion) {
-          cy.typeToInput("lcpRegionText", legacyRegion);
-        }
-        cy.selectDropdownOptionByText('tenant', tenant);
         cy.selectDropdownOptionByText('rollback', String(rollback));
         if (sdncPreLoad) {
           cy.getElementByDataTestsId('sdncPreLoad').check();

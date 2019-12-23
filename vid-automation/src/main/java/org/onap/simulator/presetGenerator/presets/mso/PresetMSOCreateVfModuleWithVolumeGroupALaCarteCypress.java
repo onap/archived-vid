@@ -47,9 +47,9 @@ public class PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress extends Prese
                 "      \"modelCustomizationName\":\"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\"" +
                 "    }," +
                 "    \"cloudConfiguration\":{" +
-                "      \"lcpCloudRegionId\":\"my region\"," +
+                "      \"lcpCloudRegionId\":\"hvf6\"," +
                        addCloudOwnerIfNeeded() +
-                "      \"tenantId\":\"092eb9e8e4b7412e8787dd091bc58e86\"" +
+                "      \"tenantId\":\"229bcdc6eaeb4ca59d55221141d01f8e\"" +
                 "    }," +
                 "    \"requestInfo\":{" +
                 "      \"instanceName\":\"" + select("puwesovabe_vol", "puwesovabe") + "\"," +

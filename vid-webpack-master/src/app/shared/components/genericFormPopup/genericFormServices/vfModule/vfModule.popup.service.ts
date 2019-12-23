@@ -31,11 +31,13 @@ export abstract class VfModulePopupServiceBase {
   uuidData: Object;
   closeDialogEvent: Subject<any> = new Subject<any>();
   isUpdateMode: boolean;
+
   storeVFModule = (that, formValues: any): void => {
     formValues.modelInfo = new ModelInfo(that.model);
     formValues.uuid = formValues.modelInfo.uuid;
     formValues.isMissingData = false;
 
+    formValues = {...formValues, ...that.getParentExtraDetails(that.uuidData.vnfStoreKey, that.uuidData.serviceId)};
     if (!that.uuidData.vFModuleStoreKey) {
       this._store.dispatch(createVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, 0, that.uuidData.vnfStoreKey));
     } else {
@@ -45,7 +47,7 @@ export abstract class VfModulePopupServiceBase {
 
   protected constructor(
     protected _basicControlGenerator: ControlGeneratorUtil,
-    protected _sharedControllersService : SharedControllersService,
+    protected _sharedControllersService: SharedControllersService,
     protected _vfModuleControlGenerator: VfModuleControlGenerator,
     protected _iframeService: IframeService,
     protected _defaultDataGeneratorService: DefaultDataGeneratorService,
@@ -111,9 +113,11 @@ export abstract class VfModulePopupServiceBase {
     return "Module (Heat stack) Instance Details";
   }
 
-  abstract getTitle(isUpdateMode : boolean) : string;
+  abstract getTitle(isUpdateMode: boolean): string;
+
   abstract getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean);
-  abstract getDynamicInputs(UUIDData : Object) : FormControlModel[];
+
+  abstract getDynamicInputs(UUIDData: Object): FormControlModel[];
 
   getGenericFormPopupDetails(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, node: ITreeNode, uuidData: Object, isUpdateMode: boolean): FormPopupDetails {
 
@@ -159,29 +163,29 @@ export class VfModulePopupService extends VfModulePopupServiceBase implements Ge
 
 
   constructor(_basicControlGenerator: ControlGeneratorUtil,
-              _sharedControllersService : SharedControllersService,
+              _sharedControllersService: SharedControllersService,
               _vfModuleControlGenerator: VfModuleControlGenerator,
               _iframeService: IframeService,
               _defaultDataGeneratorService: DefaultDataGeneratorService,
               _aaiService: AaiService,
-              _basicPopupService : BasicPopupService,
+              _basicPopupService: BasicPopupService,
               _store: NgRedux<AppState>) {
     super(_basicControlGenerator, _sharedControllersService, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
 
   }
 
-  getDynamicInputs(UUIDData : Object) : FormControlModel[]{
+  getDynamicInputs(UUIDData: Object): FormControlModel[] {
     let dynamic = this._defaultDataGeneratorService.getArbitraryInputs(this._store.getState().service.serviceHierarchy[UUIDData['serviceId']].vfModules[UUIDData['modelName']].inputs);
     return this.getVFModuleDynamicInputs(dynamic, UUIDData);
   }
 
-  getVFModuleDynamicInputs(dynamicInputs : any, UUIDData : Object) : FormControlModel[] {
-    let result : FormControlModel[] = [];
-    if(dynamicInputs) {
+  getVFModuleDynamicInputs(dynamicInputs: any, UUIDData: Object): FormControlModel[] {
+    let result: FormControlModel[] = [];
+    if (dynamicInputs) {
       let vfModuleInstance = null;
       if (_.has(this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs, UUIDData['vnfStoreKey']) &&
         _.has(this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs[UUIDData['vnfStoreKey']].vfModules, UUIDData['modelName'])) {
-        vfModuleInstance = Object.assign({},this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs[UUIDData['vnfStoreKey']].vfModules[UUIDData['modelName']][UUIDData['vfModuleStoreKey']]);
+        vfModuleInstance = Object.assign({}, this._store.getState().service.serviceInstance[UUIDData['serviceId']].vnfs[UUIDData['vnfStoreKey']].vfModules[UUIDData['modelName']][UUIDData['vfModuleStoreKey']]);
       }
       result = this._basicControlGenerator.getDynamicInputs(dynamicInputs, vfModuleInstance);
     }
@@ -193,7 +197,7 @@ export class VfModulePopupService extends VfModulePopupServiceBase implements Ge
     if (this._store.getState().service.serviceHierarchy[serviceId].service.vidNotions.instantiationType === 'Macro') {
       return this._vfModuleControlGenerator.getMacroFormControls(serviceId, vnfStoreKey, vfModuleStoreKey, this.uuidData, isUpdateMode);
     } else {
-      return this._vfModuleControlGenerator.getAlaCarteFormControls(serviceId, vnfStoreKey, vfModuleStoreKey,  this.uuidData, isUpdateMode);
+      return this._vfModuleControlGenerator.getAlaCarteFormControls(serviceId, vnfStoreKey, vfModuleStoreKey, this.uuidData, isUpdateMode);
     }
   }
 
@@ -206,7 +210,20 @@ export class VfModulePopupService extends VfModulePopupServiceBase implements Ge
     this.onCancel(that, form);
   }
 
-  getTitle(isUpdateMode : boolean) : string {
+  getParentExtraDetails = (vnfStoreKey: string, serviceInstanceId: string): { [key: string]: string | number } => {
+    const vnfInstance = this._store.getState().service.serviceInstance[serviceInstanceId].vnfs[vnfStoreKey];
+    let result = {};
+    if (!_.isNil(vnfInstance)) {
+      result['lcpCloudRegionId'] = vnfInstance['lcpCloudRegionId'];
+      result['tenantId'] = vnfInstance['tenantId'];
+      if (!_.isNil(vnfInstance['legacyRegion']) && Constants.LegacyRegion.MEGA_REGION.indexOf(vnfInstance.lcpCloudRegionId) !== -1) {
+        result['legacyRegion'] = vnfInstance['legacyRegion'];
+      }
+    }
+    return result;
+  };
+
+  getTitle(isUpdateMode: boolean): string {
     return isUpdateMode ? 'Edit Module (Heat stack)' : 'Set new Module (Heat stack)';
   }
 

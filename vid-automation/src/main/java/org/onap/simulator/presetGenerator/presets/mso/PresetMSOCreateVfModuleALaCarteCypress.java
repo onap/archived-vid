@@ -55,7 +55,7 @@ public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOCreateVfMod
                 "    \"cloudConfiguration\":{" +
                 "      \"lcpCloudRegionId\":\"hvf6\"," +
                       addCloudOwnerIfNeeded() +
-                "      \"tenantId\":\"624eb554b0d147c19ff8885341760481\"" +
+                "      \"tenantId\":\"229bcdc6eaeb4ca59d55221141d01f8e\"" +
 
                 "    }," +
                 "    \"requestInfo\":{" +

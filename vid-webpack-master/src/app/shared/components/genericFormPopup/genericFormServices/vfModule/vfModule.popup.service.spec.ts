@@ -14,6 +14,181 @@ import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {AppState} from "../../../../store/reducers";
+
+describe('VFModule popup service', () => {
+  let injector;
+  let service: VfModulePopupService;
+  let genericFormService: GenericFormService
+  let defaultDataGeneratorService: DefaultDataGeneratorService;
+  let fb: FormBuilder;
+  let iframeService: IframeService;
+  let store:  NgRedux<AppState>;
+  beforeAll(done => (async () => {
+    TestBed.configureTestingModule({
+      providers : [
+        VfModulePopupService,
+        ControlGeneratorUtil,
+        SharedControllersService,
+        VfModuleControlGenerator,
+        DefaultDataGeneratorService,
+        GenericFormService,
+        FormBuilder,
+        IframeService,
+        AaiService,
+        LogService,
+        BasicPopupService,
+        {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
+        {provide: NgRedux, useClass: MockReduxStore},
+        {provide: HttpClient, useClass: MockAppStore},
+        {provide: SdcUiServices.ModalService, useClass: MockModalService}
+      ]
+    });
+    await TestBed.compileComponents();
+
+    injector = getTestBed();
+    service = injector.get(VfModulePopupService);
+    genericFormService = injector.get(GenericFormService);
+    defaultDataGeneratorService = injector.get(DefaultDataGeneratorService);
+    fb = injector.get(FormBuilder);
+    iframeService = injector.get(IframeService);
+    store = injector.get(NgRedux)
+  })().then(done).catch(done.fail));
+
+  test('getTitle should return the correct title for edit and create mode', () => {
+    expect(service.getTitle(true)).toBe('Edit Module (Heat stack)');
+    expect(service.getTitle(false)).toBe('Set new Module (Heat stack)');
+  });
+
+  test('getInstance should return new VfModuleInstance', () => {
+    const serviceId : string = '6b528779-44a3-4472-bdff-9cd15ec93450';
+    const vnfStoreKey = null;
+    const vfModuleStoreKey = "VF_vGeraldine 0";
+    let  VfModuleInstance ;
+    VfModuleInstance = service.getInstance(serviceId, vnfStoreKey, vfModuleStoreKey);
+    expect (VfModuleInstance).toBeDefined();
+  });
+
+  test('getSubLeftTitle should return network model name', () => {
+    service.model = {
+      'name' : 'Model name'
+    };
+    expect(service.getSubLeftTitle()).toBe('Model name');
+  });
+
+  test('getSubRightTitle should return popup type', () => {
+    expect(service.getSubRightTitle()).toBe('Module (Heat stack) Instance Details');
+  });
+
+  test('getModelInformation should update modelInformations', () => {
+    const serviceId: string = '6b528779-44a3-4472-bdff-9cd15ec93450';
+    const vfModuleModelName: string = '2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1';
+
+    service.getModelInformation(serviceId, vfModuleModelName);
+    expect(service.modelInformations.length).toEqual(15);
+    expect(service.modelInformations[0].label).toEqual("Subscriber Name");
+    expect(service.modelInformations[0].values).toEqual(['SILVIA ROBBINS']);
+
+    expect(service.modelInformations[1].label).toEqual("Service Name");
+    expect(service.modelInformations[1].values).toEqual(['action-data']);
+
+    expect(service.modelInformations[2].label).toEqual("Service Instance Name");
+    expect(service.modelInformations[2].values).toEqual(['InstanceName']);
+
+    expect(service.modelInformations[3].label).toEqual("Model Name");
+    expect(service.modelInformations[3].values).toEqual(['2017488PasqualeVpe..PASQUALE_vRE_BV..module-1']);
+
+    expect(service.modelInformations[4].label).toEqual("Model version");
+    expect(service.modelInformations[4].values).toEqual(['6']);
+
+    expect(service.modelInformations[5].label).toEqual("Description");
+    expect(service.modelInformations[5].values).toEqual([null]);
+
+    expect(service.modelInformations[6].label).toEqual("Category");
+    expect(service.modelInformations[6].values).toEqual([undefined]);
+
+    expect(service.modelInformations[7].label).toEqual("Sub Category");
+    expect(service.modelInformations[7].values).toEqual([undefined]);
+
+    expect(service.modelInformations[8].label).toEqual("UUID");
+    expect(service.modelInformations[8].values).toEqual(['25284168-24bb-4698-8cb4-3f509146eca5']);
+
+    expect(service.modelInformations[9].label).toEqual("Invariant UUID");
+    expect(service.modelInformations[9].values).toEqual(['7253ff5c-97f0-4b8b-937c-77aeb4d79aa1']);
+
+    expect(service.modelInformations[10].label).toEqual("Service type");
+    expect(service.modelInformations[10].values).toEqual(['']);
+
+    expect(service.modelInformations[11].label).toEqual("Service role");
+    expect(service.modelInformations[11].values).toEqual(['']);
+
+    expect(service.modelInformations[12].label).toEqual("Minimum to instantiate");
+    expect(service.modelInformations[12].values).toEqual(['0']);
+
+    expect(service.modelInformations[13].label).toEqual("Maximum to instantiate");
+    expect(service.modelInformations[13].values).toEqual(['1']);
+  });
+
+
+  test('onCancel should trigger closeDialogEvent and iframe', () => {
+    let that = <any>{
+      parentElementClassName: 'content',
+      _iframeService: iframeService
+    };
+    jest.spyOn(iframeService, 'removeClassCloseModal');
+    jest.spyOn(service.closeDialogEvent, 'next');
+
+    service.onCancel(that, fb.group({}));
+
+    expect(that._iframeService.removeClassCloseModal).toHaveBeenCalledWith(that.parentElementClassName)
+    expect(service.closeDialogEvent.next).toHaveBeenCalledWith(that);
+  });
+
+  test('onSubmit should trigger onCancel', () => {
+    let that = <any>{
+      parentElementClassName: 'content',
+      _iframeService: iframeService,
+      storeVFModule: () => {},
+      uuidData : {
+        vnfStoreKey :  "VF_vGeraldine 0",
+        serviceId : '6e59c5de-f052-46fa-aa7e-2fca9d674c44'
+      },
+      serviceModel: {
+        uuid: 'someUUID'
+      }
+    };
+    let form = fb.group({});
+    jest.spyOn(service, 'onCancel');
+    jest.spyOn(that, 'storeVFModule');
+    jest.spyOn(window.parent, 'postMessage');
+
+    service.onSubmit(that, form);
+
+    expect(service.onCancel).toHaveBeenCalledWith(that, form);
+    expect(that.storeVFModule).toHaveBeenCalledWith(that, form.value);
+    expect(window.parent.postMessage).toHaveBeenCalledWith({
+      eventId: 'submitIframe',
+      data: {
+        serviceModelId: 'someUUID'
+      }
+    }, "*");
+  });
+
+  test('getParentExtraDetails should return lcp region and tenant details from VNF : without legacy', ()=>{
+    const parentDetails : {[ key : string] : string | number} = service.getParentExtraDetails('VF_vGeraldine 0', '6e59c5de-f052-46fa-aa7e-2fca9d674c44');
+    expect(parentDetails['tenantId']).toEqual('tenantId');
+    expect(parentDetails['lcpCloudRegionId']).toEqual('lcpCloudRegionId');
+  });
+
+  test('getParentExtraDetails should return lcp region and tenant details from VNF : with legacy', ()=>{
+    const parentDetails : {[ key : string] : string | number} = service.getParentExtraDetails('2017-488_PASQUALE-vPE 0', '6b528779-44a3-4472-bdff-9cd15ec93450');
+    expect(parentDetails['tenantId']).toEqual('tenantId');
+    expect(parentDetails['lcpCloudRegionId']).toEqual('AAIAIC25');
+    expect(parentDetails['legacyRegion']).toEqual('legacyRegion');
+  });
+
+
+});
 
 class MockModalService<T> {}
 
@@ -1525,8 +1700,8 @@ class MockReduxStore<T> {
                 "trackById": "p3wk448m5do",
                 "uuid": "d6557200-ecf2-4641-8094-5393ae3aae60",
                 "productFamilyId": "36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e",
-                "lcpCloudRegionId": null,
-                "tenantId": null,
+                "lcpCloudRegionId": 'lcpCloudRegionId',
+                "tenantId": "tenantId",
                 "lineOfBusiness": null,
                 "platformName": null,
                 "modelInfo": {
@@ -1687,8 +1862,9 @@ class MockReduxStore<T> {
                 "trackById": "o65b26t2thj",
                 "instanceName": "2017488_PASQUALEvPE",
                 "productFamilyId": "ebc3bc3d-62fd-4a3f-a037-f619df4ff034",
-                "lcpCloudRegionId": "hvf6",
-                "tenantId": "bae71557c5bb4d5aac6743a4e5f1d054",
+                "legacyRegion": "legacyRegion",
+                "lcpCloudRegionId": "AAIAIC25",
+                "tenantId": "tenantId",
                 "platformName": "platform",
                 "lineOfBusiness": "ONAP",
                 "instanceParams": [{}],
@@ -1743,386 +1919,15 @@ class MockReduxStore<T> {
             "isMultiStepDesign": false
           }
         },
-        "lcpRegionsAndTenants": {
-          "lcpRegionList": [{
-            "id": "AAIAIC25",
-            "name": "AAIAIC25",
-            "isPermitted": true
-          }, {"id": "hvf6", "name": "hvf6", "isPermitted": true}],
-          "lcpRegionsTenantsMap": {
-            "AAIAIC25": [{
-              "id": "092eb9e8e4b7412e8787dd091bc58e86",
-              "name": "USP-SIP-IC-24335-T-01",
-              "isPermitted": true
-            }],
-            "hvf6": [{
-              "id": "bae71557c5bb4d5aac6743a4e5f1d054",
-              "name": "AIN Web Tool-15-D-testalexandria",
-              "isPermitted": true
-            }, {
-              "id": "d0a3e3f2964542259d155a81c41aadc3",
-              "name": "test-hvf6-09",
-              "isPermitted": true
-            }, {
-              "id": "fa45ca53c80b492fa8be5477cd84fc2b",
-              "name": "ro-T112",
-              "isPermitted": true
-            }, {
-              "id": "4914ab0ab3a743e58f0eefdacc1dde77",
-              "name": "DN5242-Nov21-T1",
-              "isPermitted": true
-            }, {
-              "id": "d0a3e3f2964542259d155a81c41aadc3",
-              "name": "test-hvf6-09",
-              "isPermitted": true
-            }, {"id": "cbb99fe4ada84631b7baf046b6fd2044", "name": "DN5242-Nov16-T3", "isPermitted": true}]
-          }
-        },
-        "productFamilies": [{
-          "id": "ebc3bc3d-62fd-4a3f-a037-f619df4ff034",
-          "name": "ERICA",
-          "isPermitted": true
-        }, {
-          "id": "17cc1042-527b-11e6-beb8-9e71128cae77",
-          "name": "IGNACIO",
-          "isPermitted": true
-        }, {
-          "id": "36b4733a-53f4-4cc8-8ff0-9172e5fc4b8e",
-          "name": "Christie",
-          "isPermitted": true
-        }, {
-          "id": "a4f6f2ae-9bf5-4ed7-b904-06b2099c4bd7",
-          "name": "Enhanced Services",
-          "isPermitted": true
-        }, {"id": "vTerrance", "name": "vTerrance", "isPermitted": true}, {
-          "id": "323d69d9-2efe-4r45-ay0a-89ea7ard4e6f",
-          "name": "vEsmeralda",
-          "isPermitted": true
-        }, {
-          "id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
-          "name": "Emanuel",
-          "isPermitted": true
-        }, {
-          "id": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
-          "name": "BVOIP",
-          "isPermitted": true
-        }, {"id": "db171b8f-115c-4992-a2e3-ee04cae357e0", "name": "LINDSEY", "isPermitted": true}, {
-          "id": "LRSI-OSPF",
-          "name": "LRSI-OSPF",
-          "isPermitted": true
-        }, {"id": "vRosemarie", "name": "HNGATEWAY", "isPermitted": true}, {
-          "id": "vHNPaas",
-          "name": "WILKINS",
-          "isPermitted": true
-        }, {
-          "id": "e433710f-9217-458d-a79d-1c7aff376d89",
-          "name": "TYLER SILVIA",
-          "isPermitted": true
-        }, {"id": "b6a3f28c-eebf-494c-a900-055cc7c874ce", "name": "VROUTER", "isPermitted": true}, {
-          "id": "vMuriel",
-          "name": "vMuriel",
-          "isPermitted": true
-        }, {
-          "id": "0ee8c1bc-7cbd-4b0a-a1ac-e9999255abc1",
-          "name": "CARA Griffin",
-          "isPermitted": true
-        }, {
-          "id": "c7611ebe-c324-48f1-8085-94aef0c6ef3d",
-          "name": "DARREN MCGEE",
-          "isPermitted": true
-        }, {"id": "e30755dc-5673-4b6b-9dcf-9abdd96b93d1", "name": "Transport", "isPermitted": true}, {
-          "id": "vSalvatore",
-          "name": "vSalvatore",
-          "isPermitted": true
-        }, {"id": "d7bb0a21-66f2-4e6d-87d9-9ef3ced63ae4", "name": "JOSEFINA", "isPermitted": true}, {
-          "id": "vHubbard",
-          "name": "vHubbard",
-          "isPermitted": true
-        }, {"id": "12a96a9d-4b4c-4349-a950-fe1159602621", "name": "DARREN MCGEE", "isPermitted": true}],
-        "serviceTypes": {
-          "e433710f-9217-458d-a79d-1c7aff376d89": [{
-            "id": "0",
-            "name": "vRichardson",
-            "isPermitted": false
-          }, {"id": "1", "name": "TYLER SILVIA", "isPermitted": true}, {
-            "id": "2",
-            "name": "Emanuel",
-            "isPermitted": false
-          }, {"id": "3", "name": "vJamie", "isPermitted": false}, {
-            "id": "4",
-            "name": "vVoiceMail",
-            "isPermitted": false
-          }, {"id": "5", "name": "Kennedy", "isPermitted": false}, {
-            "id": "6",
-            "name": "vPorfirio",
-            "isPermitted": false
-          }, {"id": "7", "name": "vVM", "isPermitted": false}, {
-            "id": "8",
-            "name": "vOTA",
-            "isPermitted": false
-          }, {"id": "9", "name": "vFLORENCE", "isPermitted": false}, {
-            "id": "10",
-            "name": "vMNS",
-            "isPermitted": false
-          }, {"id": "11", "name": "vEsmeralda", "isPermitted": false}, {
-            "id": "12",
-            "name": "VPMS",
-            "isPermitted": false
-          }, {"id": "13", "name": "vWINIFRED", "isPermitted": false}, {
-            "id": "14",
-            "name": "SSD",
-            "isPermitted": false
-          }, {"id": "15", "name": "vMOG", "isPermitted": false}, {
-            "id": "16",
-            "name": "LINDSEY",
-            "isPermitted": false
-          }, {"id": "17", "name": "JOHANNA_SANTOS", "isPermitted": false}, {
-            "id": "18",
-            "name": "vCarroll",
-            "isPermitted": false
-          }]
-        },
-        "aicZones": [{
-          "id": "NFT1",
-          "name": "NFTJSSSS-NFT1"
-        }, {
-          "id": "JAG1",
-          "name": "YUDFJULP-JAG1"
-        }, {
-          "id": "YYY1",
-          "name": "UUUAIAAI-YYY1"
-        }, {
-          "id": "AVT1",
-          "name": "AVTRFLHD-AVT1"
-        }, {
-          "id": "ATL34",
-          "name": "ATLSANAI-ATL34"
-        }],
-        "categoryParameters": {
-          "owningEntityList": [{
-            "id": "aaa1",
-            "name": "aaa1"
-          }, {"id": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc", "name": "WayneHolland"}, {
-            "id": "Melissa",
-            "name": "Melissa"
-          }],
-          "projectList": [{"id": "WATKINS", "name": "WATKINS"}, {"id": "x1", "name": "x1"}, {"id": "yyy1", "name": "yyy1"}],
-          "lineOfBusinessList": [{"id": "ONAP", "name": "ONAP"}, {"id": "zzz1", "name": "zzz1"}],
-          "platformList": [{"id": "platform", "name": "platform"}, {"id": "xxx1", "name": "xxx1"}]
-        },
         "type": "[LCP_REGIONS_AND_TENANTS] Update",
         "subscribers": [{
-          "id": "CAR_2020_ER",
-          "name": "CAR_2020_ER",
-          "isPermitted": true
-        }, {
-          "id": "21014aa2-526b-11e6-beb8-9e71128cae77",
-          "name": "JULIO ERICKSON",
-          "isPermitted": false
-        }, {
-          "id": "DHV1707-TestSubscriber-2",
-          "name": "DALE BRIDGES",
-          "isPermitted": false
-        }, {"id": "DHV1707-TestSubscriber-1", "name": "LLOYD BRIDGES", "isPermitted": false}, {
-          "id": "jimmy-example",
-          "name": "JimmyExampleCust-20161102",
-          "isPermitted": false
-        }, {
-          "id": "jimmy-example2",
-          "name": "JimmyExampleCust-20161103",
-          "isPermitted": false
-        }, {
-          "id": "ERICA5779-TestSub-PWT-102",
-          "name": "ERICA5779-TestSub-PWT-102",
-          "isPermitted": false
-        }, {
-          "id": "ERICA5779-TestSub-PWT-101",
-          "name": "ERICA5779-TestSub-PWT-101",
-          "isPermitted": false
-        }, {
-          "id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
-          "name": "Emanuel",
-          "isPermitted": false
-        }, {
-          "id": "ERICA5779-Subscriber-4",
-          "name": "ERICA5779-Subscriber-5",
-          "isPermitted": false
-        }, {
-          "id": "ERICA5779-TestSub-PWT-103",
-          "name": "ERICA5779-TestSub-PWT-103",
-          "isPermitted": false
-        }, {
-          "id": "ERICA5779-Subscriber-2",
-          "name": "ERICA5779-Subscriber-2",
-          "isPermitted": false
-        }, {
           "id": "e433710f-9217-458d-a79d-1c7aff376d89",
           "name": "SILVIA ROBBINS",
           "isPermitted": true
-        }, {
-          "id": "ERICA5779-Subscriber-3",
-          "name": "ERICA5779-Subscriber-3",
-          "isPermitted": false
-        }, {"id": "31739f3e-526b-11e6-beb8-9e71128cae77", "name": "CRAIG/ROBERTS", "isPermitted": false}]
+        }]
       }
     };
   }
 }
 
 class MockFeatureFlagsService {}
-
-describe('VFModule popup service', () => {
-  let injector;
-  let service: VfModulePopupService;
-  let genericFormService: GenericFormService
-  let defaultDataGeneratorService: DefaultDataGeneratorService;
-  let fb: FormBuilder;
-  let iframeService: IframeService;
-
-  beforeAll(done => (async () => {
-    TestBed.configureTestingModule({
-      providers : [
-        VfModulePopupService,
-        ControlGeneratorUtil,
-        SharedControllersService,
-        VfModuleControlGenerator,
-        DefaultDataGeneratorService,
-        GenericFormService,
-        FormBuilder,
-        IframeService,
-        AaiService,
-        LogService,
-        BasicPopupService,
-        {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
-        {provide: NgRedux, useClass: MockReduxStore},
-        {provide: HttpClient, useClass: MockAppStore},
-        {provide: SdcUiServices.ModalService, useClass: MockModalService}
-      ]
-    });
-    await TestBed.compileComponents();
-
-    injector = getTestBed();
-    service = injector.get(VfModulePopupService);
-    genericFormService = injector.get(GenericFormService);
-    defaultDataGeneratorService = injector.get(DefaultDataGeneratorService);
-    fb = injector.get(FormBuilder);
-    iframeService = injector.get(IframeService);
-
-  })().then(done).catch(done.fail));
-
-  test('getTitle should return the correct title for edit and create mode', () => {
-    expect(service.getTitle(true)).toBe('Edit Module (Heat stack)');
-    expect(service.getTitle(false)).toBe('Set new Module (Heat stack)');
-  });
-
-  test('getInstance should return new VfModuleInstance', () => {
-    const serviceId : string = '6b528779-44a3-4472-bdff-9cd15ec93450';
-    const vnfStoreKey = null;
-    const vfModuleStoreKey = "VF_vGeraldine 0";
-    let  VfModuleInstance ;
-    VfModuleInstance = service.getInstance(serviceId, vnfStoreKey, vfModuleStoreKey);
-    expect (VfModuleInstance).toBeDefined();
-  });
-
-  test('getSubLeftTitle should return network model name', () => {
-    service.model = {
-      'name' : 'Model name'
-    };
-    expect(service.getSubLeftTitle()).toBe('Model name');
-  });
-
-  test('getSubRightTitle should return popup type', () => {
-    expect(service.getSubRightTitle()).toBe('Module (Heat stack) Instance Details');
-  });
-
-  test('getModelInformation should update modelInformations', () => {
-    const serviceId: string = '6b528779-44a3-4472-bdff-9cd15ec93450';
-    const vfModuleModelName: string = '2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1';
-
-    service.getModelInformation(serviceId, vfModuleModelName);
-    expect(service.modelInformations.length).toEqual(15);
-    expect(service.modelInformations[0].label).toEqual("Subscriber Name");
-    expect(service.modelInformations[0].values).toEqual(['SILVIA ROBBINS']);
-
-    expect(service.modelInformations[1].label).toEqual("Service Name");
-    expect(service.modelInformations[1].values).toEqual(['action-data']);
-
-    expect(service.modelInformations[2].label).toEqual("Service Instance Name");
-    expect(service.modelInformations[2].values).toEqual(['InstanceName']);
-
-    expect(service.modelInformations[3].label).toEqual("Model Name");
-    expect(service.modelInformations[3].values).toEqual(['2017488PasqualeVpe..PASQUALE_vRE_BV..module-1']);
-
-    expect(service.modelInformations[4].label).toEqual("Model version");
-    expect(service.modelInformations[4].values).toEqual(['6']);
-
-    expect(service.modelInformations[5].label).toEqual("Description");
-    expect(service.modelInformations[5].values).toEqual([null]);
-
-    expect(service.modelInformations[6].label).toEqual("Category");
-    expect(service.modelInformations[6].values).toEqual([undefined]);
-
-    expect(service.modelInformations[7].label).toEqual("Sub Category");
-    expect(service.modelInformations[7].values).toEqual([undefined]);
-
-    expect(service.modelInformations[8].label).toEqual("UUID");
-    expect(service.modelInformations[8].values).toEqual(['25284168-24bb-4698-8cb4-3f509146eca5']);
-
-    expect(service.modelInformations[9].label).toEqual("Invariant UUID");
-    expect(service.modelInformations[9].values).toEqual(['7253ff5c-97f0-4b8b-937c-77aeb4d79aa1']);
-
-    expect(service.modelInformations[10].label).toEqual("Service type");
-    expect(service.modelInformations[10].values).toEqual(['']);
-
-    expect(service.modelInformations[11].label).toEqual("Service role");
-    expect(service.modelInformations[11].values).toEqual(['']);
-
-    expect(service.modelInformations[12].label).toEqual("Minimum to instantiate");
-    expect(service.modelInformations[12].values).toEqual(['0']);
-
-    expect(service.modelInformations[13].label).toEqual("Maximum to instantiate");
-    expect(service.modelInformations[13].values).toEqual(['1']);
-  });
-
-
-  test('onCancel should trigger closeDialogEvent and iframe', () => {
-    let that = <any>{
-      parentElementClassName: 'content',
-      _iframeService: iframeService
-    };
-    jest.spyOn(iframeService, 'removeClassCloseModal');
-    jest.spyOn(service.closeDialogEvent, 'next');
-
-    service.onCancel(that, fb.group({}));
-
-    expect(that._iframeService.removeClassCloseModal).toHaveBeenCalledWith(that.parentElementClassName)
-    expect(service.closeDialogEvent.next).toHaveBeenCalledWith(that);
-  });
-
-  test('onSubmit should trigger onCancel', () => {
-    let that = <any>{
-      parentElementClassName: 'content',
-      _iframeService: iframeService,
-      storeVFModule: () => {
-      },
-      serviceModel: {
-        uuid: 'someUUID'
-      }
-    };
-    let form = fb.group({});
-    jest.spyOn(service, 'onCancel');
-    jest.spyOn(that, 'storeVFModule');
-    jest.spyOn(window.parent, 'postMessage');
-
-    service.onSubmit(that, form);
-
-    expect(service.onCancel).toHaveBeenCalledWith(that, form);
-    expect(that.storeVFModule).toHaveBeenCalledWith(that, form.value);
-    expect(window.parent.postMessage).toHaveBeenCalledWith({
-      eventId: 'submitIframe',
-      data: {
-        serviceModelId: 'someUUID'
-      }
-    }, "*");
-  });
-});

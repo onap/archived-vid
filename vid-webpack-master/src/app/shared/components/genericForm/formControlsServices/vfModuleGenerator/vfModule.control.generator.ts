@@ -114,9 +114,6 @@ export class VfModuleControlGenerator {
     const vfModuleInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode));
     let result: FormControlModel[] = [];
     this.pushInstanceAndVGToForm(result, vfModuleInstance, serviceId, vnfModel, true);
-    result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vfModuleInstance, result));
-    result.push(this._sharedControllersService.getLegacyRegion(vfModuleInstance));
-    result.push(this._sharedControllersService.getTenantControl(serviceId, vfModuleInstance));
     result.push(this._sharedControllersService.getRollbackOnFailureControl(vfModuleInstance));
     result.push(this._sharedControllersService.getSDNCControl(vfModuleInstance));
     if(this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
