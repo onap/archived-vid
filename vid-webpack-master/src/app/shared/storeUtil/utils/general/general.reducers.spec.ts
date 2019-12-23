@@ -178,7 +178,7 @@ describe('generalReducer', () => {
     expect(userState).toEqual(userId);
   });
 
-  test('#DELETE_VNF_INSTANCE : should delete existing vnf', () => {
+  test('#REMOVE_INSTANCE : should delete existing vnf', () => {
     let state = generalReducer(<any>{serviceInstance : {
           'serviceModelId' : {
             vnfs : {
@@ -202,7 +202,7 @@ describe('generalReducer', () => {
     expect(state.serviceInstance[ 'serviceModelId'].vnfs['modelName']).not.toBeDefined();
   });
 
-  test('#DELETE_VNF_INSTANCE : should delete existing network', () => {
+  test('#REMOVE_INSTANCE : should delete existing network', () => {
     let state = generalReducer(<any>{serviceInstance : {
           'serviceModelId' : {
             'networks' : {
@@ -224,6 +224,43 @@ describe('generalReducer', () => {
 
     expect(state).toBeDefined();
     expect(state.serviceInstance['serviceModelId'].networks['modelName']).not.toBeDefined();
+  });
+
+  test('#REMOVE_INSTANCE : remove VNF should remove VFModules ', () => {
+    let state = generalReducer(<any>
+        {serviceInstance : {
+          'serviceModelId' : {
+            'validationCounter' : 2,
+            'vnfs' : {
+              'SDC_Automation_15Aug 0' : {
+                'isMissingData' :true,
+                'modelName' : {},
+                'vfModules' : {
+                  'vfModule_1' : {
+                    'vfModule_1_1' : {
+                      'isMissingData' :true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }},
+      <RemoveInstanceAction>{
+        type: GeneralActions.REMOVE_INSTANCE,
+        modelName : 'modelName',
+        serviceModelId : 'serviceModelId',
+        storeKey : 'SDC_Automation_15Aug 0',
+        node : {
+          data : {
+            type : 'VF'
+          }
+        }
+      });
+
+    expect(state).toBeDefined();
+    expect(state.serviceInstance['serviceModelId'].vnfs['modelName']).not.toBeDefined();
+    expect(state.serviceInstance['serviceModelId'].validationCounter).toEqual(0);
   });
 
   test('#CHANGE_VNF_INSTANCE_COUNTER : should init existingVNFCounterMap to 1', () => {

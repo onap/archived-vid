@@ -55,6 +55,7 @@ export function generalReducer(state: ServiceState, action: Action) : ServiceSta
           _.forOwn(state.serviceInstance[actionData.serviceModelId][typeNodeInformation.hierarchyName][actionData.storeKey].vfModules, (vfModuleMap) => {
             _.forOwn(vfModuleMap, (vfModuleInstance) => {
               updateUniqueNames(vfModuleInstance.instanceName, null, state.serviceInstance[actionData.serviceModelId]);
+              updateServiceValidationCounter(state, vfModuleInstance.isMissingData, false, actionData.serviceModelId);
             })
           });
         }
