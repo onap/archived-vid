@@ -38,7 +38,12 @@ describe('Template', () => {
       "serviceModelName": "action-data",
       "serviceModelVersion": "1.0",
       "createdBulkDate": 1525075968000,
-      "isRetryEnabled": true
+      "isRetryEnabled": true,
+      "requestSummary": {
+        "vnf": 2,
+        "vfModule": 3,
+        "network": 1
+      }
     },
     {
       "id": 7,
@@ -139,6 +144,7 @@ describe('Template', () => {
     cy.getElementByDataTestsId(`createDate-${asyncInstantiation[0].jobId}`).contains('2018-04-30 11:12:48');
     cy.getElementByDataTestsId(`instanceName-${asyncInstantiation[0].jobId}`).contains('nWUfl instance name_002');
     cy.getElementByDataTestsId(`instantiationStatus-${asyncInstantiation[0].jobId}`).contains('FAILED');
+    cy.getElementByDataTestsId(`summary-${asyncInstantiation[0].jobId}`).contains('{"vnf":2,"vfModule":3,"network":1}');
     cy.getElementByDataTestsId(`region-${asyncInstantiation[0].jobId}`).contains('hvf6 (WAYNEHOLLAND)');
     cy.getElementByDataTestsId(`tenant-${asyncInstantiation[0].jobId}`).contains('AIN Web Tool-15-D-testalexandria');
     cy.getElementByDataTestsId(`aicZone-${asyncInstantiation[0].jobId}`).contains('NFTJSSSS-NFT1');

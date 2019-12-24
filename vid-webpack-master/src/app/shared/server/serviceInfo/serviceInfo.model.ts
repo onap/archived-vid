@@ -35,6 +35,7 @@ export class ServiceInfoModel extends InstantiationBase{
   auditUserId: string;
   action: ServiceAction;
   isRetryEnabled: boolean;
+  requestSummary:string;
 }
 
 export class ServiceInfoUiModel extends ServiceInfoModel{
