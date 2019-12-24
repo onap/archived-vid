@@ -18,7 +18,7 @@ export class InstantiationTemplatesRowModel extends InstantiationBase{
     this.createDate = !_.isNil(data.created) ? moment(data.created).format("YYYY-MM-DD HH:mm:ss") : null;
     this.instanceName = this.getInstanceName(data.serviceInstanceName);
     this.instantiationStatus = !_.isNil(data.jobStatus) ? data.jobStatus : null;
-    this.summary = null;
+    this.summary = this.convertRequestSummaryFromMapToString(data.requestSummary);
     this.region = this.getRegion(data.regionId, data.owningEntityName);
     this.tenant = !_.isNil(data.tenantName) ? data.tenantName : null;
     this.aicZone = !_.isNil(data.aicZoneName) ? data.aicZoneName : null;
@@ -46,5 +46,12 @@ export class InstantiationTemplatesRowModel extends InstantiationBase{
     }
     return instanceName;
   }
+
+  convertRequestSummaryFromMapToString = (requestSummary): string => {
+    let myvnf: string = JSON.stringify(requestSummary);
+    return myvnf;
+  }
+
+
 }
 

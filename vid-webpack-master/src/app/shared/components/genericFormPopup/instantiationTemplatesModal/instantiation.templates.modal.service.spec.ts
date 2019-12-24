@@ -54,6 +54,17 @@ describe('instantiation templates modal service', () => {
     expect(service).toBeDefined();
   });
 
+  test('convert map to json', () => {
+    let result:InstantiationTemplatesRowModel = new InstantiationTemplatesRowModel({
+      "requestSummary": {
+        "vnf": 2,
+        "vfModule": 3,
+        "network": 1
+      }
+    });
+    expect(result.summary).toEqual( "{\"vnf\":2,\"vfModule\":3,\"network\":1}");
+  });
+
 
   test('convertResponseToUI - should return table data', () => {
     const jobs = [{
@@ -92,7 +103,6 @@ describe('instantiation templates modal service', () => {
       "serviceModelName": "ComplexService",
       "serviceModelVersion": "1.0",
       "createdBulkDate": 1524995555000,
-      "isRetryEnabled": false
     }];
     const tableRows: InstantiationTemplatesRowModel[] = service.convertResponseToUI(jobs);
     expect(tableRows).toHaveLength(1);
