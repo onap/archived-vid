@@ -502,14 +502,22 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     }
 
     @Test(dataProvider = "dataProviderSummarizedMap")
-    public void getSummarizedMap(String pathInResource, Map<String, Long> expectedMap){
+    public void summarizedChildrenMap_givenServiceInstantiation_yieldCorrectMap(String pathInResource, Map<String, Long> expectedMap){
         ServiceInstantiation serviceInstantiation = TestUtils.readJsonResourceFileAsObject(
             pathInResource, ServiceInstantiation.class);
-        Map<String, Long> childrenMap =  asyncInstantiationBL.getSummarizedChildrenMap(serviceInstantiation);
+        Map<String, Long> childrenMap =  asyncInstantiationBL.summarizedChildrenMap(serviceInstantiation);
         assertEquals(childrenMap,expectedMap);
-
     }
 
+    @Test
+    public void requestSummaryOrNull_givenActionWhichIsNotCreate_yieldNullRegardlessOfPayload(){
+        ServiceInstantiation serviceInstantiation = mock(ServiceInstantiation.class);
+
+        when(serviceInstantiation.getAction()).thenReturn(Action.Upgrade);
+        when(featureManager.isActive(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)).thenReturn(true);
+
+        assertThat(asyncInstantiationBL.requestSummaryOrNull(serviceInstantiation), is(nullValue()));
+    }
 
     @Test
     public void whenPushBulkJob_thenJobRequestIsSaveInJobRequestDb() {
@@ -755,7 +763,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 new Date(),
-                "myName", ServiceInfo.ServiceAction.INSTANTIATE);
+                "myName", ServiceInfo.ServiceAction.INSTANTIATE, null);
         assertEquals(SERVICE_MODEL_VERSION_ID, serviceInfo.getServiceModelId());
 
     }
