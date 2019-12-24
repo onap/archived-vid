@@ -1,5 +1,6 @@
 package org.onap.vid.api;
 
+import static java.util.Arrays.stream;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
@@ -9,6 +10,7 @@ import static vid.automation.test.services.SimulatorApi.registerExpectationFromP
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
@@ -21,8 +23,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants.Users;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
 import vid.automation.test.model.User;
 import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
@@ -63,6 +68,11 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
         return new UserCredentials(user.credentials.userId, user.credentials.password, Users.SILVIA_ROBBINS_TYLER_SILVIA, "", "");
     }
 
+    @BeforeMethod
+    public void setUp() {
+        registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), RegistrationStrategy.CLEAR_THEN_SET);
+    }
+
     @AfterMethod
     protected void dropAllFromNameCounter() {
         AsyncJobsService asyncJobsService = new AsyncJobsService();
@@ -72,6 +82,10 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
 
     protected String templateTopologyUri(String jobId) {
         return uri.toASCIIString() + "/instantiationTemplates/templateTopology/" + jobId;
+    }
+
+    protected String instantiationStatusUri() {
+        return uri.toASCIIString() + "/asyncInstantiation";
     }
 
     @Test
@@ -87,6 +101,32 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
             fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
     }
 
+    @Test
+    @FeatureTogglingTest(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)
+    public void templateTopology_givenDeploy_getServiceInfoHoldsRequestSummary() throws IOException {
+        String uuid = postAsyncInstanceRequest(
+            ((ObjectNode) fileAsJsonNode(AsyncInstantiationBase.CREATE_BULK_OF_MACRO_REQUEST))
+                .put("bulkSize", 1)
+                .put("pause", false)
+        );
+
+        assertThat(fetchRequestSummary(uuid), jsonEquals(ImmutableMap.of(
+            "vnf", 1L,
+            "vfModule", 2L,
+            "volumeGroup", 1L
+        )));
+    }
+
+    private JsonNode fetchRequestSummary(String uuid) {
+        return stream(restTemplate.getForObject(instantiationStatusUri(), JsonNode[].class))
+            .filter(it -> it.at("/jobId").asText().equals(uuid))
+            .findFirst()
+            .map(it -> it.at("/requestSummary"))
+            .orElseGet(() -> {
+                throw new AssertionError("job " + uuid + " not found");
+            });
+    }
+
     private JsonNode fileAsJsonNode(String fileName) throws IOException {
         return objectMapper.readValue(
             convertRequest(objectMapper, fileName),
@@ -98,8 +138,6 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
     }
 
     public void templateTopology_givenDeploy_templateTopologyIsEquivalent(JsonNode body, JsonNode expectedTemplateTopology) {
-        registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), RegistrationStrategy.CLEAR_THEN_SET);
-
         String uuid1 = postAsyncInstanceRequest(body);
         JsonNode templateTopology1 = restTemplate.getForObject(templateTopologyUri(uuid1), JsonNode.class);
 

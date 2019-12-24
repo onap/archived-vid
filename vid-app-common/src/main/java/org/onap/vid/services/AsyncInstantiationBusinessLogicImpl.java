@@ -62,6 +62,7 @@ import org.onap.vid.model.Action;
 import org.onap.vid.model.NameCounter;
 import org.onap.vid.model.ResourceInfo;
 import org.onap.vid.model.ServiceInfo;
+import org.onap.vid.model.ServiceInfo.ServiceAction;
 import org.onap.vid.model.serviceInstantiation.BaseResource;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.model.serviceInstantiation.VfModule;
@@ -177,7 +178,10 @@ public class AsyncInstantiationBusinessLogicImpl implements
             Job job = jobAdapter.createServiceInstantiationJob(jobType, requestPerJob, templateId, userId, request.getTestApi(), optimisticUniqueServiceInstanceName, i);
             UUID jobId = job.getUuid();
 
-            asyncInstantiationRepository.saveServiceInfo(createServiceInfo(userId, requestPerJob, jobId, templateId, createdBulkDate, optimisticUniqueServiceInstanceName, serviceAction));
+            asyncInstantiationRepository.saveServiceInfo(createServiceInfo(
+                userId, requestPerJob, jobId, templateId, createdBulkDate,
+                optimisticUniqueServiceInstanceName, serviceAction,
+                requestSummaryOrNull(requestPerJob)));
             asyncInstantiationRepository.addJobRequest(jobId, requestPerJob);
             auditService.auditVidStatus(jobId, job.getStatus());
             uuids.add(jobId);
@@ -187,7 +191,19 @@ public class AsyncInstantiationBusinessLogicImpl implements
         return uuids;
     }
 
-    public Map<String, Long> getSummarizedChildrenMap(ServiceInstantiation serviceInstantiation){
+    Map<String, Long> requestSummaryOrNull(ServiceInstantiation request) {
+        if (!featureManager.isActive(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)) {
+            return null;
+        }
+
+        if (getAction(request) != ServiceAction.INSTANTIATE) {
+            return null;
+        }
+
+        return summarizedChildrenMap(request);
+    }
+
+    public Map<String, Long> summarizedChildrenMap(ServiceInstantiation serviceInstantiation){
         Stream<String> existingTypesStream =
             allDeepChildResources(serviceInstantiation)
                 .map(this::getModelTypes)
@@ -242,7 +258,9 @@ public class AsyncInstantiationBusinessLogicImpl implements
         return isNotEmpty(instanceName) ? getUniqueNameFromDbOnly(instanceName) : instanceName;
     }
 
-    protected ServiceInfo createServiceInfo(String userId, ServiceInstantiation serviceInstantiation, UUID jobId, UUID templateId, Date createdBulkDate, String optimisticUniqueServiceInstanceName, ServiceInfo.ServiceAction serviceAction) {
+    protected ServiceInfo createServiceInfo(String userId, ServiceInstantiation serviceInstantiation, UUID jobId,
+        UUID templateId, Date createdBulkDate, String optimisticUniqueServiceInstanceName,
+        ServiceInfo.ServiceAction serviceAction, Map<String, Long> requestSummary) {
         return new ServiceInfo(
                 userId,
                 serviceInstantiation.isALaCarte(),
@@ -267,7 +285,7 @@ public class AsyncInstantiationBusinessLogicImpl implements
                 createdBulkDate,
                 serviceAction,
                 false,
-                null);
+                requestSummary);
     }
 
     @Override
