@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import org.yaml.snakeyaml.Yaml;
 
 public class Configuration {
@@ -20,8 +19,6 @@ public class Configuration {
 	private boolean remoteTesting;
 	private String browser;
 	private String systemUnderDebug;
-	private String reportDBhost;
-	private int reportDBport;
 	private boolean captureTraffic;
 	private boolean useBrowserMobProxy;
 	private String stopOnClassFailure;
@@ -161,26 +158,6 @@ public class Configuration {
 
 	public void setSystemUnderDebug(String systemUnderDebug) {
 		this.systemUnderDebug = systemUnderDebug;
-	}
-
-
-	public String getReportDBhost() {
-		return reportDBhost;
-	}
-
-
-	public void setReportDBhost(String reportDBhost) {
-		this.reportDBhost = reportDBhost;
-	}
-
-
-	public int getReportDBport() {
-		return reportDBport;
-	}
-
-
-	public void setReportDBport(int reportDBport) {
-		this.reportDBport = reportDBport;
 	}
 
 
