@@ -56,13 +56,13 @@ describe('instantiation templates modal service', () => {
 
   test('convert map to json', () => {
     let result:InstantiationTemplatesRowModel = new InstantiationTemplatesRowModel({
-      "requestSummary": {
-        "vnf": 2,
-        "vfModule": 3,
-        "network": 1
+      requestSummary: {
+        'vnf': 2,
+        'vfModule': 3,
+        'network': 1
       }
     });
-    expect(result.summary).toEqual( "{\"vnf\":2,\"vfModule\":3,\"network\":1}");
+    expect(result.summary).toEqual( "vnf: 2, vfModule: 3, network: 1");
   });
 
 

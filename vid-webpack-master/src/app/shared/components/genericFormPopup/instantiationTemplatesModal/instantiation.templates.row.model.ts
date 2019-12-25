@@ -45,13 +45,12 @@ export class InstantiationTemplatesRowModel extends InstantiationBase{
       return '<Automatically generated>';
     }
     return instanceName;
-  }
+  };
 
-  convertRequestSummaryFromMapToString = (requestSummary): string => {
-    let myvnf: string = JSON.stringify(requestSummary);
-    return myvnf;
+  convertRequestSummaryFromMapToString = (requestSummary: Map<string, number>): string => {
+    let values: string[] = _.map(requestSummary, (count: number, instanceType: string) => instanceType + ": " + count);
+    return _.join(values, ", ");
   }
-
 
 }
 
