@@ -170,9 +170,15 @@ var MsoService = function($http, $log, $q, PropertyService, AaiService, UtilityS
             (UtilityService.runHttpErrorHandler);
         },
         getFormattedCommonResponse : function(response) {
-            return UtilityService.getCurrentTime() + " HTTP Status: "
-                + UtilityService.getHttpStatusText(response.data.status)
-                + "\n" + angular.toJson(response.data.entity, true);
+             if (response && response.data && response.data.status) {
+                return UtilityService.getCurrentTime() + " HTTP Status: "
+                    + UtilityService.getHttpStatusText(response.data.status)
+                    + "\n" + angular.toJson(response.data.entity, true);
+             }
+             else {
+                 return UtilityService.getCurrentTime() + " HTTP Status: "
+                    + "N/A\nVID has timed out waiting for an MSO response.\nPlease close this popup or refresh page.";
+            }
 
         },
         checkValidStatus : checkValidStatus,
