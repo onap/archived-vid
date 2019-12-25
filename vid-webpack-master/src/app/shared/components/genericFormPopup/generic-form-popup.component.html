@@ -48,12 +48,12 @@
 
     </div>
     <div class="modal-footer row" style="padding: 0">
-      <div class="col-md-6">
+      <div class="col-md-5">
         <div *ngIf="hasSomeError(formPopupDetails, dynamicForm) == true">
           <form-general-error [message]="errorMsg"></form-general-error>
         </div>
       </div>
-      <div class="col-md-6" style="padding: 15px;padding-right: 35px;">
+      <div class="col-md-7" style="padding: 15px;padding-right: 35px;">
         <button
           *ngIf="showTemplateBtn"
           [attr.data-tests-id]="'templateButton'"
@@ -64,14 +64,13 @@
           *ngIf="isShowPreviousInstantiationBtn"
           [attr.data-tests-id]="'ShowPreviousInstancesButton'"
           type="button" class="btn btn-success submit"
-          (click)="formPopupDetails.onOtherAction(formPopupDetails.that, dynamicForm)">
-          <span>Previous Instantiation</span>
-        </button>
+          (click)="formPopupDetails.onOtherAction(formPopupDetails.that, dynamicForm)"
+        ><span>Previous Instantiation</span></button>
         <button
           [attr.data-tests-id]="'cancelButton'"
           type="button" class="btn btn-default cancel"
-          (click)="formPopupDetails.onCancel(formPopupDetails.that, dynamicForm); clearModalIsUpdateMode()"><span>Cancel</span></button>
-
+          (click)="formPopupDetails.onCancel(formPopupDetails.that, dynamicForm); clearModalIsUpdateMode()"
+        ><span>Cancel</span></button>
         <input type="submit"
                value="Set"
                data-tests-id="form-set"
