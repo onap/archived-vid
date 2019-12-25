@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a83d0e2e_6e96e9e9",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/commitDialog.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2019-12-25T08:49:30Z",
+      "side": 1,
+      "message": "In the name of the suite and file to indicate it related to old screens.",
+      "revId": "4a5c1dd02d87c31360efb32347a6656e8b29161e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
