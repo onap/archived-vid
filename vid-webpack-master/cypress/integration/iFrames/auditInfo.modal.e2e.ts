@@ -30,13 +30,15 @@ describe('Audit information modal', function () {
       cy.get('.instantiation-status-data tbody tr').each(function (row, index) {
         cy.get('.icon-menu').eq(index).click({force: true}).then(()=>{
           cy.getElementByDataTestsId('context-menu-audit-info').click({force:true}).then(()=>{
+            cy.setViewportToSmallPopup();
             cy.get('#service-model-name').should('contain', row.find('#serviceModelName').text().trim())
               .getElementByDataTestsId('model-item-value-userId').should('contain', row.find('#userId').text().trim())
               .get('#service-instantiation-audit-info-vid').should('be.visible')
               .get('#service-instantiation-audit-info-vid').find('#vidJobStatus').should('be.visible')
               .get('#service-instantiation-audit-info-mso').should('be.visible')
               .get('#service-instantiation-audit-info-mso').find('#msoJobStatus').should('be.visible')
-              .get('#cancelButton').click({force:true});
+              .get('#cancelButton').click({force: true})
+              .setViewportToDefault();
           })
         });
       });
@@ -46,6 +48,7 @@ describe('Audit information modal', function () {
       cy.openIframe('app/ui/#/instantiationStatus');
       cy.get('.icon-menu').eq(0).click({force:true}).then(() => {
         cy.getElementByDataTestsId('context-menu-audit-info').click({force:true}).then(() => {
+          cy.setViewportToSmallPopup();
           cy.get('#service-instantiation-audit-info-mso thead tr th#instanceName').should("not.be.visible")
             .get('#service-instantiation-audit-info-mso tbody tr td.msoInstanceName').should("not.be.visible");
         })
@@ -58,6 +61,7 @@ describe('Audit information modal', function () {
         cy.openIframe('app/ui/#/instantiationStatus');
         cy.get('.icon-menu').eq(7).click({force:true}).then(() => {
           cy.getElementByDataTestsId('context-menu-audit-info').click({force:true}).then(() => {
+            cy.setViewportToSmallPopup();
             cy.get('#service-instantiation-audit-info-mso thead tr th#instanceName').should("be.visible")
               .get('#service-instantiation-audit-info-mso tbody tr').each(function (row, index) {
               assert.equal(row.find('.request-id').text().trim(), res[index]['requestId']);
@@ -74,6 +78,7 @@ describe('Audit information modal', function () {
       cy.openIframe('app/ui/#/instantiationStatus');
       cy.get('.icon-menu').eq(7).click().then(() => {
         cy.getElementByDataTestsId('context-menu-audit-info').click().then(() => {
+          cy.setViewportToSmallPopup();
           cy.get('#glossary_link').should('be.visible');
         });
       })

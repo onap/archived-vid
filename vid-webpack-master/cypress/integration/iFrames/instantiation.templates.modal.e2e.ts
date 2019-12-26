@@ -110,10 +110,7 @@ describe('Template', () => {
     cy.route(Cypress.config('baseUrl') + "/instantiationTemplates**", instantiationTemplates);
     cy.route(Cypress.config('baseUrl') + "/getuserID", '16807000');
 
-    cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
-
-
-
+    cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
 
   });
 
@@ -172,7 +169,7 @@ describe('Template', () => {
     const vidBaseUrl = `http://localhost:8080/vid/serviceModels.htm`;
 
     cy.getElementByDataTestsId('row-5c2cd8e5-27d0-42e3-85a1-85db5eaba459').click();
-    cy.getElementByDataTestsId('LoadTemplateButton').click()
+    cy.getElementByDataTestsId('LoadTemplateButton').click().setViewportToDefault();
 
     cy.location().should((loc) => {
       expect(loc.toString()).to.eq(`${vidBaseUrl}#/servicePlanning/RECREATE?serviceModelId=${serviceModelId}&jobId=${jobId}`);
