@@ -6,7 +6,7 @@ declare namespace Cypress {
 }
 
 function FillServicePopup(): Chainable<any> {
-  cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+  cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
   cy.selectDropdownOptionByText('subscriberName', 'SILVIA ROBBINS');
   cy.selectDropdownOptionByText('serviceType', 'TYLER SILVIA');
   cy.selectDropdownOptionByText('productFamily', 'TYLER SILVIA');

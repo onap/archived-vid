@@ -19,7 +19,7 @@ describe('Service popup', function () {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
         res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.vidNotions.instantiationType = 'ALaCarte';
         cy.setReduxState(<any>res1);
-        cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+        cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
         cy.isElementContainsAttr('form-set', 'disabled');
         cy.get('label').contains('Instance name:').should('not.have.class', 'required')
           .get('label').contains('Subscriber name:').should('have.class', 'required')
@@ -36,14 +36,14 @@ describe('Service popup', function () {
         let isEcompNaming = false;
         res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.serviceEcompNaming = isEcompNaming.toString();
         cy.setReduxState(<any>res1);
-        cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+        cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
         cy.isElementContainsAttr('form-set', 'disabled');
         cy.get('label').contains('Instance name:').should('have.class', 'required');
       });
     });
 
     it('should contains basic selects with required astrix', function () {
-      cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+      cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
       cy.isElementContainsAttr('form-set', 'disabled');
       cy.get('label').contains('Subscriber name:').should('have.class', 'required')
         .get('label').contains('Service type:').should('have.class', 'required')
@@ -57,7 +57,7 @@ describe('Service popup', function () {
     });
 
     it('should be able fill all selects', function () {
-      cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+      cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
 
       cy.selectDropdownOptionByText('subscriberName', 'SILVIA ROBBINS');
       cy.selectDropdownOptionByText('serviceType', 'TYLER SILVIA');
@@ -76,7 +76,7 @@ describe('Service popup', function () {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
         res1.service.categoryParameters.owningEntityList = [];
         cy.setReduxState(<any>res1);
-        cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+        cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
 
         cy.get('.message').contains('No results for this request. Please change criteria.');
         cy.get('form-general-error').contains('Page contains errors. Please see details next to the relevant fields.');
@@ -84,7 +84,7 @@ describe('Service popup', function () {
     });
 
     it('when open service popup should show showPrevious button', () => {
-      cy.openIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+      cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
       cy.getElementByDataTestsId('ShowPreviousInstancesButton').contains('Previous Instantiation').click();
 
     })
