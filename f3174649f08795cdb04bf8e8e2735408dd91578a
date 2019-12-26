@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d7264b19_3140efe3",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation.templates.modal.e2e.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-26T08:24:05Z",
+      "side": 1,
+      "message": "what connect between backend API test and cypress test ?",
+      "revId": "f3174649f08795cdb04bf8e8e2735408dd91578a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c0cfdcd_6722d03c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.service.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-26T08:24:05Z",
+      "side": 1,
+      "message": "why not regular json ?\nvnf: 2",
+      "revId": "f3174649f08795cdb04bf8e8e2735408dd91578a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
