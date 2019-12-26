@@ -31,11 +31,11 @@ import './jsonBuilders/mocks/aai.mock';
 import './jsonBuilders/mocks/vid.mock';
 import './jsonBuilders/mocks/permission.mock';
 
-
 import './steps/general/compareDeepObjects.step';
 import './steps/drawingBoard/drawingBoardModel.steps';
 import './steps/drawingBoard/drawingBoardTree.steps';
 import './steps/genericForm/genericFormAction.steps';
+import './steps/genericForm/popupViewport.step';
 import './steps/drawingBoard/drawingBoardHeader.steps';
 import './steps/drawingBoard/general.steps';
 import './steps/general/clickOutside.step';
