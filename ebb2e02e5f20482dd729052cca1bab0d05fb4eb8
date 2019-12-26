@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "6b73d630_d2f82ab0",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/auditInfo.modal.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-26T09:23:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c11bfbff_67e5075d",
+      "revId": "ebb2e02e5f20482dd729052cca1bab0d05fb4eb8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a35d1df8_1e6c1ab2",
         "filename": "vid-webpack-master/cypress/support/steps/fill.service.popup.step.ts",
         "patchSetId": 1
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "i see. it is a mistake.\ni will fix this method to reset viewport after clicking \"set\"",
       "parentUuid": "a35d1df8_1e6c1ab2",
+      "revId": "ebb2e02e5f20482dd729052cca1bab0d05fb4eb8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c3bb0ca_b98d253d",
+        "filename": "vid-webpack-master/cypress/support/steps/fill.service.popup.step.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-26T09:23:52Z",
+      "side": 1,
+      "message": "It didn\u0027t go well. Reverted the change in this file. (kept the others)",
+      "parentUuid": "5a960c16_e52a6514",
       "revId": "ebb2e02e5f20482dd729052cca1bab0d05fb4eb8",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
