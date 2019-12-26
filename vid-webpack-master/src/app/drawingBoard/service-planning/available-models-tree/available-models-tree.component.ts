@@ -166,11 +166,11 @@ export class AvailableModelsTreeComponent {
         if (this._sharedTreeService.selectedVNF) {
           this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, null, this._sharedTreeService.selectedVNF));
           DrawingBoardTreeComponent.triggerreCalculateIsDirty.next(this.serviceModelId);
-        } else if (this._availableModelsTreeService.getOptionalVNFs(this.serviceModelId, node.parent.data.name).length === 1) {
+        } else if (this._availableModelsTreeService.getOptionalVNFs(this.serviceModelId, node.parent.data.modelUniqueId).length === 1) {
           let existVnf = this._store.getState().service.serviceInstance[this.serviceModelId].vnfs;
           if(!_.isNil(existVnf)){
             for(let vnfKey in existVnf){
-              const modelUniqueId =  existVnf[vnfKey]['modelInfo'].modelCustomizationId || existVnf[vnfKey]['modelInfo'].modelInvariantId;
+              const modelUniqueId = this._sharedTreeService.modelUniqueId(existVnf[vnfKey]);
               if(modelUniqueId === node.parent.data.id){
                 this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, null, vnfKey));
                 DrawingBoardTreeComponent.triggerreCalculateIsDirty.next(this.serviceModelId);

@@ -75,6 +75,7 @@
       "action": "Create",
       "instanceId": null,
       "instanceName": "hvf6arlba007",
+      "vnfStoreKey": "vProbe_NC_VNF 0",
       "instanceParams": [
         {
         }

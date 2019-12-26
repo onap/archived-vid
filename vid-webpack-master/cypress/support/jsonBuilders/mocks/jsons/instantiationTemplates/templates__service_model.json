@@ -82,7 +82,7 @@
           "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
           "properties": {
             "minCountInstances": 0,
-            "maxCountInstances": null,
+            "maxCountInstances": 3,
             "initialCount": 0,
             "vfModuleLabel": "FE_Add_On_Module_vlbagent_eph",
             "baseModule": false
@@ -102,7 +102,7 @@
           "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
           "properties": {
             "minCountInstances": 0,
-            "maxCountInstances": null,
+            "maxCountInstances": 3,
             "initialCount": 0,
             "vfModuleLabel": "FE_Add_On_Module_vlbagent_eph",
             "baseModule": false
@@ -165,7 +165,7 @@
       "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
       "properties": {
         "minCountInstances": 0,
-        "maxCountInstances": null,
+        "maxCountInstances": 3,
         "initialCount": 0,
         "vfModuleLabel": "FE_Add_On_Module_vlbagent_eph",
         "baseModule": false
@@ -185,7 +185,7 @@
       "modelCustomizationName": "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
       "properties": {
         "minCountInstances": 0,
-        "maxCountInstances": null,
+        "maxCountInstances": 3,
         "initialCount": 0,
         "vfModuleLabel": "FE_Add_On_Module_vlbagent_eph",
         "baseModule": false

@@ -15,6 +15,7 @@ import {VNFMethods} from "../../../shared/storeUtil/utils/vnf/vnf.actions";
 import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
 import {Utils} from "../../../shared/utils/utils";
 import {Constants} from "../../../shared/utils/constants";
+import {NodeInstance} from "../../../shared/models/nodeInstance";
 
 @Injectable()
 export class SharedTreeService {
@@ -42,6 +43,16 @@ export class SharedTreeService {
       this.selectedVNF = node.data.vnfStoreKey;
     }
   }
+
+  /**
+   * Determines a consistent unique ID for a given right-tree
+   * node instance.
+   */
+  modelUniqueId = (nodeInstance: NodeInstance): string => {
+    return _.isNil(nodeInstance.modelInfo)
+      ? null
+      : (nodeInstance.modelInfo.modelCustomizationId || nodeInstance.modelInfo.modelInvariantId);
+  };
 
   hasMissingData(instance, dynamicInputs: any, isEcompGeneratedNaming: boolean, requiredFields: string[]): boolean {
     if (!isEcompGeneratedNaming && _.isEmpty(instance.instanceName)) {
@@ -239,7 +250,7 @@ export class SharedTreeService {
    **********************************************/
   shouldShowAddIcon(): boolean{
     const mode = this._store.getState().global.drawingBoardStatus;
-    return mode === DrawingBoardModes.EDIT || mode=== DrawingBoardModes.CREATE;
+    return mode === DrawingBoardModes.EDIT || mode=== DrawingBoardModes.CREATE || mode=== DrawingBoardModes.RECREATE;
   }
 
 

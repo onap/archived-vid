@@ -63,7 +63,9 @@ describe('Drawing Board: Instantiation Templates', function () {
         .getElementByDataTestsId("sdncPreLoad").should('have.value', 'on')
         .getElementByDataTestsId("cancelButton").click();
 
-        assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd();
+        assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
+          {path: [...vnfPath, "vnfStoreKey"], value: "vProbe_NC_VNF 0"}, // side-effect
+        ]);
         });
 
       it(`Given a stored template - when "edit" service is opened - then template’s details are visible as expected`,  function ()  {
@@ -81,9 +83,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       });
 
-      it.skip(`Given a stored template - add one VfModule, edit it's details, and deploy - deploy is added with the vfModule details`, () => {
-        // Test is disabled, as an issue currently prevents from clicking the [+] button.
-
+      it(`Given a stored template - add one VfModule, edit its details, and deploy - deploy is added with the vfModule details`, () => {
         loadDrawingBoardWithRecreateMode();
 
         let newVfModuleName = "new.vfmodule.name";
@@ -106,10 +106,6 @@ describe('Drawing Board: Instantiation Templates', function () {
 
         // Then...
         cy.getReduxState().then((state) => {
-          let vnfPath = [
-            "vnfs", "vProbe_NC_VNF 0"
-          ];
-
           let vfModules_1Path = [
             ...vnfPath, "vfModules", module1CustomizationId,
           ];
@@ -131,6 +127,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           );
 
           assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
+            {path: [...vnfPath, "vnfStoreKey"], value: "vProbe_NC_VNF 0"},   // side-effect
             {path: ["existingNames", newVfModuleName], value: ""},
             {path: ["existingNames", `${newVfModuleName}_vol`], value: ""},
             {path: latestVfModule_1Path, value: latestVfModule_1ExpectedValue},
@@ -174,9 +171,6 @@ describe('Drawing Board: Instantiation Templates', function () {
           cy.getElementByDataTestsId('form-set').click();
 
           // Then...
-          let vnfPath = [
-            "vnfs", "vProbe_NC_VNF 0"
-          ];
           let vfModule_0Path = [
             ...vnfPath, "vfModules",
             "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0",
@@ -202,6 +196,10 @@ describe('Drawing Board: Instantiation Templates', function () {
 });
 
 const serviceModelId = '6cfeeb18-c2b0-49df-987a-da47493c8e38';
+
+const vnfPath = [
+  "vnfs", "vProbe_NC_VNF 0"
+];
 
 function loadDrawingBoardWithRecreateMode() {
   const templateUuid = "46390edd-7100-46b2-9f18-419bd24fb60b";

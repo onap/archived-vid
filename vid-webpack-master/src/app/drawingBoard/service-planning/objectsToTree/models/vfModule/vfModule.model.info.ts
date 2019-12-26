@@ -8,7 +8,10 @@ import {VfModuleInstance} from "../../../../../shared/models/vfModuleInstance";
 import {VfModule} from "../../../../../shared/models/vfModule";
 import {NgRedux} from "@angular-redux/store";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
-import {GenericFormPopupComponent, PopupType} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
+import {
+  GenericFormPopupComponent,
+  PopupType
+} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from "ng2-bootstrap-modal";
 import {VfModulePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {AppState} from "../../../../../shared/store/reducers";
@@ -16,7 +19,15 @@ import {MessageBoxData} from "../../../../../shared/components/messageBox/messag
 import {MessageBoxService} from "../../../../../shared/components/messageBox/messageBox.service";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
-import {deleteActionVfModuleInstance, deleteVFModuleField, removeVfModuleInstance, undoDeleteVfModuleInstance, undoUgradeVFModule, updateVFModulePosition, upgradeVFModule} from "../../../../../shared/storeUtil/utils/vfModule/vfModule.actions";
+import {
+  deleteActionVfModuleInstance,
+  deleteVFModuleField,
+  removeVfModuleInstance,
+  undoDeleteVfModuleInstance,
+  undoUgradeVFModule,
+  updateVFModulePosition,
+  upgradeVFModule
+} from "../../../../../shared/storeUtil/utils/vfModule/vfModule.actions";
 import {ComponentInfoService} from "../../../component-info/component-info.service";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
@@ -166,7 +177,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
 
   getDefaultVNF(node: ITreeNode, serviceModelId: string): string {
     let keys = _.keys(_.pickBy(this._store.getState().service.serviceInstance[serviceModelId].vnfs, vnf => {
-      return (vnf.originalName == node.data.name);
+      return (this._sharedTreeService.modelUniqueId(vnf) === node.data.modelUniqueId);
     }));
     return keys.length === 1 ? this._store.getState().service.serviceInstance[serviceModelId].vnfs[keys[0]].vnfStoreKey : null;
   }
@@ -198,7 +209,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     let count = 0;
     for (let vfModuleKey in vnf['vfModules']) {
       for (let vfModule in vnf['vfModules'][vfModuleKey]) {
-        if (vnf['vfModules'][vfModuleKey][vfModule]['modelInfo'].modelCustomizationId === node.data.modelUniqueId) {
+        if (this._sharedTreeService.modelUniqueId(vnf['vfModules'][vfModuleKey][vfModule]) === node.data.modelUniqueId) {
           const vfModuleObj = vnf['vfModules'][vfModuleKey][vfModule];
           if (!(!_.isNil(vfModuleObj) && !_.isNil(vfModuleObj.action) && vfModuleObj.action.split('_').pop() === 'Delete')) count++;
         }
@@ -228,7 +239,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     if (selectedVNF) {
       return this.showVFModuleOnSelectedVNF(node, selectedVNF, serviceModelId);
     } else {
-      const optionalSelected = this.getOptionalVNFs(serviceModelId, node.parent.data.name);
+      const optionalSelected = this.getOptionalVNFs(serviceModelId, node.parent.data.modelUniqueId);
       if (optionalSelected.length === 1) {
         return this.showVFModuleOnSelectedVNF(node, optionalSelected[0].vnfStoreKey, serviceModelId);
       } else {
@@ -239,7 +250,8 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
 
 
   showVFModuleOnSelectedVNF(node: ITreeNode, selectedVNF: string, serviceModelId: string): AvailableNodeIcons {
-    if (!_.isNil(this._store.getState().service.serviceInstance[serviceModelId].vnfs[selectedVNF]) && node.parent.data.name === this._store.getState().service.serviceInstance[serviceModelId].vnfs[selectedVNF].originalName) {
+    if (!_.isNil(this._store.getState().service.serviceInstance[serviceModelId].vnfs[selectedVNF])
+        && node.parent.data.modelUniqueId === this._sharedTreeService.modelUniqueId(this._store.getState().service.serviceInstance[serviceModelId].vnfs[selectedVNF])) {
       const existingVFModules = this.getCountVFModuleOfSelectedVNF(node, selectedVNF, serviceModelId);
       const reachedLimit = this.isVFModuleReachedLimit(node, this._store.getState().service.serviceHierarchy, serviceModelId, existingVFModules);
       const showAddIcon = this._sharedTreeService.shouldShowAddIcon() && !reachedLimit;
@@ -249,12 +261,12 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
 
   }
 
-  getOptionalVNFs(serviceUUID: string, vnfOriginalModelName: string): any[] {
+  getOptionalVNFs(serviceUUID: string, vnfModelUniqueId: string): any[] {
     let result = [];
     if (!_.isNil(this._store.getState().service.serviceInstance) && !_.isNil(this._store.getState().service.serviceInstance[serviceUUID])) {
       const serviceVNFsInstances = this._store.getState().service.serviceInstance[serviceUUID].vnfs;
       for (let vnfKey in serviceVNFsInstances) {
-        if (serviceVNFsInstances[vnfKey].originalName === vnfOriginalModelName) {
+        if (this._sharedTreeService.modelUniqueId(serviceVNFsInstances[vnfKey]) === vnfModelUniqueId) {
           serviceVNFsInstances[vnfKey].vnfStoreKey = vnfKey;
           result.push(serviceVNFsInstances[vnfKey]);
         }
