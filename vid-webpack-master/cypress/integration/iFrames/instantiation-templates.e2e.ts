@@ -81,6 +81,65 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       });
 
+      it.skip(`Given a stored template - add one VfModule, edit it's details, and deploy - deploy is added with the vfModule details`, () => {
+        // Test is disabled, as an issue currently prevents from clicking the [+] button.
+
+        loadDrawingBoardWithRecreateMode();
+
+        let newVfModuleName = "new.vfmodule.name";
+        let module1ModelId = "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1";
+        let module1CustomizationId = `vprobe_nc_vnf0..${module1ModelId}`;
+
+        // Click target VNF on right tree
+        cy.getElementByDataTestsId('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0').click();
+
+        // Click [+] vfModule on left tree
+        cy.drawingBoardPressAddButtonByElementName(`node-${module1CustomizationId}`)
+          .click({force: true});
+
+        editNode(`node-c09e4530-8fd8-418f-9483-2f57ce927b05-${module1CustomizationId}`, 1);
+          cy.clearInput("instanceName");
+          cy.typeToInput("instanceName", newVfModuleName);
+          cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
+          cy.selectDropdownOptionByText('tenant', 'DN5242-Nov21-T1');
+          cy.getElementByDataTestsId('form-set').click();
+
+        // Then...
+        cy.getReduxState().then((state) => {
+          let vnfPath = [
+            "vnfs", "vProbe_NC_VNF 0"
+          ];
+
+          let vfModules_1Path = [
+            ...vnfPath, "vfModules", module1CustomizationId,
+          ];
+
+          let serviceInstanceElementOnRedux = state.service.serviceInstance[serviceModelId];
+          let latestVfModule_1Path = findPathOfLatestVfModule(serviceInstanceElementOnRedux, vfModules_1Path);
+
+          // This is a funny merge, as values are already there, but that way ensures
+          // the values that selected are really deployed, while limiting the cost of
+          // maintenance, by taking other vfModule's fields as granted.
+          let latestVfModule_1ExpectedValue = _.merge(
+            _.get(serviceInstanceElementOnRedux, latestVfModule_1Path),
+            {
+              instanceName: newVfModuleName,
+              volumeGroupName: `${newVfModuleName}_vol`,
+              lcpCloudRegionId: "hvf6",
+              tenantId: "4914ab0ab3a743e58f0eefdacc1dde77",
+            }
+          );
+
+          assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
+            {path: ["existingNames", newVfModuleName], value: ""},
+            {path: ["existingNames", `${newVfModuleName}_vol`], value: ""},
+            {path: latestVfModule_1Path, value: latestVfModule_1ExpectedValue},
+            {path: ["validationCounter"], value: null},  // side-effect
+          ]);
+        });
+
+      });
+
       [
         {desc: "with changes", modifySomeValues: true},
         {desc: "without changes", modifySomeValues: false},
@@ -142,8 +201,9 @@ describe('Drawing Board: Instantiation Templates', function () {
   });
 });
 
+const serviceModelId = '6cfeeb18-c2b0-49df-987a-da47493c8e38';
+
 function loadDrawingBoardWithRecreateMode() {
-  const serviceModelId = '6cfeeb18-c2b0-49df-987a-da47493c8e38';
   const templateUuid = "46390edd-7100-46b2-9f18-419bd24fb60b";
 
   const drawingBoardAction = `RECREATE`;
@@ -166,18 +226,19 @@ function loadDrawingBoardWithRecreateMode() {
   cy.wait('@templateTopology');
 }
 
-function editNode(dataTestId: string) {
-  return cy.drawingBoardTreeOpenContextMenuByElementDataTestId(dataTestId)
+function editNode(dataTestId: string, index ?: number) {
+  return cy.drawingBoardTreeOpenContextMenuByElementDataTestId(dataTestId, index)
     .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
 }
 
-function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd() {
+function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd(deviationFromExpected: { path: PropertyPath, value: any }[] = []) {
   cy.getDrawingBoardDeployBtn().click();
   cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
     cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/templates__instance_template.json').then((expectedResult) => {
       convertRollbackOnFailureValueFromStringToBoolean(expectedResult);
 
       let xhrBodyWithoutIsDirtyField = removeIsDirtyFieldFromXhrRequestBody(xhr);
+      setDeviationInExpected(expectedResult, deviationFromExpected);
       cy.deepCompare(xhrBodyWithoutIsDirtyField, expectedResult);
     });
   });
@@ -196,10 +257,18 @@ function assertThatBodyFromDeployRequestEqualsToFile(deviationFromExpected: { pa
   });
 }
 
-function setDeviationInExpected(expectedResult: any, deviation: { path: PropertyPath; value: any }[]) {
-  for (const caveat of deviation) {
-    _.set(expectedResult, caveat.path, caveat.value);
+function setDeviationInExpected(expectedResult: any, deviations: { path: PropertyPath; value: any }[]) {
+  for (const deviation of deviations) {
+    _.set(expectedResult, deviation.path, deviation.value);
   }
+}
+
+function findPathOfLatestVfModule(serviceInstanceElementFromRedux: any, vfModulesContainerPath: string[]) {
+  let latestVfModuleRandomlySelectedKey: string = _.last(_.keys(
+    _.get(serviceInstanceElementFromRedux, vfModulesContainerPath)
+  )) as string;
+
+  return [...vfModulesContainerPath, latestVfModuleRandomlySelectedKey];
 }
 
   //We use this function because the deployService() on drawing-board-header.component class
