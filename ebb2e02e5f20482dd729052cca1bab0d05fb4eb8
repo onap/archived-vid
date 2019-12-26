@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a84eff6b_db0c2994",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/auditInfo.modal.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-26T08:14:51Z",
+      "side": 1,
+      "message": "what happen if the test fail in some previous line ?",
+      "revId": "ebb2e02e5f20482dd729052cca1bab0d05fb4eb8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a35d1df8_1e6c1ab2",
+        "filename": "vid-webpack-master/cypress/support/steps/fill.service.popup.step.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-26T08:14:51Z",
+      "side": 1,
+      "message": "what will happen to rest of test ?\nI guess that anyone can use FillServicePopup anywhere in cypress",
+      "revId": "ebb2e02e5f20482dd729052cca1bab0d05fb4eb8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
