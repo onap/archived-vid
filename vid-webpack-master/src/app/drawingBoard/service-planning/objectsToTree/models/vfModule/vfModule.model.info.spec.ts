@@ -195,21 +195,21 @@ describe('VFModule Model Info', () => {
   });
 
   test('showNodeIcons should return true, false if reachLimit of max', ()=>{
-    let serviceId : string = 'servicedId';
     let node = {
       data : {
         id : 'vfModuleId',
-        name : 'vfModuleName'
+        modelUniqueId : 'vfModuleCustomizationId'
       },
       parent : {
         data : {
           id : 'vnfId',
-          name : 'vnfName'
+          modelUniqueId : 'vnfCustomizationId'
         }
       }
     };
     jest.spyOn(_sharedTreeService, 'getSelectedVNF').mockReturnValue('vnfName');
-    jest.spyOn(vfModuleModel, 'getOptionalVNFs').mockReturnValue(['vnfName']);
+    jest.spyOn(_sharedTreeService, 'modelUniqueId').mockReturnValue('vnfCustomizationId');
+    jest.spyOn(vfModuleModel, 'getOptionalVNFs').mockReturnValue([{vnfStoreKey: 'vnfName'}]);
     jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
       global : {},
       service : {
@@ -217,15 +217,21 @@ describe('VFModule Model Info', () => {
           'servicedId' : {
             'vnfs' : {
               'vnfName' : {
+                modelInfo: {
+                  modelCustomizationId: 'vnfCustomizationId'
+                },
                 'properties' : {
-                  'max_instances' : 1
+                  'max_instances' : 20
                 }
               }
             },
             'vfModules' : {
               'vfModuleName' : {
+                modelInfo: {
+                  modelCustomizationId: 'vfModuleCustomizationId'
+                },
                 'properties' : {
-                  maxCountInstances : 1
+                  maxCountInstances : 20
                 }
               }
             }
@@ -238,74 +244,11 @@ describe('VFModule Model Info', () => {
             },
             'vnfs' : {
               'vnfName' :{
-                  'originalName' : 'vnfName',
                   'vfModules' : {
                     'vfModuleName' : {
 
                     }
                   }
-              }
-            }
-          }
-        }
-      }
-    });
-
-    let result = vfModuleModel.showNodeIcons(<any>node, 'servicedId');
-    expect(result).toEqual(new AvailableNodeIcons(true , false));
-  });
-
-
-  test('showNodeIcons should return false, true if reachLimit of max', ()=>{
-    let serviceId : string = 'servicedId';
-    let node = {
-      data : {
-        id : 'vfModuleId',
-        name : 'vfModuleName'
-      },
-      parent : {
-        data : {
-          id : 'vnfId',
-          name : 'vnfName'
-        }
-      }
-    };
-    jest.spyOn(_sharedTreeService, 'getSelectedVNF').mockReturnValue('vnfName');
-    jest.spyOn(vfModuleModel, 'getOptionalVNFs').mockReturnValue(['vnfName']);
-    jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
-      global : {},
-      service : {
-        serviceHierarchy : {
-          'servicedId' : {
-            'vnfs' : {
-              'vnfName' : {
-                'properties' : {
-                  'max_instances' : 1
-                }
-              }
-            },
-            'vfModules' : {
-              'vfModuleName' : {
-                'properties' : {
-                  maxCountInstances : 2
-                }
-              }
-            }
-          }
-        },
-        serviceInstance : {
-          'servicedId' : {
-            'existingVNFCounterMap' : {
-              'vnfId' : 1
-            },
-            'vnfs' : {
-              'vnfName' :{
-                'originalName' : 'vnfName',
-                'vfModules' : {
-                  'vfModuleName' : {
-
-                  }
-                }
               }
             }
           }
@@ -379,6 +322,8 @@ describe('VFModule Model Info', () => {
 
   test('getNodeCount should return number of nodes', ()=>{
     let serviceId : string = 'servicedId';
+    let vfModuleModelUniqueId = 'vfModuleCustomizationId';
+    jest.spyOn(_sharedTreeService, 'modelUniqueId').mockReturnValue(vfModuleModelUniqueId);
     jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
       global : {},
       service : {
@@ -386,6 +331,9 @@ describe('VFModule Model Info', () => {
           'servicedId' : {
             'vnfs' : {
               'vnfName' : {
+                modelInfo: {
+                  modelCustomizationId: 'vnfCustomizationId'
+                },
                 'properties' : {
                   'max_instances' : 1
                 }
@@ -393,6 +341,9 @@ describe('VFModule Model Info', () => {
             },
             'vfModules' : {
               'vfModuleName' : {
+                modelInfo: {
+                  modelCustomizationId: vfModuleModelUniqueId
+                },
                 'properties' : {
                   maxCountInstances : 2
                 }
@@ -414,13 +365,13 @@ describe('VFModule Model Info', () => {
                       'vnfModuleName_111': {
                         'action': 'Create',
                         'modelInfo' : {
-                          modelVersionId : 'vfModuleId'
+                          modelCustomizationId : vfModuleModelUniqueId
                         }
                       },
                       'vnfModuleName_111_1': {
                         'action': 'Create',
                         'modelInfo' : {
-                          modelVersionId : 'vfModuleId'
+                          modelCustomizationId : vfModuleModelUniqueId
                         }
                       }
                   }
@@ -434,13 +385,13 @@ describe('VFModule Model Info', () => {
                     'vnfModuleName_111': {
                       'action': 'Create',
                       'modelInfo' : {
-                        modelVersionId : 'vfModuleId'
+                        modelCustomizationId : vfModuleModelUniqueId
                       }
                     },
                     'vnfModuleName_111_1': {
                       'action': 'Create',
                       'modelInfo' : {
-                        modelVersionId : 'vfModuleId'
+                        modelCustomizationId : vfModuleModelUniqueId
                       }
                     }
                   }
@@ -455,13 +406,13 @@ describe('VFModule Model Info', () => {
     let node = {
       data : {
         id : 'vfModuleId',
-        name : 'vfModuleName',
+        modelUniqueId: vfModuleModelUniqueId,
         'action': 'Create',
       },
       parent : {
         data : {
           id : 'vnfId',
-          name : 'vnfName',
+          modelUniqueId: 'vnfCustomizationId',
           'action': 'Create',
         }
       }
@@ -473,6 +424,8 @@ describe('VFModule Model Info', () => {
 
   test('getNodeCount should return number of nodes : there is selectedVNF', ()=>{
     let serviceId : string = 'servicedId';
+    let vfModuleModelUniqueId = 'vfModuleCustomizationId';
+    jest.spyOn(_sharedTreeService, 'modelUniqueId').mockReturnValue(vfModuleModelUniqueId);
     jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
       global : {},
       service : {
@@ -508,13 +461,13 @@ describe('VFModule Model Info', () => {
                     'vnfModuleName_111': {
                       'action': 'Create',
                       'modelInfo' : {
-                        modelVersionId : 'vfModuleId'
+                        modelCustomizationId : vfModuleModelUniqueId
                       }
                     },
                     'vnfModuleName_111_1': {
                       'action': 'Create',
                       'modelInfo' : {
-                        modelVersionId : 'vfModuleId'
+                        modelCustomizationId : vfModuleModelUniqueId
                       }
                     }
                   }
@@ -528,7 +481,7 @@ describe('VFModule Model Info', () => {
                     'vnfModuleName_111': {
                       'action': 'Create',
                       'modelInfo' : {
-                        modelVersionId : 'vfModuleId'
+                        modelCustomizationId: vfModuleModelUniqueId
                       }
                     }
                   }
@@ -544,13 +497,13 @@ describe('VFModule Model Info', () => {
     let node = {
       data : {
         id : 'vfModuleId',
-        name : 'vfModuleName',
+        modelUniqueId: vfModuleModelUniqueId,
         'action': 'Create',
       },
       parent : {
         data : {
           id : 'vnfId',
-          name : 'vnfName_1',
+          modelUniqueId: 'vnfCustomizationId',
           'action': 'Create',
         }
       }

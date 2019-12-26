@@ -81,9 +81,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       });
 
-      it.skip(`Given a stored template - add one VfModule, edit it's details, and deploy - deploy is added with the vfModule details`, () => {
-        // Test is disabled, as an issue currently prevents from clicking the [+] button.
-
+      it(`Given a stored template - add one VfModule, edit it's details, and deploy - deploy is added with the vfModule details`, () => {
         loadDrawingBoardWithRecreateMode();
 
         let newVfModuleName = "new.vfmodule.name";
@@ -131,6 +129,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           );
 
           assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
+            {path: [...vnfPath, "vnfStoreKey"], value: "vProbe_NC_VNF 0"},
             {path: ["existingNames", newVfModuleName], value: ""},
             {path: ["existingNames", `${newVfModuleName}_vol`], value: ""},
             {path: latestVfModule_1Path, value: latestVfModule_1ExpectedValue},

@@ -4,11 +4,11 @@ import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../shared/store/reducers";
 import {MessageBoxData} from "../../../shared/components/messageBox/messageBox.data";
 import {MessageBoxService} from "../../../shared/components/messageBox/messageBox.service";
-import * as _ from "lodash";
-import { SdcUiCommon} from "onap-ui-angular";
+import {SdcUiCommon} from "onap-ui-angular";
 import {SharedTreeService} from "../objectsToTree/shared.tree.service";
 import {VrfModel} from "../../../shared/models/vrfModel";
 import {clearAllGenericModalhelper} from "../../../shared/storeUtil/utils/global/global.actions";
+import * as _ from "lodash";
 
 export class AvailableNodeIcons {
    addIcon: boolean;
@@ -25,7 +25,7 @@ export class AvailableNodeIcons {
 export class AvailableModelsTreeService {
   constructor(private _defaultDataGeneratorService: DefaultDataGeneratorService,
               private store: NgRedux<AppState>,
-              public _shareTreeService : SharedTreeService) {
+              public _sharedTreeService : SharedTreeService) {
   }
 
 
@@ -45,19 +45,17 @@ export class AvailableModelsTreeService {
     return false;
   }
 
-  getOptionalVNFs(serviceUUID: string, vnfOriginalModelName : string) : any[] {
+  getOptionalVNFs(serviceUUID: string, vnfModelUniqueId: string) : any[] {
     let result = [];
     if(!_.isNil(this.store.getState().service.serviceInstance) && !_.isNil(this.store.getState().service.serviceInstance[serviceUUID])){
       const serviceVNFsInstances = this.store.getState().service.serviceInstance[serviceUUID].vnfs;
       for(let vnfKey in serviceVNFsInstances){
-        if(serviceVNFsInstances[vnfKey].originalName === vnfOriginalModelName){
+        if (this._sharedTreeService.modelUniqueId(serviceVNFsInstances[vnfKey]) === vnfModelUniqueId) {
           serviceVNFsInstances[vnfKey].vnfStoreKey = vnfKey;
           result.push(serviceVNFsInstances[vnfKey]);
         }
       }
     }
-
-
     return result;
   }
 
