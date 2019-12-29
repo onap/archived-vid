@@ -1,10 +1,9 @@
 package org.onap.vid.model.asyncInstantiation;
 
 
+import java.util.Date;
 import vid.automation.test.model.JobStatus;
 import vid.automation.test.model.ServiceAction;
-
-import java.util.Date;
 
 public class ServiceInfo {
 

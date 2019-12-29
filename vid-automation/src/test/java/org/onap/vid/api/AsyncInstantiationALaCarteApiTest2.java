@@ -1,13 +1,34 @@
 package org.onap.vid.api;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
+import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
+import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
 import org.onap.simulator.presetGenerator.presets.BasePresets.BasePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.simulator.presetGenerator.presets.ecompportal_att.PresetGetSessionSlotCheckIntervalGet;
-import org.onap.simulator.presetGenerator.presets.mso.*;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseDelete;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2ErrorResponse;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSODeleteALaCarteService;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGetErrorResponse;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGetByRequestId;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGetByServiceInstanceId;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus;
 import org.onap.vid.model.asyncInstantiation.JobAuditStatus.SourceStatus;
 import org.onap.vid.model.asyncInstantiation.ServiceInfo;
@@ -21,21 +42,6 @@ import vid.automation.test.model.ServiceAction;
 import vid.automation.test.services.AsyncJobsService;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
-import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOServiceInstanceGen2WithNames.Keys.SERVICE_NAME;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
-import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 
 @FeatureTogglingTest({Features.FLAG_ASYNC_ALACARTE_VNF})
 public class AsyncInstantiationALaCarteApiTest2 extends AsyncInstantiationBase {
