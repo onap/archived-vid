@@ -415,7 +415,7 @@ public class AsyncInstantiationMacroApiTest extends AsyncInstantiationBase {
                 "service-instance-type", null,
                 null, "InstanceName",
                 "f028b2e2-7080-4b13-91b2-94944d4c42d8", "Service with VRF", "5.0",
-                jobId, null, ServiceAction.DELETE, false)
+                jobId, null, ServiceAction.DELETE, false,null)
         );
     }
 
