@@ -9,7 +9,7 @@
   "auditTrail": null,
   "jobId": "ef3430f8-6350-454c-a7c2-89ba301522c1",
   "templateId": "a313b887-ccfd-4d85-a232-5ec9d4d94013",
-  "userId": "us16807000",
+  "userId": "16807000",
   "msoRequestId": null,
   "jobStatus": "IN_PROGRESS",
   "statusModifiedDate": 1577354226000,
@@ -38,9 +38,54 @@
   "isRetryEnabled": false,
   "aLaCarte": false,
   "requestSummary": {
-    "vnf": 1,
     "vfModule": 2,
-    "volumeGroup": 1
+    "volumeGroup": 1,
+    "vnf": 1
   }
-}
+},
+  {
+    "owningEntityId": "someID",
+    "owningEntityName": "someName",
+    "subscriberName": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+    "tenantId": "greatTenant",
+    "tenantName": "greatTenant",
+    "aicZoneId": "NFT1",
+    "aicZoneName": "NFTJSSSS-NFT1",
+    "pause": false,
+    "id": 66,
+    "created": 1577363612000,
+    "modified": 1577363618000,
+    "createdId": null,
+    "modifiedId": null,
+    "rowNum": null,
+    "auditUserId": null,
+    "auditTrail": null,
+    "jobId": "a6152b65-f202-4d5a-b91f-c041c12253b9",
+    "templateId": "3c66edf6-b760-47d7-87ad-a1e934b9dcb7",
+    "userId": "17807000",
+    "msoRequestId": null,
+    "jobStatus": "IN_PROGRESS",
+    "statusModifiedDate": 1577363613000,
+    "hidden": false,
+    "deletedAt": null,
+    "project": "myProject",
+    "regionId": "hvf3",
+    "regionName": null,
+    "serviceType": "mySubType",
+    "subscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+    "serviceInstanceId": null,
+    "serviceInstanceName": "SERVICE_NAME",
+    "serviceModelId": "5c9e863f-2716-467b-8799-4a67f378dcaa",
+    "serviceModelName": "AIM_TRANSPORT_00004",
+    "serviceModelVersion": "1.0",
+    "createdBulkDate": 1577363612000,
+    "action": "INSTANTIATE",
+    "requestSummary": {
+      "vfModule": 2,
+      "volumeGroup": 1,
+      "vnf": 1
+    },
+    "isRetryEnabled": false,
+    "aLaCarte": false
+  }
 ]
