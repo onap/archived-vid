@@ -1,6 +1,7 @@
 package org.onap.vid.model.asyncInstantiation;
 
 
+import java.util.Map;
 import vid.automation.test.model.JobStatus;
 import vid.automation.test.model.ServiceAction;
 
@@ -34,12 +35,13 @@ public class ServiceInfo {
     public Date createdBulkDate;
     public ServiceAction action;
     public boolean isRetryEnabled;
+    public Map<String, Long> requestSummary;
 
     public ServiceInfo(){
 
     }
 
-    public ServiceInfo(String userId, JobStatus jobStatus, boolean pause, String owningEntityId, String owningEntityName, String project, String aicZoneId, String aicZoneName, String tenantId, String tenantName, String regionId, String regionName, String serviceType, String subscriberName, String serviceInstanceId, String serviceInstanceName, String serviceModelId, String serviceModelName, String serviceModelVersion, String jobId, String templateId, ServiceAction action, boolean isRetryEnabled) {
+    public ServiceInfo(String userId, JobStatus jobStatus, boolean pause, String owningEntityId, String owningEntityName, String project, String aicZoneId, String aicZoneName, String tenantId, String tenantName, String regionId, String regionName, String serviceType, String subscriberName, String serviceInstanceId, String serviceInstanceName, String serviceModelId, String serviceModelName, String serviceModelVersion, String jobId, String templateId, ServiceAction action, boolean isRetryEnabled, Map<String, Long>requestSummary) {
         this.userId = userId;
         this.jobStatus = jobStatus;
         this.pause = pause;
@@ -63,6 +65,7 @@ public class ServiceInfo {
         this.templateId = templateId;
         this.action = action;
         this.isRetryEnabled = isRetryEnabled;
+        this.requestSummary = requestSummary;
     }
 
     public JobStatus getJobStatus() {
@@ -75,6 +78,10 @@ public class ServiceInfo {
 
     public String getJobId() {
         return jobId;
+    }
+
+    public Map<String, Long> getRequestSummary(){
+        return requestSummary;
     }
 
 }

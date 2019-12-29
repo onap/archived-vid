@@ -10,14 +10,15 @@ import static vid.automation.test.services.SimulatorApi.registerExpectationFromP
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.vid.model.asyncInstantiation.ServiceInfo;
 import org.onap.vid.model.mso.MsoResponseWrapper2;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -97,6 +98,10 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
             fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
     }
 
+    private Map<String, Long> getExpectedRequestSummery(String path) throws IOException {
+        return TestUtils.readJsonResourceFileAsObject(path, ServiceInfo[].class)[0].getRequestSummary();
+    }
+
     @Test
     public void templateTopology_givenDeploy_OriginalTemplateNotChanged() throws IOException {
         String uuidOriginTemplate = postAsyncInstanceRequest(fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
@@ -120,13 +125,9 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
                 .put("pause", false);
 
         postAsyncInstanceRequest(request);
+        Map<String, Long> expectedRequestSummery = getExpectedRequestSummery("/asyncInstantiation/templates__instance_teplate_for_modal.json");
 
-        assertThat(fetchRequestSummary(request.at("/modelInfo/modelVersionId").asText()),
-            jsonEquals(ImmutableMap.of(
-                "vnf", 1L,
-                "vfModule", 2L,
-                "volumeGroup", 1L
-            )));
+        assertThat(fetchRequestSummary(request.at("/modelInfo/modelVersionId").asText()), jsonEquals(expectedRequestSummery));
     }
 
     private JsonNode fetchRequestSummary(String serviceModelId) {

@@ -193,7 +193,7 @@ public class AsyncInstantiationALaCarteApiTest2 extends AsyncInstantiationBase {
                 serviceType, null,
                 null, serviceInstanceName,
                 "4117a0b6-e234-467d-b5b9-fe2f68c8b0fc", "Grouping Service for Test", "1.0",
-                jobId, null, ServiceAction.DELETE, false)
+                jobId, null, ServiceAction.DELETE, false, null)
         );
     }
 

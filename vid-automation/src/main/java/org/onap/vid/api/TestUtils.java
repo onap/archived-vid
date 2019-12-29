@@ -1,8 +1,10 @@
 package org.onap.vid.api;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.hamcrest.Matcher;
 import org.springframework.core.io.Resource;
@@ -60,6 +62,21 @@ public class TestUtils {
             throw new RuntimeException(e);
         }
     }
+
+    public static <T> T readJsonResourceFileAsObject(String pathInResource, Class<T> valueType) {
+        return readJsonResourceFileAsObject(pathInResource, valueType, false);
+    }
+
+    public static <T> T readJsonResourceFileAsObject(String pathInResource, Class<T> valueType, boolean failOnUnknownProperties) {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, failOnUnknownProperties);
+
+        try {
+            return objectMapper.readValue(TestUtils.class.getResource(pathInResource), valueType);
+        } catch (IOException e) {
+            return ExceptionUtils.rethrow(e);
+        }
+    }
+
 
     public static String getNestedPropertyInMap(Object item, String path) {
         return getNestedPropertyInMap(item, path, String.class, "/");

@@ -175,7 +175,7 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
                 "TYLER SILVIA", "SILVIA ROBBINS",
                 instanceId, serviceInstanceName,
                 "e3c34d88-a216-4f1d-a782-9af9f9588705", "gayawabawe", "5.1",
-                jobId, null, action, false)
+                jobId, null, action, false, null)
         );
     }
 
@@ -408,7 +408,7 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
         assertExpectedStatusAndServiceInfo(finalState, jobId, new ServiceInfo("us16807000", JobStatus.IN_PROGRESS, isPause, "someID",
                 "someName", "myProject", "NFT1", "NFTJSSSS-NFT1", "greatTenant", "greatTenant", "hvf3", null,
                 "mySubType", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", null, names.get(Keys.SERVICE_NAME),
-                "5c9e863f-2716-467b-8799-4a67f378dcaa", "AIM_TRANSPORT_00004", "1.0", jobId, null, ServiceAction.INSTANTIATE, false));
+                "5c9e863f-2716-467b-8799-4a67f378dcaa", "AIM_TRANSPORT_00004", "1.0", jobId, null, ServiceAction.INSTANTIATE, false, null));
     }
 
     protected void assertExpectedStatusAndServiceInfo(JobStatus finalState, String jobId, ServiceInfo expectedServiceInfo) {
