@@ -301,6 +301,21 @@ describe('Drawing board', function () {
       cy.updateServiceShouldNotOverrideChild();
     });
 
+
+    it('should show vfModule missong data icon ', () => {
+      const serviceModelId : string = 'f4d84bb4-a416-4b4e-997e-0059973630b9';
+      let res = getReduxWithVNFMissingData();
+      res.service.serviceInstance['f4d84bb4-a416-4b4e-997e-0059973630b9'].vnfs['2017-488_PASQUALE-vPE 0:0001'].vfModules['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0']['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0jkyqv'].isMissingData = true;
+      cy.setReduxState(<any>res);
+      cy.openIframe(`app/ui/#/servicePlanning?serviceModelId=${serviceModelId}`);
+      cy.getElementByDataTestsId('node-040e591e-5d30-4e0d-850f-7266e5a8e013-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0-alert-icon').should('have.class', 'icon-alert');
+
+      cy.getElementByDataTestsId('node-040e591e-5d30-4e0d-850f-7266e5a8e013-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0-menu-btn').eq(1).click({force:true})
+        .getElementByDataTestsId('context-menu-edit').click()
+        .getElementByDataTestsId('form-set').click()
+        .getElementByDataTestsId('node-040e591e-5d30-4e0d-850f-7266e5a8e013-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0-alert-icon').should('not.have.class', 'icon-alert');
+    });
+
     xit('should display service model name', () => {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setReduxState(<any>res);

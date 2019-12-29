@@ -27,7 +27,8 @@
              id="drawing-board-tree">
 
     <ng-template #treeNodeTemplate let-node let-index="index">
-      <div class="main-row" [attr.id]="getNodeId(node)" [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName"
+      <div class="main-row" [attr.id]="getNodeId(node)"
+           [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName"
            (click)="selectNode(node)"
            [ngClass]="{'isLinked' : isLinkedInstance(node?.data)}">
         <custom-popover class="failed-popover-wrap" *ngIf="node?.data?.isFailed" [value]="node?.data?.statusMessage"
@@ -89,10 +90,10 @@
           </context-menu>
           </span>
           <span
-            *ngIf="drawingBoardTreeService.isVNFMissingData(node, serviceModelId)"
+            *ngIf="drawingBoardTreeService.isVNFMissingData(node, serviceModelId) || drawingBoardTreeService.isVFModuleMissingData(node, serviceModelId)"
             tooltip="{{ missingDataTooltip }}"
             tooltipPlacement="left"
-            [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"
+            [attr.data-tests-id]="'node-'+ node.data.modelId + '-' + node.data.modelName +'-alert-icon'"
             class="icon-alert">
               <svg-icon
                 [mode]="'warning'"
@@ -101,15 +102,13 @@
                 [name]="'alert-triangle-o'">
               </svg-icon>
           </span>
-          <span *ngIf="drawingBoardTreeService.isVFModuleMissingData(node, serviceModelId)" class="icon-alert"
-                tooltip="{{ missingDataTooltip }}" tooltipPlacement="left"
-                [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-alert-icon'"></span>
         </div>
 
         <div class="action-status">
           <span
             [ngClass]="isUpgraded(node)?'action-status-type upgrade':'action-status-type delete'"
-            [attr.data-tests-id]="isUpgraded(node)?'action-status-type':'delete-status-type'" [ngStyle]="{ 'opacity': isUpgraded(node) || isDeleted(node) ? '1' : '0'}">{{isUpgraded(node)?"Upgrade":"Delete"}}</span>
+            [attr.data-tests-id]="isUpgraded(node)?'action-status-type':'delete-status-type'"
+            [ngStyle]="{ 'opacity': isUpgraded(node) || isDeleted(node) ? '1' : '0'}">{{isUpgraded(node) ? "Upgrade" : "Delete"}}</span>
         </div>
       </div>
     </ng-template>
