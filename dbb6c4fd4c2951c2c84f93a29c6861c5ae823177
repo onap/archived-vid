@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6425961f_6e5744c4",
+        "filename": "vid-automation/src/main/java/org/onap/vid/api/AsyncInstantiationBase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2019-12-29T14:43:04Z",
+      "side": 1,
+      "message": "maybe you can just ignore it in serviceInfoDataReflected method",
+      "revId": "dbb6c4fd4c2951c2c84f93a29c6861c5ae823177",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
