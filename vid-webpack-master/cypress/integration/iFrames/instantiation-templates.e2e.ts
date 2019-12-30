@@ -23,7 +23,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
     describe('Load Page and Deploy', () => {
 
-      it(`Given a stored template - when click "deploy" - then a coherent request should be sent upon deploy`,  () => {
+      it(`Given a stored template - when click "deploy" - then a coherent request should be sent upon deploy`, () => {
 
         loadDrawingBoardWithRecreateMode();
 
@@ -32,54 +32,99 @@ describe('Drawing Board: Instantiation Templates', function () {
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd();
       });
 
+      it('Given a template - User can remove existing VNF', () => {
+
+        loadDrawingBoardWithRecreateMode();
+
+        removeVNFWithVFModules('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0');
+
+        cy.getDrawingBoardDeployBtn().click();
+        cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
+          cy.deepCompare(JSON.parse(JSON.stringify(xhr.request.body)).vnfs, {});
+        });
+
+      });
+
+      it('Given a template - User can add new VNF', () => {
+        loadDrawingBoardWithRecreateMode();
+        // add new node
+        addNewNode('node-vProbe_NC_VNF 0-add-btn')
+          .fillVnfPopup()
+          .getDrawingBoardDeployBtn().click()
+          .wait('@expectedPostAsyncInstantiation').then(xhr => {
+          const vnfRequest = JSON.parse(JSON.stringify(xhr.request.body)).vnfs['vProbe_NC_VNF 0_1'];
+
+          expect(vnfRequest.action).equals("Create");
+          expect(vnfRequest.rollbackOnFailure).equals("true");
+          expect(vnfRequest.originalName).equals("vProbe_NC_VNF 0");
+          expect(vnfRequest.productFamilyId).equals("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
+          expect(vnfRequest.lcpCloudRegionId).equals("hvf6");
+          expect(vnfRequest.lineOfBusiness).equals("zzz1");
+          expect(vnfRequest.platformName).equals("xxx1");
+          expect(vnfRequest.tenantId).equals("229bcdc6eaeb4ca59d55221141d01f8e");
+        });
+      });
+
+      it('Given a template - User can Duplicate', () => {
+        const numberOfDuplicate : number = 4;
+        loadDrawingBoardWithRecreateMode();
+        nodeAction('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0', 'Duplicate')
+          .getElementByDataTestsId('duplicate-amount-vfmodules').select(numberOfDuplicate.toString())
+          .getTagElementContainsText('button', 'Duplicate').click()
+          .getDrawingBoardDeployBtn().click()
+          .wait('@expectedPostAsyncInstantiation').then(xhr => {
+            expect(Object.keys(JSON.parse(JSON.stringify(xhr.request.body)).vnfs).length).equals(numberOfDuplicate + 1);
+        });
+      });
+
       it('Given a stored template - when "edit" vnf and vfmodules are opened - then template’s details are visible as expected and deploy without changes', () => {
 
         loadDrawingBoardWithRecreateMode();
 
         // Then...
-        editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0")
-        .getElementByDataTestsId("instanceName").should('have.value', 'hvf6arlba007')
-        .getElementByDataTestsId("productFamily").should('contain', 'Emanuel')
-        .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
-        .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
-        .getElementByDataTestsId("lineOfBusiness").should('contain', 'zzz1')
-        .getElementByDataTestsId("rollback").should('contain', 'Rollback')
-        .checkPlatformValue('xxx1')
-         .getElementByDataTestsId("cancelButton").click();
+        nodeAction("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0", 'Edit')
+          .getElementByDataTestsId("instanceName").should('have.value', 'hvf6arlba007')
+          .getElementByDataTestsId("productFamily").should('contain', 'Emanuel')
+          .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
+          .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
+          .getElementByDataTestsId("lineOfBusiness").should('contain', 'zzz1')
+          .getElementByDataTestsId("rollback").should('contain', 'Rollback')
+          .checkPlatformValue('xxx1')
+          .getElementByDataTestsId("cancelButton").click();
 
-        editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
-        .getElementByDataTestsId("instanceName").should('have.value', 'hvf6arlba007_lba_Base_01')
-        .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
-        .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
-        .getElementByDataTestsId("rollback").should('contain', 'Rollback')
-        .getElementByDataTestsId("cancelButton").click();
+        nodeAction("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0", 'Edit')
+          .getElementByDataTestsId("instanceName").should('have.value', 'hvf6arlba007_lba_Base_01')
+          .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
+          .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
+          .getElementByDataTestsId("rollback").should('contain', 'Rollback')
+          .getElementByDataTestsId("cancelButton").click();
 
-        editNode("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1")
-        .getElementByDataTestsId("instanceName").should('have.value', 'my_hvf6arlba007_lba_dj_01')
-        .getElementByDataTestsId("volumeGroupName").should('have.value', 'my_special_hvf6arlba007_lba_dj_01_vol')
-        .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
-        .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
-        .getElementByDataTestsId("rollback").should('contain', 'Rollback')
-        .getElementByDataTestsId("sdncPreLoad").should('have.value', 'on')
-        .getElementByDataTestsId("cancelButton").click();
+        nodeAction("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1", 'Edit')
+          .getElementByDataTestsId("instanceName").should('have.value', 'my_hvf6arlba007_lba_dj_01')
+          .getElementByDataTestsId("volumeGroupName").should('have.value', 'my_special_hvf6arlba007_lba_dj_01_vol')
+          .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
+          .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
+          .getElementByDataTestsId("rollback").should('contain', 'Rollback')
+          .getElementByDataTestsId("sdncPreLoad").should('have.value', 'on')
+          .getElementByDataTestsId("cancelButton").click();
 
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
           {path: [...vnfPath, "vnfStoreKey"], value: "vProbe_NC_VNF 0"}, // side-effect
         ]);
-        });
+      });
 
-      it(`Given a stored template - when "edit" service is opened - then template’s details are visible as expected`,  function ()  {
+      it(`Given a stored template - when "edit" service is opened - then template’s details are visible as expected`, function () {
 
         loadDrawingBoardWithRecreateMode();
 
         cy.openServiceContextMenu()
-        .getElementByDataTestsId("context-menu-header-edit-item").click()
-        .getElementByDataTestsId("instanceName").should('have.value', 'vProbe_NC_Service_DG_new_SI')
-        .getElementByDataTestsId("subscriberName").should('contain', 'SILVIA ROBBINS')
-        .getElementByDataTestsId("serviceType").should('contain', 'TYLER SILVIA')
-        .getElementByDataTestsId("owningEntity").should('contain', 'WayneHolland')
-        .getElementByDataTestsId("project").should('contain', 'WATKINS')
-        .getElementByDataTestsId("rollback").should('contain', 'Rollback');
+          .getElementByDataTestsId("context-menu-header-edit-item").click()
+          .getElementByDataTestsId("instanceName").should('have.value', 'vProbe_NC_Service_DG_new_SI')
+          .getElementByDataTestsId("subscriberName").should('contain', 'SILVIA ROBBINS')
+          .getElementByDataTestsId("serviceType").should('contain', 'TYLER SILVIA')
+          .getElementByDataTestsId("owningEntity").should('contain', 'WayneHolland')
+          .getElementByDataTestsId("project").should('contain', 'WATKINS')
+          .getElementByDataTestsId("rollback").should('contain', 'Rollback');
 
       });
 
@@ -97,12 +142,12 @@ describe('Drawing Board: Instantiation Templates', function () {
         cy.drawingBoardPressAddButtonByElementName(`node-${module1CustomizationId}`)
           .click({force: true});
 
-        editNode(`node-c09e4530-8fd8-418f-9483-2f57ce927b05-${module1CustomizationId}`, 1);
-          cy.clearInput("instanceName");
-          cy.typeToInput("instanceName", newVfModuleName);
-          cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
-          cy.selectDropdownOptionByText('tenant', 'DN5242-Nov21-T1');
-          cy.getElementByDataTestsId('form-set').click();
+        nodeAction(`node-c09e4530-8fd8-418f-9483-2f57ce927b05-${module1CustomizationId}`, 'Edit', 1);
+        cy.clearInput("instanceName");
+        cy.typeToInput("instanceName", newVfModuleName);
+        cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
+        cy.selectDropdownOptionByText('tenant', 'DN5242-Nov21-T1');
+        cy.getElementByDataTestsId('form-set').click();
 
         // Then...
         cy.getReduxState().then((state) => {
@@ -156,7 +201,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           cy.getElementByDataTestsId('form-set').click();
 
           // edit vnf
-          editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0");
+          nodeAction("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0", 'Edit');
           if (testCase.modifySomeValues) {
             cy.selectPlatformValue('platform');
             cy.selectDropdownOptionByText("tenant", "CESAR-100-D-spjg61909");
@@ -164,7 +209,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           cy.getElementByDataTestsId('form-set').click();
 
           //edit vf module
-          editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0");
+          nodeAction("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0", 'Edit');
           if (testCase.modifySomeValues) {
             cy.getElementByDataTestsId('sdncPreLoad').click();
           }
@@ -208,11 +253,11 @@ function loadDrawingBoardWithRecreateMode() {
   const templateTopologyEndpoint = "templateTopology";
   cy.route(`**/rest/models/services/${serviceModelId}`,
     'fixture:../support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__service_model.json')
-  .as('serviceModel');
+    .as('serviceModel');
 
   cy.route(`**/instantiationTemplates/${templateTopologyEndpoint}/${templateUuid}`,
     'fixture:../../../vid-automation/src/test/resources/asyncInstantiation/templates__instance_template.json')
-  .as('templateTopology');
+    .as('templateTopology');
 
   // When...
 
@@ -224,9 +269,19 @@ function loadDrawingBoardWithRecreateMode() {
   cy.wait('@templateTopology');
 }
 
-function editNode(dataTestId: string, index ?: number) {
+function nodeAction(dataTestId: string, action: string, index ?: number) {
   return cy.drawingBoardTreeOpenContextMenuByElementDataTestId(dataTestId, index)
-    .drawingBoardTreeClickOnContextMenuOptionByName('Edit')
+    .drawingBoardTreeClickOnContextMenuOptionByName(action)
+}
+
+
+function addNewNode(dataTestId: string) {
+  return cy.getElementByDataTestsId(dataTestId).click({force: true})
+}
+
+function removeVNFWithVFModules(dataTestId: string) {
+  return nodeAction(dataTestId, 'Remove')
+    .getTagElementContainsText('button', 'Remove VNF').click()
 }
 
 function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd(deviationFromExpected: { path: PropertyPath, value: any }[] = []) {
@@ -255,6 +310,7 @@ function assertThatBodyFromDeployRequestEqualsToFile(deviationFromExpected: { pa
   });
 }
 
+
 function setDeviationInExpected(expectedResult: any, deviations: { path: PropertyPath; value: any }[]) {
   for (const deviation of deviations) {
     _.set(expectedResult, deviation.path, deviation.value);
@@ -269,23 +325,23 @@ function findPathOfLatestVfModule(serviceInstanceElementFromRedux: any, vfModule
   return [...vfModulesContainerPath, latestVfModuleRandomlySelectedKey];
 }
 
-  //We use this function because the deployService() on drawing-board-header.component class
-  // changes rollbackOnFailure value from string type to boolean.
-  function convertRollbackOnFailureValueFromStringToBoolean(expectedResult: any) {
-    expectedResult.rollbackOnFailure = Boolean(expectedResult.rollbackOnFailure);
-  }
+//We use this function because the deployService() on drawing-board-header.component class
+// changes rollbackOnFailure value from string type to boolean.
+function convertRollbackOnFailureValueFromStringToBoolean(expectedResult: any) {
+  expectedResult.rollbackOnFailure = Boolean(expectedResult.rollbackOnFailure);
+}
 
-function removeIsDirtyFieldFromXhrRequestBody(xhr : any) {
+function removeIsDirtyFieldFromXhrRequestBody(xhr: any) {
   let xhrTempBody = JSON.parse(JSON.stringify(xhr.request.body));
   delete xhrTempBody.isDirty;
   return xhrTempBody;
 }
 
-  function mockAsyncBulkResponse() {
-    cy.server().route({
-      url: Cypress.config('baseUrl') + '/asyncInstantiation/bulk',
-      method: 'POST',
-      status: 200,
-      response: "[]",
-    }).as("expectedPostAsyncInstantiation");
-  }
+function mockAsyncBulkResponse() {
+  cy.server().route({
+    url: Cypress.config('baseUrl') + '/asyncInstantiation/bulk',
+    method: 'POST',
+    status: 200,
+    response: "[]",
+  }).as("expectedPostAsyncInstantiation");
+}

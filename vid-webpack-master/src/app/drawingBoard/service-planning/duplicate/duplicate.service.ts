@@ -13,11 +13,14 @@ import {changeInstanceCounter, duplicateBulkInstances} from "../../../shared/sto
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
 import {Utils} from "../../../shared/utils/utils";
+import {SharedTreeService} from "../objectsToTree/shared.tree.service";
 
 @Injectable()
 export class DuplicateService {
 
-  constructor(private _logService: LogService, private _store: NgRedux<AppState>, modalService: SdcUiServices.ModalService) {
+  constructor(private _logService: LogService,
+              private sharedTreeService : SharedTreeService,
+              private _store: NgRedux<AppState>, modalService: SdcUiServices.ModalService) {
     this.modalService = modalService;
   }
 
@@ -123,7 +126,7 @@ export class DuplicateService {
       newObjects[uniqueStoreKey] = clone;
     }
     this.store.dispatch(duplicateBulkInstances(this.currentServiceId, newObjects, this.existingNames, node));
-    this.store.dispatch(changeInstanceCounter(toClone.modelInfo.modelUniqueId, this.currentServiceId, this.numberOfDuplicates, node));
+    this.store.dispatch(changeInstanceCounter(this.sharedTreeService.modelUniqueId(toClone), this.currentServiceId, this.numberOfDuplicates, node));
     this._logService.info("Duplicate " + this.storeKey + " serviceId: " + this.currentServiceId + "number of duplicate: " + this.numberOfDuplicates, toClone);
   }
 
