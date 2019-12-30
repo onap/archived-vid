@@ -7,6 +7,7 @@ import {IModalConfig} from 'onap-ui-angular/dist/components/common';
 import {AppState} from "../../../shared/store/reducers";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
+import {SharedTreeService} from "../objectsToTree/shared.tree.service";
 
 class MockAppStore<T> {
   getState(){
@@ -68,6 +69,7 @@ describe('Drawing board tree service', () => {
     TestBed.configureTestingModule({
       providers : [
         DuplicateService,
+        SharedTreeService,
         LogService,
         {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockAppStore},
