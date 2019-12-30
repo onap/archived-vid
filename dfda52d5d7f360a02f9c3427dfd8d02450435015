@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "530b4a6b_c7c2f4d4",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/InstantiationTemplatesApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-30T14:03:51Z",
+      "side": 1,
+      "message": "I suggest changing something bit more significant; maybe the instance name?",
+      "revId": "dfda52d5d7f360a02f9c3427dfd8d02450435015",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
