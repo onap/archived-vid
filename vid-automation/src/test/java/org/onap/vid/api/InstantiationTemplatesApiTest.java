@@ -98,6 +98,20 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
     }
 
     @Test
+    public void templateTopology_givenDeploy_OriginalTemplateNotChanged() throws IOException {
+        String uuidOriginTemplate = postAsyncInstanceRequest(fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
+        JsonNode originTemplateBeforeDeploy = restTemplate.getForObject(templateTopologyUri(uuidOriginTemplate), JsonNode.class);
+
+        ObjectNode changedNode = originTemplateBeforeDeploy.deepCopy();
+        changedNode.put("isFailed", true);
+        postAsyncInstanceRequest(changedNode);
+
+        JsonNode originTemplateAfterDeploy = restTemplate.getForObject(templateTopologyUri(uuidOriginTemplate), JsonNode.class);
+        assertThat(cleanupTemplate(originTemplateBeforeDeploy), jsonEquals(cleanupTemplate(originTemplateAfterDeploy)));
+
+    }
+
+    @Test
     @FeatureTogglingTest(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)
     public void templateTopology_givenDeploy_getServiceInfoHoldsRequestSummary() throws IOException {
         ObjectNode request =
