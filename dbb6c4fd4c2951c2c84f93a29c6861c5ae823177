@@ -16,6 +16,57 @@
       "revId": "dbb6c4fd4c2951c2c84f93a29c6861c5ae823177",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be5a35af_3f43e80e",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/InstantiationTemplatesApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-30T06:32:04Z",
+      "side": 1,
+      "message": "please inline expectedRequestSummery (and fix typo):\nthe file path don\u0027t need to be a parameter, but inlined into the function.\n then the assertion can be \"jsonEquals(expectedRequestSummary())\"",
+      "revId": "dbb6c4fd4c2951c2c84f93a29c6861c5ae823177",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a5ec0d4_9e4ad9fd",
+        "filename": "vid-automation/src/test/resources/asyncInstantiation/templates__instance_teplate_for_modal.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-30T06:32:04Z",
+      "side": 1,
+      "message": "I suggest renaming this file. Maybe something that mentions TemplateInfo",
+      "revId": "dbb6c4fd4c2951c2c84f93a29c6861c5ae823177",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6974d93_0c45ad7d",
+        "filename": "vid-automation/src/test/resources/asyncInstantiation/templates__instance_teplate_for_modal.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-30T06:32:04Z",
+      "side": 1,
+      "message": "this commit adds a full json file to combine on Cypress, but actually checks only this single field. further changes on the API will have a false certainty of an e2e teta.\nI suggest either keeping only this field, or testing for the whole file correctness, somehow.",
+      "revId": "dbb6c4fd4c2951c2c84f93a29c6861c5ae823177",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
