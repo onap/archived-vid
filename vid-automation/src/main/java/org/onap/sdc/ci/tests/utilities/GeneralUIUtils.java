@@ -21,21 +21,11 @@
 package org.onap.sdc.ci.tests.utilities;
 
 //import com.automation.common.report_portal_integration.annotations.Step;
-import com.aventstack.extentreports.Status;
-import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
-import org.onap.sdc.ci.tests.datatypes.DataTestIdEnum;
-import org.onap.sdc.ci.tests.datatypes.DataTestIdEnum.DashboardCardEnum;
-import org.onap.sdc.ci.tests.execute.setup.DriverFactory;
-import org.onap.sdc.ci.tests.execute.setup.SetupCDTest;
-import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.awt.*;
+import static org.hamcrest.Matchers.is;
+
+import com.aventstack.extentreports.Status;
+import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -45,8 +35,30 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-
-import static org.hamcrest.Matchers.is;
+import org.apache.commons.io.FileUtils;
+import org.junit.Assert;
+import org.onap.sdc.ci.tests.datatypes.DataTestIdEnum;
+import org.onap.sdc.ci.tests.datatypes.DataTestIdEnum.DashboardCardEnum;
+import org.onap.sdc.ci.tests.execute.setup.DriverFactory;
+import org.onap.sdc.ci.tests.execute.setup.SetupCDTest;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public final class GeneralUIUtils {
@@ -129,6 +141,13 @@ public final class GeneralUIUtils {
 	public static WebElement getWebElementByTestID(String dataTestId, int timeout) {
 		WebDriverWait wait = newWait(timeout);
 		return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-tests-id='" + dataTestId + "']")));
+	}
+
+	public static WebElement getWebElementByTestID(String dataTestId, String text, int timeout) {
+		WebElement webElementByTestID = getWebElementByTestID(dataTestId, timeout);
+
+		newWait(timeout).until(ExpectedConditions.textToBePresentInElement(webElementByTestID, text));
+		return webElementByTestID;
 	}
 
 	public static boolean isWebElementExistByTestId(String dataTestId) {
@@ -355,8 +374,7 @@ public final class GeneralUIUtils {
 	}
 
 	public static void waitForLoader(int timeOut) {
-		sleep(1);
-		waitForElementInVisibilityBy(By.className("tlv-loader"), timeOut);
+		newWait(timeOut).until(ExpectedConditions.invisibilityOfElementLocated(By.className("sdc-loader-background")));
 	}
 
 	public static void findComponentAndClick(String resourceName) throws Exception {
@@ -630,6 +648,7 @@ public final class GeneralUIUtils {
 		} catch (TimeoutException | org.openqa.selenium.ScriptTimeoutException e) {
 			logger.info("Ignoring TimeoutException while waiting for angular2: {}", e, e);
 		}
+		waitForLoader(10);
     }
 
 	public static Object getAllElementAttributes(WebElement element) {
@@ -805,15 +824,6 @@ public final class GeneralUIUtils {
 		Actions actions = new Actions(getDriver());
 		actions.dragAndDropBy(area, 10, yOffset).perform();
 		ultimateWait();
-	}
-
-	public static void waitForBackLoader() {
-		waitForBackLoader(timeOut);
-	}
-
-	public static void waitForBackLoader(int timeOut) {
-		sleep(1);
-		waitForElementInVisibilityBy(By.className("tlv-loader-back"), timeOut);
 	}
 
 }
