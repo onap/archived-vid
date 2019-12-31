@@ -28,6 +28,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants.Users;
 import vid.automation.test.infra.FeatureTogglingTest;
@@ -88,10 +89,18 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
         return uri.toASCIIString() + "/instantiationTemplates/templateTopology/" + jobId;
     }
 
-    @Test
-    public void templateTopology_givenDeployFromCypressE2E_getTemplateTopologyDataIsEquivalent() {
+    @DataProvider
+    public static Object[][] deployFromCypressE2EFilenames() {
+        return new Object[][]{
+            {"asyncInstantiation/templates__instance_template.json"},
+            {"asyncInstantiation/templates__instance_template_network.json"},
+        };
+    }
+
+    @Test(dataProvider = "deployFromCypressE2EFilenames")
+    public void templateTopology_givenDeployFromCypressE2E_getTemplateTopologyDataIsEquivalent(String fileName) {
         templateTopology_givenDeploy_templateTopologyIsEquivalentToBody(
-            fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
+            fileAsJsonNode(fileName));
     }
 
     @Test
