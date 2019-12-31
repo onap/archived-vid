@@ -155,7 +155,7 @@ describe('Drawing Board: Instantiation Templates', function () {
             ...vnfPath, "vfModules", module1CustomizationId,
           ];
 
-          let serviceInstanceElementOnRedux = state.service.serviceInstance[serviceModelId];
+          let serviceInstanceElementOnRedux = state.service.serviceInstance[(templateWithVnfSetup.serviceModelId)];
           let latestVfModule_1Path = findPathOfLatestVfModule(serviceInstanceElementOnRedux, vfModules_1Path);
 
           // This is a funny merge, as values are already there, but that way ensures
@@ -236,34 +236,72 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       });
 
+      it(`Given a stored template of Network - - it is loaded`,  () => {
+
+        loadDrawingBoardWithRecreateModeNetwork();
+
+        // Then...
+        cy.getElementByDataTestsId("node-SR-IOV Provider 2-1").should('be.visible');
+        cy.getElementByDataTestsId("node-SR-IOV Provider 2-2").should('be.visible');
+        assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd_network();
+      });
+
+
     });
   });
 });
 
-const serviceModelId = '6cfeeb18-c2b0-49df-987a-da47493c8e38';
+let apiTestResources = '../vid-automation/src/test/resources/asyncInstantiation/';
+
+const templateWithVnfSetup = {
+  serviceModelId: '6cfeeb18-c2b0-49df-987a-da47493c8e38',
+  instanceTemplateFile: apiTestResources + 'templates__instance_template.json',
+  instanceTemplateSetWithoutModifyFile: apiTestResources + 'templates__instance_from_template__set_without_modify1.json',
+  serviceModelFile: '../support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__service_model.json',
+};
+
+const templateWithNetworkSetup = {
+  serviceModelId: 'a1a14610-ee40-4049-8007-0608a20dd1fa',
+  instanceTemplateFile: apiTestResources + 'templates__instance_template_network.json',
+  serviceModelFile: '../support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__service_model_network.json',
+};
 
 const vnfPath = [
   "vnfs", "vProbe_NC_VNF 0"
 ];
 
 function loadDrawingBoardWithRecreateMode() {
+  loadDrawingBoardWithRecreateModeInternal(
+    '../../' + templateWithVnfSetup.instanceTemplateFile,
+    templateWithVnfSetup.serviceModelId,
+    templateWithVnfSetup.serviceModelFile);
+}
+
+function loadDrawingBoardWithRecreateModeNetwork() {
+  loadDrawingBoardWithRecreateModeInternal(
+    '../../' + templateWithNetworkSetup.instanceTemplateFile,
+    templateWithNetworkSetup.serviceModelId,
+    templateWithNetworkSetup.serviceModelFile);
+}
+
+function loadDrawingBoardWithRecreateModeInternal(instanceTemplate: string, serviceModelIdToLoad: any, serviceModel: string) {
   const templateUuid = "46390edd-7100-46b2-9f18-419bd24fb60b";
 
   const drawingBoardAction = `RECREATE`;
   const templateTopologyEndpoint = "templateTopology";
-  cy.route(`**/rest/models/services/${serviceModelId}`,
-    'fixture:../support/jsonBuilders/mocks/jsons/instantiationTemplates/templates__service_model.json')
+  cy.route(`**/rest/models/services/${serviceModelIdToLoad}`,
+    'fixture:' + serviceModel)
     .as('serviceModel');
 
   cy.route(`**/instantiationTemplates/${templateTopologyEndpoint}/${templateUuid}`,
-    'fixture:../../../vid-automation/src/test/resources/asyncInstantiation/templates__instance_template.json')
+    'fixture:' + instanceTemplate)
     .as('templateTopology');
 
   // When...
 
   cy.openIframe(`app/ui/#/servicePlanning/${drawingBoardAction}` +
     `?jobId=${templateUuid}` +
-    `&serviceModelId=${serviceModelId}`);
+    `&serviceModelId=${serviceModelIdToLoad}`);
 
   cy.wait('@serviceModel');
   cy.wait('@templateTopology');
@@ -288,9 +326,17 @@ function removeVNFWithVFModules(dataTestId: string) {
 }
 
 function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd(deviationFromExpected: { path: PropertyPath, value: any }[] = []) {
+  assertThatBodyFromDeployRequestEqualsToTemplateFromBackEndInternal(templateWithVnfSetup.instanceTemplateFile, deviationFromExpected);
+}
+
+function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd_network(deviationFromExpected: { path: PropertyPath, value: any }[] = []) {
+  assertThatBodyFromDeployRequestEqualsToTemplateFromBackEndInternal(templateWithNetworkSetup.instanceTemplateFile, deviationFromExpected);
+}
+
+function assertThatBodyFromDeployRequestEqualsToTemplateFromBackEndInternal(filePathOfExpected: string, deviationFromExpected: { path: PropertyPath; value: any }[]) {
   cy.getDrawingBoardDeployBtn().click();
   cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
-    cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/templates__instance_template.json').then((expectedResult) => {
+    cy.readFile(filePathOfExpected).then((expectedResult) => {
       convertRollbackOnFailureValueFromStringToBoolean(expectedResult);
 
       let xhrBodyWithoutIsDirtyField = removeIsDirtyFieldFromXhrRequestBody(xhr);
@@ -305,7 +351,7 @@ function assertThatBodyFromDeployRequestEqualsToFile(deviationFromExpected: { pa
   cy.getDrawingBoardDeployBtn().click();
   cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
 
-    cy.readFile('../vid-automation/src/test/resources/asyncInstantiation/templates__instance_from_template__set_without_modify1.json').then((expectedResult) => {
+    cy.readFile(templateWithVnfSetup.instanceTemplateSetWithoutModifyFile).then((expectedResult) => {
       setDeviationInExpected(expectedResult, deviationFromExpected);
       cy.deepCompare(xhr.request.body, expectedResult);
     });

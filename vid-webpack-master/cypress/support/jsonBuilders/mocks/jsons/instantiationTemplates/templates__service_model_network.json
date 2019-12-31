@@ -1,0 +1,80 @@
+{
+  "service": {
+    "uuid": "a1a14610-ee40-4049-8007-0608a20dd1fa",
+    "invariantUuid": "ce23786e-b2b1-4258-b561-f77ef93ada9c",
+    "name": "int_pktmirror_net NC SRIOV network",
+    "version": "3.0",
+    "toscaModelURL": null,
+    "category": "Network Service",
+    "serviceType": "INFRASTRUCTURE",
+    "serviceRole": "PROVIDER-NETWORK",
+    "description": "SRIOV network model for NC 1.0, VLAN ID 187 and 188.",
+    "serviceEcompNaming": "false",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "anyAlacarteWhichNotExcluded",
+      "modelCategory": "5G Provider Network",
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
+    }
+  },
+  "vnfs": {},
+  "networks": {
+    "SR-IOV Provider 2-1": {
+      "uuid": "01f4c475-3f89-4f00-a2f4-39a873dba0ae",
+      "invariantUuid": "ffb9e45c-e674-4289-aad3-00040ad746e4",
+      "description": "NETWORK_CLOUD_PROVIDER_NETWORK",
+      "name": "NETWORK_CLOUD_PROVIDER_NETWORK",
+      "version": "1.0",
+      "customizationUuid": "f6b6d141-0d4c-427d-ad35-797f3d1abe71",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "network_role": "int_pktmirror_net_1",
+        "exVL_naming": "{ecomp_generated_naming=false}",
+        "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
+        "network_scope": "GLOBAL",
+        "ecomp_generated_naming": "false",
+        "network_type": "SR-IOV-PROVIDER2-1",
+        "provider_network": "{physical_network_name=sriovnet1, is_provider_network=true}",
+        "network_technology": "STANDARD-SR-IOV",
+        "network_homing": "{ecomp_selected_instance_node_target=false}"
+      },
+      "type": "VL",
+      "modelCustomizationName": "SR-IOV Provider 2-1"
+    },
+    "SR-IOV Provider 2-2": {
+      "uuid": "01f4c475-3f89-4f00-a2f4-39a873dba0ae",
+      "invariantUuid": "ffb9e45c-e674-4289-aad3-00040ad746e4",
+      "description": "NETWORK_CLOUD_PROVIDER_NETWORK",
+      "name": "NETWORK_CLOUD_PROVIDER_NETWORK",
+      "version": "1.0",
+      "customizationUuid": "e01e26b2-aa26-4e11-9243-105d4589ff08",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "network_role": "int_pktmirror_net_2",
+        "exVL_naming": "{ecomp_generated_naming=false}",
+        "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
+        "network_scope": "GLOBAL",
+        "ecomp_generated_naming": "false",
+        "network_type": "SR-IOV-PROVIDER2-2",
+        "provider_network": "{physical_network_name=sriovnet2, is_provider_network=true}",
+        "network_technology": "STANDARD-SR-IOV",
+        "network_homing": "{ecomp_selected_instance_node_target=false}"
+      },
+      "type": "VL",
+      "modelCustomizationName": "SR-IOV Provider 2-2"
+    }
+  },
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {},
+  "volumeGroups": {},
+  "pnfs": {},
+  "vnfGroups": {},
+  "vrfs": {}
+}
