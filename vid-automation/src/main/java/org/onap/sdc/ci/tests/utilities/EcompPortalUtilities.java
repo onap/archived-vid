@@ -9,7 +9,6 @@ public class EcompPortalUtilities {
 		WebElement appImage = GeneralUIUtils.getClickableButtonBy(by, 3 * 60);
 		appImage.click();
 		GeneralUIUtils.getDriver().switchTo().frame(1);
-    	GeneralUIUtils.waitForBackLoader();
 		GeneralUIUtils.waitForAngular();
 		GeneralUIUtils.getWebElementByClassName("applicationWindow");
 	}

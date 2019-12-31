@@ -19,7 +19,7 @@ public abstract class DeployModernUIBase extends DeployDialogBase {
     String dialogTitle = "Set a new service instance";
 
     public void assertTitle(){
-        WebElement modalTitle = GeneralUIUtils.getWebElementByTestID(Constants.CREATE_MODAL_TITLE_ID, 30);
+        WebElement modalTitle = GeneralUIUtils.getWebElementByTestID(Constants.CREATE_MODAL_TITLE_ID, dialogTitle, 30);
         assertThat(modalTitle.getText(), containsString(dialogTitle));
     }
 
