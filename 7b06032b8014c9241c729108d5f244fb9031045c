@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65faf697_6b96754f",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-31T14:07:49Z",
+      "side": 1,
+      "message": "please don\u0027t commit with \u0027.only\u0027",
+      "range": {
+        "startLine": 185,
+        "startChar": 6,
+        "endLine": 185,
+        "endChar": 13
+      },
+      "revId": "7b06032b8014c9241c729108d5f244fb9031045c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f46bfee_41a8196a",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2019-12-31T14:07:49Z",
+      "side": 1,
+      "message": "This is ok, but better use the more verbose \"nodeAction\":\n\nnodeAction(\u0027node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1\u0027, \u0027Remove\u0027);",
+      "revId": "7b06032b8014c9241c729108d5f244fb9031045c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
