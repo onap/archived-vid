@@ -2,7 +2,10 @@ package org.onap.vid.api;
 
 import static java.util.Arrays.stream;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_VALUES;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.onap.vid.api.TestUtils.convertRequest;
@@ -16,6 +19,7 @@ import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.vid.model.mso.MsoResponseWrapper2;
@@ -85,20 +89,24 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
     }
 
     @Test
-    public void templateTopology_givenDeployFromCypressE2E_getTemplateTopologyDataIsEquivalent() throws IOException {
+    public void templateTopology_givenDeployFromCypressE2E_getTemplateTopologyDataIsEquivalent() {
         templateTopology_givenDeploy_templateTopologyIsEquivalentToBody(
             fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
     }
 
     @Test
-    public void templateTopology_givenDeployFromEditedTemplateCypressE2E_getTemplateTopologyDataIsEquivalentToOriginalTemplate() throws IOException {
+    public void templateTopology_givenDeployFromEditedTemplateCypressE2E_getTemplateTopologyDataIsEquivalentToOriginalTemplate() {
         templateTopology_givenDeploy_templateTopologyIsEquivalent(
             fileAsJsonNode("asyncInstantiation/templates__instance_from_template__set_without_modify1.json"),
             fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
     }
 
+    private ObjectNode templateInfoFromFile() {
+        return fileAsJsonNode("asyncInstantiation/vidRequestCreateBulkOfMacro__template_info.json");
+    }
+
     @Test
-    public void templateTopology_givenDeploy_OriginalTemplateNotChanged() throws IOException {
+    public void templateTopology_givenDeploy_OriginalTemplateNotChanged() {
         String uuidOriginTemplate = postAsyncInstanceRequest(fileAsJsonNode("asyncInstantiation/templates__instance_template.json"));
         JsonNode originTemplateBeforeDeploy = restTemplate.getForObject(templateTopologyUri(uuidOriginTemplate), JsonNode.class);
 
@@ -113,35 +121,61 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
 
     @Test
     @FeatureTogglingTest(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)
-    public void templateTopology_givenDeploy_getServiceInfoHoldsRequestSummary() throws IOException {
+    public void templateTopology_givenDeploy_getServiceInfoHoldsRequestSummary() {
         ObjectNode request =
             fileAsJsonNode(CREATE_BULK_OF_MACRO_REQUEST)
                 .put("bulkSize", 1)
                 .put("pause", false);
 
-        postAsyncInstanceRequest(request);
+        String jobId = postAsyncInstanceRequest(request);
 
-        assertThat(fetchRequestSummary(request.at("/modelInfo/modelVersionId").asText()),
-            jsonEquals(ImmutableMap.of(
+        assertThat(fetchRecentTemplateInfo(request.at("/modelInfo/modelVersionId").asText()), allOf(
+            jsonPartEquals("jobId", jobId),
+            jsonPartEquals("requestSummary", ImmutableMap.of(
                 "vnf", 1L,
                 "vfModule", 2L,
                 "volumeGroup", 1L
+            ))));
+    }
+
+    @Test
+    @FeatureTogglingTest(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)
+    public void templateTopology_givenDeploy_getServiceInfoReturnsCypressE2EFile() {
+        ObjectNode request =
+            fileAsJsonNode(CREATE_BULK_OF_MACRO_REQUEST)
+                .put("bulkSize", 1)
+                .put("pause", false);
+
+        String jobId = postAsyncInstanceRequest(request);
+
+        assertThat(fetchRecentTemplateInfo(request.at("/modelInfo/modelVersionId").asText()), allOf(
+            jsonPartEquals("jobId", jobId),
+            jsonEquals(templateInfoFromFile()).when(IGNORING_VALUES), // Assert only field types
+            jsonEquals(templateInfoFromFile()).whenIgnoringPaths(
+                // Ignore the fields where values are always changing
+                "id", "templateId", "jobId",
+                "created", "createdBulkDate",
+                "modified", "statusModifiedDate",
+                "jobStatus"
             )));
     }
 
-    private JsonNode fetchRequestSummary(String serviceModelId) {
+    private JsonNode fetchRecentTemplateInfo(String serviceModelId) {
         return stream(restTemplate.getForObject(getTemplateInfoUrl(serviceModelId), JsonNode[].class))
-            .map(it -> it.at("/requestSummary"))
             .findFirst()
             .orElseGet(() -> {
                 throw new AssertionError(getTemplateInfoUrl(serviceModelId) + " returned zero results");
             });
     }
 
-    private ObjectNode fileAsJsonNode(String fileName) throws IOException {
-        return objectMapper.readValue(
-            convertRequest(objectMapper, fileName),
-            ObjectNode.class);
+    private ObjectNode fileAsJsonNode(String fileName) {
+        try {
+            return objectMapper.readValue(
+                convertRequest(objectMapper, fileName),
+                ObjectNode.class);
+        } catch (IOException e) {
+            return ExceptionUtils.rethrow(e);
+        }
     }
 
     public void templateTopology_givenDeploy_templateTopologyIsEquivalentToBody(JsonNode body) {
