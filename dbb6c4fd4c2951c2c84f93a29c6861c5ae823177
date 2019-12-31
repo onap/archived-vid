@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0d58cd56_7baf1f9b",
+        "filename": "vid-automation/src/main/java/org/onap/vid/api/AsyncInstantiationBase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2019-12-31T12:03:12Z",
+      "side": 1,
+      "message": "it doesn\u0027t help, still requestSummary required.",
+      "parentUuid": "6425961f_6e5744c4",
+      "revId": "dbb6c4fd4c2951c2c84f93a29c6861c5ae823177",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "be5a35af_3f43e80e",
         "filename": "vid-automation/src/test/java/org/onap/vid/api/InstantiationTemplatesApiTest.java",
         "patchSetId": 1
