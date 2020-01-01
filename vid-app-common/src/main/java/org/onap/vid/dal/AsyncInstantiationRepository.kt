@@ -157,4 +157,14 @@ class AsyncInstantiationRepository @Autowired constructor(val dataAccessService:
 
     fun listInstantiatedServicesByServiceModelId(serviceModelId: UUID): List<ServiceInfo> =
             dataAccessService.getList(ServiceInfo::class.java, filterInstantiatedServiceByServiceModelId(serviceModelId), orderByCreatedDateAndStatus(), null) as List<ServiceInfo>;
+
+    fun getModelVersionIdsList() : List<String> {
+
+        val serviceInfoTableEntryList:List<ServiceInfo> = dataAccessService.getList(ServiceInfo::class.java, filterServicesByNotHiddenAndNotDeleted(), null, null) as List<ServiceInfo>;
+        val serviceInfoModelIdList = mutableListOf<String>()
+        for( entry in serviceInfoTableEntryList){
+            serviceInfoModelIdList.add(entry.serviceModelId)
+        }
+        return serviceInfoModelIdList.distinct();
+    }
 }

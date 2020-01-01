@@ -34,6 +34,7 @@ import static org.onap.vid.job.Job.JobStatus.COMPLETED;
 import com.google.common.collect.ImmutableList;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -100,6 +101,15 @@ public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest
             listInstantiatedServicesByServiceModelId(UUID.fromString(modelUUID));
         assertThat(desc, serviceInfoListResult.stream().map(ServiceInfo::getServiceInstanceName).collect(toList()),
             contains(expectedResult));
+    }
+
+    @Test
+    public void getServiceModelIdListFromDb() {
+            List<String > actualList = asyncInstantiationRepository.getModelVersionIdsList();
+            ArrayList<String> expectedList = new ArrayList<>();
+            expectedList.add(MODEL_UUID);
+            expectedList.add(MODEL_UUID_2);
+            assertThat(expectedList, equalTo(actualList));
     }
 
     @Test

@@ -64,6 +64,11 @@ public class InstantiationTemplatesController extends VidRestrictedBaseControlle
         return  asyncInstantiationRepository.listInstantiatedServicesByServiceModelId(serviceModelId);
     }
 
+    @GetMapping
+    public List<String> getServiceModelIdListFromDb(){
+        return asyncInstantiationRepository.getModelVersionIdsList();
+    }
+
     @GetMapping("templateTopology/{jobId}")
     public ServiceInstantiation getTemplateTopology(HttpServletRequest request, @PathVariable(value="jobId") UUID jobId) {
         return instantiationTemplates.getJobRequestAsTemplate(jobId);
