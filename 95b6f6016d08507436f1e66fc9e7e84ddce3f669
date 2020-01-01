@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5903cef7_fde27d38",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-01T08:28:37Z",
+      "side": 1,
+      "message": "please test",
+      "revId": "95b6f6016d08507436f1e66fc9e7e84ddce3f669",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c34786f_c310f77e",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/instantiationTemplatesModal/instantiation.templates.modal.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-01T08:28:37Z",
+      "side": 1,
+      "message": "please extract common method",
+      "revId": "95b6f6016d08507436f1e66fc9e7e84ddce3f669",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
