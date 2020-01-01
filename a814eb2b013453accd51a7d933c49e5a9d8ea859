@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d571297d_d18595bc",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T12:06:30Z",
+      "side": 1,
+      "message": "you don\u0027t need to extract this",
+      "range": {
+        "startLine": 278,
+        "startChar": 18,
+        "endLine": 278,
+        "endChar": 21
+      },
+      "revId": "a814eb2b013453accd51a7d933c49e5a9d8ea859",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b870bf98_5209022b",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T12:06:30Z",
+      "side": 1,
+      "message": "can you please reformat this closing-brackets blob, to be on the next line?",
+      "range": {
+        "startLine": 279,
+        "startChar": 62,
+        "endLine": 279,
+        "endChar": 65
+      },
+      "revId": "a814eb2b013453accd51a7d933c49e5a9d8ea859",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
