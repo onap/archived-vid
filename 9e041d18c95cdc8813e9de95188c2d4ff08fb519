@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d0c04950_a6015b3f",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/InstantiationTemplatesApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-01T08:46:27Z",
+      "side": 1,
+      "message": "fetchTemplateInfoByJobId",
+      "revId": "9e041d18c95cdc8813e9de95188c2d4ff08fb519",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
