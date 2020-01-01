@@ -754,7 +754,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         browseASDCPage.selectServiceTypeByName(serviceType);
         SelectOption.byTestIdAndVisibleText("WayneHolland", (Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID));
         SelectOption.byTestIdAndVisibleText("WATKINS", Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
-        clickToCloseModal("form-set");
+        Click.byTestId("form-set");
         VidBasePage.goOutFromIframe();
         browseASDCPage.goToIframe();
     }
@@ -1127,7 +1127,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         vidBasePage.screenshotDeployDialog("createALaCarteService-" + serviceInstanceName);
 
-        clickToCloseModal(setButtonTestId);
+        Click.byTestId(setButtonTestId);
 
         VidBasePage.goOutFromIframe();
 

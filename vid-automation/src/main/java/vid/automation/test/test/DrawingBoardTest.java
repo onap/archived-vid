@@ -1,26 +1,39 @@
 package vid.automation.test.test;
 
 
+import static org.testng.AssertJUnit.assertFalse;
+import static vid.automation.test.Constants.DrawingBoard.AVAILABLE_MODELS_TREE;
+import static vid.automation.test.Constants.DrawingBoard.BACK_BUTTON;
+import static vid.automation.test.Constants.DrawingBoard.CONTEXT_MENU_BUTTON_HEADER;
+import static vid.automation.test.Constants.DrawingBoard.CONTEXT_MENU_HEADER_EDIT_ITEM;
+import static vid.automation.test.Constants.DrawingBoard.DEFAULT_SERVICE_NAME;
+import static vid.automation.test.Constants.DrawingBoard.DRAWING_BOARD_TREE;
+import static vid.automation.test.Constants.DrawingBoard.SEARCH_LEFT_TREE;
+import static vid.automation.test.Constants.DrawingBoard.SERVICE_QUANTITY;
+import static vid.automation.test.infra.ModelInfo.macroDrawingBoardComplexService;
+import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails;
+
 import com.google.common.collect.ImmutableList;
-import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.*;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
+import vid.automation.test.infra.ModelInfo;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
 import vid.automation.test.model.User;
 import vid.automation.test.sections.BrowseASDCPage;
 import vid.automation.test.sections.DrawingBoardPage;
 import vid.automation.test.sections.VidBasePage;
-
-import static org.testng.AssertJUnit.assertFalse;
-import static vid.automation.test.Constants.DrawingBoard.*;
-import static vid.automation.test.infra.ModelInfo.macroDrawingBoardComplexService;
-import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails;
 
 public class DrawingBoardTest extends VidBaseTestCase {
 
@@ -323,6 +336,7 @@ public class DrawingBoardTest extends VidBaseTestCase {
         Click.byTestId(CONTEXT_MENU_BUTTON_HEADER);
         Click.byTestId(CONTEXT_MENU_HEADER_EDIT_ITEM);
         Assert.assertTrue(Exists.byId("instance-popup"), "context menu should not appear");
+        GeneralUIUtils.ultimateWait();
         SelectOption.byIdAndVisibleText("quantity-select", String.valueOf(updatedQuantity));
         Input.replaceText(updatedInstanceName,Constants.BrowseASDC.NewServicePopup.INSTANCE_NAME );
         Click.byTestId(Constants.BrowseASDC.NewServicePopup.SET_BUTTON);
@@ -341,6 +355,7 @@ public class DrawingBoardTest extends VidBaseTestCase {
         Click.byTestId(CONTEXT_MENU_BUTTON_HEADER);
         Click.byTestId(CONTEXT_MENU_HEADER_EDIT_ITEM);
         Assert.assertTrue(Exists.byId("instance-popup"), "context menu should not appear");
+        GeneralUIUtils.ultimateWait();
         SelectOption.byIdAndVisibleText("quantity-select", String.valueOf(updatedQuantity));
         Input.replaceText(updatedInstanceName,Constants.BrowseASDC.NewServicePopup.INSTANCE_NAME );
         Click.byTestId(Constants.BrowseASDC.NewServicePopup.CANCEL_BUTTON);
