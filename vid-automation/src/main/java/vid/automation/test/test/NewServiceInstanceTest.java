@@ -378,12 +378,10 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         // Wizard pages of Network and VPN
         Click.byTestIdOnceItsAvailable("10a74149-c9d7-4918-bbcf-d5fb9b1799ce", 20);
-        Click.byTestId("setMembersBtn");
-        GeneralUIUtils.ultimateWait();
+        clickToCloseModal("setMembersBtn");
 
         Click.byTestIdOnceItsAvailable("120d39fb-3627-473d-913c-d228dd0f8e5b", 20);
-        Click.byTestId("setMembersBtn");
-        GeneralUIUtils.ultimateWait();
+        clickToCloseModal("setMembersBtn");
 
         Assert.assertEquals(Get.byTestId("node-type-indicator").getText(),"VRF");
 
@@ -538,7 +536,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
     private void editVfModuleAndJustSetName(String vfModuleName, String vfModuleUUID) {
         hoverAndClickEditButton(vfModuleUUID + "-" + vfModuleName);
         Input.text("VF instance name ZERO", "instanceName");
-        Click.byTestId(VNF_SET_BUTTON_TEST_ID);
+        clickToCloseModal(VNF_SET_BUTTON_TEST_ID);
     }
 
     @Test
@@ -756,7 +754,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         browseASDCPage.selectServiceTypeByName(serviceType);
         SelectOption.byTestIdAndVisibleText("WayneHolland", (Constants.OwningEntity.OWNING_ENTITY_SELECT_TEST_ID));
         SelectOption.byTestIdAndVisibleText("WATKINS", Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
-        Click.byTestId("form-set");
+        clickToCloseModal("form-set");
         VidBasePage.goOutFromIframe();
         browseASDCPage.goToIframe();
     }
@@ -1070,9 +1068,9 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             vidBasePage.screenshotDeployDialog("createMacroService-" + serviceInstanceName);
 
             if ("WILL_CANCEL".equals(cycle)) {
-                Click.byTestId(Constants.CANCEL_BUTTON_TEST_ID);
+                clickToCloseModal(Constants.CANCEL_BUTTON_TEST_ID);
             } else {
-                Click.byTestId(setButtonTestId);
+                clickToCloseModal(setButtonTestId);
             }
 
             VidBasePage.goOutFromIframe();
@@ -1129,7 +1127,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         vidBasePage.screenshotDeployDialog("createALaCarteService-" + serviceInstanceName);
 
-        Click.byTestId(setButtonTestId);
+        clickToCloseModal(setButtonTestId);
 
         VidBasePage.goOutFromIframe();
 
@@ -1209,7 +1207,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         }
 
         vidBasePage.screenshotDeployDialog("createVnf-" + serviceInstanceName);
-        Click.byTestId(VNF_SET_BUTTON_TEST_ID);
+        clickToCloseModal(VNF_SET_BUTTON_TEST_ID);
         if (isNetwork) {
             return;
         }
@@ -1224,8 +1222,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
             Assert.assertTrue(Get.isOptionSelectedInMultiSelect(Constants.OwningEntity.PLATFORM_MULTI_SELECT_TEST_ID, "platform"));
 
-            Click.byTestId(Constants.CANCEL_BUTTON_TEST_ID);
-            GeneralUIUtils.ultimateWait();
+            clickToCloseModal(Constants.CANCEL_BUTTON_TEST_ID);
         } else {
             toggleItemInTree(Constants.DrawingBoard.AVAILABLE_MODELS_TREE);
         }
@@ -1345,7 +1342,12 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         uploadSupplementaryFile("sample.json", true, browseASDCPage, setButtonTestId);
 
         browseASDCPage.screenshotDeployDialog("createVfModule-" + serviceInstanceName);
-        Click.byTestId(setButtonTestId);
+        clickToCloseModal(setButtonTestId);
+    }
+
+    private void clickToCloseModal(String setOrCancelButtonTestId) {
+        Click.byTestId(setOrCancelButtonTestId);
+        GeneralUIUtils.ultimateWait();
     }
 
     private void clickEditVfModule(ServiceData serviceData) {
