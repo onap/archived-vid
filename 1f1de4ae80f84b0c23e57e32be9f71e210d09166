@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12901c7a_456ad2c7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/InstantiationTemplatesController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T12:58:57Z",
+      "side": 1,
+      "message": "no need for this controller.",
+      "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eeb99f9f_95cd6d62",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dal/AsyncInstantiationRepository.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T12:58:57Z",
+      "side": 1,
+      "message": "I think this function should be renamed.",
+      "range": {
+        "startLine": 161,
+        "startChar": 8,
+        "endLine": 161,
+        "endChar": 30
+      },
+      "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1617a1a8_d26f4348",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dal/AsyncInstantiationRepository.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T12:58:57Z",
+      "side": 1,
+      "message": "Result should be a Set, as it tells it is unordered and has no duplicates.",
+      "range": {
+        "startLine": 161,
+        "startChar": 35,
+        "endLine": 161,
+        "endChar": 47
+      },
+      "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a857804f_e252adf7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dal/AsyncInstantiationRepository.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T12:58:57Z",
+      "side": 1,
+      "message": "please select\n1) only the serviceInfoModelIdList\n2) remove duplicates on DB side; e.g. use DISTINCT.",
+      "range": {
+        "startLine": 163,
+        "startChar": 76,
+        "endLine": 163,
+        "endChar": 83
+      },
+      "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc77033a_23b9e6a1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dal/AsyncInstantiationRepository.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T12:58:57Z",
+      "side": 1,
+      "message": "it is not recommended to use mutable lists. use an unmutable one.",
+      "range": {
+        "startLine": 164,
+        "startChar": 37,
+        "endLine": 164,
+        "endChar": 50
+      },
+      "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f031f8a9_38006537",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/dal/AsyncInstantiationRepositoryTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T12:58:57Z",
+      "side": 1,
+      "message": "please rename the test to explain what it tests",
+      "range": {
+        "startLine": 107,
+        "startChar": 16,
+        "endLine": 107,
+        "endChar": 43
+      },
+      "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e29cfdd_1b4c4ddf",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/dal/AsyncInstantiationRepositoryTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T12:58:57Z",
+      "side": 1,
+      "message": "it is much simpler to create in-place immutable lists",
+      "range": {
+        "startLine": 109,
+        "startChar": 46,
+        "endLine": 109,
+        "endChar": 63
+      },
+      "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
