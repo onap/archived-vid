@@ -1,20 +1,29 @@
 import {Injectable} from "@angular/core";
+import {DialogService} from "ng2-bootstrap-modal";
 
 @Injectable()
 export class IframeService {
 
   addClassOpenModal(elementClassName: string) {
-    var parentBodyElement = parent.document.getElementsByClassName(elementClassName)[0];
+    const parentBodyElement = parent.document.getElementsByClassName(elementClassName)[0];
     if (parentBodyElement)  {
       parentBodyElement.classList.add("modal-open");
     }
   }
 
   removeClassCloseModal(elementClassName: string) {
-    var parentBodyElement = parent.document.getElementsByClassName(elementClassName)[0];
+    const parentBodyElement = parent.document.getElementsByClassName(elementClassName)[0];
     if (parentBodyElement)  {
       parentBodyElement.classList.remove("modal-open");
     }
+  }
+
+  closeIframe(dialogService : DialogService, that){
+    this.removeClassCloseModal('content');
+    dialogService.removeDialog(that);
+    setTimeout(() => {
+      window.parent.postMessage("closeIframe", "*");
+    }, 15);
   }
 
 

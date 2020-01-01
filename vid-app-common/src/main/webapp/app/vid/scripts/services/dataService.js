@@ -319,6 +319,12 @@ var DataService = function($log, DataService) {
 		},
 		setOwningEntityProperties: function (properties) {
 				_this.owningEntityProperties = properties;
+		},
+		getHasTemplate: function () {
+				return _this.hasTemplate;
+		},
+		setHasTemplate: function (hasTemplate) {
+				_this.hasTemplate = hasTemplate;
 		}
 	};
 };
