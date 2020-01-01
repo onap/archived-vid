@@ -79,6 +79,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
 
     public static final String MODEL_UUID = "337be3fc-293e-43ec-af0b-cf932dad07e6";
     public static final String MODEL_UUID_2 = "ce052844-22ba-4030-a838-822f2b39eb9b";
+    public static final String MODEL_UUID_3 = "47a071cd-99f7-49bb-bc8b-f957979d6fe1";
 
     public static final String OWNING_ENTITY_ID = "038d99af-0427-42c2-9d15-971b99b9b489";
     public static final String JULIO_ERICKSON = "JULIO ERICKSON";

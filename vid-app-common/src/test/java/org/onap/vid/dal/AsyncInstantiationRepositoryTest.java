@@ -32,10 +32,12 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.onap.vid.job.Job.JobStatus.COMPLETED;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import javax.inject.Inject;
 import org.onap.portalsdk.core.service.DataAccessService;
@@ -84,6 +86,8 @@ public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest
             MODEL_UUID, ServiceAction.INSTANTIATE);
         addNewServiceInfoWithAction(UUID.randomUUID(), "abc", "hidden", NOW, NOW, COMPLETED, true, false,
             MODEL_UUID, ServiceAction.INSTANTIATE);
+        addNewServiceInfoWithAction(UUID.randomUUID(), "abc", "4", NOW, NOW, COMPLETED, false, false,
+            MODEL_UUID_3, ServiceAction.UPDATE);
     }
 
     @DataProvider
@@ -100,6 +104,13 @@ public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest
             listInstantiatedServicesByServiceModelId(UUID.fromString(modelUUID));
         assertThat(desc, serviceInfoListResult.stream().map(ServiceInfo::getServiceInstanceName).collect(toList()),
             contains(expectedResult));
+    }
+
+    @Test
+    public void getAllTemplatesServiceModelIds_givenDbWithSeveralModelIDs_2ReturnedAnd1OmittedAndDuplicatesRemoved() {
+            Set<String> actual = asyncInstantiationRepository.getAllTemplatesServiceModelIds();
+            // MODEL_UUID3 is Action=UPDATE, therefore omitted
+            assertThat(actual, equalTo(ImmutableSet.of(MODEL_UUID, MODEL_UUID_2)));
     }
 
     @Test
