@@ -261,6 +261,24 @@ describe('Drawing Board: Instantiation Templates', function () {
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd_network();
       });
 
+      it(`Given a stored template of Network - User can remove existing network`,  () => {
+
+        loadDrawingBoardWithRecreateModeNetwork();
+
+        nodeAction('node-01f4c475-3f89-4f00-a2f4-39a873dba0ae-SR-IOV Provider 2-1', 'Remove');
+        let removed_network_Path = [
+          "networks", "SR-IOV Provider 2-1",
+        ];
+
+        let removed_network_counter_Path = [
+          "existingNetworksCounterMap", "f6b6d141-0d4c-427d-ad35-797f3d1abe71",
+        ];
+
+        assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd_network([
+          {path: removed_network_Path, value: undefined},
+          {path: removed_network_counter_Path, value: 0},
+        ]);
+      });
 
     });
   });
