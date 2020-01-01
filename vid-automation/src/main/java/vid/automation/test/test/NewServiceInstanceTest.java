@@ -1068,9 +1068,9 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
             vidBasePage.screenshotDeployDialog("createMacroService-" + serviceInstanceName);
 
             if ("WILL_CANCEL".equals(cycle)) {
-                clickToCloseModal(Constants.CANCEL_BUTTON_TEST_ID);
+                Click.byTestId(Constants.CANCEL_BUTTON_TEST_ID);
             } else {
-                clickToCloseModal(setButtonTestId);
+                Click.byTestId(setButtonTestId);
             }
 
             VidBasePage.goOutFromIframe();
