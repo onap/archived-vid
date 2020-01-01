@@ -70,11 +70,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   }
 
   closeDialog(that): void {
-    this._iframeService.removeClassCloseModal(that.parentElementClassName);
-    this.dialogService.removeDialog(this);
-    setTimeout(() => {
-      window.parent.postMessage("closeIframe", "*");
-    }, 15);
+    this._iframeService.closeIframe(this.dialogService, this);
   }
 
   shouldShowNotification(): boolean {

@@ -60,11 +60,7 @@ export class SearchElementsModalComponent extends DialogComponent<{ modalInforma
 
   closeDialog(): void {
     this._iframeService.removeFullScreen();
-    this._iframeService.removeClassCloseModal(this.parentElementClassName);
-    this.dialogService.removeDialog(this);
-    setTimeout(() => {
-      window.parent.postMessage("closeIframe", "*");
-    }, 15);
+    this._iframeService.closeIframe(this.dialogService, this);
   }
 
   selectedMembersAmountChange(selectedMembersAmount: number): void {

@@ -93,9 +93,13 @@ var creationDialogController = function (COMPONENT, FIELD, PARAMETER, $scope, $h
 
 
         if (!$scope.shouldShowOldPopup()) {
-            $scope.url = COMPONENT.SERVICE_POPUP_IFRAME_URL + request.modelNameVersionId + "&isCreate=true&r=" + Math.random();
-            window.addEventListener("message", receiveMessage, false);
-
+            if(DataService.getHasTemplate()){
+                $scope.url = COMPONENT.INSTANTIATION_TEMPLATES_IFRAME_URL + request.modelNameVersionId;
+                window.addEventListener("message", receiveMessage, false);
+            }else {
+                $scope.url = COMPONENT.SERVICE_POPUP_IFRAME_URL + request.modelNameVersionId + "&isCreate=true&r=" + Math.random();
+                window.addEventListener("message", receiveMessage, false);
+            }
         }
         else {
             callbackFunction = request.callbackFunction;
