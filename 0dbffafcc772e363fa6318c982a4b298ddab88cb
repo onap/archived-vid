@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c71e085_07db5598",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dal/AsyncInstantiationRepository.kt",
+        "patchSetId": 5
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-01T17:00:01Z",
+      "side": 1,
+      "message": "it\u0027s a very heavy request. Why not retrieve only the serviceModelId.\nyou can use simple sql/hql query fir that",
+      "revId": "0dbffafcc772e363fa6318c982a4b298ddab88cb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
