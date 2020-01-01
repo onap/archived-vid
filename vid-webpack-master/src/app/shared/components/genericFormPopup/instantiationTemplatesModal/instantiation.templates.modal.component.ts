@@ -68,6 +68,10 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
   };
 
   closeModal(): void {
+    this._iframeService.removeClassCloseModal('content');
     this.dialogService.removeDialog(this);
+    setTimeout(() => {
+      window.parent.postMessage("closeIframe", "*");
+    }, 15);
   }
 }
