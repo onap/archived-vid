@@ -88,6 +88,29 @@
     },
     {
       "key": {
+        "uuid": "ee56f21d_a7a1c3dd",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dal/AsyncInstantiationRepository.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T13:26:09Z",
+      "side": 1,
+      "message": "filter also by \"and ACTION  \u003d \u0027INSTANTIATE\u0027\"",
+      "range": {
+        "startLine": 163,
+        "startChar": 109,
+        "endLine": 163,
+        "endChar": 147
+      },
+      "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cc77033a_23b9e6a1",
         "filename": "vid-app-common/src/main/java/org/onap/vid/dal/AsyncInstantiationRepository.kt",
         "patchSetId": 1
@@ -105,6 +128,23 @@
         "endLine": 164,
         "endChar": 50
       },
+      "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50d7f2e8_939351ac",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/dal/AsyncInstantiationRepository.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-01T13:26:09Z",
+      "side": 1,
+      "message": "e.g. \n\t\treturn serviceInfoTableEntryList\n\t\t  .map({it.serviceModelId})\n\t\t  .collectToSet",
       "revId": "1f1de4ae80f84b0c23e57e32be9f71e210d09166",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
