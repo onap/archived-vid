@@ -182,6 +182,21 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       });
 
+      it('Given a template - User can remove existing vfmodule', function () {
+
+        loadDrawingBoardWithRecreateMode();
+        nodeAction('node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1', 'Remove');
+        let removed_vfModule_Path = [
+          ...vnfPath, "vfModules",
+          "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
+        ];
+
+        assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
+          {path: [...vnfPath, "vnfStoreKey"], value: "vProbe_NC_VNF 0"}, // side-effect
+          {path: [...removed_vfModule_Path], value: undefined},
+        ]);
+      });
+
       [
         {desc: "with changes", modifySomeValues: true},
         {desc: "without changes", modifySomeValues: false},
