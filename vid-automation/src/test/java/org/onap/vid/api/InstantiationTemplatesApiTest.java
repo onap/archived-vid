@@ -138,13 +138,12 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
 
         String jobId = postAsyncInstanceRequest(request);
 
-        assertThat(fetchRecentTemplateInfo(request.at("/modelInfo/modelVersionId").asText()), allOf(
-            jsonPartEquals("jobId", jobId),
+        assertThat(fetchRecentTemplateInfo(request.at("/modelInfo/modelVersionId").asText(), jobId),
             jsonPartEquals("requestSummary", ImmutableMap.of(
                 "vnf", 1L,
                 "vfModule", 2L,
                 "volumeGroup", 1L
-            ))));
+            )));
     }
 
     @Test
@@ -157,8 +156,7 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
 
         String jobId = postAsyncInstanceRequest(request);
 
-        assertThat(fetchRecentTemplateInfo(request.at("/modelInfo/modelVersionId").asText()), allOf(
-            jsonPartEquals("jobId", jobId),
+        assertThat(fetchRecentTemplateInfo(request.at("/modelInfo/modelVersionId").asText(), jobId), allOf(
             jsonEquals(templateInfoFromFile()).when(IGNORING_VALUES), // Assert only field types
             jsonEquals(templateInfoFromFile()).whenIgnoringPaths(
                 // Ignore the fields where values are always changing
@@ -169,8 +167,9 @@ public class InstantiationTemplatesApiTest extends AsyncInstantiationBase {
             )));
     }
 
-    private JsonNode fetchRecentTemplateInfo(String serviceModelId) {
+    private JsonNode fetchRecentTemplateInfo(String serviceModelId, String jobId) {
         return stream(restTemplate.getForObject(getTemplateInfoUrl(serviceModelId), JsonNode[].class))
+            .filter(it -> it.at("/jobId").asText().equals(jobId))
             .findFirst()
             .orElseGet(() -> {
                 throw new AssertionError(getTemplateInfoUrl(serviceModelId) + " returned zero results");
