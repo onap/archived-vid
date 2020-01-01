@@ -90,10 +90,14 @@ class AsyncInstantiationRepository @Autowired constructor(val dataAccessService:
                 "   and created >= '" + filterDate + "' "
     }
 
-    private fun filterInstantiatedServiceByServiceModelId(serviceModelUuid: UUID): String {
+    private fun filterByInstantiateActionStatus(): String{
         return filterServicesByNotHiddenAndNotDeleted() +
-                " and SERVICE_MODEL_ID = '$serviceModelUuid'" +
                 " and ACTION  = 'INSTANTIATE'"
+    }
+
+    private fun filterInstantiatedServiceByServiceModelId(serviceModelUuid: UUID): String {
+        return filterByInstantiateActionStatus() +
+                " and SERVICE_MODEL_ID = '$serviceModelUuid'"
     }
 
     private fun filterServicesByNotHiddenAndNotDeleted(): String {
@@ -157,4 +161,13 @@ class AsyncInstantiationRepository @Autowired constructor(val dataAccessService:
 
     fun listInstantiatedServicesByServiceModelId(serviceModelId: UUID): List<ServiceInfo> =
             dataAccessService.getList(ServiceInfo::class.java, filterInstantiatedServiceByServiceModelId(serviceModelId), orderByCreatedDateAndStatus(), null) as List<ServiceInfo>;
+
+    fun getAllTemplatesServiceModelIds(): Set<String> {
+        val allTemplatesInfo =
+                dataAccessService.getList(ServiceInfo::class.java, filterByInstantiateActionStatus(), null, null) as List<ServiceInfo>
+
+        return allTemplatesInfo
+                .map { it.serviceModelId }
+                .toHashSet()
+    }
 }
