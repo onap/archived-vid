@@ -22,12 +22,12 @@
                             "vid.automation.test.test.ChangeManagementTest",
                             "vid.automation.test.test.ALaCarteflowTest",
                             "vid.automation.test.test.VlanTagSubInterfaceTest",
+                            "vid.automation.test.test.CreatePortMirroringConfigurationTest",
                             "vid.automation.test.test.CreateNewInstanceTest"
                         };
 
                         String [] classes3 = new String [] {
-                            "vid.automation.test.test.NewServiceInstanceTest",
-                            "vid.automation.test.test.CreatePortMirroringConfigurationTest"
+                            "vid.automation.test.test.NewServiceInstanceTest"
                         };
 
                         String [] classes4 = new String [] {
