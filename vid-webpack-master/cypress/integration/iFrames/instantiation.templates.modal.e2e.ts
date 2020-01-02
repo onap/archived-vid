@@ -125,7 +125,7 @@ describe('Template', () => {
     .getElementByDataTestsId('templateButton').click({force: true}) // Open template Modal
 
     const serviceModelId = '5c9e863f-2716-467b-8799-4a67f378dcaa';
-    const vidBaseUrl = `http://localhost:8080/vid/serviceModels.htm`;
+    const vidBaseUrl = `${Cypress.config().baseUrl}/serviceModels.htm`;
 
     cy.getElementByDataTestsId(`row-${templateJobIdFromE2EFile}`).click();
     cy.getElementByDataTestsId('LoadTemplateButton').click().setViewportToDefault();

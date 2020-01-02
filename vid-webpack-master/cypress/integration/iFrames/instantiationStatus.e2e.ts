@@ -121,7 +121,7 @@ describe('Instantiation status', function () {
     //see cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json id:8
     const jobId = '5c2cd8e5-27d0-42e3-85a1-85db5eaba459';
     const serviceModelId = 'e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0';
-    const vidBaseUrl = `http://localhost:8080/vid/serviceModels.htm`;
+    const vidBaseUrl = `${Cypress.config().baseUrl}/serviceModels.htm`;
 
     cy.openIframe('app/ui/#/instantiationStatus');
 
