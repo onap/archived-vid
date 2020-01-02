@@ -163,11 +163,10 @@ class AsyncInstantiationRepository @Autowired constructor(val dataAccessService:
             dataAccessService.getList(ServiceInfo::class.java, filterInstantiatedServiceByServiceModelId(serviceModelId), orderByCreatedDateAndStatus(), null) as List<ServiceInfo>;
 
     fun getAllTemplatesServiceModelIds(): Set<String> {
-        val allTemplatesInfo =
-                dataAccessService.getList(ServiceInfo::class.java, filterByInstantiateActionStatus(), null, null) as List<ServiceInfo>
-
-        return allTemplatesInfo
-                .map { it.serviceModelId }
-                .toHashSet()
+        val allTemplatesServiceModelID: List<String> =
+            dataAccessService.executeQuery(
+                "select serviceModelId from ServiceInfo ${filterByInstantiateActionStatus()} group by serviceModelId",
+                null) as List<String>
+        return allTemplatesServiceModelID.toHashSet()
     }
 }
