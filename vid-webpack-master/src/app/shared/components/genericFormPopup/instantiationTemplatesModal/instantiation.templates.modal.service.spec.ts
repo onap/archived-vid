@@ -2,7 +2,7 @@ import {getTestBed, TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {InstantiationTemplatesModalService} from "./instantiation.templates.modal.service";
 import {AaiService} from "../../../services/aaiService/aai.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {IframeService} from "../../../utils/iframe.service";
 import {NgRedux} from "@angular-redux/store";
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
@@ -17,16 +17,25 @@ class ActivatedRouteMock<T> {
   }
 }
 
-class MockAppStore {
 
-}
+
+
+class MockAppStore {}
 
 describe('instantiation templates modal service', () => {
+  const serviceModelId :string = 'serviceModelId';
   let injector;
   let service: InstantiationTemplatesModalService;
   let httpMock: HttpTestingController;
   let _aaiService: AaiService;
   let _activatedRoute: ActivatedRoute;
+  let _router : Router;
+
+  let mockRouter = {
+    navigate: jasmine.createSpy('navigate'),
+    createUrlTree : jasmine.createSpy('createUrlTree').and.returnValue(serviceModelId),
+    navigateByUrl : jasmine.createSpy('navigateByUrl')
+  };
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -35,6 +44,7 @@ describe('instantiation templates modal service', () => {
         IframeService,
         AaiService,
         FeatureFlagsService,
+        { provide: Router, useValue: mockRouter },
         {provide: ActivatedRoute, useClass: ActivatedRouteMock},
         {provide: NgRedux, useClass: MockAppStore}
       ]
@@ -46,6 +56,7 @@ describe('instantiation templates modal service', () => {
     httpMock = injector.get(HttpTestingController);
     _aaiService = injector.get(AaiService);
     _activatedRoute = injector.get(ActivatedRoute);
+    _router = injector.get(Router);
 
   })().then(done).catch(done.fail));
 
@@ -156,5 +167,14 @@ describe('instantiation templates modal service', () => {
     let result: InstantiationTemplatesRowModel[] = service.filterByUserId('userId', jobs);
     expect(result).toHaveLength(0);
   });
+
+
+  test('navigateToNewServiceModal should navigate to new service modal', ()=>{
+
+    service.navigateToNewServiceModal(serviceModelId);
+
+    expect(_router.navigateByUrl).toBeCalledWith(serviceModelId);
+
+  })
 
 });
