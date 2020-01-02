@@ -642,13 +642,14 @@ public final class GeneralUIUtils {
     public static void waitForAngular2(){
     	WebDriverWait wait = newWait(90);
     	wait.until(AdditionalConditions.pageLoadWait());
+		waitForLoader(15);
     	try {
-			WebDriverWait briefWait = newWait(2);
+			WebDriverWait briefWait = newWait(3);
 			briefWait.until(AdditionalConditions.angular2HasFinishedProcessing());
 		} catch (TimeoutException | org.openqa.selenium.ScriptTimeoutException e) {
 			logger.info("Ignoring TimeoutException while waiting for angular2: {}", e, e);
+			waitForLoader(5);
 		}
-		waitForLoader(10);
     }
 
 	public static Object getAllElementAttributes(WebElement element) {
