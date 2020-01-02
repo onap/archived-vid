@@ -280,6 +280,27 @@ describe('Drawing Board: Instantiation Templates', function () {
         ]);
       });
 
+      it('Given a template - User can add a new network', () => {
+
+        loadDrawingBoardWithRecreateModeNetwork();
+
+        // add new node
+        addNewNode('node-SR-IOV Provider 2-1-add-btn')
+        .fillNetworkPopup()
+        .getDrawingBoardDeployBtn().click()
+        .wait('@expectedPostAsyncInstantiation').then(xhr => {
+          const networkRequest = bodyOf(xhr).networks['SR-IOV Provider 2-1_1'];
+
+          expect(networkRequest.action).equals("Create");
+          expect(networkRequest.rollbackOnFailure).equals("true");
+          expect(networkRequest.originalName).equals("SR-IOV Provider 2-1");
+          expect(networkRequest.productFamilyId).equals("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
+          expect(networkRequest.lcpCloudRegionId).equals("hvf6");
+          expect(networkRequest.lineOfBusiness).equals("zzz1");
+          expect(networkRequest.platformName).equals("xxx1");
+          expect(networkRequest.tenantId).equals("229bcdc6eaeb4ca59d55221141d01f8e");
+        });
+      });
     });
   });
 });
