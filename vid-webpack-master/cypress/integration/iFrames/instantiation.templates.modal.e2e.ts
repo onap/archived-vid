@@ -79,7 +79,7 @@ describe('Template', () => {
     cy.screenshot();
   });
 
-  it('when open service popup should show template button', function () {
+  it.only('when open service popup should show template button', function () {
     cy.getElementByDataTestsId('templateButton').contains('Template')
       .getElementByDataTestsId('templateButton').click({force: true}) // Open template Modal
       .getElementByDataTestsId('template-modal-title').contains('Templates') // Check Modal header

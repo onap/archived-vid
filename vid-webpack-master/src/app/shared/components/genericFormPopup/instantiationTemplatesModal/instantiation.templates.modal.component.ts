@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {DialogComponent, DialogService} from "ng2-bootstrap-modal";
 import {IframeService} from "../../../utils/iframe.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ServiceInfoService} from "../../../server/serviceInfo/serviceInfo.service";
 import {InstantiationTemplatesModalService} from "./instantiation.templates.modal.service";
 import {InstantiationTemplatesRowModel} from "./instantiation.templates.row.model";
@@ -20,6 +20,7 @@ import {forkJoin} from "rxjs";
 
 export class InstantiationTemplatesModalComponent extends DialogComponent<string, boolean> implements OnInit, OnDestroy {
 
+  serviceModelId: string = null;
   selectedInstantiation: InstantiationTemplatesRowModel = null;
   templateModalComponentService: InstantiationTemplatesModalService;
   originalTableData: InstantiationTemplatesRowModel[] = [];
@@ -34,6 +35,7 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
               private _instantiationStatusComponentService: InstantiationStatusComponentService,
               private _aaiService: AaiService,
               private _store : NgRedux<AppState>,
+              private _router : Router,
               private _route: ActivatedRoute) {
     super(dialogService);
     this.templateModalComponentService = _templateModalComponentService;
@@ -44,8 +46,8 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
     this._route
       .queryParams
       .subscribe(params => {
-
-        const getServiceJobInfoRoute = this._serviceInfoService.getTemplatesInfo(true, params['serviceModelId']);
+        this.serviceModelId = params['serviceModelId'];
+        const getServiceJobInfoRoute = this._serviceInfoService.getTemplatesInfo(true, this.serviceModelId);
         const getUserIdRoute = this._aaiService.getUserId();
 
         forkJoin([getServiceJobInfoRoute, getUserIdRoute]).subscribe(([jobs]) => {
@@ -69,5 +71,10 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
 
   closeModal(): void {
     this._iframeService.closeIframe(this.dialogService, this);
+  }
+
+
+  closeModalAndOpenNewServiceModal(): void {
+    this._templateModalComponentService.navigateToNewServiceModal(this.serviceModelId);
   }
 }
