@@ -28,6 +28,7 @@ public abstract class DeployModernUIBase extends DeployDialogBase {
         GeneralUIUtils.ultimateWait();
         clickCancelButtonByTestID();
         goOutFromIframe();
+        GeneralUIUtils.ultimateWait();
     }
 
     @Override

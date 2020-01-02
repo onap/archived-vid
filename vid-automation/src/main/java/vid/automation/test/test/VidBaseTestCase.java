@@ -190,7 +190,7 @@ public class VidBaseTestCase extends SetupCDTest{
 
     @BeforeSuite(alwaysRun = true)
     public void setSmallDefaultTimeout() throws Exception {
-        getDriver().manage().timeouts().implicitlyWait(250, TimeUnit.MILLISECONDS);
+        getDriver().manage().timeouts().implicitlyWait(1000, TimeUnit.MILLISECONDS);
     }
 
     @Override
