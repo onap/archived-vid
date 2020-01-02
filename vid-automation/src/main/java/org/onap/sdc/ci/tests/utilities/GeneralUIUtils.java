@@ -642,13 +642,14 @@ public final class GeneralUIUtils {
     public static void waitForAngular2(){
     	WebDriverWait wait = newWait(90);
     	wait.until(AdditionalConditions.pageLoadWait());
+		waitForLoader(60);
     	try {
-			WebDriverWait briefWait = newWait(2);
+			WebDriverWait briefWait = newWait(3);
 			briefWait.until(AdditionalConditions.angular2HasFinishedProcessing());
 		} catch (TimeoutException | org.openqa.selenium.ScriptTimeoutException e) {
 			logger.info("Ignoring TimeoutException while waiting for angular2: {}", e, e);
+			waitForLoader(30);
 		}
-		waitForLoader(10);
     }
 
 	public static Object getAllElementAttributes(WebElement element) {
@@ -824,6 +825,16 @@ public final class GeneralUIUtils {
 		Actions actions = new Actions(getDriver());
 		actions.dragAndDropBy(area, 10, yOffset).perform();
 		ultimateWait();
+	}
+
+	public static void acceptDeadObjectException(Runnable todo) {
+		try {
+			todo.run();
+		} catch (org.openqa.selenium.WebDriverException e) {
+			if (!e.getMessage().startsWith("TypeError: can't access dead object")) {
+				throw e;
+			}
+		}
 	}
 
 }
