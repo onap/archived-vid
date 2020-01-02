@@ -1,16 +1,10 @@
 package vid.automation.test.sections;
 
-import com.aventstack.extentreports.Status;
-import org.junit.Assert;
-import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
-import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import vid.automation.test.Constants;
-import vid.automation.test.Constants.ViewEdit;
-import vid.automation.test.infra.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
 
+import com.aventstack.extentreports.Status;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,12 +13,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
-
-import static java.util.stream.Collectors.toMap;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.onap.sdc.ci.tests.utilities.GeneralUIUtils.getDriver;
-import static org.testng.Assert.assertEquals;
+import org.junit.Assert;
+import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
+import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import vid.automation.test.Constants;
+import vid.automation.test.Constants.ViewEdit;
+import vid.automation.test.infra.Click;
+import vid.automation.test.infra.Exists;
+import vid.automation.test.infra.Features;
+import vid.automation.test.infra.Get;
+import vid.automation.test.infra.Input;
+import vid.automation.test.infra.SelectOption;
+import vid.automation.test.infra.Wait;
 
 public class VidBasePage {
 
@@ -276,6 +283,7 @@ public class VidBasePage {
         }
         String target = uri.resolve(path).toString();
 
+        goOutFromIframe();
         getDriver().navigate().to(target);
         GeneralUIUtils.ultimateWait();
 
@@ -308,6 +316,7 @@ public class VidBasePage {
     }
 
     public static void goOutFromIframe(){
+        GeneralUIUtils.acceptDeadObjectException(GeneralUIUtils::ultimateWait);
         getDriver().switchTo().defaultContent();
     }
 
