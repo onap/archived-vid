@@ -44,6 +44,7 @@ import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.aai.util.AAITreeConverter;
 import org.onap.vid.aai.util.CacheProvider;
 import org.onap.vid.aai.util.TestWithAaiClient;
+import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.model.ModelUtil;
 import org.onap.vid.model.aaiTree.Network;
 import org.onap.vid.model.aaiTree.VpnBinding;
@@ -59,6 +60,7 @@ public class AAIServiceIntegrativeTest extends TestWithAaiClient {
     private AAIRestInterface aaiRestInterface;
     private AaiServiceImpl aaiServiceWithoutMocks;
     private Logging logging = new Logging();
+    AsyncInstantiationRepository asyncInstantiationRepository;
 
     private AaiServiceImpl createAaiServiceWithoutMocks(AAIRestInterface aaiRestInterface, CacheProvider cacheProvider) {
         AaiClient aaiClient = new AaiClient(aaiRestInterface, null, cacheProvider);
@@ -71,7 +73,7 @@ public class AAIServiceIntegrativeTest extends TestWithAaiClient {
                 null,
                 executorService
         );
-        return new AaiServiceImpl(aaiClient, null, aaiServiceTree, executorService, logging);
+        return new AaiServiceImpl(aaiClient, null, aaiServiceTree, executorService, logging, asyncInstantiationRepository);
     }
 
     @BeforeMethod

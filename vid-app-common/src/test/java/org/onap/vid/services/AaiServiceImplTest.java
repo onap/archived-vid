@@ -34,12 +34,14 @@ import static org.onap.vid.model.aaiTree.NodeType.SERVICE_INSTANCE;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableSet;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
@@ -83,6 +85,7 @@ import org.onap.vid.aai.model.Result;
 import org.onap.vid.aai.model.ServiceRelationships;
 import org.onap.vid.aai.model.VnfResult;
 import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.model.aaiTree.AAITreeNode;
@@ -129,6 +132,9 @@ public class AaiServiceImplTest {
 
     @Mock
     private AaiClientInterface aaiClient;
+
+    @Mock
+    private AsyncInstantiationRepository asyncInstantiationRepository;
 
     @Mock
     private AaiResponseTranslator aaiResponseTranslator;
@@ -392,7 +398,9 @@ public class AaiServiceImplTest {
         };
 
         when(aaiClient.getServiceModelsByDistributionStatus()).thenReturn(serviceModelsByDistributionStatusResponse);
+        when(asyncInstantiationRepository.getAllTemplatesServiceModelIds()).thenReturn(ImmutableSet.of("MODELVER_VERSION_ID1", "MODELVER_VERSION_ID"));
         Collection<Service> actualServices = aaiService.getServicesByDistributionStatus();
+
 
         assertThat(actualServices)
             .hasSize(2)
@@ -591,6 +599,11 @@ public class AaiServiceImplTest {
         tree.setAdditionalProperties(additionalProperties);
     }
 
+    private boolean getServiceModelId(String serviceModelId){
+        Set serviceModelIdset = ImmutableSet.of("MODELVER_VERSION_ID1", "MODELVER_VERSION_ID");
+        boolean bool = serviceModelIdset.contains(serviceModelId);
+        return bool;
+    }
     private org.onap.vid.asdc.beans.Service createService(String category, String suffix) {
         return new Service.ServiceBuilder()
             .setUuid("MODELVER_VERSION_ID" + suffix)
@@ -603,6 +616,7 @@ public class AaiServiceImplTest {
             .setLifecycleState(null)
             .setArtifacts(null)
             .setResources(null)
+            .setTemplateExists(getServiceModelId("MODELVER_VERSION_ID" + suffix))
             .build();
     }
 

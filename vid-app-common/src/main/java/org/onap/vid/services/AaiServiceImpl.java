@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
@@ -76,6 +77,7 @@ import org.onap.vid.aai.model.RelationshipList;
 import org.onap.vid.aai.model.Result;
 import org.onap.vid.aai.model.ServiceRelationships;
 import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceInstanceSearchResult;
 import org.onap.vid.model.SubscriberList;
@@ -110,19 +112,22 @@ public class AaiServiceImpl implements AaiService {
 
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AaiServiceImpl.class);
+    private final AsyncInstantiationRepository asyncInstantiationRepository;
 
     @Autowired
     public AaiServiceImpl(
         AaiClientInterface aaiClient,
         AaiResponseTranslator aaiResponseTranslator,
         AAIServiceTree aaiServiceTree,
-        ExecutorService executorService, Logging logging)
+        ExecutorService executorService, Logging logging,
+        AsyncInstantiationRepository asyncInstantiationRepository)
     {
         this.aaiClient = aaiClient;
         this.aaiResponseTranslator = aaiResponseTranslator;
         this.aaiServiceTree = aaiServiceTree;
         this.executorService = executorService;
         this.logging = logging;
+        this.asyncInstantiationRepository = asyncInstantiationRepository;
     }
 
     private List<Service> convertModelToService(Model model) {
@@ -142,6 +147,7 @@ public class AaiServiceImpl implements AaiService {
                         .setArtifacts(null)
                         .setResources(null)
                         .setOrchestrationType(modelVer.getOrchestrationType())
+                        .setTemplateExists(isServiceModelIdExists(modelVer.getModelVersionId()))
                         .build();
 
 
@@ -153,6 +159,11 @@ public class AaiServiceImpl implements AaiService {
         }
 
         return services;
+    }
+
+    private boolean isServiceModelIdExists(String serviceModelId){
+        Set serviceModelIdsFromDB = asyncInstantiationRepository.getAllTemplatesServiceModelIds();
+        return serviceModelIdsFromDB.contains(serviceModelId);
     }
 
     private boolean hasData(AaiResponse<?> aaiResponse) {

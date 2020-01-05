@@ -76,8 +76,10 @@ public class Service {
     private Collection<SubResource> resources;
 
     private String orchestrationType;
-    
-    
+
+    private boolean isTemplateExists;
+
+
     public static class ServiceBuilder {
        private String uuid;
        private String invariantUUID;
@@ -89,7 +91,8 @@ public class Service {
        private String distributionStatus;
        private Collection<Artifact> artifacts;
        private Collection<SubResource> resources;
-        private String orchestrationType;
+       private String orchestrationType;
+       private boolean isTemplateExists;
 
         public ServiceBuilder setUuid(String uuid) {
             this.uuid = uuid;
@@ -148,6 +151,12 @@ public class Service {
 
         public Service build() {
             return new Service(this);
+        }
+
+
+        public ServiceBuilder setTemplateExists(boolean templateExists) {
+            isTemplateExists = templateExists;
+            return this;
         }
     }
     
@@ -293,5 +302,6 @@ public class Service {
         this.artifacts = serviceBuilder.artifacts;
         this.resources = serviceBuilder.resources;
         this.orchestrationType = serviceBuilder.orchestrationType;
+        this.isTemplateExists = serviceBuilder.isTemplateExists;
     }
 }

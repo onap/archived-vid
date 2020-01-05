@@ -52,6 +52,7 @@ import org.onap.vid.asdc.parser.ToscaParserImpl2;
 import org.onap.vid.asdc.parser.VidNotionsBuilder;
 import org.onap.vid.asdc.rest.SdcRestClient;
 import org.onap.vid.client.SyncRestClient;
+import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.logging.VidLoggingInterceptor;
 import org.onap.vid.properties.AsdcClientConfiguration;
 import org.onap.vid.properties.VidProperties;
@@ -101,8 +102,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public AaiService getAaiService(AaiClientInterface aaiClient, AaiResponseTranslator aaiResponseTranslator,
-        AAIServiceTree aaiServiceTree, Logging logging, ExecutorService executorService) {
-        return new AaiServiceImpl(aaiClient, aaiResponseTranslator, aaiServiceTree, executorService, logging);
+        AAIServiceTree aaiServiceTree, Logging logging, ExecutorService executorService, AsyncInstantiationRepository asyncInstantiationRepository) {
+        return new AaiServiceImpl(aaiClient, aaiResponseTranslator, aaiServiceTree, executorService, logging, asyncInstantiationRepository);
     }
 
     @Bean
