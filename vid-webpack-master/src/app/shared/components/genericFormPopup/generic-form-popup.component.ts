@@ -8,7 +8,7 @@ import * as _ from "lodash";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../store/reducers";
 import {ServicePopupService} from "./genericFormServices/service/service.popup.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AaiService} from "../../services/aaiService/aai.service";
 import {GenericFormPopupService} from "./generic-form-popup.service";
 import {FormControlModel} from "../../models/formControlModels/formControl.model";
@@ -53,7 +53,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   hasGeneralApiError: boolean = false;
   parentElementClassName = 'content';
   errorMsg = 'Page contains errors. Please see details next to the relevant fields.';
-
+  serviceModelId : string;
   servicesQty = 1;
   quantityOptions = _.range(1, 51)
 
@@ -65,6 +65,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
               private _aaiService: AaiService,
               private _dialogService: DialogService,
               private _route: ActivatedRoute,
+              private _router : Router,
               private _genericFormPopupService: GenericFormPopupService) {
     super(dialogService);
   }
@@ -86,9 +87,9 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
     this._route
       .queryParams
       .subscribe(params => {
-        console.log('changed');
-        if (params['serviceModelId'] && params['isCreate'] == "true") {
-          this.onInitForCreateNewServicePopup();
+        this.serviceModelId = params['serviceModelId'];
+        if (this.serviceModelId && params['isCreate'] == "true") {
+          this.onInitForCreateNewServicePopup(params['hasTemplate']);
         }
       });
 
@@ -106,7 +107,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
     }
   }
 
-  private onInitForCreateNewServicePopup() {
+  private onInitForCreateNewServicePopup(hasTemplate : boolean) {
     this._genericFormPopupService.initReduxOnCreateNewService().then((serviceModelId: string) => {
       this.uuidData = <any>{
         bulkSize: 1,
@@ -115,8 +116,8 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
         serviceId: serviceModelId,
         popupService: this._servicePopupService,
       };
-      this.showTemplateBtn = !!this._store.getState().global.flags["FLAG_2004_INSTANTIATION_TEMPLATES_POPUP"];
 
+      this.showTemplateBtn = this._genericFormPopupService.shouldShowTemplateBtn(hasTemplate);
       this.isShowPreviousInstantiationBtn = !!this._store.getState().global.flags["FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER"];
 
       this.uuidData.popupService.closeDialogEvent.subscribe((that) => {
@@ -154,7 +155,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
 
 
   openTemplateModal = (): void => {
-    this._dialogService.addDialog(InstantiationTemplatesModalComponent, {});
+    this._router.navigate(['/instantiationTemplatesPopup'], { queryParams: { serviceModelId: this.serviceModelId}, queryParamsHandling: 'merge' });
   }
 
 }

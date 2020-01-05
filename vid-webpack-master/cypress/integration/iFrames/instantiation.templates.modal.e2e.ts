@@ -71,7 +71,7 @@ describe('Template', () => {
 
     cy.route(Cypress.config('baseUrl') + "/getuserID", 'us16807000');
 
-    cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
+    cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true&hasTemplate=true');
 
   });
 
@@ -117,10 +117,15 @@ describe('Template', () => {
     cy.getElementByDataTestsId('filterByUserIdTestId').click();
     cy.get('.member-table-row').should('have.length', 1);
 
+
+    // navigate to service modal -> should show Template button
+    cy.getElementByDataTestsId('startFromScratchButton').click().then(()=>{
+      cy.getElementByDataTestsId('templateButton').should('be.visible')
+    });
+
   });
 
   it('clicking on load template button, go to expected url', function () {
-
     cy.getElementByDataTestsId('templateButton').contains('Template')
     .getElementByDataTestsId('templateButton').click({force: true}) // Open template Modal
 

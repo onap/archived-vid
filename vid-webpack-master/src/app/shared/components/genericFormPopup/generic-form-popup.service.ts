@@ -90,4 +90,14 @@ export class GenericFormPopupService {
   }
 
   refreshModalCheckForGeneralErrorTrigger : Subject<boolean> = new Subject<boolean>();
+
+
+
+  shouldShowTemplateBtn = (hasTemplate: boolean) : boolean => {
+    const instantiationTemplateFlag =  !!this._store.getState().global.flags["FLAG_2004_INSTANTIATION_TEMPLATES_POPUP"];
+    if(instantiationTemplateFlag){
+      return hasTemplate;
+    }
+    return false;
+  }
 }

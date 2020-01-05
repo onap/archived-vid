@@ -29,7 +29,6 @@ export class SpinnerComponent{
       }else {
         delete this.requestMap[requestUrl]
       }
-      console.log(this.requestMap);
       this.show = !_.isEmpty(this.requestMap) && this.requestMap !== undefined;
 
     })
