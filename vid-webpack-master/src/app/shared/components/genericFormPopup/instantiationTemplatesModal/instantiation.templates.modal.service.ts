@@ -1,10 +1,13 @@
 import {Injectable} from "@angular/core";
 import {InstantiationTemplatesRowModel} from "./instantiation.templates.row.model";
+import {Router} from "@angular/router";
 import * as _ from 'lodash';
 
 @Injectable()
 export class InstantiationTemplatesModalService {
+  constructor(private _router : Router){
 
+  }
   convertResponseToUI = (jobsResponse: any[]): InstantiationTemplatesRowModel[] => {
     let tableRows: InstantiationTemplatesRowModel[] = [];
 
@@ -24,5 +27,10 @@ export class InstantiationTemplatesModalService {
     }
     return [];
   };
+
+
+  navigateToNewServiceModal(serviceModelId: string) {
+     this._router.navigate(['/servicePopup'], { queryParams: { serviceModelId: serviceModelId, isCreate:true}, queryParamsHandling: 'merge' });
+  }
 
 }
