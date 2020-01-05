@@ -2172,7 +2172,6 @@ describe('Service popup service', () => {
 
   test('getDynamicInputs should return list of controls' ,() => {
     const result:  FormControlModel[] = service.getDynamicInputs('6b528779-44a3-4472-bdff-9cd15ec93450');
-    console.log(result);
     expect(result.length).toEqual(4);
     expect(result[0].controlName).toEqual('2017488_pasqualevpe0_ASN_1');
     expect(result[1].controlName).toEqual('2017488_pasqualevpe0_ASN_2');

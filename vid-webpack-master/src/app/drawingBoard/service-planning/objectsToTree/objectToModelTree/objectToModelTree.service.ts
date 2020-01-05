@@ -28,8 +28,6 @@ export class ObjectToModelTreeService {
     }
 
     this.calculateNumberOfNodesWithPlusIcon(serviceModel, nodes);
-
-    console.log('nodes', nodes);
     return nodes;
   }
 

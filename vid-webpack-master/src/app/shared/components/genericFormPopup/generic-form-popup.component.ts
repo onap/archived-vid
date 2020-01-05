@@ -86,9 +86,8 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
     this._route
       .queryParams
       .subscribe(params => {
-        console.log('changed');
         if (params['serviceModelId'] && params['isCreate'] == "true") {
-          this.onInitForCreateNewServicePopup();
+          this.onInitForCreateNewServicePopup(params['hasTemplate']);
         }
       });
 
@@ -106,7 +105,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
     }
   }
 
-  private onInitForCreateNewServicePopup() {
+  private onInitForCreateNewServicePopup(hasTemplate : boolean) {
     this._genericFormPopupService.initReduxOnCreateNewService().then((serviceModelId: string) => {
       this.uuidData = <any>{
         bulkSize: 1,
@@ -115,8 +114,8 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
         serviceId: serviceModelId,
         popupService: this._servicePopupService,
       };
-      this.showTemplateBtn = !!this._store.getState().global.flags["FLAG_2004_INSTANTIATION_TEMPLATES_POPUP"];
 
+      this.showTemplateBtn = this._genericFormPopupService.shouldShowTemplateBtn(hasTemplate);
       this.isShowPreviousInstantiationBtn = !!this._store.getState().global.flags["FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER"];
 
       this.uuidData.popupService.closeDialogEvent.subscribe((that) => {

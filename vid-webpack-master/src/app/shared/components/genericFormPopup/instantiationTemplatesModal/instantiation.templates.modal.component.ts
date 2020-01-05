@@ -76,5 +76,6 @@ export class InstantiationTemplatesModalComponent extends DialogComponent<string
 
   closeModalAndOpenNewServiceModal(): void {
     this._templateModalComponentService.navigateToNewServiceModal(this.serviceModelId);
+    this.dialogService.removeDialog(this);
   }
 }

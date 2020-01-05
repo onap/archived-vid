@@ -22,6 +22,7 @@ import {VfModuleControlGenerator} from "../genericForm/formControlsServices/vfMo
 import {FeatureFlagsService} from "../../services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "./genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {SharedControllersService} from "../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {AppState} from "../../store/reducers";
 
 class MockAppStore<T>{
   getState() {
@@ -951,6 +952,7 @@ describe('Generic Form popup Service', () => {
   let servicePopupService : ServicePopupService;
   let _aaiService : AaiService;
   let _activatedRoute : ActivatedRoute;
+  let _store : NgRedux<AppState>;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -987,6 +989,7 @@ describe('Generic Form popup Service', () => {
     servicePopupService = injector.get(ServicePopupService);
     _aaiService = injector.get(AaiService);
     _activatedRoute = injector.get(ActivatedRoute);
+    _store = injector.get(NgRedux);
 
   })().then(done).catch(done.fail));
 
@@ -1065,5 +1068,54 @@ describe('Generic Form popup Service', () => {
   test('initReduxOnCreateNewService',() => {
     jest.spyOn(_aaiService, 'getServiceModelById');
     service.initReduxOnCreateNewService();
+  });
+
+
+  test('shouldShowTemplateBtn : should return true if flag is true and has template', ()=> {
+    spyOn(_store, 'getState').and.returnValue({
+      global : {
+        flags : {
+          "FLAG_2004_INSTANTIATION_TEMPLATES_POPUP" : true
+        }
+      }
+    });
+    const result: boolean = service.shouldShowTemplateBtn(true);
+    expect(result).toBeTruthy();
+  });
+
+  test('shouldShowTemplateBtn : should return false if flag is false and has template', ()=> {
+    spyOn(_store, 'getState').and.returnValue({
+      global : {
+        flags : {
+          "FLAG_2004_INSTANTIATION_TEMPLATES_POPUP" : false
+        }
+      }
+    });
+    const result: boolean = service.shouldShowTemplateBtn(true);
+    expect(result).toBeFalsy();
+  });
+
+  test('shouldShowTemplateBtn : should return false if flag is true and has no template', ()=> {
+    spyOn(_store, 'getState').and.returnValue({
+      global : {
+        flags : {
+          "FLAG_2004_INSTANTIATION_TEMPLATES_POPUP" : true
+        }
+      }
+    });
+    const result: boolean = service.shouldShowTemplateBtn(false);
+    expect(result).toBeFalsy();
+  });
+
+  test('shouldShowTemplateBtn : should return false if flag is false and has no template', ()=> {
+    spyOn(_store, 'getState').and.returnValue({
+      global : {
+        flags : {
+          "FLAG_2004_INSTANTIATION_TEMPLATES_POPUP" : false
+        }
+      }
+    });
+    const result: boolean = service.shouldShowTemplateBtn(false);
+    expect(result).toBeFalsy();
   })
 });

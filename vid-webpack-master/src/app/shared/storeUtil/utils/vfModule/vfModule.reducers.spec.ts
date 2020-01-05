@@ -251,7 +251,6 @@ test('#DELETE_ACTION_VF_MODULE_INSTANCE', () => {
       serviceId: 'serviceModelId'
     }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
 
-  console.log(vfModule.action);
   expect(vfModule).toBeDefined();
   expect(vfModule.isMissingData).toBeTruthy();
   expect(vfModule.action).toEqual(ServiceInstanceActions.None_Delete);
@@ -287,7 +286,6 @@ test('#UNDO_DELETE_ACTION_VF_MODULE_INSTANCE', () => {
       serviceId: 'serviceModelId'
     }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
 
-  console.log(vfModule.action);
   expect(vfModule).toBeDefined();
   expect(vfModule.action).toEqual(ServiceInstanceActions.None);
 });
