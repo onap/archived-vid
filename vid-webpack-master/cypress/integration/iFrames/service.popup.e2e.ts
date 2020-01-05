@@ -30,6 +30,17 @@ describe('Service popup', function () {
       });
     });
 
+    it('a-la-carte service instantiation popup should show Template button ', function () {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
+        res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.vidNotions.instantiationType = 'ALaCarte';
+        res1.global.flags = {};
+        res1.global.flags["FLAG_2004_INSTANTIATION_TEMPLATES_POPUP"] = true;
+        cy.setReduxState(<any>res1);
+        cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true&hasTemplate=true');
+        cy.getElementByDataTestsId('templateButton').should('be.visible')
+      });
+    });
+
     it('a-la-carte service instantiation popup has Instance name as required', function () {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res1) => {
         res1.service.serviceHierarchy["2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"].service.vidNotions.instantiationType = 'ALaCarte';
@@ -39,6 +50,7 @@ describe('Service popup', function () {
         cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
         cy.isElementContainsAttr('form-set', 'disabled');
         cy.get('label').contains('Instance name:').should('have.class', 'required');
+        cy.getElementByDataTestsId('templateButton').should('not.be.visible')
       });
     });
 
