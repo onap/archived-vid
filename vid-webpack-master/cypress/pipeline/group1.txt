@@ -1,11 +1,9 @@
+cypress/integration/iFrames/ala-carte.e2e.ts
 cypress/integration/iFrames/auditInfo.modal.e2e.ts
 cypress/integration/iFrames/browse-sdc.e2e.ts
+cypress/integration/iFrames/changeManagement.e2e.ts
 cypress/integration/iFrames/collectionResource.e2e.ts
+cypress/integration/iFrames/commitDialog.e2e.ts
 cypress/integration/iFrames/drawingBoard.e2e.ts
-cypress/integration/iFrames/instantiationStatus.e2e.ts
-cypress/integration/iFrames/network.popup.e2e.ts
-cypress/integration/iFrames/permission.e2e.ts
-cypress/integration/iFrames/pnf.e2e.ts
-cypress/integration/iFrames/resume.e2e.ts
-cypress/integration/iFrames/retry.e2e.ts
-cypress/integration/iFrames/viewEdit.e2e.ts
+cypress/integration/iFrames/instantiation-templates.e2e.ts
+
