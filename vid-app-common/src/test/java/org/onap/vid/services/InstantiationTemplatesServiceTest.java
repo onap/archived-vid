@@ -20,7 +20,10 @@
 
 package org.onap.vid.services;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.anEmptyMap;
 import static org.hamcrest.Matchers.hasProperty;
@@ -28,22 +31,31 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.model.ModelUtil;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiationTemplate;
 import org.onap.vid.model.serviceInstantiation.Vnf;
+import org.onap.vid.properties.Features;
 import org.onap.vid.testUtils.TestUtils;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 public class InstantiationTemplatesServiceTest {
 
@@ -53,12 +65,20 @@ public class InstantiationTemplatesServiceTest {
     @Mock
     private ModelUtil modelUtil;
 
+    @Mock
+    private FeatureManager featureManager;
+
     @InjectMocks
     private InstantiationTemplatesService instantiationTemplatesService;
 
     @BeforeMethod
     public void initMocks() {
         TestUtils.initMockitoMocks(this);
+    }
+
+    @AfterMethod
+    public void resetMocks() {
+        reset(featureManager);
     }
 
     @Test
@@ -97,6 +117,55 @@ public class InstantiationTemplatesServiceTest {
         assertThat(result, hasProperty("existingNetworksCounterMap", anEmptyMap()));
         assertThat(result, hasProperty("existingVnfGroupCounterMap", anEmptyMap()));
         assertThat(result, hasProperty("existingVRFCounterMap", anEmptyMap()));
+    }
+
+    @DataProvider
+    public static Object[][] isTemplatesExistsByGivenServiceUuid() {
+        return new Object[][]{{"MODELVER_VERSION_ID1",TRUE},
+                              {"MODELVER_VERSION",FALSE}};
+    }
+
+    @Test(dataProvider = "isTemplatesExistsByGivenServiceUuid")
+    public void setInServiceisHasTemplateValue_givenServiceWithServiceModelId_thenIsTemplateExistsIsEatherTrueOrFalse(String givenUuid, Boolean expectedTemplatesExist){
+
+        when(featureManager.isActive(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)).thenReturn(true);
+
+        Service service = new Service();
+        service.setUuid(givenUuid);
+
+        Service newService = instantiationTemplatesService.setInServiceisHasTemplateValue(service, ImmutableSet.of("MODELVER_VERSION_ID1", "MODELVER_VERSION_ID"));
+        assertThat(newService.getTemplateExists(), is(expectedTemplatesExist));
+
+    }
+
+    @Test
+    public void setTemplatesExistance_givenCollection_thenSameCollectionReturnedWithTemplateExistsProperty(){
+
+        when(asyncInstantiationRepository.getAllTemplatesServiceModelIds()).thenReturn(ImmutableSet.of("MODELVER_VERSION_ID1", "MODELVER_VERSION_ID"));
+        Collection<Service> actualCollection = instantiationTemplatesService.setOnEachServiceInCollectionIsTemplateExistsValue(createGivenCollection());
+        assertThat(actualCollection, is(expectedCollection(createGivenCollection())));
+
+    }
+
+    private Collection<Service> createGivenCollection(){
+        Service service1 = new Service();
+        Service service2 = new Service();
+        service1.setUuid("MODELVER_VERSION_ID1");
+        service2.setUuid("MODELVER");
+        Collection<Service> givenCollection = new ArrayList<>();
+        givenCollection.add(service1);
+        givenCollection.add(service2);
+        return givenCollection;
+    }
+    private Collection<Service>expectedCollection(Collection<Service> givenCollection){
+        for(Service service : givenCollection){
+            if(service.getUuid().equals("MODELVER_VERSION_ID1")){
+                service.setTemplateExists(true);
+            }else {
+                service.setTemplateExists(false);
+            }
+        }
+        return givenCollection;
     }
 
 }
