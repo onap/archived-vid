@@ -76,6 +76,8 @@ public class Service {
     private Collection<SubResource> resources;
 
     private String orchestrationType;
+
+    private Boolean isTemplateExists;
     
     
     public static class ServiceBuilder {
@@ -204,6 +206,9 @@ public class Service {
         return orchestrationType;
     }
 
+    public Boolean getTemplateExists() { return isTemplateExists; }
+
+
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
@@ -255,6 +260,8 @@ public class Service {
     public void setOrchestrationType(String orchestrationType) {
         this.orchestrationType = orchestrationType;
     }
+
+    public void setTemplateExists(Boolean templateExists) { isTemplateExists = templateExists; }
 
     @Override
     public String toString() {
