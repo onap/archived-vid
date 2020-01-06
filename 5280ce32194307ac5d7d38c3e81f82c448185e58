@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e86479e2_f10f16a1",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/beans/Service.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-06T17:05:24Z",
+      "side": 1,
+      "message": "please rename to something like isInstantiationTemplateExists.\nthis name also appears on commit message, and on Frontend code (I guess)",
+      "range": {
+        "startLine": 80,
+        "startChar": 20,
+        "endLine": 80,
+        "endChar": 36
+      },
+      "revId": "5280ce32194307ac5d7d38c3e81f82c448185e58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "235c81fa_7eebbe3d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/beans/Service.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-06T17:05:24Z",
+      "side": 1,
+      "message": "can you please format this to multiline?\npublic ..... {\n   return isTemplateExists;\n}",
+      "revId": "5280ce32194307ac5d7d38c3e81f82c448185e58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a73fa8dc_1a36823b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/beans/Service.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-06T17:05:24Z",
+      "side": 1,
+      "message": "The convention is param name to be the same, then `this.isTemplateExists \u003d isTemplateExists;`.",
+      "range": {
+        "startLine": 264,
+        "startChar": 42,
+        "endLine": 264,
+        "endChar": 56
+      },
+      "revId": "5280ce32194307ac5d7d38c3e81f82c448185e58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "506261ca_a872d33b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/beans/Service.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-06T17:05:24Z",
+      "side": 1,
+      "message": "can you please format this to multiline?\npublic ..... {\n   isTemplateExists \u003d templateExists; \n}",
+      "revId": "5280ce32194307ac5d7d38c3e81f82c448185e58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89f73290_96940911",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/InstantiationTemplatesService.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-06T17:05:24Z",
+      "side": 1,
+      "message": "you may static import Collectors.toList, so that line will end with:\n......collect(toList());",
+      "range": {
+        "startLine": 84,
+        "startChar": 106,
+        "endLine": 84,
+        "endChar": 117
+      },
+      "revId": "5280ce32194307ac5d7d38c3e81f82c448185e58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
