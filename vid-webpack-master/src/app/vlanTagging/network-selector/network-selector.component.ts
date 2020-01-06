@@ -26,7 +26,6 @@ export class NetworkSelectorComponent implements OnInit {
   constructor(store: NgRedux<AppState>) {
     this.localStore = store;
     this.groupSelection = {};
-    console.log(store);
   }
 
   getValueOfLabelInGroup(group: any, label: string){

@@ -10,6 +10,7 @@ import {UUIDData} from "./generic-form-popup.component";
 import {FormPopupDetails} from "../../models/formControlModels/formPopupDetails.model";
 import {Subject} from "rxjs";
 import {deleteAllServiceInstances} from "../../storeUtil/utils/service/service.actions";
+import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
 
 @Injectable()
 export class GenericFormPopupService {
@@ -17,6 +18,7 @@ export class GenericFormPopupService {
               private _store: NgRedux<AppState>,
               private _servicePopupService : ServicePopupService,
               public _activatedRoute : ActivatedRoute,
+              private _featureFlagsService : FeatureFlagsService,
               private _aaiService : AaiService){
 
   }
@@ -90,4 +92,14 @@ export class GenericFormPopupService {
   }
 
   refreshModalCheckForGeneralErrorTrigger : Subject<boolean> = new Subject<boolean>();
+
+
+
+  shouldShowTemplateBtn = (hasTemplate: boolean) : boolean => {
+    const instantiationTemplateFlag =  this._featureFlagsService.getFlagState(Features.FLAG_2004_INSTANTIATION_TEMPLATES_POPUP);
+    if(instantiationTemplateFlag){
+      return hasTemplate;
+    }
+    return false;
+  }
 }

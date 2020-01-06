@@ -22,6 +22,8 @@ import {VfModuleControlGenerator} from "../genericForm/formControlsServices/vfMo
 import {FeatureFlagsService} from "../../services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "./genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {SharedControllersService} from "../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {AppState} from "../../store/reducers";
+import each from 'jest-each';
 
 class MockAppStore<T>{
   getState() {
@@ -951,6 +953,8 @@ describe('Generic Form popup Service', () => {
   let servicePopupService : ServicePopupService;
   let _aaiService : AaiService;
   let _activatedRoute : ActivatedRoute;
+  let _store : NgRedux<AppState>;
+  let _featureFlagsService : FeatureFlagsService;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -972,7 +976,7 @@ describe('Generic Form popup Service', () => {
         VfModulePopupService,
         VfModuleUpgradePopupService,
         VfModuleControlGenerator,
-        {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
+        FeatureFlagsService,
         {provide: ActivatedRoute, useClass: ActivatedRouteMock},
         {provide: NgRedux, useClass: MockAppStore}]
     });
@@ -987,7 +991,8 @@ describe('Generic Form popup Service', () => {
     servicePopupService = injector.get(ServicePopupService);
     _aaiService = injector.get(AaiService);
     _activatedRoute = injector.get(ActivatedRoute);
-
+    _store = injector.get(NgRedux);
+    _featureFlagsService = injector.get(FeatureFlagsService);
   })().then(done).catch(done.fail));
 
 
@@ -1065,5 +1070,18 @@ describe('Generic Form popup Service', () => {
   test('initReduxOnCreateNewService',() => {
     jest.spyOn(_aaiService, 'getServiceModelById');
     service.initReduxOnCreateNewService();
-  })
+  });
+
+
+  const shouldShowTemplateBtnDataProvider = [
+    ['shouldShowTemplateBtn : should return true if flag is true and has template', true , true, true],
+    ['shouldShowTemplateBtn : should return false if flag is false and has template',false , true, false],
+    ['shouldShowTemplateBtn : should return false if flag is true and has no template',true , false, false],
+    ['shouldShowTemplateBtn : should return false if flag is false and has no template',false , false, false]];
+  each(shouldShowTemplateBtnDataProvider).test('%s', (desc : string, flag : boolean, hasTemplate : boolean, expected : boolean ) => {
+    spyOn(_featureFlagsService, 'getFlagState').and.returnValue(flag)
+
+    const result: boolean = service.shouldShowTemplateBtn(hasTemplate);
+    expect(result).toEqual(expected);
+  });
 });
