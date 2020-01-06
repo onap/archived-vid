@@ -1,0 +1,169 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cbfba171_dbfcffc5",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/InstantiationTemplatesService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-06T07:54:49Z",
+      "side": 1,
+      "message": "setOnEachServiceIsTemplateExists",
+      "range": {
+        "startLine": 77,
+        "startChar": 31,
+        "endLine": 77,
+        "endChar": 80
+      },
+      "revId": "8730d900d012db802c7384e5b18ae21210b2ff01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e28d10df_ea442003",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/InstantiationTemplatesService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-06T07:54:49Z",
+      "side": 1,
+      "message": "setTemplateExistForService",
+      "revId": "8730d900d012db802c7384e5b18ae21210b2ff01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c26d4295_5173a6e3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/InstantiationTemplatesService.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-06T07:54:49Z",
+      "side": 1,
+      "message": "please move to setOnEachServiceInCollectionIsTemplateExistsValue",
+      "revId": "8730d900d012db802c7384e5b18ae21210b2ff01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57249bca_a48153a9",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/InstantiationTemplatesServiceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-06T07:54:49Z",
+      "side": 1,
+      "message": "\"1\"",
+      "revId": "8730d900d012db802c7384e5b18ae21210b2ff01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad881a91_96b26121",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/InstantiationTemplatesServiceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-06T07:54:49Z",
+      "side": 1,
+      "message": "\"3\"",
+      "revId": "8730d900d012db802c7384e5b18ae21210b2ff01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3cb52cc_f902c056",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/InstantiationTemplatesServiceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-06T07:54:49Z",
+      "side": 1,
+      "message": "\"1\", \"2\"",
+      "range": {
+        "startLine": 136,
+        "startChar": 115,
+        "endLine": 136,
+        "endChar": 160
+      },
+      "revId": "8730d900d012db802c7384e5b18ae21210b2ff01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6469e232_2be2944e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/InstantiationTemplatesServiceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-06T07:54:49Z",
+      "side": 1,
+      "message": "use simple examples like \"1\", \"2\"",
+      "revId": "8730d900d012db802c7384e5b18ae21210b2ff01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70ec6440_979fdf51",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/InstantiationTemplatesServiceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-06T07:54:49Z",
+      "side": 1,
+      "message": "return ImmutableList.of(service1, service2)",
+      "revId": "8730d900d012db802c7384e5b18ae21210b2ff01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af8a401e_24095173",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/InstantiationTemplatesServiceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-06T07:54:49Z",
+      "side": 1,
+      "message": "I prefer generate the results hard coded ...",
+      "revId": "8730d900d012db802c7384e5b18ae21210b2ff01",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
