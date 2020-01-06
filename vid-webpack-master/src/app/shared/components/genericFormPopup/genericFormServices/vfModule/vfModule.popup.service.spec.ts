@@ -14,6 +14,7 @@ import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {ModalService} from "../../../../onapUI/sharedOnapServices";
 
 class MockModalService<T> {}
 
@@ -1996,7 +1997,7 @@ describe('VFModule popup service', () => {
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},
-        {provide: SdcUiServices.ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService}
       ]
     });
     await TestBed.compileComponents();

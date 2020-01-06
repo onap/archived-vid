@@ -24,6 +24,7 @@ import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {ModalService} from "../../../../../shared/onapUI/sharedOnapServices";
 
 export class NetworkModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -31,7 +32,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
               private _dialogService: DialogService,
               private _networkPopupService: NetworkPopupService,
               private _duplicateService: DuplicateService,
-              private modalService: SdcUiServices.ModalService,
+              private modalService: ModalService,
               private _iframeService: IframeService,
               private _featureFlagsService: FeatureFlagsService,
               private _store: NgRedux<AppState>) {

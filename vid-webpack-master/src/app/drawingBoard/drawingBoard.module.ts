@@ -36,6 +36,8 @@ import {ComponentInfoComponent} from './service-planning/component-info/componen
 import {ComponentInfoService} from "./service-planning/component-info/component-info.service";
 import {NetworkStepService} from "./service-planning/objectsToTree/models/vrf/vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "./service-planning/objectsToTree/models/vrf/vrfModal/vpnStep/vpn.step.service";
+import {ModalModule} from "onap-ui-angular/dist/modals/modal.module";
+import {ModalService} from "../shared/onapUI/sharedOnapServices";
 
 
 @NgModule({
@@ -48,7 +50,8 @@ import {VpnStepService} from "./service-planning/objectsToTree/models/vrf/vrfMod
     CommonModule,
     SdcUiComponentsModule,
     SharedModule.forRoot(),
-    FeatureFlagModule.forRoot()],
+    FeatureFlagModule.forRoot(),
+    ModalModule],
   providers: [
     AaiService,
     ObjectToTreeService,
@@ -64,7 +67,7 @@ import {VpnStepService} from "./service-planning/objectsToTree/models/vrf/vrfMod
     DynamicInputsService,
     InstanceTreeGenerator,
     SharedTreeService,
-    SdcUiServices.ModalService,
+    ModalService,
     SdcUiServices.LoaderService,
     CreateDynamicComponentService,
     ComponentInfoService,
@@ -83,7 +86,7 @@ import {VpnStepService} from "./service-planning/objectsToTree/models/vrf/vrfMod
     SearchComponent,
     ComponentInfoComponent],
   entryComponents: [DuplicateVnfComponent],
-  exports: [AvailableModelsTreeComponent, DrawingBoardTreeComponent, DrawingBoardHeader, TreeNodeHeaderPropertiesComponent, SearchComponent]
+  exports: [AvailableModelsTreeComponent, DrawingBoardTreeComponent, DrawingBoardHeader, TreeNodeHeaderPropertiesComponent, SearchComponent, DuplicateVnfComponent]
 })
 
 export class DrawingBoardModule {

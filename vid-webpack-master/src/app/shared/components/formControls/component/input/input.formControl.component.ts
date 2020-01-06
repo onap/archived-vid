@@ -9,7 +9,7 @@ import {FormGroup} from "@angular/forms";
 })
 
 export class InputFormControlComponent{
-  @ViewChild('customInput') element:ElementRef;
+  @ViewChild('customInput', {static: false}) element:ElementRef;
   @Input() data: InputFormControl = null;
   @Input() form: FormGroup;
 

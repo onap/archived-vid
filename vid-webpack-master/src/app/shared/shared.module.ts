@@ -80,6 +80,8 @@ import {SearchFilterPipe} from "./pipes/searchFilter/search-filter.pipe";
 import {RecreateResolver} from "./resolvers/recreate/recreate.resolver";
 import {InstantiationTemplatesService} from "./services/templateService/instantiationTemplates.service";
 import {SharedControllersService} from "./components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {ModalService} from "./onapUI/sharedOnapServices";
+import {DuplicateVnfComponent} from "../drawingBoard/service-planning/duplicate/duplicate-vnf.component";
 
 
 @NgModule({
@@ -170,12 +172,13 @@ import {SharedControllersService} from "./components/genericForm/formControlsSer
   entryComponents : [
     GenericFormPopupComponent,
     SearchElementsModalComponent,
-    InstantiationTemplatesModalComponent
+    InstantiationTemplatesModalComponent,
+    DuplicateVnfComponent
   ],
   providers: [
     ServiceInfoService,
     MessageBoxService,
-    SdcUiServices.ModalService,
+    ModalService,
     SdcUiServices.LoaderService,
     HttpInterceptorService,
     IframeService,

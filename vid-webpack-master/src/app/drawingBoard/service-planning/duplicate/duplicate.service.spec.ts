@@ -8,6 +8,7 @@ import {AppState} from "../../../shared/store/reducers";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
 import {SharedTreeService} from "../objectsToTree/shared.tree.service";
+import {ModalService} from "../../../shared/onapUI/sharedOnapServices";
 
 class MockAppStore<T> {
   getState(){
@@ -73,7 +74,7 @@ describe('Drawing board tree service', () => {
         LogService,
         {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockAppStore},
-        {provide: SdcUiServices.ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService}
       ]
     });
     await TestBed.compileComponents();

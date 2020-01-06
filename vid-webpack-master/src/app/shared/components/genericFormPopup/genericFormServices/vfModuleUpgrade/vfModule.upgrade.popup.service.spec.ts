@@ -26,6 +26,7 @@ import {ServiceActions} from "../../../../storeUtil/utils/service/service.action
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import * as _ from "lodash";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {ModalService} from "../../../../onapUI/sharedOnapServices";
 
 class MockModalService<T> {}
 
@@ -87,7 +88,7 @@ describe('VFModule popup service', () => {
         {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},
-        {provide: SdcUiServices.ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService}
       ]
     });
     await TestBed.compileComponents();

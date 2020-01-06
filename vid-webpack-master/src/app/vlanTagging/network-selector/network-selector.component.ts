@@ -21,7 +21,7 @@ export class NetworkSelectorComponent implements OnInit {
   @select(['service', 'networkFunctions'])
   readonly networkFunctions: Observable<any>;
 
-  @ViewChild('form') form: NgForm;
+  @ViewChild('form', {static: false}) form: NgForm;
 
   constructor(store: NgRedux<AppState>) {
     this.localStore = store;

@@ -8,19 +8,19 @@ import {VfModuleMap} from "../../../shared/models/vfModulesMap";
 import * as _ from "lodash";
 import {DefaultDataGeneratorService} from "../../../shared/services/defaultDataServiceGenerator/default.data.generator.service";
 import {TypeNodeInformation} from "../typeNodeInformation.model";
-import {SdcUiCommon, SdcUiServices} from "onap-ui-angular";
+import {SdcUiCommon} from "onap-ui-angular";
 import {changeInstanceCounter, duplicateBulkInstances} from "../../../shared/storeUtil/utils/general/general.actions";
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
 import {Utils} from "../../../shared/utils/utils";
 import {SharedTreeService} from "../objectsToTree/shared.tree.service";
-
+import {ModalService} from "../../../shared/onapUI/sharedOnapServices";
 @Injectable()
 export class DuplicateService {
 
   constructor(private _logService: LogService,
               private sharedTreeService : SharedTreeService,
-              private _store: NgRedux<AppState>, modalService: SdcUiServices.ModalService) {
+              private _store: NgRedux<AppState>, modalService: ModalService) {
     this.modalService = modalService;
   }
 
@@ -35,7 +35,7 @@ export class DuplicateService {
   maxNumberOfDuplicate: number = 0;
   storeKey: string = null;
   padding = '0000';
-  modalService: SdcUiServices.ModalService;
+  modalService: ModalService;
   store: NgRedux<AppState>;
   existingNames: { [key: string]: any };
   currentNode: ITreeNode = null;
