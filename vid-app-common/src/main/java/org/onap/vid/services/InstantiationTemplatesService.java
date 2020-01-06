@@ -23,27 +23,37 @@ package org.onap.vid.services;
 import static java.util.Collections.emptyMap;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
+import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.model.ModelUtil;
 import org.onap.vid.model.serviceInstantiation.BaseResource;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiationTemplate;
+import org.onap.vid.properties.Features;
 import org.springframework.stereotype.Component;
+import org.togglz.core.manager.FeatureManager;
 
 @Component
 public class InstantiationTemplatesService {
 
     private final ModelUtil modelUtil;
     private final AsyncInstantiationRepository asyncInstantiationRepository;
+    private FeatureManager featureManager;
+
 
     @Inject
     public InstantiationTemplatesService(ModelUtil modelUtil,
-        AsyncInstantiationRepository asyncInstantiationRepository) {
+        AsyncInstantiationRepository asyncInstantiationRepository,
+        FeatureManager featureManager) {
         this.modelUtil = modelUtil;
         this.asyncInstantiationRepository = asyncInstantiationRepository;
+        this.featureManager = featureManager;
     }
 
     public ServiceInstantiationTemplate getJobRequestAsTemplate(UUID jobId) {
@@ -64,4 +74,19 @@ public class InstantiationTemplatesService {
         );
     }
 
+    public Collection<Service> setOnEachServiceIsTemplateExists(Collection<Service> services){
+        if (!featureManager.isActive(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)){
+            return services;
+        }
+
+        Set<String> serviceModelIdsFromDB  = asyncInstantiationRepository.getAllTemplatesServiceModelIds();
+
+        return services.stream().map(it -> setTemplateExistForService(it, serviceModelIdsFromDB)).collect(Collectors.toList());
+    }
+
+    protected Service setTemplateExistForService(Service service, Set<String> serviceModelIdsFromDb) {
+
+        service.setTemplateExists(serviceModelIdsFromDb.contains(service.getUuid()));
+        return service;
+    }
 }
