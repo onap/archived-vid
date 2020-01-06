@@ -24,7 +24,7 @@ function deepCompare(actual : any, expected : any) {
     if(diff.length > 0){
       console.error("diff", diff);
       cy.log("The object are not equals", diff);
-      expect(actual).equals(expected);
+      expect(actual).equals(expected, `diff: ${diff}, actual:${JSON.stringify(actual)}, expected:${JSON.stringify(expected)}`);
     }
   }
 }
