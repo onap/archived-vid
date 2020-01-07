@@ -20,6 +20,9 @@
 
 package org.onap.vid.asdc.beans;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -77,6 +80,7 @@ public class Service {
 
     private String orchestrationType;
 
+    @JsonInclude(NON_NULL)
     private Boolean isInstantiationTemplateExists;
     
     
