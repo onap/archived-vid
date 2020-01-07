@@ -30,7 +30,7 @@ export class InstantiationTemplatesModalService {
 
 
   navigateToNewServiceModal(serviceModelId: string) {
-     this._router.navigate(['/servicePopup'], { queryParams: { serviceModelId: serviceModelId, isCreate:true, hasTemplate : true}, queryParamsHandling: 'merge' });
+     this._router.navigate(['/servicePopup'], { queryParams: { serviceModelId: serviceModelId, isCreate:true, isInstantiationTemplateExists : true}, queryParamsHandling: 'merge' });
   }
 
 }

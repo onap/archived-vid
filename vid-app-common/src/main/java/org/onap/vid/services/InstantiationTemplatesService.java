@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import javax.inject.Inject;
+import org.jetbrains.annotations.NotNull;
 import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.model.ModelUtil;
@@ -76,7 +77,8 @@ public class InstantiationTemplatesService {
 
     public Collection<Service> setOnEachServiceIsTemplateExists(Collection<Service> services){
         if (!featureManager.isActive(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)){
-            return services;
+            return unsetTemplateExistsToAllServices(services);
+
         }
 
         Set<String> serviceModelIdsFromDB  = asyncInstantiationRepository.getAllTemplatesServiceModelIds();
@@ -84,8 +86,13 @@ public class InstantiationTemplatesService {
         return services.stream().map(it -> setTemplateExistForService(it, serviceModelIdsFromDB)).collect(toList());
     }
 
-    protected Service setTemplateExistForService(Service service, Set<String> serviceModelIdsFromDb) {
+    @NotNull
+    protected Collection<Service> unsetTemplateExistsToAllServices(Collection<Service> services) {
+        services.forEach(it -> it.setIsInstantiationTemplateExists(false));
+        return services;
+    }
 
+    protected Service setTemplateExistForService(Service service, Set<String> serviceModelIdsFromDb) {
         service.setIsInstantiationTemplateExists(serviceModelIdsFromDb.contains(service.getUuid()));
         return service;
     }

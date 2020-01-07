@@ -95,10 +95,10 @@ export class GenericFormPopupService {
 
 
 
-  shouldShowTemplateBtn = (hasTemplate: boolean) : boolean => {
+  shouldShowTemplateBtn = (isInstantiationTemplateExists: boolean) : boolean => {
     const instantiationTemplateFlag =  this._featureFlagsService.getFlagState(Features.FLAG_2004_INSTANTIATION_TEMPLATES_POPUP);
     if(instantiationTemplateFlag){
-      return hasTemplate;
+      return isInstantiationTemplateExists;
     }
     return false;
   }

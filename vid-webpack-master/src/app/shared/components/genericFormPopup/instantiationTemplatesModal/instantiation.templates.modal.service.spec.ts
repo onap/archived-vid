@@ -173,7 +173,7 @@ describe('instantiation templates modal service', () => {
 
     service.navigateToNewServiceModal(serviceModelId);
 
-    expect(_router.navigate).toBeCalledWith(["/servicePopup"], {"queryParams": {"isCreate": true, "serviceModelId": serviceModelId, hasTemplate : true}, "queryParamsHandling": "merge"});
+    expect(_router.navigate).toBeCalledWith(["/servicePopup"], {"queryParams": {"isCreate": true, "serviceModelId": serviceModelId, isInstantiationTemplateExists : true}, "queryParamsHandling": "merge"});
   })
 
 });
