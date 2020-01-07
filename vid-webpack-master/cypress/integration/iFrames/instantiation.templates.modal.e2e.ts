@@ -71,7 +71,7 @@ describe('Template', () => {
 
     cy.route(Cypress.config('baseUrl') + "/getuserID", 'us16807000');
 
-    cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true&hasTemplate=true');
+    cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true&isInstantiationTemplateExists=true');
 
   });
 
