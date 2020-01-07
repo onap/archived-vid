@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e086c518_3f62d6b6",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/asdc/beans/Service.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-01-07T11:05:23Z",
+      "side": 1,
+      "message": "why is it required?",
+      "range": {
+        "startLine": 84,
+        "startChar": 20,
+        "endLine": 84,
+        "endChar": 49
+      },
+      "revId": "16ef9772c84d9110b451a1a28f0fe76e40f8bd53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
