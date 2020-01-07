@@ -1074,14 +1074,14 @@ describe('Generic Form popup Service', () => {
 
 
   const shouldShowTemplateBtnDataProvider = [
-    ['shouldShowTemplateBtn : should return true if flag is true and has template', true , true, true],
-    ['shouldShowTemplateBtn : should return false if flag is false and has template',false , true, false],
-    ['shouldShowTemplateBtn : should return false if flag is true and has no template',true , false, false],
-    ['shouldShowTemplateBtn : should return false if flag is false and has no template',false , false, false]];
-  each(shouldShowTemplateBtnDataProvider).test('%s', (desc : string, flag : boolean, hasTemplate : boolean, expected : boolean ) => {
+    ['shouldShowTemplateBtn : should return true if flag is true and has instantiation template', true , true, true],
+    ['shouldShowTemplateBtn : should return false if flag is false and has instantiation template',false , true, false],
+    ['shouldShowTemplateBtn : should return false if flag is true and has no instantiation template',true , false, false],
+    ['shouldShowTemplateBtn : should return false if flag is false and has no instantiation template',false , false, false]];
+  each(shouldShowTemplateBtnDataProvider).test('%s', (desc : string, flag : boolean, isInstantiationTemplateExists : boolean, expected : boolean ) => {
     spyOn(_featureFlagsService, 'getFlagState').and.returnValue(flag)
 
-    const result: boolean = service.shouldShowTemplateBtn(hasTemplate);
+    const result: boolean = service.shouldShowTemplateBtn(isInstantiationTemplateExists);
     expect(result).toEqual(expected);
   });
 });
