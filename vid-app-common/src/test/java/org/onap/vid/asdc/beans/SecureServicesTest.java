@@ -20,16 +20,52 @@
 
 package org.onap.vid.asdc.beans;
 
+import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doReturn;
+
+import java.util.Set;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.onap.vid.aai.model.AaiGetNetworkCollectionDetails.CloudRegion;
+import org.onap.vid.dal.AsyncInstantiationRepository;
+import org.onap.vid.services.InstantiationTemplatesService;
+import org.onap.vid.testUtils.TestUtils;
+import org.testng.annotations.BeforeMethod;
 
 public class SecureServicesTest {
+
+    @Mock
+    private AsyncInstantiationRepository asyncInstantiationRepository;
+
+    @InjectMocks
+    private InstantiationTemplatesService instantiationTemplatesService;
+
+    @BeforeMethod
+    public void initMocks() {
+        TestUtils.initMockitoMocks(this);
+    }
 
     private SecureServices createTestSubject() {
         return new SecureServices();
     }
 
+    @Test
+    public void setTemplateExistsOnService(){
+        Collection<Service> servcies = createGivenCollection();
+        Collection<String> serviceModelIdsFromDB=  mock(Collection.class, RETURNS_DEEP_STUBS);
+        doReturn(serviceModelIdsFromDB).when(asyncInstantiationRepository).getAllTemplatesServiceModelIds();
+
+        instantiationTemplatesService.setOnEachServiceIsTemplateExists(servcies);
+        verify(asyncInstantiationRepository).getAllTemplatesServiceModelIds();
+
+    }
     @Test
     public void testSetServices() throws Exception {
         SecureServices testSubject;
@@ -68,5 +104,13 @@ public class SecureServicesTest {
         // default test
         testSubject = createTestSubject();
         testSubject.setReadOnly(readOnly);
+    }
+
+    private Collection<Service> createGivenCollection(){
+        Service service1 = new Service();
+        Service service2 = new Service();
+        service1.setUuid("1");
+        service2.setUuid("3");
+        return ImmutableList.of(service1, service2);
     }
 }
