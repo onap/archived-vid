@@ -76,6 +76,8 @@ public class Service {
     private Collection<SubResource> resources;
 
     private String orchestrationType;
+
+    private Boolean isInstantiationTemplateExists;
     
     
     public static class ServiceBuilder {
@@ -204,6 +206,11 @@ public class Service {
         return orchestrationType;
     }
 
+    public Boolean getIsInstantiationTemplateExists() {
+        return isInstantiationTemplateExists;
+    }
+
+
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
@@ -256,12 +263,17 @@ public class Service {
         this.orchestrationType = orchestrationType;
     }
 
+    public void setIsInstantiationTemplateExists(Boolean isInstantiationTemplateExists) {
+        this.isInstantiationTemplateExists = isInstantiationTemplateExists;
+    }
+
     @Override
     public String toString() {
         return uuid;
     }
 
     @Override
+
     public int hashCode() {
         return UUID.fromString(getUuid()).hashCode();
     }
