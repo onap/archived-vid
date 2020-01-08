@@ -93,14 +93,23 @@ public class PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress extends Prese
                 "    ]," +
                 "    \"requestParameters\":{" +
                addTestApi()+
-                "       \"userParams\":[{" +
-                "          \"2017488_pasqualevpe0_vnf_instance_name\":\"mtnj309me6\"," +
-                "          \"2017488_pasqualevpe0_vnf_config_template_version\":\"17.2\"," +
-                "          \"pasqualevpe0_bandwidth\":\"10\"," +
-                "          \"2017488_pasqualevpe0_AIC_CLLI\":\"ATLMY8GA\"," +
-                "          \"pasqualevpe0_bandwidth_units\":\"Gbps\"" +
-                "        }" +
-                "      ]," +
+                "\"userParams\": [{"
+            + "                    \"name\": \"pasqualevpe0_bandwidth\","
+            + "                    \"value\": \"10\""
+            + "                }, {"
+            + "                    \"name\": \"2017488_pasqualevpe0_vnf_instance_name\","
+            + "                    \"value\": \"mtnj309me6\""
+            + "                }, {"
+            + "                    \"name\": \"2017488_pasqualevpe0_vnf_config_template_version\","
+            + "                    \"value\": \"17.2\""
+            + "                }, {"
+            + "                    \"name\": \"2017488_pasqualevpe0_AIC_CLLI\","
+            + "                    \"value\": \"ATLMY8GA\""
+            + "                }, {"
+            + "                    \"name\": \"pasqualevpe0_bandwidth_units\","
+            + "                    \"value\": \"Gbps\""
+            + "                }"
+            + "            ]," +
                 "      \"usePreload\":true" +
                 "    }" +
                 "  }" +
