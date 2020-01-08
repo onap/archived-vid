@@ -26,8 +26,8 @@ export class ServicePlanningComponent implements OnInit {
   }
 
   pageMode: DrawingBoardModes = DrawingBoardModes.CREATE;
-  @ViewChild(DrawingBoardTreeComponent) drawingModelTree;
-  @ViewChild(AvailableModelsTreeComponent) availableModelTree;
+  @ViewChild(DrawingBoardTreeComponent, {static: false}) drawingModelTree;
+  @ViewChild(AvailableModelsTreeComponent, {static: false}) availableModelTree;
 
   isShowTree(): boolean {
     return true;

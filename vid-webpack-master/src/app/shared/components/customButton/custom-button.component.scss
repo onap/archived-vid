@@ -1,0 +1,273 @@
+.custom-button {
+  order: 1;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  outline: none;
+  border-radius: 2px;
+  padding: 0 12px;
+  height: 36px;
+  line-height: 36px;
+  width: 120px;
+  min-width: 90px;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: OpenSans-Regular, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  /*** Sizes ***/
+  /*** Sizes ***/
+  /*** Buttons with icons ***/
+}
+
+.custom-button:disabled {
+  cursor: default;
+}
+
+.custom-button.sdc-button__primary {
+  border: 1px solid transparent;
+  background-color: #009fdb;
+  color: #ffffff;
+}
+
+.custom-button.sdc-button__primary:not(:disabled):hover, .custom-button.sdc-button__primary:not(:disabled):active {
+  background-color: #1eb9f3;
+}
+
+.custom-button.sdc-button__primary:not(:disabled):focus:not(:active) {
+  border: 1px solid #ffffff;
+  background-color: #1eb9f3;
+  box-shadow: 0px 0px 0px 1px #1eb9f3;
+}
+
+.custom-button.sdc-button__primary:disabled {
+  background: #9dd9ef;
+}
+
+.custom-button.sdc-button__secondary {
+  border: 1px solid #009fdb;
+  background-color: transparent;
+  color: #009fdb;
+}
+
+.custom-button.sdc-button__secondary:not(:disabled):hover, .custom-button.sdc-button__secondary:not(:disabled):active {
+  background-color: #1eb9f3;
+  color: #ffffff;
+}
+
+.custom-button.sdc-button__secondary:not(:disabled):focus:not(:active) {
+  color: #1eb9f3;
+  box-shadow: inset 0px 0px 0px 0px #0568ae, 0px 0px 0px 1px #009fdb;
+}
+
+.custom-button.sdc-button__secondary:not(:disabled):focus:not(:active):hover {
+  color: #ffffff;
+}
+
+.custom-button.sdc-button__secondary:disabled {
+  color: #9dd9ef;
+  border-color: #9dd9ef;
+}
+
+.custom-button.sdc-button__link {
+  background-color: transparent;
+  color: #009fdb;
+  fill: #009fdb;
+  border: none;
+}
+
+.custom-button.sdc-button__link:not(:disabled):hover, .custom-button.sdc-button__link:not(:disabled):active {
+  color: #1eb9f3;
+}
+
+.custom-button.sdc-button__link:not(:disabled):focus:not(:active) {
+  border: 1px solid #0568ae;
+  color: #1eb9f3;
+}
+
+.custom-button.sdc-button__link:disabled {
+  color: #9dd9ef;
+}
+
+.custom-button.sdc-button__success {
+  border: 1px solid transparent;
+  background-color: #4ca90c;
+  color: #ffffff;
+}
+
+.custom-button.sdc-button__success:not(:disabled):hover, .custom-button.sdc-button__success:not(:disabled):active {
+  background-color: #57c00e;
+}
+
+.custom-button.sdc-button__success:not(:disabled):focus:not(:active) {
+  border: 1px solid #ffffff;
+  background-color: #57c00e;
+  box-shadow: 0px 0px 0px 1px #57c00e;
+}
+
+.custom-button.sdc-button__success:disabled {
+  background: #a5d485;
+}
+
+.custom-button.sdc-button__error, .custom-button.sdc-button__alert {
+  border: 1px solid transparent;
+  background-color: #cf2a2a;
+  color: #ffffff;
+}
+
+.custom-button.sdc-button__error:not(:disabled):hover, .custom-button.sdc-button__error:not(:disabled):active, .custom-button.sdc-button__alert:not(:disabled):hover, .custom-button.sdc-button__alert:not(:disabled):active {
+  background-color: #ed4141;
+}
+
+.custom-button.sdc-button__error:not(:disabled):focus:not(:active), .custom-button.sdc-button__alert:not(:disabled):focus:not(:active) {
+  border: 1px solid #ffffff;
+  background-color: #ed4141;
+  box-shadow: 0px 0px 0px 1px #ed4141;
+}
+
+.custom-button.sdc-button__error:disabled, .custom-button.sdc-button__alert:disabled {
+  background: #f4adad;
+}
+
+.custom-button.sdc-button__warning {
+  border: 1px solid transparent;
+  background-color: #ffb81c;
+  color: #ffffff;
+}
+
+.custom-button.sdc-button__warning:not(:disabled):hover, .custom-button.sdc-button__warning:not(:disabled):active {
+  background-color: #f6c632;
+}
+
+.custom-button.sdc-button__warning:not(:disabled):focus:not(:active) {
+  border: 1px solid #ffffff;
+  background-color: #f6c632;
+  box-shadow: 0px 0px 0px 1px #f6c632;
+}
+
+.custom-button.sdc-button__warning:disabled {
+  background: #ffdb8d;
+}
+
+.custom-button.sdc-button__info {
+  border: 1px solid transparent;
+  background-color: #009fdb;
+  color: #ffffff;
+}
+
+.custom-button.sdc-button__info:not(:disabled):hover, .custom-button.sdc-button__info:not(:disabled):active {
+  background-color: #1eb9f3;
+}
+
+.custom-button.sdc-button__info:not(:disabled):focus:not(:active) {
+  border: 1px solid #ffffff;
+  background-color: #1eb9f3;
+  box-shadow: 0px 0px 0px 1px #1eb9f3;
+}
+
+.custom-button.sdc-button__info:disabled {
+  background: #9dd9ef;
+}
+
+.custom-button.sdc-button__file-opener input[type=file] {
+  height: 36px;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+}
+
+.custom-button.btn-xx-large {
+  width: 350px;
+}
+
+.custom-button.btn-xx-large input[type=file] {
+  width: 350px;
+}
+
+.custom-button.btn-x-large {
+  width: 250px;
+}
+
+.custom-button.btn-x-large input[type=file] {
+  width: 250px;
+}
+
+.custom-button.btn-large {
+  width: 180px;
+}
+
+.custom-button.btn-large input[type=file] {
+  width: 180px;
+}
+
+.custom-button.btn-medium {
+  width: 140px;
+}
+
+.custom-button.btn-medium input[type=file] {
+  width: 140px;
+}
+
+.custom-button.btn-small {
+  width: 110px;
+}
+
+.custom-button.btn-small input[type=file] {
+  width: 110px;
+}
+
+.custom-button.btn-x-small {
+  width: 90px;
+}
+
+.custom-button.btn-x-small input[type=file] {
+  width: 90px;
+}
+
+.custom-button.btn-default {
+  width: auto;
+}
+
+.custom-button.btn-default input[type=file] {
+  width: auto;
+}
+
+.custom-button.sdc-icon-right {
+  flex-direction: row-reverse;
+}
+
+.custom-button.sdc-icon-right .svg-icon {
+  margin-left: 15px;
+}
+
+.custom-button.sdc-icon-left {
+  flex-direction: row;
+}
+
+.custom-button.sdc-icon-left .svg-icon {
+  margin-right: 15px;
+}
+
+.custom-button svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.sdc-button__wrapper {
+  display: inline-flex;
+}
+
+.sdc-button__spinner {
+  padding-top: 6px;
+  margin: 0 2px;
+}
+
+.sdc-button__spinner.left {
+  order: 2;
+}

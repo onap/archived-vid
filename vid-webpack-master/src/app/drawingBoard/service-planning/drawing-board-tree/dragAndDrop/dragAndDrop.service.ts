@@ -1,9 +1,7 @@
 import {Injectable} from "@angular/core";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../shared/store/reducers";
-import {DragAndDropModel} from "./dragAndDrop.model";
 import {FeatureFlagsService, Features} from "../../../../shared/services/featureFlag/feature-flags.service";
-import * as _ from 'lodash';
 
 @Injectable()
 export class DragAndDropService {

@@ -88,7 +88,7 @@ export class AvailableModelsTreeComponent {
 
   @Output()
   highlightInstances: EventEmitter<number> = new EventEmitter<number>();
-  @ViewChild('tree') tree: TreeComponent;
+  @ViewChild('tree', {static: false}) tree: TreeComponent;
 
   nodes = [];
   service = {name: ''};
