@@ -24,7 +24,11 @@ package org.onap.vid.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import fj.test.Bool;
+import java.util.Collection;
 import org.apache.log4j.BasicConfigurator;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +44,7 @@ import org.onap.vid.model.PombaInstance.PombaRequest;
 import org.onap.vid.model.PombaInstance.ServiceInstance;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AaiService;
+import org.onap.vid.services.InstantiationTemplatesService;
 import org.onap.vid.services.PombaService;
 import org.onap.vid.services.VidService;
 import org.springframework.test.web.servlet.MockMvc;
@@ -52,9 +57,12 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toMap;
+import static org.assertj.core.api.Assertions.allOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -79,6 +87,8 @@ public class VidControllerTest {
     private RoleProvider roleProvider;
     @Mock
     private PombaService pombaService;
+    @Mock
+    private InstantiationTemplatesService instantiationTemplatesService;
 
     private VidController vidController;
     private MockMvc mockMvc;
@@ -90,7 +100,7 @@ public class VidControllerTest {
 
     @Before
     public void setUp() {
-        vidController = new VidController(vidService, aaiService, roleProvider, pombaService);
+        vidController = new VidController(vidService, aaiService, roleProvider, pombaService, instantiationTemplatesService);
         BasicConfigurator.configure();
         mockMvc = MockMvcBuilders.standaloneSetup(vidController).build();
         objectMapper = new ObjectMapper();
@@ -102,12 +112,17 @@ public class VidControllerTest {
 
     @Test
     public void getServices_shouldReturnService_whenServiceExists() throws Exception {
-        List<Service> services = ImmutableList.of(createService(uuid1, 1), createService(uuid2, 2), createService(uuid3, 3));
+        List<Service> services1 = ImmutableList.of(createService(uuid1, 1), createService(uuid2, 2), createService(uuid3, 3));
+        List<Service> services2 = ImmutableList.of(createService(uuid1, 4), createService(uuid2, 5), createService(uuid3, 6));
 
-        given(aaiService.getServicesByDistributionStatus()).willReturn(services);
+        given(aaiService.getServicesByDistributionStatus())
+            .willReturn(services1);
+
+        given(instantiationTemplatesService.setOnEachServiceIsTemplateExists(services1))
+            .willReturn(services2);
 
         SecureServices secureServices = new SecureServices();
-        secureServices.setServices(services);
+        secureServices.setServices(services2);
         secureServices.setReadOnly(false);
 
         mockMvc.perform(get(REST_MODELS_SERVICES)
