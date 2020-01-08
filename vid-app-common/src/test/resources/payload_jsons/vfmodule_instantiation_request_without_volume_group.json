@@ -50,11 +50,20 @@
     ],
     "requestParameters": {
       "usePreload": true,
-      "userParams": [{
-        "vre_a_volume_size_0" : "100",
-        "vmx_int_net_len" : "24",
-        "availability_zone_0": "mtpocdv-kvm-az01"
-      }],
+      "userParams": [
+        {
+          "name": "vre_a_volume_size_0",
+          "value": "100"
+        },
+        {
+          "name": "vmx_int_net_len",
+          "value": "24"
+        },
+        {
+          "name": "availability_zone_0",
+          "value": "mtpocdv-kvm-az01"
+        }
+      ],
       "testApi" : "VNF_API"
     }
   }
