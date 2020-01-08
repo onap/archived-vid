@@ -154,8 +154,8 @@ public class InstantiationTemplatesServiceTest {
         when(featureManager.isActive(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)).thenReturn(false);
         Collection<Service> actualCollection = instantiationTemplatesService.setOnEachServiceIsTemplateExists(createGivenCollection());
         assertThat("was " + actualCollection, actualCollection, containsInAnyOrder(
-            allOf(hasProperty("uuid", is("1")), hasProperty("isInstantiationTemplateExists", nullValue())),
-            allOf(hasProperty("uuid", is("3")), hasProperty("isInstantiationTemplateExists", nullValue()))
+            allOf(hasProperty("uuid", is("1")), hasProperty("isInstantiationTemplateExists", is(false))),
+            allOf(hasProperty("uuid", is("3")), hasProperty("isInstantiationTemplateExists", is(false)))
         ));
     }
 

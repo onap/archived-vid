@@ -36,7 +36,7 @@ describe('Service popup', function () {
         res1.global.flags = {};
         res1.global.flags["FLAG_2004_INSTANTIATION_TEMPLATES_POPUP"] = true;
         cy.setReduxState(<any>res1);
-        cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true&hasTemplate=true');
+        cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true&isInstantiationTemplateExists=true');
         cy.getElementByDataTestsId('templateButton').should('be.visible')
       });
     });
