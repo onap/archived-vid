@@ -3,7 +3,7 @@
 VID Release Notes
 =================
 
-Version: El-Alto (6.0.x)
+Version: Frankfurt (6.0.x)
 ------------------------
 **Known Issues**
 
