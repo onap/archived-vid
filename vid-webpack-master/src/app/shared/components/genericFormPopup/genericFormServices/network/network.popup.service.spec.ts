@@ -14,6 +14,7 @@ import {BasicPopupService} from "../basic.popup.service";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {ModalService} from "../../../customModal/services/modal.service";
 
 class MockAppStore<T> {}
 
@@ -2001,7 +2002,7 @@ describe('Network popup service', () => {
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},
-        {provide: SdcUiServices.ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService}
       ]
     });
     await TestBed.compileComponents();

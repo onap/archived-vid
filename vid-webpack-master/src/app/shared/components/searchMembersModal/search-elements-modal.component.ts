@@ -44,7 +44,7 @@ export class SearchElementsModalComponent extends DialogComponent<{ modalInforma
     })
   }
 
-  @ViewChild('ElementsTableComponent') membersTable;
+  @ViewChild('ElementsTableComponent', {static: false}) membersTable;
 
   ngOnInit(selectedRowsIds?: string[]): void {
     const genericModalHelper = this._store.getState().global.genericModalHelper;
