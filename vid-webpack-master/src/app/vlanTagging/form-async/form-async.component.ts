@@ -27,7 +27,7 @@ export class Formasync implements OnInit {
 
   constructor(private store: NgRedux<AppState>, private _formAsyncService: FormAsyncService) { }
 
-  @ViewChild('form') form: NgForm;
+  @ViewChild('form', {static: false}) form: NgForm;
   @Input()
   set params(params: any) {
     if (params) {

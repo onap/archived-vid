@@ -27,13 +27,15 @@ import {VfModuleControlGenerator} from "../../../../shared/components/genericFor
 import {VnfGroupPopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/vnfGroup/vnfGroup.popup.service";
 import {VnfGroupControlGenerator} from "../../../../shared/components/genericForm/formControlsServices/vnfGroupGenerator/vnfGroup.control.generator";
 import {DuplicateService} from "../../duplicate/duplicate.service";
-import {SdcUiComponentsModule, SdcUiServices} from "onap-ui-angular";
+import {SdcUiComponentsModule} from "onap-ui-angular";
 import {ErrorMsgService} from "../../../../shared/components/error-msg/error-msg.service";
 import {ComponentInfoService} from "../../component-info/component-info.service";
 import {NetworkStepService} from "../models/vrf/vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "../models/vrf/vrfModal/vpnStep/vpn.step.service";
 import {VfModuleUpgradePopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {SharedControllersService} from "../../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {ModalService} from "../../../../shared/components/customModal/services/modal.service";
+import {CreateDynamicComponentService} from "../../../../shared/components/customModal/services/create-dynamic-component.service";
 
 class MockAppStore<T> {
   getState() {
@@ -86,9 +88,11 @@ describe('Model Tree Generator service', () => {
         DialogService,
         ErrorMsgService,
         ComponentInfoService,
-        SdcUiServices.ModalService,
+        ModalService,
         NetworkStepService,
         VpnStepService,
+        ModalService,
+        CreateDynamicComponentService,
         { provide: NgRedux, useClass: MockAppStore },
         MockNgRedux]
     });

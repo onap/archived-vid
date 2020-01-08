@@ -22,7 +22,6 @@ import {
   updateProductFamilies, updateUserId
 } from "../../storeUtil/utils/general/general.actions";
 import {createServiceInstance} from "../../storeUtil/utils/service/service.actions";
-import {delay, mapTo} from "rxjs/operators";
 
 const notFetchedAlready = (state: AppState): boolean => state.service.productFamilies !== null;
 
@@ -30,7 +29,6 @@ const notFetchedAlready = (state: AppState): boolean => state.service.productFam
 export class AAIEpics {
   constructor(private aaiService: AaiService) {
   }
-
   public createEpic() {
     return combineEpics(
         this.loadProductFamiliesEpic
@@ -49,7 +47,11 @@ export class AAIEpics {
 
   private loadProductFamiliesEpic = (action$, store) => action$
     .ofType(LOAD_PRODUCT_FAMILIES)
-    .switchMap(() => this.aaiService.getProductFamilies().map(data => updateProductFamilies(data)));
+    .switchMap(() =>
+      this.aaiService.getProductFamilies()
+        .map(data =>
+          updateProductFamilies(data)
+      ));
 
   private loadCategoryParameters = (action$, store) => action$
     .ofType(LOAD_CATEGORY_PARAMETERS)
@@ -64,7 +66,9 @@ export class AAIEpics {
   private loadServiceAccordingToUuid = (action$, store) => action$
     .ofType(LOAD_SERVICE_MDOEL_BY_UUID)
     .switchMap((action) => this.aaiService.getServiceModelById(action.modelId)
-      .map(data => createServiceInstance(action.uuid, data)));
+      .map(data =>
+        createServiceInstance(action.uuid, data))
+    );
 
   private loadUserId = (action$, store) => action$
     .ofType(LOAD_USER_ID)
