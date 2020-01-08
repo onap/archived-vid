@@ -15,7 +15,6 @@ import {VfModulePopupService} from "../../../shared/components/genericFormPopup/
 import {VnfGroupingModelInfo} from "./models/vnfGrouping/vnfGrouping.model.info";
 import {VnfGroupPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnfGroup/vnfGroup.popup.service";
 import {DuplicateService} from "../duplicate/duplicate.service";
-import {SdcUiServices} from "onap-ui-angular";
 import {IframeService} from "../../../shared/utils/iframe.service";
 import {ComponentInfoService} from "../component-info/component-info.service";
 import {PnfModelInfo} from "./models/pnf/pnf.model.info";
@@ -26,6 +25,7 @@ import {NetworkStepService} from "./models/vrf/vrfModal/networkStep/network.step
 import {VpnStepService} from "./models/vrf/vrfModal/vpnStep/vpn.step.service";
 import { VfModuleUpgradePopupService } from "../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
+import {ModalService} from "../../../shared/components/customModal/services/modal.service";
 
 @Injectable()
 export class ObjectToTreeService {
@@ -39,7 +39,7 @@ export class ObjectToTreeService {
               private _vfModuleUpgradePopupService : VfModuleUpgradePopupService,
               private _vnfGroupPopupService : VnfGroupPopupService,
               private _duplicateService : DuplicateService,
-              private _modalService: SdcUiServices.ModalService,
+              private _modalService: ModalService,
               private _iframeService : IframeService,
               private _componentInfoService : ComponentInfoService,
               private _networkStepService : NetworkStepService,
@@ -48,8 +48,6 @@ export class ObjectToTreeService {
               private _featureFlagsService: FeatureFlagsService,
               private _store : NgRedux<AppState>) {
   }
-
-
 
 
   /***********************************************************

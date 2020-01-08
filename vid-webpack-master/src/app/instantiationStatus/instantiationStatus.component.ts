@@ -39,7 +39,7 @@ export class InstantiationStatusComponent implements OnInit {
   instantiationStatusComponentService: InstantiationStatusComponentService;
   configurationService : ConfigurationService;
   serviceInfoData: ServiceInfoModel[] = null;
-  @ViewChild(ContextMenuComponent) public contextMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: false}) public contextMenu: ContextMenuComponent;
 
   public contextMenuActions: Array<MenuAction> = [
     {

@@ -11,10 +11,10 @@ import {BasicPopupService} from "../basic.popup.service";
 import {ServicePopupService} from "./service.popup.service";
 import {ServiceControlGenerator} from "../../../genericForm/formControlsServices/service.control.generator";
 import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
-import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {ModalService} from "../../../customModal/services/modal.service";
 
 class MockModalService<T> {}
 
@@ -2067,7 +2067,7 @@ describe('Service popup service', () => {
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},
-        {provide: SdcUiServices.ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService}
       ]
     });
     await TestBed.compileComponents();
