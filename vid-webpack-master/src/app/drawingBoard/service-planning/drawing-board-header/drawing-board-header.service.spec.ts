@@ -26,6 +26,7 @@ class MockAppStore<T>{
   }
 }
 
+class MockDragAndDropService<T> {}
 describe('Generate path to old View/Edit ', () => {
   let injector;
   let service: DrawingBoardHeaderService;

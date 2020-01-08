@@ -11,7 +11,7 @@ import {FileFormControl} from "../../../../models/formControlModels/fileFormCont
 export class FileFormControlComponent {
   @Input() data: FileFormControl = null;
   @Input() form: FormGroup;
-  @ViewChild('fileUploader')
+  @ViewChild('fileUploader', {static: false})
   fileUploader:ElementRef ;
 
   onDelete(event, data, form) {

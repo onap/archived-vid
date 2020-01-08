@@ -31,6 +31,7 @@ import {ComponentInfoService} from "../../../component-info/component-info.servi
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {ModalService} from "../../../../../shared/components/customModal/services/modal.service";
 
 export class VnfModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -41,7 +42,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
               private _vfModulePopupService: VfModulePopupService,
               private _vfModuleUpgradePopupService: VfModuleUpgradePopupService,
               private _duplicateService: DuplicateService,
-              private modalService: SdcUiServices.ModalService,
+              private modalService: ModalService,
               private _iframeService: IframeService,
               private _componentInfoService: ComponentInfoService,
               private _featureFlagsService: FeatureFlagsService,

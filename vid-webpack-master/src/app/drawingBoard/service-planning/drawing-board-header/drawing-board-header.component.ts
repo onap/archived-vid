@@ -80,7 +80,7 @@ export class DrawingBoardHeader {
   }
 
 
-  @ViewChild(ContextMenuComponent) public contextMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: false}) public contextMenu: ContextMenuComponent;
 
   editViewEdit(): void {
      window.parent.location.assign(this._drawingBoardHeaderService.generateOldViewEditPath());

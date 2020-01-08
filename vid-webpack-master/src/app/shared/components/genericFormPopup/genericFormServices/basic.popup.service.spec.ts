@@ -11,9 +11,9 @@ import {IframeService} from "../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {FormControlModel} from "../../../models/formControlModels/formControl.model";
 import {BasicPopupService} from "./basic.popup.service";
-import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
+import {ModalService} from "../../customModal/services/modal.service";
 
 class MockAppStore<T> {}
 
@@ -1996,7 +1996,7 @@ describe('Basic popup service', () => {
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},
-        {provide: SdcUiServices.ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService}
       ]
     });
     await TestBed.compileComponents();

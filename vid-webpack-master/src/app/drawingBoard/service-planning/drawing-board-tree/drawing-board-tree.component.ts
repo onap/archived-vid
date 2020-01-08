@@ -13,7 +13,6 @@ import {DrawingBoardTreeService, TreeNodeContextMenuModel} from "./drawing-board
 import {NetworkPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
 import {VfModulePopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {VnfPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
-import {SdcUiServices} from "onap-ui-angular";
 import {HighlightPipe} from "../../../shared/pipes/highlight/highlight-filter.pipe";
 import {VnfGroupPopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vnfGroup/vnfGroup.popup.service";
 import {ObjectToInstanceTreeService} from "../objectsToTree/objectToInstanceTree/objectToInstanceTree.service";
@@ -29,6 +28,7 @@ import {ComponentInfoModel} from "../component-info/component-info-model";
 import {ObjectToModelTreeService} from "../objectsToTree/objectToModelTree/objectToModelTree.service";
 import {DrawingBoardModes} from "../drawing-board.modes";
 import {ServiceInstanceActions} from "../../../shared/models/serviceInstanceActions";
+import {ModalService} from "../../../shared/components/customModal/services/modal.service";
 
 @Component({
   selector: 'drawing-board-tree',
@@ -52,7 +52,7 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
   static triggerDeleteActionService: Subject<string> = new Subject<string>();
   static triggerUndoDeleteActionService: Subject<string> = new Subject<string>();
   static triggerreCalculateIsDirty: Subject<string> = new Subject<string>();
-  @ViewChild(ContextMenuComponent) public contextMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: false}) public contextMenu: ContextMenuComponent;
 
   constructor(private _contextMenuService: ContextMenuService,
               private _iframeService: IframeService,
@@ -60,7 +60,7 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
               private store: NgRedux<AppState>,
               private route: ActivatedRoute,
               private _duplicateService: DuplicateService,
-              private modalService: SdcUiServices.ModalService,
+              private modalService: ModalService,
               private _drawingBoardTreeService: DrawingBoardTreeService,
               private _networkPopupService: NetworkPopupService,
               private _vfModulePopuopService: VfModulePopupService,
@@ -120,7 +120,7 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
   @Output()
   highlightNode: EventEmitter<number> = new EventEmitter<number>();
 
-  @ViewChild('tree') tree: TreeComponent;
+  @ViewChild('tree', {static: false}) tree: TreeComponent;
   missingDataTooltip: string = Constants.Error.MISSING_VNF_DETAILS;
   currentNode: ITreeNode = null;
   flags: any;

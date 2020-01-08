@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {combineEpics, createEpicMiddleware, ofType} from 'redux-observable';
+import {combineEpics, ofType} from "redux-observable-es6-compat";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -22,7 +22,7 @@ import {
   updateProductFamilies, updateUserId
 } from "../../storeUtil/utils/general/general.actions";
 import {createServiceInstance} from "../../storeUtil/utils/service/service.actions";
-import {delay, mapTo} from "rxjs/operators";
+import {delay, map, mapTo, mergeMap} from "rxjs/operators";
 
 const notFetchedAlready = (state: AppState): boolean => state.service.productFamilies !== null;
 
@@ -42,40 +42,66 @@ export class AAIEpics {
       , this.loadUserId)
   }
 
-  private loadLcpTenants = (action$, store) =>
-   action$.ofType(LOAD_LCP_TENANT)
-    .switchMap((action) => this.aaiService.getLcpRegionsAndTenants(action.subscriberId, action.serviceType)
-    .map(data => updateLcpRegionsAndTenants(data)));
 
-  private loadProductFamiliesEpic = (action$, store) => action$
-    .ofType(LOAD_PRODUCT_FAMILIES)
-    .switchMap(() => this.aaiService.getProductFamilies().map(data => updateProductFamilies(data)));
-
-  private loadCategoryParameters = (action$, store) => action$
-    .ofType(LOAD_CATEGORY_PARAMETERS)
-    .switchMap(() => this.aaiService.getCategoryParameters(null).map(data => updateCategoryParameters(data)));
+  loadLcpTenants = action$ =>
+    action$.pipe(  //fixed
+      ofType(LOAD_LCP_TENANT),
+      map((action :any) => {
+        return this.aaiService.getLcpRegionsAndTenants(action.subscriberId, action.serviceType).map(data => updateLcpRegionsAndTenants(data))
+      })
+    );
 
 
-  private loadNetworkAccordingToNetworkFunction = (action$, store) => action$
-    .ofType(LOAD_NETWORK_ACCORDING_TO_NF)
-    .flatMap((action) => this.aaiService.getCRAccordingToNetworkFunctionId(action.networkFunctions, action.cloudOwner, action.cloudRegionId).map((res) =>
-      updateNetworkCollectionFunction(action.networkFunctions, res)));
 
-  private loadServiceAccordingToUuid = (action$, store) => action$
-    .ofType(LOAD_SERVICE_MDOEL_BY_UUID)
-    .switchMap((action) => this.aaiService.getServiceModelById(action.modelId)
-      .map(data => createServiceInstance(action.uuid, data)));
+   loadProductFamiliesEpic = action$ =>
+    action$.pipe(  //fixed
+      ofType(LOAD_PRODUCT_FAMILIES),
+      map(() => {
+        return this.aaiService.getProductFamilies().map(data => updateProductFamilies(data))
+      })
+    );
 
-  private loadUserId = (action$, store) => action$
-    .ofType(LOAD_USER_ID)
-    .switchMap(() => this.aaiService.getUserId()
-      .map(res => updateUserId(res)));
+  loadCategoryParameters = action$ =>
+    action$.pipe(  //fixed
+      ofType(LOAD_CATEGORY_PARAMETERS),
+      map((action :any) => {
+        return this.aaiService.getCategoryParameters(null).map(data => updateCategoryParameters(data))
+      })
+    );
 
 
-  private loadAicZones = (action$, store) => action$
-    .ofType(LOAD_AIC_ZONES)
-    .switchMap(() => this.aaiService.getAicZones().map(data => updateAicZones(data)));
-  // .catch(response => of(this.actions.loadFailed(status)))
-  // .startWith(this.actions.loadStarted()));
+  loadNetworkAccordingToNetworkFunction = action$ =>
+    action$.pipe(  //fixed
+      ofType(LOAD_NETWORK_ACCORDING_TO_NF),
+      map((action :any) => {
+        return this.aaiService.getCRAccordingToNetworkFunctionId(action.networkFunctions, action.cloudOwner, action.cloudRegionId)
+          .map((res) => updateNetworkCollectionFunction(action.networkFunctions, res))
+      })
+    );
+
+  loadServiceAccordingToUuid = action$ =>
+    action$.pipe(  //fixed
+      ofType(LOAD_SERVICE_MDOEL_BY_UUID),
+      map((action :any) => {
+        return this.aaiService.getServiceModelById(action.modelId) .map(data => createServiceInstance(action.uuid, data))
+      })
+    );
+
+  loadUserId = action$ =>
+    action$.pipe(  //fixed
+      ofType(LOAD_USER_ID),
+      map(() => {
+        return this.aaiService.getUserId().map(res => updateUserId(res))
+      })
+    );
+
+
+  loadAicZones = action$ =>
+    action$.pipe(  //fixed
+      ofType(LOAD_AIC_ZONES),
+      map(() => {
+        return this.aaiService.getAicZones().map(data => updateAicZones(data))
+      })
+    );
 
 }
