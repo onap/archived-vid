@@ -38,6 +38,7 @@ import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.onap.vid.model.VidNotions;
@@ -45,6 +46,7 @@ import org.onap.vid.model.VidNotions.InstantiationType;
 import org.onap.vid.model.VidNotions.InstantiationUI;
 import org.onap.vid.model.VidNotions.ModelCategory;
 import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.ServiceInstantiationRequestDetails.UserParamNameAndValue;
 import org.testng.annotations.Test;
 
 public class InstantiationModelSerializationTest {
@@ -125,10 +127,10 @@ public class InstantiationModelSerializationTest {
     @Test
     public void serializeAndDeserializeVfModule() throws Exception {
 
-        ImmutableMap<String, String> supplementaryParams = ImmutableMap.of(
-            "uno", "1",
-            "dos", "2",
-            "tres", "3"
+        List<UserParamNameAndValue> supplementaryParams = ImmutableList.of(
+            new UserParamNameAndValue("uno", "1"),
+            new UserParamNameAndValue("dos", "2"),
+            new UserParamNameAndValue("tres", "3")
         );
 
         VfModule vfModule = new VfModule(
