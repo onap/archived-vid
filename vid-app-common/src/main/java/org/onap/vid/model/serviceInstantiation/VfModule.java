@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobType;
 import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.ServiceInstantiationRequestDetails.UserParamNameAndValue;
 
 /**
  * The Class VfModule.
@@ -42,7 +43,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 
 	@JsonInclude(NON_NULL) @JsonProperty("volumeGroupName") private final String volumeGroupInstanceName;
 	@JsonInclude(NON_NULL) @JsonProperty("sdncPreLoad") private Boolean usePreload;
-	private Map<String, String> supplementaryParams;
+	private List<UserParamNameAndValue> supplementaryParams;
 
 	@JsonInclude(NON_NULL)
 	private final Boolean retainVolumeGroups;
@@ -58,7 +59,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		@JsonProperty("legacyRegion") String legacyRegion,
 		@JsonProperty("tenantId") String tenantId,
 		@JsonProperty("instanceParams") List<Map<String, String>> instanceParams,
-		@JsonProperty("supplementaryFileContent") Map<String, String> supplementaryParams,
+		@JsonProperty("supplementaryFileContent") List<UserParamNameAndValue> supplementaryParams,
 		@JsonProperty("rollbackOnFailure") boolean rollbackOnFailure,
 		@JsonProperty("sdncPreLoad") @JsonAlias("usePreload") Boolean usePreload,
 		@JsonProperty("instanceId") String instanceId,
@@ -86,7 +87,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		return usePreload;
 	}
 
-	public Map<String, String> getSupplementaryParams() {
+	public List<UserParamNameAndValue> getSupplementaryParams() {
 		return supplementaryParams;
 	}
 
