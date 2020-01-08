@@ -21,36 +21,6 @@
 package org.onap.vid.controller;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import org.apache.log4j.BasicConfigurator;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.onap.vid.asdc.AsdcCatalogException;
-import org.onap.vid.asdc.beans.SecureServices;
-import org.onap.vid.asdc.beans.Service;
-import org.onap.vid.model.*;
-import org.onap.vid.model.PombaInstance.PombaRequest;
-import org.onap.vid.model.PombaInstance.ServiceInstance;
-import org.onap.vid.roles.RoleProvider;
-import org.onap.vid.services.AaiService;
-import org.onap.vid.services.PombaService;
-import org.onap.vid.services.VidService;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.IntStream;
-
 import static java.util.stream.Collectors.toMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -63,6 +33,43 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.IntStream;
+import javax.ws.rs.core.MediaType;
+import org.apache.log4j.BasicConfigurator;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.onap.vid.asdc.AsdcCatalogException;
+import org.onap.vid.asdc.beans.SecureServices;
+import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.model.CR;
+import org.onap.vid.model.Network;
+import org.onap.vid.model.Node;
+import org.onap.vid.model.PombaInstance.PombaRequest;
+import org.onap.vid.model.PombaInstance.ServiceInstance;
+import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.ServiceProxy;
+import org.onap.vid.model.VNF;
+import org.onap.vid.model.VfModule;
+import org.onap.vid.model.VolumeGroup;
+import org.onap.vid.roles.RoleProvider;
+import org.onap.vid.services.AaiService;
+import org.onap.vid.services.InstantiationTemplatesService;
+import org.onap.vid.services.PombaService;
+import org.onap.vid.services.VidService;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @RunWith(MockitoJUnitRunner.class)
 public class VidControllerTest {
@@ -79,6 +86,8 @@ public class VidControllerTest {
     private RoleProvider roleProvider;
     @Mock
     private PombaService pombaService;
+    @Mock
+    private InstantiationTemplatesService instantiationTemplatesService;
 
     private VidController vidController;
     private MockMvc mockMvc;
@@ -90,7 +99,7 @@ public class VidControllerTest {
 
     @Before
     public void setUp() {
-        vidController = new VidController(vidService, aaiService, roleProvider, pombaService);
+        vidController = new VidController(vidService, aaiService, roleProvider, pombaService, instantiationTemplatesService);
         BasicConfigurator.configure();
         mockMvc = MockMvcBuilders.standaloneSetup(vidController).build();
         objectMapper = new ObjectMapper();
@@ -102,12 +111,17 @@ public class VidControllerTest {
 
     @Test
     public void getServices_shouldReturnService_whenServiceExists() throws Exception {
-        List<Service> services = ImmutableList.of(createService(uuid1, 1), createService(uuid2, 2), createService(uuid3, 3));
+        List<Service> services1 = ImmutableList.of(createService(uuid1, 1), createService(uuid2, 2), createService(uuid3, 3));
+        List<Service> services2 = ImmutableList.of(createService(uuid1, 4), createService(uuid2, 5), createService(uuid3, 6));
 
-        given(aaiService.getServicesByDistributionStatus()).willReturn(services);
+        given(aaiService.getServicesByDistributionStatus())
+            .willReturn(services1);
+
+        given(instantiationTemplatesService.setOnEachServiceIsTemplateExists(services1))
+            .willReturn(services2);
 
         SecureServices secureServices = new SecureServices();
-        secureServices.setServices(services);
+        secureServices.setServices(services2);
         secureServices.setReadOnly(false);
 
         mockMvc.perform(get(REST_MODELS_SERVICES)

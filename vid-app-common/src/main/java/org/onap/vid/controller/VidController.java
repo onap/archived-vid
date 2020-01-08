@@ -21,16 +21,19 @@
 
 package org.onap.vid.controller;
 
+import java.util.Collection;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.SecureServices;
+import org.onap.vid.asdc.beans.Service;
 import org.onap.vid.exceptions.VidServiceUnavailableException;
 import org.onap.vid.model.PombaInstance.PombaRequest;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AaiService;
+import org.onap.vid.services.InstantiationTemplatesService;
 import org.onap.vid.services.PombaService;
 import org.onap.vid.services.VidService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,14 +53,16 @@ public class VidController extends RestrictedBaseController {
     private final AaiService aaiService;
     private final RoleProvider roleProvider;
     private final PombaService pombaService;
+    private final InstantiationTemplatesService instantiationTemplatesService;
 
     @Autowired
     public VidController(VidService vidService, AaiService aaiService, RoleProvider roleProvider,
-        PombaService pombaService) {
+        PombaService pombaService, InstantiationTemplatesService instantiationTemplatesService) {
         this.vidService = vidService;
         this.aaiService = aaiService;
         this.roleProvider = roleProvider;
         this.pombaService = pombaService;
+        this.instantiationTemplatesService = instantiationTemplatesService;
     }
 
     /**
@@ -69,8 +74,15 @@ public class VidController extends RestrictedBaseController {
         LOG.info("Start API for browse SDC was called");
         SecureServices secureServices = new SecureServices();
         List<Role> roles = roleProvider.getUserRoles(request);
-        secureServices.setServices(aaiService.getServicesByDistributionStatus());
+
+        Collection<Service> servicesByDistributionStatus = aaiService.getServicesByDistributionStatus();
+
+        Collection<Service> servicesWithTemplatesIndication =
+            instantiationTemplatesService.setOnEachServiceIsTemplateExists(servicesByDistributionStatus);
+
+        secureServices.setServices(servicesWithTemplatesIndication);
 		secureServices.setReadOnly(roleProvider.userPermissionIsReadOnly(roles));
+
         return secureServices;
     }
 
