@@ -20,6 +20,7 @@
 
 package org.onap.vid.utils;
 
+import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getThrowableList;
@@ -220,7 +221,7 @@ public class Logging {
 
     <T> T withMDCInternal(Map<String, String> copyOfParentMDC, UncheckedThrowingSupplier<T> supplier) {
         try {
-            MDC.setContextMap(copyOfParentMDC);
+            MDC.setContextMap(defaultIfNull(copyOfParentMDC, emptyMap()));
             return supplier.get();
         } finally {
             MDC.clear();
