@@ -21,6 +21,10 @@
 package org.onap.vid.services;
 
 import static com.google.common.collect.Maps.newHashMap;
+import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.EMPTY_MAP;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonNodeAbsent;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
@@ -41,7 +45,6 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +81,7 @@ import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.mso.model.NetworkInstantiationRequestDetails;
 import org.onap.vid.mso.model.ServiceDeletionRequestDetails;
 import org.onap.vid.mso.model.ServiceInstantiationRequestDetails;
-import org.onap.vid.mso.model.UserParamMap;
+import org.onap.vid.mso.model.ServiceInstantiationRequestDetails.UserParamNameAndValue;
 import org.onap.vid.mso.model.VfModuleMacro;
 import org.onap.vid.mso.model.VfModuleOrVolumeGroupRequestDetails;
 import org.onap.vid.mso.model.VnfInstantiationRequestDetails;
@@ -163,7 +166,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     private void createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(boolean withVfmodules, boolean disabledHoming) throws IOException {
 
         ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
-                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
+                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, EMPTY_LIST, false),
                 1,
                 false, PROJECT_NAME, true);
         URL resource;
@@ -181,7 +184,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
                 msoRequestBuilder.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
 
         String expected = IOUtils.toString(resource, "UTF-8");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
+        assertThat(result, jsonEquals(expected));
     }
 
     @Test
@@ -233,7 +236,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     }
 
     private ServiceInstantiation generateALaCarteServiceDeletionPayload() {
-        return generateMockAlaCarteServiceDeletionPayload(false, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API", "1234567890");
+        return generateMockAlaCarteServiceDeletionPayload(false, EMPTY_MAP, EMPTY_MAP, EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API", "1234567890");
     }
 
     @Test
@@ -255,7 +258,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     }
 
     private ServiceInstantiation generateServiceDeletionPayload() {
-        return generateMockServiceDeletionPayload(false, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API", "1234567890");
+        return generateMockServiceDeletionPayload(false, EMPTY_MAP, EMPTY_MAP, EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API", "1234567890");
     }
 
     @DataProvider
@@ -301,7 +304,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     public static Object[][] testBuildVnfInstanceParamsDataProvider(Method test) {
         return new Object[][]{
                 {
-                        Collections.EMPTY_LIST,
+                        EMPTY_LIST,
                         ImmutableList.of(
                                 ImmutableList.of(ImmutableMap.of("k1", "v1", "k2", "v2")),
                                 ImmutableList.of(ImmutableMap.of("k3", "v3", "k2", "v2"))
@@ -313,23 +316,23 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
                         ImmutableList.of(
                                 ImmutableList.of(ImmutableMap.of("k1", "v1", "k2", "v2")),
                                 ImmutableList.of(ImmutableMap.of("k3", "v3", "k2", "v2")),
-                                ImmutableList.of(Collections.EMPTY_MAP),
-                                Collections.singletonList(null)
+                                ImmutableList.of(EMPTY_MAP),
+                                singletonList(null)
                         ),
                         ImmutableList.of(ImmutableMap.of("k1", "v1", "k2", "v2", "k3", "v3", "j1", "w1"))
                 },
                 {
-                        Collections.EMPTY_LIST,
+                        EMPTY_LIST,
                         Arrays.asList(null, null),
-                        Collections.EMPTY_LIST //mso is expect to empty list and not list with empty map
+                        EMPTY_LIST //mso is expect to empty list and not list with empty map
                 },
                 {
-                        ImmutableList.of(Collections.EMPTY_MAP),
+                        ImmutableList.of(EMPTY_MAP),
                         ImmutableList.of(
-                                ImmutableList.of(Collections.EMPTY_MAP),
-                                ImmutableList.of(Collections.EMPTY_MAP)
+                                ImmutableList.of(EMPTY_MAP),
+                                ImmutableList.of(EMPTY_MAP)
                         ),
-                        Collections.EMPTY_LIST //mso is expect to empty list and not list with empty map
+                        EMPTY_LIST //mso is expect to empty list and not list with empty map
                 }
         };
     }
@@ -360,8 +363,11 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
         ModelInfo vnfModelInfo = createVnfModelInfo(true);
         List<Map<String, String>> instanceParams = ImmutableList.of(ImmutableMap.of("vmx_int_net_len", "24",
                 "vre_a_volume_size_0", "120"));
-        Map<String, String> supplementaryParams = ImmutableMap.of("vre_a_volume_size_0", "100",
-                "availability_zone_0", "mtpocdv-kvm-az01");
+        List<UserParamNameAndValue> supplementaryParams = ImmutableList.of(
+            new UserParamNameAndValue("vre_a_volume_size_0", "100"),
+            new UserParamNameAndValue("availability_zone_0", "mtpocdv-kvm-az01")
+        );
+
         VfModule vfModule = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1", "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",
                 "72d9d1cd-f46d-447a-abdb-451d6fb05fa8", instanceParams, supplementaryParams,
                 (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vRE_BV_expansion" : null), "myVgName", true);
@@ -378,26 +384,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
         final RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> result = msoRequestBuilder.generateVfModuleInstantiationRequest(
                 vfModule, siModelInfo, serviceInstanceId,
                 vnfModelInfo, vnfInstanceId, volumeGroupInstanceId, "pa0916", "VNF_API");
-        MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
-    }
-
-    @DataProvider
-    public static Object[][] expectedAggregatedParams() {
-        return new Object[][]{
-                {ImmutableMap.of("a", "b", "c", "d"), ImmutableMap.of("e", "f", "g", "h"), ImmutableList.of(ImmutableMap.of("c", "d", "a", "b", "e", "f", "g", "h"))},
-                {ImmutableMap.of("a", "b", "c", "g"), ImmutableMap.of("c", "d", "e", "f"), ImmutableList.of(ImmutableMap.of("a", "b", "c", "d", "e", "f"))},
-                {ImmutableMap.of(), ImmutableMap.of("c", "d", "e", "f"), ImmutableList.of(ImmutableMap.of("c", "d", "e", "f"))},
-                {ImmutableMap.of("a", "b", "c", "g"), ImmutableMap.of(), ImmutableList.of(ImmutableMap.of("a", "b", "c", "g"))},
-                {ImmutableMap.of(), ImmutableMap.of(), ImmutableList.of()},
-                {null, ImmutableMap.of(), ImmutableList.of()},
-                {ImmutableMap.of(), null, ImmutableList.of()},
-        };
-    }
-
-    @Test(dataProvider = "expectedAggregatedParams")
-    public void testAggregateInstanceParamsAndSuppFile(Map<String, String> instanceParams, Map<String, String> suppParams, List<UserParamMap<String, String>> expected) {
-        List<UserParamMap<String, String>> aggParams = msoRequestBuilder.aggregateAllInstanceParams(instanceParams, suppParams);
-        assertThat("Aggregated params are not as expected", aggParams, equalTo(expected));
+        assertThat(result, jsonEquals(expected).when(IGNORING_ARRAY_ORDER));
     }
 
     @Test
@@ -406,8 +393,8 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
         VfModule vfModule = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1",
                 "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",
                 "72d9d1cd-f46d-447a-abdb-451d6fb05fa8",
-                Collections.emptyList(),
-                Collections.emptyMap(),
+                emptyList(),
+                emptyList(),
                 "vmxnjr001_AVPN_base_vRE_BV_expansion",
                 "myVgName",
                 true);
@@ -437,7 +424,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     @Test(dataProvider = "expectedNetworkRequestDetailsParameters")
     public void createNetworkRequestDetails_detailsAreAsExpected(String networkName, String filePath) throws IOException {
 
-        List<NetworkDetails> networkDetails = Collections.singletonList(new NetworkDetails(networkName, "ab153b6e-c364-44c0-bef6-1f2982117f04"));
+        List<NetworkDetails> networkDetails = singletonList(new NetworkDetails(networkName, "ab153b6e-c364-44c0-bef6-1f2982117f04"));
         final List<Network> networksList = new ArrayList<>(createNetworkList(null, networkDetails, true).values());
         ModelInfo siModelInfo = createServiceModelInfo();
         String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
@@ -495,7 +482,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     @Test
     public void checkIfNullProjectNameSentToMso() {
         ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
-                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
+                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, EMPTY_LIST, false),
                 1,
                 false, null, false);
         RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
@@ -503,7 +490,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
         JsonNode jsonNode = new ObjectMapper().valueToTree(result.requestDetails);
         Assert.assertTrue(jsonNode.get("project").isNull());
         serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
-                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, Collections.EMPTY_LIST, false),
+                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, EMPTY_LIST, false),
                 1,
                 false, "not null", false);
         result = msoRequestBuilder.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
@@ -569,7 +556,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
                         "    }" +
                         "  }" +
                         "}";
-        VfModule vfModuleDetails = createVfModule("201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0", VF_MODULE_0_MODEL_VERSION_ID, VF_MODULE_0_MODEL_CUSTOMIZATION_NAME, null, new HashMap<>(), "vmxnjr001_AVPN_base_vPE_BV_base", null, true);
+        VfModule vfModuleDetails = createVfModule("201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0", VF_MODULE_0_MODEL_VERSION_ID, VF_MODULE_0_MODEL_CUSTOMIZATION_NAME, null, emptyList(), "vmxnjr001_AVPN_base_vPE_BV_base", null, true);
         RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> result =
                 msoRequestBuilder.generateDeleteVfModuleRequest(vfModuleDetails, "az2018");
         MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
@@ -636,16 +623,25 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     @Test
     public void generateReplaceVfModuleRequest_whenThereAreSupplementaryParams_thenTheyAreAddToUserParams() {
 
-        String expectedParams = "[{"
-            + "        \"vre_a_volume_size_0\" : \"100\","
-            + "        \"vmx_int_net_len\" : \"24\","
-            + "        \"availability_zone_0\": \"abc\""
-            + "      }]";
+        String expectedParams = "["
+            + "        {"
+            + "          \"name\": \"vre_a_volume_size_0\","
+            + "          \"value\": \"100\""
+            + "        },"
+            + "        {"
+            + "          \"name\": \"vmx_int_net_len\","
+            + "          \"value\": \"24\""
+            + "        },"
+            + "        {"
+            + "          \"name\": \"availability_zone_0\","
+            + "          \"value\": \"abc\""
+            + "        }"
+            + "     ]";
 
-        Map<String, String> supplementaryParams = ImmutableMap.of(
-            "vre_a_volume_size_0", "100",
-            "vmx_int_net_len", "24",
-            "availability_zone_0", "abc"
+        List<UserParamNameAndValue> supplementaryParams = ImmutableList.of(
+            new UserParamNameAndValue( "vre_a_volume_size_0", "100"),
+            new UserParamNameAndValue("vmx_int_net_len", "24"),
+            new UserParamNameAndValue("availability_zone_0", "abc")
         );
 
         assertThat(generatedVfModuleReplaceRequest(null, null, supplementaryParams),
@@ -662,7 +658,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     }
 
     private RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> generatedVfModuleReplaceRequest(
-        Boolean retainAssignments, Boolean retainVolumeGroups, Map<String, String> supplementaryParams) {
+        Boolean retainAssignments, Boolean retainVolumeGroups, List<UserParamNameAndValue> supplementaryParams) {
         when(featureManager.isActive(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST)).thenReturn(true);
         when(aaiClient.getCloudOwnerByCloudRegionId("regionOne")).thenReturn("irma-aic");
 
