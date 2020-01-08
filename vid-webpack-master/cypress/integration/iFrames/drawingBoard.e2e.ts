@@ -6762,7 +6762,7 @@ describe('Drawing board', function () {
                       "supplementaryFile_hidden_content": "{\r\n  \"name\": \"a\",\r\n  \"value\": \"32\"\r\n}",
                       "supplementaryFileContent": {
                         "name": "a",
-                          "value": "32"
+                        "value": "32"
                       },
                       "supplementaryFileName": "sample.json",
                       "instanceParams": [

@@ -1,4 +1,10 @@
-{
-  "param": "ABCD",
-  "vnf_instance_name": "sample"
-}
+[
+  {
+  "name": "param",
+  "value": "ABCD"
+  },
+  {
+    "name": "vnf_instance_name",
+    "value": "sample"
+  }
+]

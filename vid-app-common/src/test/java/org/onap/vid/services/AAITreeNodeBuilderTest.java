@@ -51,6 +51,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.Mock;
 import org.mockito.stubbing.Answer;
@@ -79,6 +81,7 @@ public class AAITreeNodeBuilderTest {
 
     private ExecutorService executorService;
     private Logging logging = new Logging();
+    private static final Logger logger = LogManager.getLogger(AAITreeNodeBuilderTest.class);
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -92,7 +95,9 @@ public class AAITreeNodeBuilderTest {
     private void buildNodeAndAssert(JsonNode inputNode, AAITreeNode expectedNode, NodeType nodeType){
         ConcurrentSkipListSet<AAITreeNode> nodesAccumulator = new ConcurrentSkipListSet<>(comparing(AAITreeNode::getUniqueNodeKey));
         when(aaiClientMock.typedAaiRest(Unchecked.toURI("anyUrl"), JsonNode.class, null, HttpMethod.GET, false)).thenReturn(inputNode);
-        AAITreeNode actualNode = aaiTreeNodeBuilder.buildNode(
+        AAITreeNode actualNode = null;
+        try {
+            actualNode = aaiTreeNodeBuilder.buildNode(
                 nodeType,
                 "anyUrl",
                 null,
@@ -100,7 +105,12 @@ public class AAITreeNodeBuilderTest {
                 nodesAccumulator,
                 executorService,
                 AAI_TREE_PATHS.getSubTree(new AAIServiceTree.AaiRelationship(nodeType))
-        ).get(0);
+            ).get(0);
+        //print stack trace for more information in case of failure
+        } catch (RuntimeException e) {
+            logger.error("Failed to build node by aaiTreeNodeBuilder", e);
+            throw e;
+        }
         assertThat(actualNode, jsonEquals(expectedNode).when(IGNORING_ARRAY_ORDER, IGNORING_EXTRA_FIELDS).whenIgnoringPaths("relationshipList","children[0].relationshipList"));
     }
 
