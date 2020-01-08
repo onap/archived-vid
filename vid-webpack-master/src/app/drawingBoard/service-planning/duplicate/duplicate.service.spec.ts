@@ -2,12 +2,12 @@ import {DuplicateService} from './duplicate.service';
 import {LogService} from '../../../shared/utils/log/log.service';
 import {NgRedux} from '@angular-redux/store';
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
-import {SdcUiServices} from "onap-ui-angular";
-import {IModalConfig} from 'onap-ui-angular/dist/components/common';
 import {AppState} from "../../../shared/store/reducers";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
 import {SharedTreeService} from "../objectsToTree/shared.tree.service";
+import {IModalConfig} from "../../../shared/components/customModal/models/modal.model";
+import {ModalService} from "../../../shared/components/customModal/services/modal.service";
 
 class MockAppStore<T> {
   getState(){
@@ -73,7 +73,7 @@ describe('Drawing board tree service', () => {
         LogService,
         {provide: FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockAppStore},
-        {provide: SdcUiServices.ModalService, useClass: MockModalService}
+        {provide: ModalService, useClass: MockModalService}
       ]
     });
     await TestBed.compileComponents();

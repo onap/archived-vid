@@ -37,6 +37,8 @@ import {VpnStepService} from "../models/vrf/vrfModal/vpnStep/vpn.step.service";
 import {NetworkStepService} from "../models/vrf/vrfModal/networkStep/network.step.service";
 import {VfModuleUpgradePopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {SharedControllersService} from "../../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {ModalService} from "../../../../shared/components/customModal/services/modal.service";
+import {CreateDynamicComponentService} from "../../../../shared/components/customModal/services/create-dynamic-component.service";
 
 class MockAppStore<T> {
   getState() {
@@ -112,6 +114,8 @@ describe('Model Tree Generator service', () => {
         ComponentInfoService,
         NetworkStepService,
         VpnStepService,
+        ModalService,
+        CreateDynamicComponentService,
         SharedControllersService,
         {provide: NgRedux, useClass: MockAppStore},
         MockNgRedux ]

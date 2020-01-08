@@ -4,7 +4,7 @@ import {RootEpics} from './epics';
 
 import rootReducer, {AppState} from "./reducers";
 import {AAIEpics} from "../services/aaiService/aai.epics";
-import {createEpicMiddleware} from "redux-observable";
+import {createEpicMiddleware} from "redux-observable-es6-compat";
 import {AaiService} from "../services/aaiService/aai.service";
 import {applyMiddleware, createStore} from "redux";
 

@@ -71,9 +71,9 @@ export class VlanTaggingComponent implements OnInit {
   readonly userIdObs: Observable<any>;
 
 
-  @ViewChild(NetworkSelectorComponent)
+  @ViewChild(NetworkSelectorComponent, {static: false})
   public networkSelectorComponent: NetworkSelectorComponent;
-  @ViewChild(Formasync)
+  @ViewChild(Formasync, {static: false})
   public formAsync: Formasync;
 
 

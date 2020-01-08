@@ -16,7 +16,6 @@ import {AvailableNodeIcons} from "../../../available-models-tree/available-model
 import {DuplicateVnfComponent} from "../../../duplicate/duplicate-vnf.component";
 import {changeInstanceCounter, removeInstance} from "../../../../../shared/storeUtil/utils/general/general.actions";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
-import {SdcUiServices} from "onap-ui-angular";
 import {DuplicateService} from "../../../duplicate/duplicate.service";
 import {ServiceInstanceActions} from "../../../../../shared/models/serviceInstanceActions";
 import {deleteActionNetworkInstance, undoDeleteActionNetworkInstance, updateNetworkPosition} from "../../../../../shared/storeUtil/utils/network/network.actions";
@@ -24,6 +23,7 @@ import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
+import {ModalService} from "../../../../../shared/components/customModal/services/modal.service";
 
 export class NetworkModelInfo implements ILevelNodeInfo {
   constructor(private _dynamicInputsService: DynamicInputsService,
@@ -31,7 +31,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
               private _dialogService: DialogService,
               private _networkPopupService: NetworkPopupService,
               private _duplicateService: DuplicateService,
-              private modalService: SdcUiServices.ModalService,
+              private modalService: ModalService,
               private _iframeService: IframeService,
               private _featureFlagsService: FeatureFlagsService,
               private _store: NgRedux<AppState>) {

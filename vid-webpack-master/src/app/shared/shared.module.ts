@@ -80,6 +80,15 @@ import {SearchFilterPipe} from "./pipes/searchFilter/search-filter.pipe";
 import {RecreateResolver} from "./resolvers/recreate/recreate.resolver";
 import {InstantiationTemplatesService} from "./services/templateService/instantiationTemplates.service";
 import {SharedControllersService} from "./components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {DuplicateVnfComponent} from "../drawingBoard/service-planning/duplicate/duplicate-vnf.component";
+import {ModalService} from "./components/customModal/services/modal.service";
+import {CreateDynamicComponentService} from "./components/customModal/services/create-dynamic-component.service";
+import {ModalComponent} from "./components/customModal/modal.component";
+import {ModalCloseButtonComponent} from './components/customModal/components/modalCloseButton/modal-close-button.component';
+import {CustomButtonComponent} from "./components/customButton/custom-button.component";
+import {CustomModalButtonComponent} from "./components/customModal/components/modalButton/modal-button.component";
+import {CustomRippleClickAnimationDirective} from "./components/customModal/directives/ripple-click.animation.directive";
+
 
 
 @NgModule({
@@ -110,6 +119,7 @@ import {SharedControllersService} from "./components/genericForm/formControlsSer
     NumberFormControlComponent,
     InputPreventionPatternDirective,
     ClickOutsideDirective,
+    CustomRippleClickAnimationDirective,
     FormGeneralErrorsComponent,
     SpinnerComponent,
     NoContentMessageAndIconComponent,
@@ -133,7 +143,11 @@ import {SharedControllersService} from "./components/genericForm/formControlsSer
     ErrorMsgComponent,
     DynamicInputsComponent,
     DynamicInputLabelPipe,
-    InstantiationTemplatesModalComponent
+    InstantiationTemplatesModalComponent,
+    ModalComponent,
+    ModalCloseButtonComponent,
+    CustomButtonComponent,
+    CustomModalButtonComponent
   ],
   exports: [
     PopoverComponent,
@@ -142,6 +156,7 @@ import {SharedControllersService} from "./components/genericForm/formControlsSer
     FormControlErrorComponent,
     DropdownFormControlComponent,
     InputPreventionPatternDirective,
+    CustomRippleClickAnimationDirective,
     ClickOutsideDirective,
     FormGeneralErrorsComponent,
     SpinnerComponent,
@@ -165,17 +180,24 @@ import {SharedControllersService} from "./components/genericForm/formControlsSer
     ErrorMsgComponent,
     SvgComponent,
     DynamicInputsComponent,
-    DynamicInputLabelPipe
+    DynamicInputLabelPipe,
+    ModalComponent,
+    ModalCloseButtonComponent,
+    CustomButtonComponent,
+    CustomModalButtonComponent
   ],
   entryComponents : [
     GenericFormPopupComponent,
     SearchElementsModalComponent,
-    InstantiationTemplatesModalComponent
+    InstantiationTemplatesModalComponent,
+    DuplicateVnfComponent,
+    ModalComponent
   ],
   providers: [
     ServiceInfoService,
     MessageBoxService,
-    SdcUiServices.ModalService,
+    CreateDynamicComponentService,
+    ModalService,
     SdcUiServices.LoaderService,
     HttpInterceptorService,
     IframeService,
