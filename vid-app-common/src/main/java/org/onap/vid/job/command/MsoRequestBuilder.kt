@@ -11,11 +11,12 @@ import org.onap.vid.changeManagement.RequestDetailsWrapper
 import org.onap.vid.model.serviceInstantiation.*
 import org.onap.vid.mso.model.*
 import org.onap.vid.mso.model.BaseResourceInstantiationRequestDetails.*
+import org.onap.vid.mso.model.ServiceInstantiationRequestDetails.UserParamNameAndValue
 import org.onap.vid.mso.rest.SubscriberInfo
 import org.onap.vid.properties.Features
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
 import org.onap.vid.services.CloudOwnerService
-import org.onap.vid.utils.JACKSON_OBJECT_MAPPER
+import org.onap.vid.services.UserParamsContainer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.togglz.core.manager.FeatureManager
@@ -108,7 +109,7 @@ class MsoRequestBuilder
         //cloud configuration
         val cloudConfiguration = generateCloudConfiguration(vfModuleDetails.lcpCloudRegionId, vfModuleDetails.tenantId)
 
-        val userParams = aggregateAllInstanceParams(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
+        val userParams = UserParamsContainer(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
 
         //related instance list
         val relatedInstanceList = generateRelatedInstances(mapOf(serviceInstanceId to serviceModelInfo, vnfInstanceId to vnfModelInfo))
@@ -118,7 +119,7 @@ class MsoRequestBuilder
             relatedInstanceList.add(RelatedInstance(volumeGroupModel, vgInstanceId, vfModuleDetails.volumeGroupInstanceName))
         }
 
-        return RequestDetailsWrapper(VfModuleOrVolumeGroupRequestDetails(vfModuleDetails.modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters(userParams)))
+        return RequestDetailsWrapper(VfModuleOrVolumeGroupRequestDetails(vfModuleDetails.modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters(userParams.toALaCarte())))
     }
 
     fun generateVfModuleInstantiationRequest(
@@ -153,8 +154,8 @@ class MsoRequestBuilder
     fun generateVolumeGroupInstantiationRequest(vfModuleDetails: VfModule, serviceModelInfo: ModelInfo, serviceInstanceId: String, vnfModelInfo: ModelInfo, vnfInstanceId: String, userId: String, testApi: String?): RequestDetailsWrapper<VolumeGroupRequestDetails> {
         val requestInfo = generateRequestInfo(vfModuleDetails.volumeGroupInstanceName, ResourceType.VOLUME_GROUP, vfModuleDetails.isRollbackOnFailure, null, userId)
         val cloudConfiguration = generateCloudConfiguration(vfModuleDetails.lcpCloudRegionId, vfModuleDetails.tenantId)
-        val userParams = aggregateAllInstanceParams(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
-        val requestParameters = RequestParametersVfModuleOrVolumeGroupInstantiation(userParams, vfModuleDetails.isUsePreload, testApi)
+        val userParams = UserParamsContainer(extractActualInstanceParams(vfModuleDetails.instanceParams), vfModuleDetails.supplementaryParams)
+        val requestParameters = RequestParametersVfModuleOrVolumeGroupInstantiation(userParams.toALaCarte(), vfModuleDetails.isUsePreload, testApi)
         val relatedInstances = generateRelatedInstances(mapOf(serviceInstanceId to serviceModelInfo, vnfInstanceId to vnfModelInfo))
 
         vfModuleDetails.modelInfo.modelType = "volumeGroup"
@@ -283,37 +284,15 @@ class MsoRequestBuilder
     private fun convertVfModuleMapToList(vfModules: Map<String, Map<String, VfModule>>): List<VfModuleMacro> {
         return vfModules.values.stream().flatMap { vfModule ->
             vfModule.values.stream().map { item ->
-                val aggregatedParams = aggregateAllInstanceParams(extractActualInstanceParams(item.instanceParams), item.supplementaryParams)
-                val aggregatedParamsConverted = JACKSON_OBJECT_MAPPER.convertValue(aggregatedParams, List::class.java)
+                val userParams = UserParamsContainer(extractActualInstanceParams(item.instanceParams), item.supplementaryParams)
 
                 VfModuleMacro(
                         item.modelInfo,
                         item.instanceName,
                         item.volumeGroupInstanceName,
-                        aggregatedParamsConverted as List<Map<String, String>>)
+                        userParams.toMacroPost1806())
             }
         }.collect(Collectors.toList<VfModuleMacro>())
-    }
-
-    fun aggregateAllInstanceParams(instanceParams: Map<String, String>?, supplementaryParams: Map<String, String>?): List<UserParamMap<String, String>> {
-        var instanceParamsFinal: Map<String, String> = instanceParams ?: emptyMap()
-        val supplementaryParamsFinal: Map<String, String> = supplementaryParams ?: emptyMap()
-
-        if (!(instanceParamsFinal.isEmpty() && supplementaryParamsFinal.isEmpty())) {
-            //remove duplicate keys from instanceParams if exist in supplementaryParams
-            instanceParamsFinal = instanceParamsFinal.entries.stream()
-                    .filter { m -> !supplementaryParamsFinal.containsKey(m.key) }
-                    .collect(Collectors.toMap({ it.key }, { it.value }))
-
-            //aggregate the 2 collections and format them as UserParamMap
-            val aggregatedParams = UserParamMap<String, String>()
-            aggregatedParams.putAll(instanceParamsFinal)
-            aggregatedParams.putAll(supplementaryParamsFinal)
-
-            return mutableListOf(aggregatedParams)
-        }
-
-        return emptyList()
     }
 
     //Make sure we always get a one Map from InstanceParams
@@ -394,14 +373,14 @@ class MsoRequestBuilder
         }
     }
 
-    private fun generateUserParamList(): List<ServiceInstantiationRequestDetails.UserParamNameAndValue> {
+    private fun generateUserParamList(): List<UserParamNameAndValue> {
         return emptyList()
     }
 
     fun generateMacroServicePre1806InstantiationRequest(payload: ServiceInstantiation, userId: String): RequestDetailsWrapper<ServiceInstantiationRequestDetails> {
         val requestInfo = ServiceInstantiationRequestDetails.RequestInfo(payload.instanceName, payload.productFamilyId, VID_SOURCE, payload.isRollbackOnFailure, userId)
-        val userParams = generateUserParamsNameAndValue(payload.instanceParams)
-        val requestParameters = ServiceInstantiationRequestDetails.RequestParameters(payload.subscriptionServiceType, false, userParams)
+        val userParams = UserParamsContainer(generateSingleMapFromInstanceParams(payload.instanceParams), emptyList())
+        val requestParameters = ServiceInstantiationRequestDetails.RequestParameters(payload.subscriptionServiceType, false, userParams.toMacroPre1806())
         val subscriberInfo = generateSubscriberInfoPre1806(payload)
         val project = if (payload.projectName != null) ServiceInstantiationRequestDetails.Project(payload.projectName) else null
         val owningEntity = ServiceInstantiationRequestDetails.ServiceInstantiationOwningEntity(payload.owningEntityId, payload.owningEntityName)
@@ -419,8 +398,8 @@ class MsoRequestBuilder
                 relatedInstanceList))
     }
 
-    private fun generateUserParamsNameAndValue(instanceParams: List<Map<String, String>>): List<ServiceInstantiationRequestDetails.UserParamNameAndValue> {
-        return instanceParams.getOrElse(0) {emptyMap()}.map{ x-> ServiceInstantiationRequestDetails.UserParamNameAndValue(x.key, x.value)}
+    private fun generateSingleMapFromInstanceParams(instanceParams: List<Map<String, String>>): Map<String, String> {
+        return if (instanceParams.isNullOrEmpty()) emptyMap() else instanceParams[0]
     }
 
     private fun generateSubscriberInfoPre1806(payload: ServiceInstantiation): SubscriberInfo {

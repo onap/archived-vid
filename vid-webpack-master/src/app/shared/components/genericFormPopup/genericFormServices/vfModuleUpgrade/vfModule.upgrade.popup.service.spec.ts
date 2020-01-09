@@ -1,10 +1,6 @@
 import {LogService} from "../../../../utils/log/log.service";
 import {NgRedux} from "@angular-redux/store";
-import {
-  ControlGeneratorUtil,
-  SDN_C_PRE_LOAD,
-  SUPPLEMENTARY_FILE
-} from "../../../genericForm/formControlsServices/control.generator.util.service";
+import {ControlGeneratorUtil, SDN_C_PRE_LOAD, SUPPLEMENTARY_FILE} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {HttpClient} from "@angular/common/http";
 import {GenericFormService} from "../../../genericForm/generic-form.service";
@@ -192,7 +188,7 @@ describe('VFModule popup service', () => {
     };
     form.controls = {
       supplementaryFile_hidden_content : {
-        value: '{"c": "c", "d": 1}'
+        value: '[{"name": "c", "value": "c"}, {"name": "d", "value": "1"}]'
         },
       supplementaryFile_hidden : {
         value: {
@@ -204,7 +200,7 @@ describe('VFModule popup service', () => {
     let expectedMergePayload = {
       a: "value",
       b: "another",
-      supplementaryFileContent: {c: "c", d: 1},
+      supplementaryFileContent: [{"name": "c", "value": "c"}, {"name": "d", "value": "1"}],
       supplementaryFileName: "name"
     };
 

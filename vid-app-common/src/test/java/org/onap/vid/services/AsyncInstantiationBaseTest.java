@@ -22,7 +22,6 @@ package org.onap.vid.services;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -65,6 +64,7 @@ import org.onap.vid.model.serviceInstantiation.VfModule;
 import org.onap.vid.model.serviceInstantiation.Vnf;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.ServiceInstantiationRequestDetails.UserParamNameAndValue;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.RequestStatus;
 import org.onap.vid.properties.Features;
@@ -250,7 +250,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
     }
 
     protected VfModule createVfModule(String modelName, String modelVersionId, String modelCustomizationId,
-                                    List<Map<String, String>> instanceParams, Map<String, String> supplementaryParams, String instanceName, String volumeGroupInstanceName, boolean isAlacarte) {
+                                    List<Map<String, String>> instanceParams, List<UserParamNameAndValue> supplementaryParams, String instanceName, String volumeGroupInstanceName, boolean isAlacarte) {
         ModelInfo vfModuleInfo = new ModelInfo();
         vfModuleInfo.setModelType("vfModule");
         vfModuleInfo.setModelName(modelName);
@@ -276,7 +276,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
     }
 
     protected VfModule createVfModuleForReplace(ModelInfo vfModuleModelInfo, String instanceName,
-        String lcpCloudRegionId, String tenantId, Boolean retainAssignments, Boolean retainVolumeGroups, Map<String, String> supplementaryParams) {
+        String lcpCloudRegionId, String tenantId, Boolean retainAssignments, Boolean retainVolumeGroups, List<UserParamNameAndValue> supplementaryParams) {
         return new VfModule( vfModuleModelInfo, instanceName, null, Action.Upgrade.name(), lcpCloudRegionId, null, tenantId,
                 null, supplementaryParams, true, null, null, UUID.randomUUID().toString(), null, null, retainAssignments, retainVolumeGroups, null);
     }
@@ -349,9 +349,9 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         Map<String, Map<String, VfModule>> vfModules = new HashMap<>();
 
         List<Map<String, String>> instanceParams1 = ImmutableList.of((ImmutableMap.of("vmx_int_net_len", "24")));
-        VfModule vfModule1 = createVfModule("201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0", VF_MODULE_0_MODEL_VERSION_ID, VF_MODULE_0_MODEL_CUSTOMIZATION_NAME, instanceParams1, new HashMap<>(), (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vPE_BV_base" : null), null, isAlacarte);
+        VfModule vfModule1 = createVfModule("201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0", VF_MODULE_0_MODEL_VERSION_ID, VF_MODULE_0_MODEL_CUSTOMIZATION_NAME, instanceParams1, emptyList(), (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vPE_BV_base" : null), null, isAlacarte);
         List<Map<String, String>> instanceParams2 = ImmutableList.of(vfModuleInstanceParamsMap);
-        VfModule vfModule2 = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1", VF_MODULE_1_MODEL_VERSION_ID, VF_MODULE_1_MODEL_CUSTOMIZATION_NAME, instanceParams2, new HashMap<>(), (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vRE_BV_expansion": null), (isUserProvidedNaming ? "myVgName" : null), isAlacarte);
+        VfModule vfModule2 = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1", VF_MODULE_1_MODEL_VERSION_ID, VF_MODULE_1_MODEL_CUSTOMIZATION_NAME, instanceParams2, emptyList(), (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vRE_BV_expansion": null), (isUserProvidedNaming ? "myVgName" : null), isAlacarte);
 
         String vfModuleModelName = vfModule1.getModelInfo().getModelName();
         vfModules.put(vfModuleModelName, new LinkedHashMap<>());
