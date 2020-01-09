@@ -25,7 +25,8 @@
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <epsdk.version>2.5.0</epsdk.version>
+        <epsdk.version>2.6.0</epsdk.version>
+        <epsdk.overlay.version>2.5.0</epsdk.overlay.version>
         <springframework.version>5.2.0.RELEASE</springframework.version>
         <springframework.orm.version>4.3.22.RELEASE</springframework.orm.version>
         <!-- epsdk-core is importing this class, which is only on spring-orm 4 but not in orm 5:
@@ -562,7 +563,7 @@
         <dependency>
             <groupId>org.onap.portal.sdk</groupId>
             <artifactId>epsdk-app-overlay</artifactId>
-            <version>${epsdk.version}</version>
+            <version>${epsdk.overlay.version}</version>
             <type>war</type>
         </dependency>
         <dependency>
@@ -871,6 +872,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>1.4</version>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
