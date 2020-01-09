@@ -1497,6 +1497,7 @@ Private metthods
                     $scope.reloadRoute();
                 } else {
                     color = FIELD.ID.COLOR_F88;
+                    $scope.reloadRoute();
                 }
                 $scope.callbackStyle = {
                     "background-color": color
