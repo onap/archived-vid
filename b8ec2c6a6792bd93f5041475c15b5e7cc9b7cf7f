@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9cd8a0ba_85880d70",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/UserParamsConvertor.kt",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-09T14:05:04Z",
+      "side": 1,
+      "message": "This can be better named, IMO, UserParamsContainer.",
+      "range": {
+        "startLine": 6,
+        "startChar": 16,
+        "endLine": 6,
+        "endChar": 25
+      },
+      "revId": "b8ec2c6a6792bd93f5041475c15b5e7cc9b7cf7f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
