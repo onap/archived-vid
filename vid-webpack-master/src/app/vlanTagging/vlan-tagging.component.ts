@@ -71,11 +71,8 @@ export class VlanTaggingComponent implements OnInit {
   readonly userIdObs: Observable<any>;
 
 
-  @ViewChild(NetworkSelectorComponent)
-  public networkSelectorComponent: NetworkSelectorComponent;
-  @ViewChild(Formasync)
-  public formAsync: Formasync;
-
+  @ViewChild(NetworkSelectorComponent, {static: false}) networkSelectorComponent: NetworkSelectorComponent;
+  @ViewChild(Formasync, {static: false}) formAsync: Formasync;
 
   deploySubInterface() {
 
@@ -186,9 +183,9 @@ export class VlanTaggingComponent implements OnInit {
   isNextButtonDisabled() {
     switch (this.currentStep) {
       case WizardSteps.one:
-        return !this.formAsync.form.valid;
+        return this.formAsync ? !this.formAsync.form.valid : false;
       case WizardSteps.two:
-        return !this.networkSelectorComponent.form.valid;
+        return this.networkSelectorComponent ? !this.networkSelectorComponent.form.valid : false;
     }
   }
 

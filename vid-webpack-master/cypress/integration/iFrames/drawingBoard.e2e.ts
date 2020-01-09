@@ -350,7 +350,7 @@ describe('Drawing board', function () {
         cy.drawingBoardTreeClickOnContextMenuOptionByName('Remove');
 
         cy.get('.title').contains('Remove VNF');
-        cy.get('.sdc-button').contains('Remove VNF').click();
+        cy.get('.custom-button').contains('Remove VNF').click();
         // assert vfModules are disabled after remove parent vnf
         cy.get('.tree-node-disabled div[data-tests-id="node-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1"]')
           .should('be.visible');

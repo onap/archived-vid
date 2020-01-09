@@ -19,7 +19,7 @@ import {AuditInfoModalComponentService} from "./auditInfoModal.component.service
 export class AuditInfoModalComponent {
   static openModal: Subject<ServiceInfoModel> = new Subject<ServiceInfoModel>();
   static openInstanceAuditInfoModal: Subject<{instanceId , type, model, instance}> = new Subject<{instanceId , type, model, instance}>();
-  @ViewChild('auditInfoModal') public auditInfoModal: ModalDirective;
+  @ViewChild('auditInfoModal', {static: false}) public auditInfoModal: ModalDirective;
   title: string = 'Service Instantiation Information';
   modelInfoItems: ModelInformationItem[] = [];
   serviceModel: ServiceModel;
