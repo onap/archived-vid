@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "599b9383_ecc6a82a",
+        "filename": "vid-webpack-master/pom.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-09T13:28:34Z",
+      "side": 1,
+      "message": "try v10.18.0, and matching npm",
+      "revId": "fc629c79c62cb38178fc633206606057563da452",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
