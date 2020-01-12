@@ -320,11 +320,11 @@ var DataService = function($log, DataService) {
 		setOwningEntityProperties: function (properties) {
 				_this.owningEntityProperties = properties;
 		},
-		getHasTemplate: function () {
-				return _this.hasTemplate;
+		getIsInstantiationTemplateExists: function () {
+				return _this.isInstantiationTemplateExists;
 		},
-		setHasTemplate: function (hasTemplate) {
-				_this.hasTemplate = hasTemplate;
+		setIsInstantiationTemplateExists: function (isInstantiationTemplateExists) {
+				_this.isInstantiationTemplateExists = isInstantiationTemplateExists;
 		}
 	};
 };
