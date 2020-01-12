@@ -67,9 +67,9 @@ describe('Browse SDC', function () {
     const SERVICE_MODEL_ID: string = '74fa72dd-012b-49c3-800d-06b12bcaf1a0';
 
     cy.readFile('cypress/support/jsonBuilders/mocks/jsons/bug616888/list-services.json').then((res) => {
-      res.services = res.services.map((service: { uuid: string, hasTemplate: boolean }) => {
+      res.services = res.services.map((service: { uuid: string, isInstantiationTemplateExists: boolean }) => {
         if (service.uuid === SERVICE_MODEL_ID) {
-          service.hasTemplate = true;
+          service.isInstantiationTemplateExists = true;
         }
         return service;
       });
