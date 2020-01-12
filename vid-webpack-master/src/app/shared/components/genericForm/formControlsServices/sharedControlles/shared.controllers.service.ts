@@ -167,7 +167,7 @@ export class SharedControllersService {
       placeHolder: (!isEcompGeneratedNaming) ? 'Instance name' : 'Automatically generated when not provided',
       validations: validations,
       isVisible : true,
-      value : (!isEcompGeneratedNaming || (!_.isNil(instance) && !_.isNil(instance.instanceName)))
+      value : (!isEcompGeneratedNaming || (!_.isNil(instance) && !_.isNil(instance.instanceName) && instance.instanceName !== ""))
         ? this._basicControlGenerator.getDefaultInstanceName(instance, model) : null,
       onKeypress : (event) => {
         const pattern:RegExp = ControlGeneratorUtil.INSTANCE_NAME_REG_EX;
