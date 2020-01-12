@@ -9,6 +9,7 @@ declare namespace Cypress {
     initActiveVPNs : typeof  initActiveVPNs;
     initGetAAISubDetails : typeof  initGetAAISubDetails;
     initAAIServices: typeof initAAIServices;
+    initGetModelByServiceType: typeof initGetModelByServiceType;
   }
 }
 
@@ -47,6 +48,19 @@ function initGetAAISubDetails(response? : JSON) : void {
       }).as('aai-sub-details')
   });
 }
+
+function initGetModelByServiceType(response? : JSON) : void {
+  cy.readFile('cypress/support/jsonBuilders/mocks/jsons/aaiSubDetails.json').then((res) => {
+    cy.server()
+      .route({
+        method: 'GET',
+        status: 200,
+        url: Cypress.config('baseUrl') + "/aai_get_models_by_service_type/**",
+        response: response ? response : res
+      }).as('aai-sub-details')
+  });
+}
+
 
 function initAlaCarteService(response? : JSON) : void {
   cy.readFile('cypress/support/jsonBuilders/mocks/jsons/a-la-carteService.json').then((res) => {
@@ -156,6 +170,7 @@ Cypress.Commands.add('initSearchVNFMemebers', initSearchVNFMemebers);
 Cypress.Commands.add('initActiveNetworks', initActiveNetworks);
 Cypress.Commands.add('initActiveVPNs', initActiveVPNs);
 Cypress.Commands.add('initAAIServices', initAAIServices);
+Cypress.Commands.add('initGetModelByServiceType', initGetModelByServiceType);
 
 
 
