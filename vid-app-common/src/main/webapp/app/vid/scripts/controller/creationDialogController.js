@@ -93,7 +93,7 @@ var creationDialogController = function (COMPONENT, FIELD, PARAMETER, $scope, $h
 
 
         if (!$scope.shouldShowOldPopup()) {
-            if(DataService.getHasTemplate()){
+            if(DataService.getIsInstantiationTemplateExists()){
                 $scope.url = COMPONENT.INSTANTIATION_TEMPLATES_IFRAME_URL + request.modelNameVersionId;
                 window.addEventListener("message", receiveMessage, false);
             }else {

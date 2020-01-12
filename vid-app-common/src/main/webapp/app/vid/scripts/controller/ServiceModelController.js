@@ -163,7 +163,7 @@
                 viewPerPage: $scope.viewPerPage,
                 currentPage: $scope.currentPage
 			};
-			DataService.setHasTemplate(service.hasTemplate);
+			DataService.setIsInstantiationTemplateExists(service.isInstantiationTemplateExists);
 			sessionStorage.setItem("searchKey",JSON.stringify(searchKey));
 
 			console.log("Instantiating SDC service " + service.uuid);
