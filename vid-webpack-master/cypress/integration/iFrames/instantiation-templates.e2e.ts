@@ -52,16 +52,25 @@ describe('Drawing Board: Instantiation Templates', function () {
           .fillVnfPopup()
           .getDrawingBoardDeployBtn().click()
           .wait('@expectedPostAsyncInstantiation').then(xhr => {
-            const vnfRequest = bodyOf(xhr).vnfs['vProbe_NC_VNF 0_1'];
+          const vnfRequest = bodyOf(xhr).vnfs['vProbe_NC_VNF 0_1'];
 
-            expect(vnfRequest.action).equals("Create");
-            expect(vnfRequest.rollbackOnFailure).equals("true");
-            expect(vnfRequest.originalName).equals("vProbe_NC_VNF 0");
-            expect(vnfRequest.productFamilyId).equals("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
-            expect(vnfRequest.lcpCloudRegionId).equals("hvf6");
-            expect(vnfRequest.lineOfBusiness).equals("zzz1");
-            expect(vnfRequest.platformName).equals("xxx1");
-            expect(vnfRequest.tenantId).equals("229bcdc6eaeb4ca59d55221141d01f8e");
+          expect(vnfRequest.action).equals("Create");
+          expect(vnfRequest.rollbackOnFailure).equals("true");
+          expect(vnfRequest.originalName).equals("vProbe_NC_VNF 0");
+          expect(vnfRequest.productFamilyId).equals("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb");
+          expect(vnfRequest.lcpCloudRegionId).equals("hvf6");
+          expect(vnfRequest.lineOfBusiness).equals("zzz1");
+          expect(vnfRequest.platformName).equals("xxx1");
+          expect(vnfRequest.tenantId).equals("229bcdc6eaeb4ca59d55221141d01f8e");
+
+
+          // check instance name not change if empty
+          editNode('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0', 0)
+            .clearInput('instanceName');
+          cy.getElementByDataTestsId('form-set').click({force: true}).then((done) => {
+            editNode('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0', 0)
+              .getElementByDataTestsId('instanceName').should('be.empty')
+          });
         });
       });
 
@@ -73,7 +82,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           .getTagElementContainsText('button', 'Duplicate').click()
           .getDrawingBoardDeployBtn().click()
           .wait('@expectedPostAsyncInstantiation').then(xhr => {
-            expect(Object.keys(bodyOf(xhr).vnfs).length).equals(numberOfDuplicate + 1);
+          expect(Object.keys(bodyOf(xhr).vnfs).length).equals(numberOfDuplicate + 1);
         });
       });
 
@@ -143,11 +152,11 @@ describe('Drawing Board: Instantiation Templates', function () {
           .click({force: true});
 
         editNode(`node-c09e4530-8fd8-418f-9483-2f57ce927b05-${module1CustomizationId}`, 1);
-          cy.clearInput("instanceName");
-          cy.typeToInput("instanceName", newVfModuleName);
-          cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
-          cy.selectDropdownOptionByText('tenant', 'DN5242-Nov21-T1');
-          cy.getElementByDataTestsId('form-set').click();
+        cy.clearInput("instanceName");
+        cy.typeToInput("instanceName", newVfModuleName);
+        cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
+        cy.selectDropdownOptionByText('tenant', 'DN5242-Nov21-T1');
+        cy.getElementByDataTestsId('form-set').click();
 
         // Then...
         cy.getReduxState().then((state) => {
@@ -251,7 +260,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       });
 
-      it(`Given a stored template of Network - - it is loaded`,  () => {
+      it(`Given a stored template of Network - - it is loaded`, () => {
 
         loadDrawingBoardWithRecreateModeNetwork();
 
@@ -261,7 +270,7 @@ describe('Drawing Board: Instantiation Templates', function () {
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd_network();
       });
 
-      it(`Given a stored template of Network - User can remove existing network`,  () => {
+      it(`Given a stored template of Network - User can remove existing network`, () => {
 
         loadDrawingBoardWithRecreateModeNetwork();
 
@@ -286,9 +295,9 @@ describe('Drawing Board: Instantiation Templates', function () {
 
         // add new node
         addNewNode('node-SR-IOV Provider 2-1-add-btn')
-        .fillNetworkPopup()
-        .getDrawingBoardDeployBtn().click()
-        .wait('@expectedPostAsyncInstantiation').then(xhr => {
+          .fillNetworkPopup()
+          .getDrawingBoardDeployBtn().click()
+          .wait('@expectedPostAsyncInstantiation').then(xhr => {
           const networkRequest = bodyOf(xhr).networks['SR-IOV Provider 2-1_1'];
 
           expect(networkRequest.action).equals("Create");
