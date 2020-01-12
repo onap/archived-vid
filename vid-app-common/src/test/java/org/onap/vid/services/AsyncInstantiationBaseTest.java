@@ -249,8 +249,10 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         return instanceParams;
     }
 
-    protected VfModule createVfModule(String modelName, String modelVersionId, String modelCustomizationId,
-                                    List<Map<String, String>> instanceParams, List<UserParamNameAndValue> supplementaryParams, String instanceName, String volumeGroupInstanceName, boolean isAlacarte) {
+    protected VfModule createVfModule(
+        String modelName, String modelVersionId, String modelCustomizationId,
+        List<Map<String, String>> instanceParams, List<UserParamNameAndValue> supplementaryParams, String instanceName,
+        String volumeGroupInstanceName, boolean isAlacarte, Boolean usePreload) {
         ModelInfo vfModuleInfo = new ModelInfo();
         vfModuleInfo.setModelType("vfModule");
         vfModuleInfo.setModelName(modelName);
@@ -262,7 +264,8 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
             vfModuleInfo.setModelInvariantId("22222222-f63c-463e-ba94-286933b895f9");
             vfModuleInfo.setModelVersion("10.0");
             return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), "mdt1", null,
-                    "88a6ca3ee0394ade9403f075db23167e", instanceParams, supplementaryParams, false, true, null, UUID.randomUUID().toString(), null, null,
+                "88a6ca3ee0394ade9403f075db23167e", instanceParams, supplementaryParams, false,
+                usePreload, null, UUID.randomUUID().toString(), null, null,
                 null, null, null);
         }
 
@@ -349,9 +352,11 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         Map<String, Map<String, VfModule>> vfModules = new HashMap<>();
 
         List<Map<String, String>> instanceParams1 = ImmutableList.of((ImmutableMap.of("vmx_int_net_len", "24")));
-        VfModule vfModule1 = createVfModule("201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0", VF_MODULE_0_MODEL_VERSION_ID, VF_MODULE_0_MODEL_CUSTOMIZATION_NAME, instanceParams1, emptyList(), (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vPE_BV_base" : null), null, isAlacarte);
+        VfModule vfModule1 = createVfModule("201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0", VF_MODULE_0_MODEL_VERSION_ID, VF_MODULE_0_MODEL_CUSTOMIZATION_NAME,
+            instanceParams1, emptyList(), (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vPE_BV_base" : null), null, isAlacarte, true);
         List<Map<String, String>> instanceParams2 = ImmutableList.of(vfModuleInstanceParamsMap);
-        VfModule vfModule2 = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1", VF_MODULE_1_MODEL_VERSION_ID, VF_MODULE_1_MODEL_CUSTOMIZATION_NAME, instanceParams2, emptyList(), (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vRE_BV_expansion": null), (isUserProvidedNaming ? "myVgName" : null), isAlacarte);
+        VfModule vfModule2 = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1", VF_MODULE_1_MODEL_VERSION_ID, VF_MODULE_1_MODEL_CUSTOMIZATION_NAME,
+            instanceParams2, emptyList(), (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vRE_BV_expansion": null), (isUserProvidedNaming ? "myVgName" : null), isAlacarte, true);
 
         String vfModuleModelName = vfModule1.getModelInfo().getModelName();
         vfModules.put(vfModuleModelName, new LinkedHashMap<>());
