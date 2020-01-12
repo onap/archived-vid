@@ -103,7 +103,7 @@ data class VfModuleOrVolumeGroupRequestDetails(
 
 open class RequestParametersVfModuleOrVolumeGroup internal constructor(
         userParams: List<UserParamTypes>,
-        @get:JsonInclude(NON_NULL) val isUsePreload: Boolean?,
+        val isUsePreload: Boolean,
         testApi: String?
 ) : BaseResourceInstantiationRequestDetails.RequestParameters(userParams, testApi)
 
@@ -111,7 +111,7 @@ class RequestParametersVfModuleOrVolumeGroupInstantiation(
         userParams: List<UserParamTypes>,
         usePreload: Boolean?,
         testApi: String?
-) : RequestParametersVfModuleOrVolumeGroup(userParams, usePreload, testApi)
+) : RequestParametersVfModuleOrVolumeGroup(userParams, usePreload.orFalse(), testApi)
 
 class RequestParametersVfModuleUpgrade(
         userParams: List<UserParamTypes>,
@@ -119,7 +119,8 @@ class RequestParametersVfModuleUpgrade(
         testApi: String?,
         @get:JsonInclude(NON_NULL) val retainAssignments: Boolean?,
         @get:JsonInclude(NON_NULL) val rebuildVolumeGroups: Boolean?
-) : RequestParametersVfModuleOrVolumeGroup(userParams, usePreload, testApi)
+) : RequestParametersVfModuleOrVolumeGroup(userParams, usePreload.orFalse(), testApi)
 
 class UserParamMap<K, V> : HashMap<K, V>(), UserParamTypes, MutableMap<K, V>
 
+private fun Boolean?.orFalse(): Boolean = this ?: false
