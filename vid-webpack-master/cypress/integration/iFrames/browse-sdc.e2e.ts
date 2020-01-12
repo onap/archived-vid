@@ -63,6 +63,44 @@ describe('Browse SDC', function () {
 
   });
 
+  it.only(`browse sdc open create new service instance flow`, function () {
+    const MACRO_FOR_NEW_FLOW_ID: string = '745d1bf1-9ed1-413f-8111-f1e984ad63fb';
+
+    cy.initGetAAISubDetails();
+
+    cy.readFile('../vid-automation/src/main/resources/registration_to_simulator/create_new_instance/aai_get_models_by_service_type_SILVIA_ROBBINS.json').then((res) => {
+      jsonBuilderAndMock.basicJson(res.simulatorResponse.body,
+        Cypress.config('baseUrl') + '/aai_get_models_by_service_type/**',
+        200,
+        0,
+        'aaiGetModelByServiceType');
+    });
+
+    cy.readFile('cypress/support/jsonBuilders/mocks/jsons/bug616888/Dror_service1806_Macro1.json').then((res) => {
+      jsonBuilderAndMock.basicJson(res,
+        Cypress.config('baseUrl') + '/rest/models/services/' + MACRO_FOR_NEW_FLOW_ID,
+        200,
+        0,
+        'MACRO_FOR_NEW_FLOW');
+    });
+
+    cy.get('span').contains('Create New Service Instance').click({force: true})
+      .selectDropdownOptionByText('subscriberName', 'SILVIA ROBBINS');
+    cy.get('button').contains('Submit').click({force: true});
+    cy.selectDropdownOptionByText('serviceType', 'TYLER SILVIA');
+    cy.get('button').contains('Submit').click({force: true});
+    cy.getElementByDataTestsId('deploy-' + MACRO_FOR_NEW_FLOW_ID).click({force: true});
+    cy.wait("@aaiGetModelByServiceType").then(() => {
+      cy.get('button').contains('Deploy').eq(0).click({force: true});
+      cy.get('iframe').then(function ($iframe) {
+        expect($iframe.attr('src')).to.contain(`app/ui/#/servicePopup?serviceModelId=74fa72dd-012b-49c3-800d-06b12bcaf1a0`);
+      });
+     });
+
+    cy.visit("welcome.htm"); //relaod page to not break the following tests
+
+  });
+
   it(`browse sdc should open instantiation template modal if service hasTemplate is true`, function () {
     const SERVICE_MODEL_ID: string = '74fa72dd-012b-49c3-800d-06b12bcaf1a0';
 
