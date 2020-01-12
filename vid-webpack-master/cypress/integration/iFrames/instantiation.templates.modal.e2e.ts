@@ -94,7 +94,6 @@ describe('Template', () => {
     cy.get(`#header-instantiationStatus`).contains('Instantiation Status');
     cy.get(`#header-region`).contains('Region');
     cy.get(`#header-tenant`).contains('Tenant');
-    cy.get(`#header-aicZone`).contains('AIC Zone');
 
     // check table body row
     cy.getElementByDataTestsId(`userId-${templateJobIdFromE2EFile}`).contains('16807000');
@@ -104,7 +103,6 @@ describe('Template', () => {
     cy.getElementByDataTestsId(`summary-${templateJobIdFromE2EFile}`).contains('vnf: 1, vfModule: 2, volumeGroup: 1');
     cy.getElementByDataTestsId(`region-${templateJobIdFromE2EFile}`).contains('hvf3 (SOMENAME)');
     cy.getElementByDataTestsId(`tenant-${templateJobIdFromE2EFile}`).contains('greatTenant');
-    cy.getElementByDataTestsId(`aicZone-${templateJobIdFromE2EFile}`).contains('NFTJSSSS-NFT1');
 
 
     //check load button is disabled
