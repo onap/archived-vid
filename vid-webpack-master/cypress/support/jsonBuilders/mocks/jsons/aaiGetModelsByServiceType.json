@@ -1,0 +1,58 @@
+{
+  "inventory-response-item": [
+    {
+      "service-subscription": {
+        "service-type": "TYLER SILVIA",
+        "resource-version": "1494001841964"
+      },
+      "extra-properties": {},
+      "inventory-response-items": {
+        "inventory-response-item":[
+          {
+            "model-name": "RG_11-18_vccf_srvc",
+            "service-instance": {
+              "service-instance-id": "b9769e8f-70aa-4b05-8988-64044aa63498",
+              "service-instance-name": "TestCharlie",
+              "model-invariant-id": "4af418a9-c2f5-4fae-a577-b69d6341eee8",
+              "model-version-id": "745d1bf1-9ed1-413f-8111-f1e984ad63fb",
+              "resource-version": "1494002070115"
+            },
+            "extra-properties": {
+              "extra-property": [
+                {
+                  "property-name": "model-ver.model-description",
+                  "property-value": "Service for vccf"
+                },
+                {
+                  "property-name": "model-ver.model-version-id",
+                  "property-value": "745d1bf1-9ed1-413f-8111-f1e984ad63fb"
+                },
+                {
+                  "property-name": "model-ver.model-name",
+                  "property-value": "RG_11-18_vccf_srvc"
+                },
+                {
+                  "property-name": "model.model-type",
+                  "property-value": "service"
+                },
+                {
+                  "property-name": "model.model-invariant-id",
+                  "property-value": "4af418a9-c2f5-4fae-a577-b69d6341eee8"
+                },
+                {
+                  "property-name": "model.model-description"
+                },
+                {
+                  "property-name": "model-ver.model-version",
+                  "property-value": "1.0"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+
+
