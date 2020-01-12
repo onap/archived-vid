@@ -33,6 +33,7 @@
     }],
     "requestParameters": {
       "userParams": [],
+      "usePreload": false,
       "testApi": "GR_API"
     },
     "modelInfo": {
