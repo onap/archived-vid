@@ -10,7 +10,6 @@ export class InstantiationTemplatesRowModel extends InstantiationBase{
   readonly summary?: string;
   readonly region?: string;
   readonly tenant?: string;
-  readonly aicZone?: string;
 
   constructor(data) {
     super(data);
@@ -21,7 +20,6 @@ export class InstantiationTemplatesRowModel extends InstantiationBase{
     this.summary = this.convertRequestSummaryFromMapToString(data.requestSummary);
     this.region = this.getRegion(data.regionId, data.owningEntityName);
     this.tenant = !_.isNil(data.tenantName) ? data.tenantName : null;
-    this.aicZone = !_.isNil(data.aicZoneName) ? data.aicZoneName : null;
   }
 
 
@@ -36,7 +34,8 @@ export class InstantiationTemplatesRowModel extends InstantiationBase{
 
   getRegion = (regionId: string, owningEntityName: string): string => {
     const convertOwning = !_.isNil(owningEntityName) ? `(${this.getCloudOwner(owningEntityName)})` : '';
-    return `${regionId} ${convertOwning}`.trim();
+    const region = !_.isNil(regionId) ? regionId : '';
+    return `${region} ${convertOwning}`.trim();
   };
 
 

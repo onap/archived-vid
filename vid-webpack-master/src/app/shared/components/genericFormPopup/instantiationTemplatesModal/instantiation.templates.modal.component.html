@@ -56,7 +56,6 @@
             <th class="header-title" id="header-summary">Summary</th>
             <th class="header-title" id="header-region">Region</th>
             <th class="header-title" id="header-tenant">Tenant</th>
-            <th class="header-title" id="header-aicZone">AIC Zone</th>
           </tr>
           </thead>
           <tbody>
@@ -135,16 +134,6 @@
                   [dataTestId]="'tenant-' + item.jobId"
                   [id]="item.tenant"
                   [value]="item.tenant"
-                  [breakWord]="true">
-                </custom-ellipsis>
-              </div>
-            </td>
-            <td>
-              <div>
-                <custom-ellipsis
-                  [dataTestId]="'aicZone-' + item.jobId"
-                  [id]="item.aicZone"
-                  [value]="item.aicZone"
                   [breakWord]="true">
                 </custom-ellipsis>
               </div>

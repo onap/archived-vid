@@ -17,9 +17,6 @@ class ActivatedRouteMock<T> {
   }
 }
 
-//
-
-
 class MockAppStore {}
 
 describe('instantiation templates modal service', () => {
@@ -123,7 +120,6 @@ describe('instantiation templates modal service', () => {
     expect(tableRows[0].instantiationStatus).toEqual('FAILED');
     expect(tableRows[0].region).toEqual('hvf6 (AAA1)');
     expect(tableRows[0].tenant).toEqual('AIN Web Tool-15-D-SSPtestcustome');
-    expect(tableRows[0].aicZone).toEqual('VSDKYUTP-BAN1');
     expect(tableRows[0].jobId).toEqual('9f88fdb5-bb47-4bf3-8c5f-98f1ad0ec87c');
   });
 
@@ -134,6 +130,14 @@ describe('instantiation templates modal service', () => {
       regionId: 'regionId'
     });
     expect(result.region).toEqual('regionId (OWNER)');
+  });
+
+  test('getRegion if null should return empty string', () => {
+    let result: InstantiationTemplatesRowModel = new InstantiationTemplatesRowModel({
+      owningEntityName: 'att-owner',
+      regionId: null
+    });
+    expect(result.region).toEqual('(OWNER)');
   });
 
   test('getCloudOwner should not return owningEntityName if not exist', () => {
