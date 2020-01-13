@@ -23,8 +23,10 @@ package org.onap.vid.services;
 import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
 import static net.javacrumbs.jsonunit.JsonAssert.whenIgnoringPaths;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
@@ -59,12 +61,14 @@ import static org.onap.vid.job.Job.JobStatus.PAUSE;
 import static org.onap.vid.job.Job.JobStatus.PENDING;
 import static org.onap.vid.job.Job.JobStatus.STOPPED;
 import static org.onap.vid.testUtils.TestUtils.generateRandomAlphaNumeric;
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -149,8 +153,6 @@ import org.testng.annotations.Test;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, MockedAaiClientAndFeatureManagerConfig.class})
 public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseTest {
-
-
 
     @Mock
     private JobAdapter jobAdapterMock;
@@ -1391,7 +1393,36 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     {
         String path = asyncInstantiationBL.getVfModuleReplacePath("myService", "myVNF", "myVFModule");
         assertThat(path, equalTo("/serviceInstantiation/v7/serviceInstances/myService/vnfs/myVNF/vfModules/myVFModule/replace"));
-
     }
+
+    @Test
+    public void whenCallClearStatusFromRequest_isFailedAndStatusAreRemoved() throws JsonProcessingException {
+        ServiceInstantiation serviceInstantiation = JACKSON_OBJECT_MAPPER.readValue(
+               "{"
+                + "    \"modelInfo\": {"
+                + "        \"modelType\": \"service\""
+                + "    },"
+                + "    \"isFailed\": true,"
+                + "    \"statusMessage\": \"some status\","
+                + "    \"vnfs\": {"
+                + "        \"vProbe_NC_VNF\": {"
+                + "            \"modelInfo\": {"
+                + "                \"modelType\": \"vnf\""
+                + "            },"
+                + "            \"isFailed\": true,"
+                + "            \"statusMessage\": \"other status\""
+                + "        }"
+                + "    }"
+                + "}",
+            ServiceInstantiation.class);
+        asyncInstantiationBL.clearStatusFromRequest(serviceInstantiation);
+        assertThat(serviceInstantiation, allOf(
+            jsonPartEquals("isFailed", false),
+            jsonPartEquals("statusMessage", null),
+            jsonPartEquals("vnfs.vProbe_NC_VNF.isFailed", false),
+            jsonPartEquals("vnfs.vProbe_NC_VNF.statusMessage", null)
+        ));
+    }
+
 
 }

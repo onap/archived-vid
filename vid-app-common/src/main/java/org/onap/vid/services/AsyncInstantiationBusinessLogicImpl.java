@@ -170,7 +170,9 @@ public class AsyncInstantiationBusinessLogicImpl implements
         int bulkSize = request.getBulkSize();
         UUID templateId = UUID.randomUUID();
         for (int i = 0; i < bulkSize; i++) {
-            ServiceInstantiation requestPerJob = prepareServiceToBeUnique(request);
+            ServiceInstantiation clonedServiceInstantiation = cloneServiceInstantiation(request);
+            ServiceInstantiation requestPerJob = prepareServiceToBeUnique(clonedServiceInstantiation);
+            requestPerJob = clearStatusFromRequest(requestPerJob);
             ServiceInfo.ServiceAction serviceAction = getAction(requestPerJob);
             JobType jobType = getJobType(requestPerJob);
             final String optimisticUniqueServiceInstanceName = bulkSize>1 ? //only bulk with more than 1 service need to get multiple names
@@ -561,20 +563,28 @@ public class AsyncInstantiationBusinessLogicImpl implements
 
     @Override
     public ServiceInstantiation prepareServiceToBeUnique(ServiceInstantiation serviceInstantiation) {
-        try {
-            ServiceInstantiation clonedServiceInstantiation = JACKSON_OBJECT_MAPPER.readValue(
-                    JACKSON_OBJECT_MAPPER.writeValueAsBytes(serviceInstantiation), ServiceInstantiation.class);
-            clonedServiceInstantiation.setBulkSize(1);
-            return replaceAllTrackById(clonedServiceInstantiation);
-        } catch (IOException e) {
-            throw new GenericUncheckedException(e);
-        }
-
+        serviceInstantiation.setBulkSize(1);
+        return replaceAllTrackById(serviceInstantiation);
     }
-
     private<T extends BaseResource> T replaceAllTrackById(T resource) {
         resource.setTrackById(UUID.randomUUID().toString());
         resource.getChildren().forEach(this::replaceAllTrackById);
+        return resource;
+    }
+
+    private ServiceInstantiation cloneServiceInstantiation(ServiceInstantiation serviceInstantiation) {
+        try {
+            return JACKSON_OBJECT_MAPPER.readValue(
+                JACKSON_OBJECT_MAPPER.writeValueAsBytes(serviceInstantiation), ServiceInstantiation.class);
+        } catch (IOException e) {
+            throw new GenericUncheckedException(e);
+        }
+    }
+
+    <T extends BaseResource> T clearStatusFromRequest(T resource) {
+        resource.setIsFailed(false);
+        resource.setStatusMessage(null);
+        resource.getChildren().forEach(this::clearStatusFromRequest);
         return resource;
     }
 
