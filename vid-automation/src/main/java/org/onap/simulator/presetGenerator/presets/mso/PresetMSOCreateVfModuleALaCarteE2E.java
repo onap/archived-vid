@@ -67,6 +67,7 @@ public class PresetMSOCreateVfModuleALaCarteE2E extends PresetMSOCreateVfModuleB
             + "            }" + addRelatedInstance()
             + "        ],"
             + "        \"requestParameters\": {"
+            + "               \"usePreload\": false,"
             + "               \"userParams\": [{"
             + "                    \"name\": \"param\","
             + "                    \"value\": \"ABCD\""

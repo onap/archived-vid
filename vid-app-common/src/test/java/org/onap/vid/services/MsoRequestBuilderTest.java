@@ -350,14 +350,14 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     @DataProvider
     public static Object[][] vfModuleRequestDetails(Method test) {
         return new Object[][]{
-                {"cc3514e3-5a33-55df-13ab-12abad84e7cc", true, "/payload_jsons/vfmodule_instantiation_request.json"},
-                {null, true, "/payload_jsons/vfmodule_instantiation_request_without_volume_group.json"},
-                {null, false, "/payload_jsons/vfmodule_instantiation_request_without_instance_name.json"}
+                {"cc3514e3-5a33-55df-13ab-12abad84e7cc", true, false, "/payload_jsons/vfmodule_instantiation_request.json"},
+                {null, true, null, "/payload_jsons/vfmodule_instantiation_request_without_volume_group.json"},
+                {null, false, true, "/payload_jsons/vfmodule_instantiation_request_without_instance_name.json"}
         };
     }
 
     @Test(dataProvider = "vfModuleRequestDetails")
-    public void createVfModuleRequestDetails_detailsAreAsExpected(String volumeGroupInstanceId, boolean isUserProvidedNaming, String fileName) throws IOException {
+    public void createVfModuleRequestDetails_detailsAreAsExpected(String volumeGroupInstanceId, boolean isUserProvidedNaming, Boolean usePreload, String fileName) throws IOException {
 
         ModelInfo siModelInfo = createServiceModelInfo();
         ModelInfo vnfModelInfo = createVnfModelInfo(true);
@@ -370,7 +370,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
 
         VfModule vfModule = createVfModule("201673MowAvpnVpeBvL..AVPN_vRE_BV..module-1", "56e2b103-637c-4d1a-adc8-3a7f4a6c3240",
                 "72d9d1cd-f46d-447a-abdb-451d6fb05fa8", instanceParams, supplementaryParams,
-                (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vRE_BV_expansion" : null), "myVgName", true);
+                (isUserProvidedNaming ? "vmxnjr001_AVPN_base_vRE_BV_expansion" : null), "myVgName", true, usePreload);
 
         String serviceInstanceId = "aa3514e3-5a33-55df-13ab-12abad84e7aa";
         String vnfInstanceId = "bb3514e3-5a33-55df-13ab-12abad84e7bb";
@@ -397,6 +397,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
                 emptyList(),
                 "vmxnjr001_AVPN_base_vRE_BV_expansion",
                 "myVgName",
+                true,
                 true);
         vfModule.getModelInfo().setModelInvariantId("ff5256d2-5a33-55df-13ab-12abad84e7ff");
         vfModule.getModelInfo().setModelVersion("1");
@@ -556,7 +557,8 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
                         "    }" +
                         "  }" +
                         "}";
-        VfModule vfModuleDetails = createVfModule("201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0", VF_MODULE_0_MODEL_VERSION_ID, VF_MODULE_0_MODEL_CUSTOMIZATION_NAME, null, emptyList(), "vmxnjr001_AVPN_base_vPE_BV_base", null, true);
+        VfModule vfModuleDetails = createVfModule("201673MowAvpnVpeBvL..AVPN_base_vPE_BV..module-0", VF_MODULE_0_MODEL_VERSION_ID, VF_MODULE_0_MODEL_CUSTOMIZATION_NAME,
+            null, emptyList(), "vmxnjr001_AVPN_base_vPE_BV_base", null, true, true);
         RequestDetailsWrapper<VfModuleOrVolumeGroupRequestDetails> result =
                 msoRequestBuilder.generateDeleteVfModuleRequest(vfModuleDetails, "az2018");
         MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);
