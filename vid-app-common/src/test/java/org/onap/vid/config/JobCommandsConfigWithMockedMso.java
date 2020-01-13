@@ -31,12 +31,32 @@ import org.onap.vid.aai.util.SystemPropertyHelper;
 import org.onap.vid.dal.AsyncInstantiationRepository;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobsBrokerService;
-import org.onap.vid.job.command.*;
+import org.onap.vid.job.command.ALaCarteServiceCommand;
+import org.onap.vid.job.command.CommandUtils;
+import org.onap.vid.job.command.InProgressStatusService;
+import org.onap.vid.job.command.InstanceGroupCommand;
+import org.onap.vid.job.command.InstanceGroupMemberCommand;
+import org.onap.vid.job.command.JobCommandFactory;
+import org.onap.vid.job.command.MacroServiceCommand;
+import org.onap.vid.job.command.MsoRequestBuilder;
+import org.onap.vid.job.command.MsoResultHandlerService;
+import org.onap.vid.job.command.NetworkCommand;
+import org.onap.vid.job.command.VfmoduleCommand;
+import org.onap.vid.job.command.VnfCommand;
+import org.onap.vid.job.command.VolumeGroupCommand;
+import org.onap.vid.job.command.WatchChildrenJobsBL;
 import org.onap.vid.job.impl.JobAdapterImpl;
 import org.onap.vid.job.impl.JobWorker;
 import org.onap.vid.job.impl.JobsBrokerServiceInDatabaseImpl;
+import org.onap.vid.model.ModelUtil;
 import org.onap.vid.mso.RestMsoImplementation;
-import org.onap.vid.services.*;
+import org.onap.vid.services.AsyncInstantiationBusinessLogic;
+import org.onap.vid.services.AsyncInstantiationBusinessLogicImpl;
+import org.onap.vid.services.AuditService;
+import org.onap.vid.services.AuditServiceImpl;
+import org.onap.vid.services.CloudOwnerService;
+import org.onap.vid.services.InstantiationTemplatesService;
+import org.onap.vid.services.VersionService;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -129,6 +149,18 @@ public class JobCommandsConfigWithMockedMso {
                                                                            AuditService auditService) {
         return new AsyncInstantiationBusinessLogicImpl(jobAdapter, jobsBrokerService, sessionFactory, aaiClient, featureManager, cloudOwnerService, asyncInstantiationRepository, auditService);
     }
+
+    @Bean
+    public ModelUtil modelUtil() {return new ModelUtil();}
+
+    @Bean
+    public InstantiationTemplatesService instantiationTemplatesService(
+        ModelUtil modelUtil,
+        AsyncInstantiationRepository asyncInstantiationRepository,
+        FeatureManager featureManager
+        ) {
+        return new InstantiationTemplatesService(modelUtil, asyncInstantiationRepository, featureManager);
+    };
 
 
     @Bean

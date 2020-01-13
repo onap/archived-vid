@@ -34,6 +34,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Every.everyItem;
@@ -119,6 +120,7 @@ import org.onap.vid.properties.Features;
 import org.onap.vid.services.AsyncInstantiationBaseTest;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
+import org.onap.vid.services.InstantiationTemplatesService;
 import org.onap.vid.services.VersionService;
 import org.onap.vid.testUtils.TestUtils;
 import org.onap.vid.utils.DaoUtils;
@@ -171,6 +173,9 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     @Inject
     private CommandUtils commandUtils;
+
+    @Inject
+    private InstantiationTemplatesService instantiationTemplates;
 
     @BeforeClass
     void initServicesInfoService() {
@@ -1307,6 +1312,46 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     private ServiceInstantiation upgradeVfModulePayload() {
         return readJsonResourceFileAsObject("/payload_jsons/vfmodule/upgrade_vfmodule_e2e__fe_input_cypress.json", ServiceInstantiation.class);
+    }
+
+    @Test
+    public void deployService_failIt_retryDeploy_getRetryAsTemplate_makeSureFalsyIsFailedInTemplate() {
+
+        final String SERVICE_REQUEST_ID = UUID.randomUUID().toString();
+        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VNF)).thenReturn(true);
+        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
+
+        //push alacarte with 1 vnf, verify STATUS pending
+        UUID uuid = pushALaCarteWithVnf();
+        singleServicesAndAssertStatus(JobStatus.PENDING, uuid);
+
+        reset(restMso);
+        //mock mso to answer 200 of create service instance request, verify STATUS in progress
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith("serviceInstances"), any())).thenReturn(
+            createResponse(200, SERVICE_INSTANCE_ID, SERVICE_REQUEST_ID));
+
+        //mock mso to answer FAILED for service instance create
+        final RestObject<AsyncRequestStatus> failedResponse = asyncRequestStatusResponseAsRestObject(FAILED_STR);
+        final String failureDescription = "Some deep failure";
+        failedResponse.get().request.requestStatus.setStatusMessage(failureDescription);
+        when(restMso.GetForObject(endsWith(SERVICE_REQUEST_ID), eq(AsyncRequestStatus.class))).
+            thenReturn(failedResponse);
+
+        //Wait till job failed
+        processJobsCountTimesAndAssertStatus(uuid, 10, FAILED);
+
+        //make sure retry request jas isFailed = true, and status message is with failureDescription
+        ServiceInstantiation retryRequest = asyncInstantiationBL.getBulkForRetry(uuid);
+        assertTrue(retryRequest.getIsFailed());
+        assertEquals(failureDescription, retryRequest.getStatusMessage());
+
+        //deploy retry job and it's template
+        UUID retryUuid = asyncInstantiationBL.pushBulkJob(retryRequest, USER_ID).get(0);
+        ServiceInstantiation templateOfRetry = instantiationTemplates.getJobRequestAsTemplate(retryUuid);
+
+        //make sure the template request has isFailed = false, and no status message
+        assertFalse(templateOfRetry.getIsFailed());
+        assertThat(templateOfRetry.getStatusMessage(), is(emptyString()));
     }
 
 }
