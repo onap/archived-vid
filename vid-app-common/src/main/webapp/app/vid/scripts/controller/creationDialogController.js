@@ -376,6 +376,7 @@ var creationDialogController = function (COMPONENT, FIELD, PARAMETER, $scope, $h
                     } else {
                         $scope.isDialogVisible = false;
                         $scope.popup.isVisible = false;
+                        runCallback(response);
                     }
                 }
             });
