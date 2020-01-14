@@ -1,0 +1,423 @@
+{
+  "action": "Create",
+  "isDirty": true,
+  "vnfs": {
+    "2017-488_PASQUALE-vPE 0": {
+      "action": "Create",
+      "inMaint": false,
+      "rollbackOnFailure": "true",
+      "originalName": "2017-488_PASQUALE-vPE 0",
+      "isMissingData": false,
+      "trackById": "4thhlv1ifk8",
+      "vfModules": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0axxko": {
+            "instanceName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0VFinstancenameZERO",
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content": null,
+            "instanceParams": [{}
+            ],
+            "modelInfo": {
+              "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
+              "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+              "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
+              "modelVersion": "5",
+              "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
+              "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+              "modelUniqueId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3"
+            },
+            "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+            "isMissingData": false
+          }
+        },
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1kxvlv": {
+            "instanceName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1VFinstancename",
+            "volumeGroupName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1VFinstancename_vol_abc",
+            "supplementaryFile": "C:\\fakepath\\sample.json",
+            "supplementaryFile_hidden": {},
+            "supplementaryFile_hidden_content": "[\r\n  {\r\n  \"name\": \"param\",\r\n  \"value\": \"ABCD\"\r\n  },\r\n  {\r\n    \"name\": \"vnf_instance_name\",\r\n    \"value\": \"sample\"\r\n  }\r\n]\r\n",
+            "instanceParams": [{
+              "vnf_config_template_version": "17.2",
+              "bandwidth_units": "Gbps",
+              "bandwidth": "10",
+              "AIC_CLLI": "ATLMY8GA",
+              "vnf_instance_name": "mtnj309me6"
+            }
+            ],
+            "supplementaryFileContent": [{
+              "name": "param",
+              "value": "ABCD"
+            }, {
+              "name": "vnf_instance_name",
+              "value": "sample"
+            }
+            ],
+            "supplementaryFileName": "sample.json",
+            "modelInfo": {
+              "modelInvariantId": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
+              "modelVersionId": "25284168-24bb-4698-8cb4-3f509146eca5",
+              "modelName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
+              "modelVersion": "6",
+              "modelCustomizationId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
+              "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
+              "modelUniqueId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401"
+            },
+            "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
+            "isMissingData": false,
+            "action": "Create"
+          }
+        }
+      },
+      "vnfStoreKey": "2017-488_PASQUALE-vPE 0",
+      "upgradedVFMSonsCounter": 0,
+      "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+      "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "lcpCloudRegionId": "AAIAIC25",
+      "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
+      "lineOfBusiness": "ONAP",
+      "platformName": "platform",
+      "modelInfo": {
+        "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+        "modelName": "2017-488_PASQUALE-vPE",
+        "modelVersion": "5.0",
+        "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
+        "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
+        "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+        "modelUniqueId": "1da7b585-5e61-4993-b95e-8e6606c81e45"
+      },
+      "instanceName": "2017-488_PASQUALE-vPEVNFinstancename",
+      "legacyRegion": "some legacy region",
+      "instanceParams": [{
+        "vnf_config_template_version": "17.2",
+        "bandwidth_units": "Gbps",
+        "bandwidth": "10",
+        "AIC_CLLI": "ATLMY8GA",
+        "ASN": "AV_vPE",
+        "vnf_instance_name": "mtnj309me6"
+      }
+      ]
+    },
+    "2017-388_PASQUALE-vPE 0": {
+      "action": "Create",
+      "inMaint": false,
+      "rollbackOnFailure": "true",
+      "originalName": "2017-388_PASQUALE-vPE 0",
+      "isMissingData": false,
+      "trackById": "wajemqsm28",
+      "vfModules": {},
+      "vnfStoreKey": "2017-388_PASQUALE-vPE 0",
+      "upgradedVFMSonsCounter": 0,
+      "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168",
+      "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "lcpCloudRegionId": "AAIAIC25",
+      "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
+      "lineOfBusiness": "ONAP",
+      "platformName": "platform",
+      "modelInfo": {
+        "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "modelVersionId": "afacccf6-397d-45d6-b5ae-94c39734b168",
+        "modelName": "2017-388_PASQUALE-vPE",
+        "modelVersion": "4.0",
+        "modelCustomizationId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
+        "modelCustomizationName": "2017-388_PASQUALE-vPE 0",
+        "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168",
+        "modelUniqueId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c"
+      },
+      "instanceName": "2017-388_PASQUALE-vPEVNF_NAME",
+      "legacyRegion": "some legacy region",
+      "instanceParams": [{
+        "vnf_config_template_version": "17.2",
+        "bandwidth_units": "Gbps",
+        "bandwidth": "10",
+        "AIC_CLLI": "ATLMY8GA",
+        "ASN": "AV_vPE",
+        "vnf_instance_name": "mtnj309me6"
+      }
+      ]
+    },
+    "2017-488_PASQUALE-vPE 0:0001": {
+      "action": "Create",
+      "inMaint": false,
+      "rollbackOnFailure": "true",
+      "originalName": "2017-488_PASQUALE-vPE 0",
+      "isMissingData": false,
+      "trackById": "8al62ujkdnn",
+      "vfModules": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0axxko": {
+            "instanceName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0VFinstancenameZERO_001",
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content": null,
+            "instanceParams": [{}
+            ],
+            "modelInfo": {
+              "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
+              "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+              "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
+              "modelVersion": "5",
+              "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
+              "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+              "modelUniqueId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3"
+            },
+            "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+            "isMissingData": false,
+            "trackById": "vwc9udn83i"
+          }
+        },
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1kxvlv": {
+            "instanceName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1VFinstancename_001",
+            "volumeGroupName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1VFinstancename_vol_abc_001",
+            "supplementaryFile": "C:\\fakepath\\sample.json",
+            "supplementaryFile_hidden": {},
+            "supplementaryFile_hidden_content": "[\r\n  {\r\n  \"name\": \"param\",\r\n  \"value\": \"ABCD\"\r\n  },\r\n  {\r\n    \"name\": \"vnf_instance_name\",\r\n    \"value\": \"sample\"\r\n  }\r\n]\r\n",
+            "instanceParams": [{
+              "vnf_config_template_version": "17.2",
+              "bandwidth_units": "Gbps",
+              "bandwidth": "10",
+              "AIC_CLLI": "ATLMY8GA",
+              "vnf_instance_name": "mtnj309me6"
+            }
+            ],
+            "supplementaryFileContent": [{
+              "name": "param",
+              "value": "ABCD"
+            }, {
+              "name": "vnf_instance_name",
+              "value": "sample"
+            }
+            ],
+            "supplementaryFileName": "sample.json",
+            "modelInfo": {
+              "modelInvariantId": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
+              "modelVersionId": "25284168-24bb-4698-8cb4-3f509146eca5",
+              "modelName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
+              "modelVersion": "6",
+              "modelCustomizationId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
+              "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
+              "modelUniqueId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401"
+            },
+            "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
+            "isMissingData": false,
+            "action": "Create",
+            "trackById": "ro9ve47r6x"
+          }
+        }
+      },
+      "vnfStoreKey": "2017-488_PASQUALE-vPE 0",
+      "upgradedVFMSonsCounter": 0,
+      "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+      "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "lcpCloudRegionId": "AAIAIC25",
+      "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
+      "lineOfBusiness": "ONAP",
+      "platformName": "platform",
+      "modelInfo": {
+        "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+        "modelName": "2017-488_PASQUALE-vPE",
+        "modelVersion": "5.0",
+        "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
+        "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
+        "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+        "modelUniqueId": "1da7b585-5e61-4993-b95e-8e6606c81e45"
+      },
+      "instanceName": "2017-488_PASQUALE-vPEVNFinstancename_001",
+      "legacyRegion": "some legacy region",
+      "instanceParams": [{
+        "vnf_config_template_version": "17.2",
+        "bandwidth_units": "Gbps",
+        "bandwidth": "10",
+        "AIC_CLLI": "ATLMY8GA",
+        "ASN": "AV_vPE",
+        "vnf_instance_name": "mtnj309me6"
+      }
+      ]
+    },
+    "2017-488_PASQUALE-vPE 0:0002": {
+      "action": "Create",
+      "inMaint": false,
+      "rollbackOnFailure": "true",
+      "originalName": "2017-488_PASQUALE-vPE 0",
+      "isMissingData": false,
+      "trackById": "ezef7i1egqr",
+      "vfModules": {
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0axxko": {
+            "instanceName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0VFinstancenameZERO_002",
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content": null,
+            "instanceParams": [{}
+            ],
+            "modelInfo": {
+              "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
+              "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+              "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
+              "modelVersion": "5",
+              "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
+              "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+              "modelUniqueId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3"
+            },
+            "uuid": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+            "isMissingData": false,
+            "trackById": "8wt7dnqw2"
+          }
+        },
+        "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1": {
+          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1kxvlv": {
+            "instanceName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1VFinstancename_002",
+            "volumeGroupName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1VFinstancename_vol_abc_002",
+            "supplementaryFile": "C:\\fakepath\\sample.json",
+            "supplementaryFile_hidden": {},
+            "supplementaryFile_hidden_content": "[{\"name\": \"param\", \"value\": \"ABCD\"  },{\"name\": \"vnf_instance_name\", \"value\": \"sample\"}]",
+            "instanceParams": [{
+              "vnf_config_template_version": "17.2",
+              "bandwidth_units": "Gbps",
+              "bandwidth": "10",
+              "AIC_CLLI": "ATLMY8GA",
+              "vnf_instance_name": "mtnj309me6"
+            }
+            ],
+            "supplementaryFileContent": [{
+              "name": "param",
+              "value": "ABCD"
+            }, {
+              "name": "vnf_instance_name",
+              "value": "sample"
+            }
+            ],
+            "supplementaryFileName": "sample.json",
+            "modelInfo": {
+              "modelInvariantId": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
+              "modelVersionId": "25284168-24bb-4698-8cb4-3f509146eca5",
+              "modelName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
+              "modelVersion": "6",
+              "modelCustomizationId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401",
+              "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1",
+              "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
+              "modelUniqueId": "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401"
+            },
+            "uuid": "25284168-24bb-4698-8cb4-3f509146eca5",
+            "isMissingData": false,
+            "action": "Create",
+            "trackById": "ktfmert6m4d"
+          }
+        }
+      },
+      "vnfStoreKey": "2017-488_PASQUALE-vPE 0",
+      "upgradedVFMSonsCounter": 0,
+      "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+      "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
+      "lcpCloudRegionId": "AAIAIC25",
+      "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
+      "lineOfBusiness": "ONAP",
+      "platformName": "platform",
+      "modelInfo": {
+        "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
+        "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+        "modelName": "2017-488_PASQUALE-vPE",
+        "modelVersion": "5.0",
+        "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
+        "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
+        "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
+        "modelUniqueId": "1da7b585-5e61-4993-b95e-8e6606c81e45"
+      },
+      "instanceName": "2017-488_PASQUALE-vPEVNFinstancename_002",
+      "legacyRegion": "some legacy region",
+      "instanceParams": [{
+        "vnf_config_template_version": "17.2",
+        "bandwidth_units": "Gbps",
+        "bandwidth": "10",
+        "AIC_CLLI": "ATLMY8GA",
+        "ASN": "AV_vPE",
+        "vnf_instance_name": "mtnj309me6"
+      }
+      ]
+    }
+  },
+  "vrfs": {},
+  "instanceParams": [{
+    "2017488_pasqualevpe0_ASN": "AV_vPE"
+  }
+  ],
+  "validationCounter": 0,
+  "existingNames": {
+    "SERVICE_NAME": "",
+    "2017-488_pasquale-vpevnfinstancename": "",
+    "2017-388_pasquale-vpeVNF_NAME": "",
+    "2017488pasqualevpe..pasquale_vre_bv..module-1vfinstancename": "",
+    "2017488pasqualevpe..pasquale_vre_bv..module-1vfinstancename_vol_abc": "",
+    "2017488pasqualevpe..pasquale_base_vpe_bv..module-0vfinstancenamezero": "",
+    "2017-488_pasquale-vpevnfinstancename_001": "",
+    "2017488pasqualevpe..pasquale_base_vpe_bv..module-0vfinstancenamezero_001": "",
+    "2017488pasqualevpe..pasquale_vre_bv..module-1vfinstancename_001": "",
+    "2017488pasqualevpe..pasquale_vre_bv..module-1vfinstancename_vol_abc_001": "",
+    "2017-488_pasquale-vpevnfinstancename_002": "",
+    "2017488pasqualevpe..pasquale_base_vpe_bv..module-0vfinstancenamezero_002": "",
+    "2017488pasqualevpe..pasquale_vre_bv..module-1vfinstancename_002": "",
+    "2017488pasqualevpe..pasquale_vre_bv..module-1vfinstancename_vol_abc_002": ""
+  },
+  "existingVNFCounterMap": {
+    "1da7b585-5e61-4993-b95e-8e6606c81e45": 3,
+    "b3c76f73-eeb5-4fb6-9d31-72a889f1811c": 1
+  },
+  "existingVRFCounterMap": {},
+  "existingVnfGroupCounterMap": {},
+  "existingNetworksCounterMap": {},
+  "optionalGroupMembersMap": {},
+  "networks": {},
+  "vnfGroups": {},
+  "bulkSize": "3",
+  "isUpgraded": false,
+  "upgradedVFMSonsCounter": 0,
+  "instanceName": "SERVICE_NAME",
+  "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "subscriptionServiceType": "TYLER SILVIA",
+  "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+  "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
+  "lcpCloudRegionId": "hvf6",
+  "tenantId": "bae71557c5bb4d5aac6743a4e5f1d054",
+  "aicZoneId": "NFT1",
+  "projectName": "WATKINS",
+  "rollbackOnFailure": "true",
+  "aicZoneName": "NFTJSSSS-NFT1",
+  "owningEntityName": "WayneHolland",
+  "testApi": "VNF_API",
+  "tenantName": "AIN Web Tool-15-D-testalexandria",
+  "modelInfo": {
+    "modelInvariantId": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+    "modelVersionId": "6b528779-44a3-4472-bdff-9cd15ec93450",
+    "modelName": "action-data",
+    "modelVersion": "1.0",
+    "uuid": "6b528779-44a3-4472-bdff-9cd15ec93450",
+    "modelUniqueId": "6b528779-44a3-4472-bdff-9cd15ec93450"
+  },
+  "isALaCarte": false,
+  "name": "action-data",
+  "version": "1.0",
+  "description": "",
+  "category": "",
+  "uuid": "6b528779-44a3-4472-bdff-9cd15ec93450",
+  "invariantUuid": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+  "serviceType": "",
+  "serviceRole": "",
+  "vidNotions": {
+    "instantiationUI": "legacy",
+    "modelCategory": "other",
+    "viewEditUI": "macroService",
+    "instantiationType": "Macro"
+  },
+  "isEcompGeneratedNaming": false,
+  "isMultiStepDesign": false
+}
+

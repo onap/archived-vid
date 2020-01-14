@@ -28,7 +28,6 @@ import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcomp
 import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse;
 import static vid.automation.test.infra.ModelInfo.macroSriovWithDynamicFieldsEcompNamingFalsePartialModelDetailsVnfEcompNamingFalse;
 import static vid.automation.test.infra.ModelInfo.macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails;
-import static vid.automation.test.infra.ModelInfo.pasqualeVmxVpeBvService488Annotations;
 import static vid.automation.test.infra.ModelInfo.transportWithPnfsService;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
@@ -106,7 +105,7 @@ import vid.automation.test.test.NewServiceInstanceTest.ServiceData.IS_GENERATED_
 import vid.automation.test.utils.ReadFile;
 
 @FeatureTogglingTest(FLAG_ENABLE_WEBPACK_MODERN_UI)
-public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
+public class NewServiceInstanceTest extends DrawingBoardInstantiationBase {
 
     public static final String COMPLETED = "COMPLETED";
     private static final String IN_PROGRESS = "IN_PROGRESS";
@@ -319,34 +318,28 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         });
 
         doReduxStep(reduxStates, randomAlphabetic, startInStep, reduxForStep, i, mode, () -> {
-            prepareServicePreset(macroSriovWithDynamicFieldsEcompNamingFalsePartialModelDetailsVnfEcompNamingFalse,
-                    true);
 
-            final String vfModuleName1 = "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0";
-            final String vfModuleName2 = "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1";
-            final String request1 = PresetMSOBaseCreateInstancePost.DEFAULT_REQUEST_ID;
-            final String request2 = "ce010256-3fdd-4cb5-aed7-37112a2c6e93";
-            final ImmutableMap<Keys, String> vars = ImmutableMap.<Keys, String>builder()
-                    .put(Keys.SERVICE_NAME, serviceInstanceName)
-                    .put(Keys.VNF_NAME, cleanSeparators("2017-488_PASQUALE-vPE", serviceData.vnfData.vnfInstanceName))
-                    .put(Keys.VFM_NAME1, cleanSeparators(vfModuleName1 , "VF instance name ZERO"))
-                    .put(Keys.VFM_NAME2, cleanSeparators(vfModuleName2 , "VF instance name"))
-                    .put(Keys.VG_NAME, cleanSeparators(vfModuleName2 , "VF instance name") + "_vol_abc")
-                    .put(Keys.VNF_NAME2, cleanSeparators(vnfName2, vnfInstanceName2))
-                    .build();
-            registerExpectationFromPresets(ImmutableList.of(
-                    // although "some legacy region" is provided for vnf, Service's region "hvf6" overrides it
-                    PRESET_MTN6_TO_ATT_AIC,
-                    new PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse(vars, 0, request1),
-                    new PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse(vars, 1, request2)
-            ), SimulatorApi.RegistrationStrategy.APPEND);
+            final ImmutableMap<Keys, String> vars = generateNamesForEcompNamingFalsePreset(serviceData.vnfData.vnfInstanceName, serviceInstanceName, vnfInstanceName2, vnfName2);
 
-            deployAndVerifyModuleInPendingTableMacro(serviceInstanceName, request1, request2);
+            final String requestId1 = registerPresetsForEcompNamingFalseFirstService(vars);
+
+            final String requestId2 = registerPresetsForEcompNamingFalseSecondService(vars);
+
+            deployAndVerifyModuleInPendingTableMacro(serviceInstanceName, requestId1, requestId2);
             verifyOpenAuditInfo(serviceInstanceName);
             verifyOpenViewEdit(serviceInstanceName);
             verifyDeleteJob(serviceInstanceName);
             verifyHideJob(serviceInstanceName);
         });
+    }
+
+    @NotNull
+    protected String registerPresetsForEcompNamingFalseSecondService(ImmutableMap<Keys, String> vars) {
+        final String requestId2 = "ce010256-3fdd-4cb5-aed7-37112a2c6e93";
+        registerExpectationFromPreset(
+            new PresetMSOCreateServiceInstanceGen2WithNamesEcompNamingFalse(vars, 1, requestId2),
+            SimulatorApi.RegistrationStrategy.APPEND);
+        return requestId2;
     }
 
     @Test
@@ -526,10 +519,6 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         assertThat(options.stream().map(x -> x.getText()).collect(Collectors.toList()), Matchers.contains("1","2"));
         SelectOption.byIdAndVisibleText("duplicate-select", String.valueOf(count));
         Click.byClassAndVisibleText("sdc-button__primary", "DUPLICATE");
-    }
-
-    private String cleanSeparators(String... s) {
-        return String.join("", s).replace(" ", "");
     }
 
     //@Step("edit vf module and just set name")
@@ -1350,6 +1339,13 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         GeneralUIUtils.ultimateWait();
     }
 
+    public void validateDynamicFields(List<String> dynamicFields) {
+        for (String field : dynamicFields) {
+            WebElement fieldElement = GeneralUIUtils.findByText(field);
+            org.junit.Assert.assertNotNull("couldn't find dynamic field: " + field, fieldElement);
+        }
+    }
+
     private void clickEditVfModule(ServiceData serviceData) {
         hoverAndClickEditButton(serviceData.vfData.uuid + "-" + serviceData.vfData.vfName);
     }
@@ -1400,22 +1396,6 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         Assert.assertNotNull(webElement, "notification area should be visible if more then 1 qty.");
     }
 
-    //@Step("prepare service preset")
-    private void prepareServicePreset(ModelInfo modelInfo, boolean deploy) {
-        String subscriberId = "e433710f-9217-458d-a79d-1c7aff376d89";
-
-        if (deploy) {
-            registerExpectationForServiceDeployment(
-                ImmutableList.of(
-                    modelInfo,
-                    pasqualeVmxVpeBvService488Annotations
-                ),
-                subscriberId, null);
-        } else {
-            registerExpectationForServiceBrowseAndDesign(ImmutableList.of(modelInfo), subscriberId);
-        }
-    }
-
     static class ServiceData {
 
         ServiceData(String modelUuid, List<String> dynamicFields, IS_GENERATED_NAMING isServiceGeneratedNaming,
@@ -1448,7 +1428,7 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         enum IS_GENERATED_NAMING { TRUE, FALSE, TRUE_BUT_GIVE_NAME_EITHER_WAY}
     }
 
-    private static class VnfData {
+    public static class VnfData {
         VnfData(String vnfName, String vnfUuid, String vnfInstanceName, boolean isGeneratedNaming) {
             this.vnfName = vnfName;
             this.vnfUuid = vnfUuid;

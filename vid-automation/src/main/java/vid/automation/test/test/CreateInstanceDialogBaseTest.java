@@ -1,5 +1,6 @@
 package vid.automation.test.test;
 
+import java.util.ArrayList;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
@@ -11,9 +12,6 @@ import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.Service;
 import vid.automation.test.model.ServiceModel;
 import vid.automation.test.sections.ViewEditPage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
 
@@ -161,10 +159,5 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
         Click.byId(multiSelectId);
     }
 
-    public void validateDynamicFields(List<String> dynamicFields) {
-        for (String field : dynamicFields) {
-            WebElement fieldElement = GeneralUIUtils.findByText(field);
-            Assert.assertNotNull("couldn't find dynamic field: " + field, fieldElement);
-        }
-    }
+
 }
