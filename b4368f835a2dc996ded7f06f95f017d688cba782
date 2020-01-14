@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5792b618_07cd576c",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/browse-sdc.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-14T15:23:13Z",
+      "side": 1,
+      "message": "using this file here is not 100 percent ok, as this file mimics the aai response. but the Cypress mimics the backend response.\ntoday it is the same, but tomorrow the backend response will be added with isInstantiationTemplateExists fields, which will not be added to aai_get_models_by_service_type_SILVIA_ROBBINS file.",
+      "revId": "b4368f835a2dc996ded7f06f95f017d688cba782",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc0297c8_174b190e",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/browse-sdc.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-14T15:23:13Z",
+      "side": 1,
+      "message": "I suppose this line should happen before the previous one of clicking deploy, isn\u0027t it?",
+      "revId": "b4368f835a2dc996ded7f06f95f017d688cba782",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
