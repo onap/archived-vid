@@ -20,6 +20,8 @@
 
 package org.onap.vid.properties;
 
+import java.io.File;
+import javax.servlet.ServletContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -29,9 +31,6 @@ import org.togglz.core.manager.FeatureManager;
 import org.togglz.core.manager.FeatureManagerBuilder;
 import org.togglz.core.repository.file.FileBasedStateRepository;
 import org.togglz.spring.listener.TogglzApplicationContextBinderApplicationListener;
-
-import javax.servlet.ServletContext;
-import java.io.File;
 
 @Configuration
 public class FeaturesTogglingConfiguration {
@@ -52,11 +51,13 @@ public class FeaturesTogglingConfiguration {
 
         filename = StringUtils.trimToNull(filename);
 
-        return new FeatureManagerBuilder()
+        return new FeatureSetsManager(
+            new FeatureManagerBuilder()
                 .featureEnum(Features.class)
                 .stateRepository(new FileBasedStateRepository(
-                        new File(filename.startsWith("/")? filename : servletContext.getRealPath("/WEB-INF/conf/" + filename))
+                    new File(filename.startsWith("/") ? filename : servletContext.getRealPath("/WEB-INF/conf/" + filename))
                 ))
-                .build();
+                .build(), servletContext
+        );
     }
 }
