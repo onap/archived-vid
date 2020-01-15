@@ -374,7 +374,7 @@ public final class GeneralUIUtils {
 	}
 
 	public static void waitForLoader(int timeOut) {
-		newWait(timeOut).until(ExpectedConditions.invisibilityOfElementLocated(By.className("sdc-loader-background")));
+		newWait(timeOut).until(ExpectedConditions.invisibilityOfElementLocated(By.className("custom-loader-background")));
 	}
 
 	public static void findComponentAndClick(String resourceName) throws Exception {

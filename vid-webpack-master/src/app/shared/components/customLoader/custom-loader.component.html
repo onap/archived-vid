@@ -1,0 +1,15 @@
+<div>
+  <div class="custom-loader-wrapper" *ngIf="!global" [attr.data-tests-id]="testId">
+    <div class="custom-loader-background" *ngIf="active"
+         [style.top]="offset.top" [style.left]="offset.left" [style.width]="offset.width"
+         [style.height]="offset.height">
+      <div class="custom-loader {{ size }}" *ngIf="active"></div>
+    </div>
+    <ng-content></ng-content>
+  </div>
+  <div *ngIf="global && active" [attr.data-tests-id]="testId">
+    <div class="custom-loader-global-wrapper custom-loader-background">
+      <div class="custom-loader {{ size }}"></div>
+    </div>
+  </div>
+</div>

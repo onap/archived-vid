@@ -6,7 +6,7 @@ import * as _ from 'lodash';
   selector: 'custom-ellipsis',
   template: `
     <span
-      sdc-tooltip
+      custom-tooltip
       class="ellipsis"
       [attr.data-tests-id]="dataTestId"
       id="{{id}}"
