@@ -523,13 +523,17 @@ public class VidBaseTestCase extends SetupCDTest{
         loadServicePopupOnBrowseASDCPage(modelVersionId);
     }
 
-    protected void loadServicePopupOnBrowseASDCPage(String modelVersionId ) {
+    protected void loadServicePopupOnBrowseASDCPage(String modelVersionId) {
+        loadServicePopupOnBrowseASDCPage(modelVersionId, "Model version");
+    }
+
+    protected void loadServicePopupOnBrowseASDCPage(String modelVersionId, String expectedText) {
         DeployModernUIMacroDialog deployMacroDialog = new DeployModernUIMacroDialog();
         VidBasePage.goOutFromIframe();
         deployMacroDialog.clickDeployServiceButtonByServiceUUID(modelVersionId);
         deployMacroDialog.goToIframe();
         GeneralUIUtils.ultimateWait();
-        Wait.byText("Model version");
+        Wait.byText(expectedText);
     }
 
     public void assertSetButtonDisabled(String buttonTestId) {
