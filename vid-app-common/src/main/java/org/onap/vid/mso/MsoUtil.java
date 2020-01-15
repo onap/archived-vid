@@ -21,15 +21,15 @@
 
 package org.onap.vid.mso;
 
+import static org.apache.commons.lang3.StringUtils.firstNonBlank;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.joshworks.restclient.http.HttpResponse;
 import java.io.IOException;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.onap.vid.exceptions.GenericUncheckedException;
 
 public class MsoUtil {
 
@@ -76,22 +76,31 @@ public class MsoUtil {
     }
 
     public static String formatExceptionAdditionalInfo(int statusCode, String msoResponse) {
-        String errorMsg = "Http Code:" + statusCode;
-        if (!StringUtils.isEmpty(msoResponse)) {
-            String filteredJson;
-            try {
-                filteredJson = StringUtils.defaultIfEmpty(
-                        JACKSON_OBJECT_MAPPER.readTree(msoResponse).path("serviceException").toString().replaceAll("[\\{\\}]","") ,
-                        msoResponse
-                );
-            } catch (JsonParseException e) {
-                filteredJson = msoResponse;
-            } catch (IOException e) {
-                throw new GenericUncheckedException(e);
-            }
+        final String errorMsg = "Http Code:" + statusCode;
 
-            errorMsg = errorMsg + ", " + filteredJson;
+        if (isEmpty(msoResponse)) {
+            return errorMsg;
         }
-        return errorMsg;
+
+        try {
+            JsonNode jsonNode = JACKSON_OBJECT_MAPPER.readTree(msoResponse);
+
+            return errorMsg + ", " + firstNonBlank(
+                removeBraces(jsonNode.get("serviceException")),
+                removeBraces(jsonNode.path("requestError").get("serviceException")),
+                msoResponse
+            );
+
+        } catch (Exception e) {
+            return errorMsg + ", " + msoResponse;
+        }
+    }
+
+    private static String removeBraces(JsonNode jsonNode) {
+        if (jsonNode == null || jsonNode.isMissingNode()) {
+            return null;
+        }
+
+        return jsonNode.toString().replaceAll("[\\{\\}]", "");
     }
 }

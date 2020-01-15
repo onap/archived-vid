@@ -1223,7 +1223,8 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         String message = "Failed to create service instance";
         return new Object[][]{
                 {500, message},
-                {199, "{\"serviceException\":{\"messageId\":\"SVC2000\",\"text\":\"Error: " + message + "\"}}"}
+                {400, "{\"requestError\":{\"serviceException\":{\"messageId\":\"SVC0002\",\"text\":\"" + message + "\"}}}"},
+                {199, "{\"serviceException\":{\"messageId\":\"SVC2000\",\"text\":\"Error: " + message + "\"}}"},
         };
     }
 
