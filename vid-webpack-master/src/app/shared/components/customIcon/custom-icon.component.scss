@@ -1,0 +1,297 @@
+@import 'node_modules/onap-ui-common/lib/scss/variables.scss';
+
+:host {
+  display: inline-flex;
+}
+
+@mixin color-icon($primary-color) {
+  color: $primary-color;
+  fill: $primary-color;
+}
+
+@mixin color-icon-hover($secondary-color) {
+  &.clickable {
+    cursor: pointer;
+    &:not([disabled]):hover, &:active, &:focus {
+      @include color-icon($secondary-color);
+    }
+  }
+}
+
+@mixin color-icon-label($primary-color) {
+  @include color-icon($primary-color);
+
+  .custom-icon {
+    @include color-icon($primary-color);
+  }
+}
+
+@mixin color-icon-label-hover($secondary-color) {
+  &.clickable {
+    &:not([disabled]):hover, &:active, &:focus {
+      @include color-icon-label($secondary-color);
+    }
+  }
+}
+
+/deep/ .custom-icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  box-sizing: content-box;
+
+  & > svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  &[disabled] {
+    opacity: 0.7;
+  }
+
+  &.mode-primary {
+    @include color-icon($blue);
+    @include color-icon-hover($light-blue);
+  }
+
+  &.mode-primary2 {
+    @include color-icon($dark-gray);
+    @include color-icon-hover($light-blue);
+  }
+
+  &.mode-secondary {
+    @include color-icon($gray);
+    @include color-icon-hover($dark-gray);
+  }
+
+  &.mode-success {
+    @include color-icon($green);
+  }
+
+  &.mode-error {
+    @include color-icon($red);
+  }
+
+  &.mode-warning {
+    @include color-icon($yellow);
+  }
+
+  &.mode-info {
+    @include color-icon($text-black);
+    @include color-icon-hover($dark-blue);
+  }
+
+  &.mode-white {
+    @include color-icon($white);
+    @include color-icon-hover($light-gray);
+  }
+
+  &.size-x_small {
+    width: 8px;
+    height: 8px;
+  }
+
+  &.size-small {
+    width: 12px;
+    height: 12px;
+  }
+
+  &.size-medium {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.size-large {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.size-x_large {
+    width: 36px;
+    height: 36px;
+  }
+
+  &.size-x_x_large {
+    width: 48px;
+    height: 48px;
+  }
+
+  &.bg-type-circle {
+    border-radius: 50%;
+    padding: 6px;
+  }
+
+  &.bg-type-rectangle {
+    padding: 6px;
+  }
+
+  &.bg-color-purple {
+    background-color: $purple;
+  }
+
+  &.bg-color-light-blue {
+    background-color: $light-blue;
+  }
+
+  &.bg-color-green {
+    background-color: $green;
+  }
+
+  &.bg-color-red {
+    background-color: $red;
+  }
+
+  &.bg-color-yellow {
+    background-color: $yellow;
+  }
+
+  &.bg-color-blue {
+    background-color: $blue;
+  }
+
+  &.bg-color-lightBlue {
+    background-color: $light-blue;
+  }
+
+  &.bg-color-darkBlue {
+    background-color: $dark-blue;
+  }
+
+  &.bg-color-darkBlue2 {
+    background-color: $dark-blue2;
+  }
+
+  &.bg-color-disabledBlue {
+    background-color: $disabled-blue;
+  }
+
+  &.bg-color-gray {
+    background-color: $gray;
+  }
+
+  &.bg-color-white {
+    background-color: $white;
+  }
+
+  &.bg-color-transparent {
+    background-color:transparent;
+  }
+  &.bg-color-silver {
+    background-color: $light-silver;
+  }
+}
+
+.custom-icon-wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  &.custom-icon-label {
+  }
+
+  &.custom-icon {
+  }
+
+  &[disabled] {
+    opacity: 0.7;
+  }
+
+  &.label-placement-bottom {
+    flex-direction: column;
+    .custom-icon-label {
+      margin-top: 0.25em;
+    }
+  }
+
+  &.label-placement-right {
+    .custom-icon-label {
+      margin-left: 0.25em;
+    }
+  }
+
+  &.label-placement-top {
+    flex-direction: column-reverse;
+    .custom-icon-label {
+      margin-bottom: 0.25em;
+    }
+  }
+
+  &.label-placement-left {
+    flex-direction: row-reverse;
+    .custom-icon-label {
+      margin-right: 0.25em;
+    }
+  }
+
+  &.mode-primary {
+    @include color-icon-label($blue);
+    @include color-icon-label-hover($light-blue);
+  }
+
+  &.mode-secondary {
+    @include color-icon-label($gray);
+    @include color-icon-label-hover($light-blue);
+  }
+
+  &.mode-success {
+    @include color-icon-label($green);
+  }
+
+  &.mode-error {
+    @include color-icon-label($red);
+  }
+
+  &.mode-warning {
+    @include color-icon-label($yellow);
+  }
+
+  &.mode-info {
+    @include color-icon-label($text-black);
+    @include color-icon-label-hover($light-blue);
+  }
+
+  &.size-x_small {
+    font-size: 8px;
+    line-height: 10px;
+
+    .custom-icon {
+      @extend .custom-icon.size-x_small;
+    }
+  }
+
+  &.size-small {
+    font-size: 12px;
+    line-height: 14px;
+
+    .custom-icon {
+      @extend .custom-icon.size-small;
+    }
+  }
+
+  &.size-medium {
+    font-size: 16px;
+    line-height: 20px;
+
+    .custom-icon {
+      @extend .custom-icon.size-medium;
+    }
+  }
+
+  &.size-large {
+    font-size: 24px;
+    line-height: 28px;
+
+    .custom-icon {
+      @extend .custom-icon.size-large;
+    }
+  }
+
+  &.size-x_large {
+    font-size: 34px;
+    line-height: 40px;
+
+    .custom-icon {
+      @extend .custom-icon.size-x_large;
+    }
+  }
+}
