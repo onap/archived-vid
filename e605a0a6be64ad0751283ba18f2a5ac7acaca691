@@ -50,6 +50,24 @@
       "revId": "e605a0a6be64ad0751283ba18f2a5ac7acaca691",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17c0810d_1b39a13b",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/properties/FeatureSetsManagerTest.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-15T11:40:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "183aaf54_e008ed0f",
+      "revId": "e605a0a6be64ad0751283ba18f2a5ac7acaca691",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
