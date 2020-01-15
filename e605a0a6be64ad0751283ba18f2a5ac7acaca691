@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cfdfba97_05fec110",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/FeatureSetsManager.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-15T07:24:39Z",
+      "side": 1,
+      "message": "pity that httpServletRequest is nullable",
+      "revId": "e605a0a6be64ad0751283ba18f2a5ac7acaca691",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f72c360_d5b91069",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/FeatureSetsManager.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-15T07:24:39Z",
+      "side": 1,
+      "message": "requestAttributes is nullable",
+      "revId": "e605a0a6be64ad0751283ba18f2a5ac7acaca691",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "183aaf54_e008ed0f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/properties/FeatureSetsManagerTest.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-15T07:24:39Z",
+      "side": 1,
+      "message": "Please add test that your bottom line target is achieved :\nuse some feature that is off by regular manager and on in specific file (like example.features.properties)\nAnd then test :\nIf there is a cookie with feature set - you get the feature flag on.\nIf there is no cookie with feature set - you get the feature flag off",
+      "revId": "e605a0a6be64ad0751283ba18f2a5ac7acaca691",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
