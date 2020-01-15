@@ -14,7 +14,7 @@ import {RippleAnimationAction} from "../../directives/ripple-click.animation.dir
          [attr.data-tests-id]="testId"
          (click)="!disabled && closeModal('close')"
     >
-      <svg-icon name="close" [mode]="disabled? 'secondary' : 'info'" size="small"></svg-icon>
+      <custom-icon name="close" [mode]="disabled? 'secondary' : 'info'" size="small"></custom-icon>
     </div>
   `
 })

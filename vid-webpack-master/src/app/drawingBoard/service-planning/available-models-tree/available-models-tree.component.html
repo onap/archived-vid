@@ -29,10 +29,10 @@
               <span [attr.data-tests-id]="'numberButton'">{{node.data.getNodeCount(node, this.serviceModelId)}}</span>
             </span>
             <span class="icon-v" *ngIf="node?.data?.showNodeIcons(node, serviceModelId)?.vIcon">
-                <svg-icon
+                <custom-icon
                   [mode]="'secondary'"
                   [name]="'maximum'">
-              </svg-icon>
+              </custom-icon>
             </span>
             <span class="icon-plus" *ngIf="_store.getState().service.serviceInstance[serviceModelId].action !== 'Delete' && node?.data?.showNodeIcons(node, serviceModelId)?.addIcon">
               <span tooltip="Add" [attr.data-tests-id]="'node-'+node.data.name+'-add-btn'" (click)="onClickAdd(node, serviceModelId)">

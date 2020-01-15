@@ -8,12 +8,12 @@
 
         <div *ngIf="title" class="title" >
           {{ title }}
-          <svg-icon
+          <custom-icon
             *ngIf="titleIcon"
             [name]="titleIcon.iconName"
             [mode]="titleIcon.iconMode"
             [size]="titleIcon.iconSize">
-          </svg-icon>
+          </custom-icon>
         </div>
         <sdc-modal-close-button #modalCloseButton [testId]="'close' | calculateTestId : testId" [modalInstanceRef]="instanceRef"></sdc-modal-close-button>
       </div>
