@@ -88,6 +88,8 @@ import {ModalCloseButtonComponent} from './components/customModal/components/mod
 import {CustomButtonComponent} from "./components/customButton/custom-button.component";
 import {CustomModalButtonComponent} from "./components/customModal/components/modalButton/modal-button.component";
 import {CustomRippleClickAnimationDirective} from "./components/customModal/directives/ripple-click.animation.directive";
+import {LoaderComponent} from "./components/customLoader/custom-loader.component";
+import {LoaderService} from "./components/customLoader/custom-loader.service";
 
 
 
@@ -147,7 +149,8 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     ModalComponent,
     ModalCloseButtonComponent,
     CustomButtonComponent,
-    CustomModalButtonComponent
+    CustomModalButtonComponent,
+    LoaderComponent
   ],
   exports: [
     PopoverComponent,
@@ -184,7 +187,8 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     ModalComponent,
     ModalCloseButtonComponent,
     CustomButtonComponent,
-    CustomModalButtonComponent
+    CustomModalButtonComponent,
+    LoaderComponent
   ],
   entryComponents : [
     GenericFormPopupComponent,
@@ -234,7 +238,8 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     SearchFilterPipe,
     ModelInformationService,
     MultiselectFormControlService,
-    InstantiationTemplatesModalService
+    InstantiationTemplatesModalService,
+    LoaderService
   ]
 })
 export class SharedModule {

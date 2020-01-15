@@ -32,7 +32,7 @@ describe('Spinner', function () {
             "error 500 asyncInstantiation");
           cy.openIframe('app/ui/#/instantiationStatus');
 
-          cy.get('.sdc-loader')
+          cy.get('.custom-loader')
             .and('be.visible');
 
         });
