@@ -49,7 +49,6 @@ import {ServicePopupService} from "./components/genericFormPopup/genericFormServ
 import {GenericFormPopupService} from "./components/genericFormPopup/generic-form-popup.service";
 import {FormGeneralErrorsService} from "./components/formGeneralErrors/formGeneralErrors.service";
 import {VnfPopupService} from "./components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
-import {SdcUiComponentsModule, SdcUiServices} from "onap-ui-angular";
 import {SafePipe} from "./pipes/safe/safe.pipe";
 import {ViewEditResolver} from "./resolvers/viewEdit/viewEdit.resolver";
 import {FlagsResolve} from "./resolvers/flag/flag.resolver";
@@ -88,6 +87,12 @@ import {ModalCloseButtonComponent} from './components/customModal/components/mod
 import {CustomButtonComponent} from "./components/customButton/custom-button.component";
 import {CustomModalButtonComponent} from "./components/customModal/components/modalButton/modal-button.component";
 import {CustomRippleClickAnimationDirective} from "./components/customModal/directives/ripple-click.animation.directive";
+import {LoaderComponent} from "./components/customLoader/custom-loader.component";
+import {LoaderService} from "./components/customLoader/custom-loader.service";
+import {SvgIconComponent} from "./components/customIcon/custom-icon.component";
+import {TooltipTemplateComponent} from "./components/customTooltip/custom-tooltip.component";
+import {TooltipDirective} from "./components/customTooltip/tooltip.directive";
+import {SdcUiComponentsModule} from "onap-ui-angular";
 
 
 
@@ -101,8 +106,8 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     FeatureFlagModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    TooltipModule,
     SdcUiComponentsModule,
+    TooltipModule,
     AngularMultiSelectModule,
     BootstrapModalModule,
     DataTableModule,
@@ -119,6 +124,7 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     NumberFormControlComponent,
     InputPreventionPatternDirective,
     ClickOutsideDirective,
+    TooltipDirective,
     CustomRippleClickAnimationDirective,
     FormGeneralErrorsComponent,
     SpinnerComponent,
@@ -147,7 +153,10 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     ModalComponent,
     ModalCloseButtonComponent,
     CustomButtonComponent,
-    CustomModalButtonComponent
+    CustomModalButtonComponent,
+    LoaderComponent,
+    SvgIconComponent,
+    TooltipTemplateComponent
   ],
   exports: [
     PopoverComponent,
@@ -158,6 +167,7 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     InputPreventionPatternDirective,
     CustomRippleClickAnimationDirective,
     ClickOutsideDirective,
+    TooltipDirective,
     FormGeneralErrorsComponent,
     SpinnerComponent,
     NoContentMessageAndIconComponent,
@@ -184,7 +194,10 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     ModalComponent,
     ModalCloseButtonComponent,
     CustomButtonComponent,
-    CustomModalButtonComponent
+    CustomModalButtonComponent,
+    LoaderComponent,
+    SvgIconComponent,
+    TooltipTemplateComponent
   ],
   entryComponents : [
     GenericFormPopupComponent,
@@ -198,7 +211,7 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     MessageBoxService,
     CreateDynamicComponentService,
     ModalService,
-    SdcUiServices.LoaderService,
+    LoaderService,
     HttpInterceptorService,
     IframeService,
     DefaultDataGeneratorService,
@@ -234,7 +247,8 @@ import {CustomRippleClickAnimationDirective} from "./components/customModal/dire
     SearchFilterPipe,
     ModelInformationService,
     MultiselectFormControlService,
-    InstantiationTemplatesModalService
+    InstantiationTemplatesModalService,
+    LoaderService
   ]
 })
 export class SharedModule {
