@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c793025c_bebd2e49",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/TemplateInstantiationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-15T11:37:04Z",
+      "side": 1,
+      "message": "set",
+      "range": {
+        "startLine": 41,
+        "startChar": 19,
+        "endLine": 41,
+        "endChar": 23
+      },
+      "revId": "f7b40a180b015cf197c02ca2716f752536b4428e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2c41737_b587eac8",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/TemplateInstantiationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-15T11:37:04Z",
+      "side": 1,
+      "message": "can simply VidBasePage.goToIframe",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 31
+      },
+      "revId": "f7b40a180b015cf197c02ca2716f752536b4428e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ada8867f_f9c7c37a",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/TemplateInstantiationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-15T11:37:04Z",
+      "side": 1,
+      "message": "I suggest implementing loadTemplatesPopupOnBrowseASDCPage VidBaseTestCase class, and have the \"Templates\" expected-text there.",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 112,
+        "endChar": 40
+      },
+      "revId": "f7b40a180b015cf197c02ca2716f752536b4428e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1aaea29_fc3239e2",
+        "filename": "vid-automation/src/main/resources/asyncInstantiation/vidRequestCreateALaCarteForTemplate.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-15T11:37:04Z",
+      "side": 1,
+      "message": "If this file is from another Selenium test, isn\u0027t it \"validated\" there to be an up-to-date payload?",
+      "revId": "f7b40a180b015cf197c02ca2716f752536b4428e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
