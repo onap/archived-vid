@@ -8,6 +8,7 @@ import static vid.automation.test.Constants.BrowseASDC.NewServicePopup.SET_BUTTO
 import static vid.automation.test.Constants.DrawingBoard.CONTEXT_MENU_BUTTON_HEADER;
 import static vid.automation.test.Constants.DrawingBoard.CONTEXT_MENU_HEADER_EDIT_ITEM;
 import static vid.automation.test.Constants.DrawingBoard.DEPLOY_BUTTON;
+import static vid.automation.test.infra.Features.FLAG_2004_INSTANTIATION_TEMPLATES_POPUP;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
@@ -25,6 +26,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.Click;
+import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.Input;
 import vid.automation.test.infra.ModelInfo;
@@ -61,6 +63,7 @@ public class TemplateInstantiationTest extends ModernUITestBase {
         drawing board is opened -> edit service instance name -> deploy ->
         instantiation status is opened -> wait for service to completed.
      */
+    @FeatureTogglingTest(FLAG_2004_INSTANTIATION_TEMPLATES_POPUP)
     @Test
     public void instantiateALaCarteServiceFromTemplateTest() {
 
