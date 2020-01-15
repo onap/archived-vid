@@ -41,12 +41,12 @@
           <div><span title="{{node.data.type}}"
                      [attr.data-tests-id]="'node-type-indicator'">{{node?.data?.typeName}}</span></div>
           <div *ngIf="isLinkedInstance(node?.data)">
-            <svg-icon
+            <custom-icon
               [ngClass]="'link'"
               class="icon-link"
               [size]="'small'"
               [name]="'link'">
-            </svg-icon>
+            </custom-icon>
           </div>
         </div>
         <div class="model-info" [ngClass]="{'rightBorder' : pageMode === 'VIEW'}">
@@ -78,12 +78,12 @@
                          [enabled]="isEnabled(currentNode, serviceModelId, contextMenuOption.methodName)">
               <div [attr.data-tests-id]="contextMenuOption.dataTestId">
                 <div style="float: left;margin-top: 3px;">
-                  <svg-icon
+                  <custom-icon
                     class="icon-edit"
                     [ngClass]="contextMenuOption.iconClass"
                     [size]="'small'"
                     [name]="contextMenuOption.iconClass">
-                </svg-icon></div>
+                </custom-icon></div>
                 <div style="padding-left: 25px;">{{getcontextMenuOptionLabel(contextMenuOption)}}</div>
               </div>
             </ng-template>
@@ -95,12 +95,12 @@
             tooltipPlacement="left"
             [attr.data-tests-id]="'node-'+ node.data.modelId + '-' + node.data.modelName +'-alert-icon'"
             class="icon-alert">
-              <svg-icon
+              <custom-icon
                 [mode]="'warning'"
                 [testId]="'icon-alert'"
                 [size]="'medium'"
                 [name]="'alert-triangle-o'">
-              </svg-icon>
+              </custom-icon>
           </span>
         </div>
 

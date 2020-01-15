@@ -10,14 +10,14 @@ import * as _ from 'lodash';
 
 @Component({
   selector : 'vid-svg-icon',
-  template: `    
-      <svg-icon
+  template: `
+      <custom-icon
         [mode]="mode"
         [size]="size"
         [name]="name"
         [testId]="testId"
         [clickable]="clickable">
-    </svg-icon>
+    </custom-icon>
   `,
 
 
