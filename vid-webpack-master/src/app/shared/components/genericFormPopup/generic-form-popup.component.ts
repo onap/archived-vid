@@ -47,7 +47,6 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   type: PopupType;
   uuidData: UUIDData;
   showTemplateBtn: boolean = false;
-  isShowPreviousInstantiationBtn: boolean = false;
   isUpdateMode: boolean;
   node: ITreeNode = null;
   hasGeneralApiError: boolean = false;
@@ -118,7 +117,6 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
       };
 
       this.showTemplateBtn = this._genericFormPopupService.shouldShowTemplateBtn(isInstantiationTemplateExists);
-      this.isShowPreviousInstantiationBtn = !!this._store.getState().global.flags["FLAG_2004_TEMP_BUTTON_TO_INSTANTIATION_STATUS_FILTER"];
 
       this.uuidData.popupService.closeDialogEvent.subscribe((that) => {
         this.closeDialog(that);
