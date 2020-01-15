@@ -53,8 +53,4 @@ public abstract class DeployModernUIBase extends DeployDialogBase {
         GeneralUIUtils.clickOnElementByTestId(Constants.OwningEntity.PROJECT_SELECT_TEST_ID);
     }
 
-    public void clickPreviousInstantiationButton() {
-        GeneralUIUtils.clickOnElementByTestIdWithoutWait("ShowPreviousInstancesButton");
-    }
-
 }
