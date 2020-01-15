@@ -95,13 +95,6 @@ describe('Service popup', function () {
       });
     });
 
-    it('when open service popup should show showPrevious button', () => {
-      cy.openPopupIframe('/app/ui/#/servicePopup?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd&isCreate=true');
-      cy.getElementByDataTestsId('ShowPreviousInstancesButton').contains('Previous Instantiation').click();
-
-    })
-
-
   });
 });
 
