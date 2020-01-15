@@ -57,6 +57,7 @@ import org.onap.vid.services.AuditServiceImpl;
 import org.onap.vid.services.CloudOwnerService;
 import org.onap.vid.services.InstantiationTemplatesService;
 import org.onap.vid.services.VersionService;
+import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -295,8 +296,8 @@ public class JobCommandsConfigWithMockedMso {
     }
 
     @Bean
-    public MsoResultHandlerService rootCommandService(AsyncInstantiationBusinessLogic asyncInstantiationBL, AuditService auditService) {
-        return new MsoResultHandlerService(asyncInstantiationBL, auditService);
+    public MsoResultHandlerService rootCommandService(AsyncInstantiationBusinessLogic asyncInstantiationBL, AuditService auditService, Logging logging) {
+        return new MsoResultHandlerService(asyncInstantiationBL, auditService, logging);
     }
 
     @Bean

@@ -28,13 +28,14 @@ import org.onap.vid.model.serviceInstantiation.ServiceInstantiation
 import org.onap.vid.mso.RestObject
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
 import org.onap.vid.services.AuditService
+import org.onap.vid.utils.Logging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class MsoResultHandlerService
-@Autowired constructor(private val asyncInstantiationBL: AsyncInstantiationBusinessLogic, private val auditService: AuditService) {
+@Autowired constructor(private val asyncInstantiationBL: AsyncInstantiationBusinessLogic, private val auditService: AuditService, private val logging: Logging) {
 
     companion object {
         private val LOGGER = EELFLoggerDelegate.getLogger(MsoResultHandlerService::class.java)
@@ -59,7 +60,8 @@ class MsoResultHandlerService
             asyncInstantiationBL.addResourceInfo(sharedData, jobStatus, msoResourceIds.instanceId)
             MsoResult(Job.JobStatus.COMPLETED_WITH_NO_ACTION, msoResourceIds)
         } else {
-            auditService.setFailedAuditStatusFromMso(jobUUID, null, msoResponse.statusCode, msoResponse.raw)
+            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to instantiate root resource. Details: ${msoResponse.raw}")
+            auditService.setFailedAuditStatusFromMso(jobUUID, logging.currentRequestId(), msoResponse.statusCode, msoResponse.raw)
             asyncInstantiationBL.addFailedResourceInfo(sharedData, msoResponse)
             return MsoResult(Job.JobStatus.FAILED)
         }
@@ -72,7 +74,8 @@ class MsoResultHandlerService
             asyncInstantiationBL.addResourceInfo(sharedData, Job.JobStatus.IN_PROGRESS, msoResourceIds.instanceId)
             MsoResult(Job.JobStatus.COMPLETED_WITH_NO_ACTION, msoResourceIds)
         } else {
-            LOGGER.debug(EELFLoggerDelegate.debugLogger, "Failed to $actionDescription. Details: ${msoResponse.raw}")
+            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to $actionDescription. Details: ${msoResponse.raw}")
+            auditService.setFailedAuditStatusFromMso(sharedData.rootJobId, logging.currentRequestId(), msoResponse.statusCode, "Failed to $actionDescription. Details: ${msoResponse.raw}")
             asyncInstantiationBL.addFailedResourceInfo(sharedData, msoResponse)
             MsoResult(Job.JobStatus.FAILED)
         }

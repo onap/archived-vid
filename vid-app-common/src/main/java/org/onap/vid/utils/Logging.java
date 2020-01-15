@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.onap.logging.ref.slf4j.ONAPLogConstants;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.exceptions.GenericUncheckedException;
@@ -228,4 +229,7 @@ public class Logging {
         }
     }
 
+    public String currentRequestId() {
+        return MDC.get(ONAPLogConstants.MDCs.REQUEST_ID);
+    }
 }
