@@ -11,6 +11,7 @@ import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOw
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.COMPLETE;
 import static org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID;
 import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertTrue;
 import static vid.automation.test.infra.Features.FLAG_1902_VNF_GROUPING;
 import static vid.automation.test.infra.Features.FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI;
@@ -28,7 +29,6 @@ import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcomp
 import static vid.automation.test.infra.ModelInfo.macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse;
 import static vid.automation.test.infra.ModelInfo.macroSriovWithDynamicFieldsEcompNamingFalsePartialModelDetailsVnfEcompNamingFalse;
 import static vid.automation.test.infra.ModelInfo.macroSriovWithDynamicFieldsEcompNamingTruePartialModelDetails;
-import static vid.automation.test.infra.ModelInfo.pasqualeVmxVpeBvService488Annotations;
 import static vid.automation.test.infra.ModelInfo.transportWithPnfsService;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
@@ -48,13 +48,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matchers;
-import org.jetbrains.annotations.NotNull;
 import org.onap.sdc.ci.tests.datatypes.UserCredentials;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegionSpecificState;
@@ -106,7 +104,7 @@ import vid.automation.test.test.NewServiceInstanceTest.ServiceData.IS_GENERATED_
 import vid.automation.test.utils.ReadFile;
 
 @FeatureTogglingTest(FLAG_ENABLE_WEBPACK_MODERN_UI)
-public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
+public class NewServiceInstanceTest extends ModernUITestBase {
 
     public static final String COMPLETED = "COMPLETED";
     private static final String IN_PROGRESS = "IN_PROGRESS";
@@ -1384,11 +1382,12 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
         }
     }
 
-    @NotNull
-    private String uuid() {
-        return UUID.randomUUID().toString();
+    public void validateDynamicFields(List<String> dynamicFields) {
+        for (String field : dynamicFields) {
+            WebElement fieldElement = GeneralUIUtils.findByText(field);
+            assertNotNull("couldn't find dynamic field: " + field, fieldElement);
+        }
     }
-
 
     private void assertNotificationAreaVisibilityBehaviourAndSetBulkSize(int size) {
         WebElement webElement = Get.byId("notification-area");
@@ -1398,22 +1397,6 @@ public class NewServiceInstanceTest extends CreateInstanceDialogBaseTest {
 
         webElement = Get.byId("notification-area");
         Assert.assertNotNull(webElement, "notification area should be visible if more then 1 qty.");
-    }
-
-    //@Step("prepare service preset")
-    private void prepareServicePreset(ModelInfo modelInfo, boolean deploy) {
-        String subscriberId = "e433710f-9217-458d-a79d-1c7aff376d89";
-
-        if (deploy) {
-            registerExpectationForServiceDeployment(
-                ImmutableList.of(
-                    modelInfo,
-                    pasqualeVmxVpeBvService488Annotations
-                ),
-                subscriberId, null);
-        } else {
-            registerExpectationForServiceBrowseAndDesign(ImmutableList.of(modelInfo), subscriberId);
-        }
     }
 
     static class ServiceData {

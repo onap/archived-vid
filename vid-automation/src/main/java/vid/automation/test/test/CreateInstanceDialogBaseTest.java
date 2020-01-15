@@ -1,19 +1,16 @@
 package vid.automation.test.test;
 
+import java.util.ArrayList;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
 import vid.automation.test.infra.Click;
 import vid.automation.test.infra.Exists;
-import vid.automation.test.infra.Get;
 import vid.automation.test.infra.SelectOption;
 import vid.automation.test.model.Service;
 import vid.automation.test.model.ServiceModel;
 import vid.automation.test.sections.ViewEditPage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
 
@@ -147,24 +144,4 @@ public class CreateInstanceDialogBaseTest extends VidBaseTestCase {
         Assert.assertTrue(field + " " + Constants.REQUIRED, byclassAndText);
     }
 
-    protected void cancelPopup() {
-        viewEditPage.clickCancelButtonByTestID();
-        GeneralUIUtils.ultimateWait();
-    }
-
-
-
-    public static void AssertUnselectedOptionInMultiselectById(String multiSelectId, String unselectedOption){
-        Click.byId(multiSelectId);
-        WebElement element = Get.byClassAndText(Constants.MULTI_SELECT_UNSELECTED_CLASS, unselectedOption);
-        Assert.assertTrue("The option "+ unselectedOption +" is already selected",element != null);
-        Click.byId(multiSelectId);
-    }
-
-    public void validateDynamicFields(List<String> dynamicFields) {
-        for (String field : dynamicFields) {
-            WebElement fieldElement = GeneralUIUtils.findByText(field);
-            Assert.assertNotNull("couldn't find dynamic field: " + field, fieldElement);
-        }
-    }
 }

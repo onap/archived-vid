@@ -305,15 +305,19 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
         final List<String> jobIds = createBulkOfMacroInstances(presets, false, bulkSize, names);
         Assert.assertEquals(jobIds.size(),bulkSize);
 
+        waitForJobsToSuccessfullyCompleted(bulkSize, jobIds);
+        return jobIds;
+    }
+
+    public void waitForJobsToSuccessfullyCompleted(int bulkSize, List<String> jobIds) {
         assertTrue(String.format("Not all services with ids: %s are in state completed after 30 sec",
                 jobIds.stream().collect(joining(","))),
 
                 Wait.waitFor(y-> serviceListCall().getBody().stream()
                         .filter(si -> jobIds.contains(si.jobId))
-                        .filter(si -> si.jobStatus==JobStatus.COMPLETED)
+                        .filter(si -> si.jobStatus== JobStatus.COMPLETED)
                         .count() == bulkSize,
                 null, 30, 1 ));
-        return jobIds;
     }
 
     protected List<JobAuditStatus> getJobMsoAuditStatusForAlaCarte(String jobUUID, String requestId, String serviceInstanceId){
