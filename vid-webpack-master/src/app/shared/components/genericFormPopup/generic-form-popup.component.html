@@ -61,12 +61,6 @@
           (click)="openTemplateModal()"
         ><span>Template</span></button>
         <button
-          *ngIf="isShowPreviousInstantiationBtn"
-          [attr.data-tests-id]="'ShowPreviousInstancesButton'"
-          type="button" class="btn btn-success submit"
-          (click)="formPopupDetails.onOtherAction(formPopupDetails.that, dynamicForm)"
-        ><span>Previous Instantiation</span></button>
-        <button
           [attr.data-tests-id]="'cancelButton'"
           type="button" class="btn btn-default cancel"
           (click)="formPopupDetails.onCancel(formPopupDetails.that, dynamicForm); clearModalIsUpdateMode()"
