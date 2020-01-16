@@ -24,6 +24,8 @@ export class AuditInfoModalComponent {
   modelInfoItems: ModelInformationItem[] = [];
   serviceModel: ServiceModel;
   serviceModelName: string;
+  serviceModelId: string;
+  jobId: string;
   vidInfoData: AuditStatus[] = [];
   msoInfoData: AuditStatus[] = [];
   isAlaCarte: boolean;
@@ -32,6 +34,7 @@ export class AuditInfoModalComponent {
   model: any;
   instanceId: string;
   isALaCarteFlagOn: boolean;
+  showMoreAuditInfoLink: boolean;
   type : string = "Service";
   showVidStatus : boolean = true;
   auditInfoModalComponentService : AuditInfoModalComponentService;
@@ -41,6 +44,7 @@ export class AuditInfoModalComponent {
     this.auditInfoModalComponentService = this._auditInfoModalComponentService;
     AuditInfoModalComponent.openModal.subscribe((jobData: ServiceInfoModel) => {
       this.isALaCarteFlagOn = this.store.getState().global.flags['FLAG_A_LA_CARTE_AUDIT_INFO'];
+      this.showMoreAuditInfoLink = !!this.store.getState().global.flags['FLAG_MORE_AUDIT_INFO_LINK_ON_AUDIT_INFO'];
       this.initializeProperties();
       this.showVidStatus = true;
       if (jobData) {
@@ -48,6 +52,8 @@ export class AuditInfoModalComponent {
         this.openAuditInfoModal(jobData);
         _iframeService.addClassOpenModal(this.parentElementClassName);
         this.serviceModelName = jobData.serviceModelName ? jobData.serviceModelName : '';
+        this.serviceModelId = jobData.serviceModelId;
+        this.jobId = jobData.jobId;
         this.auditInfoModal.show();
       } else {
         _iframeService.removeClassCloseModal(this.parentElementClassName);
@@ -57,6 +63,7 @@ export class AuditInfoModalComponent {
 
     AuditInfoModalComponent.openInstanceAuditInfoModal.subscribe(({instanceId  , type ,  model, instance}) => {
       this.showVidStatus = false;
+      this.showMoreAuditInfoLink = false;
       this.initializeProperties();
       this.setModalTitles(type);
       this.serviceModelName = AuditInfoModalComponentService.getInstanceModelName(model);
@@ -118,5 +125,8 @@ export class AuditInfoModalComponent {
   onNavigate(){
     window.open("http://ecompguide.web.att.com:8000/#ecomp_ug/c_ecomp_ops_vid.htmll#r_ecomp_ops_vid_bbglossary", "_blank");
   }
+
+  readOnlyRetryUrl = (): string =>
+    `../../serviceModels.htm?more#/servicePlanning/RETRY?serviceModelId=${this.serviceModelId}&jobId=${this.jobId}`
 }
 
