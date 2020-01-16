@@ -203,3 +203,8 @@
   when flag is true and max_instances is not declare than user can add unlimited VND, NETWORK, VFMODULE,
   User can duplicate up to 10 record in single time.
   If the flag is false and max_instances is not declare the max will be 1 else max_instances value.
+
+* FLAG_MORE_AUDIT_INFO_LINK_ON_AUDIT_INFO
+  On the "audit info" modal (available on Instantiation Status page), shows a link navigating to
+  the read-only RETRY page with more audit info.
+  
