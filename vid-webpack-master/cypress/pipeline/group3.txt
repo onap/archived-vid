@@ -1,0 +1,4 @@
+cypress/integration/iFrames/instantiation.templates.modal.e2e.ts
+cypress/integration/iFrames/instantiationStatus.e2e.ts
+cypress/integration/iFrames/resume.e2e.ts
+cypress/integration/iFrames/vnf.update.e2e.ts
