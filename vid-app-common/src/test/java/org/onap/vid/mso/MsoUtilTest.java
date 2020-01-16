@@ -26,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.joshworks.restclient.http.HttpResponse;
 import org.onap.vid.testUtils.TestUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class MsoUtilTest {
@@ -67,4 +68,26 @@ public class MsoUtilTest {
         assertThat(result.getStatus()).isEqualTo(SC_OK);
     }
 
+    @DataProvider
+    public static Object[][] formatExceptionAdditionalInfo() {
+        return new Object[][]{
+            {"message", "Http Code:400, message"},
+
+            {null, "Http Code:400"},
+
+            {"{\"requestError\":{\"serviceException\":{\"messageId\":\"SVC0002\",\"text\":\"message\"}}}",
+                "Http Code:400, \"messageId\":\"SVC0002\",\"text\":\"message\""},
+
+            {"{\"validJson\": \"Error: message\"}", "Http Code:400, {\"validJson\": \"Error: message\"}"},
+
+            {"{\"serviceException\":{\"messageId\":\"SVC0002\",\"text\":\"Error: message\"}}",
+                "Http Code:400, \"messageId\":\"SVC0002\",\"text\":\"Error: message\""},
+        };
+    }
+
+    @Test(dataProvider = "formatExceptionAdditionalInfo")
+    public void formatExceptionAdditionalInfo_payloadWithError400_doNotReturnNull(String payload, String expected) {
+        assertThat(MsoUtil.formatExceptionAdditionalInfo(400, payload))
+            .isEqualTo(expected);
+    }
 }
