@@ -50,7 +50,7 @@ export class VnfControlGenerator {
 
     if (!_.isNil(vnfModel)) {
       result.push(this.getInstanceName(vnfInstance, serviceId, vnfName, vnfModel.isEcompGeneratedNaming));
-      result.push(this._sharedControllersService.getProductFamilyControl(vnfInstance, result, false));
+      result.push(this._sharedControllersService.getProductFamilyControl(vnfInstance, result, true));
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
@@ -74,7 +74,7 @@ export class VnfControlGenerator {
     if (!_.isNil(vnfModel)) {
       const flags = this.store.getState().global.flags;
       result.push(this.getInstanceName(vnfInstance, serviceId, vnfName, vnfModel.isEcompGeneratedNaming));
-      result.push(this._sharedControllersService.getProductFamilyControl(vnfInstance, result, false));
+      result.push(this._sharedControllersService.getProductFamilyControl(vnfInstance, result, true));
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
