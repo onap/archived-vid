@@ -1184,12 +1184,15 @@ public class NewServiceInstanceTest extends ModernUITestBase {
 
         browseASDCPage.selectTenant("092eb9e8e4b7412e8787dd091bc58e86");
 
+
         assertSetButtonDisabled(VNF_SET_BUTTON_TEST_ID);
 
         if(isNetwork){
             browseASDCPage.selectPlatform("platform");
         }else {
             SelectOption.selectOptionsFromMultiselectById("multi-selectPlatform", ImmutableList.of("platform"));
+            SelectOption.byTestIdAndVisibleText("TYLER SILVIA", Constants.ViewEdit.PRODUCT_FAMILY_SELECT_TESTS_ID);
+            browseASDCPage.selectProductFamily("e433710f-9217-458d-a79d-1c7aff376d89");
         }
 
         browseASDCPage.selectLineOfBusiness("ONAP");
