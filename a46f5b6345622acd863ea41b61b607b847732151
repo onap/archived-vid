@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d7a9c4a0_203f6cbe",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoUtil.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-16T05:52:15Z",
+      "side": 1,
+      "message": "only god knows what you wrote here...",
+      "revId": "a46f5b6345622acd863ea41b61b607b847732151",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73a1dd18_8213cfec",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/mso/MsoUtilTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-16T05:52:15Z",
+      "side": 1,
+      "message": "it\u0027s pretty hard to understand how it\u0027s actually looks like, because there are a lot of \\\".\nis \\\" part of original string or it just here for java syntax ?\n\nMaybe you can convert this file to Kotlin, so we can see the strings as is ?",
+      "revId": "a46f5b6345622acd863ea41b61b607b847732151",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5668cdb0_b2e10c17",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AsyncInstantiationBusinessLogicTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-16T05:52:15Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "a46f5b6345622acd863ea41b61b607b847732151",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
