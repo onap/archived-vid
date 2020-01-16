@@ -16,6 +16,24 @@
       "revId": "0fee3b78de4c30481ac562e795a28d3235c75122",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "630ebbf6_1fe75a3b",
+        "filename": "vid-webpack-master/src/app/shared/components/auditInfoModal/auditInfoModal.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-16T12:07:10Z",
+      "side": 1,
+      "message": "I\u0027ll try, thanks.",
+      "parentUuid": "5ae1ef8a_168f9937",
+      "revId": "0fee3b78de4c30481ac562e795a28d3235c75122",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
