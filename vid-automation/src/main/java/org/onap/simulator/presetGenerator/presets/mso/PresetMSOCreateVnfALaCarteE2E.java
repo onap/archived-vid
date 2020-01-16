@@ -40,6 +40,7 @@ public class PresetMSOCreateVnfALaCarteE2E extends PresetMSOCreateVnfBase {
             + "            \"tenantId\": \"092eb9e8e4b7412e8787dd091bc58e86\""
             + "        },"
             + "        \"requestInfo\": {"
+            + "            \"productFamilyId\":\"e433710f-9217-458d-a79d-1c7aff376d89\","
             + "            \"source\": \"VID\","
             + "            \"suppressRollback\": false,"
             + "            \"requestorId\": \""+requestorId+"\""
