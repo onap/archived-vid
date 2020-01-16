@@ -21,14 +21,17 @@
 package org.onap.vid.model.serviceInstantiation;
 
 
+import static java.util.stream.Collectors.toList;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobType;
 import org.onap.vid.mso.model.ModelInfo;
-
-import java.util.*;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * The Class VNF.
@@ -59,10 +62,11 @@ public class Vnf extends BaseResource implements JobAdapter.AsyncJobRequest {
 		@JsonProperty("trackById") String trackById,
 		@JsonProperty("isFailed") Boolean isFailed,
 		@JsonProperty("statusMessage") String statusMessage,
-		@JsonProperty("position") Integer position) {
+		@JsonProperty("position") Integer position,
+		@JsonProperty("originalName") String originalName) {
 
 		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
-			position);
+			position, originalName);
 		this.productFamilyId = productFamilyId;
 		this.platformName = platformName;
 		this.lineOfBusiness = lineOfBusiness;
