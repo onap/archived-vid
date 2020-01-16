@@ -957,7 +957,8 @@ describe('VNF Control Generator', () => {
       FormControlNames.INSTANCE_NAME,
       FormControlNames.LCPCLOUD_REGION_ID,
       FormControlNames.TENANT_ID,
-      'platformName'
+      'platformName',
+      FormControlNames.PRODUCT_FAMILY_ID
     ];
 
     for(let i = 0 ; i < mandatoryControls.length ; i++){
