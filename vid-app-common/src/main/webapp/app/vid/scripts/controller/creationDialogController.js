@@ -75,10 +75,6 @@ var creationDialogController = function (COMPONENT, FIELD, PARAMETER, $scope, $h
             {
                 $location.path('/servicePlanning').search({serviceModelId: event.data.data.serviceModelId});
             }
-        } else if (event.data.eventId == 'showPreviousInstantiations') {
-            {
-                $location.path('/instantiationStatus').search({filterText: event.data.data.serviceModelId});
-            }
         }
         $scope.$apply();
     }

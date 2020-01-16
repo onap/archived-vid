@@ -2142,33 +2142,6 @@ describe('Service popup service', () => {
     expect(service.closeDialogEvent.next).toHaveBeenCalledWith(that);
   });
 
-  test('showPreviousInstantiations should trigger postMessage', () => {
-    let that = <any>{
-      parentElementClassName: 'content',
-      _iframeService: iframeService,
-      resetPopupData : () =>{      },
-      serviceModel:{
-        uuid:'1111'
-      }
-
-    };
-
-    let expectedMessage= {
-      eventId: 'showPreviousInstantiations',
-      data: {
-        serviceModelId: that.serviceModel.uuid
-      }
-    };
-
-    jest.spyOn(window.parent, 'postMessage');
-
-    service.showPreviousInstantiations(that, fb.group({}));
-
-    expect( window.parent.postMessage).toHaveBeenCalledWith(expectedMessage,"*")
-
-  });
-
-
 
   test('getDynamicInputs should return list of controls' ,() => {
     const result:  FormControlModel[] = service.getDynamicInputs('6b528779-44a3-4472-bdff-9cd15ec93450');
