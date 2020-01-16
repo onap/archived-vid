@@ -21,13 +21,12 @@
 package org.onap.vid.model.serviceInstantiation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.onap.vid.job.JobAdapter;
-import org.onap.vid.job.JobType;
-import org.onap.vid.mso.model.ModelInfo;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import org.onap.vid.job.JobAdapter;
+import org.onap.vid.job.JobType;
+import org.onap.vid.mso.model.ModelInfo;
 
 public class InstanceGroup extends BaseResource implements JobAdapter.AsyncJobRequest {
 
@@ -42,10 +41,11 @@ public class InstanceGroup extends BaseResource implements JobAdapter.AsyncJobRe
         @JsonProperty("trackById") String trackById,
         @JsonProperty("isFailed") Boolean isFailed,
         @JsonProperty("statusMessage") String statusMessage,
-        @JsonProperty("position") Integer position) {
+        @JsonProperty("position") Integer position,
+        @JsonProperty("originalName") String originalName) {
 
         super(modelInfo, instanceName, action, null, null, null, null, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
-            position);
+            position, originalName);
         this.vnfGroupMembers = vnfGroupMembers;
     }
 

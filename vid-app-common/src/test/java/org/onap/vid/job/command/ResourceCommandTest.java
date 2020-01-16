@@ -279,7 +279,7 @@ public class ResourceCommandTest {
                     convertToMap(networks),
                     convertToMap(vnfGroups),
                     null,
-                    null, false, 1, false,false,null, null, null, null, null, null, null);
+                    null, false, 1, false,false,null, null, null, null, null, null, null, null);
         }
 
         public static ServiceInstantiation createServiceWith2InstancesInEachLevel(Action action) {
@@ -298,11 +298,11 @@ public class ResourceCommandTest {
 
         static InstanceGroup createGroup(List<InstanceGroupMember> groupMembers, Action action) {
             return new InstanceGroup(mock(ModelInfo.class), null, action.name(), false, null, convertToMap(groupMembers), null, null, null,
-                null);
+                null, null);
         }
 
         static InstanceGroupMember createMember(Action action) {
-            return new InstanceGroupMember(null, action.toString(), null, null, null, null);
+            return new InstanceGroupMember(null, action.toString(), null, null, null, null, null);
         }
 
         static Vnf createVnf(List<VfModule> vfModules, Action action) {
@@ -310,22 +310,22 @@ public class ResourceCommandTest {
             vfModulesMap.put("abc",convertToMap(vfModules));
 
             return new Vnf(mock(ModelInfo.class), null, null, action.toString(), null, null, null, null, null, null, false, null, vfModulesMap, null, null, null,
-                null);
+                null, null);
         }
 
         static Vnf createVnf(Action action) {
             return new Vnf(mock(ModelInfo.class), null, null, action.toString(), null, null, null, null, null, null, false, null,null, null, null, null,
-                null);
+                null, null);
         }
 
         static VfModule createVfModule(Action action) {
             return new VfModule(mock(ModelInfo.class), null, null, action.toString(), null, null, null, null, null,
-                false, false, null, null, null, null, null, null, null);
+                false, false, null, null, null, null, null, null, null, null);
         }
 
         static Network createNetwork(Action action) {
             return new Network(mock(ModelInfo.class), null, null, action.toString(), null, null, null, null, null, null, false, null, null, null, null,
-                null);
+                null, null);
         }
     }
 

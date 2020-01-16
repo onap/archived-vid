@@ -94,7 +94,8 @@ public class InstantiationModelSerializationTest {
             new VidNotions(InstantiationUI.ANY_ALACARTE_WHICH_NOT_EXCLUDED,
                 ModelCategory.INFRASTRUCTURE_VPN,
                 InstantiationUI.INFRASTRUCTURE_VPN,
-                InstantiationType.Macro)
+                InstantiationType.Macro),
+            "originalName"
         );
 
         verifySerializationAndDeserialization(serviceInstantiation);
@@ -119,7 +120,8 @@ public class InstantiationModelSerializationTest {
             "trackById",
             true,
             "statusMessage",
-            5);
+            5,
+            "originalName");
 
         verifySerializationAndDeserialization(vnf);
     }
@@ -151,7 +153,8 @@ public class InstantiationModelSerializationTest {
             "statusMessage",
             true,
             true,
-            1);
+            1,
+            "originalName");
 
         verifySerializationAndDeserialization(vfModule);
     }
@@ -164,7 +167,7 @@ public class InstantiationModelSerializationTest {
         VfModule vfModule = new VfModule(newModelInfo(), null, null, null,
             null, null, null, null, null, false,
             /* HERE ====> */ USE_PRELOAD,
-            null, null, null, null, null, null, null);
+            null, null, null, null, null, null, null, null);
 
         assertThat(vfModule, jsonPartEquals("sdncPreLoad", USE_PRELOAD));
         assertThat(vfModule, jsonNodeAbsent("usePreload"));
@@ -179,7 +182,7 @@ public class InstantiationModelSerializationTest {
             /* HERE ====> */ VOLUME_GROUP_INSTANCE_NAME,
             null, null, null, null, null, null,
             false, null, null, null, null, null,
-            null, null, null);
+            null, null, null, null);
 
         assertThat(vfModule, jsonPartEquals("volumeGroupName", VOLUME_GROUP_INSTANCE_NAME));
         assertThat(vfModule, jsonNodeAbsent("volumeGroupInstanceName"));

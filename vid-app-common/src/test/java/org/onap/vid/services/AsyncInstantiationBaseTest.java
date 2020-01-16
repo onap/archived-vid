@@ -237,7 +237,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
                 testApi,
                 instanceId,
                 action.name(),
-                UUID.randomUUID().toString(), null, null, null);
+                UUID.randomUUID().toString(), null, null, null, null);
     }
 
     private List<Map<String,String>> createInstanceParams() {
@@ -266,12 +266,12 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
             return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), "mdt1", null,
                 "88a6ca3ee0394ade9403f075db23167e", instanceParams, supplementaryParams, false,
                 usePreload, null, UUID.randomUUID().toString(), null, null,
-                null, null, null);
+                null, null, null, "originalName");
         }
 
         return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), null, null, null,
                 instanceParams, supplementaryParams, false, false, null, UUID.randomUUID().toString(), null,
-            null, null, null, null);
+            null, null, null, null, "originalName");
     }
 
     protected ModelInfo createVfModuleModelInfo(String modelName, String modelVersion, String modelVersionId, String modelInvariantId, String modelCustomizationId, String modelCustomizationName) {
@@ -281,7 +281,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
     protected VfModule createVfModuleForReplace(ModelInfo vfModuleModelInfo, String instanceName,
         String lcpCloudRegionId, String tenantId, Boolean retainAssignments, Boolean retainVolumeGroups, List<UserParamNameAndValue> supplementaryParams) {
         return new VfModule( vfModuleModelInfo, instanceName, null, Action.Upgrade.name(), lcpCloudRegionId, null, tenantId,
-                null, supplementaryParams, true, null, null, UUID.randomUUID().toString(), null, null, retainAssignments, retainVolumeGroups, null);
+                null, supplementaryParams, true, null, null, UUID.randomUUID().toString(), null, null, retainAssignments, retainVolumeGroups, null, "originalName");
     }
 
     protected ModelInfo createVnfModelInfo(boolean isAlacarte) {
@@ -366,7 +366,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
 
         Vnf vnf = new Vnf(vnfModelInfo, "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", (isUserProvidedNaming ? VNF_NAME : null), Action.Create.name(),
                 "platformName", "mdt1", null, "88a6ca3ee0394ade9403f075db23167e", vnfInstanceParams,"lineOfBusinessName" , false, null, vfModules,
-                UUID.randomUUID().toString(), null, null, null);
+                UUID.randomUUID().toString(), null, null, null, "originalName");
 
         vnfs.put(vnf.getModelInfo().getModelName(), vnf);
         return vnfs;
@@ -398,7 +398,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
                 "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", null, "MOG", lcpCloudRegionId, null, tenantId,
                 null, null, null, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, instanceParams, false, 1, false, false,
                 null, null, null, null, null, null,
-                new VidNotions(InstantiationUI.TRANSPORT_SERVICE, ModelCategory.Transport, InstantiationUI.TRANSPORT_SERVICE, InstantiationType.Macro)
+                new VidNotions(InstantiationUI.TRANSPORT_SERVICE, ModelCategory.Transport, InstantiationUI.TRANSPORT_SERVICE, InstantiationType.Macro), "originalName"
         );
         return serviceInstantiation;
     }
@@ -419,7 +419,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
                 details->new Network(createNetworkModelInfo(isALaCarte, details.modelCustomizationId), "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
                 details.name, Action.Create.name(),
                 "platformName", "mdt1", null, "88a6ca3ee0394ade9403f075db23167e", instanceParams,"lineOfBusinessName" ,
-                false, null, UUID.randomUUID().toString(), null, null, null));
+                false, null, UUID.randomUUID().toString(), null, null, null, "originalName"));
 //        I can't tell why compiler don't like the statement if it's only one line...
         return networkStream.collect(Collectors.toMap(network -> network.getModelInfo().getModelCustomizationId(), network -> network));
     }
@@ -435,7 +435,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         modelInfo.setModelVersion("10.0");
 
         return new InstanceGroup(modelInfo, (isUserProvidedNaming ? VNF_GROUP_NAME : null), action.name(), false, null, emptyMap(), UUID.randomUUID().toString(), null, null,
-            null);
+            null, "originalName");
     }
 
     protected ModelInfo createServiceModelInfo() {
