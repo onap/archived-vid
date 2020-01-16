@@ -23,16 +23,15 @@ package org.onap.vid.model.serviceInstantiation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobType;
 import org.onap.vid.model.Action;
 import org.onap.vid.mso.model.ModelInfo;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
@@ -60,6 +59,8 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
 	protected Integer position;
 
+	protected String originalName; //not used at backend, but stored for fronted
+
 
 	private static final Map<String, Action> actionStingToEnumMap = ImmutableMap.<String, Action>builder()
 			.put("Delete", Action.Delete)
@@ -85,7 +86,8 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 		@JsonProperty("trackById") String trackById,
 		@JsonProperty("isFailed") Boolean isFailed,
 		@JsonProperty("statusMessage") String statusMessage,
-		@JsonProperty("position") Integer position) {
+		@JsonProperty("position") Integer position,
+		@JsonProperty("originalName") String originalName) {
 		this.modelInfo = modelInfo;
 		this.modelInfo.setModelType(getModelType());
 		this.rollbackOnFailure = rollbackOnFailure;
@@ -175,6 +177,10 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
 	public void setPosition(Integer position) {
 		this.position = position;
+	}
+
+	public String getOriginalName() {
+		return originalName;
 	}
 
 	@JsonIgnore
