@@ -18,26 +18,9 @@ export class InstantiationTemplatesRowModel extends InstantiationBase{
     this.instanceName = this.getInstanceName(data.serviceInstanceName);
     this.instantiationStatus = !_.isNil(data.jobStatus) ? data.jobStatus : null;
     this.summary = this.convertRequestSummaryFromMapToString(data.requestSummary);
-    this.region = this.getRegion(data.regionId, data.owningEntityName);
+    this.region =  !_.isNil(data.regionName) ? data.regionName : null;
     this.tenant = !_.isNil(data.tenantName) ? data.tenantName : null;
   }
-
-
-  /**************************************************************************************************
-   return the LCP region and in brackets the cloud owner removing the “att-“ with capital letters.
-   **************************************************************************************************/
-  getCloudOwner = (owningEntityName: string): string => {
-    const splitByAtt: string[] = owningEntityName.split('att-');
-    let owning: string = splitByAtt[splitByAtt.length - 1];
-    return owning.toUpperCase();
-  };
-
-  getRegion = (regionId: string, owningEntityName: string): string => {
-    const convertOwning = !_.isNil(owningEntityName) ? `(${this.getCloudOwner(owningEntityName)})` : '';
-    const region = !_.isNil(regionId) ? regionId : '';
-    return `${region} ${convertOwning}`.trim();
-  };
-
 
   getInstanceName = (instanceName?: string): string => {
     if (_.isNil(instanceName)) {

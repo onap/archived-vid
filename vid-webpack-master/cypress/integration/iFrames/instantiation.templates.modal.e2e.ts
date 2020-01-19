@@ -101,7 +101,7 @@ describe('Template', () => {
     cy.getElementByDataTestsId(`instanceName-${templateJobIdFromE2EFile}`).contains('SERVICE_NAME');
     cy.getElementByDataTestsId(`instantiationStatus-${templateJobIdFromE2EFile}`).contains('IN_PROGRESS');
     cy.getElementByDataTestsId(`summary-${templateJobIdFromE2EFile}`).contains('vnf: 1, vfModule: 2, volumeGroup: 1');
-    cy.getElementByDataTestsId(`region-${templateJobIdFromE2EFile}`).contains('hvf3 (SOMENAME)');
+    cy.getElementByDataTestsId(`region-${templateJobIdFromE2EFile}`).contains('regionName1');
     cy.getElementByDataTestsId(`tenant-${templateJobIdFromE2EFile}`).contains('greatTenant');
 
 

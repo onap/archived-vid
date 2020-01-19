@@ -102,7 +102,7 @@ describe('instantiation templates modal service', () => {
       "tenantId": "1178612d2b394be4834ad77f567c0af2",
       "tenantName": "AIN Web Tool-15-D-SSPtestcustome",
       "regionId": "hvf6",
-      "regionName": null,
+      "regionName": "testRegionName",
       "serviceType": "TYLER SILVIA",
       "subscriberName": "e433710f-9217-458d-a79d-1c7aff376d89",
       "serviceInstanceId": null,
@@ -118,31 +118,9 @@ describe('instantiation templates modal service', () => {
     expect((new Date(tableRows[0].createDate)).toISOString()).toEqual('2018-04-29T09:52:35.000Z');
     expect(tableRows[0].instanceName).toEqual('serviceInstanceName');
     expect(tableRows[0].instantiationStatus).toEqual('FAILED');
-    expect(tableRows[0].region).toEqual('hvf6 (AAA1)');
+    expect(tableRows[0].region).toEqual('testRegionName');
     expect(tableRows[0].tenant).toEqual('AIN Web Tool-15-D-SSPtestcustome');
     expect(tableRows[0].jobId).toEqual('9f88fdb5-bb47-4bf3-8c5f-98f1ad0ec87c');
-  });
-
-
-  test('getCloudOwner should remove "-att" from owningEntityName : "att-owner', () => {
-    let result: InstantiationTemplatesRowModel = new InstantiationTemplatesRowModel({
-      owningEntityName: 'att-owner',
-      regionId: 'regionId'
-    });
-    expect(result.region).toEqual('regionId (OWNER)');
-  });
-
-  test('getRegion if null should return empty string', () => {
-    let result: InstantiationTemplatesRowModel = new InstantiationTemplatesRowModel({
-      owningEntityName: 'att-owner',
-      regionId: null
-    });
-    expect(result.region).toEqual('(OWNER)');
-  });
-
-  test('getCloudOwner should not return owningEntityName if not exist', () => {
-    let result: InstantiationTemplatesRowModel = new InstantiationTemplatesRowModel({owningEntityName: null, regionId: 'regionId'});
-    expect(result.region).toEqual('regionId');
   });
 
   test('getInstanceName should  return instance name id exist if not exist', () => {
