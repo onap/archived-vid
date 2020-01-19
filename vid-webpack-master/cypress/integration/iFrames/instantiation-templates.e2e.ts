@@ -37,6 +37,7 @@ describe('Drawing Board: Instantiation Templates', function () {
         loadDrawingBoardWithRecreateMode();
 
         removeVNFWithVFModules('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0');
+        removeVNFWithVFModules('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0');
 
         cy.getDrawingBoardDeployBtn().click();
         cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
@@ -52,7 +53,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           .fillVnfPopup()
           .getDrawingBoardDeployBtn().click()
           .wait('@expectedPostAsyncInstantiation').then(xhr => {
-          const vnfRequest = bodyOf(xhr).vnfs['vProbe_NC_VNF 0_1'];
+          const vnfRequest = bodyOf(xhr).vnfs['vProbe_NC_VNF 0_2'];
 
           expect(vnfRequest.action).equals("Create");
           expect(vnfRequest.rollbackOnFailure).equals("true");
@@ -82,7 +83,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           .getTagElementContainsText('button', 'Duplicate').click()
           .getDrawingBoardDeployBtn().click()
           .wait('@expectedPostAsyncInstantiation').then(xhr => {
-          expect(Object.keys(bodyOf(xhr).vnfs).length).equals(numberOfDuplicate + 1);
+          expect(Object.keys(bodyOf(xhr).vnfs).length).equals(numberOfDuplicate + 2);
         });
       });
 
@@ -119,6 +120,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
           {path: [...vnfPath, "vnfStoreKey"], value: "vProbe_NC_VNF 0"}, // side-effect
+          {path: [...vnfPath2, "vnfStoreKey"], value: "vProbe_NC_VNF 0_1"},
         ]);
       });
 
@@ -145,7 +147,7 @@ describe('Drawing Board: Instantiation Templates', function () {
         let module1CustomizationId = `vprobe_nc_vnf0..${module1ModelId}`;
 
         // Click target VNF on right tree
-        cy.getElementByDataTestsId('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0').click();
+        cy.getElementByDataTestsId('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0').first().click();
 
         // Click [+] vfModule on left tree
         cy.drawingBoardPressAddButtonByElementName(`node-${module1CustomizationId}`)
@@ -182,6 +184,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
           assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
             {path: [...vnfPath, "vnfStoreKey"], value: "vProbe_NC_VNF 0"},   // side-effect
+            {path: [...vnfPath2, "vnfStoreKey"], value: "vProbe_NC_VNF 0_1"},
             {path: ["existingNames", newVfModuleName], value: ""},
             {path: ["existingNames", `${newVfModuleName}_vol`], value: ""},
             {path: latestVfModule_1Path, value: latestVfModule_1ExpectedValue},
@@ -202,6 +205,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
         assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
           {path: [...vnfPath, "vnfStoreKey"], value: "vProbe_NC_VNF 0"}, // side-effect
+          {path: [...vnfPath2, "vnfStoreKey"], value: "vProbe_NC_VNF 0_1"},
           {path: [...removed_vfModule_Path], value: undefined},
         ]);
       });
@@ -331,6 +335,10 @@ const templateWithNetworkSetup = {
 
 const vnfPath = [
   "vnfs", "vProbe_NC_VNF 0"
+];
+
+const vnfPath2 = [
+  "vnfs", "vProbe_NC_VNF 0_1"
 ];
 
 function loadDrawingBoardWithRecreateMode() {

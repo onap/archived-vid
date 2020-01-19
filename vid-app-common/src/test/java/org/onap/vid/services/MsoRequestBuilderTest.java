@@ -526,7 +526,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
                         "}";
         Vnf vnfDetails = new Vnf(createVnfModelInfo(true), "productFamily", "instanceName", Action.Delete.name(), "platform", "AAIAIC25", null,
                 "092eb9e8e4b7412e8787dd091bc58e86", null, null, false, "VNF_INSTANCE_ID", null, UUID.randomUUID().toString(), null, null,
-            null);
+            null, "originalName");
         RequestDetailsWrapper<VnfInstantiationRequestDetails> result =
                 msoRequestBuilder.generateDeleteVnfRequest(vnfDetails, "az2018");
         MsoOperationalEnvironmentTest.assertThatExpectationIsLikeObject(expected, result);

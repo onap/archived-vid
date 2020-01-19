@@ -68,9 +68,10 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		@JsonProperty("statusMessage") String statusMessage,
 		@Nullable @JsonProperty("retainAssignments") Boolean retainAssignments,
 		@Nullable @JsonProperty("retainVolumeGroups") Boolean retainVolumeGroups,
-		@JsonProperty("position") Integer position) {
+		@JsonProperty("position") Integer position,
+		@JsonProperty("originalName") String originalName) {
 		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
-			position);
+			position, originalName);
 		this.volumeGroupInstanceName = volumeGroupInstanceName;
 		this.usePreload = usePreload;
 		this.supplementaryParams = supplementaryParams;
@@ -135,6 +136,8 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 				this.getStatusMessage(),
 				this.isRetainAssignments(),
 				this.isRetainVolumeGroups(),
-				this.getPosition());
+				this.getPosition(),
+			    this.getOriginalName()
+		);
 	}
 }

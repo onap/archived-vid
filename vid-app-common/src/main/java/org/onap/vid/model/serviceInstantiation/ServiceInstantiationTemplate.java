@@ -52,7 +52,8 @@ public class ServiceInstantiationTemplate extends ServiceInstantiation implement
             baseService.isRollbackOnFailure(), baseService.isALaCarte(), baseService.getTestApi(),
             baseService.getInstanceId(), Objects.toString(baseService.getAction(), null),
             baseService.getTrackById(), baseService.getIsFailed(), baseService.getStatusMessage(),
-            baseService.getVidNotions()
+            baseService.getVidNotions(),
+            baseService.getOriginalName()
         );
 
         this.existingVNFCounterMap = vnfCounterMap;
