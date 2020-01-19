@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ebf11f2a_2d94df59",
+        "filename": "vid-webpack-master/src/app/shared/components/auditInfoModal/auditInfoModal.component.html",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2020-01-19T07:21:15Z",
+      "side": 1,
+      "message": "I prefer button and not link (you can change the style of the button to look like link)\nAnd you can test if the button can navigate",
+      "revId": "59eaa5abcc93e8c215f673a6fda18845eb6e51b7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f32aecc_caadd96e",
+        "filename": "vid-webpack-master/src/app/shared/components/auditInfoModal/auditInfoModal.component.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2020-01-19T07:21:15Z",
+      "side": 1,
+      "message": "you should declare  default value \"showMoreAuditInfoLink: boolean \u003d false\"",
+      "revId": "59eaa5abcc93e8c215f673a6fda18845eb6e51b7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f81ef0ac_0a6561db",
+        "filename": "vid-webpack-master/src/app/shared/components/auditInfoModal/auditInfoModal.component.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2020-01-19T07:21:15Z",
+      "side": 1,
+      "message": "If you will use button with this.router.navigate .... you can test it bu simple unit test",
+      "revId": "59eaa5abcc93e8c215f673a6fda18845eb6e51b7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
