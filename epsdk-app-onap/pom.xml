@@ -24,7 +24,8 @@
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <epsdk.version>2.5.0</epsdk.version>
+        <epsdk.version>2.6.0</epsdk.version>
+        <epsdk.overlay.version>2.5.0</epsdk.overlay.version>
         <jackson.version>2.10.1</jackson.version>
         <jackson.databind.version>2.10.1</jackson.databind.version>
         <springframework.version>5.2.0.RELEASE</springframework.version>
@@ -269,7 +270,7 @@
         <dependency>
             <groupId>org.onap.portal.sdk</groupId>
             <artifactId>epsdk-app-overlay</artifactId>
-            <version>${epsdk.version}</version>
+            <version>${epsdk.overlay.version}</version>
             <type>war</type>
         </dependency>
         <dependency>
