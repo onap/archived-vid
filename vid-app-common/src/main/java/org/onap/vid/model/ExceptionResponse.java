@@ -20,9 +20,8 @@
 
 package org.onap.vid.model;
 
+import org.onap.logging.ref.slf4j.ONAPLogConstants.MDCs;
 import org.slf4j.MDC;
-
-import static com.att.eelf.configuration.Configuration.MDC_KEY_REQUEST_ID;
 
 /**
  * The Class ExceptionResponse.
@@ -67,7 +66,7 @@ public class ExceptionResponse {
 
 	public void setException(Exception exception) {
 		setException(exception.getClass().toString().replaceFirst("^.*[\\.$]", ""));
-		setMessage(exception.getMessage() + " (Request id: " + MDC.get(MDC_KEY_REQUEST_ID) + ")");
+		setMessage(exception.getMessage() + " (Request id: " + MDC.get(MDCs.REQUEST_ID) + ")");
 	}
 
 	/**

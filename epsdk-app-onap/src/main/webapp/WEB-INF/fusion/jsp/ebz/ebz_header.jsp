@@ -20,13 +20,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page isELIgnored="false"%>
-<%@ page import="org.onap.portalsdk.core.util.SystemProperties"%>
-<%@ page import="org.onap.portalsdk.core.onboarding.util.PortalApiProperties"%>
 <%@ page import="org.onap.portalsdk.core.onboarding.util.PortalApiConstants"%>
-<%@ page import="org.onap.portalsdk.core.domain.MenuData"%>
+<%@ page import="org.onap.portalsdk.core.onboarding.util.PortalApiProperties"%>
+<%@ page import="org.onap.portalsdk.core.util.SystemProperties"%>
 <link rel="stylesheet" type="text/css" href="app/fusion/external/ebz/ebz_header/header.css">
 <link rel="stylesheet" type="text/css" href="app/fusion/external/ebz/ebz_header/portal_ebz_header.css">
-<link rel="stylesheet" type="text/css" href="app/fusion/external/ebz/sandbox/styles/style.css" >
+<link rel="stylesheet" type="text/css" href="app/fusion/external/ebz/sandbox/styles/style.css">
 
 
 <%--<script src= "app/fusion/external/ebz/angular_js/angular.js"></script> --%>
@@ -688,55 +687,6 @@
                                	    "url": ""
                                	  },
                                	  {
-                               	    "menuId": 90,
-                               	    "column": 1,
-                               	    "text": "Google",
-                               	    "parentMenuId": 1,
-                               	    "url": "http://google.com"
-                               	  },
-                               	  {
-                               	    "menuId": 91,
-                               	    "column": 1,
-                               	    "text": "Mike Little's Coffee Cup",
-                               	    "parentMenuId": 2,
-                               	    "url": "http://coffee.com"
-                               	  },
-                               	  {
-                               	    "menuId": 92,
-                               	    "column": 2,
-                               	    "text": "Andy and his Astrophotgraphy",
-                               	    "parentMenuId": 3,
-                               	    "url": "http://nightskypix.com"
-                               	  },
-                               	  {
-                               	    "menuId": 93,
-                               	    "column": 1,
-                               	    "text": "JSONLint",
-                               	    "parentMenuId": 4,
-                               	    "url": "http://http://jsonlint.com"
-                               	  },
-                               	  {
-                               	    "menuId": 96,
-                               	    "column": 3,
-                               	    "text": "3rd Level App1c R200",
-                               	    "parentMenuId": 4,
-                               	    "url": "http://app1c.com"
-                               	  },
-                               	  {
-                               	    "menuId": 97,
-                               	    "column": 1,
-                               	    "text": "3rd Level App4b R16",
-                               	    "parentMenuId": 5,
-                               	    "url": "http://app4b.com"
-                               	  },
-                               	  {
-                               	    "menuId": 98,
-                               	    "column": 2,
-                               	    "text": "3rd Level App2b R16",
-                               	    "parentMenuId": 5,
-                               	    "url": "http://app2b.com"
-                               	  },
-                               	  {
                                	    "menuId": 99,
                                	    "column": 1,
                                	    "text": "Favorites",
@@ -748,11 +698,20 @@
  	   		$scope.megaMenuDataObject = menuStructureConvert($scope.jsonMenuData);
 //	  		$log.debug(JSON.stringify($scope.jsonMenuData));
     	}
+
+	LeftMenuService.getLeftMenu().then(function (response) {
+		var menu = {
+			parentList: JSON.parse(response.data),
+			childItemList: JSON.parse(response.data2)
+		};
+
+		try {
+
 		var childItemList="";
 		var parentList = "";
 		try{
-			childItemList = ${menu.childItemList};
-			parentList = ${menu.parentList};
+			childItemList = menu.childItemList; //
+			parentList = menu.parentList;
 		}catch(err){
 			console.log("ebz_header: failed to get child/parent lists", err);
 		}
@@ -819,7 +778,14 @@
 		$timeout(function() {
 			detectScrollEvent();
 		}, 800);
-		
+
+		} catch (e) {
+			console.log("error happened while trying to get app menu " + e);
+		}
+	}, function (error) {
+		console.log('getLeftMenu failed', error);
+	});
+
 	});
 	
 	app.filter("ellipsis", function(){
