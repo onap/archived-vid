@@ -2,12 +2,12 @@
   <div class="left-header">
     <span class="vid-logo-small"></span>
     <span class="icon-back">
-      <svg-icon
+      <custom-icon
         (click)="closePage()"
         [testId]="'backBtn'"
         [size]="'large'"
         [name]="'navigation-arrow-back'">
-      </svg-icon>
+      </custom-icon>
     </span>
 
     <div class="header-col middleDetails" style="padding-top: 7px;padding-left: 13px;line-height: 100%;" *ngIf="isServiceFailed">
@@ -59,12 +59,12 @@
         <ng-template *ngIf="mode !== 'CREATE'" contextMenuItem
                      (execute)="drawingBoardHeaderService.showAuditInfo(serviceModelId)">
           <div  [attr.data-tests-id]="'context-menu-header-audit-item'" style="float: left;margin-top: 8px;">
-                  <svg-icon
+                  <custom-icon
                     [ngClass]="'eye-o'"
                     class="eye-o"
                     [size]="'small'"
                     [name]="'eye-o'">
-                </svg-icon></div>
+                </custom-icon></div>
                 <div style="padding-left: 12px;">Show Audit Info</div>
         </ng-template>
         <ng-template *ngIf="drawingBoardHeaderService?.showResumeService(serviceModelId)" contextMenuItem
