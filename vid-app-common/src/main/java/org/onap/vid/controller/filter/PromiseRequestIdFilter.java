@@ -41,8 +41,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import org.onap.logging.ref.slf4j.ONAPLogConstants.MDCs;
 import org.onap.vid.logging.Headers;
 import org.onap.vid.logging.RequestIdHeader;
+import org.slf4j.MDC;
 import org.springframework.web.filter.GenericFilterBean;
 
 @WebFilter(urlPatterns = "/*")
@@ -82,7 +84,8 @@ public class PromiseRequestIdFilter extends GenericFilterBean {
 
         if (isWrapNeeded(highestPriorityHeader, originalRequestId)) {
             // Copy originalRequestId to the promised header value
-            request = new PromiseRequestIdRequestWrapper(httpRequest, toUuidOrElse(originalRequestId, UUID::randomUUID));
+            request = new PromiseRequestIdRequestWrapper(httpRequest,
+                toUuidOrElse(originalRequestId, MDC.get(MDCs.REQUEST_ID), UUID::randomUUID));
         }
 
         return request;
@@ -97,6 +100,10 @@ public class PromiseRequestIdFilter extends GenericFilterBean {
             PROMISED_HEADER == highestPriorityHeader && verifyAndValidateUuid(originalRequestId);
 
         return !headerExistsAndValid;
+    }
+
+    UUID toUuidOrElse(String uuid1, String uuid2, Supplier<UUID> uuidSupplier) {
+        return toUuidOrElse(uuid1, () -> toUuidOrElse(uuid2, uuidSupplier));
     }
 
     UUID toUuidOrElse(String uuid, Supplier<UUID> uuidSupplier) {
