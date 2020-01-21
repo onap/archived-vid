@@ -59,7 +59,7 @@ public class PresetMSOCreateVnfALaCarteE2E extends PresetMSOCreateVnfBase {
             + "        ],"
             + "        \"requestParameters\": {"
             + "            \"userParams\": [],"
-            + "            \"testApi\": \"VNF_API\""
+            + "            \"testApi\": \"GR_API\""
             + "        }"
             + "    }"
             + "}";

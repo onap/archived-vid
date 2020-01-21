@@ -1,13 +1,12 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
-import org.springframework.http.HttpMethod;
+import static java.util.Collections.singletonList;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Collections.singletonList;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork extends BaseMSOPreset {
 
@@ -82,7 +81,7 @@ public class PresetMSOOrchestrationRequestsGet5GServiceInstanceAndNetwork extend
                 "          \"requestParameters\": {" +
                 "            \"subscriptionServiceType\": \"TYLER SILVIA\"," +
                 "            \"aLaCarte\": true," +
-                "            \"testApi\": \"VNF_API\"" +
+                "            \"testApi\": \"GR_API\"" +
                 "          }," +
                 "          \"project\": {" +
                 "            \"projectName\": \"WATKINS\"" +

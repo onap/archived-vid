@@ -47,7 +47,7 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesAlacarteService extends 
                 "      \"requestorId\": \"us16807000\" " +
                 "    }, " +
                 "    \"requestParameters\": { " +
-                "      \"testApi\": \"VNF_API\", " +
+                "      \"testApi\": \"GR_API\", " +
                 "      \"subscriptionServiceType\": \"TYLER SILVIA\", " +
                 "      \"aLaCarte\": true, " +
                 "      \"userParams\": [] " +
