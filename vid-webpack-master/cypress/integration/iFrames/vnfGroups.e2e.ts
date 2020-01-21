@@ -12,7 +12,7 @@ describe('Vnf Groups', function () {
       cy.initAAIMock();
       cy.initVidMock();
       cy.permissionVidMock();
-      cy.setTestApiParamToVNF();
+      cy.setTestApiParamToGR;
       cy.login();
   });
 

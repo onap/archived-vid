@@ -649,7 +649,7 @@ public class ChangeManagementTest extends VidBaseTestCase {
                                 .put("workflow", "" + workflowName + "")
                                 .put("policyYN", "Y")
                                 .put("sniroYN", "Y")
-                                .put("testApi", "VNF_API")
+                                .put("testApi", "GR_API")
                                 .put("vnfType", "vMobileDNS")
                                 .putAll(workflowParams)
                                 .build()

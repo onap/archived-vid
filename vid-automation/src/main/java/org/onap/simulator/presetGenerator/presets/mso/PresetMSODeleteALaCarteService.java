@@ -37,7 +37,7 @@ public class PresetMSODeleteALaCarteService extends PresetMSODeleteService {
                 "      \"requestorId\": \"us16807000\"" +
                 "    }," +
                 "    \"requestParameters\": {" +
-                "       \"testApi\": \"VNF_API\","+
+                "       \"testApi\": \"GR_API\","+
                 "      \"aLaCarte\": true" +
                 "    }" +
                 "  }" +
