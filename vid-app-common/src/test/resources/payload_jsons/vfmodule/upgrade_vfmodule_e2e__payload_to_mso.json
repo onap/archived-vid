@@ -36,7 +36,7 @@
       "retainAssignments": false,
       "usePreload" : true,
       "userParams": [],
-      "testApi": "VNF_API"
+      "testApi": "GR_API"
     },
     "modelInfo": {
       "modelType": "vfModule",

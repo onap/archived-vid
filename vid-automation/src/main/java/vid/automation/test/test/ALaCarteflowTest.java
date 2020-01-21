@@ -39,7 +39,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     static final String SERVICE_NAME = "ggghhh";
     static final String SERVICE_ID = "537d3eb0-b7ab-4fe8-a438-6166ab6af49b";
     static final String VNF_ID = "0eb38f69-d96b-4d5e-b8c9-3736c292f0f7";
-    static final String DEFAULT_TEST_API_VALUE = "VNF_API";
+    static final String DEFAULT_TEST_API_VALUE = "GR_API";
     public static final String SERVICE_INSTANCE_ID = "SERVICE_INSTANCE_ID";
     public static final String A_LACARTE_FLOW_GET_ORCHESTRATION = "aLacarteFlow/get_orchestration_request_status.json";
     public static final String ORCHESTRATION_REQUEST_ID = "orchestrationRequestId";
@@ -71,7 +71,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
 
 
     @Test(dataProvider = "msoTestApiOptions")
-    private void testAddVfModule(String msoTestApiOption, String msoTestApiValue) {
+    public void testAddVfModule(String msoTestApiOption, String msoTestApiValue) {
         withMsoTestApiConfiguration(msoTestApiOption, msoTestApiValue, () -> {
             final String REQUEST_ID = "dbe54591-c8ed-46d3-abc7-d3a24873bddd";
             final String MODEL_UUID = "d205e01d-e5da-4e68-8c52-f95cb0607959";
@@ -104,7 +104,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test
-    private void testTenant() throws Exception {
+    public void testTenant() throws Exception {
         ViewEditPage viewEditPage = new ViewEditPage();
         User user = usersService.getUser("Emanuel_with_tenant");
         relogin(user.credentials);
@@ -120,7 +120,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test(dataProvider = "msoTestApiOptions")
-    private void testAddVnf(String msoTestApiOption, String msoTestApiValue) {
+    public void testAddVnf(String msoTestApiOption, String msoTestApiValue) {
         withMsoTestApiConfiguration(msoTestApiOption, msoTestApiValue, () -> {
             final String MODEL_UUID = MODEL;
             String instanceName = new VidBasePage().generateInstanceName(Constants.ViewEdit.VNF_INSTANCE_NAME_PREFIX);
@@ -145,7 +145,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test(dataProvider = "msoTestApiOptions")
-    private void requiredLineOfBussiness_confirmVnfWithNoLob(String msoTestApiOption, String msoTestApiValue) throws Exception {
+    public void requiredLineOfBussiness_confirmVnfWithNoLob(String msoTestApiOption, String msoTestApiValue) throws Exception {
         withMsoTestApiConfiguration(msoTestApiOption, msoTestApiValue, () -> {
             goToInstance();
             String instanceName = new VidBasePage().generateInstanceName(Constants.ViewEdit.VNF_INSTANCE_NAME_PREFIX);
@@ -170,7 +170,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test
-    private void emptyLobAfterReopenCreateVnfDialog() throws Exception {
+    public void emptyLobAfterReopenCreateVnfDialog() throws Exception {
         final String lobToSelect = "ONAP";
         goToInstance();
         ViewEditPage viewEditPage = new ViewEditPage();
@@ -185,7 +185,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     }
 
     @Test(dataProvider = "msoTestApiOptions")
-    private void testAddVolumeGroup(String msoTestApiOption, String msoTestApiValue) throws Exception {
+    public void testAddVolumeGroup(String msoTestApiOption, String msoTestApiValue) throws Exception {
         withMsoTestApiConfiguration(msoTestApiOption, msoTestApiValue, () -> {
             final String REQUEST_ID = "dbe54591-c8ed-46d3-abc7-d3a24873bdaa";
             final String MODEL_UUID = "13f022c4-651e-4326-b8e1-61e9a8c7a7ad";
@@ -230,8 +230,8 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     @DataProvider
     public static Object[][] msoTestApiOptions() {
         return new Object[][]{
-                {"VNF_API (old)", DEFAULT_TEST_API_VALUE}
-                , {"GR_API (new)", "GR_API"}
+                {"GR_API (new)", DEFAULT_TEST_API_VALUE}
+                , {"VNF_API (old)", "VNF_API"}
         };
     }
 
@@ -244,7 +244,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
                 test.run();
             } finally {
                 // back to default
-                selectMsoTestApiOption("VNF_API (old)");
+                selectMsoTestApiOption("GR_API (new)");
             }
         }
     }

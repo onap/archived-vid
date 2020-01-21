@@ -111,7 +111,7 @@
   "rollbackOnFailure": false,
   "isALaCarte": true,
   "collectionResources": {},
-  "testApi": "VNF_API",
+  "testApi": "GR_API",
   "vidNotions": {
     "instantiationUI": "legacy",
     "modelCategory": "other",

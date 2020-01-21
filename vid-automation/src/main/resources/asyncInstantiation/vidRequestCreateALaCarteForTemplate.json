@@ -26,7 +26,7 @@
   "rollbackOnFailure": true,
   "aicZoneName": null,
   "owningEntityName": "WayneHolland",
-  "testApi": "VNF_API",
+  "testApi": "GR_API",
   "tenantName": null,
   "modelInfo": {
     "modelInvariantId": "d1068db8-b933-4919-8972-8bc1aed366c8",

@@ -1943,7 +1943,7 @@
         "bulkSize": "3",
         "aicZoneName": "NFTJSSSS-NFT1",
         "owningEntityName": "WayneHolland",
-        "testApi": "VNF_API",
+        "testApi": "GR_API",
         "tenantName": "AIN Web Tool-15-D-testalexandria",
         "modelInfo": {
           "modelInvariantId": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
