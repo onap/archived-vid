@@ -113,7 +113,7 @@ public class VidBaseTestCase extends SetupCDTest{
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        this.uri = new JerseyUriBuilder().host(envUrI.getHost()).port(envUrI.getPort()).scheme("http").path("vid").build();
+        this.uri = new JerseyUriBuilder().host(envUrI.getHost()).port(envUrI.getPort()).scheme(envUrI.getScheme()).path("vid").build();
     }
 
     public void login() {
