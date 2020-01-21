@@ -32,7 +32,7 @@
   "subscriberName":"SILVIA ROBBINS",
   "owningEntityName":"WayneHolland",
   "rollbackOnFailure":"true",
-  "testApi": "VNF_API",
+  "testApi": "GR_API",
   "isALaCarte":true,
   "action": "Create"
 }

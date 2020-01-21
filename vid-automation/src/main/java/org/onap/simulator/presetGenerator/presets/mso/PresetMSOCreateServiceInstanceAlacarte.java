@@ -44,7 +44,7 @@ public class PresetMSOCreateServiceInstanceAlacarte extends PresetMSOCreateServi
                 "      \"requestorId\": \""+this.requestorId+"\"" +
                 "    }," +
                 "    \"requestParameters\": {" +
-                "      \"testApi\": \"VNF_API\"," +
+                "      \"testApi\": \"GR_API\"," +
                 "      \"subscriptionServiceType\": \"TYLER SILVIA\"," +
                 "      \"aLaCarte\": true," +
                 "      \"userParams\": []" +

@@ -38,7 +38,7 @@ public class PresetMSOCreateNetworkALaCarteOldViewEdit extends PresetMSOBaseCrea
                 "          \"modelCustomizationName\": \"AIC30_CONTRAIL_BASIC 0\"" +
                 "        }," +
                 "        \"requestParameters\": {" +
-                "          \"testApi\": \"VNF_API\"," +
+                "          \"testApi\": \"GR_API\"," +
                 "          \"userParams\": []" +
                 "        }," +
                 "        \"cloudConfiguration\": {" +

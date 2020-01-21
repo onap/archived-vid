@@ -55,7 +55,7 @@ public class PresetMSOCreateVnfVlanTagging extends PresetMSOBaseCreateInstancePo
                 "    }," +
                 "    \"requestParameters\": {" +
                 "      \"userParams\": []," +
-                "      \"testApi\": \"VNF_API\"" +
+                "      \"testApi\": \"GR_API\"" +
                 "    }," +
                 "    \"relatedInstanceList\": [{" +
                 "        \"relatedInstance\": {" +

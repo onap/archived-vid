@@ -70,7 +70,7 @@ public class PresetMSOCreateNetworkALaCarte5G extends PresetMSOBaseCreateInstanc
                 "      }" +
                 "    ]," +
                 "    \"requestParameters\": {" +
-                "      \"testApi\": \"VNF_API\"," +
+                "      \"testApi\": \"GR_API\"," +
                 "      \"userParams\": []" +
                 "    }" +
                 "  }" +

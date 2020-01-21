@@ -57,7 +57,7 @@
   "bulkSize": 1,
   "rollbackOnFailure": "false",
   "isALaCarte": true,
-  "testApi": "VNF_API",
+  "testApi": "GR_API",
   "instanceId": "INSTANCE_ID",
   "action": "None",
   "trackById": "TRACK_BY_ID",

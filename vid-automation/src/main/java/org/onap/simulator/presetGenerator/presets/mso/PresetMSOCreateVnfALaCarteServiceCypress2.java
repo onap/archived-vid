@@ -30,7 +30,7 @@ public class PresetMSOCreateVnfALaCarteServiceCypress2 extends PresetMSOCreateVn
                     "\"modelType\":\"vnf\"," +
                     "\"modelVersion\":\"4.0\"}," +
                 "\"requestParameters\":{" +
-                    "\"testApi\": \"VNF_API\", " +
+                    "\"testApi\": \"GR_API\", " +
                     "\"userParams\":[]" +
                 "}," +
                 "\"relatedInstanceList\":[" +

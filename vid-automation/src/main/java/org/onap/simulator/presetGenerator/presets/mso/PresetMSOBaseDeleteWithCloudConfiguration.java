@@ -23,7 +23,7 @@ public abstract class PresetMSOBaseDeleteWithCloudConfiguration extends PresetMS
                 "      \"requestorId\": \"us16807000\"" +
                 "    }," +
                 "    \"requestParameters\": {" +
-                "      \"testApi\": \"VNF_API\"" +
+                "      \"testApi\": \"GR_API\"" +
                 "    }," +
                 "    \"cloudConfiguration\": {" +
                 "      \"lcpCloudRegionId\": \"hvf6\"," +
