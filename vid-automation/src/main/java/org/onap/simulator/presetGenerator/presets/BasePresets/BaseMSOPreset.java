@@ -11,22 +11,6 @@ public abstract class BaseMSOPreset extends BasePreset {
     public static final String DEFAULT_INSTANCE_ID = "f8791436-8d55-4fde-b4d5-72dd2cf13cfb";
     protected String cloudOwner = DEFAULT_CLOUD_OWNER;
 
-    public static String getRequestBodyWithTestApiOnly() {
-        if (Features.FLAG_ADD_MSO_TESTAPI_FIELD.isActive()) {
-            return "" +
-                    "{" +
-                    "  \"requestDetails\": { " +
-                    "    \"requestParameters\": { " +
-                    "      \"testApi\": \"VNF_API\" " +
-                    "    } " +
-                    "  } " +
-                    "} " +
-                    "";
-        } else {
-            return null;
-        }
-    }
-
     protected String addCloudOwnerIfNeeded() {
         return Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST.isActive() ?
             "\"cloudOwner\": \"" + cloudOwner + "\"," : "";

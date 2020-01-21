@@ -133,7 +133,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
     beforeEach(() => {
       cy.clearSessionStorage();
-      cy.setTestApiParamToVNF();
+      cy.setTestApiParamToGR();
       cy.initVidMock();
       cy.login();
     });
