@@ -66,7 +66,7 @@ public class PresetMSOCreateVNFInstanceOnlyRelatedServiceInstance extends Preset
                 "    ]," +
                 "    \"requestParameters\": {" +
                 "      \"userParams\": []," +
-                "      \"testApi\": \"VNF_API\"" +
+                "      \"testApi\": \"GR_API\"" +
                 "    }" +
                 "  }" +
                 "}";

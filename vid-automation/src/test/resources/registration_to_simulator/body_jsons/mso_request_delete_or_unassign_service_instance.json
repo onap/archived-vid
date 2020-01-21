@@ -12,7 +12,7 @@
       "requestorId": "16807000"
     },
     "requestParameters": {
-      "testApi": "VNF_API",
+      "testApi": "GR_API",
       "aLaCarte": false
     }
   }

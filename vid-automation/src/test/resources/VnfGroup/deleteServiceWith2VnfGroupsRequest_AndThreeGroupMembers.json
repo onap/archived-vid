@@ -163,7 +163,7 @@
   "instanceName": "SERVICE_INSTANCE_NAME",
   "owningEntityName": null,
   "rollbackOnFailure": false,
-  "testApi": "VNF_API",
+  "testApi": "GR_API",
   "isALaCarte": true,
   "vidNotions": {
     "instantiationUI": "serviceWithVnfGrouping",

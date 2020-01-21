@@ -43,7 +43,7 @@
   "subscriptionServiceType": "service-instance-type",
   "tenantId": null,
   "tenantName": null,
-  "testApi": "VNF_API",
+  "testApi": "GR_API",
   "validationCounter": 0,
   "vnfGroups": {
     "VNF_GROUP1_INSTANCE_ID": {
