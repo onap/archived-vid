@@ -24,6 +24,7 @@ import {VfModuleUpgradePopupService} from "./genericFormServices/vfModuleUpgrade
 import {SharedControllersService} from "../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 import {AppState} from "../../store/reducers";
 import each from 'jest-each';
+import {SharedTreeService} from "../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 
 class MockAppStore<T>{
   getState() {
@@ -977,6 +978,7 @@ describe('Generic Form popup Service', () => {
         VfModuleUpgradePopupService,
         VfModuleControlGenerator,
         FeatureFlagsService,
+        SharedTreeService,
         {provide: ActivatedRoute, useClass: ActivatedRouteMock},
         {provide: NgRedux, useClass: MockAppStore}]
     });

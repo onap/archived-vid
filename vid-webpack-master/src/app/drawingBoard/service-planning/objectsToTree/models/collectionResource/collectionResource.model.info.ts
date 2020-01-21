@@ -30,7 +30,7 @@ export class CollectionResourceModelInfo implements ILevelNodeInfo{
 
   getModel = (collectionResourceModelId: string, instance: CollectionResourceInstance, serviceHierarchy): CollectionResourceModel => {
     const originalModelName = instance.originalName ? instance.originalName : collectionResourceModelId;
-    return new CollectionResourceModel(serviceHierarchy[this.name][originalModelName]);
+    return new CollectionResourceModel(this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, originalModelName));
   };
 
 

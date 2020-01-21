@@ -9,7 +9,10 @@ import {SharedTreeService} from "../../shared.tree.service";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../../shared/store/reducers";
 import {DefaultDataGeneratorService} from "../../../../../shared/services/defaultDataServiceGenerator/default.data.generator.service";
-import {GenericFormPopupComponent, PopupType} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
+import {
+  GenericFormPopupComponent,
+  PopupType
+} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from 'ng2-bootstrap-modal';
 import {VnfPopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
 import {VfModulePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
@@ -17,13 +20,18 @@ import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {DuplicateService} from "../../../duplicate/duplicate.service";
 import {DuplicateVnfComponent} from "../../../duplicate/duplicate-vnf.component";
-import {SdcUiServices} from "onap-ui-angular";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {changeInstanceCounter, removeInstance} from "../../../../../shared/storeUtil/utils/general/general.actions";
 import {MessageBoxData} from "../../../../../shared/components/messageBox/messageBox.data";
 import {MessageBoxService} from "../../../../../shared/components/messageBox/messageBox.service";
 import {ServiceInstanceActions} from "../../../../../shared/models/serviceInstanceActions";
-import {deleteActionVnfInstance, undoDeleteActionVnfInstance, undoUpgradeVnf, updateVnfPosition, upgradeVnf} from "../../../../../shared/storeUtil/utils/vnf/vnf.actions";
+import {
+  deleteActionVnfInstance,
+  undoDeleteActionVnfInstance,
+  undoUpgradeVnf,
+  updateVnfPosition,
+  upgradeVnf
+} from "../../../../../shared/storeUtil/utils/vnf/vnf.actions";
 import * as _ from 'lodash';
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
@@ -81,7 +89,9 @@ export class VnfModelInfo implements ILevelNodeInfo {
    ************************************************************/
   getModel = (vnfModelId: string, instance: VnfInstance, serviceHierarchy): VNFModel => {
     const originalModelName = instance.originalName ? instance.originalName : vnfModelId;
-    return new VNFModel(serviceHierarchy[this.name][originalModelName], this._featureFlagsService.getAllFlags());
+    return new VNFModel(
+      this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, originalModelName),
+      this._featureFlagsService.getAllFlags());
   };
 
 

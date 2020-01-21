@@ -20,6 +20,7 @@ import {VNFModel} from "../../../../models/vnfModel";
 import {VnfInstance} from "../../../../models/vnfInstance";
 import * as _ from 'lodash';
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
+import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -40,6 +41,7 @@ export class VfModuleControlGenerator {
   constructor(private genericFormService: GenericFormService,
               private _basicControlGenerator: ControlGeneratorUtil,
               private _sharedControllersService: SharedControllersService,
+              private _sharedTreeService: SharedTreeService,
               private store: NgRedux<AppState>,
               private http: HttpClient,
               private _aaiService: AaiService,
@@ -76,8 +78,7 @@ export class VfModuleControlGenerator {
     const vfModuleInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode));
     const vfModuleModel = this.vfModuleModel;
     const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey];
-    const vnfModelName: string = vnf.originalName;
-    const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfModelName]);
+    const vnfModel = this.newVNFModel(serviceId, vnf);
 
     let result: FormControlModel[] = [];
 
@@ -88,6 +89,14 @@ export class VfModuleControlGenerator {
       result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }
     return result;
+  }
+
+  private newVNFModel(serviceId: string, vnf: VnfInstance) {
+    const vnfModelName: string = vnf.originalName;
+
+    const serviceModelFromHierarchy = this.store.getState().service.serviceHierarchy[serviceId];
+    const model = this._sharedTreeService.modelByIdentifier(serviceModelFromHierarchy, "vnfs", vnfModelName);
+    return new VNFModel(model);
   }
 
   pushInstanceAndVGToForm(result: FormControlModel[], vfModuleElement: any, serviceId: string, vnfModel: any, isALaCarte: boolean) :FormControlModel[]{
@@ -108,8 +117,7 @@ export class VfModuleControlGenerator {
       }
     }
     const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey] ;
-    const vnfModelName: string = vnf.originalName;
-    const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfModelName]);
+    const vnfModel = this.newVNFModel(serviceId, vnf);
 
     const vfModuleInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode));
     let result: FormControlModel[] = [];

@@ -20,8 +20,9 @@ describe('PNF model info', () => {
   let injector;
   let _componentInfoService: ComponentInfoService;
   let _store: NgRedux<AppState>;
-  let pnfModel: PnfModelInfo =  new PnfModelInfo();
-  beforeEach(() => {
+  let _sharedTreeService;
+  let pnfModel: PnfModelInfo;
+  beforeEach(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgReduxTestingModule],
       providers: [
@@ -35,12 +36,14 @@ describe('PNF model info', () => {
         FeatureFlagsService,
         ComponentInfoService,
         IframeService]
-    }).compileComponents();
-
+    });
+    await TestBed.compileComponents();
     injector = getTestBed();
     _store = injector.get(NgRedux);
+    _sharedTreeService = injector.get(SharedTreeService);
+    pnfModel = new PnfModelInfo(_sharedTreeService);
     _componentInfoService = injector.get(ComponentInfoService);
-  });
+  })().then(done).catch(done.fail));
 
   test('pnf model should be defined', () => {
     expect(pnfModel).toBeDefined();

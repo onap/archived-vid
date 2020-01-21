@@ -24,7 +24,7 @@ describe('Collection Resource Model Info', () => {
   let collectionResourceModel: CollectionResourceModelInfo;
   let  _sharedTreeService : SharedTreeService;
 
-  beforeEach(() => {
+  beforeEach(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgReduxTestingModule],
       providers: [
@@ -38,16 +38,17 @@ describe('Collection Resource Model Info', () => {
         FeatureFlagsService,
         ComponentInfoService,
         IframeService]
-    }).compileComponents();
-
+    });
+    await TestBed.compileComponents();
     injector = getTestBed();
     _store = injector.get(NgRedux);
     _componentInfoService = injector.get(ComponentInfoService);
+    _sharedTreeService = injector.get(SharedTreeService);
 
     collectionResourceModel = new CollectionResourceModelInfo(_store, _sharedTreeService);
 
 
-  });
+  })().then(done).catch(done.fail));
 
   test('collection resource should be defined', () => {
     expect(collectionResourceModel).toBeDefined();

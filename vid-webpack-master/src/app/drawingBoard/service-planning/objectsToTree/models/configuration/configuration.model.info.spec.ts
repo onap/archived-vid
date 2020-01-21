@@ -1,11 +1,12 @@
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {TestBed} from "@angular/core/testing";
+import {getTestBed, TestBed} from "@angular/core/testing";
 import {MockNgRedux, NgReduxTestingModule} from "@angular-redux/store/testing";
 import {DynamicInputsService} from "../../dynamicInputs.service";
 import {ConfigurationModelInfo} from "./configuration.model.info";
 import {SharedTreeService} from "../../shared.tree.service";
 
 describe('Vnf Model Info', () => {
+  let injector;
   let  _dynamicInputsService : DynamicInputsService;
   let  _sharedTreeService : SharedTreeService;
 
@@ -18,6 +19,9 @@ describe('Vnf Model Info', () => {
         DynamicInputsService]
     });
     await TestBed.compileComponents();
+
+    injector = getTestBed();
+    _sharedTreeService = injector.get(SharedTreeService);
   })().then(done).catch(done.fail));
 
   test('ConfigurationModelInfo should be defined', () => {

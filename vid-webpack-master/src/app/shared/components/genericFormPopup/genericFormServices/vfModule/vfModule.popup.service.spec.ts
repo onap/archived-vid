@@ -14,6 +14,7 @@ import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flag
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 import {ModalService} from "../../../customModal/services/modal.service";
+import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 
 class MockModalService<T> {}
 
@@ -1993,6 +1994,7 @@ describe('VFModule popup service', () => {
         AaiService,
         LogService,
         BasicPopupService,
+        SharedTreeService,
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockReduxStore},
         {provide: HttpClient, useClass: MockAppStore},

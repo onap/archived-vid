@@ -6,12 +6,17 @@ import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
 import {LogService} from "../../../../utils/log/log.service";
-import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
+import {
+  FormControlModel,
+  ValidatorModel,
+  ValidatorOptions
+} from "../../../../models/formControlModels/formControl.model";
 import {FormControlNames, VfModuleControlGenerator} from "./vfModule.control.generator";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {VfModuleInstance} from "../../../../models/vfModuleInstance";
 import {VfModule} from "../../../../models/vfModule";
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
+import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 
 class MockAppStore<T> {
   getState() {
@@ -925,6 +930,7 @@ describe('VFModule Control Generator', () => {
         AaiService,
         FormBuilder,
         LogService,
+        SharedTreeService,
         {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
         {provide: NgRedux, useClass: MockAppStore}]
     });

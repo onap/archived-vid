@@ -6,11 +6,14 @@ import {AvailableNodeIcons} from "../../../available-models-tree/available-model
 import {PnfInstance} from "app/shared/models/pnfInstance";
 import {PNFModel} from "../../../../../shared/models/pnfModel";
 import {PnfTreeNode} from "../../../../../shared/models/pnfTreeNode";
+import {SharedTreeService} from "../../shared.tree.service";
 
 
 export class PnfModelInfo implements ILevelNodeInfo{
 
-  constructor(){}
+  constructor(
+    private _sharedTreeService: SharedTreeService,
+  ){}
 
   name: string = 'pnfs';
   type: string ='PNF';
@@ -30,7 +33,7 @@ export class PnfModelInfo implements ILevelNodeInfo{
 
   getModel = (pnfModelId: string, instance: PnfInstance, serviceHierarchy): PNFModel => {
     const originalModelName = instance.originalName ? instance.originalName : pnfModelId;
-    return new PNFModel(serviceHierarchy[this.name][originalModelName]);
+    return new PNFModel(this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, originalModelName));
   };
 
   getNextLevelObject(): any { return null;  }

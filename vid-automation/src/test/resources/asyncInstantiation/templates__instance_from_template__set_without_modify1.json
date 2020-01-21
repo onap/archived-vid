@@ -75,7 +75,7 @@
       "action": "Create",
       "instanceId": null,
       "instanceName": "hvf6arlba007",
-      "originalName": "vProbe_NC_VNF 0",
+      "originalName": "024a417d-ca46-40bf-95ce-809c6a269011",
       "vnfStoreKey": "vProbe_NC_VNF 0",
       "instanceParams": [
         {
@@ -169,7 +169,7 @@
       },
       "productFamilyId": "e433710f-9217-458d-a79d-1c7aff376d89",
       "instanceName": "hvf6arlba008",
-      "originalName": "vProbe_NC_VNF 0",
+      "originalName": "024a417d-ca46-40bf-95ce-809c6a269011",
       "vnfStoreKey": "vProbe_NC_VNF 0_1",
       "action": "Create",
       "platformName": "xxx1",
