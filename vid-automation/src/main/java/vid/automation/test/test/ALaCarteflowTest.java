@@ -39,7 +39,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     static final String SERVICE_NAME = "ggghhh";
     static final String SERVICE_ID = "537d3eb0-b7ab-4fe8-a438-6166ab6af49b";
     static final String VNF_ID = "0eb38f69-d96b-4d5e-b8c9-3736c292f0f7";
-    static final String DEFAULT_TEST_API_VALUE = "VNF_API";
+    static final String DEFAULT_TEST_API_VALUE = "GR_API";
     public static final String SERVICE_INSTANCE_ID = "SERVICE_INSTANCE_ID";
     public static final String A_LACARTE_FLOW_GET_ORCHESTRATION = "aLacarteFlow/get_orchestration_request_status.json";
     public static final String ORCHESTRATION_REQUEST_ID = "orchestrationRequestId";
@@ -230,7 +230,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
     @DataProvider
     public static Object[][] msoTestApiOptions() {
         return new Object[][]{
-                {"VNF_API (old)", DEFAULT_TEST_API_VALUE}
+                {"GR_API (old)", DEFAULT_TEST_API_VALUE}
                 , {"GR_API (new)", "GR_API"}
         };
     }
@@ -244,7 +244,7 @@ public class ALaCarteflowTest extends CreateInstanceDialogBaseTest {
                 test.run();
             } finally {
                 // back to default
-                selectMsoTestApiOption("VNF_API (old)");
+                selectMsoTestApiOption("GR_API (old)");
             }
         }
     }

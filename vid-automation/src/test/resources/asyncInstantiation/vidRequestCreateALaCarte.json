@@ -20,7 +20,7 @@
   "tenantId" : "c85f0e80-0636-44a4-8cb2-4ec00d056e79",
   "tenantName" : "Hedvika Wendelin",
   "bulkSize": "1",
-  "testApi": "VNF_API",
+  "testApi": "GR_API",
   "isALaCarte": true
 }
 

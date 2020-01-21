@@ -45,7 +45,7 @@ public class PresetMSOCreateVnfGroup extends PresetMSOBaseCreateInstancePost {
                 "      }" +
                 "    ]," +
                 "    \"requestParameters\": {" +
-                "      \"testApi\": \"VNF_API\", " +
+                "      \"testApi\": \"GR_API\", " +
                 "      \"userParams\": []" +
                 "    }" +
                 "  }" +

@@ -50,7 +50,7 @@ public class PresetMSOCreateServiceInstanceGen2WithNamesAlacarteGroupingService 
                 "      \"requestorId\": \"" + userId + "\" " +
                 "    }, " +
                 "    \"requestParameters\": { " +
-                "      \"testApi\": \"VNF_API\", " +
+                "      \"testApi\": \"GR_API\", " +
                 "      \"subscriptionServiceType\": \"TYLER SILVIA\", " +
                 "      \"aLaCarte\": true, " +
                 "      \"userParams\": [] " +

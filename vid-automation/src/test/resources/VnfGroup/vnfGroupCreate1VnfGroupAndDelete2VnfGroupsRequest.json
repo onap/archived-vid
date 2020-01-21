@@ -119,5 +119,5 @@
     "modelVersion": "1.0"
   },
 
-  "testApi": "VNF_API"
+  "testApi": "GR_API"
 }

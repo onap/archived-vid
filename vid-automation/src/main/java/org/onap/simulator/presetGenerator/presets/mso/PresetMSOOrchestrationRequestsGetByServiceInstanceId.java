@@ -1,13 +1,12 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
-import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
-import org.springframework.http.HttpMethod;
+import static java.util.Collections.singletonList;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Collections.singletonList;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseMSOPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetMSOOrchestrationRequestsGetByServiceInstanceId extends BaseMSOPreset {
 
@@ -68,7 +67,7 @@ public class PresetMSOOrchestrationRequestsGetByServiceInstanceId extends BaseMS
                 "      \"requestParameters\": {" +
                 "        \"subscriptionServiceType\": \"Kennedy\"," +
                 "        \"aLaCarte\": true," +
-                "        \"testApi\": \"VNF_API\"" +
+                "        \"testApi\": \"GR_API\"" +
                 "      }," +
                 "      \"project\": {" +
                 "        \"projectName\": \"Kennedy\"" +
@@ -138,7 +137,7 @@ public class PresetMSOOrchestrationRequestsGetByServiceInstanceId extends BaseMS
                 "        \"lcpCloudRegionId\":\"olson5b\"" +
                 "      }," +
                 "      \"requestParameters\":{" +
-                "        \"testApi\":\"VNF_API\"" +
+                "        \"testApi\":\"GR_API\"" +
                 "      }," +
                 "      \"platform\":{" +
                 "        \"platformName\":\"AIC\"" +

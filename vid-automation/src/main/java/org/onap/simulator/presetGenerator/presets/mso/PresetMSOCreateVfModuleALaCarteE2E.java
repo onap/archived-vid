@@ -76,7 +76,7 @@ public class PresetMSOCreateVfModuleALaCarteE2E extends PresetMSOCreateVfModuleB
             + "                    \"value\": \"sample\""
             + "                }"
             + "            ],"
-            + "            \"testApi\": \"VNF_API\""
+            + "            \"testApi\": \"GR_API\""
             + "        }"
             + "    }"
             + "}";
