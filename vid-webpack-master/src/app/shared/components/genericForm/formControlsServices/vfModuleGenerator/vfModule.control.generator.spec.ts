@@ -4,7 +4,7 @@ import {NgRedux} from '@angular-redux/store';
 import {ControlGeneratorUtil, SDN_C_PRE_LOAD} from "../control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {LogService} from "../../../../utils/log/log.service";
 import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
 import {FormControlNames, VfModuleControlGenerator} from "./vfModule.control.generator";
@@ -12,6 +12,7 @@ import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flag
 import {VfModuleInstance} from "../../../../models/vfModuleInstance";
 import {VfModule} from "../../../../models/vfModule";
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
+import {AppState} from "../../../../store/reducers";
 
 class MockAppStore<T> {
   getState() {
@@ -914,6 +915,7 @@ describe('VFModule Control Generator', () => {
   let injector;
   let service: VfModuleControlGenerator;
   let httpMock: HttpTestingController;
+  let store : NgRedux<AppState>;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -933,6 +935,7 @@ describe('VFModule Control Generator', () => {
     injector = getTestBed();
     service = injector.get(VfModuleControlGenerator);
     httpMock = injector.get(HttpTestingController);
+    store = injector.get(NgRedux);
     jest.spyOn(console, 'error');
 
   })().then(done).catch(done.fail));
@@ -1158,5 +1161,28 @@ describe('VFModule Control Generator', () => {
       expect(controls[i].controlName).toEqual(orderedControls[i]);
     }
   });
+
+
+  test('getSdncExtraContents', ()=>{
+    spyOn(store, 'getState').and.returnValue( {
+      "global": {
+        "flags": {
+          "FLAG_2004_VFM_SDNC_PRELOAD_FILES" : true
+        }
+      }
+    });
+
+    const extraContent = service.getSdncExtraContents();
+    const uploadFileData = extraContent[0];
+
+    expect(uploadFileData.type).toEqual('UPLOAD_FILE');
+    expect(uploadFileData.dataTestId).toEqual('SDN_C_pre-load_upload_link');
+    expect(uploadFileData.uploadMethod).toBeDefined();
+    expect(uploadFileData.isDisabled).toBeDefined();
+    expect(uploadFileData.onSuccess).toBeDefined();
+    expect(uploadFileData.onFailed).toBeDefined();
+
+  })
+
 });
 

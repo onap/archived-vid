@@ -133,13 +133,14 @@ export class SharedControllersService {
     })
   };
 
-  getSDNCControl = (instance: any): FormControlModel => {
+  getSDNCControl = (instance: any, extraContents? : any[]): FormControlModel => {
     return new CheckboxFormControl({
       controlName: SDN_C_PRE_LOAD,
       displayName: 'SDN-C pre-load',
       dataTestId: 'sdncPreLoad',
       value: instance ? instance.sdncPreLoad : false,
-      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')]
+      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
+      extraContents : extraContents
     })
   };
 
