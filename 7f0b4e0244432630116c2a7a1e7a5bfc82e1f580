@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "4b5315ca_3bd2a57a",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1188,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-22T13:10:36Z",
+      "side": 1,
+      "message": "Won\u0027t this assertion fail for VNF, as product-family is now required?",
+      "range": {
+        "startLine": 1188,
+        "startChar": 8,
+        "endLine": 1188,
+        "endChar": 31
+      },
+      "revId": "7f0b4e0244432630116c2a7a1e7a5bfc82e1f580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "616839a6_734768fa",
         "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
         "patchSetId": 3
