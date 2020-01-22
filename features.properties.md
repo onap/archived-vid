@@ -199,6 +199,9 @@
 * FLAG_2004_INSTANTIATION_TEMPLATES_POPUP
   Enables a designated Templates selection modal, accessible when creating a new instance through "Browse SDC".
 
+* FLAG_2004_VFM_SDNC_PRELOAD_FILES
+  Enables upload files when SDNC preload checkbox is checked
+
 * FLAG_2002_UNLIMITED_MAX 
   when flag is true and max_instances is not declare than user can add unlimited VND, NETWORK, VFMODULE,
   User can duplicate up to 10 record in single time.
@@ -207,4 +210,3 @@
 * FLAG_MORE_AUDIT_INFO_LINK_ON_AUDIT_INFO
   On the "audit info" modal (available on Instantiation Status page), shows a link navigating to
   the read-only RETRY page with more audit info.
-  

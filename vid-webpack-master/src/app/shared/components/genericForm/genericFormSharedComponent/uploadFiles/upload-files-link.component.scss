@@ -1,0 +1,23 @@
+.upload-text {
+  margin-left: 30px;
+  font-family: OpenSans-Semibold;
+  font-size: 14px;
+  line-height: 23px;
+}
+
+a.disabled {
+  color: gray;
+  cursor: not-allowed;
+  text-decoration: underline;
+}
+
+.hide-span {
+  visibility: hidden;
+  position: absolute;
+  overflow: hidden;
+  width: 0px;
+  height: 0px;
+  border: none;
+  margin: 0;
+  padding: 0
+}

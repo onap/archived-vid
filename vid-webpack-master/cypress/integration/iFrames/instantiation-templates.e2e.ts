@@ -25,7 +25,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       it(`Given a stored template - when click "deploy" - then a coherent request should be sent upon deploy`, () => {
 
-        loadDrawingBoardWithRecreateMode();
+        cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
 
         // Then...
         cy.getElementByDataTestsId("node-vProbe_NC_VNF 0").should('be.visible');
@@ -34,7 +34,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       it('Given a template - User can remove existing VNF', () => {
 
-        loadDrawingBoardWithRecreateMode();
+        cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
 
         removeVNFWithVFModules('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0');
         removeVNFWithVFModules('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0');
@@ -47,7 +47,7 @@ describe('Drawing Board: Instantiation Templates', function () {
       });
 
       it('Given a template - User can add new VNF', () => {
-        loadDrawingBoardWithRecreateMode();
+        cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
         // add new node
         addNewNode('node-vProbe_NC_VNF 0-add-btn')
           .fillVnfPopup()
@@ -66,10 +66,10 @@ describe('Drawing Board: Instantiation Templates', function () {
 
 
           // check instance name not change if empty
-          editNode('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0', 0)
+          cy.editNode('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0', 0)
             .clearInput('instanceName');
           cy.getElementByDataTestsId('form-set').click({force: true}).then((done) => {
-            editNode('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0', 0)
+            cy.editNode('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0', 0)
               .getElementByDataTestsId('instanceName').should('be.empty')
           });
         });
@@ -77,8 +77,8 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       it('Given a template - User can Duplicate VNF', () => {
         const numberOfDuplicate: number = 4;
-        loadDrawingBoardWithRecreateMode();
-        nodeAction('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0', 'Duplicate')
+        cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
+        cy.nodeAction('node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0', 'Duplicate')
           .getElementByDataTestsId('duplicate-amount-vfmodules').select(numberOfDuplicate.toString())
           .getTagElementContainsText('button', 'Duplicate').click()
           .getDrawingBoardDeployBtn().click()
@@ -89,10 +89,10 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       it('Given a stored template - when "edit" vnf and vfmodules are opened - then template’s details are visible as expected and deploy without changes', () => {
 
-        loadDrawingBoardWithRecreateMode();
+        cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
 
         // Then...
-        editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0")
+        cy.editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0")
           .getElementByDataTestsId("instanceName").should('have.value', 'hvf6arlba007')
           .getElementByDataTestsId("productFamily").should('contain', 'Emanuel')
           .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
@@ -102,14 +102,14 @@ describe('Drawing Board: Instantiation Templates', function () {
           .checkPlatformValue('xxx1')
           .getElementByDataTestsId("cancelButton").click();
 
-        editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
+        cy.editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
           .getElementByDataTestsId("instanceName").should('have.value', 'hvf6arlba007_lba_Base_01')
           .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
           .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
           .getElementByDataTestsId("rollback").should('contain', 'Rollback')
           .getElementByDataTestsId("cancelButton").click();
 
-        editNode("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1")
+        cy.editNode("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1")
           .getElementByDataTestsId("instanceName").should('have.value', 'my_hvf6arlba007_lba_dj_01')
           .getElementByDataTestsId("volumeGroupName").should('have.value', 'my_special_hvf6arlba007_lba_dj_01_vol')
           .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
@@ -126,7 +126,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       it(`Given a stored template - when "edit" service is opened - then template’s details are visible as expected`, function () {
 
-        loadDrawingBoardWithRecreateMode();
+        cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
 
         cy.openServiceContextMenu()
           .getElementByDataTestsId("context-menu-header-edit-item").click()
@@ -140,7 +140,7 @@ describe('Drawing Board: Instantiation Templates', function () {
       });
 
       it(`Given a stored template - add one VfModule, edit its details, and deploy - deploy is added with the vfModule details`, () => {
-        loadDrawingBoardWithRecreateMode();
+        cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
 
         let newVfModuleName = "new.vfmodule.name";
         let module1ModelId = "VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1";
@@ -153,7 +153,7 @@ describe('Drawing Board: Instantiation Templates', function () {
         cy.drawingBoardPressAddButtonByElementName(`node-${module1CustomizationId}`)
           .click({force: true});
 
-        editNode(`node-c09e4530-8fd8-418f-9483-2f57ce927b05-${module1CustomizationId}`, 1);
+        cy.editNode(`node-c09e4530-8fd8-418f-9483-2f57ce927b05-${module1CustomizationId}`, 1);
         cy.clearInput("instanceName");
         cy.typeToInput("instanceName", newVfModuleName);
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
@@ -196,8 +196,8 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       it('Given a template - User can remove existing vfmodule', function () {
 
-        loadDrawingBoardWithRecreateMode();
-        nodeAction('node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1', 'Remove');
+        cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
+        cy.nodeAction('node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1', 'Remove');
         let removed_vfModule_Path = [
           ...vnfPath, "vfModules",
           "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1",
@@ -217,7 +217,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
         it(`Given a stored template - edit service vnf and vfmodule ${testCase.desc} - deploy request should be ${testCase.desc}`, function () {
 
-          loadDrawingBoardWithRecreateMode();
+          cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
 
           //edit service
           cy.openServiceContextMenu();
@@ -229,7 +229,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           cy.getElementByDataTestsId('form-set').click();
 
           // edit vnf
-          editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0");
+          cy.editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0");
           if (testCase.modifySomeValues) {
             cy.selectPlatformValue('platform');
             cy.selectDropdownOptionByText("tenant", "CESAR-100-D-spjg61909");
@@ -237,7 +237,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           cy.getElementByDataTestsId('form-set').click();
 
           //edit vf module
-          editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0");
+          cy.editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0");
           if (testCase.modifySomeValues) {
             cy.getElementByDataTestsId('sdncPreLoad').click();
           }
@@ -266,7 +266,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       it(`Given a stored template of Network - - it is loaded`, () => {
 
-        loadDrawingBoardWithRecreateModeNetwork();
+        cy.loadDrawingBoardWithRecreateModeNetwork(templateWithNetworkSetup);
 
         // Then...
         cy.getElementByDataTestsId("node-SR-IOV Provider 2-1").should('be.visible');
@@ -276,9 +276,9 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       it(`Given a stored template of Network - User can remove existing network`, () => {
 
-        loadDrawingBoardWithRecreateModeNetwork();
+        cy.loadDrawingBoardWithRecreateModeNetwork(templateWithNetworkSetup);
 
-        nodeAction('node-01f4c475-3f89-4f00-a2f4-39a873dba0ae-SR-IOV Provider 2-1', 'Remove');
+        cy.nodeAction('node-01f4c475-3f89-4f00-a2f4-39a873dba0ae-SR-IOV Provider 2-1', 'Remove');
         let removed_network_Path = [
           "networks", "SR-IOV Provider 2-1",
         ];
@@ -295,7 +295,7 @@ describe('Drawing Board: Instantiation Templates', function () {
 
       it('Given a template - User can add a new network', () => {
 
-        loadDrawingBoardWithRecreateModeNetwork();
+        cy.loadDrawingBoardWithRecreateModeNetwork(templateWithNetworkSetup);
 
         // add new node
         addNewNode('node-SR-IOV Provider 2-1-add-btn')
@@ -341,58 +341,14 @@ const vnfPath2 = [
   "vnfs", "vProbe_NC_VNF 0_1"
 ];
 
-function loadDrawingBoardWithRecreateMode() {
-  loadDrawingBoardWithRecreateModeInternal(
-    '../../' + templateWithVnfSetup.instanceTemplateFile,
-    templateWithVnfSetup.serviceModelId,
-    templateWithVnfSetup.serviceModelFile);
-}
 
-function loadDrawingBoardWithRecreateModeNetwork() {
-  loadDrawingBoardWithRecreateModeInternal(
-    '../../' + templateWithNetworkSetup.instanceTemplateFile,
-    templateWithNetworkSetup.serviceModelId,
-    templateWithNetworkSetup.serviceModelFile);
-}
-
-function loadDrawingBoardWithRecreateModeInternal(instanceTemplate: string, serviceModelIdToLoad: any, serviceModel: string) {
-  const templateUuid = "46390edd-7100-46b2-9f18-419bd24fb60b";
-
-  const drawingBoardAction = `RECREATE`;
-  const templateTopologyEndpoint = "templateTopology";
-  cy.route(`**/rest/models/services/${serviceModelIdToLoad}`,
-    'fixture:' + serviceModel)
-    .as('serviceModel');
-
-  cy.route(`**/instantiationTemplates/${templateTopologyEndpoint}/${templateUuid}`,
-    'fixture:' + instanceTemplate)
-    .as('templateTopology');
-
-  // When...
-
-  cy.openIframe(`app/ui/#/servicePlanning/${drawingBoardAction}` +
-    `?jobId=${templateUuid}` +
-    `&serviceModelId=${serviceModelIdToLoad}`);
-
-  cy.wait('@serviceModel');
-  cy.wait('@templateTopology');
-}
-
-function nodeAction(dataTestId: string, action: string, index ?: number) {
-  return cy.drawingBoardTreeOpenContextMenuByElementDataTestId(dataTestId, index)
-    .drawingBoardTreeClickOnContextMenuOptionByName(action)
-}
-
-function editNode(dataTestId: string, index ?: number) {
-  return nodeAction(dataTestId, 'Edit', index);
-}
 
 function addNewNode(dataTestId: string) {
   return cy.getElementByDataTestsId(dataTestId).click({force: true})
 }
 
 function removeVNFWithVFModules(dataTestId: string) {
-  return nodeAction(dataTestId, 'Remove')
+  return cy.nodeAction(dataTestId, 'Remove')
     .getTagElementContainsText('button', 'Remove VNF').click()
 }
 
@@ -465,6 +421,7 @@ function mockAsyncBulkResponse() {
     url: Cypress.config('baseUrl') + '/asyncInstantiation/bulk',
     method: 'POST',
     status: 200,
-    response: "[]",
+    response: true,
   }).as("expectedPostAsyncInstantiation");
 }
+
