@@ -15,6 +15,7 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+import 'cypress-file-upload';
 import './steps/login.step';
 import './steps/fill.service.popup.step';
 import './steps/fill.vnf.popup.step';
@@ -41,6 +42,7 @@ import './steps/drawingBoard/general.steps';
 import './steps/general/clickOutside.step';
 import './steps/drawingBoard/drawingBoardComponentInfo.steps';
 import './steps/genericForm/checkPopover.step';
+
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

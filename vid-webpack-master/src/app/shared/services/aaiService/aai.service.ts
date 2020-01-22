@@ -44,6 +44,11 @@ export class AaiService {
 
   }
 
+  preLoadSDNC(): Observable<boolean> {
+    let pathQuery: string = Constants.Path.PRE_LOAD;
+    return this.http.post<boolean>(pathQuery, {})
+  }
+
   getServiceModelById = (serviceModelId: string): Observable<any> => {
     if (_.has(this.store.getState().service.serviceHierarchy, serviceModelId)) {
       return of(<any> JSON.parse(JSON.stringify(this.store.getState().service.serviceHierarchy[serviceModelId])));

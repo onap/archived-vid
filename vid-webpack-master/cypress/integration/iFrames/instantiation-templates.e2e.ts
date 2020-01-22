@@ -124,6 +124,34 @@ describe('Drawing Board: Instantiation Templates', function () {
         ]);
       });
 
+
+      it('When VFModule is checked then upload files is available Happy scenario ', () => {
+        mockPreloadResult(true, 200);
+        loadDrawingBoardWithRecreateMode();
+        editNode("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1");
+        checkUploadLinkLogic();
+
+        uploadFile().then(()=>{
+          cy.get('.sdc-modal__content').should('contain', 'The pre-load file(s) have been uploaded successfully.');
+          cy.getElementByDataTestsId('button-ok').click()
+            .getElementByDataTestsId('SDN_C_pre-load_upload_link').should('contain', 'Upload another')
+        });
+      });
+
+      it('When VFModule is checked then upload files is available UnHappy scenario ', () => {
+        mockPreloadResult(false, 200);
+        loadDrawingBoardWithRecreateMode();
+
+        editNode("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1");
+        checkUploadLinkLogic();
+
+        uploadFile().then(()=>{
+          cy.get('.sdc-modal__content').should('contain', 'Failed to upload one or more of the files, please retry.');
+          cy.getElementByDataTestsId('button-ok').click()
+            .getElementByDataTestsId('SDN_C_pre-load_upload_link').should('contain', 'Upload')
+        });
+      });
+
       it(`Given a stored template - when "edit" service is opened - then template’s details are visible as expected`, function () {
 
         loadDrawingBoardWithRecreateMode();
@@ -465,6 +493,35 @@ function mockAsyncBulkResponse() {
     url: Cypress.config('baseUrl') + '/asyncInstantiation/bulk',
     method: 'POST',
     status: 200,
-    response: "[]",
+    response: true,
   }).as("expectedPostAsyncInstantiation");
+}
+
+function mockPreloadResult(response : boolean, status?: number) {
+  cy.server().route({
+    url: Cypress.config('baseUrl') + '/preload',
+    method: 'POST',
+    status: status ? status : 200,
+    response: response,
+  }).as("preload");
+}
+
+
+function uploadFile(){
+  return new Promise((resolve)=>{
+    const fileName = '../support/uploadFiles/sdncPreLoadFileExample.json';
+    cy.fixture(fileName).then(fileContent => {
+      // @ts-ignore
+      cy.get('input[type=file]').eq(0).upload({ fileContent, fileName, mimeType: 'application/json' }).then(()=>{
+        resolve();
+      });
+    })
+  });
+}
+
+function checkUploadLinkLogic(){
+  cy.getElementByDataTestsId('SDN_C_pre-load_upload_link').should('contain', 'Upload').should('not.have.class', 'disabled')
+    .getElementByDataTestsId('sdncPreLoad').click()
+    .getElementByDataTestsId('SDN_C_pre-load_upload_link').should('contain', 'Upload').should('have.class', 'disabled')
+    .getElementByDataTestsId('sdncPreLoad').click()
 }
