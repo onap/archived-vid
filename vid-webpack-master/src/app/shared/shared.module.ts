@@ -93,6 +93,9 @@ import {SvgIconComponent} from "./components/customIcon/custom-icon.component";
 import {TooltipTemplateComponent} from "./components/customTooltip/custom-tooltip.component";
 import {TooltipDirective} from "./components/customTooltip/tooltip.directive";
 import {SdcUiComponentsModule} from "onap-ui-angular";
+import {UploadFilesLinkComponent} from "./components/genericForm/genericFormSharedComponent/uploadFiles/upload-files-link.component";
+import { FileUploadModule } from 'ng2-file-upload';
+import {MessageModal} from "./components/messageModal/message-modal.service";
 
 
 
@@ -111,7 +114,8 @@ import {SdcUiComponentsModule} from "onap-ui-angular";
     AngularMultiSelectModule,
     BootstrapModalModule,
     DataTableModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    FileUploadModule
   ],
   declarations: [
     PopoverComponent,
@@ -156,7 +160,8 @@ import {SdcUiComponentsModule} from "onap-ui-angular";
     CustomModalButtonComponent,
     LoaderComponent,
     SvgIconComponent,
-    TooltipTemplateComponent
+    TooltipTemplateComponent,
+    UploadFilesLinkComponent
   ],
   exports: [
     PopoverComponent,
@@ -197,7 +202,8 @@ import {SdcUiComponentsModule} from "onap-ui-angular";
     CustomModalButtonComponent,
     LoaderComponent,
     SvgIconComponent,
-    TooltipTemplateComponent
+    TooltipTemplateComponent,
+    UploadFilesLinkComponent
   ],
   entryComponents : [
     GenericFormPopupComponent,
@@ -248,7 +254,8 @@ import {SdcUiComponentsModule} from "onap-ui-angular";
     ModelInformationService,
     MultiselectFormControlService,
     InstantiationTemplatesModalService,
-    LoaderService
+    LoaderService,
+    MessageModal
   ]
 })
 export class SharedModule {
