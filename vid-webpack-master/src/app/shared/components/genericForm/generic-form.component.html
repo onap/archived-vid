@@ -3,7 +3,7 @@
     <div *ngFor="let formControl of formControls" class="form-conrtols">
       <div [ngSwitch]="formControl.type">
         <form-control-input  *ngSwitchCase="'INPUT'"   [data]="formControl" [form]="dynamicFormGroup"></form-control-input>
-        <checkbox-form-control *ngSwitchCase="'CHECKBOX'"  [data]="formControl" [form]="dynamicFormGroup" ></checkbox-form-control>
+        <checkbox-form-control *ngSwitchCase="'CHECKBOX'"  [data]="formControl" [form]="dynamicFormGroup"></checkbox-form-control>
         <dropdown-form-control *ngSwitchCase="'DROPDOWN'" [data]="formControl" [form]="dynamicFormGroup" ></dropdown-form-control>
         <file-form-control *ngSwitchCase="'FILE'" [data]="formControl" [form]="dynamicFormGroup"></file-form-control>
         <multiselect-form-control *ngSwitchCase="'MULTI_SELECT'"
