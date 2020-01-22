@@ -3,6 +3,7 @@ import {Subject} from "rxjs/Subject";
 import {FormControlType} from "./formControlTypes.enum";
 import {CustomValidators} from "../../validators/uniqueName/uniqueName.validator";
 import * as _ from 'lodash';
+import {UploadFilesLinkModel} from "../../components/genericForm/genericFormSharedComponent/uploadFiles/upload-files-link.model";
 
 export class  FormControlModel {
   formGroup : FormGroup;
@@ -43,6 +44,7 @@ export class  FormControlModel {
     this.preventionsAttribute = data.preventionsAttribute || [];
     this.onBlur = function(){};
     this.onChange = data.onChange ? data.onChange: function () {}
+
   }
 
   isRequired() : boolean {

@@ -199,6 +199,9 @@
 * FLAG_2004_INSTANTIATION_TEMPLATES_POPUP
   Enables a designated Templates selection modal, accessible when creating a new instance through "Browse SDC".
 
+* FLAG_2006_VFM_SDNC_PRELOAD_FILES
+  Enables upload files when SDNC preload checkbox is checked
+
 * FLAG_2002_UNLIMITED_MAX 
   when flag is true and max_instances is not declare than user can add unlimited VND, NETWORK, VFMODULE,
   User can duplicate up to 10 record in single time.
@@ -207,8 +210,3 @@
 * FLAG_MORE_AUDIT_INFO_LINK_ON_AUDIT_INFO
   On the "audit info" modal (available on Instantiation Status page), shows a link navigating to
   the read-only RETRY page with more audit info.
-  
-*FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY 
-  When flag is true the user will be provided with edit permissions by owning entity id even the user have no permission by Subscriber,
-   when the flag is false the user provided with edit permission by Subscriber.
-  
