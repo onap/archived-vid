@@ -18,7 +18,6 @@ import static org.hamcrest.Matchers.matchesPattern;
 import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
@@ -28,12 +27,15 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.onap.vid.api.BaseApiTest;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -234,12 +236,29 @@ public class LoggerFormatTest extends BaseApiTest {
     }
 
     private JsonNode getCheckerResults (String logtype, String logLines){
+
+        final int MAX_RETRIES = 3;
+
         Map<String, String> params = new HashMap<>();
         params.put("format", "raw");
         params.put("type", logtype);
         params.put("component", "vid");
         params.put("data", logLines);
 
-        return restTemplate.postForObject(logChecker, params, JsonNode.class);
+        for (int i=0; i< MAX_RETRIES; i++) {
+            try {
+                return restTemplate.postForObject(logChecker, params, JsonNode.class);
+            } catch (RestClientException exception) { //retry for cases that logchecker is not available immediately
+                logger.error("Failed to call to logChecker try: " + i, exception);
+                if (i<(MAX_RETRIES-1)) { //no need to sleep on last retry
+                    try {
+                        Thread.sleep((new Random().nextInt(2000) + 1000)); //random sleep between 1-3 seconds
+                    } catch (InterruptedException e) {
+                        ExceptionUtils.rethrow(e);
+                    }
+                }
+            }
+        }
+        throw new AssertionError("failed to call to logChecker after max retries: "+MAX_RETRIES);
     }
 }
