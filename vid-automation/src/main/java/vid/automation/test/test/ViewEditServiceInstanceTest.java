@@ -4,8 +4,8 @@ import static org.apache.logging.log4j.core.util.Assert.isNonEmpty;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
-import static org.testng.AssertJUnit.assertEquals;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 import com.google.common.collect.ImmutableMap;
@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,7 +56,7 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
     private final String crNetworkText ="NETWORK INSTANCE GROUP: l3network-id-rs804s | ROLE: RosemaProtectedOam.OAM | TYPE: Tenant_Layer_3 | # OF NETWORKS: 3";
     private final String crCollectionText ="COLLECTION: collection-name | TYPE: L3-NETWORK";
     private final String crInfoText = "\"requestState\": \"COMPLETE\"";
-    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.US);
     static final String LCP_REGION = "hvf6";
     static final String CLOUD_OWNER = "AIC";
     static final String TENANT = "bae71557c5bb4d5aac6743a4e5f1d054";
@@ -284,6 +285,7 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
         viewEditPage.clickCloseButton();
     }
 
+    //this test works only if your browser run at UTC timezone
     @Test
     public void testTimestampOnDeactivateAndInfoServiceInstance() throws ParseException {
         SimulatorApi.clearAll();
@@ -296,7 +298,7 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
         goToExistingInstanceById(serviceInstanceId);
         Click.byClass("service-info");
         GeneralUIUtils.ultimateWait();
-        assertEquals("Timestamp isn't the finished time", getTimeatampValue(Constants.ViewEdit.DETAILS_LOG), "Tue, 24 Oct 2017 02:28:39");
+        assertThat("Timestamp isn't the finished time", getTimeatampValue(Constants.ViewEdit.DETAILS_LOG), matchesPattern("Mon, 23 Oct 2017 [0-9]{1,2}:28:39")); //timezone insensitive
         viewEditPage.clickCloseButton();
         viewEditPage.clickDeactivateButton();
         GeneralUIUtils.ultimateWait();
