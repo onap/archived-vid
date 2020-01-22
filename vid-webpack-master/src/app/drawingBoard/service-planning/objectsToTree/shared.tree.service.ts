@@ -54,6 +54,25 @@ export class SharedTreeService {
       : (nodeInstance.modelInfo.modelCustomizationId || nodeInstance.modelInfo.modelInvariantId);
   };
 
+  /**
+   * Finds a model inside a full service model
+   * @param serviceModelFromHierarchy
+   * @param modelTypeName "vnfs" | "networks" | "vfModules" | "collectionResources" | ...
+   * @param modelUniqueIdOrName Either an entry name (i.e. "originalName"), modelCustomizationId or modelInvariantId.
+   *                      Note that modelInvariantId will work only where model lacks a modelCustomizationId.
+   */
+  modelByIdentifier = (serviceModelFromHierarchy, modelTypeName: string, modelUniqueIdOrName: string): any => {
+    if (_.isNil(serviceModelFromHierarchy)) return undefined;
+
+    const modelsOfType = serviceModelFromHierarchy[modelTypeName];
+    if (_.isNil(modelsOfType)) return undefined;
+
+    const modelIfModelIdentifierIsEntryName = modelsOfType[modelUniqueIdOrName];
+    return _.isNil(modelIfModelIdentifierIsEntryName)
+      ? _.find(modelsOfType, o => (o.customizationUuid || o.invariantUuid) === modelUniqueIdOrName)
+      : modelIfModelIdentifierIsEntryName;
+  };
+
   hasMissingData(instance, dynamicInputs: any, isEcompGeneratedNaming: boolean, requiredFields: string[]): boolean {
     if (!isEcompGeneratedNaming && _.isEmpty(instance.instanceName)) {
       return true;

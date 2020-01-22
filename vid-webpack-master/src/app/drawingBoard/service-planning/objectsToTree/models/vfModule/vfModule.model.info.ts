@@ -79,10 +79,9 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
    * @param serviceHierarchy - serviceHierarchy
    ************************************************************/
   getModel = (vfModuleModelId: string, instance, serviceHierarchy): Partial<VfModule> => {
-    if (!_.isNil(serviceHierarchy)) {
-      if (!_.isNil(serviceHierarchy[this.name]) && !_.isNil(serviceHierarchy[this.name][vfModuleModelId])) {
-        return new VfModule(serviceHierarchy[this.name][vfModuleModelId], this._featureFlagsService.getAllFlags());
-      }
+    const model = this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, vfModuleModelId);
+    if (!_.isNil(model)) {
+      return new VfModule(model, this._featureFlagsService.getAllFlags());
     }
     return {};
   };

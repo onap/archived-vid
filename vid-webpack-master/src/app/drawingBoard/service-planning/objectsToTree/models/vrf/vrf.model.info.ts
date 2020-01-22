@@ -52,7 +52,7 @@ export class VrfModelInfo implements ILevelNodeInfo {
 
   getModel = (vrfModelId: string, instance: VrfInstance, serviceHierarchy): VrfModel => {
     const originalModelName = instance.originalName ? instance.originalName : vrfModelId;
-    return new VrfModel(serviceHierarchy[this.name][originalModelName]);
+    return new VrfModel(this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, originalModelName));
   };
 
 

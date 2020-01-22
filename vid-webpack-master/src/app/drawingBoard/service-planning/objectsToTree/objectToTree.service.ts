@@ -23,7 +23,7 @@ import {AaiService} from "../../../shared/services/aaiService/aai.service";
 import {VrfModelInfo} from "./models/vrf/vrf.model.info";
 import {NetworkStepService} from "./models/vrf/vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "./models/vrf/vrfModal/vpnStep/vpn.step.service";
-import { VfModuleUpgradePopupService } from "../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import {VfModuleUpgradePopupService} from "../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {FeatureFlagsService} from "../../../shared/services/featureFlag/feature-flags.service";
 import {ModalService} from "../../../shared/components/customModal/services/modal.service";
 
@@ -56,7 +56,7 @@ export class ObjectToTreeService {
   getFirstLevelOptions(): ILevelNodeInfo[] {
     return [new VnfModelInfo(this._dynamicInputsService, this._sharedTreeService, this._defaultDataGeneratorService, this._dialogService, this._vnfPopupService, this._vfModulePopupService, this._vfModuleUpgradePopupService,this._duplicateService, this._modalService, this._iframeService, this._componentInfoService, this._featureFlagsService, this._store)
       , new NetworkModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._networkPopupService, this._duplicateService, this._modalService, this._iframeService,  this._featureFlagsService, this._store),
-      new PnfModelInfo(),
+      new PnfModelInfo(this._sharedTreeService),
       new VrfModelInfo(this._store, this._sharedTreeService, this._dialogService, this._iframeService, this._featureFlagsService, this._networkStepService, this._vpnStepService),
       new CollectionResourceModelInfo(this._store, this._sharedTreeService),
       new ConfigurationModelInfo(this._dynamicInputsService, this._sharedTreeService),

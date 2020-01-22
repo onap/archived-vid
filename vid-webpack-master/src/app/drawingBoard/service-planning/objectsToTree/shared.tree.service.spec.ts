@@ -166,6 +166,36 @@ describe('Shared Tree Service', () => {
     expect(MessageBoxService.openModal.next).toHaveBeenCalled();
   });
 
+  each([
+    ['volumeGroups by entry name', "volumeGroups",
+      "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1", "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1"],
+    ['vfmodule by customizationUuid', "vfModules",
+      "f7e7c365-60cf-49a9-9ebf-a1aa11b9d401", "2017488PasqualeVpe..PASQUALE_vRE_BV..module-1"],
+    ['vnf by customizationUuid', "vnfs",
+      "1da7b585-5e61-4993-b95e-8e6606c81e45", "2017-488_PASQUALE-vPE 0"],
+    ['vnfGroups by invariantUuid because no customizationUuid', "vnfGroups",
+      "4bb2e27e-ddab-4790-9c6d-1f731bc14a45", "groupingservicefortest..ResourceInstanceGroup..0"],
+  ]).test('modelByIdentifier should success: %s', (description, modelTypeName, modelUniqueIdOrName, expectedModelCustomizationName) => {
+    let serviceModelFromHierarchy =
+      getStore().service.serviceHierarchy["1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"];
+
+    expect(service.modelByIdentifier(serviceModelFromHierarchy, modelTypeName, modelUniqueIdOrName))
+      .toHaveProperty("modelCustomizationName", expectedModelCustomizationName);
+  });
+
+  each([
+    ['vfmodule by invariantUuid when there is customizationUuid', "vfModules", "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1"],
+    ['network by non-existing modelUniqueIdOrName', "networks", "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1"],
+    ['collectionResource has no resource', "collectionResources", "whatever"],
+    ['non-existing model-type', "fooBar", "whatever"],
+  ]).test('modelByIdentifier should fail: %s', (description, modelTypeName, modelUniqueIdOrName) => {
+    let serviceModelFromHierarchy =
+      getStore().service.serviceHierarchy["1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"];
+
+    expect(service.modelByIdentifier(serviceModelFromHierarchy, modelTypeName, modelUniqueIdOrName))
+      .toBeUndefined();
+  });
+
   test('openAuditInfoModal should open modal for failed instance', () => {
     jest.spyOn(AuditInfoModalComponent.openInstanceAuditInfoModal, 'next');
 
