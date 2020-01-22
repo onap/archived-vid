@@ -284,6 +284,7 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
         viewEditPage.clickCloseButton();
     }
 
+    //this test works only if your browser run at UTC timezone
     @Test
     public void testTimestampOnDeactivateAndInfoServiceInstance() throws ParseException {
         SimulatorApi.clearAll();
@@ -296,7 +297,7 @@ public class ViewEditServiceInstanceTest extends VidBaseTestCase {
         goToExistingInstanceById(serviceInstanceId);
         Click.byClass("service-info");
         GeneralUIUtils.ultimateWait();
-        assertEquals("Timestamp isn't the finished time", getTimeatampValue(Constants.ViewEdit.DETAILS_LOG), "Tue, 24 Oct 2017 02:28:39");
+        assertEquals("Timestamp isn't the finished time", "Tue, 24 Oct 2017 02:28:39", getTimeatampValue(Constants.ViewEdit.DETAILS_LOG));
         viewEditPage.clickCloseButton();
         viewEditPage.clickDeactivateButton();
         GeneralUIUtils.ultimateWait();
