@@ -124,6 +124,18 @@ describe('Drawing Board: Instantiation Templates', function () {
         ]);
       });
 
+
+      it('When VFModule is checked then upload files is available ', () => {
+
+        loadDrawingBoardWithRecreateMode();
+        editNode("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1")
+          .getElementByDataTestsId('SDN_C_pre-load_upload_link').should('contain', 'Upload').should('not.have.class', 'disabled')
+          .getElementByDataTestsId('sdncPreLoad').click()
+          .getElementByDataTestsId('SDN_C_pre-load_upload_link').should('contain', 'Upload').should('have.class', 'disabled')
+          .getElementByDataTestsId('sdncPreLoad').click()
+          .getElementByDataTestsId('SDN_C_pre-load_upload_link').click();
+      });
+
       it(`Given a stored template - when "edit" service is opened - then template’s details are visible as expected`, function () {
 
         loadDrawingBoardWithRecreateMode();

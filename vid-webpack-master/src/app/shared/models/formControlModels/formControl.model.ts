@@ -3,6 +3,7 @@ import {Subject} from "rxjs/Subject";
 import {FormControlType} from "./formControlTypes.enum";
 import {CustomValidators} from "../../validators/uniqueName/uniqueName.validator";
 import * as _ from 'lodash';
+import {UploadFilesModel} from "../../components/genericForm/genericFormSharedComponent/uploadFiles/upload-files.model";
 
 export class  FormControlModel {
   formGroup : FormGroup;
@@ -24,6 +25,7 @@ export class  FormControlModel {
   preventionsAttribute : AttributeMap[] = [];
   waitFor? : Subject<string>[] = [];
   hasErrors : () =>  string[];
+  extraContents : UploadFilesModel[];
 
 
   constructor(data: any){
@@ -43,6 +45,7 @@ export class  FormControlModel {
     this.preventionsAttribute = data.preventionsAttribute || [];
     this.onBlur = function(){};
     this.onChange = data.onChange ? data.onChange: function () {}
+    this.extraContents = !_.isNil(data.extraContents)  ? data.extraContents : null;
   }
 
   isRequired() : boolean {

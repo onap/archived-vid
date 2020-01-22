@@ -3,7 +3,7 @@ import {GenericFormService} from "../../generic-form.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {NgRedux} from "@angular-redux/store";
 import {HttpClient} from "@angular/common/http";
-import {ControlGeneratorUtil} from "../control.generator.util.service";
+import {ControlGeneratorUtil, SDN_C_PRE_LOAD} from "../control.generator.util.service";
 import {
   CustomValidatorOptions,
   FormControlModel,
@@ -20,6 +20,10 @@ import {VNFModel} from "../../../../models/vnfModel";
 import {VnfInstance} from "../../../../models/vnfInstance";
 import * as _ from 'lodash';
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
+import {MessageModal} from "../../../messageModal/message-modal.service";
+import {MessageModalTypeEnum} from "../../../messageModal/message-modal-type.enum";
+import {ButtonType} from "../../../customModal/models/button.type";
+import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 
 export enum FormControlNames {
@@ -36,7 +40,7 @@ export enum FormControlNames {
 export class VfModuleControlGenerator {
   aaiService: AaiService;
   vfModuleModel: VfModule;
-  isUpdateMode : boolean;
+  isUpdateMode: boolean;
 
   constructor(private genericFormService: GenericFormService,
               private _basicControlGenerator: ControlGeneratorUtil,
@@ -54,7 +58,7 @@ export class VfModuleControlGenerator {
     if (isUpdateMode && this.store.getState().service.serviceInstance[serviceId] &&
       _.has(this.store.getState().service.serviceInstance[serviceId].vnfs, vnfStoreKey) &&
       _.has(this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey].vfModules, UUIDData['modelName'])) {
-       vfModuleInstance = Object.assign({},this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey].vfModules[UUIDData['modelName']][UUIDData['vFModuleStoreKey']]);
+      vfModuleInstance = Object.assign({}, this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey].vfModules[UUIDData['modelName']][UUIDData['vFModuleStoreKey']]);
     }
     return vfModuleInstance;
   };
@@ -65,11 +69,11 @@ export class VfModuleControlGenerator {
     return vfModule;
   }
 
-  getMacroFormControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, uuidData : Object, isUpdateMode: boolean): FormControlModel[] {
+  getMacroFormControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, uuidData: Object, isUpdateMode: boolean): FormControlModel[] {
     this.isUpdateMode = isUpdateMode;
     this.extractVfAccordingToVfModuleUuid(serviceId, uuidData);
     if (_.isNil(serviceId) || _.isNil(vnfStoreKey) || _.isNil(vfModuleStoreKey)) {
-      if(isUpdateMode){
+      if (isUpdateMode) {
         this._logService.error('should provide serviceId, vfModuleStoreKey, vnfStoreKey', serviceId);
         return [];
       }
@@ -85,7 +89,7 @@ export class VfModuleControlGenerator {
     if (!_.isNil(vfModuleModel)) {
       result = this.pushInstanceAndVGToForm(result, vfModuleInstance, serviceId, vnfModel, false);
     }
-    if(this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
+    if (this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
       result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }
     return result;
@@ -99,7 +103,7 @@ export class VfModuleControlGenerator {
     return new VNFModel(model);
   }
 
-  pushInstanceAndVGToForm(result: FormControlModel[], vfModuleElement: any, serviceId: string, vnfModel: any, isALaCarte: boolean) :FormControlModel[]{
+  pushInstanceAndVGToForm(result: FormControlModel[], vfModuleElement: any, serviceId: string, vnfModel: any, isALaCarte: boolean): FormControlModel[] {
     result.push(this.getInstanceName(vfModuleElement, serviceId, vnfModel.isEcompGeneratedNaming));
     if (this.vfModuleModel.volumeGroupAllowed) {
       result.push(this.getVolumeGroupData(vfModuleElement, serviceId, vnfModel.isEcompGeneratedNaming, isALaCarte));
@@ -107,16 +111,16 @@ export class VfModuleControlGenerator {
     return result;
   }
 
-  getAlaCarteFormControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, uuidData : Object, isUpdateMode: boolean): FormControlModel[] {
+  getAlaCarteFormControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, uuidData: Object, isUpdateMode: boolean): FormControlModel[] {
     this.isUpdateMode = isUpdateMode;
     this.extractVfAccordingToVfModuleUuid(serviceId, uuidData);
     if (_.isNil(serviceId) || _.isNil(vnfStoreKey) || _.isNil(vfModuleStoreKey)) {
-      if(isUpdateMode){
+      if (isUpdateMode) {
         this._logService.error('should provide serviceId, vfModuleStoreKey, vnfStoreKey', serviceId);
         return [];
       }
     }
-    const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey] ;
+    const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey];
     const vnfModel = this.newVNFModel(serviceId, vnf);
 
     const vfModuleInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode));
@@ -126,26 +130,61 @@ export class VfModuleControlGenerator {
     result.push(this._sharedControllersService.getLegacyRegion(vfModuleInstance));
     result.push(this._sharedControllersService.getTenantControl(serviceId, vfModuleInstance));
     result.push(this._sharedControllersService.getRollbackOnFailureControl(vfModuleInstance));
-    result.push(this._sharedControllersService.getSDNCControl(vfModuleInstance));
-    if(this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
+    result.push(this._sharedControllersService.getSDNCControl(vfModuleInstance, this.getSdncExtraContents()));
+    if (this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
       result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }
     return result;
   }
 
-  getInstanceName(instance: any, serviceId: string, isEcompGeneratedNaming: boolean): FormControlModel {
-    let formControlModel:FormControlModel = this._sharedControllersService.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, this.vfModuleModel);
-    formControlModel.onBlur = (event, form : FormGroup) => {
-        if(!_.isNil(form.controls['volumeGroupName'])&& event.target.value.length > 0){
-          form.controls['volumeGroupName'].setValue(event.target.value + "_vol");
+  getSdncExtraContents() {
+    return !!this.store.getState().global.flags['FLAG_2004_VFM_SDNC_PRELOAD_FILES'] ? [
+      {
+        type: 'UPLOAD_FILE',
+        dataTestId: 'SDN_C_pre-load_upload_link',
+        uploadMethod: (form: FormGroup) : Promise<boolean> => {
+          // this -> files item
+          return new Promise((resolve => {
+            resolve(true);
+          }))
+        },
+        isDisabled: (form: FormGroup): boolean => {
+          return !form.controls[SDN_C_PRE_LOAD].value;
+        },
+        onSuccess: (form: FormGroup): void => {
+          MessageModal.showMessageModal({
+            text: 'The pre-load file(s) have been uploaded successfully.',
+            type: MessageModalTypeEnum.success,
+            title: 'Success',
+            buttons: [{type: ButtonType.success, size: 'large', text: 'OK', closeModal: true}]
+          })
+        },
+        onFailed: (form: FormGroup) : void=> {
+          MessageModal.showMessageModal({
+            text: 'Failed to upload one or more of the files, please retry.',
+            type: MessageModalTypeEnum.error,
+            title: 'Failure',
+            buttons: [{type: ButtonType.error, size: 'large', text: 'OK', closeModal: true}]
+          })
         }
-      };
+      }
+    ] : [];
+  }
+
+
+  getInstanceName(instance: any, serviceId: string, isEcompGeneratedNaming: boolean): FormControlModel {
+    let formControlModel: FormControlModel = this._sharedControllersService.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, this.vfModuleModel);
+    formControlModel.onBlur = (event, form: FormGroup) => {
+      if (!_.isNil(form.controls['volumeGroupName']) && event.target.value.length > 0) {
+        form.controls['volumeGroupName'].setValue(event.target.value + "_vol");
+      }
+    };
 
     return formControlModel;
   }
 
   getDefaultVolumeGroupName(instance: any, isEcompGeneratedNaming: boolean): string {
-    if ((!_.isNil(instance) && instance.volumeGroupName))  {
+    if ((!_.isNil(instance) && instance.volumeGroupName)) {
       return instance.volumeGroupName;
     }
     if (isEcompGeneratedNaming) {
@@ -165,12 +204,12 @@ export class VfModuleControlGenerator {
       displayName: 'Volume Group Name',
       dataTestId: 'volumeGroupName',
       validations: validations,
-      tooltip : 'When filled, VID will create a Volume Group by this name and associate with this module.\n' +
-                'When empty, the module is created without a Volume Group.',
-      isVisible: this.shouldVGNameBeVisible(isEcompGeneratedNaming,isALaCarte),
+      tooltip: 'When filled, VID will create a Volume Group by this name and associate with this module.\n' +
+        'When empty, the module is created without a Volume Group.',
+      isVisible: this.shouldVGNameBeVisible(isEcompGeneratedNaming, isALaCarte),
       value: this.getDefaultVolumeGroupName(instance, isEcompGeneratedNaming),
       onKeypress: (event) => {
-        const pattern:RegExp = ControlGeneratorUtil.INSTANCE_NAME_REG_EX;
+        const pattern: RegExp = ControlGeneratorUtil.INSTANCE_NAME_REG_EX;
         if (pattern) {
           if (!pattern.test(event['key'])) {
             event.preventDefault();
@@ -182,7 +221,7 @@ export class VfModuleControlGenerator {
   }
 
   private shouldVGNameBeVisible(isEcompGeneratedNaming: boolean, isALaCarte: boolean) {
-    if((!isALaCarte && !isEcompGeneratedNaming) || isALaCarte){
+    if ((!isALaCarte && !isEcompGeneratedNaming) || isALaCarte) {
       return true;
     }
     return false;
