@@ -1,0 +1,15 @@
+<div>
+  <a [attr.data-tests-id]="uploadFilesModel.dataTestId"
+     (click)="uploadFilesTrigger()"
+     href="javascript:void(0)"
+     class="upload-text"
+     [class.disabled]="uploadFilesModel.isDisabled &&  uploadFilesModel.isDisabled(form)">{{uploadFilesModel.uploadText || 'Upload'}}</a>
+  <span class="hide-span">
+     <input
+       type="file"
+       #fileInput
+       ng2FileSelect
+       [uploader]="uploader"
+       [attr.data-tests-id]="uploadFilesModel.dataTestId + '-input'"/>
+  </span>
+</div>
