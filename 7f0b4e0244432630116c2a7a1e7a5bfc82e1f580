@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "349f2618_b5bd71ec",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1188,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-01-23T08:00:46Z",
+      "side": 1,
+      "message": "yes.\nI will move the assertion to row 1198\nThanks!\n\nJust before making the commit - since product family is mandatory and not selected yet, the button should be disabled as the assertion is checking. So I\u0027m leaving it as is",
+      "parentUuid": "4b5315ca_3bd2a57a",
+      "range": {
+        "startLine": 1188,
+        "startChar": 8,
+        "endLine": 1188,
+        "endChar": 31
+      },
+      "revId": "7f0b4e0244432630116c2a7a1e7a5bfc82e1f580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "616839a6_734768fa",
         "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
         "patchSetId": 3
@@ -36,6 +60,24 @@
       "writtenOn": "2020-01-22T12:39:16Z",
       "side": 1,
       "message": "why do you select the product family twice ? In 2 different ways.\nOr maybe I\u0027m missing something ?",
+      "revId": "7f0b4e0244432630116c2a7a1e7a5bfc82e1f580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5394be56_86a90c9f",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1194,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-01-23T08:00:46Z",
+      "side": 1,
+      "message": "I actually checked how product family ID is selected on another test..",
+      "parentUuid": "616839a6_734768fa",
       "revId": "7f0b4e0244432630116c2a7a1e7a5bfc82e1f580",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
