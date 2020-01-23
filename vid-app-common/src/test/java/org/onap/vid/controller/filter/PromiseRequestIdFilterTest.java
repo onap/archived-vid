@@ -51,12 +51,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
-import org.onap.logging.ref.slf4j.ONAPLogConstants.MDCs;
 import org.onap.portalsdk.core.web.support.UserUtils;
 import org.onap.vid.logging.RequestIdHeader;
-import org.slf4j.MDC;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -73,18 +70,10 @@ public class PromiseRequestIdFilterTest {
 
     private final PromiseRequestIdFilter promiseRequestIdFilter = new PromiseRequestIdFilter();
 
-    @AfterMethod
-    public void tearDown() {
-        MDC.remove(MDCs.REQUEST_ID);
-    }
-
     @Test
-    public void givenMdcValueAndRequestIdHeader_headerValueNotChanged() throws IOException, ServletException {
+    public void givenRequestIdHeader_headerValueNotChanged() throws IOException, ServletException {
 
         final String someTxId = "863850e2-8545-4efd-94b8-afba5f52b3d5";
-        final String mdcTxId = "ed752ff1-3970-4f18-8219-2d821fa4eaea";
-
-        MDC.put(MDCs.REQUEST_ID, mdcTxId);
 
         final ImmutableMap<String, String> incomingRequestHeaders = ImmutableMap.of(
                 anotherHeader, anotherValue,
@@ -130,20 +119,6 @@ public class PromiseRequestIdFilterTest {
         );
 
         buildRequestThenRunThroughFilterAndAssertResultRequestHeaders(incomingRequestHeaders, UserUtils::getRequestId);
-    }
-
-    @Test
-    public void givenMdcValueAndNoRequestIdHeader_headerValueWasFromMDC() throws IOException, ServletException {
-
-        final String mdcTxId = "ed752ff1-3970-4f18-8219-2d821fa4eaea";
-
-        MDC.put(MDCs.REQUEST_ID, mdcTxId);
-
-        final ImmutableMap<String, String> incomingRequestHeaders = ImmutableMap.of(
-                anotherHeader, anotherValue
-        );
-
-        buildRequestThenRunThroughFilterAndAssertResultRequestHeaders(incomingRequestHeaders, specificTxId(mdcTxId));
     }
 
     @Test
