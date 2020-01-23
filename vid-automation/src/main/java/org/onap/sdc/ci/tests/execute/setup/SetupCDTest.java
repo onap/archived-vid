@@ -171,8 +171,8 @@ public abstract class SetupCDTest extends DriverFactory {
 
 	public static void navigateToUrl(String url)  {
 		try {
-			System.out.println("Deleting cookies...");
-			deleteCookies();
+//			System.out.println("Deleting cookies...");
+//			deleteCookies();
 
 			System.out.println("Navigating to URL : " + url);
 			getDriver().navigate().to(url);
