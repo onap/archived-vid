@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "aa64aebf_7c519944",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1188,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-01-23T12:31:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "349f2618_b5bd71ec",
+      "range": {
+        "startLine": 1188,
+        "startChar": 8,
+        "endLine": 1188,
+        "endChar": 31
+      },
+      "revId": "7f0b4e0244432630116c2a7a1e7a5bfc82e1f580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "616839a6_734768fa",
         "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
         "patchSetId": 3
@@ -81,6 +105,24 @@
       "revId": "7f0b4e0244432630116c2a7a1e7a5bfc82e1f580",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "460b2851_9f4a4e44",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/NewServiceInstanceTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1194,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-01-23T12:31:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5394be56_86a90c9f",
+      "revId": "7f0b4e0244432630116c2a7a1e7a5bfc82e1f580",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
