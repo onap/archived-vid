@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e17af4a4_0a885084",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vnfGenerator/vnf.control.generator.spec.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 961,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-23T11:59:09Z",
+      "side": 1,
+      "message": "FormControlNames.PRODUCT_FAMILY_ID",
+      "revId": "a3f683b7c65fcc88d813ddc06b64bacb5f8b14c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
