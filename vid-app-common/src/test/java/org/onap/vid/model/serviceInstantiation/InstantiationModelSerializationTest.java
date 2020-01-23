@@ -23,11 +23,10 @@ package org.onap.vid.model.serviceInstantiation;
 import static java.util.Collections.emptyMap;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonNodeAbsent;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonPartEquals;
-import static org.hamcrest.CoreMatchers.either;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
@@ -41,6 +40,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.hamcrest.core.CombinableMatcher;
 import org.onap.vid.model.VidNotions;
 import org.onap.vid.model.VidNotions.InstantiationType;
 import org.onap.vid.model.VidNotions.InstantiationUI;
@@ -97,6 +97,8 @@ public class InstantiationModelSerializationTest {
                 InstantiationType.Macro),
             "originalName"
         );
+
+        serviceInstantiation.setPosition(1); // set non-null value; required only for the test
 
         verifySerializationAndDeserialization(serviceInstantiation);
     }
@@ -160,6 +162,45 @@ public class InstantiationModelSerializationTest {
     }
 
     @Test
+    public void baseResource_originalName_shouldFallbackFromNullToCustomizationId() {
+
+        final String ORIGINAL_NAME = null;
+        final String modelCustomizationId = newModelInfo().getModelCustomizationId();
+
+        // BaseResource is abstract
+        BaseResource vnf = new Vnf(newModelInfo(), null, null, null,
+            null, null, null, null,
+            null, null, false, null, null,
+            null, null, null, null, ORIGINAL_NAME);
+
+        BaseResource serviceInstantiation = new ServiceInstantiation(newModelInfo(), null, null, null,
+            null, null, null, null,
+            null, null, null, null,
+            null, null, null, null,
+            null, null, null, null,
+            false, 0, false, false,
+            null, null, null, null, null,
+            null, null, ORIGINAL_NAME);
+
+        assertThat(vnf, jsonPartEquals("originalName", modelCustomizationId));
+        assertThat(serviceInstantiation, jsonPartEquals("originalName", modelCustomizationId));
+    }
+
+    @Test
+    public void baseResource_originalName_shouldBeAbsentIfModelInfoIsEmpty() {
+
+        final String ORIGINAL_NAME = null;
+
+        // BaseResource is abstract
+        BaseResource vnf = new Vnf(new ModelInfo(), null, null, null,
+            null, null, null, null,
+            null, null, false, null, null,
+            null, null, null, null, ORIGINAL_NAME);
+
+        assertThat(vnf, jsonNodeAbsent("originalName"));
+    }
+
+    @Test
     public void VfModule_sdncPreLoad_shouldBeSerializedWithCorrectName() {
 
         final boolean USE_PRELOAD = true;
@@ -209,12 +250,12 @@ public class InstantiationModelSerializationTest {
         throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         assertThat("setup is expected to have no field with a default Java value",
             PropertyUtils.describe(object).entrySet(),
-            not(hasItem(hasProperty("value",
-                either(nullValue())
-                    .or(equalTo(0))
-                    .or(equalTo(""))
-                    .or(equalTo(false))
-                    .or(equalTo(Create))))));
+            everyItem(hasProperty("value",
+                new CombinableMatcher<>(not(nullValue()))
+                    .and(not(equalTo(0)))
+                    .and(not(equalTo(")")))
+                    .and(not(equalTo(false)))
+                    .and(not(equalTo(Create))))));
     }
 
 }

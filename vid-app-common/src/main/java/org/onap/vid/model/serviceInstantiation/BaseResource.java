@@ -21,6 +21,7 @@
 package org.onap.vid.model.serviceInstantiation;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static org.apache.commons.lang3.StringUtils.firstNonEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -105,7 +106,7 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 		this.isFailed = isFailed!= null ? isFailed: false;
 		this.statusMessage = statusMessage;
 		this.position = position;
-		this.originalName = originalName;
+		this.originalName = firstNonEmpty(originalName, modelInfo.getModelCustomizationId(), modelInfo.getModelInvariantId());
 	}
 
 	private Action actionStringToEnum(String actionAsString) {
