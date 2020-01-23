@@ -16,6 +16,24 @@
       "revId": "740ae55e408ebd448a1efeaba5cb64fc8b3d64fd",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f37ae61_77c60370",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/filter/PromiseRequestIdFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-23T07:05:15Z",
+      "side": 1,
+      "message": "i like the generic feel. :/",
+      "parentUuid": "135f5aaa_24e2670c",
+      "revId": "740ae55e408ebd448a1efeaba5cb64fc8b3d64fd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
