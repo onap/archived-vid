@@ -52,6 +52,24 @@
       "revId": "740ae55e408ebd448a1efeaba5cb64fc8b3d64fd",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d508617e_4961d215",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/filter/PromiseRequestIdFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-23T08:59:49Z",
+      "side": 1,
+      "message": "i\u0027ll rename `toUuidOrElse` to `firstValidUuidOrElse`, ok? the meaning is in the caller.",
+      "parentUuid": "f6bdf9b1_3097863a",
+      "revId": "740ae55e408ebd448a1efeaba5cb64fc8b3d64fd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
