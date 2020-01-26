@@ -24,11 +24,11 @@ import java.util.List;
 import java.util.Map;
 import org.onap.vid.mso.rest.RequestDetails;
 
-public class RoleValidatorByRoles implements RoleValidator {
+public class RoleValidatorBySubscriberAndServiceType implements RoleValidator {
 
     private final List<Role> userRoles;
 
-    RoleValidatorByRoles(List<Role> roles) {
+    RoleValidatorBySubscriberAndServiceType(List<Role> roles) {
         this.userRoles = roles;
     }
 

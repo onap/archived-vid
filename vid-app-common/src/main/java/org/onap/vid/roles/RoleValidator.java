@@ -35,7 +35,7 @@ public interface RoleValidator {
     static RoleValidator by(List<Role> roles, boolean disableRoles) {
         return disableRoles
             ? new AlwaysValidRoleValidator()
-            : new RoleValidatorByRoles(roles);
+            : new RoleValidatorBySubscriberAndServiceType(roles);
     }
 
     boolean isSubscriberPermitted(String subscriberName);
