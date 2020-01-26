@@ -97,7 +97,7 @@ describe('Template', () => {
 
     // check table body row
     cy.getElementByDataTestsId(`userId-${templateJobIdFromE2EFile}`).contains('16807000');
-    cy.getElementByDataTestsId(`createDate-${templateJobIdFromE2EFile}`).contains('2019-12-26 11:57:05');
+    cy.getElementByDataTestsId(`createDate-${templateJobIdFromE2EFile}`).contains(/2019-12-26 [0-9]{1,2}:57:05/); //timezone insensitive
     cy.getElementByDataTestsId(`instanceName-${templateJobIdFromE2EFile}`).contains('SERVICE_NAME');
     cy.getElementByDataTestsId(`instantiationStatus-${templateJobIdFromE2EFile}`).contains('IN_PROGRESS');
     cy.getElementByDataTestsId(`summary-${templateJobIdFromE2EFile}`).contains('vnf: 1, vfModule: 2, volumeGroup: 1');
