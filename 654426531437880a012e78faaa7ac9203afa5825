@@ -1,0 +1,364 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "796bba8a_6d5ab155",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "move two tests to another file, dedicated for preload",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0243900_1321ce94",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "sdnc-preload - upload file success",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6922f1d7_10df2e6c",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "sdnc-preload - upload file failed",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab32bda1_b4b6864b",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 1171,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "add another test that when flag is off -- list is empty",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a158b5d_06c75fa8",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 1172,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "getSdncPreloadExtraContents - when PRELOAD_FILES flag is on - extra content is UPLOAD_FILE",
+      "range": {
+        "startLine": 1172,
+        "startChar": 8,
+        "endLine": 1172,
+        "endChar": 28
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b6aae0b_63bc8c82",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "getSdncPreloadExtraContents",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33f7223e_db3124b4",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "2006",
+      "range": {
+        "startLine": 142,
+        "startChar": 54,
+        "endLine": 142,
+        "endChar": 58
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f81bd283_6d9e9265",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "rename to sdnc_pereload_upload_link",
+      "range": {
+        "startLine": 145,
+        "startChar": 21,
+        "endLine": 145,
+        "endChar": 35
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8f2f333_ad331b49",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "`sdncPreload`",
+      "range": {
+        "startLine": 148,
+        "startChar": 34,
+        "endLine": 148,
+        "endChar": 45
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18a7fb60_b44a4a7c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/genericFormSharedComponent/uploadFiles/upload-files.component.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "rename  \u0027uploadFiles\u0027 to something like \u0027uploadFileLink\u0027",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dbf326c4_b2093474",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/genericFormSharedComponent/uploadFiles/upload-files.component.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "convert to css class",
+      "range": {
+        "startLine": 8,
+        "startChar": 11,
+        "endLine": 8,
+        "endChar": 123
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cea402c1_53140877",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/genericFormSharedComponent/uploadFiles/upload-files.component.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 14
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "543358d3_12401e86",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/genericFormSharedComponent/uploadFiles/upload-files.component.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "take out of `if`",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 60
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f954b186_a7deb5a0",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/genericFormSharedComponent/uploadFiles/upload-files.component.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "extract method `resetState`",
+      "range": {
+        "startLine": 30,
+        "startChar": 6,
+        "endLine": 30,
+        "endChar": 46
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b97c74e_59138521",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/genericFormSharedComponent/uploadFiles/upload-files.component.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "can get null exception on this.uploadFilesModel.isDisabled",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8da8f2c_7465adc8",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/genericFormSharedComponent/uploadFiles/upload-files.model.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "`files: FileItem[]`",
+      "range": {
+        "startLine": 20,
+        "startChar": 17,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "def14f83_fc8b3f55",
+        "filename": "vid-webpack-master/src/app/shared/components/messageModal/message-modal-type.enum.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "merge into `message-modal.model.ts` file.",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bdb5d2d_2e69a966",
+        "filename": "vid-webpack-master/src/app/shared/components/messageModal/message-modal.model.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T09:20:42Z",
+      "side": 1,
+      "message": "can define `type: \u0027error\u0027 | \u0027info\u0027 | \u0027success\u0027`",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
