@@ -53,6 +53,23 @@
     },
     {
       "key": {
+        "uuid": "e16d5afc_1d219511",
+        "filename": "vid-webpack-master/cypress/support/uploadFiles/sdncPreLoadFileExample.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T12:32:10Z",
+      "side": 1,
+      "message": "please mention inside the file text that this file is invalid, and is just a mockup.",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ab32bda1_b4b6864b",
         "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.spec.ts",
         "patchSetId": 4
@@ -356,6 +373,69 @@
       "writtenOn": "2020-01-26T09:20:42Z",
       "side": 1,
       "message": "can define `type: \u0027error\u0027 | \u0027info\u0027 | \u0027success\u0027`",
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "884b6269_e3c84ea1",
+        "filename": "vid-webpack-master/src/app/shared/components/messageModal/message-modal.service.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T12:32:10Z",
+      "side": 1,
+      "message": "should use MessageModalTypeEnum?",
+      "range": {
+        "startLine": 27,
+        "startChar": 15,
+        "endLine": 27,
+        "endChar": 36
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8be2e852_2242bdaa",
+        "filename": "vid-webpack-master/src/app/shared/models/formControlModels/formControl.model.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T12:32:10Z",
+      "side": 1,
+      "message": "object array",
+      "range": {
+        "startLine": 28,
+        "startChar": 18,
+        "endLine": 28,
+        "endChar": 34
+      },
+      "revId": "654426531437880a012e78faaa7ac9203afa5825",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5813e66_8d8409b9",
+        "filename": "vid-webpack-master/src/app/shared/models/formControlModels/formControl.model.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T12:32:10Z",
+      "side": 1,
+      "message": "missing a `;` at end of line",
       "revId": "654426531437880a012e78faaa7ac9203afa5825",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
