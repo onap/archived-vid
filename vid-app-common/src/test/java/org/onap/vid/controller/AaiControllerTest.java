@@ -69,7 +69,7 @@ import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.model.VersionByInvariantIdsRequest;
 import org.onap.vid.properties.Features;
 import org.onap.vid.roles.RoleProvider;
-import org.onap.vid.roles.RoleValidatorByRoles;
+import org.onap.vid.roles.RoleValidatorBySubscriberAndServiceType;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.onap.vid.utils.Unchecked;
@@ -408,7 +408,7 @@ public class AaiControllerTest {
         String okResponseBody = "OK_RESPONSE";
         AaiResponse<String> aaiResponse = new AaiResponse<>(okResponseBody, "", HttpStatus.OK.value());
         given(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).willReturn(isFeatureActive);
-        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorByRoles.class),
+        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorBySubscriberAndServiceType.class),
             eq(isFeatureActive && omitServiceInstances)))
             .willReturn(aaiResponse);
 
@@ -479,7 +479,7 @@ public class AaiControllerTest {
         String okResponseBody = "OK_RESPONSE";
         AaiResponse<String> aaiResponse = new AaiResponse<>(okResponseBody, "", HttpStatus.OK.value());
         given(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).willReturn(isFeatureActive);
-        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorByRoles.class),
+        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorBySubscriberAndServiceType.class),
             eq(isFeatureActive && omitServiceInstances)))
             .willReturn(aaiResponse);
 
