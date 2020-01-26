@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dac837df_c1ef3348",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-26T12:57:08Z",
+      "side": 1,
+      "message": "it is not \"enable\" -- it is just \"create a flag\"",
+      "revId": "a363fb531db808b52bdc256cb11d102dce05d516",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
