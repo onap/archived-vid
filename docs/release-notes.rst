@@ -15,6 +15,9 @@ Version: Frankfurt (6.0.x)
 
 *Fixed Security Issues*
 
+  - `↗ <https://jira.onap.org/browse/VID-471>`__ Upgrade epsdk version to 2.6.0
+
+
 *Known Security Issues*
 
 
