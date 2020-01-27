@@ -32,7 +32,7 @@ public class AlwaysValidRoleValidator implements RoleValidator {
     }
 
     @Override
-    public boolean isServicePermitted(String subscriberName, String serviceType) {
+    public boolean isServicePermitted(WithPermissionProperties permissionProperties) {
         return true;
     }
 

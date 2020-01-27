@@ -33,7 +33,7 @@ public class RoleValidatorByOwningEntity implements RoleValidator{
     }
 
     @Override
-    public boolean isServicePermitted(String subscriberName, String serviceType) {
+    public boolean isServicePermitted(WithPermissionProperties permissionProperties) {
         return false;
     }
 

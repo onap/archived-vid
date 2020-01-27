@@ -20,11 +20,16 @@
 
 package org.onap.vid.model;
 
-public class ServiceInstanceSearchResult {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.onap.vid.roles.WithPermissionProperties;
+
+public class ServiceInstanceSearchResult implements WithPermissionProperties {
+
+	private final String SUBSCRIBER_ID_FRONTEND_ALIAS = "globalCustomerId";
 
 	private String serviceInstanceId;
 
-	private String globalCustomerId;
+	private String subscriberId;
 
 	private String serviceType;
 
@@ -39,13 +44,13 @@ public class ServiceInstanceSearchResult {
 	private boolean isPermitted;
 
 	public ServiceInstanceSearchResult(){
-
 	}
-	public ServiceInstanceSearchResult(String serviceInstanceId, String globalCustomerId, String serviceType,
+	
+	public ServiceInstanceSearchResult(String serviceInstanceId, String subscriberId, String serviceType,
 									   String serviceInstanceName, String subscriberName, String aaiModelInvariantId,
 									   String aaiModelVersionId, boolean isPermitted) {
 		this.serviceInstanceId = serviceInstanceId;
-		this.globalCustomerId = globalCustomerId;
+		this.subscriberId = subscriberId;
 		this.serviceType = serviceType;
 		this.serviceInstanceName = serviceInstanceName;
 		this.subscriberName = subscriberName;
@@ -62,14 +67,17 @@ public class ServiceInstanceSearchResult {
 		this.serviceInstanceId = serviceInstanceId;
 	}
 
-	public String getGlobalCustomerId() {
-		return globalCustomerId;
+	@Override
+	@JsonProperty(SUBSCRIBER_ID_FRONTEND_ALIAS)
+	public String getSubscriberId() {
+		return subscriberId;
 	}
 
-	public void setGlobalCustomerId(String globalCustomerId) {
-		this.globalCustomerId = globalCustomerId;
+	public void setSubscriberId(String subscriberId) {
+		this.subscriberId = subscriberId;
 	}
 
+	@Override
 	public String getServiceType() {
 		return serviceType;
 	}
@@ -118,22 +126,4 @@ public class ServiceInstanceSearchResult {
 		this.isPermitted = isPermitted;
 	}
 
-	@Override
-	public boolean equals(Object other){
-		if (other instanceof ServiceInstanceSearchResult) {
-			ServiceInstanceSearchResult serviceInstanceSearchResultOther = (ServiceInstanceSearchResult) other;
-			if (this.getServiceInstanceId().equals(serviceInstanceSearchResultOther.getServiceInstanceId())) {
-				return true;
-			}
-		}
-		return false;
-
-	}
-
-	@Override
-	public int hashCode() {
-		int result = 17;
-		result = 31 * result + serviceInstanceId.hashCode();
-		return result;
-	}
 }
