@@ -43,6 +43,7 @@ export class  FormControlModel {
     this.preventionsAttribute = data.preventionsAttribute || [];
     this.onBlur = function(){};
     this.onChange = data.onChange ? data.onChange: function () {}
+
   }
 
   isRequired() : boolean {
