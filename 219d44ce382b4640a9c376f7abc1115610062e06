@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c0c292c7_12c3f8b3",
+        "filename": "vid-webpack-master/src/app/shared/components/messageModal/message-modal.service.ts",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-27T11:45:12Z",
+      "side": 1,
+      "message": "should be: info",
+      "revId": "219d44ce382b4640a9c376f7abc1115610062e06",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ffb5305_8c17d13d",
+        "filename": "vid-webpack-master/src/app/shared/models/formControlModels/formControl.model.ts",
+        "patchSetId": 8
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-27T11:45:12Z",
+      "side": 1,
+      "message": "import not needed, right?",
+      "revId": "219d44ce382b4640a9c376f7abc1115610062e06",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
