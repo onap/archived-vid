@@ -33,7 +33,9 @@ import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.mso.MsoResponseWrapper2;
 import org.onap.vid.properties.Features;
+import org.onap.vid.roles.PermissionProperties;
 import org.onap.vid.roles.RoleProvider;
+import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.services.AsyncInstantiationBusinessLogic;
 import org.onap.vid.services.AuditService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
@@ -165,8 +167,11 @@ public class AsyncInstantiationController extends VidRestrictedBaseController {
     }
 
     private void throwExceptionIfAccessDenied(ServiceInstantiation request, HttpServletRequest httpServletRequest, String userId) {
-        if (featureManager.isActive(Features.FLAG_1906_INSTANTIATION_API_USER_VALIDATION) && !roleProvider.getUserRolesValidator(httpServletRequest).isServicePermitted(request.getGlobalSubscriberId(), request.getSubscriptionServiceType())) {
-            throw new AccessDeniedException(String.format("User %s is not allowed to make this request", userId));
+        if (featureManager.isActive(Features.FLAG_1906_INSTANTIATION_API_USER_VALIDATION)) {
+            RoleValidator roleValidator = roleProvider.getUserRolesValidator(httpServletRequest);
+            if (!roleValidator.isServicePermitted(new PermissionProperties(request.getGlobalSubscriberId(), request.getSubscriptionServiceType()))) {
+                throw new AccessDeniedException(String.format("User %s is not allowed to make this request", userId));
+            }
         }
     }
 }

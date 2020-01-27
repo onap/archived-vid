@@ -40,7 +40,7 @@ public interface RoleValidator {
 
     boolean isSubscriberPermitted(String subscriberName);
 
-    boolean isServicePermitted(String subscriberName, String serviceType);
+    boolean isServicePermitted(WithPermissionProperties serviceInstanceSearchResult);
 
     boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName);
 }

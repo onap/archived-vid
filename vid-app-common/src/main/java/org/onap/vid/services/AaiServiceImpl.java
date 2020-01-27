@@ -85,6 +85,7 @@ import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.model.aaiTree.RelatedVnf;
 import org.onap.vid.model.aaiTree.VpnBinding;
 import org.onap.vid.model.aaiTree.VpnBindingKt;
+import org.onap.vid.roles.PermissionProperties;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.utils.Intersection;
 import org.onap.vid.utils.Logging;
@@ -217,11 +218,11 @@ public class AaiServiceImpl implements AaiService {
                 } else if (key.equals(SERVICE_TYPE)) {
                     serviceInstanceSearchResult.setServiceType(relationshipData.getRelationshipValue());
                 } else if (key.equals(CUSTOMER_ID)) {
-                    serviceInstanceSearchResult.setGlobalCustomerId(relationshipData.getRelationshipValue());
+                    serviceInstanceSearchResult.setSubscriberId(relationshipData.getRelationshipValue());
                 }
             }
 
-            boolean isPermitted = roleValidator.isServicePermitted(serviceInstanceSearchResult.getSubscriberName(), serviceInstanceSearchResult.getServiceType());
+            boolean isPermitted = roleValidator.isServicePermitted(serviceInstanceSearchResult);
             serviceInstanceSearchResult.setIsPermitted(isPermitted);
         }
     }
@@ -265,10 +266,9 @@ public class AaiServiceImpl implements AaiService {
     @Override
     public AaiResponse getSubscriberData(String subscriberId, RoleValidator roleValidator, boolean omitServiceInstances) {
         AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId, omitServiceInstances);
-        String subscriberGlobalId = subscriberResponse.getT().globalCustomerId;
         for (ServiceSubscription serviceSubscription : subscriberResponse.getT().serviceSubscriptions.serviceSubscription) {
-            String serviceType = serviceSubscription.serviceType;
-            serviceSubscription.isPermitted = roleValidator.isServicePermitted(subscriberGlobalId, serviceType);
+            serviceSubscription.isPermitted = roleValidator.isServicePermitted(
+                new PermissionProperties(serviceSubscription, subscriberResponse.getT().globalCustomerId));
         }
         return subscriberResponse;
 
@@ -298,38 +298,43 @@ public class AaiServiceImpl implements AaiService {
 
     private List<ServiceInstanceSearchResult> getServicesBySubscriber(String subscriberId, String instanceIdentifier, RoleValidator roleValidator) {
         AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId, false);
-        String subscriberGlobalId = subscriberResponse.getT().globalCustomerId;
         String subscriberName = subscriberResponse.getT().subscriberName;
         ServiceSubscriptions serviceSubscriptions = subscriberResponse.getT().serviceSubscriptions;
 
-        return getSearchResultsForSubscriptions(serviceSubscriptions, subscriberId, instanceIdentifier, roleValidator, subscriberGlobalId, subscriberName);
-
+        return getSearchResultsForSubscriptions(serviceSubscriptions, subscriberId, instanceIdentifier, roleValidator, subscriberName);
     }
 
 
-    private ArrayList<ServiceInstanceSearchResult> getSearchResultsForSubscriptions(ServiceSubscriptions serviceSubscriptions, String subscriberId, String instanceIdentifier, RoleValidator roleValidator, String subscriberGlobalId, String subscriberName) {
+    private ArrayList<ServiceInstanceSearchResult> getSearchResultsForSubscriptions(
+        ServiceSubscriptions serviceSubscriptions, String subscriberId, String instanceIdentifier,
+        RoleValidator roleValidator, String subscriberName) {
         ArrayList<ServiceInstanceSearchResult> results = new ArrayList<>();
 
         if (serviceSubscriptions != null) {
             for (ServiceSubscription serviceSubscription : serviceSubscriptions.serviceSubscription) {
-                String serviceType = serviceSubscription.serviceType;
-                serviceSubscription.isPermitted = roleValidator.isServicePermitted(subscriberGlobalId, serviceType);
-                ArrayList<ServiceInstanceSearchResult> resultsForSubscription = getSearchResultsForSingleSubscription(serviceSubscription, subscriberId, instanceIdentifier, subscriberName, serviceType);
-                results.addAll(resultsForSubscription);
+                serviceSubscription.isPermitted = roleValidator.isServicePermitted(new PermissionProperties(serviceSubscription, subscriberId));
+                results.addAll(getSearchResultsForSingleSubscription(
+                    serviceSubscription, subscriberId, instanceIdentifier, subscriberName,
+                    serviceSubscription.serviceType, roleValidator)
+                );
             }
         }
 
         return results;
     }
 
-    private ArrayList<ServiceInstanceSearchResult> getSearchResultsForSingleSubscription(ServiceSubscription serviceSubscription, String subscriberId, String instanceIdentifier, String subscriberName, String serviceType) {
+    private ArrayList<ServiceInstanceSearchResult> getSearchResultsForSingleSubscription(
+        ServiceSubscription serviceSubscription, String subscriberId, String instanceIdentifier, String subscriberName,
+        String serviceType, RoleValidator roleValidator) {
         ArrayList<ServiceInstanceSearchResult> results = new ArrayList<>();
 
         if (serviceSubscription.serviceInstances != null) {
             for (ServiceInstance serviceInstance : serviceSubscription.serviceInstances.serviceInstance) {
                 ServiceInstanceSearchResult serviceInstanceSearchResult =
                         new ServiceInstanceSearchResult(serviceInstance.serviceInstanceId, subscriberId, serviceType, serviceInstance.serviceInstanceName,
-                                subscriberName, serviceInstance.modelInvariantId, serviceInstance.modelVersionId, serviceSubscription.isPermitted);
+                                subscriberName, serviceInstance.modelInvariantId, serviceInstance.modelVersionId, false);
+
+                serviceInstanceSearchResult.setIsPermitted(roleValidator.isServicePermitted(serviceInstanceSearchResult));
 
                 if ((instanceIdentifier == null) || (serviceInstanceMatchesIdentifier(instanceIdentifier, serviceInstance))){
                     results.add(serviceInstanceSearchResult);

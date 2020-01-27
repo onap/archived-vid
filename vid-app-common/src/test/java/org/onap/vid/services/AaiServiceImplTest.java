@@ -183,7 +183,7 @@ public class AaiServiceImplTest {
         AaiResponse<Services> aaiResponseServices = new AaiResponse<>(services, null, HttpStatus.SC_OK);
 
         when(aaiClient.getSubscriberData(SUBSCRIBER_ID, false)).thenReturn(aaiResponseServices);
-        when(roleValidator.isServicePermitted(eq(GLOBAL_CUSTOMER_ID), anyString())).thenReturn(Boolean.TRUE);
+        when(roleValidator.isServicePermitted(any())).thenReturn(Boolean.TRUE);
 
         AaiResponse actualResponse = aaiService.getSubscriberData(SUBSCRIBER_ID, roleValidator, false);
         List<ServiceSubscription> actualServiceSubscriptions = ((AaiResponse<Services>) actualResponse)
