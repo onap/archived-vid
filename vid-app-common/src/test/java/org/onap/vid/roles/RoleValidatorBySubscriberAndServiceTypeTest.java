@@ -66,19 +66,19 @@ public class RoleValidatorBySubscriberAndServiceTypeTest {
 
     @Test
     public void shouldPermitServiceWhenNamesMatches() {
-        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE)).isTrue();
+        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(new PermissionProperties(SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE))).isTrue();
     }
 
 
     @Test
     public void shouldNotPermitServiceWhenSubscriberNameNotMatches() {
         assertThat(
-            roleValidatorBySubscriberAndServiceType.isServicePermitted(NOT_MATCHING_SUBSCRIBER, SAMPLE_SERVICE_TYPE)).isFalse();
+            roleValidatorBySubscriberAndServiceType.isServicePermitted(new PermissionProperties(NOT_MATCHING_SUBSCRIBER, SAMPLE_SERVICE_TYPE))).isFalse();
     }
 
     @Test
     public void shouldNotPermitServiceWhenServiceTypeNotMatches() {
-        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(SAMPLE_SUBSCRIBER, NOT_MATCHING_SUBSCRIBER)).isFalse();
+        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(new PermissionProperties(SAMPLE_SUBSCRIBER, NOT_MATCHING_SUBSCRIBER))).isFalse();
     }
 
     @Test
@@ -94,24 +94,4 @@ public class RoleValidatorBySubscriberAndServiceTypeTest {
             .isTenantPermitted(SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE, NOT_MATCHING_TENANT)).isFalse();
     }
 
-    @Test
-    public void shouldValidateProperlySORequest() {
-        requestDetails.setAdditionalProperty("requestDetails", requestDetailsProperties);
-
-        assertThat(roleValidatorBySubscriberAndServiceType.isMsoRequestValid(requestDetails)).isTrue();
-    }
-
-    @Test
-    public void shouldValidateUnknownSORequest() {
-        assertThat(roleValidatorBySubscriberAndServiceType.isMsoRequestValid(new RequestDetails())).isTrue();
-    }
-
-    @Test
-    public void shouldRejectSORequestWhenSubscriberNotMatches() {
-        Map<String, Object> subscriberInfo = ImmutableMap.of("globalSubscriberId", "sample");
-        Map<String, Object> requestDetailsProperties = ImmutableMap.of("subscriberInfo", subscriberInfo, "requestParameters", requestParameters);
-        requestDetails.setAdditionalProperty("requestDetails", requestDetailsProperties);
-
-        assertThat(roleValidatorBySubscriberAndServiceType.isMsoRequestValid(requestDetails)).isFalse();
-    }
 }

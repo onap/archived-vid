@@ -21,8 +21,6 @@
 package org.onap.vid.roles;
 
 import java.util.List;
-import java.util.Map;
-import org.onap.vid.mso.rest.RequestDetails;
 
 public class RoleValidatorBySubscriberAndServiceType implements RoleValidator {
 
@@ -43,9 +41,9 @@ public class RoleValidatorBySubscriberAndServiceType implements RoleValidator {
     }
 
     @Override
-    public boolean isServicePermitted(String subscriberName, String serviceType) {
+    public boolean isServicePermitted(WithPermissionProperties permissionProperties) {
         for (Role role : userRoles) {
-            if (role.getSubscribeName().equals(subscriberName) && role.getServiceType().equals(serviceType)) {
+            if (role.getSubscribeName().equals(permissionProperties.getSubscriberId()) && role.getServiceType().equals(permissionProperties.getServiceType())) {
                 return true;
             }
         }
@@ -62,19 +60,6 @@ public class RoleValidatorBySubscriberAndServiceType implements RoleValidator {
             }
         }
         return false;
-    }
-
-    boolean isMsoRequestValid(RequestDetails msoRequest) {
-        try {
-            String globalSubscriberIdRequested = (String) ((Map) ((Map) msoRequest.getAdditionalProperties()
-                .get("requestDetails")).get("subscriberInfo")).get("globalSubscriberId");
-            String serviceType = (String) ((Map) ((Map) msoRequest.getAdditionalProperties().get("requestDetails"))
-                .get("requestParameters")).get("subscriptionServiceType");
-            return isServicePermitted(globalSubscriberIdRequested, serviceType);
-        } catch (Exception e) {
-            //Until we'll get the exact information regarding the tenants and the global customer id, we'll return true on unknown requests to mso
-            return true;
-        }
     }
 
 }
