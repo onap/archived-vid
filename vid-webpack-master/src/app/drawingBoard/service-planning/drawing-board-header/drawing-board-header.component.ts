@@ -128,7 +128,9 @@ export class DrawingBoardHeader {
   }
 
   public editService(): void {
-    this._iframeService.addClassOpenModal(this.parentElementClassName);
+    if(IframeService.isIframe()){
+      this._iframeService.addClassOpenModal(this.parentElementClassName);
+    }
     this.dialogService.addDialog(GenericFormPopupComponent, {
       type: PopupType.SERVICE,
       uuidData: <any>{
