@@ -23,11 +23,13 @@ package org.onap.vid.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -68,8 +70,11 @@ import org.onap.vid.aai.model.PortDetailsTranslator.PortDetailsOk;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.model.VersionByInvariantIdsRequest;
 import org.onap.vid.properties.Features;
+import org.onap.vid.roles.AlwaysValidRoleValidator;
 import org.onap.vid.roles.RoleProvider;
+import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.roles.RoleValidatorBySubscriberAndServiceType;
+import org.onap.vid.roles.RoleValidatorFactory;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.onap.vid.utils.Unchecked;
@@ -92,6 +97,8 @@ public class AaiControllerTest {
     @Mock
     private RoleProvider roleProvider;
     @Mock
+    private RoleValidator roleValidator;
+    @Mock
     private SystemPropertiesWrapper systemPropertiesWrapper;
     @Mock
     private FeatureManager featureManager;
@@ -103,6 +110,7 @@ public class AaiControllerTest {
     public void setUp() {
         aaiController = new AaiController(aaiService, aaiRestInterface, roleProvider, systemPropertiesWrapper,
             featureManager);
+        when(roleProvider.getUserRolesValidator(any())).thenReturn(roleValidator);
         mockMvc = MockMvcBuilders.standaloneSetup(aaiController).build();
     }
 
@@ -408,7 +416,7 @@ public class AaiControllerTest {
         String okResponseBody = "OK_RESPONSE";
         AaiResponse<String> aaiResponse = new AaiResponse<>(okResponseBody, "", HttpStatus.OK.value());
         given(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).willReturn(isFeatureActive);
-        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorBySubscriberAndServiceType.class),
+        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidator.class),
             eq(isFeatureActive && omitServiceInstances)))
             .willReturn(aaiResponse);
 
@@ -479,7 +487,7 @@ public class AaiControllerTest {
         String okResponseBody = "OK_RESPONSE";
         AaiResponse<String> aaiResponse = new AaiResponse<>(okResponseBody, "", HttpStatus.OK.value());
         given(featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH)).willReturn(isFeatureActive);
-        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidatorBySubscriberAndServiceType.class),
+        given(aaiService.getSubscriberData(eq(subscriberId), isA(RoleValidator.class),
             eq(isFeatureActive && omitServiceInstances)))
             .willReturn(aaiResponse);
 

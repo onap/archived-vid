@@ -87,6 +87,12 @@ public class RoleValidatorBySubscriberAndServiceTypeTest {
             .isTenantPermitted(SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE, SAMPLE_TENANT)).isTrue();
     }
 
+    @Test
+    public void shouldPermitTenantWhenNameMatchesCaseInsensitive() {
+        assertThat(roleValidatorBySubscriberAndServiceType
+            .isTenantPermitted(SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE, SAMPLE_TENANT.toUpperCase())).isTrue();
+    }
+
 
     @Test
     public void shouldNotPermitTenantWhenNameNotMatches() {

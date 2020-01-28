@@ -58,16 +58,20 @@ public class RoleProvider {
 
     private Function<HttpServletRequest, Integer> getUserIdFunction;
     private Function<HttpServletRequest, Map> getRolesFunction;
+    private final RoleValidatorFactory roleValidatorFactory;
 
     @Autowired
-    public RoleProvider(AaiService aaiService) {
+    public RoleProvider(AaiService aaiService, RoleValidatorFactory roleValidatorFactory) {
         this.aaiService=aaiService;
+        this.roleValidatorFactory = roleValidatorFactory;
         getUserIdFunction = UserUtils::getUserId;
         getRolesFunction = UserUtils::getRoles;
     }
 
-    RoleProvider(AaiService aaiService, Function<HttpServletRequest, Integer> getUserIdFunction, Function<HttpServletRequest, Map> getRolesFunction) {
+    RoleProvider(AaiService aaiService, RoleValidatorFactory roleValidatorFactory,
+        Function<HttpServletRequest, Integer> getUserIdFunction, Function<HttpServletRequest, Map> getRolesFunction) {
         this.aaiService = aaiService;
+        this.roleValidatorFactory = roleValidatorFactory;
         this.getRolesFunction = getRolesFunction;
         this.getUserIdFunction = getUserIdFunction;
     }
@@ -162,7 +166,7 @@ public class RoleProvider {
     }
 
     public RoleValidator getUserRolesValidator(HttpServletRequest request) {
-        return RoleValidator.by(getUserRoles(request));
+        return roleValidatorFactory.by(getUserRoles(request));
     }
 }
 

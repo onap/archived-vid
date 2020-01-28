@@ -21,16 +21,33 @@
 
 package org.onap.vid.roles;
 
+
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.togglz.core.manager.FeatureManager;
 
-public interface RoleValidator {
+@Component
+public class RoleValidatorFactory {
+    private final FeatureManager featureManager;
+
+    @Autowired
+    public RoleValidatorFactory(FeatureManager featureManager) {
+        this.featureManager = featureManager;
+    }
 
 
-    boolean isSubscriberPermitted(String subscriberId);
+    public RoleValidator by(List<Role> roles) {
+        final boolean disableRoles = StringUtils
+            .equals(SystemProperties.getProperty("role_management_activated"), "false");
+        return by(roles, disableRoles);
+    }
 
-    boolean isServicePermitted(WithPermissionProperties serviceInstanceSearchResult);
-
-    boolean isTenantPermitted(String subscriberId, String serviceType, String tenantName);
+    public RoleValidator by(List<Role> roles, boolean disableRoles) {
+        return disableRoles
+            ? new AlwaysValidRoleValidator()
+            : new RoleValidatorBySubscriberAndServiceType(roles);
+    }
 }

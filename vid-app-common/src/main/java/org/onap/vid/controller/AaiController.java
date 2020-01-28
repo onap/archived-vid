@@ -49,7 +49,6 @@ import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.util.AAIRestInterface;
 import org.onap.vid.model.VersionByInvariantIdsRequest;
 import org.onap.vid.properties.Features;
-import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.services.AaiService;
@@ -137,7 +136,7 @@ public class AaiController extends RestrictedBaseController {
 
     @RequestMapping(value = "/aai_get_services", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> doGetServices(HttpServletRequest request) throws IOException {
-        RoleValidator roleValidator = RoleValidator.by(roleProvider.getUserRoles(request));
+        RoleValidator roleValidator = roleProvider.getUserRolesValidator(request);
 
         AaiResponse subscriberList = aaiService.getServices(roleValidator);
         return aaiResponseToResponseEntity(subscriberList);
@@ -225,7 +224,7 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = "/aai_get_full_subscribers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getFullSubscriberList(HttpServletRequest request) throws IOException {
         ResponseEntity<String> responseEntity;
-        RoleValidator roleValidator = RoleValidator.by(roleProvider.getUserRoles(request));
+        RoleValidator roleValidator = roleProvider.getUserRolesValidator(request);
         SubscriberFilteredResults subscriberList = aaiService.getFullSubscriberList(roleValidator);
         if (subscriberList.getHttpCode() == 200) {
             responseEntity = new ResponseEntity<>(objectMapper.writeValueAsString(subscriberList.getSubscriberList()),
@@ -256,8 +255,7 @@ public class AaiController extends RestrictedBaseController {
     @RequestMapping(value = "/aai_sub_details/{subscriberId}", method = RequestMethod.GET)
     public ResponseEntity<String> getSubscriberDetails(HttpServletRequest request, @PathVariable("subscriberId") String subscriberId,
                                                        @RequestParam(value="omitServiceInstances", required = false, defaultValue = "false") boolean omitServiceInstances) throws IOException {
-        List<Role> roles = roleProvider.getUserRoles(request);
-        RoleValidator roleValidator = RoleValidator.by(roles);
+        RoleValidator roleValidator = roleProvider.getUserRolesValidator(request);
         AaiResponse subscriberData = aaiService.getSubscriberData(subscriberId, roleValidator,
             featureManager.isActive(Features.FLAG_1906_AAI_SUB_DETAILS_REDUCE_DEPTH) && omitServiceInstances);
         String httpMessage = subscriberData.getT() != null ? objectMapper.writeValueAsString(subscriberData.getT()) : subscriberData.getErrorMessage();
@@ -274,8 +272,7 @@ public class AaiController extends RestrictedBaseController {
         @RequestParam(value = "owningEntity", required = false) List<String> owningEntities) throws IOException {
         ResponseEntity responseEntity;
 
-        List<Role> roles = roleProvider.getUserRoles(request);
-        RoleValidator roleValidator = RoleValidator.by(roles);
+        RoleValidator roleValidator = roleProvider.getUserRolesValidator(request);
 
         AaiResponse<ServiceInstancesSearchResults> searchResult = aaiService
             .getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator, owningEntities, projects);
@@ -404,8 +401,7 @@ public class AaiController extends RestrictedBaseController {
 
         ResponseEntity responseEntity;
         try {
-            List<Role> roles = roleProvider.getUserRoles(request);
-            RoleValidator roleValidator = RoleValidator.by(roles);
+            RoleValidator roleValidator = roleProvider.getUserRolesValidator(request);
             AaiResponse<GetTenantsResponse[]> response = aaiService
                 .getTenants(globalCustomerId, serviceType, roleValidator);
             if (response.getHttpCode() == 200) {

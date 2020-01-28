@@ -33,8 +33,10 @@ import org.onap.vid.model.SubscriberList;
 import org.onap.vid.roles.EcompRole;
 import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleValidator;
+import org.onap.vid.roles.RoleValidatorFactory;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class SubscriberFilteredResultsTest {
 
@@ -89,9 +91,7 @@ public class SubscriberFilteredResultsTest {
     }
 
     private void prepareRoleValidator() {
-        ArrayList<Role> list = new ArrayList<>();
-        list.add(new Role(EcompRole.READ, "a", "a", "a"));
-       roleValidator = RoleValidator.by(list);
+        roleValidator = mock(RoleValidator.class);
     }
 
     private void prepareSubscriberList() throws IOException {

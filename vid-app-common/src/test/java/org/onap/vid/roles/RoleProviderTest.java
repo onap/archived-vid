@@ -22,6 +22,8 @@ package org.onap.vid.roles;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.assertj.core.util.Lists;
+import org.hamcrest.CoreMatchers;
 import org.mockito.Mock;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.RoleParsingException;
@@ -58,13 +61,16 @@ public class RoleProviderTest {
     @Mock
     private AaiResponse<SubscriberList> subscriberListResponse;
 
+    @Mock
+    private RoleValidatorFactory roleValidatorFactory;
+
     private RoleProvider roleProvider;
 
 
     @BeforeMethod
     public void setUp() {
         initMocks(this);
-        roleProvider = new RoleProvider(aaiService, httpServletRequest -> 5, httpServletRequest -> createRoles());
+        roleProvider = new RoleProvider(aaiService, roleValidatorFactory, httpServletRequest -> 5, httpServletRequest -> createRoles());
     }
 
     @Test
@@ -141,6 +147,16 @@ public class RoleProviderTest {
         Role withPermission = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SERVICE_TYPE_LOGS, TENANT_PERMITTED);
 
         assertThat(roleProvider.userPermissionIsReadLogs(Lists.list(withoutPermission, withPermission))).isTrue();
+    }
+
+    @Test
+    public void getUserRolesValidator_shouldReturnValidatorFromFactory() {
+        RoleValidator expectedRoleValidator = new AlwaysValidRoleValidator();
+        when(roleValidatorFactory.by(any())).thenReturn(expectedRoleValidator);
+
+        RoleValidator result = roleProvider.getUserRolesValidator(request);
+
+        assertThat(result).isEqualTo(expectedRoleValidator);
     }
 
     private void setSubscribers() {

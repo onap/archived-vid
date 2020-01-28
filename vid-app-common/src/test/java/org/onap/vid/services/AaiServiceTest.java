@@ -23,6 +23,12 @@ package org.onap.vid.services;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
@@ -49,6 +55,7 @@ import org.onap.vid.aai.model.ServiceRelationships;
 import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleValidator;
+import org.onap.vid.roles.RoleValidatorFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -61,6 +68,9 @@ public class AaiServiceTest {
     @Mock
     private AaiClientInterface aaiClientInterface;
 
+    @Mock
+    private RoleValidatorFactory roleValidatorFactory;
+
     @BeforeMethod
     public void initMocks(){
         MockitoAnnotations.initMocks(this);
@@ -68,7 +78,7 @@ public class AaiServiceTest {
 
     @Test
     public void testGetSpecificPnf(){
-        Pnf pnf = new Pnf("11111", null, null, null, null, null, null);
+        Pnf pnf = Pnf.builder().withPnfId("11111").build();
         AaiResponse<Pnf> aaiResponse = new AaiResponse<>(pnf, "aaaa", 200);
         Mockito.doReturn(aaiResponse).when(aaiClientInterface).getSpecificPnf(Mockito.anyString());
         AaiResponse<Pnf> specificPnf = aaiService.getSpecificPnf("1345667");
@@ -150,8 +160,6 @@ public class AaiServiceTest {
     public static Object[][] getTenantsData() {
         return new Object[][] {
                 {"customer1", "serviceType1", "tenant1", "customer1", "serviceType1", "tenant1", "id-1", true},
-                {"customer1", "serviceType1", "TeNant1", "customer1", "serviceType1", "tenant1", "id-1", true},
-                {"customer1", "serviceType1", "TENANT1", "customer1", "serviceType1", "tenant1", "id-1", true},
                 {"customer1", "serviceType1", "tenant2", "customer1", "serviceType1", "tenant1", "tenant2", false},
                 {"customer1", "serviceType1", null, "customer1", "serviceType1", "tenant1", "tenant2", true},
                 {"customer2", "serviceType1", "tenant1", "customer1", "serviceType1", "tenant1", "id-1", false},
@@ -162,14 +170,20 @@ public class AaiServiceTest {
     }
 
     @Test(dataProvider = "getTenantsData")
-    public void testGetTenants(String userGlobalCustomerId, String userServiceType, String userTenantName, String serviceGlobalCustomerId,
-                               String serviceServiceType, String serviceTenantName, String serviceTenantId, boolean expectedIsPermitted) {
+    public void testGetTenants(String userGlobalCustomerId, String userServiceType, String userTenantName,
+                                String serviceGlobalCustomerId, String serviceServiceType, String serviceTenantName,
+                                String serviceTenantId, boolean expectedIsPermitted) {
         GetTenantsResponse[] getTenantsResponses = new GetTenantsResponse[] {new GetTenantsResponse(null, null, serviceTenantName, serviceTenantId, false)};
         AaiResponse<GetTenantsResponse[]> aaiResponse = new AaiResponse<>(getTenantsResponses, null, 200);
         Mockito.doReturn(aaiResponse).when(aaiClientInterface).getTenants(serviceGlobalCustomerId, serviceServiceType);
-        Role role = new Role(null, userGlobalCustomerId, userServiceType, userTenantName);
-        RoleValidator roleValidator = RoleValidator.by(Collections.singletonList(role), false);
-        AaiResponse<GetTenantsResponse[]> actualTenants = aaiService.getTenants(serviceGlobalCustomerId, serviceServiceType, roleValidator);
+
+        RoleValidator roleValidatorMock = mock(RoleValidator.class);
+        when(roleValidatorMock.isTenantPermitted(
+            eq(userGlobalCustomerId), eq(userServiceType),
+            (userTenantName == null) ? anyString() : eq(userTenantName))
+        ).thenReturn(true);
+
+        AaiResponse<GetTenantsResponse[]> actualTenants = aaiService.getTenants(serviceGlobalCustomerId, serviceServiceType, roleValidatorMock);
 
         assertThat(actualTenants.getT(), arrayWithSize(1));
         assertThat(actualTenants.getT()[0].tenantName, equalTo(serviceTenantName));
