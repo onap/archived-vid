@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f05f4f6e_12bcf8c0",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorsComposerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-28T10:57:40Z",
+      "side": 1,
+      "message": "of",
+      "revId": "abb69004c16707e1dafa7a75050e8c026de9fe31",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
