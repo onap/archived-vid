@@ -33,7 +33,7 @@ import org.onap.vid.model.aaiTree.Network;
 import org.onap.vid.model.aaiTree.RelatedVnf;
 import org.onap.vid.model.aaiTree.VpnBinding;
 import org.onap.vid.properties.Features;
-import org.onap.vid.roles.PermissionProperties;
+import org.onap.vid.roles.PermissionPropertiesSubscriberAndServiceType;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.services.AaiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +95,7 @@ public class AaiController2 extends VidRestrictedBaseController {
 
         final boolean isEditPermitted = roleProvider
                 .getUserRolesValidator(request)
-                .isServicePermitted(new PermissionProperties(subscriberId, serviceType));
+                .isServicePermitted(new PermissionPropertiesSubscriberAndServiceType(subscriberId, serviceType));
 
         return new Permissions(isEditPermitted);
     }

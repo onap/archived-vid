@@ -66,7 +66,7 @@ public class LoggerControllerTest {
 
     @Test
     public void shouldThrowNotAuthorizedException_whenUserIsNotAuthorizedToGetLogs() throws Exception {
-        List<Role> list = ImmutableList.of(new Role(EcompRole.READ, "subName1", "servType1", "tenant1"));
+        List<Role> list = ImmutableList.of(new Role(EcompRole.READ, "subName1", "servType1", "tenant1", "owningEntityId"));
 
         given(provider.getUserRoles(argThat(req -> req.getRequestedSessionId().equals("id1")))).willReturn(list);
         given(provider.userPermissionIsReadLogs(list)).willReturn(false);
@@ -80,7 +80,7 @@ public class LoggerControllerTest {
 
     @Test
     public void shouldReturnLastAndOneBeforeLogLines_whenLimitIs2() throws Exception {
-        List<Role> list = ImmutableList.of(new Role(EcompRole.READ, "subName1", "servType1", "tenant1"));
+        List<Role> list = ImmutableList.of(new Role(EcompRole.READ, "subName1", "servType1", "tenant1", "owningEntityId"));
 
         given(provider.getUserRoles(argThat(req -> req.getRequestedSessionId().equals("id1")))).willReturn(list);
         given(provider.userPermissionIsReadLogs(list)).willReturn(true);
@@ -96,7 +96,7 @@ public class LoggerControllerTest {
 
     @Test
     public void shouldReturnEmptyString_whenLogFileIsEmpty() throws Exception {
-        List<Role> list = ImmutableList.of(new Role(EcompRole.READ, "subName1", "servType1", "tenant1"));
+        List<Role> list = ImmutableList.of(new Role(EcompRole.READ, "subName1", "servType1", "tenant1", "owningEntityId"));
 
         given(provider.getUserRoles(argThat(req -> req.getRequestedSessionId().equals("id1")))).willReturn(list);
         given(provider.userPermissionIsReadLogs(list)).willReturn(true);
@@ -111,7 +111,7 @@ public class LoggerControllerTest {
 
     @Test
     public void shouldReturnEmptyString_whenDebugLogFileIsEmpty() throws Exception {
-        List<Role> list = ImmutableList.of(new Role(EcompRole.READ, "subName1", "servType1", "tenant1"));
+        List<Role> list = ImmutableList.of(new Role(EcompRole.READ, "subName1", "servType1", "tenant1", "owningEntityId"));
 
         given(provider.getUserRoles(argThat(req -> req.getRequestedSessionId().equals("id1")))).willReturn(list);
         given(provider.userPermissionIsReadLogs(list)).willReturn(true);

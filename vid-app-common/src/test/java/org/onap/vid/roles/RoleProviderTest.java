@@ -22,7 +22,6 @@ package org.onap.vid.roles;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -32,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.assertj.core.util.Lists;
-import org.hamcrest.CoreMatchers;
 import org.mockito.Mock;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.RoleParsingException;
@@ -117,7 +115,7 @@ public class RoleProviderTest {
 
     @Test
     public void shouldProperlyRetrieveUserRolesWhenPermissionIsDifferentThanRead() {
-        Role expectedRole = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER_ID, SAMPLE_SERVICE, SAMPLE_TENANT);
+        Role expectedRole = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER_ID, SAMPLE_SERVICE, SAMPLE_TENANT, owningEntityId());
         setSubscribers();
 
         List<Role> userRoles = roleProvider.getUserRoles(request);
@@ -138,13 +136,14 @@ public class RoleProviderTest {
 
     @Test
     public void shouldReturnNotReadOnlyPermissionWhenRolesArePresent() {
-        assertThat(roleProvider.userPermissionIsReadOnly(Lists.list(new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE, SAMPLE_TENANT)))).isFalse();
+        assertThat(roleProvider.userPermissionIsReadOnly(Lists.list(new Role(
+            EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE, SAMPLE_TENANT, owningEntityId())))).isFalse();
     }
 
     @Test
     public void userShouldHavePermissionToReadLogsWhenServiceAndTenantAreCorrect() {
-        Role withoutPermission = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE, SAMPLE_TENANT);
-        Role withPermission = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SERVICE_TYPE_LOGS, TENANT_PERMITTED);
+        Role withoutPermission = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE, SAMPLE_TENANT, owningEntityId());
+        Role withPermission = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SERVICE_TYPE_LOGS, TENANT_PERMITTED, owningEntityId());
 
         assertThat(roleProvider.userPermissionIsReadLogs(Lists.list(withoutPermission, withPermission))).isTrue();
     }
@@ -157,6 +156,12 @@ public class RoleProviderTest {
         RoleValidator result = roleProvider.getUserRolesValidator(request);
 
         assertThat(result).isEqualTo(expectedRoleValidator);
+    }
+
+    private String owningEntityId() {
+        // while translateOwningEntityNameToOwningEntityId does nothing, no translation happens.
+        // this will be changed later.
+        return SAMPLE_SUBSCRIBER;
     }
 
     private void setSubscribers() {

@@ -22,9 +22,9 @@ package org.onap.vid.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
-import org.onap.vid.roles.WithPermissionProperties;
+import org.onap.vid.roles.WithPermissionPropertiesSubscriberAndServiceType;
 
-public class ServiceInstanceSearchResult implements WithPermissionProperties {
+public class ServiceInstanceSearchResult implements WithPermissionPropertiesSubscriberAndServiceType {
 
 	private final String SUBSCRIBER_ID_FRONTEND_ALIAS = "globalCustomerId";
 

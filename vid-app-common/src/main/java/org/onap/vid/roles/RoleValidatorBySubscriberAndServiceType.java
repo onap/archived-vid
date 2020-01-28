@@ -21,6 +21,7 @@
 package org.onap.vid.roles;
 
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class RoleValidatorBySubscriberAndServiceType implements RoleValidator {
 
@@ -42,12 +43,19 @@ public class RoleValidatorBySubscriberAndServiceType implements RoleValidator {
 
     @Override
     public boolean isServicePermitted(WithPermissionProperties permissionProperties) {
-        for (Role role : userRoles) {
-            if (role.getSubscriberId().equals(permissionProperties.getSubscriberId()) && role.getServiceType().equals(permissionProperties.getServiceType())) {
-                return true;
-            }
+        if (permissionProperties instanceof WithPermissionPropertiesSubscriberAndServiceType) {
+            return isServicePermitted(
+                (WithPermissionPropertiesSubscriberAndServiceType) permissionProperties
+            );
         }
         return false;
+    }
+
+    private boolean isServicePermitted(WithPermissionPropertiesSubscriberAndServiceType permissionProperties) {
+        return userRoles.stream().anyMatch(userRole ->
+            StringUtils.equals(userRole.getSubscriberId(), permissionProperties.getSubscriberId())
+                && StringUtils.equals(userRole.getServiceType(), permissionProperties.getServiceType())
+        );
     }
 
     @Override

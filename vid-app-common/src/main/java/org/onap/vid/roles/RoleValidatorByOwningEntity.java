@@ -21,10 +21,25 @@
 package org.onap.vid.roles;
 
 
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+
 public class RoleValidatorByOwningEntity implements RoleValidator{
 
-    public boolean isOwningEntityIdPermitted(String owningEntityId){
-        return false;
+    private final List<Role> userRoles;
+
+    RoleValidatorByOwningEntity(List<Role> roles) {
+        this.userRoles = roles;
+    }
+
+    private boolean isOwningEntityIdPermitted(String owningEntityId) {
+        if (StringUtils.isEmpty(owningEntityId)) {
+            return false;
+        }
+
+        return userRoles.stream().anyMatch(userRole ->
+            StringUtils.equals(userRole.getOwningEntityId(), owningEntityId)
+        );
     }
 
     @Override
@@ -34,7 +49,12 @@ public class RoleValidatorByOwningEntity implements RoleValidator{
 
     @Override
     public boolean isServicePermitted(WithPermissionProperties permissionProperties) {
-        return false;
+        if (permissionProperties instanceof WithPermissionPropertiesOwningEntity) {
+            String owningEntityId = ((WithPermissionPropertiesOwningEntity) permissionProperties).getOwningEntityId();
+            return isOwningEntityIdPermitted(owningEntityId);
+        } else {
+            return false;
+        }
     }
 
     @Override
