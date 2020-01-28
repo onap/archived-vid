@@ -7,10 +7,10 @@ class RoleValidatorsComposer(private vararg val roleValidators: RoleValidator) :
     override fun isServicePermitted(p: WithPermissionProperties): Boolean =
             roleValidators.any { it.isServicePermitted(p) }
 
-    override fun isSubscriberPermitted(subscriberName: String?): Boolean =
-            roleValidators.any { it.isSubscriberPermitted(subscriberName) }
+    override fun isSubscriberPermitted(subscriberId: String?): Boolean =
+            roleValidators.any { it.isSubscriberPermitted(subscriberId) }
 
-    override fun isTenantPermitted(globalCustomerId: String?, serviceType: String?, tenantName: String?): Boolean =
-            roleValidators.any { it.isTenantPermitted(globalCustomerId, serviceType, tenantName) }
+    override fun isTenantPermitted(subscriberId: String?, serviceType: String?, tenantName: String?): Boolean =
+            roleValidators.any { it.isTenantPermitted(subscriberId, serviceType, tenantName) }
 
 }

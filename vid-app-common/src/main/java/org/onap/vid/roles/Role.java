@@ -28,15 +28,15 @@ public class Role {
 
     private EcompRole ecompRole;
 
-    private String subscribeName;
+    private String subscriberId;
 
     private String serviceType;
 
     private String tenant;
 
-    public Role(EcompRole ecompRole, String subscribeName, String serviceType, String tenant) {
+    public Role(EcompRole ecompRole, String subscriberId, String serviceType, String tenant) {
         this.ecompRole = ecompRole;
-        this.subscribeName = subscribeName;
+        this.subscriberId = subscriberId;
         this.serviceType = serviceType;
         this.tenant = tenant;
     }
@@ -46,12 +46,12 @@ public class Role {
     }
 
 
-    public String getSubscribeName() {
-        return subscribeName;
+    public String getSubscriberId() {
+        return subscriberId;
     }
 
-    public void setSubscribeName(String subscribeName) {
-        this.subscribeName = subscribeName;
+    public void setSubscriberId(String subscriberId) {
+        this.subscriberId = subscriberId;
     }
 
     public String getServiceType() {

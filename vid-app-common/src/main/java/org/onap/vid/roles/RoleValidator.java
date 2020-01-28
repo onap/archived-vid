@@ -38,9 +38,9 @@ public interface RoleValidator {
             : new RoleValidatorBySubscriberAndServiceType(roles);
     }
 
-    boolean isSubscriberPermitted(String subscriberName);
+    boolean isSubscriberPermitted(String subscriberId);
 
     boolean isServicePermitted(WithPermissionProperties serviceInstanceSearchResult);
 
-    boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName);
+    boolean isTenantPermitted(String subscriberId, String serviceType, String tenantName);
 }

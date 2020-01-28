@@ -28,7 +28,7 @@ public class RoleValidatorByOwningEntity implements RoleValidator{
     }
 
     @Override
-    public boolean isSubscriberPermitted(String subscriberName) {
+    public boolean isSubscriberPermitted(String subscriberId) {
         return false;
     }
 
@@ -38,7 +38,7 @@ public class RoleValidatorByOwningEntity implements RoleValidator{
     }
 
     @Override
-    public boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName) {
+    public boolean isTenantPermitted(String subscriberId, String serviceType, String tenantName) {
         return false;
     }
 }

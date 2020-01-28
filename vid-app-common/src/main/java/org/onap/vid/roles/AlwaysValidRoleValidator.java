@@ -27,7 +27,7 @@ public class AlwaysValidRoleValidator implements RoleValidator {
     }
 
     @Override
-    public boolean isSubscriberPermitted(String subscriberName) {
+    public boolean isSubscriberPermitted(String subscriberId) {
         return true;
     }
 
@@ -37,7 +37,7 @@ public class AlwaysValidRoleValidator implements RoleValidator {
     }
 
     @Override
-    public boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName) {
+    public boolean isTenantPermitted(String subscriberId, String serviceType, String tenantName) {
         return true;
     }
 }

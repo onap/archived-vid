@@ -31,9 +31,9 @@ public class RoleValidatorBySubscriberAndServiceType implements RoleValidator {
     }
 
     @Override
-    public boolean isSubscriberPermitted(String subscriberName) {
+    public boolean isSubscriberPermitted(String subscriberId) {
         for (Role role : userRoles) {
-            if (role.getSubscribeName().equals(subscriberName)) {
+            if (role.getSubscriberId().equals(subscriberId)) {
                 return true;
             }
         }
@@ -43,7 +43,7 @@ public class RoleValidatorBySubscriberAndServiceType implements RoleValidator {
     @Override
     public boolean isServicePermitted(WithPermissionProperties permissionProperties) {
         for (Role role : userRoles) {
-            if (role.getSubscribeName().equals(permissionProperties.getSubscriberId()) && role.getServiceType().equals(permissionProperties.getServiceType())) {
+            if (role.getSubscriberId().equals(permissionProperties.getSubscriberId()) && role.getServiceType().equals(permissionProperties.getServiceType())) {
                 return true;
             }
         }
@@ -51,9 +51,9 @@ public class RoleValidatorBySubscriberAndServiceType implements RoleValidator {
     }
 
     @Override
-    public boolean isTenantPermitted(String globalCustomerId, String serviceType, String tenantName) {
+    public boolean isTenantPermitted(String subscriberId, String serviceType, String tenantName) {
         for (Role role : userRoles) {
-            if (role.getSubscribeName().equals(globalCustomerId)
+            if (role.getSubscriberId().equals(subscriberId)
                 && role.getServiceType().equals(serviceType)
                 && (role.getTenant() == null || role.getTenant().equalsIgnoreCase(tenantName))) {
                 return true;

@@ -42,7 +42,7 @@ import org.testng.annotations.Test;
 public class RoleProviderTest {
 
     private static final String SAMPLE_SUBSCRIBER = "sampleSubscriber";
-    private static final String SAMPLE_CUSTOMER_ID = "sampleCustomerId";
+    private static final String SAMPLE_SUBSCRIBER_ID = "subscriberId";
     private static final String SERVICE_TYPE_LOGS = "LOGS";
     private static final String TENANT_PERMITTED = "PERMITTED";
     private static final String SAMPLE_SERVICE = "sampleService";
@@ -83,7 +83,7 @@ public class RoleProviderTest {
         Role role = roleProvider.createRoleFromStringArr(roleParts, SAMPLE_ROLE_PREFIX);
 
         assertThat(role.getEcompRole()).isEqualTo(EcompRole.READ);
-        assertThat(role.getSubscribeName()).isEqualTo(SAMPLE_CUSTOMER_ID);
+        assertThat(role.getSubscriberId()).isEqualTo(SAMPLE_SUBSCRIBER_ID);
         assertThat(role.getTenant()).isEqualTo(SAMPLE_TENANT);
         assertThat(role.getServiceType()).isEqualTo(SAMPLE_SERVICE);
     }
@@ -97,7 +97,7 @@ public class RoleProviderTest {
         Role role = roleProvider.createRoleFromStringArr(roleParts, SAMPLE_ROLE_PREFIX);
 
         assertThat(role.getEcompRole()).isEqualTo(EcompRole.READ);
-        assertThat(role.getSubscribeName()).isEqualTo(SAMPLE_CUSTOMER_ID);
+        assertThat(role.getSubscriberId()).isEqualTo(SAMPLE_SUBSCRIBER_ID);
         assertThat(role.getServiceType()).isEqualTo(SAMPLE_SERVICE);
         assertThat(role.getTenant()).isNullOrEmpty();
     }
@@ -111,7 +111,7 @@ public class RoleProviderTest {
 
     @Test
     public void shouldProperlyRetrieveUserRolesWhenPermissionIsDifferentThanRead() {
-        Role expectedRole = new Role(EcompRole.READ, SAMPLE_CUSTOMER_ID, SAMPLE_SERVICE, SAMPLE_TENANT);
+        Role expectedRole = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER_ID, SAMPLE_SERVICE, SAMPLE_TENANT);
         setSubscribers();
 
         List<Role> userRoles = roleProvider.getUserRoles(request);
@@ -121,7 +121,7 @@ public class RoleProviderTest {
         Role actualRole = userRoles.get(0);
 
         assertThat(actualRole.getTenant()).isEqualTo(expectedRole.getTenant());
-        assertThat(actualRole.getSubscribeName()).isEqualTo(expectedRole.getSubscribeName());
+        assertThat(actualRole.getSubscriberId()).isEqualTo(expectedRole.getSubscriberId());
         assertThat(actualRole.getServiceType()).isEqualTo(expectedRole.getServiceType());
     }
 
@@ -146,7 +146,7 @@ public class RoleProviderTest {
     private void setSubscribers() {
         Subscriber subscriber = new Subscriber();
         subscriber.subscriberName = SAMPLE_SUBSCRIBER;
-        subscriber.globalCustomerId = SAMPLE_CUSTOMER_ID;
+        subscriber.globalCustomerId = SAMPLE_SUBSCRIBER_ID;
         SubscriberList subscriberList = new SubscriberList(Lists.list(subscriber));
         when(aaiService.getFullSubscriberList()).thenReturn(subscriberListResponse);
         when(subscriberListResponse.getT()).thenReturn(subscriberList);
