@@ -1,6 +1,7 @@
 import {Route} from "@angular/router";
 import {FlagsResolve} from "../shared/resolvers/flag/flag.resolver";
 import {InstantiationStatusComponent} from "./instantiationStatus.component";
+import {SideMenuResolver} from "../shared/resolvers/sideMenu/sideMenu.resolver";
 
 export const InstantiationStatusRoutes: Route[] = [
   {
@@ -10,7 +11,8 @@ export const InstantiationStatusRoutes: Route[] = [
         path: '',
         component: InstantiationStatusComponent,
         resolve: {
-          flags: FlagsResolve
+          flags: FlagsResolve,
+          sideMenu : SideMenuResolver
         },
       }
     ]

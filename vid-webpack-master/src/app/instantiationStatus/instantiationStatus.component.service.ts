@@ -14,6 +14,7 @@ import {of} from "rxjs";
 import {MsoService} from "../shared/services/msoService/mso.service";
 import {ServiceAction} from "../shared/models/serviceInstanceActions";
 import {InstantiationBase} from "../shared/models/InstantiationBase";
+import {IframeService} from "../shared/utils/iframe.service";
 
 export let PENDING : string = "pending";
 export let INPROGRESS : string = "in_progress";
@@ -115,9 +116,11 @@ export class InstantiationStatusComponentService {
 
   navigateToNewViewEdit(item: InstantiationBase, mode: DrawingBoardModes): void {
     this._store.dispatch(updateDrawingBoardStatus(mode));
-    const viewEditUrlTree:UrlTree = this.getNewViewEditUrlTree(item, mode);
+    const viewEditUrlTree:UrlTree = this.getNewViewEditUrlTree(item, mode)
+    if(IframeService.isIframe()){
+      window.parent.location.assign(this.getViewEditUrl(viewEditUrlTree));
+    }
     this._router.navigateByUrl(viewEditUrlTree);
-    window.parent.location.assign(this.getViewEditUrl(viewEditUrlTree));
   }
 
   getNewViewEditUrlTree(item: InstantiationBase, mode: DrawingBoardModes): UrlTree {

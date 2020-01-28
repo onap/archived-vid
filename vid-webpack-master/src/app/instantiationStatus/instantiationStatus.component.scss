@@ -22,6 +22,7 @@ div.dataTables_wrapper {
 
 .instantiation-status-header {
   margin-top: 30px;
+
   .title {
     font-family: OpenSans-Semibold;
     font-size: 24px;
@@ -103,12 +104,12 @@ div.dataTables_wrapper {
     max-width: 200px;
   }
 
-  thead th.smallTd ,tbody td.smallTd {
+  thead th.smallTd, tbody td.smallTd {
     max-width: 100px !important;
     min-width: 100px !important;
   }
 
-  thead th.mediumTd ,tbody td.mediumTd {
+  thead th.mediumTd, tbody td.mediumTd {
     max-width: 150px !important;
     min-width: 150px !important;
   }
@@ -125,6 +126,7 @@ div.dataTables_wrapper {
     color: #5A5A5A;
     font-weight: bold;
   }
+
   .menu-div {
     float: right;
     border-left: 1px solid gray;
@@ -166,13 +168,21 @@ div.dataTables_wrapper {
 
 /* Safari */
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 
@@ -182,8 +192,8 @@ div.dataTables_wrapper {
   -o-animation: spin .4s infinite linear;
   animation: spin .4s infinite linear;
   -webkit-transform-origin: 50% 44%;
-  transform-origin:50% 44%;
-  -ms-transform-origin:50% 44% /* IE 9 */
+  transform-origin: 50% 44%;
+  -ms-transform-origin: 50% 44% /* IE 9 */
 }
 
 @-moz-keyframes spin {
@@ -231,7 +241,7 @@ div.dataTables_wrapper {
   content: '\e91f';
 }
 
-.context-menu-icon{
+.context-menu-icon {
   width: 25px;
   float: left;
 }
@@ -281,3 +291,4 @@ div.dataTables_wrapper {
   right: 20px;
   width: 22%;
 }
+

@@ -55,7 +55,8 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   serviceModelId : string;
   servicesQty = 1;
   quantityOptions = _.range(1, 51)
-
+  isIframe : boolean = true;
+  modalIsOpen : boolean = false;
   constructor(dialogService: DialogService,
               private _iframeService: IframeService,
               private _store: NgRedux<AppState>,
@@ -82,6 +83,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   }
 
   ngOnInit(): void {
+    this.isIframe = IframeService.isIframe();
     this._store.dispatch(updateCurrentModalModeAction(this.isUpdateMode));
     this._route
       .queryParams

@@ -37,11 +37,58 @@ import {setOptionalMembersVnfGroupInstance} from "../../storeUtil/utils/vnfGroup
 import {NetworkModalRow} from "../../../drawingBoard/service-planning/objectsToTree/models/vrf/vrfModal/networkStep/network.step.model";
 import {VPNModalRow} from "../../../drawingBoard/service-planning/objectsToTree/models/vrf/vrfModal/vpnStep/vpn.step.model";
 import {ModelInfo} from "../../models/modelInfo";
+import {SideMenuModel} from "../../components/sideMenu/side-menu.model";
+import {VersionModel} from "../../components/sideMenu/version.model";
 
 @Injectable()
 export class AaiService {
   constructor(private http: HttpClient, private store: NgRedux<AppState>, private featureFlagsService:FeatureFlagsService) {
 
+  }
+
+  getVidVersion() : Observable<VersionModel>{
+    return of({
+      features:"2002.features.properties",
+      build:"1.0.5421",
+      displayVersion:"2002.5421"
+    });
+  }
+
+  getMenuItems() : Observable<SideMenuModel[]> {
+    return of([
+      {
+        label : "VID Home",
+        action : "welcome"
+      },
+      {
+        label : "Search for Existing Service Instances",
+        action : "serviceModels.htm#/instances/services"
+      },
+      {
+        label : "Create New Service Instance",
+        action : "serviceModels.htm#/instances/subscribers"
+      },
+      {
+        label : "Browse SDC Service Models",
+        action : "serviceModels.htm"
+      },
+      {
+        label : "Instantiation Status",
+        action : "app/ui/#/instantiationStatus"
+      },
+      {
+        label : "VNF Changes",
+        action : "serviceModels.htm#/change-management"
+      },
+      {
+        label : "Test Environments",
+        action : "serviceModels.htm#/testEnvironments"
+      },
+      {
+        label : "Admin",
+        action : "admin"
+      }
+    ])
   }
 
   sdncPreload(): Observable<boolean> {
