@@ -1,6 +1,4 @@
 .modal-search-member-content {
-  height: 100vh;
-  width: 100vw;
   position: relative;
   background: white;
   .header {
@@ -111,5 +109,13 @@ select.select-criteria {
 .search-button {
   display: flex;
   justify-content: space-around;
+}
+
+.modalOutsideIframe {
+  width: 70%;
+  border: 1px solid gray;
+  margin: auto;
+  margin-top: 30px;
+  outline: none;
 }
 
