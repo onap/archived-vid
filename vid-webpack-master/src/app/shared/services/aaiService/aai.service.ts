@@ -29,7 +29,14 @@ import {VnfInstance} from "../../models/vnfInstance";
 import {VfModuleInstance} from "../../models/vfModuleInstance";
 import {ServiceInstance} from "../../models/serviceInstance";
 import {VfModuleMap} from "../../models/vfModulesMap";
-import {updateAicZones, updateCategoryParameters, updateLcpRegionsAndTenants, updateServiceTypes, updateSubscribers, updateUserId} from "../../storeUtil/utils/general/general.actions";
+import {
+  updateAicZones,
+  updateCategoryParameters,
+  updateLcpRegionsAndTenants,
+  updateServiceTypes,
+  updateSubscribers,
+  updateUserId
+} from "../../storeUtil/utils/general/general.actions";
 import {createServiceInstance, updateModel,} from "../../storeUtil/utils/service/service.actions";
 import {FeatureFlagsService, Features} from "../featureFlag/feature-flags.service";
 import {VnfMember} from "../../models/VnfMember";
@@ -37,11 +44,30 @@ import {setOptionalMembersVnfGroupInstance} from "../../storeUtil/utils/vnfGroup
 import {NetworkModalRow} from "../../../drawingBoard/service-planning/objectsToTree/models/vrf/vrfModal/networkStep/network.step.model";
 import {VPNModalRow} from "../../../drawingBoard/service-planning/objectsToTree/models/vrf/vrfModal/vpnStep/vpn.step.model";
 import {ModelInfo} from "../../models/modelInfo";
+import {SideMenuModel} from "../../components/sideMenu/side-menu.model";
+import {VersionModel} from "../../components/sideMenu/version.model";
 
 @Injectable()
 export class AaiService {
-  constructor(private http: HttpClient, private store: NgRedux<AppState>, private featureFlagsService:FeatureFlagsService) {
+  constructor(private http: HttpClient, private store: NgRedux<AppState>, private featureFlagsService: FeatureFlagsService) {
 
+  }
+
+  getVidVersion(): Observable<VersionModel> {
+    let pathQuery: string = Constants.Path.GET_VERSION;
+    return this.http.get<any>(pathQuery);
+  }
+
+  getAppName(): Observable<{data : string}> {
+    let pathQuery: string = Constants.Path.GET_APP_NAME;
+    return this.http.get<any>(pathQuery);
+  }
+
+  getMenuItems(): Observable<SideMenuModel[]> {
+    let pathQuery: string = Constants.Path.GET_MENU;
+    return this.http.get<any>(pathQuery).map((response: { data: string, data2: string, data3: string }) => {
+      return JSON.parse(response.data)
+    })
   }
 
   sdncPreload(): Observable<boolean> {
@@ -51,7 +77,7 @@ export class AaiService {
 
   getServiceModelById = (serviceModelId: string): Observable<any> => {
     if (_.has(this.store.getState().service.serviceHierarchy, serviceModelId)) {
-      return of(<any> JSON.parse(JSON.stringify(this.store.getState().service.serviceHierarchy[serviceModelId])));
+      return of(<any>JSON.parse(JSON.stringify(this.store.getState().service.serviceHierarchy[serviceModelId])));
     }
     let pathQuery: string = Constants.Path.SERVICES_PATH + serviceModelId;
     return this.http.get(pathQuery).map(res => res)
@@ -149,7 +175,7 @@ export class AaiService {
   getSubscribers = (): Observable<Subscriber[]> => {
 
     if (this.store.getState().service.subscribers) {
-      return of(<any> JSON.parse(JSON.stringify(this.store.getState().service.subscribers)));
+      return of(<any>JSON.parse(JSON.stringify(this.store.getState().service.subscribers)));
     }
 
     let pathQuery: string = Constants.Path.AAI_GET_SUBSCRIBERS + Constants.Path.ASSIGN + Math.random();
@@ -162,7 +188,7 @@ export class AaiService {
 
   getAicZones = (): Observable<AicZone[]> => {
     if (this.store.getState().service.aicZones) {
-      return of(<any> JSON.parse(JSON.stringify(this.store.getState().service.aicZones)));
+      return of(<any>JSON.parse(JSON.stringify(this.store.getState().service.aicZones)));
     }
 
     let pathQuery: string = Constants.Path.AAI_GET_AIC_ZONES + Constants.Path.ASSIGN + Math.random();
@@ -193,10 +219,10 @@ export class AaiService {
     const lcpRegionsTenantsMap = {};
 
     const lcpRegionList = _.uniqBy(cloudRegionTenantList, 'cloudRegionID').map((cloudRegionTenant) => {
-      const cloudOwner:string = cloudRegionTenant["cloudOwner"];
-      const cloudRegionId:string = cloudRegionTenant["cloudRegionID"];
-      const name:string = this.extractLcpRegionName(cloudRegionId, cloudOwner);
-      const isPermitted:boolean = cloudRegionTenant["is-permitted"];
+      const cloudOwner: string = cloudRegionTenant["cloudOwner"];
+      const cloudRegionId: string = cloudRegionTenant["cloudRegionID"];
+      const name: string = this.extractLcpRegionName(cloudRegionId, cloudOwner);
+      const isPermitted: boolean = cloudRegionTenant["is-permitted"];
       return new LcpRegion(cloudRegionId, name, isPermitted, cloudOwner);
     });
 
@@ -216,20 +242,20 @@ export class AaiService {
     return new LcpRegionsAndTenants(lcpRegionList, lcpRegionsTenantsMap);
   };
 
-  public extractLcpRegionName(cloudRegionId: string, cloudOwner: string):string {
+  public extractLcpRegionName(cloudRegionId: string, cloudOwner: string): string {
     return this.featureFlagsService.getFlagState(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST) ?
-      cloudRegionId+AaiService.formatCloudOwnerTrailer(cloudOwner) : cloudRegionId;
+      cloudRegionId + AaiService.formatCloudOwnerTrailer(cloudOwner) : cloudRegionId;
   };
 
-  public static formatCloudOwnerTrailer(cloudOwner: string):string {
-    return " ("+ cloudOwner.trim().toLowerCase().replace(/^[^-]*-/, "").toUpperCase() + ")";
+  public static formatCloudOwnerTrailer(cloudOwner: string): string {
+    return " (" + cloudOwner.trim().toLowerCase().replace(/^[^-]*-/, "").toUpperCase() + ")";
   }
 
   getServiceTypes = (subscriberId): Observable<ServiceType[]> => {
 
     console.log("AaiService:getSubscriptionServiceTypeList: globalCustomerId: " + subscriberId);
     if (_.has(this.store.getState().service.serviceTypes, subscriberId)) {
-      return of(<ServiceType[]> JSON.parse(JSON.stringify(this.store.getState().service.serviceTypes[subscriberId])));
+      return of(<ServiceType[]>JSON.parse(JSON.stringify(this.store.getState().service.serviceTypes[subscriberId])));
     }
 
     return this.getSubscriberDetails(subscriberId)
@@ -257,44 +283,44 @@ export class AaiService {
   };
 
 
-  public retrieveServiceInstanceTopology(serviceInstanceId : string, subscriberId: string, serviceType: string):Observable<ServiceInstance> {
+  public retrieveServiceInstanceTopology(serviceInstanceId: string, subscriberId: string, serviceType: string): Observable<ServiceInstance> {
     let pathQuery: string = `${Constants.Path.AAI_GET_SERVICE_INSTANCE_TOPOLOGY_PATH}${subscriberId}/${serviceType}/${serviceInstanceId}`;
     return this.http.get<ServiceInstance>(pathQuery);
   }
 
-  public retrieveActiveNetwork(cloudRegion : string, tenantId: string) : Observable<NetworkModalRow[]>{
+  public retrieveActiveNetwork(cloudRegion: string, tenantId: string): Observable<NetworkModalRow[]> {
     let pathQuery: string = `${Constants.Path.AAI_GET_ACTIVE_NETWORKS_PATH}?cloudRegion=${cloudRegion}&tenantId=${tenantId}`;
     return this.http.get<NetworkModalRow[]>(pathQuery);
   }
 
-  public retrieveActiveVPNs() : Observable<VPNModalRow[]>{
+  public retrieveActiveVPNs(): Observable<VPNModalRow[]> {
     let pathQuery: string = `${Constants.Path.AAI_GET_VPNS_PATH}`;
     return this.http.get<VPNModalRow[]>(pathQuery);
   }
 
-  public retrieveAndStoreServiceInstanceTopology(serviceInstanceId: string, subscriberId: string, serviceType: string, serviceModeId: string):Observable<ServiceInstance> {
-    return this.retrieveServiceInstanceTopology(serviceInstanceId, subscriberId, serviceType).do((service:ServiceInstance) => {
+  public retrieveAndStoreServiceInstanceTopology(serviceInstanceId: string, subscriberId: string, serviceType: string, serviceModeId: string): Observable<ServiceInstance> {
+    return this.retrieveServiceInstanceTopology(serviceInstanceId, subscriberId, serviceType).do((service: ServiceInstance) => {
       this.store.dispatch(createServiceInstance(service, serviceModeId));
     });
   };
 
 
-  public retrieveServiceInstanceRetryTopology(jobId : string) :Observable<ServiceInstance> {
+  public retrieveServiceInstanceRetryTopology(jobId: string): Observable<ServiceInstance> {
     let pathQuery: string = `${Constants.Path.SERVICES_RETRY_TOPOLOGY}/${jobId}`;
     return this.http.get<ServiceInstance>(pathQuery);
 
   }
 
-  public retrieveAndStoreServiceInstanceRetryTopology(jobId: string, serviceModeId : string):Observable<ServiceInstance> {
-    return this.retrieveServiceInstanceRetryTopology(jobId).do((service:ServiceInstance) => {
+  public retrieveAndStoreServiceInstanceRetryTopology(jobId: string, serviceModeId: string): Observable<ServiceInstance> {
+    return this.retrieveServiceInstanceRetryTopology(jobId).do((service: ServiceInstance) => {
       this.store.dispatch(createServiceInstance(service, serviceModeId));
     });
   };
 
   public getOptionalGroupMembers(serviceModelId: string, subscriberId: string, serviceType: string, serviceInvariantId: string, groupType: string, groupRole: string): Observable<VnfMember[]> {
     let pathQuery: string = `${Constants.Path.AAI_GET_SERVICE_GROUP_MEMBERS_PATH}${subscriberId}/${serviceType}/${serviceInvariantId}/${groupType}/${groupRole}`;
-    if(_.has(this.store.getState().service.serviceInstance[serviceModelId].optionalGroupMembersMap,pathQuery)){
-      return of(<VnfMember[]> JSON.parse(JSON.stringify(this.store.getState().service.serviceInstance[serviceModelId].optionalGroupMembersMap[pathQuery])));
+    if (_.has(this.store.getState().service.serviceInstance[serviceModelId].optionalGroupMembersMap, pathQuery)) {
+      return of(<VnfMember[]>JSON.parse(JSON.stringify(this.store.getState().service.serviceInstance[serviceModelId].optionalGroupMembersMap[pathQuery])));
     }
     return this.http.get<VnfMember[]>(pathQuery)
       .do((res) => {
@@ -317,60 +343,60 @@ export class AaiService {
   loadMockMembers(): any {
     return [
       {
-        "action":"None",
-        "instanceName":"VNF1_INSTANCE_NAME",
-        "instanceId":"VNF1_INSTANCE_ID",
-        "orchStatus":null,
-        "productFamilyId":null,
-        "lcpCloudRegionId":"hvf23b",
-        "tenantId":"3e9a20a3e89e45f884e09df0cc2d2d2a",
-        "tenantName":"APPC-24595-T-IST-02C",
-        "modelInfo":{
-          "modelInvariantId":"vnf-instance-model-invariant-id",
-          "modelVersionId":"7a6ee536-f052-46fa-aa7e-2fca9d674c44",
-          "modelVersion":"2.0",
-          "modelName":"vf_vEPDG",
-          "modelType":"vnf"
+        "action": "None",
+        "instanceName": "VNF1_INSTANCE_NAME",
+        "instanceId": "VNF1_INSTANCE_ID",
+        "orchStatus": null,
+        "productFamilyId": null,
+        "lcpCloudRegionId": "hvf23b",
+        "tenantId": "3e9a20a3e89e45f884e09df0cc2d2d2a",
+        "tenantName": "APPC-24595-T-IST-02C",
+        "modelInfo": {
+          "modelInvariantId": "vnf-instance-model-invariant-id",
+          "modelVersionId": "7a6ee536-f052-46fa-aa7e-2fca9d674c44",
+          "modelVersion": "2.0",
+          "modelName": "vf_vEPDG",
+          "modelType": "vnf"
         },
-        "instanceType":"VNF1_INSTANCE_TYPE",
-        "provStatus":null,
-        "inMaint":false,
-        "uuid":"7a6ee536-f052-46fa-aa7e-2fca9d674c44",
-        "originalName":null,
-        "legacyRegion":null,
-        "lineOfBusiness":null,
-        "platformName":null,
-        "trackById":"7a6ee536-f052-46fa-aa7e-2fca9d674c44:002",
-        "serviceInstanceId":"service-instance-id1",
-        "serviceInstanceName":"service-instance-name"
+        "instanceType": "VNF1_INSTANCE_TYPE",
+        "provStatus": null,
+        "inMaint": false,
+        "uuid": "7a6ee536-f052-46fa-aa7e-2fca9d674c44",
+        "originalName": null,
+        "legacyRegion": null,
+        "lineOfBusiness": null,
+        "platformName": null,
+        "trackById": "7a6ee536-f052-46fa-aa7e-2fca9d674c44:002",
+        "serviceInstanceId": "service-instance-id1",
+        "serviceInstanceName": "service-instance-name"
       },
       {
-        "action":"None",
-        "instanceName":"VNF2_INSTANCE_NAME",
-        "instanceId":"VNF2_INSTANCE_ID",
-        "orchStatus":null,
-        "productFamilyId":null,
-        "lcpCloudRegionId":"hvf23b",
-        "tenantId":"3e9a20a3e89e45f884e09df0cc2d2d2a",
-        "tenantName":"APPC-24595-T-IST-02C",
-        "modelInfo":{
-          "modelInvariantId":"vnf-instance-model-invariant-id",
-          "modelVersionId":"eb5f56bf-5855-4e61-bd00-3e19a953bf02",
-          "modelVersion":"1.0",
-          "modelName":"vf_vEPDG",
-          "modelType":"vnf"
+        "action": "None",
+        "instanceName": "VNF2_INSTANCE_NAME",
+        "instanceId": "VNF2_INSTANCE_ID",
+        "orchStatus": null,
+        "productFamilyId": null,
+        "lcpCloudRegionId": "hvf23b",
+        "tenantId": "3e9a20a3e89e45f884e09df0cc2d2d2a",
+        "tenantName": "APPC-24595-T-IST-02C",
+        "modelInfo": {
+          "modelInvariantId": "vnf-instance-model-invariant-id",
+          "modelVersionId": "eb5f56bf-5855-4e61-bd00-3e19a953bf02",
+          "modelVersion": "1.0",
+          "modelName": "vf_vEPDG",
+          "modelType": "vnf"
         },
-        "instanceType":"VNF2_INSTANCE_TYPE",
-        "provStatus":null,
-        "inMaint":true,
-        "uuid":"eb5f56bf-5855-4e61-bd00-3e19a953bf02",
-        "originalName":null,
-        "legacyRegion":null,
-        "lineOfBusiness":null,
-        "platformName":null,
-        "trackById":"eb5f56bf-5855-4e61-bd00-3e19a953bf02:003",
-        "serviceInstanceId":"service-instance-id2",
-        "serviceInstanceName":"service-instance-name"
+        "instanceType": "VNF2_INSTANCE_TYPE",
+        "provStatus": null,
+        "inMaint": true,
+        "uuid": "eb5f56bf-5855-4e61-bd00-3e19a953bf02",
+        "originalName": null,
+        "legacyRegion": null,
+        "lineOfBusiness": null,
+        "platformName": null,
+        "trackById": "eb5f56bf-5855-4e61-bd00-3e19a953bf02:003",
+        "serviceInstanceId": "service-instance-id2",
+        "serviceInstanceName": "service-instance-name"
       }
     ]
 

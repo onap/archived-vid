@@ -87,7 +87,7 @@ describe('Drawing Board: Instantiation Templates', function () {
         });
       });
 
-      it('Given a stored template - when "edit" vnf and vfmodules are opened - then template’s details are visible as expected and deploy without changes', () => {
+      it.only('Given a stored template - when "edit" vnf and vfmodules are opened - then template’s details are visible as expected and deploy without changes', () => {
 
         cy.loadDrawingBoardWithRecreateMode(templateWithVnfSetup);
 

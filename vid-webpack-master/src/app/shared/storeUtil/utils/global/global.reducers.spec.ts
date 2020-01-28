@@ -7,7 +7,7 @@ import {
   UpdateGenericModalHelper,
   DeleteGenericModalHelper,
   ClearGenericModalHelper,
-  UpdateGenericModalTableDataHelper, UpdateCurrentModalModeAction
+  UpdateGenericModalTableDataHelper, UpdateCurrentModalModeAction, UpdateAppNameAction, UpdateApplicationVersionAction
 } from "./global.actions";
 import {globalReducer} from "./global.reducers";
 
@@ -176,6 +176,26 @@ describe('globalReducer', () => {
         isUpdateModalMode : null
       });
     expect(globalDrawingBoardState.isUpdateModalMode).toBeUndefined();
+  });
+
+  test('#UPDATE_APP_NAME : should update application name',  ()=> {
+    const appName = 'appName';
+    let globalDrawingBoardState = globalReducer(<any>{global : {}},
+      <UpdateAppNameAction>{
+        type: GlobalActions.UPDATE_APP_NAME,
+        appName
+      });
+    expect(globalDrawingBoardState.appName).toEqual(appName);
+  });
+
+  test('#UPDATE_APPLICATION_VERSION : should update application version',  ()=> {
+    const applicationVersion = {"features":"2002.features.properties","build":"1.0.5512","displayVersion":"2002.5512"};
+    let globalDrawingBoardState = globalReducer(<any>{global : {}},
+      <UpdateApplicationVersionAction>{
+        type: GlobalActions.UPDATE_APPLICATION_VERSION,
+        applicationVersion
+      });
+    expect(globalDrawingBoardState.applicationVersion).toEqual(applicationVersion);
   });
 
 

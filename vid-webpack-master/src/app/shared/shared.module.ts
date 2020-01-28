@@ -96,6 +96,9 @@ import {SdcUiComponentsModule} from "onap-ui-angular";
 import {UploadFilesLinkComponent} from "./components/genericForm/genericFormSharedComponent/uploadFiles/upload-files-link.component";
 import { FileUploadModule } from 'ng2-file-upload';
 import {MessageModal} from "./components/messageModal/message-modal.service";
+import {SideMenuComponent} from "./components/sideMenu/side-menu.component";
+import {SideMenuService} from "./components/sideMenu/side-menu.component.service";
+import {SideMenuResolver} from "./resolvers/sideMenu/sideMenu.resolver";
 
 
 
@@ -104,7 +107,7 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     BrowserModule,
     HttpClientModule,
     CommonModule,
-    RouterModule,
+    RouterModule.forRoot([]),
     PopoverModule.forRoot(),
     FeatureFlagModule.forRoot(),
     FormsModule,
@@ -161,7 +164,8 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     LoaderComponent,
     SvgIconComponent,
     TooltipTemplateComponent,
-    UploadFilesLinkComponent
+    UploadFilesLinkComponent,
+    SideMenuComponent
   ],
   exports: [
     PopoverComponent,
@@ -203,7 +207,8 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     LoaderComponent,
     SvgIconComponent,
     TooltipTemplateComponent,
-    UploadFilesLinkComponent
+    UploadFilesLinkComponent,
+    SideMenuComponent
   ],
   entryComponents : [
     GenericFormPopupComponent,
@@ -224,6 +229,7 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     ConfigurationService,
     GenericFormService,
     FlagsResolve,
+    SideMenuResolver,
     ViewEditResolver,
     RetryResolver,
     RecreateResolver,
@@ -255,7 +261,8 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     MultiselectFormControlService,
     InstantiationTemplatesModalService,
     LoaderService,
-    MessageModal
+    MessageModal,
+    SideMenuService
   ]
 })
 export class SharedModule {
