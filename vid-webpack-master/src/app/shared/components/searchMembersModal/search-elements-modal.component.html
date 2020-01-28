@@ -1,64 +1,73 @@
-<div class="modal-search-member-content">
-  <div class="header">
-    <vid-svg-icon
-      [attr.data-tests-id]="'cancelBtn'"
-      (click)="backAction()"
-      class="navigation-arrow-back"
-      [mode]="'primary'"
-      [size]="'large'"
-      [name]="'navigation-arrow-back'"
-      [clickable]="true"
-      [fill]="'#FFFFFF'"
-      [widthViewBox]="'24'"
-      [heightViewBox]="'24'">
-    </vid-svg-icon>
+<div bsModal [config]="{backdrop: 'static'}"
+     tabindex="-1" role="dialog" aria-labelledby="dialog-static-name"
+     [ngClass]="{'modalOutsideIframe' : !isIframe}">
+  <div class="modal-search-member-content"
+       [ngStyle]="{ 'width': isIframe ? '100vw' : 'auto', 'height' : isIframe ? '100vh' : '90vh'}">
+    <div class="header">
+      <vid-svg-icon
+        [attr.data-tests-id]="'cancelBtn'"
+        (click)="backAction()"
+        class="navigation-arrow-back"
+        [mode]="'primary'"
+        [size]="'large'"
+        [name]="'navigation-arrow-back'"
+        [clickable]="true"
+        [fill]="'#FFFFFF'"
+        [widthViewBox]="'24'"
+        [heightViewBox]="'24'">
+      </vid-svg-icon>
 
-    <span class="title">
+      <span class="title">
       {{modalInformation.title}}
     </span>
-    <button type="submit" data-tests-id="setMembersBtn" [disabled]="disableSetElements" (click)="doneAction()" class="sdc-button sdc-button__primary">{{modalInformation?.topButton?.text}}</button>
-  </div>
-  <div class="content-wrapper">
-    <div class="sidebar-left">
-      <div class="search-criteria-wrapper">
-        <div class="search-criteria-title">SEARCH CRITERIA</div>
-         <div class="search-item" *ngFor="let searchFieldItem of modalInformation?.searchFields">
-           <div>
-             <div><span class="label-item" >{{searchFieldItem.title}}</span></div>
-             <div><span attr.data-tests-id="{{searchFieldItem.dataTestId}}" class="text-item">{{searchFieldItem.value}}</span></div>
-           </div>
-         </div>
-        <div class="search-item" *ngFor="let criteria of modalInformation?.criteria">
-          <div *ngIf="criteria.type === 'DROPDOWN'">
-            <div><span class="label-item"  [ngClass]="{'required': criteria.isRequired}">{{criteria.label}}</span></div>
+      <button type="submit" data-tests-id="setMembersBtn" [disabled]="disableSetElements" (click)="doneAction()"
+              class="sdc-button sdc-button__primary">{{modalInformation?.topButton?.text}}</button>
+    </div>
+    <div class="content-wrapper">
+      <div class="sidebar-left">
+        <div class="search-criteria-wrapper">
+          <div class="search-criteria-title">SEARCH CRITERIA</div>
+          <div class="search-item" *ngFor="let searchFieldItem of modalInformation?.searchFields">
             <div>
-              <select class="form-control input-text select-criteria"
-                      id="{{criteria?.dataTestId}}-select"
-                      [attr.data-tests-id]="criteria?.dataTestId"
-                      (change)="criteria.onChange(criteria, $event.target.value)">
-
-                <option *ngFor="let option of criteria.onInit() | async"
-                        class="{{option}} {{option}}-Option"
-                        [value]="option">{{option}}
-                </option>
-              </select>
+              <div><span class="label-item">{{searchFieldItem.title}}</span></div>
+              <div><span attr.data-tests-id="{{searchFieldItem.dataTestId}}"
+                         class="text-item">{{searchFieldItem.value}}</span></div>
             </div>
           </div>
-        </div>
-        <div class="search-button" *ngIf="modalInformation.criteria && modalInformation.criteria.length > 0">
-          <button type="submit"
-                  data-tests-id="searchByNetworkRole"
-                  [disabled]="disableSearchByNetworkRole"
-                  (click)="searchByCriteriaAction()"
-                  class="sdc-button sdc-button__primary">Search...</button>
+          <div class="search-item" *ngFor="let criteria of modalInformation?.criteria">
+            <div *ngIf="criteria.type === 'DROPDOWN'">
+              <div><span class="label-item" [ngClass]="{'required': criteria.isRequired}">{{criteria.label}}</span>
+              </div>
+              <div>
+                <select class="form-control input-text select-criteria"
+                        id="{{criteria?.dataTestId}}-select"
+                        [attr.data-tests-id]="criteria?.dataTestId"
+                        (change)="criteria.onChange(criteria, $event.target.value)">
+
+                  <option *ngFor="let option of criteria.onInit() | async"
+                          class="{{option}} {{option}}-Option"
+                          [value]="option">{{option}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="search-button" *ngIf="modalInformation.criteria && modalInformation.criteria.length > 0">
+            <button type="submit"
+                    data-tests-id="searchByNetworkRole"
+                    [disabled]="disableSearchByNetworkRole"
+                    (click)="searchByCriteriaAction()"
+                    class="sdc-button sdc-button__primary">Search...
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="sidebar-right">
-      <app-members-table
-        [data]="elementsData"
-        [modalInformation]="modalInformation"
-        (selectedMembersAmountChange)="selectedMembersAmountChange($event)"></app-members-table>
+      <div class="sidebar-right">
+        <app-members-table
+          [data]="elementsData"
+          [modalInformation]="modalInformation"
+          (selectedMembersAmountChange)="selectedMembersAmountChange($event)"></app-members-table>
+      </div>
     </div>
   </div>
 </div>
