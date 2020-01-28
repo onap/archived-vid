@@ -119,6 +119,24 @@
     },
     {
       "key": {
+        "uuid": "88a71e59_5d5b9226",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorsComposerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-28T06:13:46Z",
+      "side": 1,
+      "message": "why do you care about the order ?",
+      "parentUuid": "1bd4bf98_a00df919",
+      "revId": "5b3c356c592dc26591aa8da5f49f95ee65b93c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "77bb7b9a_4c9aabbc",
         "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorsComposerTest.java",
         "patchSetId": 1
@@ -183,6 +201,24 @@
       "side": 1,
       "message": "to know all provided validators were consulted?",
       "parentUuid": "f6d290dc_3d83d5c2",
+      "revId": "5b3c356c592dc26591aa8da5f49f95ee65b93c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "121028df_eb0ba5d6",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorsComposerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-28T06:13:46Z",
+      "side": 1,
+      "message": "so change the order of true and false validators in the test",
+      "parentUuid": "3a989a59_bd859722",
       "revId": "5b3c356c592dc26591aa8da5f49f95ee65b93c98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
