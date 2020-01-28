@@ -53,7 +53,7 @@ public class RoleValidatorByOwningEntityTest {
 
     @Test
     public void testIsServicePermitted() {
-        assertFalse(roleValidatorByOwningEntity.isServicePermitted(SUBSCRIBER_NAME, SERVICE_TYPE));
+        assertFalse(roleValidatorByOwningEntity.isServicePermitted(new PermissionProperties(SUBSCRIBER_NAME, SERVICE_TYPE)));
     }
 
     @Test

@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 import org.jetbrains.annotations.NotNull;
 import org.onap.vid.aai.model.Permissions;
+import org.onap.vid.roles.PermissionProperties;
 import org.onap.vid.roles.RoleProvider;
 import org.onap.vid.roles.RoleValidator;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -53,7 +54,7 @@ public class ServicePermissionsTest {
         RoleProvider roleProvider = mock(RoleProvider.class);
         RoleValidator roleValidator = mock(RoleValidator.class);
         when(roleProvider.getUserRolesValidator(any())).thenReturn(roleValidator);
-        when(roleValidator.isServicePermitted(subscriberId, serviceType)).thenReturn(expected);
+        when(roleValidator.isServicePermitted(new PermissionProperties(subscriberId, serviceType))).thenReturn(expected);
 
         AaiController2 aaiController2 = new AaiController2(null, roleProvider, null, null);
 
