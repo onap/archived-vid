@@ -21,12 +21,7 @@
 
 package org.onap.vid.roles;
 
-import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-import org.onap.portalsdk.core.util.SystemProperties;
-
 public interface RoleValidator {
-
 
     boolean isSubscriberPermitted(String subscriberId);
 

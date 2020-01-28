@@ -85,7 +85,7 @@ import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.model.aaiTree.RelatedVnf;
 import org.onap.vid.model.aaiTree.VpnBinding;
 import org.onap.vid.model.aaiTree.VpnBindingKt;
-import org.onap.vid.roles.PermissionProperties;
+import org.onap.vid.roles.PermissionPropertiesSubscriberAndServiceType;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.utils.Intersection;
 import org.onap.vid.utils.Logging;
@@ -268,7 +268,7 @@ public class AaiServiceImpl implements AaiService {
         AaiResponse<Services> subscriberResponse = aaiClient.getSubscriberData(subscriberId, omitServiceInstances);
         for (ServiceSubscription serviceSubscription : subscriberResponse.getT().serviceSubscriptions.serviceSubscription) {
             serviceSubscription.isPermitted = roleValidator.isServicePermitted(
-                new PermissionProperties(serviceSubscription, subscriberResponse.getT().globalCustomerId));
+                new PermissionPropertiesSubscriberAndServiceType(serviceSubscription, subscriberResponse.getT().globalCustomerId));
         }
         return subscriberResponse;
 
@@ -312,7 +312,7 @@ public class AaiServiceImpl implements AaiService {
 
         if (serviceSubscriptions != null) {
             for (ServiceSubscription serviceSubscription : serviceSubscriptions.serviceSubscription) {
-                serviceSubscription.isPermitted = roleValidator.isServicePermitted(new PermissionProperties(serviceSubscription, subscriberId));
+                serviceSubscription.isPermitted = roleValidator.isServicePermitted(new PermissionPropertiesSubscriberAndServiceType(serviceSubscription, subscriberId));
                 results.addAll(getSearchResultsForSingleSubscription(
                     serviceSubscription, subscriberId, instanceIdentifier, subscriberName,
                     serviceSubscription.serviceType, roleValidator)

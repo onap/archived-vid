@@ -2,8 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
- * Modifications Copyright (C) 2018 - 2019 Nokia. All rights reserved.
+ * Copyright (C) 2017 - 2020 AT&T Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +53,7 @@ public class RoleValidatorFactory {
         else if (featureManager.isActive(Features.FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY)){
             return new RoleValidatorsComposer(
                 new RoleValidatorBySubscriberAndServiceType(roles),
-                new RoleValidatorByOwningEntity()
+                new RoleValidatorByOwningEntity(roles)
             );
         }
         else {

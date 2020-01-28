@@ -42,11 +42,6 @@ import org.onap.vid.services.AaiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
-/**
- * Created by Oren on 7/1/17.
- */
-
 @Component
 public class RoleProvider {
 
@@ -147,11 +142,13 @@ public class RoleProvider {
 
     public Role createRoleFromStringArr(String[] roleParts, String rolePrefix) throws RoleParsingException {
         String globalCustomerID = replaceSubscriberNameToGlobalCustomerID(roleParts[0], rolePrefix);
+        String owningEntityId = translateOwningEntityNameToOwningEntityId(roleParts[0]);
+
         try {
             if (roleParts.length > 2) {
-                return new Role(EcompRole.READ, globalCustomerID, roleParts[1], roleParts[2]);
+                return new Role(EcompRole.READ, globalCustomerID, roleParts[1], roleParts[2], owningEntityId);
             } else {
-                return new Role(EcompRole.READ, globalCustomerID, roleParts[1], null);
+                return new Role(EcompRole.READ, globalCustomerID, roleParts[1], null, owningEntityId);
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             if (roleParts.length > 0)
@@ -163,6 +160,10 @@ public class RoleProvider {
             throw new RoleParsingException();
         }
 
+    }
+
+    private String translateOwningEntityNameToOwningEntityId(String owningEntityName) {
+        return owningEntityName; // TODO: translate to id
     }
 
     public RoleValidator getUserRolesValidator(HttpServletRequest request) {

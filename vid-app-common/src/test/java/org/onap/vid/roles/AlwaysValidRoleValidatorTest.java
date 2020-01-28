@@ -33,7 +33,8 @@ public class AlwaysValidRoleValidatorTest {
 
     @Test
     public void testIsServicePermitted() {
-        assertTrue(new AlwaysValidRoleValidator().isServicePermitted(new PermissionProperties("any", "any")));
+        WithPermissionProperties emptyPermissionProperties = new WithPermissionProperties() {};
+        assertTrue(new AlwaysValidRoleValidator().isServicePermitted(emptyPermissionProperties));
     }
 
     @Test

@@ -20,49 +20,44 @@
 
 package org.onap.vid.roles;
 
-/**
- * Created by Oren on 7/1/17.
- */
-
 public class Role {
 
-    private EcompRole ecompRole;
+    private final EcompRole ecompRole;
 
-    private String subscriberId;
+    private final String subscriberId;
 
-    private String serviceType;
+    private final String serviceType;
 
-    private String tenant;
+    private final String tenant;
 
-    public Role(EcompRole ecompRole, String subscriberId, String serviceType, String tenant) {
+    private final String owningEntityId;
+
+    public Role(EcompRole ecompRole, String subscriberId, String serviceType, String tenant, String owningEntityId) {
         this.ecompRole = ecompRole;
         this.subscriberId = subscriberId;
         this.serviceType = serviceType;
         this.tenant = tenant;
+        this.owningEntityId = owningEntityId;
     }
 
     public EcompRole getEcompRole() {
         return ecompRole;
     }
 
-
     public String getSubscriberId() {
         return subscriberId;
-    }
-
-    public void setSubscriberId(String subscriberId) {
-        this.subscriberId = subscriberId;
     }
 
     public String getServiceType() {
         return serviceType;
     }
 
-
     public String getTenant() {
         return tenant;
     }
 
-
+    public String getOwningEntityId() {
+        return owningEntityId;
+    }
 
 }

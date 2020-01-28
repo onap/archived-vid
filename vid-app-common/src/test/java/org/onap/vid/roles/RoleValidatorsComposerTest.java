@@ -43,7 +43,7 @@ public class RoleValidatorsComposerTest {
     public static Object[][] allInterfaceFunctions() {
         return Stream.<Function<RoleValidator, Boolean>>of(
             (RoleValidator o) -> o.isSubscriberPermitted("subscriberId"),
-            (RoleValidator o) -> o.isServicePermitted(new PermissionProperties("subscriberId", "serviceType")),
+            (RoleValidator o) -> o.isServicePermitted(new WithPermissionProperties() {}),
             (RoleValidator o) -> o.isTenantPermitted("subscriberId", "serviceType", "tenantName")
         ).map(it -> new Object[]{it}).collect(toList()).toArray(new Object[][]{});
     }

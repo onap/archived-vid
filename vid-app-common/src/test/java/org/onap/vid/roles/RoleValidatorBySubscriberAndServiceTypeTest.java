@@ -24,10 +24,7 @@ package org.onap.vid.roles;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import java.util.List;
-import java.util.Map;
-import org.onap.vid.mso.rest.RequestDetails;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -38,20 +35,17 @@ public class RoleValidatorBySubscriberAndServiceTypeTest {
     private static final String SAMPLE_SERVICE_TYPE = "sampleServiceType";
     private static final String NOT_MATCHING_TENANT = "notMatchingTenant";
     private static final String SAMPLE_TENANT = "sampleTenant";
+    private static final String SOME_OWNING_ENTITY_ID = "someOwningEntityId";
 
-    private static final Role SAMPLE_ROLE = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE, SAMPLE_TENANT);
+    private static final Role SAMPLE_ROLE = new Role(
+        EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE, SAMPLE_TENANT, SOME_OWNING_ENTITY_ID);
 
     private List<Role> roles = ImmutableList.of(SAMPLE_ROLE);
-    private Map<String, Object> subscriberInfo = ImmutableMap.of("globalSubscriberId", SAMPLE_SUBSCRIBER);
-    private Map<String, Object> requestParameters = ImmutableMap.of("subscriptionServiceType", SAMPLE_SERVICE_TYPE);
-    private Map<String, Object> requestDetailsProperties = ImmutableMap.of("subscriberInfo", subscriberInfo, "requestParameters", requestParameters);
-    private RequestDetails requestDetails;
     private RoleValidatorBySubscriberAndServiceType roleValidatorBySubscriberAndServiceType;
 
     @BeforeMethod
     public void setUp() {
         roleValidatorBySubscriberAndServiceType = new RoleValidatorBySubscriberAndServiceType(roles);
-        requestDetails = new RequestDetails();
     }
 
     @Test
@@ -66,19 +60,33 @@ public class RoleValidatorBySubscriberAndServiceTypeTest {
 
     @Test
     public void shouldPermitServiceWhenNamesMatches() {
-        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(new PermissionProperties(SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE))).isTrue();
+        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(
+            new PermissionPropertiesSubscriberAndServiceType(SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE))).isTrue();
     }
 
+    @Test
+    public void isServicePermitted_serviceWithAllPermissionProperties_isPermitted() {
+        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(
+            new AllPermissionProperties(SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE, SOME_OWNING_ENTITY_ID))).isTrue();
+    }
 
     @Test
     public void shouldNotPermitServiceWhenSubscriberNameNotMatches() {
         assertThat(
-            roleValidatorBySubscriberAndServiceType.isServicePermitted(new PermissionProperties(NOT_MATCHING_SUBSCRIBER, SAMPLE_SERVICE_TYPE))).isFalse();
+            roleValidatorBySubscriberAndServiceType.isServicePermitted(
+                new PermissionPropertiesSubscriberAndServiceType(NOT_MATCHING_SUBSCRIBER, SAMPLE_SERVICE_TYPE))).isFalse();
     }
 
     @Test
     public void shouldNotPermitServiceWhenServiceTypeNotMatches() {
-        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(new PermissionProperties(SAMPLE_SUBSCRIBER, NOT_MATCHING_SUBSCRIBER))).isFalse();
+        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(
+            new PermissionPropertiesSubscriberAndServiceType(SAMPLE_SUBSCRIBER, NOT_MATCHING_SUBSCRIBER))).isFalse();
+    }
+
+    @Test
+    public void isServicePermitted_owningEntityPermissionProperties_isNotPermitted() {
+        assertThat(roleValidatorBySubscriberAndServiceType.isServicePermitted(
+            new PermissionPropertiesOwningEntity(SAMPLE_SUBSCRIBER))).isFalse();
     }
 
     @Test
