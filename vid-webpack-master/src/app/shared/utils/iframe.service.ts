@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {DialogService} from "ng2-bootstrap-modal";
+import * as _ from "lodash";
 
 @Injectable()
 export class IframeService {
@@ -40,5 +41,10 @@ export class IframeService {
     if (parentBodyElement) {
       parentBodyElement.classList.remove("full-screen");
     }
+  }
+
+  static isIframe() : boolean{
+    const iframeElement = window.frameElement;
+    return !_.isNil(iframeElement);
   }
 }

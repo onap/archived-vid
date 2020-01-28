@@ -1,8 +1,10 @@
 <div class="modal fade" bsModal #auditInfoModal="bs-modal" [config]="{backdrop: 'static'}"
-     tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
-  <div id="audit-info-modal" class="">
+     tabindex="-1" role="dialog" aria-labelledby="dialog-static-name"
+     [ngClass]="{'modalOutsideIframe' : !isIframe && modalIsOpen}">
+  <div id="audit-info-modal" [ngClass]="{'modal-lg' : !isIframe && modalIsOpen}">
     <div class="modal-content">
       <div class="modal-header">
+        {{isIframe}}
         <button type="button" class="close" (click)="onCancelClick()">&times;</button>
         <span [attr.data-tests-id]="'audit-info-title'" class="modal-title">{{title}}</span>
       </div>

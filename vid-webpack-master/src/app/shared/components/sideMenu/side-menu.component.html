@@ -1,0 +1,25 @@
+<nav role="navigation">
+  <div id="menuToggle">
+    <input type="checkbox" />
+
+    <span></span>
+    <span></span>
+    <span></span>
+
+    <ul id="menu">
+      <a *ngFor="let sideMenuItem of sideMenuItems"
+         href="javascript:void(0)"
+         (click)="redirect(sideMenuItem)">
+        <li>
+          <custom-icon
+            class="icon-position"
+            [name]="sideMenuService.getRouteIcon(sideMenuItem)"
+            [mode]="'primary'"
+            [size]="'medium'"
+          ></custom-icon>
+          {{sideMenuItem.label}}
+        </li>
+      </a>
+    </ul>
+  </div>
+</nav>
