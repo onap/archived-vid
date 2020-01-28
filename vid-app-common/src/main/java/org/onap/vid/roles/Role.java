@@ -20,10 +20,6 @@
 
 package org.onap.vid.roles;
 
-/**
- * Created by Oren on 7/1/17.
- */
-
 public class Role {
 
     private EcompRole ecompRole;
@@ -34,11 +30,15 @@ public class Role {
 
     private String tenant;
 
-    public Role(EcompRole ecompRole, String subscriberId, String serviceType, String tenant) {
+    private String owningEntityId;
+
+    public Role(EcompRole ecompRole, String subscriberId, String serviceType, String tenant,
+        String owningEntityId) {
         this.ecompRole = ecompRole;
         this.subscriberId = subscriberId;
         this.serviceType = serviceType;
         this.tenant = tenant;
+        this.owningEntityId = owningEntityId;
     }
 
     public EcompRole getEcompRole() {
@@ -64,5 +64,11 @@ public class Role {
     }
 
 
+    public String getOwningEntityId() {
+        return owningEntityId;
+    }
 
+    public void setOwningEntityId(String owningEntityId) {
+        this.owningEntityId = owningEntityId;
+    }
 }

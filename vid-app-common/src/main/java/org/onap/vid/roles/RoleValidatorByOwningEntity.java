@@ -21,9 +21,26 @@
 package org.onap.vid.roles;
 
 
+import java.util.List;
+import org.eclipse.jetty.util.StringUtil;
+
 public class RoleValidatorByOwningEntity implements RoleValidator{
 
+    private final List<Role> userRoles;
+
+    RoleValidatorByOwningEntity(List<Role> roles) {
+        this.userRoles = roles;
+    }
+
     public boolean isOwningEntityIdPermitted(String owningEntityId){
+        if (StringUtil.isEmpty(owningEntityId))
+            return false;
+
+        for (Role role : userRoles) {
+            if (role.getOwningEntityId().equals(owningEntityId)) {
+                return true;
+            }
+        }
         return false;
     }
 

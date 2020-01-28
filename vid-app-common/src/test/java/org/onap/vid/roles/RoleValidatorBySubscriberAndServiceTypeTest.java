@@ -39,7 +39,8 @@ public class RoleValidatorBySubscriberAndServiceTypeTest {
     private static final String NOT_MATCHING_TENANT = "notMatchingTenant";
     private static final String SAMPLE_TENANT = "sampleTenant";
 
-    private static final Role SAMPLE_ROLE = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE, SAMPLE_TENANT);
+    private static final Role SAMPLE_ROLE = new Role(
+        EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE_TYPE, SAMPLE_TENANT, "");
 
     private List<Role> roles = ImmutableList.of(SAMPLE_ROLE);
     private Map<String, Object> subscriberInfo = ImmutableMap.of("globalSubscriberId", SAMPLE_SUBSCRIBER);

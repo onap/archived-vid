@@ -90,7 +90,7 @@ public class SubscriberFilteredResultsTest {
 
     private void prepareRoleValidator() {
         ArrayList<Role> list = new ArrayList<>();
-        list.add(new Role(EcompRole.READ, "a", "a", "a"));
+        list.add(new Role(EcompRole.READ, "a", "a", "a", ""));
        roleValidator = RoleValidator.by(list);
     }
 
