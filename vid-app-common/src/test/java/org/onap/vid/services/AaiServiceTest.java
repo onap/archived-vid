@@ -167,7 +167,7 @@ public class AaiServiceTest {
         GetTenantsResponse[] getTenantsResponses = new GetTenantsResponse[] {new GetTenantsResponse(null, null, serviceTenantName, serviceTenantId, false)};
         AaiResponse<GetTenantsResponse[]> aaiResponse = new AaiResponse<>(getTenantsResponses, null, 200);
         Mockito.doReturn(aaiResponse).when(aaiClientInterface).getTenants(serviceGlobalCustomerId, serviceServiceType);
-        Role role = new Role(null, userGlobalCustomerId, userServiceType, userTenantName);
+        Role role = new Role(null, userGlobalCustomerId, userServiceType, userTenantName, "");
         RoleValidator roleValidator = RoleValidator.by(Collections.singletonList(role), false);
         AaiResponse<GetTenantsResponse[]> actualTenants = aaiService.getTenants(serviceGlobalCustomerId, serviceServiceType, roleValidator);
 

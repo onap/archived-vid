@@ -111,7 +111,7 @@ public class RoleProviderTest {
 
     @Test
     public void shouldProperlyRetrieveUserRolesWhenPermissionIsDifferentThanRead() {
-        Role expectedRole = new Role(EcompRole.READ, SAMPLE_CUSTOMER_ID, SAMPLE_SERVICE, SAMPLE_TENANT);
+        Role expectedRole = new Role(EcompRole.READ, SAMPLE_CUSTOMER_ID, SAMPLE_SERVICE, SAMPLE_TENANT, "");
         setSubscribers();
 
         List<Role> userRoles = roleProvider.getUserRoles(request);
@@ -132,13 +132,14 @@ public class RoleProviderTest {
 
     @Test
     public void shouldReturnNotReadOnlyPermissionWhenRolesArePresent() {
-        assertThat(roleProvider.userPermissionIsReadOnly(Lists.list(new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE, SAMPLE_TENANT)))).isFalse();
+        assertThat(roleProvider.userPermissionIsReadOnly(Lists.list(new Role(
+            EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE, SAMPLE_TENANT, "")))).isFalse();
     }
 
     @Test
     public void userShouldHavePermissionToReadLogsWhenServiceAndTenantAreCorrect() {
-        Role withoutPermission = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE, SAMPLE_TENANT);
-        Role withPermission = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SERVICE_TYPE_LOGS, TENANT_PERMITTED);
+        Role withoutPermission = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SAMPLE_SERVICE, SAMPLE_TENANT, "");
+        Role withPermission = new Role(EcompRole.READ, SAMPLE_SUBSCRIBER, SERVICE_TYPE_LOGS, TENANT_PERMITTED, "");
 
         assertThat(roleProvider.userPermissionIsReadLogs(Lists.list(withoutPermission, withPermission))).isTrue();
     }

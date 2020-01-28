@@ -20,45 +20,52 @@
 
 package org.onap.vid.roles;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
+import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class RoleValidatorByOwningEntityTest {
 
-    private static final String OWNING_ENTITY_ID = "owningEntityId";
-    private static final String SUBSCRIBER_NAME = "subscriber_name";
-    private static final String SERVICE_TYPE = "serviceType";
-    private static final String GLOBAL_CUSTOMER_ID = "globalCustomerId";
-    private static final String TENANT_NAME = "tenantName";
+    private static final String SAMPLE_OWNING_ENTITY_ID = "sampleOwningEntityId";
+    private static final String NOT_MATCHING__OWNING_ENTITY_ID = "notMatchingOwningEntityId";
+    private static final Role SAMPLE_ROLE = new Role(EcompRole.READ, "", "", "", SAMPLE_OWNING_ENTITY_ID);
+    private List<Role> roles = ImmutableList.of(SAMPLE_ROLE);
+
 
 
     private RoleValidatorByOwningEntity roleValidatorByOwningEntity;
 
     @BeforeMethod
     public void setup(){
-        roleValidatorByOwningEntity = new RoleValidatorByOwningEntity();
+        roleValidatorByOwningEntity = new RoleValidatorByOwningEntity(roles);
     }
 
     @Test
     public void testIsOwningEntityIdPermitted() {
-        assertFalse(roleValidatorByOwningEntity.isOwningEntityIdPermitted(OWNING_ENTITY_ID));
+        assertFalse(roleValidatorByOwningEntity.isOwningEntityIdPermitted(""));
+        assertFalse(roleValidatorByOwningEntity.isOwningEntityIdPermitted(NOT_MATCHING__OWNING_ENTITY_ID));
+        assertTrue(roleValidatorByOwningEntity.isOwningEntityIdPermitted(SAMPLE_OWNING_ENTITY_ID));
     }
 
     @Test
     public void testIsSubscriberPermitted() {
-        assertFalse(roleValidatorByOwningEntity.isSubscriberPermitted(SUBSCRIBER_NAME));
+        assertFalse(roleValidatorByOwningEntity.isSubscriberPermitted(anyString()));
     }
 
     @Test
     public void testIsServicePermitted() {
-        assertFalse(roleValidatorByOwningEntity.isServicePermitted(new PermissionProperties(SUBSCRIBER_NAME, SERVICE_TYPE)));
+        assertFalse(roleValidatorByOwningEntity.isServicePermitted(any()));
     }
 
     @Test
     public void testIsTenantPermitted() {
-        assertFalse(roleValidatorByOwningEntity.isTenantPermitted(GLOBAL_CUSTOMER_ID , SERVICE_TYPE, TENANT_NAME));
+        assertFalse(roleValidatorByOwningEntity.isTenantPermitted(anyString() , anyString(), anyString()));
     }
 
 }
