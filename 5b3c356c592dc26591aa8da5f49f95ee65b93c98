@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "df625028_69390b32",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/roles/RoleValidatorsComposer.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-28T05:51:55Z",
+      "side": 1,
+      "message": "I\u0027m really not sure about the signature of these methods.\nI think it shall get some interface as input like Permissionable",
+      "range": {
+        "startLine": 3,
+        "startChar": 81,
+        "endLine": 3,
+        "endChar": 94
+      },
+      "revId": "5b3c356c592dc26591aa8da5f49f95ee65b93c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8502979_6342e8b3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/roles/RoleValidatorsComposer.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-28T05:51:55Z",
+      "side": 1,
+      "message": "why vararg and not just list of roleValidators ?\nor at least provide primary constructor that get a list ,\nand secondary one that get vararg",
+      "revId": "5b3c356c592dc26591aa8da5f49f95ee65b93c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a7b7732_bbcb0c4d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorsComposerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-28T05:51:55Z",
+      "side": 1,
+      "message": "why do we need this verify ?\nThere is no side affect for these methods that we need to verify they called",
+      "revId": "5b3c356c592dc26591aa8da5f49f95ee65b93c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77bb7b9a_4c9aabbc",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorsComposerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-28T05:51:55Z",
+      "side": 1,
+      "message": "is it requirement of RoleValidatorsComposer to have this short circuits ?\nIMO - no",
+      "revId": "5b3c356c592dc26591aa8da5f49f95ee65b93c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6d290dc_3d83d5c2",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorsComposerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-28T05:51:55Z",
+      "side": 1,
+      "message": "why do we need this verify ?",
+      "revId": "5b3c356c592dc26591aa8da5f49f95ee65b93c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
