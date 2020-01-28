@@ -84,6 +84,24 @@
     },
     {
       "key": {
+        "uuid": "c2fd913d_f247a690",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/roles/RoleValidatorsComposer.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-01-28T08:00:40Z",
+      "side": 1,
+      "message": "List can be declared as variable once and used later.\nIt can be provided by something else (like spring bean).\nvarargs can\u0027t.\n\nFor example in hamcrest it\u0027s very annoying to use varargs instead of list in contains assertion.",
+      "parentUuid": "e8744f14_fd4ae24b",
+      "revId": "5b3c356c592dc26591aa8da5f49f95ee65b93c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5a7b7732_bbcb0c4d",
         "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorsComposerTest.java",
         "patchSetId": 1
