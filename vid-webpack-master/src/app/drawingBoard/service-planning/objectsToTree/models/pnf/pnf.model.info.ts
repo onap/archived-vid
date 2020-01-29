@@ -32,8 +32,8 @@ export class PnfModelInfo implements ILevelNodeInfo{
   }
 
   getModel = (pnfModelId: string, instance: PnfInstance, serviceHierarchy): PNFModel => {
-    const originalModelName = instance.originalName ? instance.originalName : pnfModelId;
-    return new PNFModel(this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, originalModelName));
+    const uniqueIdOrName = this._sharedTreeService.modelUniqueNameOrId(instance);
+    return new PNFModel(this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, uniqueIdOrName, pnfModelId));
   };
 
   getNextLevelObject(): any { return null;  }

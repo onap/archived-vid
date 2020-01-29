@@ -56,7 +56,7 @@ describe('Retry Page', function () {
 
     cy.openIframe(`app/ui/#/servicePlanning/RETRY_EDIT?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}&jobId=${JOB_ID}`);
 
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').click();
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').eq(0).click();
 
     cy.get('.failed-msg').should('have.length', 5);
     cy.get('.newIcon').should('have.length', 4);
@@ -133,7 +133,7 @@ describe('Retry Page', function () {
 
     cy.openIframe(`app/ui/#/servicePlanning/RETRY?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}&jobId=${JOB_ID}`);
 
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').click();
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').eq(0).click();
 
     cy.get('.failed-msg').should('have.length', 4);
     cy.get('.newIcon').should('have.length', 4);

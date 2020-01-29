@@ -54,23 +54,39 @@ export class SharedTreeService {
       : (nodeInstance.modelInfo.modelCustomizationId || nodeInstance.modelInfo.modelInvariantId);
   };
 
+  modelUniqueNameOrId = instance =>
+    instance.originalName ? instance.originalName : this.modelUniqueId(instance);
+
   /**
    * Finds a model inside a full service model
    * @param serviceModelFromHierarchy
    * @param modelTypeName "vnfs" | "networks" | "vfModules" | "collectionResources" | ...
-   * @param modelUniqueIdOrName Either an entry name (i.e. "originalName"), modelCustomizationId or modelInvariantId.
+   * @param modelUniqueNameOrId Either an entry name (i.e. "originalName"), modelCustomizationId or modelInvariantId.
    *                      Note that modelInvariantId will work only where model lacks a modelCustomizationId.
+   * @param modeName An optional entry name (i.e. "originalName"); will not try to use as id
    */
-  modelByIdentifier = (serviceModelFromHierarchy, modelTypeName: string, modelUniqueIdOrName: string): any => {
-    if (_.isNil(serviceModelFromHierarchy)) return undefined;
+  modelByIdentifiers = (serviceModelFromHierarchy, modelTypeName: string, modelUniqueNameOrId: string, modeName?: string): any => {
+    const logErrorAndReturnUndefined = () =>
+      console.error(`modelByIdentifiers: could not find a model matching query`, {
+        modelTypeName, modelUniqueNameOrId, modeName, serviceModelFromHierarchy
+      });
+
+    if (_.isNil(serviceModelFromHierarchy)) return logErrorAndReturnUndefined();
 
     const modelsOfType = serviceModelFromHierarchy[modelTypeName];
-    if (_.isNil(modelsOfType)) return undefined;
+    if (_.isNil(modelsOfType)) return logErrorAndReturnUndefined();
 
-    const modelIfModelIdentifierIsEntryName = modelsOfType[modelUniqueIdOrName];
-    return _.isNil(modelIfModelIdentifierIsEntryName)
-      ? _.find(modelsOfType, o => (o.customizationUuid || o.invariantUuid) === modelUniqueIdOrName)
-      : modelIfModelIdentifierIsEntryName;
+    const modelIfModelIdentifierIsEntryName = modelsOfType[modelUniqueNameOrId];
+    const modelIfModeNameExists = _.isNil(modeName) ? null : modelsOfType[modeName];
+
+    if (!_.isNil(modelIfModelIdentifierIsEntryName)) {
+      return modelIfModelIdentifierIsEntryName;
+    } else if (!_.isNil(modelIfModeNameExists)) {
+      return modelIfModeNameExists;
+    } else {
+      // try modelUniqueNameOrId as an id
+      return _.find(modelsOfType, o => (o.customizationUuid || o.invariantUuid) === modelUniqueNameOrId) || logErrorAndReturnUndefined()
+    }
   };
 
   hasMissingData(instance, dynamicInputs: any, isEcompGeneratedNaming: boolean, requiredFields: string[]): boolean {
