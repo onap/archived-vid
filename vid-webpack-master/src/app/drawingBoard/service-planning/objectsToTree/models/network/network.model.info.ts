@@ -234,8 +234,8 @@ export class NetworkModelInfo implements ILevelNodeInfo {
             });
           }
         },
-        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {
