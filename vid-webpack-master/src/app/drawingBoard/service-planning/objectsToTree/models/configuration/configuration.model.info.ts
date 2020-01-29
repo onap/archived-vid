@@ -31,7 +31,7 @@ export class ConfigurationModelInfo implements ILevelNodeInfo{
    * @param serviceHierarchy - serviceHierarchy
    ************************************************************/
   getModel = (configurationModelId : string, serviceHierarchy) : any =>{
-    const model = this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, configurationModelId);
+    const model = this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, configurationModelId);
     if (!_.isNil(model)) {
       return model;
     }

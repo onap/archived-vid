@@ -113,13 +113,13 @@ describe('View only drawing board', function () {
     cy.getElementByDataTestsId('node-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1').find(`[data-tests-id='node-type-indicator']`).should('have.text', 'M');
 
     //testing right side
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find(`[data-tests-id='node-type-indicator']`).should('have.text', 'VNF');
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').click({force: true});
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find(`[data-tests-id='node-type-indicator']`).should('have.length', 3).and('have.text', 'VNFVNFVNF');
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').eq(0).click({force: true});
     cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0').eq(0).find(`[data-tests-id='node-type-indicator']`).should('have.text', 'M');
 
     //check vnf node tree sub header
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find("[data-tests-id='status-property-orchStatus']").should('have.text', 'Created');
-    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find("[data-tests-id='status-property-provStatus']").should('have.text', '');
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find("[data-tests-id='status-property-orchStatus']").eq(0).should('have.text', 'Created');
+    cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find("[data-tests-id='status-property-provStatus']").eq(0).should('have.text', '');
     cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').find("[data-tests-id='status-property-inMaint']").should('not.exist');
 
     //check vf Module node tree sub header
