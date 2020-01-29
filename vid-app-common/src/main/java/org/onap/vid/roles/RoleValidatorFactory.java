@@ -25,6 +25,7 @@ package org.onap.vid.roles;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.properties.Features;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.togglz.core.manager.FeatureManager;
@@ -46,8 +47,10 @@ public class RoleValidatorFactory {
     }
 
     public RoleValidator by(List<Role> roles, boolean disableRoles) {
-        return disableRoles
-            ? new AlwaysValidRoleValidator()
-            : new RoleValidatorBySubscriberAndServiceType(roles);
+
+        if(featureManager.isActive(Features.FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY)) {
+            return disableRoles ? new AlwaysValidRoleValidator() : new RoleValidatorByOwningEntity();
+        }
+        return disableRoles ? new AlwaysValidRoleValidator() : new RoleValidatorBySubscriberAndServiceType(roles);
     }
 }
