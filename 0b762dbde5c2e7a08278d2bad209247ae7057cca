@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6bc10c7d_b04bb091",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-29T14:19:19Z",
+      "side": 1,
+      "message": "i suggest a similar test will test `shouldShowDelete` directly.",
+      "revId": "0b762dbde5c2e7a08278d2bad209247ae7057cca",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf0d6b3c_cc1aca8e",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-29T14:19:19Z",
+      "side": 1,
+      "message": "what about `shouldShowDuplicate` on macro view/edit?",
+      "revId": "0b762dbde5c2e7a08278d2bad209247ae7057cca",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
