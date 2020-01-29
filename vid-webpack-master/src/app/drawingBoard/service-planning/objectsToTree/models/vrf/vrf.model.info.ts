@@ -16,15 +16,8 @@ import {NetworkStepService} from "./vrfModal/networkStep/network.step.service";
 import {VpnStepService} from "./vrfModal/vpnStep/vpn.step.service";
 import {NetworkModelInfo} from "../network/network.model.info";
 import {VpnModelInfo} from "../vpn/vpn.model.info";
-import {
-  clearAllGenericModalhelper,
-  updateGenericModalhelper,
-  updateGenericModalTableDataHelper
-} from "../../../../../shared/storeUtil/utils/global/global.actions";
-import {
-  deleteActionVrfInstance,
-  undoDeleteActionVrfInstance
-} from "../../../../../shared/storeUtil/utils/vrf/vrf.actions";
+import {clearAllGenericModalhelper, updateGenericModalhelper, updateGenericModalTableDataHelper} from "../../../../../shared/storeUtil/utils/global/global.actions";
+import {deleteActionVrfInstance, undoDeleteActionVrfInstance} from "../../../../../shared/storeUtil/utils/vrf/vrf.actions";
 import * as _ from "lodash";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 
@@ -157,8 +150,8 @@ export class VrfModelInfo implements ILevelNodeInfo {
         method: (node, serviceModelId) => {
           this._store.dispatch(deleteActionVrfInstance(node.data.vrfStoreKey, serviceModelId));
         },
-        visible: (node) => this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {

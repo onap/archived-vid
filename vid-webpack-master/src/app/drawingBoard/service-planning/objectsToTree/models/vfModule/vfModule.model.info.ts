@@ -8,10 +8,7 @@ import {VfModuleInstance} from "../../../../../shared/models/vfModuleInstance";
 import {VfModule} from "../../../../../shared/models/vfModule";
 import {NgRedux} from "@angular-redux/store";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
-import {
-  GenericFormPopupComponent,
-  PopupType
-} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
+import {GenericFormPopupComponent, PopupType} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from "ng2-bootstrap-modal";
 import {VfModulePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
 import {AppState} from "../../../../../shared/store/reducers";
@@ -19,15 +16,7 @@ import {MessageBoxData} from "../../../../../shared/components/messageBox/messag
 import {MessageBoxService} from "../../../../../shared/components/messageBox/messageBox.service";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
-import {
-  deleteActionVfModuleInstance,
-  deleteVFModuleField,
-  removeVfModuleInstance,
-  undoDeleteVfModuleInstance,
-  undoUgradeVFModule,
-  updateVFModulePosition,
-  upgradeVFModule
-} from "../../../../../shared/storeUtil/utils/vfModule/vfModule.actions";
+import {deleteActionVfModuleInstance, deleteVFModuleField, removeVfModuleInstance, undoDeleteVfModuleInstance, undoUgradeVFModule, updateVFModulePosition, upgradeVFModule} from "../../../../../shared/storeUtil/utils/vfModule/vfModule.actions";
 import {ComponentInfoService} from "../../../component-info/component-info.service";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
@@ -355,8 +344,8 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
         method: (node, serviceModelId) => {
           this._store.dispatch(deleteActionVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId))
         },
-        visible: (node) => this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {
@@ -364,7 +353,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
           this._store.dispatch(deleteVFModuleField(node.data.modelName,  node.parent.data.vnfStoreKey, node.data.servicedId ,node.data.dynamicModelName, 'retainAssignments'));
         },
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
-        enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
+        enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent, serviceModelId) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
       },
       upgrade: {
         method: (node, serviceModelId) => {

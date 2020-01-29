@@ -6,11 +6,7 @@ import * as _ from "lodash";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {DynamicInputsService} from "../../dynamicInputs.service";
-import {
-  deleteActionRelatedVnfMemberInstance,
-  removeRelatedVnfMemberInstance,
-  undoDeleteActionRelatedVnfMemberInstance
-} from "../../../../../shared/storeUtil/utils/relatedVnfMember/relatedVnfMember.actions";
+import {deleteActionRelatedVnfMemberInstance, removeRelatedVnfMemberInstance, undoDeleteActionRelatedVnfMemberInstance} from "../../../../../shared/storeUtil/utils/relatedVnfMember/relatedVnfMember.actions";
 import {VnfInstance} from "../../../../../shared/models/vnfInstance";
 import {VNFModel} from "../../../../../shared/models/vnfModel";
 import {VnfTreeNode} from "../../../../../shared/models/vnfTreeNode";
@@ -128,8 +124,8 @@ export class RelatedVnfMemberInfoModel implements ILevelNodeInfo {
         method : (node, serviceModelId) => {
           this._store.dispatch(deleteActionRelatedVnfMemberInstance(node.parent.data.vnfGroupStoreKey, node.data.vnfStoreKey, serviceModelId));
         },
-        visible: (node) => this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete : {
         method : (node, serviceModelId) => {
@@ -137,7 +133,7 @@ export class RelatedVnfMemberInfoModel implements ILevelNodeInfo {
 
         },
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
-        enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
+        enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent, serviceModelId) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
       }
     }
   }

@@ -7,10 +7,7 @@ import {SharedTreeService} from "../../shared.tree.service";
 import {InputType} from "../../../../../shared/models/inputTypes";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../../shared/store/reducers";
-import {
-  GenericFormPopupComponent,
-  PopupType
-} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
+import {GenericFormPopupComponent, PopupType} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from "ng2-bootstrap-modal";
 import {NetworkPopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/network/network.popup.service";
 import * as _ from "lodash";
@@ -21,11 +18,7 @@ import {changeInstanceCounter, removeInstance} from "../../../../../shared/store
 import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {DuplicateService} from "../../../duplicate/duplicate.service";
 import {ServiceInstanceActions} from "../../../../../shared/models/serviceInstanceActions";
-import {
-  deleteActionNetworkInstance,
-  undoDeleteActionNetworkInstance,
-  updateNetworkPosition
-} from "../../../../../shared/storeUtil/utils/network/network.actions";
+import {deleteActionNetworkInstance, undoDeleteActionNetworkInstance, updateNetworkPosition} from "../../../../../shared/storeUtil/utils/network/network.actions";
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
@@ -234,8 +227,8 @@ export class NetworkModelInfo implements ILevelNodeInfo {
             });
           }
         },
-        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {

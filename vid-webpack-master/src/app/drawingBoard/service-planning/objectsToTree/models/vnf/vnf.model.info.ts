@@ -9,10 +9,7 @@ import {SharedTreeService} from "../../shared.tree.service";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../../shared/store/reducers";
 import {DefaultDataGeneratorService} from "../../../../../shared/services/defaultDataServiceGenerator/default.data.generator.service";
-import {
-  GenericFormPopupComponent,
-  PopupType
-} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
+import {GenericFormPopupComponent, PopupType} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from 'ng2-bootstrap-modal';
 import {VnfPopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vnf/vnf.popup.service";
 import {VfModulePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service";
@@ -25,13 +22,7 @@ import {changeInstanceCounter, removeInstance} from "../../../../../shared/store
 import {MessageBoxData} from "../../../../../shared/components/messageBox/messageBox.data";
 import {MessageBoxService} from "../../../../../shared/components/messageBox/messageBox.service";
 import {ServiceInstanceActions} from "../../../../../shared/models/serviceInstanceActions";
-import {
-  deleteActionVnfInstance,
-  undoDeleteActionVnfInstance,
-  undoUpgradeVnf,
-  updateVnfPosition,
-  upgradeVnf
-} from "../../../../../shared/storeUtil/utils/vnf/vnf.actions";
+import {deleteActionVnfInstance, undoDeleteActionVnfInstance, undoUpgradeVnf, updateVnfPosition, upgradeVnf} from "../../../../../shared/storeUtil/utils/vnf/vnf.actions";
 import * as _ from 'lodash';
 import {IModalConfig} from "onap-ui-angular/dist/modals/models/modal-config";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
@@ -271,8 +262,8 @@ export class VnfModelInfo implements ILevelNodeInfo {
             });
           }
         },
-        visible: (node) => this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {

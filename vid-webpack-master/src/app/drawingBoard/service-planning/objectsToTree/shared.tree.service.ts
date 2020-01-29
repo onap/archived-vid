@@ -139,8 +139,8 @@ export class SharedTreeService {
   /**********************************************
    * should return true if can delete
    **********************************************/
-  shouldShowDelete(node): boolean {
-    return this.shouldShowButtonGeneric(node, "delete")
+  shouldShowDelete(node, serviceModelId): boolean {
+    return this.shouldShowButtonGeneric(node, "delete", serviceModelId)
   }
 
   /**********************************************
@@ -193,7 +193,7 @@ export class SharedTreeService {
   shouldShowUpgrade(node, serviceModelId): boolean {
     if (FeatureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE, this._store) &&
       this.isThereAnUpdatedLatestVersion(serviceModelId)) {
-      return this.shouldShowButtonGeneric(node, VNFMethods.UPGRADE);
+      return this.shouldShowButtonGeneric(node, VNFMethods.UPGRADE, serviceModelId);
     }
     else {
       return false
@@ -201,12 +201,22 @@ export class SharedTreeService {
   }
 
   private isThereAnUpdatedLatestVersion(serviceModelId) : boolean{
-    let serviceInstance = this._store.getState().service.serviceInstance[serviceModelId];
+    let serviceInstance = this.getServiceInstance(serviceModelId);
     return !_.isNil(serviceInstance.latestAvailableVersion) && (Number(serviceInstance.modelInfo.modelVersion) < serviceInstance.latestAvailableVersion);
   }
 
-  private shouldShowButtonGeneric(node, method) {
+  private getServiceInstance(serviceModelId): any {
+    return this._store.getState().service.serviceInstance[serviceModelId];
+  }
+
+  shouldShowButtonGeneric(node, method, serviceModelId) {
     const mode = this._store.getState().global.drawingBoardStatus;
+    const isMacro = !(this.getServiceInstance(serviceModelId).isALaCarte);
+
+    if (isMacro) { //if macro action allowed only for service level
+      return false;
+    }
+
     if (!_.isNil(node) && !_.isNil(node.data) && !_.isNil(node.data.action) && !_.isNil(node.data.menuActions[method])) {
       if (mode !== DrawingBoardModes.EDIT || node.data.action === ServiceInstanceActions.Create) {
         return false;
@@ -288,7 +298,7 @@ export class SharedTreeService {
    ************************************************/
   getExistingInstancesWithDeleteMode(node, serviceModelId: string, type: string): number {
     let counter = 0;
-    const existingInstances = this._store.getState().service.serviceInstance[serviceModelId][type];
+    const existingInstances = this.getServiceInstance(serviceModelId)[type];
     const modelUniqueId = node.data.modelUniqueId;
     if (!_.isNil(existingInstances)) {
       for (let instanceKey in existingInstances) {

@@ -63,7 +63,7 @@ function getNodeWithData(menuAction:string){
   };
   nodeData['menuActions'][menuAction] =  {
     method: (node, serviceModelId) => {}
-  }
+  };
   const node = {
     parent: {
       data: nodeData,
@@ -134,7 +134,7 @@ describe('Shared Tree Service', () => {
 
   test('SharedTreeService upgradeBottomUp should call redux actions', () => {
     const serviceModelId = "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd";
-    const node = getNodeWithData("upgrade")
+    const node = getNodeWithData("upgrade");
     spyOn(node.parent.data.menuActions['upgrade'], 'method');
     service.upgradeBottomUp(node, serviceModelId);
     expect(node.parent.data.menuActions['upgrade'].method).toBeCalledWith(node.parent, serviceModelId);
@@ -144,7 +144,7 @@ describe('Shared Tree Service', () => {
 
   test('SharedTreeService undoUpgradeBottomUp should call redux actions', () => {
     const serviceModelId = "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd";
-    const node = getNodeWithData("undoUpgrade")
+    const node = getNodeWithData("undoUpgrade");
     spyOn(node.parent.data.menuActions['undoUpgrade'], 'method');
     service.undoUpgradeBottomUp(node, serviceModelId);
     expect(node.parent.data.menuActions['undoUpgrade'].method).toBeCalledWith(node.parent, serviceModelId);
@@ -264,7 +264,6 @@ describe('Shared Tree Service', () => {
   });
 
 
-
   test('statusProperties should be prop on node according to node properties', () => {
     let node = service.addingStatusProperty({orchStatus: 'completed', provStatus: 'inProgress', inMaint: false});
     expect(node.statusProperties).toBeDefined();
@@ -284,6 +283,7 @@ describe('Shared Tree Service', () => {
       testId: 'inMaint'
     })]);
   });
+
   const enableRemoveAndEditItemsDataProvider = [
     ['Create action CREATE mode', DrawingBoardModes.CREATE ,ServiceInstanceActions.Create, true],
     ['Create action VIEW mode',DrawingBoardModes.VIEW , ServiceInstanceActions.Create,false],
@@ -306,205 +306,41 @@ describe('Shared Tree Service', () => {
       let res = service.shouldShowRemoveAndEdit(node);
       expect(res).toBe(enabled);
     });
-});
-function generateService() {
-  return {
-    "vnfs": {
-      "2017-488_PASQUALE-vPE 0": {
-        "inMaint": false,
-        "rollbackOnFailure": "true",
-        "originalName": "2017-488_PASQUALE-vPE 0",
-        "isMissingData": false,
-        "trackById": "stigekyxrqi",
-        "vfModules": {
-          "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0": {
-            "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0gytfi": {
-              "isMissingData": false,
-              "sdncPreReload": null,
-              "modelInfo": {
-                "modelType": "VFmodule",
-                "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
-                "modelVersionId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
-                "modelName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0",
-                "modelVersion": "5",
-                "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
-                "modelCustomizationName": "2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"
-              },
-              "instanceParams": [{}],
-              "trackById": "3oj23o7nupo"
-            }
+
+  each([
+    [false, 'method is not in menu actions', ServiceInstanceActions.None, DrawingBoardModes.EDIT, {}, true],
+    [false, 'there is no action in node', null, DrawingBoardModes.EDIT, {someMethod: "someValue"}, true],
+    [true, 'edit mode, action is none, method in menu action', ServiceInstanceActions.None, DrawingBoardModes.EDIT, {someMethod: "someValue"}, true],
+    [false, 'edit mode, action is none, method in menu action, macro service', ServiceInstanceActions.None, DrawingBoardModes.EDIT, {someMethod: "someValue"}, false],
+    [false, 'edit mode, action is not none, method in menu action', ServiceInstanceActions.Resume, DrawingBoardModes.EDIT, {someMethod: "someValue"}, true],
+    [false, 'edit mode, action is CREATE, method in menu action', ServiceInstanceActions.Resume, DrawingBoardModes.EDIT, {someMethod: "someValue"}, true]
+  ]).test('shouldShowButtonGeneric return %s if %s ', (expected, description, action, mode, menuActions, isALaCarte) => {
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
+      global: {
+        drawingBoardStatus: mode
+      },
+      service : {
+        serviceInstance: {
+          someModelId : {
+            isALaCarte
           }
-        },
-        "vnfStoreKey": "2017-488_PASQUALE-vPE 0",
-        "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
-        "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
-        "lcpCloudRegionId": "AAIAIC25",
-        "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
-        "lineOfBusiness": "ONAP",
-        "platformName": "xxx1",
-        "modelInfo": {
-          "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
-          "modelVersionId": "69e09f68-8b63-4cc9-b9ff-860960b5db09",
-          "modelName": "2017-488_PASQUALE-vPE",
-          "modelVersion": "5.0",
-          "modelCustomizationName": "2017-488_PASQUALE-vPE 0",
-          "modelCustomizationId": "1da7b585-5e61-4993-b95e-8e6606c81e45",
-          "uuid": "69e09f68-8b63-4cc9-b9ff-860960b5db09"
-        },
-        "legacyRegion": "11111111",
-        "instanceParams": [{}]
+        }
+
+      }
+    });
+    let node = <any>{
+      data:{
+        action: action,
+        menuActions: menuActions
       },
-      "2017-388_PASQUALE-vPE 0": {
-        "inMaint": false,
-        "rollbackOnFailure": "true",
-        "originalName": "2017-388_PASQUALE-vPE 0",
-        "isMissingData": false,
-        "trackById": "nib719t5vca",
-        "vfModules": {},
-        "vnfStoreKey": "2017-388_PASQUALE-vPE 0",
-        "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
-        "lcpCloudRegionId": "AAIAIC25",
-        "legacyRegion": "11111",
-        "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
-        "platformName": "platform",
-        "lineOfBusiness": "zzz1",
-        "instanceParams": [{}],
-        "modelInfo": {
-          "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
-          "modelVersionId": "afacccf6-397d-45d6-b5ae-94c39734b168",
-          "modelName": "2017-388_PASQUALE-vPE",
-          "modelVersion": "4.0",
-          "modelCustomizationId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
-          "modelCustomizationName": "2017-388_PASQUALE-vPE 0",
-          "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168"
-        },
-        "uuid": "afacccf6-397d-45d6-b5ae-94c39734b168"
-      },
-      "2017-388_PASQUALE-vPE 1": {
-        "inMaint": false,
-        "rollbackOnFailure": "true",
-        "originalName": "2017-388_PASQUALE-vPE 1",
-        "isMissingData": false,
-        "trackById": "cv7l1ak8vpe",
-        "vfModules": {},
-        "vnfStoreKey": "2017-388_PASQUALE-vPE 1",
-        "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
-        "lcpCloudRegionId": "AAIAIC25",
-        "legacyRegion": "123",
-        "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
-        "platformName": "platform",
-        "lineOfBusiness": "ONAP",
-        "instanceParams": [{}],
-        "modelInfo": {
-          "modelInvariantId": "00beb8f9-6d39-452f-816d-c709b9cbb87d",
-          "modelVersionId": "0903e1c0-8e03-4936-b5c2-260653b96413",
-          "modelName": "2017-388_PASQUALE-vPE",
-          "modelVersion": "1.0",
-          "modelCustomizationId": "280dec31-f16d-488b-9668-4aae55d6648a",
-          "modelCustomizationName": "2017-388_PASQUALE-vPE 1",
-          "uuid": "0903e1c0-8e03-4936-b5c2-260653b96413"
-        },
-        "uuid": "0903e1c0-8e03-4936-b5c2-260653b96413"
-      }
-    },
-    "instanceParams": [{}],
-    "validationCounter": 0,
-    "existingNames": {"yoav": ""},
-    "existingVNFCounterMap": {
-      "69e09f68-8b63-4cc9-b9ff-860960b5db09": 1,
-      "afacccf6-397d-45d6-b5ae-94c39734b168": 1,
-      "0903e1c0-8e03-4936-b5c2-260653b96413": 1
-    },
-    "existingVnfGroupCounterMap": {
-      "daeb6568-cef8-417f-9075-ed259ce59f48": 0,
-      "c2b300e6-45de-4e5e-abda-3032bee2de56": -1
-    },
-    "existingNetworksCounterMap": {"ddc3f20c-08b5-40fd-af72-c6d14636b986": 1},
-    "networks": {
-      "ExtVL 0": {
-        "inMaint": false,
-        "rollbackOnFailure": "true",
-        "originalName": "ExtVL 0",
-        "isMissingData": false,
-        "trackById": "s6okajvv2n8",
-        "networkStoreKey": "ExtVL 0",
-        "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
-        "lcpCloudRegionId": "AAIAIC25",
-        "legacyRegion": "12355555",
-        "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
-        "platformName": "platform",
-        "lineOfBusiness": null,
-        "instanceParams": [{}],
-        "modelInfo": {
-          "modelInvariantId": "379f816b-a7aa-422f-be30-17114ff50b7c",
-          "modelVersionId": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
-          "modelName": "ExtVL",
-          "modelVersion": "37.0",
-          "modelCustomizationId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
-          "modelCustomizationName": "ExtVL 0",
-          "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986"
-        },
-        "uuid": "ddc3f20c-08b5-40fd-af72-c6d14636b986"
-      }
-    },
-    "vnfGroups": {
-      "groupingservicefortest..ResourceInstanceGroup..0": {
-        "inMaint": false,
-        "rollbackOnFailure": "true",
-        "originalName": "groupingservicefortest..ResourceInstanceGroup..0",
-        "isMissingData": false,
-        "trackById": "se0obn93qq",
-        "vnfGroupStoreKey": "groupingservicefortest..ResourceInstanceGroup..0",
-        "instanceName": "groupingservicefortestResourceInstanceGroup0",
-        "instanceParams": [{}],
-        "modelInfo": {
-          "modelInvariantId": "4bb2e27e-ddab-4790-9c6d-1f731bc14a45",
-          "modelVersionId": "daeb6568-cef8-417f-9075-ed259ce59f48",
-          "modelName": "groupingservicefortest..ResourceInstanceGroup..0",
-          "modelVersion": "1",
-          "modelCustomizationName": "groupingservicefortest..ResourceInstanceGroup..0",
-          "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48"
-        },
-        "uuid": "daeb6568-cef8-417f-9075-ed259ce59f48"
-      }
-    },
-    "instanceName": "yoav",
-    "globalSubscriberId": "e433710f-9217-458d-a79d-1c7aff376d89",
-    "subscriptionServiceType": "TYLER SILVIA",
-    "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
-    "productFamilyId": "d8a6ed93-251c-47ca-adc9-86671fd19f4c",
-    "lcpCloudRegionId": "AAIAIC25",
-    "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
-    "aicZoneId": "ATL53",
-    "pause": null,
-    "projectName": "WATKINS",
-    "rollbackOnFailure": "true",
-    "bulkSize": 1,
-    "aicZoneName": "AAIATLTE-ATL53",
-    "owningEntityName": "WayneHolland",
-    "testApi": "VNF_API",
-    "isEcompGeneratedNaming": false,
-    "tenantName": "USP-SIP-IC-24335-T-01",
-    "modelInfo": {
-      "modelInvariantId": "cdb90b57-ed78-4d44-a5b4-7f43a02ec632",
-      "modelVersionId": "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd",
-      "modelName": "action-data",
-      "modelVersion": "1.0",
-      "uuid": "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"
-    },
-    "isALaCarte": false,
-    "name": "action-data",
-    "version": "1.0",
-    "description": "PASQUALE vMX vPE based on Juniper 17.2 release. Updated with updated VF for v8.0 of VLM",
-    "category": "Network L1-3",
-    "uuid": "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd",
-    "invariantUuid": "cdb90b57-ed78-4d44-a5b4-7f43a02ec632",
-    "serviceType": "pnf",
-    "serviceRole": "Testing",
-    "vidNotions": {"instantiationUI": "legacy", "modelCategory": "other", "viewEditUI": "legacy"},
-    "isMultiStepDesign": true
-  };
-}
+    };
+
+    let res = service.shouldShowButtonGeneric(node, "someMethod", "someModelId");
+    expect(res).toBe(expected);
+  });
+
+
+});
 
 function getStore() {
   return {

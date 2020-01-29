@@ -6,19 +6,13 @@ import {VnfGroupModel} from "../../../../../shared/models/vnfGroupModel";
 import {VnfGroupTreeNode} from "../../../../../shared/models/vnfGroupTreeNode";
 import {SharedTreeService} from "../../shared.tree.service";
 import {VnfGroupPopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vnfGroup/vnfGroup.popup.service";
-import {
-  GenericFormPopupComponent,
-  PopupType
-} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
+import {GenericFormPopupComponent, PopupType} from "../../../../../shared/components/genericFormPopup/generic-form-popup.component";
 import {DialogService} from 'ng2-bootstrap-modal';
 import {AppState} from "../../../../../shared/store/reducers";
 import {NgRedux} from "@angular-redux/store";
 import {changeInstanceCounter, removeInstance} from "../../../../../shared/storeUtil/utils/general/general.actions";
 import {IframeService} from "../../../../../shared/utils/iframe.service";
-import {
-  deleteActionVnfGroupInstance,
-  undoDeleteActionVnfGroupInstance
-} from "../../../../../shared/storeUtil/utils/vnfGroup/vnfGroup.actions";
+import {deleteActionVnfGroupInstance, undoDeleteActionVnfGroupInstance} from "../../../../../shared/storeUtil/utils/vnfGroup/vnfGroup.actions";
 import {RelatedVnfMemberInfoModel} from "../relatedVnfMember/relatedVnfMember.info.model";
 import {SearchElementsModalComponent} from "../../../../../shared/components/searchMembersModal/search-elements-modal.component";
 import * as _ from "lodash";
@@ -30,10 +24,7 @@ import {Level1Instance} from "../../../../../shared/models/level1Instance";
 import {AaiService} from "../../../../../shared/services/aaiService/aai.service";
 import {Observable} from "rxjs";
 import {createRelatedVnfMemberInstance} from "../../../../../shared/storeUtil/utils/relatedVnfMember/relatedVnfMember.actions";
-import {
-  ITableContent,
-  SearchFieldItemType
-} from "../../../../../shared/components/searchMembersModal/members-table/element-table-row.model";
+import {ITableContent, SearchFieldItemType} from "../../../../../shared/components/searchMembersModal/members-table/element-table-row.model";
 import {CustomTableColumnDefinition} from "../../../../../shared/components/searchMembersModal/members-table/elements-table.component";
 
 export class VnfGroupingModelInfo implements ILevelNodeInfo {
@@ -275,8 +266,8 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
             });
           }
         },
-        visible: (node) => this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {
