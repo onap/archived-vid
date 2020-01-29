@@ -37,7 +37,7 @@ export class NcfModelInfo implements ILevelNodeInfo {
   };
 
 
-  createInstanceTreeNode = (instance: Level1Instance, model: Level1Model, parentModel, storeKey: string): NcfTreeNode => {
+  createInstanceTreeNode = (instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any => {
     let modelVersion: string = null;
     if (parentModel.networksCollection && instance.originalName) {
       const ncfRealModel: NcfModelInterface = parentModel.networksCollection[instance.originalName];
@@ -47,7 +47,7 @@ export class NcfModelInfo implements ILevelNodeInfo {
     }
 
     let node = new NcfTreeNode(instance, model, storeKey, modelVersion);
-    node.menuActions = this.getMenuAction(<any>node, model.uuid);
+    node.menuActions = this.getMenuAction(<any>node, serviceModelId);
     node.typeName = this.typeName;
     return node;
   };

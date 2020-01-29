@@ -34,11 +34,11 @@ export class CollectionResourceModelInfo implements ILevelNodeInfo{
   };
 
 
-  createInstanceTreeNode = (instance: CollectionResourceInstance, model: CollectionResourceModel, parentModel, storeKey: string): CollectionResourceTreeNode => {
+  createInstanceTreeNode = (instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any => {
       let node = new CollectionResourceTreeNode(instance, model, storeKey);
       node.missingData = this.hasMissingData(instance, node, model.isEcompGeneratedNaming);
       node.typeName = this.typeName;
-      node.menuActions = this.getMenuAction(<any>node, model.uuid);
+      node.menuActions = this.getMenuAction(<any>node, serviceModelId);
       node.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
       node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
       return node;

@@ -86,7 +86,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     return {};
   };
 
-  createNode(instance: VfModuleInstance, currentModel: VfModule, parentModel: VNFModel, modelName: string, index: number): VfModuleTreeNode {
+  createNode(instance: VfModuleInstance, currentModel: VfModule, parentModel: VNFModel, modelName: string, index: number, serviceModelId: string): VfModuleTreeNode {
     let dynamicModelName = Object.keys(instance)[index];
     instance = instance[Object.keys(instance)[index]];
     const isEcompGeneratedNaming: boolean = this.isEcompGeneratedNaming(currentModel, parentModel);
@@ -96,7 +96,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
 
     newVfModule.missingData = this._sharedTreeService.hasMissingData(instance, newVfModule.dynamicInputs, isEcompGeneratedNaming, []);
     newVfModule.typeName = this.typeName;
-    newVfModule.menuActions = this.getMenuAction(<any>newVfModule, currentModel.uuid);
+    newVfModule.menuActions = this.getMenuAction(<any>newVfModule, serviceModelId);
     newVfModule.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
     newVfModule.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
 
@@ -104,16 +104,16 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     return newVfModule;
   }
 
-  createInstanceTreeNode(instance: VfModuleInstance, currentModel: VfModule, parentModel: VNFModel, modelName: string): VfModuleTreeNode | VfModuleTreeNode[] {
+  createInstanceTreeNode(instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any {
     let numberOfChilds = Object.keys(instance).length;
     if (numberOfChilds > 1) {
       let result: VfModuleTreeNode[] = [];
       for (let i = 0; i < numberOfChilds; i++) {
-        result.push(this.createNode(instance, currentModel, parentModel, modelName, i));
+        result.push(this.createNode(instance, model, parentModel, storeKey, i, serviceModelId));
       }
       return result;
     } else {
-      return this.createNode(instance, currentModel, parentModel, modelName, 0);
+      return this.createNode(instance, model, parentModel, storeKey, 0, serviceModelId);
     }
   }
 
@@ -355,8 +355,8 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
         method: (node, serviceModelId) => {
           this._store.dispatch(deleteActionVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId))
         },
-        visible: (node) => this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {
@@ -364,7 +364,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
           this._store.dispatch(deleteVFModuleField(node.data.modelName,  node.parent.data.vnfStoreKey, node.data.servicedId ,node.data.dynamicModelName, 'retainAssignments'));
         },
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
-        enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
+        enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent, serviceModelId) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
       },
       upgrade: {
         method: (node, serviceModelId) => {

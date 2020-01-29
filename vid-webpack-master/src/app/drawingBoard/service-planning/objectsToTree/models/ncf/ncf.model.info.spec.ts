@@ -69,7 +69,7 @@ describe('NCF Model Info', () => {
       typeName: "NCF"
     };
 
-    const ncfTreeNode: NcfTreeNode = ncfModel.createInstanceTreeNode(instance, {}, parentModel, "6b3536cf-3a12-457f-abb5-fa2203e0d923");
+    const ncfTreeNode: NcfTreeNode = ncfModel.createInstanceTreeNode(instance, {}, parentModel, "6b3536cf-3a12-457f-abb5-fa2203e0d923", "dd182d7d-6949-4b90-b3cc-5befe400742e");
     expect(ncfTreeNode).toMatchObject(expected);
   });
 

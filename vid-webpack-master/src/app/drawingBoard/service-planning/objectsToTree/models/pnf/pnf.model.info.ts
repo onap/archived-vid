@@ -21,7 +21,7 @@ export class PnfModelInfo implements ILevelNodeInfo{
   childNames: string[];
   componentInfoType = ComponentInfoType.PNF;
 
-  createInstanceTreeNode = (instance: PnfInstance, model: PNFModel, parentModel: any, storeKey: string): PnfTreeNode => null;
+  createInstanceTreeNode = (instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any => null;
 
   getInfo(model, instance): ModelInformationItem[] {
     return [];

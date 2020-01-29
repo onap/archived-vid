@@ -16,6 +16,8 @@ export const initServicePlanning = function (viewOrEdit: string, customModelFile
   }
 
   cy.readFile('../vid-automation/src/test/resources/aaiGetInstanceTopology/ServiceTreeWithMultipleChildren_serviceModel.json').then((res) => {
+    res.service.instantiationType = "A-La-Carte";
+    res.service.vidNotions.instantiationType = "ALaCarte";
     jsonBuilderAndMock.basicJson(
       res,
       Cypress.config('baseUrl') + "/rest/models/services/6e59c5de-f052-46fa-aa7e-2fca9d674c44",

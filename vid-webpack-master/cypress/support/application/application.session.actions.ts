@@ -5,7 +5,6 @@ declare namespace Cypress {
     clearSessionStorage: typeof clearSessionStorage;
     setTestApiParamToGR: typeof setTestApiParamToGR;
     setTestApiParamToVNF: typeof setTestApiParamToVNF;
-    buildReduxStateWithServiceRespone: typeof buildReduxStateWithServiceRespone;
   }
 }
 
@@ -44,42 +43,8 @@ function setTestApiParamToVNF() : void {
   });
 }
 
-function updateObject(obj: any, key: string, val: any, value:any) {
-  return JSON.parse(JSON.stringify(obj)
-    .replace(new RegExp(`"${key}":"${val}"`), `"${key}":"${value}"`))
-}
-
-function buildReduxStateWithServiceRespone(res: any, serviceId:string, isEcompGeneratedNaming:boolean) :void {
-  res = updateObject(res, "ecomp_generated_naming", !isEcompGeneratedNaming, isEcompGeneratedNaming);
-  cy.window().then((win) => {
-    win.sessionStorage.setItem('reduxState',  JSON.stringify({
-      "global": {
-        "name": null
-      },
-      "service": {
-        "serviceHierarchy": {
-          [serviceId] : res
-        },
-        "serviceInstance": {
-          [serviceId]: {
-            "existingVNFCounterMap": {},
-            "existingVnfGroupCounterMap": {},
-            "existingNetworksCounterMap": {},
-            "vnfs": {},
-            "vnfGroups": {},
-            "isEcompGeneratedNaming": isEcompGeneratedNaming,
-            "existingNames": {},
-            "vidNotions": res.service.vidNotions
-          }
-        }
-      }
-    }));
-  });
-}
-
 Cypress.Commands.add('setReduxState', setReduxState);
 Cypress.Commands.add('getReduxState', getReduxState);
 Cypress.Commands.add('clearSessionStorage', clearSessionStorage);
 Cypress.Commands.add('setTestApiParamToGR', setTestApiParamToGR);
 Cypress.Commands.add('setTestApiParamToVNF',setTestApiParamToVNF);
-Cypress.Commands.add('buildReduxStateWithServiceRespone', buildReduxStateWithServiceRespone);

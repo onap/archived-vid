@@ -34,10 +34,11 @@ export class ObjectToInstanceTreeService {
     this.numberOfFailed = 0;
     this.numberOfElements = 0;
     let _this = this;
+    const serviceModelId:string = serviceInstance.modelInfo.modelVersionId;
     const firstLevelOptions: ILevelNodeInfo[] = _this._objectToTreeService.getFirstLevelOptions();
     for (let option of firstLevelOptions) {
       _.forOwn(serviceInstance[option.name], function (instance, modelName) {
-        nodes.push(_this.getNodeInstance(modelName, null, instance, serviceHierarchy, option));
+        nodes.push(_this.getNodeInstance(modelName, null, instance, serviceHierarchy, option, serviceModelId));
       });
     }
     return this.sortElementsByPosition(nodes);
@@ -71,18 +72,19 @@ export class ObjectToInstanceTreeService {
    * @param instance
    * @param serviceHierarchy - The service Hierarchy store
    * @param option
+   * @param serviceModelId
    * @param parentType
    ****************************************************************/
-  getNodeInstance(modelName: string, parentModel: any, instance: any, serviceHierarchy, option: ILevelNodeInfo, parentType ?: string) {
+  getNodeInstance(modelName: string, parentModel: any, instance: any, serviceHierarchy, option: ILevelNodeInfo, serviceModelId: string, parentType ?: string) {
     const model = option.getModel(modelName, instance, serviceHierarchy);
 
-    let optionalNodes = option.createInstanceTreeNode(instance, model, parentModel, modelName);
+    let optionalNodes = option.createInstanceTreeNode(instance, model, parentModel, modelName, serviceModelId);
     this.increaseNumberOfFailed(optionalNodes);
     this.increaseNumberOfExcitingElements();
     let nodes: any[] = _.isArray(optionalNodes) ? optionalNodes : [optionalNodes];
     for (let node of nodes) {
       node = this.addingExtraDataToNode(node, modelName, parentModel, instance, serviceHierarchy, option, parentType);
-      let children = this.addNextInstanceTreeNode(instance, model, option, node, serviceHierarchy);
+      let children = this.addNextInstanceTreeNode(instance, model, option, node, serviceHierarchy, serviceModelId);
       if (!_.isNil(children) && children.length > 0) {
         node.children = this.sortElementsByPosition(children);
       }
@@ -119,8 +121,9 @@ export class ObjectToInstanceTreeService {
    * @param levelNodeInfo
    * @param parentNode
    * @param serviceHierarchy - The service Hierarchy store
+   * @param serviceModelId
    ****************************************************************/
-  addNextInstanceTreeNode(parentInstance, parentModel, levelNodeInfo: ILevelNodeInfo, parentNode, serviceHierarchy): any[] {
+  addNextInstanceTreeNode(parentInstance, parentModel, levelNodeInfo: ILevelNodeInfo, parentNode, serviceHierarchy, serviceModelId: string): any[] {
     if (!_.isNil(levelNodeInfo.childNames)&& levelNodeInfo.childNames.length > 0) {
       const that = this;
       parentNode.children = [];
@@ -130,7 +133,7 @@ export class ObjectToInstanceTreeService {
           let nextLevelNodeInfo = levelNodeInfo.getNextLevelObject.apply(that, [childName]);
           Object.keys(parentInstance[childName]).map((modelName) => {
             let nextLevelInstance = parentInstance[childName][modelName];
-            let nodes: any[] | any = that.getNodeInstance(modelName, parentModel, nextLevelInstance, serviceHierarchy, nextLevelNodeInfo, parentType);
+            let nodes: any[] | any = that.getNodeInstance(modelName, parentModel, nextLevelInstance, serviceHierarchy, nextLevelNodeInfo, serviceModelId, parentType);
             if (_.isArray(nodes)) {
               parentNode.children = parentNode.children.concat(nodes);
             } else {

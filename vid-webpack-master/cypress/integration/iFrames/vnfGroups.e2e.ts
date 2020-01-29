@@ -20,6 +20,42 @@ describe('Vnf Groups', function () {
     cy.screenshot();
   });
 
+  function updateObject(obj: any, key: string, val: any, value:any) {
+    return JSON.parse(JSON.stringify(obj)
+    .replace(new RegExp(`"${key}":"${val}"`), `"${key}":"${value}"`))
+  }
+
+  function buildReduxStateWithServiceRespone(res: any, serviceId:string, isEcompGeneratedNaming:boolean) :void {
+    res = updateObject(res, "ecomp_generated_naming", !isEcompGeneratedNaming, isEcompGeneratedNaming);
+    cy.window().then((win) => {
+      win.sessionStorage.setItem('reduxState',  JSON.stringify({
+        "global": {
+          "name": null
+        },
+        "service": {
+          "serviceHierarchy": {
+            [serviceId] : res
+          },
+          "serviceInstance": {
+            [serviceId]: {
+              "modelInfo" : {
+                "modelVersionId" : serviceId
+              },
+              "existingVNFCounterMap": {},
+              "existingVnfGroupCounterMap": {},
+              "existingNetworksCounterMap": {},
+              "vnfs": {},
+              "vnfGroups": {},
+              "isEcompGeneratedNaming": isEcompGeneratedNaming,
+              "existingNames": {},
+              "vidNotions": res.service.vidNotions
+            }
+          }
+        }
+      }));
+    });
+  }
+
   describe('Vnf Group model basic view', function () {
 
       it('Vnf group open new view edit', function () {
@@ -36,7 +72,7 @@ describe('Vnf Groups', function () {
             "ServiceWithVnfGroup",
           );
 
-          cy.buildReduxStateWithServiceRespone(res, serviceId, false);
+          buildReduxStateWithServiceRespone(res, serviceId, false);
           cy.openIframe('app/ui/#/servicePlanning?serviceModelId=' + serviceId);
           cy.getElementByDataTestsId('node-' + groupName).find(`[data-tests-id='node-type-indicator']`).contains('G');
           cy.getElementByDataTestsId('node-' + groupName).contains('' + groupName);
