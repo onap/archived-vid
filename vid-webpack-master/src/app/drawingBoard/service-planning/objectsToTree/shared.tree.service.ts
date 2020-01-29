@@ -54,23 +54,39 @@ export class SharedTreeService {
       : (nodeInstance.modelInfo.modelCustomizationId || nodeInstance.modelInfo.modelInvariantId);
   };
 
+  modelUniqueNameOrId = (instance): string =>
+    instance.originalName ? instance.originalName : this.modelUniqueId(instance);
+
   /**
    * Finds a model inside a full service model
    * @param serviceModelFromHierarchy
    * @param modelTypeName "vnfs" | "networks" | "vfModules" | "collectionResources" | ...
-   * @param modelUniqueIdOrName Either an entry name (i.e. "originalName"), modelCustomizationId or modelInvariantId.
+   * @param modelUniqueNameOrId Either an entry name (i.e. "originalName"), modelCustomizationId or modelInvariantId.
    *                      Note that modelInvariantId will work only where model lacks a modelCustomizationId.
+   * @param modeName An optional entry name (i.e. "originalName"); will not try to use as id
    */
-  modelByIdentifier = (serviceModelFromHierarchy, modelTypeName: string, modelUniqueIdOrName: string): any => {
-    if (_.isNil(serviceModelFromHierarchy)) return undefined;
+  modelByIdentifiers = (serviceModelFromHierarchy, modelTypeName: string, modelUniqueNameOrId: string, modeName?: string): any => {
+    const logErrorAndReturnUndefined = () =>
+      console.info(`modelByIdentifiers: could not find a model matching query`, {
+        modelTypeName, modelUniqueNameOrId, modeName, serviceModelFromHierarchy
+      });
+
+    if (_.isNil(serviceModelFromHierarchy)) return logErrorAndReturnUndefined();
 
     const modelsOfType = serviceModelFromHierarchy[modelTypeName];
-    if (_.isNil(modelsOfType)) return undefined;
+    if (_.isNil(modelsOfType)) return logErrorAndReturnUndefined();
 
-    const modelIfModelIdentifierIsEntryName = modelsOfType[modelUniqueIdOrName];
-    return _.isNil(modelIfModelIdentifierIsEntryName)
-      ? _.find(modelsOfType, o => (o.customizationUuid || o.invariantUuid) === modelUniqueIdOrName)
-      : modelIfModelIdentifierIsEntryName;
+    const modelIfModelIdentifierIsEntryName = modelsOfType[modelUniqueNameOrId];
+    const modelIfModeNameExists = _.isNil(modeName) ? null : modelsOfType[modeName];
+
+    if (!_.isNil(modelIfModelIdentifierIsEntryName)) {
+      return modelIfModelIdentifierIsEntryName;
+    } else if (!_.isNil(modelIfModeNameExists)) {
+      return modelIfModeNameExists;
+    } else {
+      // try modelUniqueNameOrId as an id
+      return _.find(modelsOfType, o => (o.customizationUuid || o.invariantUuid) === modelUniqueNameOrId) || logErrorAndReturnUndefined()
+    }
   };
 
   hasMissingData(instance, dynamicInputs: any, isEcompGeneratedNaming: boolean, requiredFields: string[]): boolean {
@@ -139,8 +155,8 @@ export class SharedTreeService {
   /**********************************************
    * should return true if can delete
    **********************************************/
-  shouldShowDelete(node, serviceModelId): boolean {
-    return this.shouldShowButtonGeneric(node, "delete", serviceModelId)
+  shouldShowDelete(node): boolean {
+    return this.shouldShowButtonGeneric(node, "delete")
   }
 
   /**********************************************
@@ -193,7 +209,7 @@ export class SharedTreeService {
   shouldShowUpgrade(node, serviceModelId): boolean {
     if (FeatureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE, this._store) &&
       this.isThereAnUpdatedLatestVersion(serviceModelId)) {
-      return this.shouldShowButtonGeneric(node, VNFMethods.UPGRADE, serviceModelId);
+      return this.shouldShowButtonGeneric(node, VNFMethods.UPGRADE);
     }
     else {
       return false
@@ -201,22 +217,12 @@ export class SharedTreeService {
   }
 
   private isThereAnUpdatedLatestVersion(serviceModelId) : boolean{
-    let serviceInstance = this.getServiceInstance(serviceModelId);
+    let serviceInstance = this._store.getState().service.serviceInstance[serviceModelId];
     return !_.isNil(serviceInstance.latestAvailableVersion) && (Number(serviceInstance.modelInfo.modelVersion) < serviceInstance.latestAvailableVersion);
   }
 
-  private getServiceInstance(serviceModelId): any {
-    return this._store.getState().service.serviceInstance[serviceModelId];
-  }
-
-  shouldShowButtonGeneric(node, method, serviceModelId) {
+  private shouldShowButtonGeneric(node, method) {
     const mode = this._store.getState().global.drawingBoardStatus;
-    const isMacro = !(this.getServiceInstance(serviceModelId).isALaCarte);
-
-    if (isMacro) { //if macro action allowed only for service level
-      return false;
-    }
-
     if (!_.isNil(node) && !_.isNil(node.data) && !_.isNil(node.data.action) && !_.isNil(node.data.menuActions[method])) {
       if (mode !== DrawingBoardModes.EDIT || node.data.action === ServiceInstanceActions.Create) {
         return false;
@@ -298,7 +304,7 @@ export class SharedTreeService {
    ************************************************/
   getExistingInstancesWithDeleteMode(node, serviceModelId: string, type: string): number {
     let counter = 0;
-    const existingInstances = this.getServiceInstance(serviceModelId)[type];
+    const existingInstances = this._store.getState().service.serviceInstance[serviceModelId][type];
     const modelUniqueId = node.data.modelUniqueId;
     if (!_.isNil(existingInstances)) {
       for (let instanceKey in existingInstances) {

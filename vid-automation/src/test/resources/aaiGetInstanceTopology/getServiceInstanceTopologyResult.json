@@ -23,8 +23,7 @@
       },
       "type": "VL",
       "instanceName" : "NetInstance",
-      "modelCustomizationName": "ExtVL 0",
-      "isFailed": true
+      "modelCustomizationName": "ExtVL 0"
     }
   },
   "vnfs": {
