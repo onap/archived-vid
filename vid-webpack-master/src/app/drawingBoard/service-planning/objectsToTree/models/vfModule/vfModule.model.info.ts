@@ -104,16 +104,16 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     return newVfModule;
   }
 
-  createInstanceTreeNode(instance: VfModuleInstance, currentModel: VfModule, parentModel: VNFModel, modelName: string): VfModuleTreeNode | VfModuleTreeNode[] {
+  createInstanceTreeNode(instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any {
     let numberOfChilds = Object.keys(instance).length;
     if (numberOfChilds > 1) {
       let result: VfModuleTreeNode[] = [];
       for (let i = 0; i < numberOfChilds; i++) {
-        result.push(this.createNode(instance, currentModel, parentModel, modelName, i));
+        result.push(this.createNode(instance, model, parentModel, storeKey, i));
       }
       return result;
     } else {
-      return this.createNode(instance, currentModel, parentModel, modelName, 0);
+      return this.createNode(instance, model, parentModel, storeKey, 0);
     }
   }
 
@@ -355,8 +355,8 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
         method: (node, serviceModelId) => {
           this._store.dispatch(deleteActionVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId))
         },
-        visible: (node) => this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {
@@ -364,7 +364,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
           this._store.dispatch(deleteVFModuleField(node.data.modelName,  node.parent.data.vnfStoreKey, node.data.servicedId ,node.data.dynamicModelName, 'retainAssignments'));
         },
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
-        enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
+        enable: (node, serviceModelId) => this._sharedTreeService.shouldShowUndoDelete(node) && this._sharedTreeService.shouldShowDelete(node.parent, serviceModelId) && !this._sharedTreeService.isServiceOnDeleteMode(serviceModelId)
       },
       upgrade: {
         method: (node, serviceModelId) => {
