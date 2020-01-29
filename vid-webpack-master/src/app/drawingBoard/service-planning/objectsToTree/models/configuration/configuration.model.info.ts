@@ -38,7 +38,7 @@ export class ConfigurationModelInfo implements ILevelNodeInfo{
     return {};
   };
 
-  createInstanceTreeNode(instance: any, model: any, storeKey: string): any {return null;}
+  createInstanceTreeNode(instance: any, model: any, storeKey: string, serviceModelId: string): any {return null;}
 
   childNames: string[];
 
