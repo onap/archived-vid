@@ -382,6 +382,14 @@ export class SharedTreeService {
     });
   }
 
+  modelUniqueIdOrName = (instance, modelName?: string) =>
+    _.find([
+      instance.originalName,
+      this.modelUniqueId(instance),
+      modelName,
+    ], (value: any) => {
+      return !_.isEmpty(value) && _.isString(value);
+    });
 
   addGeneralInfoItems(modelInfoSpecificItems: ModelInformationItem[], type: ComponentInfoType, model, instance):ComponentInfoModel {
     let modelInfoItems: ModelInformationItem[] = [

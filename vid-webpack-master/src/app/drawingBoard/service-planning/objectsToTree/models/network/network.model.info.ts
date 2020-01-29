@@ -71,9 +71,9 @@ export class NetworkModelInfo implements ILevelNodeInfo {
    * @param serviceHierarchy - serviceHierarchy
    ************************************************************/
   getModel = (networkModelId: string, instance: NetworkInstance, serviceHierarchy): NetworkModel => {
-    const originalModelName = instance.originalName ? instance.originalName : networkModelId;
+    const uniqueIdOrName = this._sharedTreeService.modelUniqueIdOrName(instance, networkModelId);
     return new NetworkModel(
-      this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, originalModelName),
+      this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, uniqueIdOrName),
       this._featureFlagsService.getAllFlags());
   };
 

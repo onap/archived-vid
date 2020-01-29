@@ -29,8 +29,8 @@ export class CollectionResourceModelInfo implements ILevelNodeInfo{
   updateDynamicInputsDataFromModel = (currentModel): any => [];
 
   getModel = (collectionResourceModelId: string, instance: CollectionResourceInstance, serviceHierarchy): CollectionResourceModel => {
-    const originalModelName = instance.originalName ? instance.originalName : collectionResourceModelId;
-    return new CollectionResourceModel(this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, originalModelName));
+    const uniqueIdOrName = this._sharedTreeService.modelUniqueIdOrName(instance, collectionResourceModelId);
+    return new CollectionResourceModel(this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, uniqueIdOrName));
   };
 
 

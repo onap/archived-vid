@@ -51,8 +51,8 @@ export class VrfModelInfo implements ILevelNodeInfo {
   updateDynamicInputsDataFromModel = (currentModel): any => [];
 
   getModel = (vrfModelId: string, instance: VrfInstance, serviceHierarchy): VrfModel => {
-    const originalModelName = instance.originalName ? instance.originalName : vrfModelId;
-    return new VrfModel(this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, originalModelName));
+    const uniqueIdOrName = this._sharedTreeService.modelUniqueIdOrName(instance, vrfModelId);
+    return new VrfModel(this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, uniqueIdOrName));
   };
 
 
