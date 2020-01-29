@@ -96,8 +96,8 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
   }
 
   getModel(modelId: string, instance: any, serviceHierarchy): any {
-    const originalModelName = instance.originalName ? instance.originalName : modelId;
-    return new VnfGroupModel(this._sharedTreeService.modelByIdentifier(serviceHierarchy, this.name, originalModelName));
+    const uniqueIdOrName = this._sharedTreeService.modelUniqueNameOrId(instance);
+    return new VnfGroupModel(this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, uniqueIdOrName, modelId));
   }
 
   hasMissingData(instance, dynamicInputs: any, isEcompGeneratedNaming: boolean): boolean {

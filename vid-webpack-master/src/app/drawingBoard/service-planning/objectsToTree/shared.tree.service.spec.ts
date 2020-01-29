@@ -179,7 +179,7 @@ describe('Shared Tree Service', () => {
     let serviceModelFromHierarchy =
       getStore().service.serviceHierarchy["1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"];
 
-    expect(service.modelByIdentifier(serviceModelFromHierarchy, modelTypeName, modelUniqueIdOrName))
+    expect(service.modelByIdentifiers(serviceModelFromHierarchy, modelTypeName, modelUniqueIdOrName))
       .toHaveProperty("modelCustomizationName", expectedModelCustomizationName);
   });
 
@@ -192,7 +192,7 @@ describe('Shared Tree Service', () => {
     let serviceModelFromHierarchy =
       getStore().service.serviceHierarchy["1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd"];
 
-    expect(service.modelByIdentifier(serviceModelFromHierarchy, modelTypeName, modelUniqueIdOrName))
+    expect(service.modelByIdentifiers(serviceModelFromHierarchy, modelTypeName, modelUniqueIdOrName))
       .toBeUndefined();
   });
 

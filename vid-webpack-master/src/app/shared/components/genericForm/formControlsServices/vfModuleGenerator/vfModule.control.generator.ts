@@ -94,10 +94,10 @@ export class VfModuleControlGenerator {
   }
 
   private newVNFModel(serviceId: string, vnf: VnfInstance) {
-    const vnfModelName: string = vnf.originalName;
+    const vnfModelName: string = this._sharedTreeService.modelUniqueNameOrId(vnf);
 
     const serviceModelFromHierarchy = this.store.getState().service.serviceHierarchy[serviceId];
-    const model = this._sharedTreeService.modelByIdentifier(serviceModelFromHierarchy, "vnfs", vnfModelName);
+    const model = this._sharedTreeService.modelByIdentifiers(serviceModelFromHierarchy, "vnfs", vnfModelName);
     return new VNFModel(model);
   }
 
