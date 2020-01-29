@@ -64,7 +64,7 @@ export interface ILevelNodeInfo {
    * @param parentModel
    * @param storeKey - instance storeKey if exist (for duplicate)
    ************************************************************/
-  createInstanceTreeNode(instance: any, model: any, parentModel: any, storeKey: string): any
+  createInstanceTreeNode(instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any
 
   /***********************************************************
    * return if instance has some missing data

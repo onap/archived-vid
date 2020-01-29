@@ -85,11 +85,11 @@ export class NetworkModelInfo implements ILevelNodeInfo {
    * @param parentModel
    * @param storeKey - store key if exist
    ************************************************************/
-  createInstanceTreeNode = (instance: NetworkInstance, model: NetworkModel, parentModel, storeKey: string): NetworkTreeNode => {
+  createInstanceTreeNode = (instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any => {
     let node = new NetworkTreeNode(instance, model, storeKey);
     node.missingData = this.hasMissingData(instance, node, model.isEcompGeneratedNaming);
     node.typeName = this.typeName;
-    node.menuActions = this.getMenuAction(<any>node, model.uuid);
+    node.menuActions = this.getMenuAction(<any>node, serviceModelId);
     node.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
     node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
     node = this._sharedTreeService.addingStatusProperty(node);
@@ -234,8 +234,8 @@ export class NetworkModelInfo implements ILevelNodeInfo {
             });
           }
         },
-        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {

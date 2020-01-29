@@ -34,12 +34,12 @@ export class VpnModelInfo implements ILevelNodeInfo {
   };
 
 
-  createInstanceTreeNode = (instance: NetworkInstance, model: any, parentModel, storeKey: string): VpnTreeNode => {
+  createInstanceTreeNode = (instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any => {
     let node = new VpnTreeNode(instance, model, storeKey);
     node.missingData = this.hasMissingData(instance, node, model.isEcompGeneratedNaming);
     node = this._sharedTreeService.addingStatusProperty(node);
     node.typeName = this.typeName;
-    node.menuActions = this.getMenuAction(<any>node, model.uuid);
+    node.menuActions = this.getMenuAction(<any>node, serviceModelId);
     node.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
     node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
     node = this._sharedTreeService.addingStatusProperty(node);

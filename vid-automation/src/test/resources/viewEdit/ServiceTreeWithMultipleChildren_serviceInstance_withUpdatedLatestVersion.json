@@ -15,7 +15,7 @@
   "aicZoneName":null,
   "projectName":null,
   "rollbackOnFailure":null,
-  "isALaCarte":false,
+  "isALaCarte":true,
   "modelInfo":{
     "modelInvariantId":"d27e42cf-087e-4d31-88ac-6c4b7585f800",
     "modelVersionId": "6e59c5de-f052-46fa-aa7e-2fca9d674c44",

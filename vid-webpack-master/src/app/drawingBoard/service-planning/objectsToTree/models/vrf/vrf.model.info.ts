@@ -56,11 +56,11 @@ export class VrfModelInfo implements ILevelNodeInfo {
   };
 
 
-  createInstanceTreeNode = (instance: VrfInstance, model: VrfModel, parentModel, storeKey: string): VrfTreeNode => {
+  createInstanceTreeNode = (instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any => {
     let node = new VrfTreeNode(instance, model, storeKey);
     node.missingData = this.hasMissingData(instance, node, model.isEcompGeneratedNaming);
     node.typeName = this.typeName;
-    node.menuActions = this.getMenuAction(<any>node, model.uuid);
+    node.menuActions = this.getMenuAction(<any>node, serviceModelId);
     node.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
     node.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
     return node;
@@ -157,8 +157,8 @@ export class VrfModelInfo implements ILevelNodeInfo {
         method: (node, serviceModelId) => {
           this._store.dispatch(deleteActionVrfInstance(node.data.vrfStoreKey, serviceModelId));
         },
-        visible: (node) => this._sharedTreeService.shouldShowDelete(node),
-        enable: (node) => this._sharedTreeService.shouldShowDelete(node)
+        visible: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId),
+        enable: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId)
       },
       undoDelete: {
         method: (node, serviceModelId) => {
