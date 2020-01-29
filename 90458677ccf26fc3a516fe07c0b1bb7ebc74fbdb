@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b64c947_a1ea6ff2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/roles/RoleValidatorFactory.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-29T14:37:09Z",
+      "side": 1,
+      "message": "should be composed with `RoleValidatorBySubscriberAndServiceType`",
+      "range": {
+        "startLine": 52,
+        "startChar": 71,
+        "endLine": 52,
+        "endChar": 98
+      },
+      "revId": "90458677ccf26fc3a516fe07c0b1bb7ebc74fbdb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eeb88aea_d69f8417",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorFactoryTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-29T14:37:09Z",
+      "side": 1,
+      "message": "can remove Nokia",
+      "revId": "90458677ccf26fc3a516fe07c0b1bb7ebc74fbdb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4e49302_caad8fdf",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorFactoryTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-29T14:37:09Z",
+      "side": 1,
+      "message": "can use `emptyList()`",
+      "range": {
+        "startLine": 68,
+        "startChar": 48,
+        "endLine": 68,
+        "endChar": 56
+      },
+      "revId": "90458677ccf26fc3a516fe07c0b1bb7ebc74fbdb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0d6ae19_3210f50a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/roles/RoleValidatorFactoryTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-01-29T14:37:09Z",
+      "side": 1,
+      "message": "can remove param",
+      "range": {
+        "startLine": 73,
+        "startChar": 54,
+        "endLine": 73,
+        "endChar": 65
+      },
+      "revId": "90458677ccf26fc3a516fe07c0b1bb7ebc74fbdb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
