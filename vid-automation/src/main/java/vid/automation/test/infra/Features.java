@@ -58,6 +58,7 @@ public enum Features implements Feature {
     FLAG_2002_UNLIMITED_MAX,
     FLAG_2004_INSTANTIATION_TEMPLATES_POPUP,
     FLAG_2006_VFM_SDNC_PRELOAD_FILES,
+    FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY,
     ;
 
     public boolean isActive() {
