@@ -2,6 +2,7 @@ package org.onap.vid.api;
 
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.defaultPlacement;
 import static org.onap.simulator.presetGenerator.presets.aai.PresetAAIStandardQueryGet.ofL3Network;
@@ -13,12 +14,15 @@ import static org.onap.simulator.presetGenerator.presets.ecompportal_att.EcompPo
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
+import static vid.automation.test.Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_CRAIG_ROBERTS;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 import static vid.automation.test.utils.TestHelper.GET_SERVICE_MODELS_BY_DISTRIBUTION_STATUS;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
@@ -896,6 +900,31 @@ public class AaiApiTest extends BaseApiAaiTest {
         ResponseEntity<String> response = restTemplate.getForEntity(urlBuilder.build().toString(), String.class);
         assertTrue(response.getStatusCode().is2xxSuccessful());
         assertThat(response.getBody(), jsonEquals(getResourceAsString(AAI_VNFS_FOR_CHANGE_MANAGEMENT_JSON_BY_PARAMS)));
+    }
+
+    @Test
+    public void searchServiceInstances_serviceInstanceOfAnotherSubscriber_authIsFalse() {
+        String craigRobertsSubscriberId = "31739f3e-526b-11e6-beb8-9e71128cae77";
+        String shaniiiiServiceInstanceId = "4ea864f2-b946-473a-b51c-51a7c10b8391";
+        boolean expectedPermission = Features.FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY.isActive();
+
+        SimulatorApi.registerExpectation(GET_SUBSCRIBERS_FOR_CUSTOMER_CRAIG_ROBERTS, CLEAR_THEN_SET);
+
+        JsonNode serviceInstancesResult = restTemplate
+            .getForObject(uri + "/search_service_instances?subscriberId=" + craigRobertsSubscriberId, JsonNode.class);
+
+        assertThat(serviceInstancesResult.path("service-instances").isArray(), is(true));
+
+        ArrayNode servicesArray = ((ArrayNode) serviceInstancesResult.path("service-instances"));
+
+        JsonNode shaniiiServiceResult = Streams.fromIterator(servicesArray.iterator())
+            .filter(it -> it.path("serviceInstanceId").asText().equals(shaniiiiServiceInstanceId))
+            .findAny()
+            .orElseThrow(() -> new AssertionError("could not find serviceInstanceId=" + shaniiiiServiceInstanceId));
+
+        assertThat(shaniiiServiceResult.toString(),
+            shaniiiServiceResult.path("isPermitted").booleanValue(), is(expectedPermission));
+
     }
 
     private void assertResponse(Object expected, String response) {
