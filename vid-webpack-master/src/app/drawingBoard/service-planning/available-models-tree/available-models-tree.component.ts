@@ -134,7 +134,13 @@ export class AvailableModelsTreeComponent {
     this.highlightInstances.emit(node.data.modelUniqueId);
     if (FeatureFlagsService.getFlagState(Features.FLAG_1906_COMPONENT_INFO, this.store)) {
       const serviceHierarchy = this._store.getState().service.serviceHierarchy[this.serviceModelId];
-      const model = node.data.getModel(node.data.name, node.data, serviceHierarchy);
+
+      const instanceModel = this._sharedTreeService.modelByIdentifiers(
+        serviceHierarchy, node.data.modelTypeName,
+        this._sharedTreeService.modelUniqueNameOrId(node.data), node.data.name
+      );
+
+      const model = node.data.getModel(instanceModel);
       const modelInfoItems  = node.data.getInfo(model, null);
       const componentInfoModel :ComponentInfoModel = this._sharedTreeService.addGeneralInfoItems(modelInfoItems, node.data.componentInfoType, model, null);
       ComponentInfoService.triggerComponentInfoChange.next(componentInfoModel);

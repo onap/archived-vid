@@ -1,6 +1,5 @@
 import {DynamicInputsService} from "../../dynamicInputs.service";
 import {ILevelNodeInfo} from "../basic.model.info";
-import {NetworkInstance} from "../../../../../shared/models/networkInstance";
 import {NetworkModel} from "../../../../../shared/models/networkModel";
 import {NetworkTreeNode} from "../../../../../shared/models/networkTreeNode";
 import {SharedTreeService} from "../../shared.tree.service";
@@ -65,15 +64,12 @@ export class NetworkModelInfo implements ILevelNodeInfo {
   };
 
   /***********************************************************
-   * return network model
-   * @param networkModelId - current Model id
-   * @param instance
-   * @param serviceHierarchy - serviceHierarchy
+   * return a NodeModel object instance
+   * @param instanceModel - The model of the instance (usually extracted from serviceHierarchy store)
    ************************************************************/
-  getModel = (networkModelId: string, instance: NetworkInstance, serviceHierarchy): NetworkModel => {
-    const uniqueIdOrName = this._sharedTreeService.modelUniqueNameOrId(instance);
+  getModel = (instanceModel: any): NetworkModel => {
     return new NetworkModel(
-      this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, uniqueIdOrName, networkModelId),
+      instanceModel,
       this._featureFlagsService.getAllFlags());
   };
 
