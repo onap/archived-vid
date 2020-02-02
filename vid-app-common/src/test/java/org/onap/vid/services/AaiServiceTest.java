@@ -20,22 +20,23 @@
 
 package org.onap.vid.services;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.any;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.withSettings;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.mockito.InjectMocks;
@@ -44,6 +45,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiResponse;
+import org.onap.vid.aai.ServiceInstance;
 import org.onap.vid.aai.model.AaiGetPnfResponse;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
@@ -53,7 +55,6 @@ import org.onap.vid.aai.model.RelationshipData;
 import org.onap.vid.aai.model.RelationshipList;
 import org.onap.vid.aai.model.ServiceRelationships;
 import org.onap.vid.model.aaiTree.AAITreeNode;
-import org.onap.vid.roles.Role;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.roles.RoleValidatorFactory;
 import org.testng.annotations.BeforeMethod;
@@ -218,6 +219,61 @@ public class AaiServiceTest {
 
         boolean anyMatch = aaiService.isInstanceGroupsNotMatchRoleAndType(instanceGroups, "SERVICE-ACCESS", "LOAD-GROUP");
         assertThat(anyMatch, equalTo(expectedMatch));
+    }
+
+    @DataProvider
+    public static Object[][] dataToDestroy() {
+        return new Object[][]{
+            {"nothing"}, {"relationship-list"}, {"relationship"}, {"relationship-data"} ,{"owning-entity-id"}
+        };
+    }
+
+
+    @Test(dataProvider = "dataToDestroy")
+    public void relatedOwningEntityId_givenInstanceAndOptionalError_extractCorrectlyOrReturnNull(String dataToDestroy) throws JsonProcessingException {
+        ServiceInstance serviceInstance = new ObjectMapper().readValue((""
+            + "{ "
+            + "  \"service-instance-id\": \"5d521981-33be-4bb5-bb20-5616a9c52a5a\", "
+            + "  \"service-instance-name\": \"dfgh\", "
+            + "  \"service-type\": \"\", "
+            + "  \"service-role\": \"\", "
+            + "  \"environment-context\": \"null\", "
+            + "  \"workload-context\": \"null\", "
+            + "  \"model-invariant-id\": \"331a194d-9248-4533-88bc-62c812ccb5c1\", "
+            + "  \"model-version-id\": \"171b3887-e73e-479d-8ef8-2690bf74f2aa\", "
+            + "  \"resource-version\": \"1508832105498\", "
+            + "  \"orchestration-status\": \"Active\", "
+            + "  \"relationship-list\": { "
+            + "    \"relationship\": [ "
+            + "      { "
+            + "        \"related-to\": \"project\", "
+            + "        \"related-link\": \"/aai/v11/business/projects/project/Kennedy\", "
+            + "        \"relationship-data\": [ "
+            + "          { "
+            + "            \"relationship-key\": \"project.project-name\", "
+            + "            \"relationship-value\": \"Kennedy\" "
+            + "          } "
+            + "        ] "
+            + "      }, "
+            + "      { "
+            + "        \"related-to\": \"owning-entity\", "
+            + "        \"related-link\": \"/aai/v11/business/owning-entities/owning-entity/4d4ecf59-41f1-40d4-818d-885234680a42\", "
+            + "        \"relationship-data\": [ "
+            + "          { "
+            + "            \"relationship-key\": \"owning-entity.owning-entity-id\", "
+            + "            \"relationship-value\": \"4d4ecf59-41f1-40d4-818d-885234680a42\" "
+            + "          } "
+            + "        ] "
+            + "      } "
+            + "    ] "
+            + "  } "
+            + "}").replace(dataToDestroy, "destroyed"), ServiceInstance.class);
+
+        if (dataToDestroy.equals("nothing")) {
+            assertThat(aaiService.relatedOwningEntityId(serviceInstance), is("4d4ecf59-41f1-40d4-818d-885234680a42"));
+        } else {
+            assertThat(aaiService.relatedOwningEntityId(serviceInstance), is(nullValue()));
+        }
     }
 
 }

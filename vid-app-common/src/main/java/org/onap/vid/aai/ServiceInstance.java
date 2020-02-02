@@ -22,6 +22,7 @@ package org.onap.vid.aai;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.onap.vid.aai.model.RelationshipList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceInstance {
@@ -49,5 +50,8 @@ public class ServiceInstance {
 
 	@JsonProperty("model-version-id")
 	public String modelVersionId;
+
+	@JsonProperty("relationship-list")
+	public RelationshipList relationshipList;
 
 }
