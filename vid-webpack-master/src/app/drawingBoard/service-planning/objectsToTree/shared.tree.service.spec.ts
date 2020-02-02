@@ -196,7 +196,7 @@ describe('Shared Tree Service', () => {
       .toBeUndefined();
   });
 
-  test('openAuditInfoModal should open modal for failed instance', () => {
+  test('openAuditInfoModalInsideIframe should open modal for failed instance', () => {
     jest.spyOn(AuditInfoModalComponent.openInstanceAuditInfoModal, 'next');
 
     let modelInfoServiceMock: ILevelNodeInfo = new VnfModelInfo(null, null,
@@ -338,6 +338,50 @@ describe('Shared Tree Service', () => {
       let res = service.shouldShowRemoveAndEdit(node);
       expect(res).toBe(enabled);
     });
+
+
+  const isDiffCustomizationUuidProvider = [
+    ['currentVfModule customizationUuid and customizationUuid vfModuleHierarchy are diff' ,true,  "mDNS 01222020 0", "82160e6e-d9c4-45ef-bd19-01573ab11b61"],
+    ['currentVfModule customizationUuid and customizationUuid vfModuleHierarchy are same' , false, "mDNS 01222020 0", 'c9b32003-febc-44e0-a97f-7630fa7fa4a0'],
+    ['current vnf parent not exist' , true, "mDNS 01222020 1", 'c9b32003-febc-44e0-a97f-7630fa7fa4a0'],
+    ['vfModuleHierarchy is not part of the current model' , true, "mDNS 01222020 1", 'c9b32003-febc-44e0-a97f-7630fa7fa4a0']];
+
+  each(isDiffCustomizationUuidProvider).test('isDiffCustomizationUuid: when  %s should return %s', (description, expected, vnfModelName, customizationUuid) => {
+    const serviceModelId : string = 'a243da28-c11e-45a8-9f26-0284a9a789bc';
+    const vfModuleModelName : string = 'mdns012220200..Mdns01222020..base_dns..module-0';
+    spyOn(store, 'getState').and.returnValue({
+      service : {
+        serviceHierarchy : {
+          [serviceModelId] : {
+            vnfs : {
+              [vnfModelName] : {
+                vfModules : {
+                  [vfModuleModelName] : {
+                    customizationUuid : customizationUuid
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    const node = <any>{
+      data:{
+        modelCustomizationId : 'c9b32003-febc-44e0-a97f-7630fa7fa4a0',
+        modelName : vfModuleModelName
+      },
+      parent : {
+        data : {
+          modelName : "mDNS 01222020 0"
+        }
+      }
+    };
+
+    const isDiffCustomizationUuidResponse : boolean = service.isDiffCustomizationUuid(node, serviceModelId);
+    expect(isDiffCustomizationUuidResponse).toEqual(expected);
+  });
 
 });
 
