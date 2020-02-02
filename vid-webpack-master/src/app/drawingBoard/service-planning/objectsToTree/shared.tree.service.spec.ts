@@ -343,35 +343,6 @@ describe('Shared Tree Service', () => {
 
 function getStore() {
   return {
-    "global": {
-      "name": null,
-      "flags": {
-        "EMPTY_DRAWING_BOARD_TEST": false,
-        "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
-        "FLAG_ADD_MSO_TESTAPI_FIELD": true,
-        "FLAG_SERVICE_MODEL_CACHE": true,
-        "FLAG_SHOW_ASSIGNMENTS": true,
-        "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
-        "FLAG_A_LA_CARTE_AUDIT_INFO": true,
-        "FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST": true,
-        "FLAG_PRESENT_PROVIDER_NETWORKS_ASSOCIATIONS": true,
-        "FLAG_1902_NEW_VIEW_EDIT": true,
-        "FLAG_1810_IDENTIFY_SERVICE_FOR_NEW_UI": false,
-        "FLAG_1902_VNF_GROUPING": true,
-        "FLAG_SHOW_VERIFY_SERVICE": true,
-        "FLAG_ASYNC_ALACARTE_VFMODULE": true,
-        "FLAG_ASYNC_ALACARTE_VNF": true,
-        "FLAG_1810_AAI_LOCAL_CACHE": true,
-        "FLAG_EXP_USE_DEFAULT_HOST_NAME_VERIFIER": false,
-        "FLAG_EXP_ANY_ALACARTE_NEW_INSTANTIATION_UI": false,
-        "FLAG_SUPPLEMENTARY_FILE": true,
-        "FLAG_5G_IN_NEW_INSTANTIATION_UI": true,
-        "FLAG_RESTRICTED_SELECT": false,
-        "FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY": true
-      },
-      "drawingBoardStatus": "VIEW",
-      "type": "UPDATE_DRAWING_BOARD_STATUS"
-    },
     "service": {
       "serviceHierarchy": {
         "1a80c596-27e5-4ca9-b5bb-e03a7fd4c0fd": {
@@ -971,55 +942,6 @@ function getStore() {
               }
             }
           }
-        },
-        "b75e0d22-05ff-4448-9266-5f0d4e1dbbd6": {
-          "service": {
-            "uuid": "b75e0d22-05ff-4448-9266-5f0d4e1dbbd6",
-            "invariantUuid": "5b9c0f33-eec1-484a-bf77-736a6644d7a8",
-            "name": "Using VID for VoIP Network Instantiations Shani",
-            "version": "1.0",
-            "toscaModelURL": null,
-            "category": "VoIP Call Control",
-            "serviceType": "",
-            "serviceRole": "",
-            "description": "Using VID for VoIP Network Instantiations Shani",
-            "serviceEcompNaming": "true",
-            "instantiationType": "ClientConfig",
-            "inputs": {},
-            "vidNotions": {"instantiationUI": "legacy", "modelCategory": "other", "viewEditUI": "legacy"}
-          },
-          "vnfs": {},
-          "networks": {
-            "AIC30_CONTRAIL_BASIC 0": {
-              "uuid": "ac815c68-35b7-4ea4-9d04-92d2f844b27c",
-              "invariantUuid": "de01afb5-532b-451d-aac4-ff9ff0644060",
-              "description": "Basic contrail 3.0.x L3 network for AIC 3.x sites. ",
-              "name": "AIC30_CONTRAIL_BASIC",
-              "version": "3.0",
-              "customizationUuid": "e94d61f7-b4b2-489a-a4a7-30b1a1a80daf",
-              "inputs": {},
-              "commands": {},
-              "properties": {
-                "network_assignments": "{is_external_network=false, ipv4_subnet_default_assignment={min_subnets_count=1}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={min_subnets_count=1}}",
-                "exVL_naming": "{ecomp_generated_naming=true}",
-                "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
-                "network_scope": "Service",
-                "network_type": "AIC30_CONTRAIL_BASIC",
-                "network_technology": "Contrail",
-                "network_homing": "{ecomp_selected_instance_node_target=false}"
-              },
-              "type": "VL",
-              "modelCustomizationName": "AIC30_CONTRAIL_BASIC 0"
-            }
-          },
-          "collectionResources": {},
-          "configurations": {},
-          "fabricConfigurations": {},
-          "serviceProxies": {},
-          "vfModules": {},
-          "volumeGroups": {},
-          "pnfs": {},
-          "vnfGroups": {}
         }
       },
       "serviceInstance": {

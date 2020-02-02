@@ -39,6 +39,7 @@ describe('Retry Page', function () {
       res.vnfs["2017-388_PASQUALE-vPE 0"].action = 'Create';
       res.vnfs["2017-488_PASQUALE-vPE 0"].action = 'Create';
       res.networks["ExtVL 0"].action = 'Create';
+      res.networks["ExtVL 0"].isFailed = true;
       res.networks["ExtVL 0"].statusMessage = 'Network instantiation failed message';
 
       // Adding VFModule with isFailed.
@@ -112,6 +113,7 @@ describe('Retry Page', function () {
       // Adding VFModule with isFailed.
       res.vnfs["2017-488_PASQUALE-vPE 0"].vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"]["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot"].isFailed = true;
       res.vnfs["2017-488_PASQUALE-vPE 0"].vfModules["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0"]["2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot"].action = 'Create';
+      res.networks["ExtVL 0"].isFailed = true;
 
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/responceForFailedInstance.json').then((res) => {
         jsonBuilderAndMock.basicJson(

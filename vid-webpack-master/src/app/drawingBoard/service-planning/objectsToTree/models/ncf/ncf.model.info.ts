@@ -32,7 +32,7 @@ export class NcfModelInfo implements ILevelNodeInfo {
 
   updateDynamicInputsDataFromModel = (currentModel): any => [];
 
-  getModel = (modelId: string, instance: any, serviceHierarchy): any => {
+  getModel = (instanceModel: any): any => {
     return new Level1Model();
   };
 

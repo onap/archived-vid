@@ -8,10 +8,12 @@ import {ErrorMsgService} from "../../../../shared/components/error-msg/error-msg
 import {FeatureFlagsService, Features} from "../../../../shared/services/featureFlag/feature-flags.service";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../shared/store/reducers";
+import {SharedTreeService} from "../shared.tree.service";
 
 @Injectable()
 export class ObjectToInstanceTreeService {
-  constructor(private _objectToTreeService: ObjectToTreeService, private _errorMsgService: ErrorMsgService, private store: NgRedux<AppState>) {
+  constructor(private _objectToTreeService: ObjectToTreeService, private _errorMsgService: ErrorMsgService,
+              private store: NgRedux<AppState>, private _sharedTreeService: SharedTreeService) {
     this.numberOfFailed = 0;
     this.numberOfElements = 0;
 
@@ -76,7 +78,11 @@ export class ObjectToInstanceTreeService {
    * @param parentType
    ****************************************************************/
   getNodeInstance(modelName: string, parentModel: any, instance: any, serviceHierarchy, option: ILevelNodeInfo, serviceModelId: string, parentType ?: string) {
-    const model = option.getModel(modelName, instance, serviceHierarchy);
+    let instanceModel = this._sharedTreeService.modelByIdentifiers(
+      serviceHierarchy, option.name,
+      this._sharedTreeService.modelUniqueNameOrId(instance), modelName
+    );
+    const model = option.getModel(instanceModel);
 
     let optionalNodes = option.createInstanceTreeNode(instance, model, parentModel, modelName, serviceModelId);
     this.increaseNumberOfFailed(optionalNodes);

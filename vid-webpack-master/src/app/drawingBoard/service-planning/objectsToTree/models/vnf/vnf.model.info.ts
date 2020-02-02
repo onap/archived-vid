@@ -87,10 +87,9 @@ export class VnfModelInfo implements ILevelNodeInfo {
    * @param instance - vnf instance
    * @param serviceHierarchy - serviceHierarchy
    ************************************************************/
-  getModel = (vnfModelId: string, instance: VnfInstance, serviceHierarchy): VNFModel => {
-    const uniqueIdOrName = this._sharedTreeService.modelUniqueNameOrId(instance);
+  getModel = (instanceModel: any): VNFModel => {
     return new VNFModel(
-      this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, uniqueIdOrName, vnfModelId),
+      instanceModel,
       this._featureFlagsService.getAllFlags());
   };
 
