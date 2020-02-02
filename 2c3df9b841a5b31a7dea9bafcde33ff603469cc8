@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "493b5ed9_50ed37bb",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 6154
+      },
+      "writtenOn": "2020-02-02T10:50:29Z",
+      "side": 1,
+      "message": "(instance : object)",
+      "revId": "2c3df9b841a5b31a7dea9bafcde33ff603469cc8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
