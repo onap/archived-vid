@@ -1,6 +1,6 @@
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {AvailableNodeIcons} from "../../available-models-tree/available-models-tree.service";
-import {ComponentInfoModel, ComponentInfoType} from "../../component-info/component-info-model";
+import {ComponentInfoType} from "../../component-info/component-info-model";
 import {ModelInformationItem} from "../../../../shared/components/model-information/model-information.component";
 
 export interface ILevelNodeInfo {
@@ -44,12 +44,11 @@ export interface ILevelNodeInfo {
   updatePosition(node, that, instanceId, parentStoreKey?) : void;
 
   /***********************************************************
-   * return object instance
-   * @param modelId - The model id
-   * @param serviceHierarchy - The serviceHierarchy store
-   * @param instance - existing instance details
+   * return a NodeModel object instance
+   * @param instanceModel - The model of the instance (usually extracted from
+   *        serviceHierarchy store)
    ************************************************************/
-  getModel(modelId: string, instance: any, serviceHierarchy): any;
+  getModel(instanceModel: any): any;
 
   /***********************************************************
    * return dynamic inputs of current model
