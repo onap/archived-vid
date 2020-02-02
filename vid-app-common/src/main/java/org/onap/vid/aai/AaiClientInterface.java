@@ -49,7 +49,7 @@ public interface AaiClientInterface extends ProbeInterface {
 
     AaiResponse<SubscriberList> getAllSubscribers();
 
-    AaiResponse getSubscriberData(String subscriberId, boolean omitServiceInstances);
+    AaiResponse<Services> getSubscriberData(String subscriberId, boolean omitServiceInstances);
 
     AaiResponse getServices();
 
