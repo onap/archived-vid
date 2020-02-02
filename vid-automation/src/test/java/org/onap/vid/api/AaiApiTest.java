@@ -903,7 +903,7 @@ public class AaiApiTest extends BaseApiAaiTest {
     }
 
     @Test
-    public void searchServiceInstances_serviceInstanceOfAnotherSubscriber_authIsFollwingFeatureToggle() {
+    public void searchServiceInstances_serviceInstanceOfAnotherSubscriber_authIsFollowingFeatureToggle() {
         String craigRobertsSubscriberId = "31739f3e-526b-11e6-beb8-9e71128cae77";
         String aServiceInstanceId = "4ea864f2-b946-473a-b51c-51a7c10b8391";
         String aServiceOwningEntityId = "f160c875-ddd1-4ef5-84d8-d098784daa3a";
@@ -913,6 +913,7 @@ public class AaiApiTest extends BaseApiAaiTest {
 
         SimulatorApi.registerExpectation(GET_SUBSCRIBERS_FOR_CUSTOMER_CRAIG_ROBERTS,
             ImmutableMap.of(aServiceOwningEntityId, currentUserAuthorizedOwningEntityId), CLEAR_THEN_SET);
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), APPEND);
 
         JsonNode serviceInstancesResult = restTemplate
             .getForObject(uri + "/search_service_instances?subscriberId=" + craigRobertsSubscriberId, JsonNode.class);

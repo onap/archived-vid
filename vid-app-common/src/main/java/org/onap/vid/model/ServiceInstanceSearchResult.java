@@ -22,9 +22,11 @@ package org.onap.vid.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
+import org.onap.vid.roles.WithPermissionPropertiesOwningEntity;
 import org.onap.vid.roles.WithPermissionPropertiesSubscriberAndServiceType;
 
-public class ServiceInstanceSearchResult implements WithPermissionPropertiesSubscriberAndServiceType {
+public class ServiceInstanceSearchResult
+	implements WithPermissionPropertiesSubscriberAndServiceType, WithPermissionPropertiesOwningEntity {
 
 	private final String SUBSCRIBER_ID_FRONTEND_ALIAS = "globalCustomerId";
 
@@ -42,14 +44,16 @@ public class ServiceInstanceSearchResult implements WithPermissionPropertiesSubs
 
 	private String aaiModelVersionId;
 
+	private String owningEntityId;
+
 	private boolean isPermitted;
 
 	public ServiceInstanceSearchResult(){
 	}
 	
 	public ServiceInstanceSearchResult(String serviceInstanceId, String subscriberId, String serviceType,
-									   String serviceInstanceName, String subscriberName, String aaiModelInvariantId,
-									   String aaiModelVersionId, boolean isPermitted) {
+		String serviceInstanceName, String subscriberName, String aaiModelInvariantId,
+		String aaiModelVersionId, String owningEntityId, boolean isPermitted) {
 		this.serviceInstanceId = serviceInstanceId;
 		this.subscriberId = subscriberId;
 		this.serviceType = serviceType;
@@ -57,6 +61,7 @@ public class ServiceInstanceSearchResult implements WithPermissionPropertiesSubs
 		this.subscriberName = subscriberName;
 		this.aaiModelInvariantId = aaiModelInvariantId;
 		this.aaiModelVersionId = aaiModelVersionId;
+		this.owningEntityId = owningEntityId;
 		this.isPermitted = isPermitted;
 	}
 
@@ -117,6 +122,15 @@ public class ServiceInstanceSearchResult implements WithPermissionPropertiesSubs
 
 	public void setAaiModelVersionId(String aaiModelVersionId) {
 		this.aaiModelVersionId = aaiModelVersionId;
+	}
+
+	@Override
+	public String getOwningEntityId() {
+		return owningEntityId;
+	}
+
+	public void setOwningEntityId(String owningEntityId) {
+		this.owningEntityId = owningEntityId;
 	}
 
 	public boolean getIsPermitted() {

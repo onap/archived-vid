@@ -528,9 +528,9 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
-    public AaiResponse getSubscriberData(String subscriberId, boolean omitServiceInstances) {
+    public AaiResponse<Services> getSubscriberData(String subscriberId, boolean omitServiceInstances) {
         String depth = omitServiceInstances ? "1" : "2";
-        AaiResponse subscriberDataResponse;
+        AaiResponse<Services> subscriberDataResponse;
         Response resp = doAaiGet(BUSINESS_CUSTOMERS_CUSTOMER + subscriberId + "?depth=" + depth, false);
         subscriberDataResponse = processAaiResponse(resp, Services.class, null);
         return subscriberDataResponse;
@@ -617,7 +617,7 @@ public class AaiClient implements AaiClientInterface {
         }
     }
 
-    private AaiResponse processAaiResponse(Response resp, Class classType, String responseBody) {
+    private <T> AaiResponse<T> processAaiResponse(Response resp, Class<? extends T> classType, String responseBody) {
         return processAaiResponse(resp, classType, responseBody, VidObjectMapperType.CODEHAUS);
     }
 

@@ -21,6 +21,8 @@
 
 package org.onap.vid.services;
 
+import static java.util.Collections.emptyList;
+import static org.apache.commons.collections4.ListUtils.emptyIfNull;
 import static org.onap.vid.aai.AaiClient.QUERY_FORMAT_RESOURCE;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
@@ -33,8 +35,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
@@ -98,6 +102,7 @@ public class AaiServiceImpl implements AaiService {
     private static final String SERVICE_INSTANCE_ID = "service-instance.service-instance-id";
     private static final String SERVICE_TYPE = "service-subscription.service-type";
     private static final String CUSTOMER_ID = "customer.global-customer-id";
+    private static final String OWNING_ENTITY_ID = "owning-entity.owning-entity-id";
     private static final String SERVICE_INSTANCE_NAME = "service-instance.service-instance-name";
     private static final String TENANT_NODE_TYPE = "tenant";
     private static final String CLOUD_REGION_NODE_TYPE = "cloud-region";
@@ -330,9 +335,11 @@ public class AaiServiceImpl implements AaiService {
 
         if (serviceSubscription.serviceInstances != null) {
             for (ServiceInstance serviceInstance : serviceSubscription.serviceInstances.serviceInstance) {
+
                 ServiceInstanceSearchResult serviceInstanceSearchResult =
-                        new ServiceInstanceSearchResult(serviceInstance.serviceInstanceId, subscriberId, serviceType, serviceInstance.serviceInstanceName,
-                                subscriberName, serviceInstance.modelInvariantId, serviceInstance.modelVersionId, false);
+                        new ServiceInstanceSearchResult(serviceInstance.serviceInstanceId, subscriberId, serviceType,
+                            serviceInstance.serviceInstanceName, subscriberName, serviceInstance.modelInvariantId,
+                            serviceInstance.modelVersionId, relatedOwningEntityId(serviceInstance), false);
 
                 serviceInstanceSearchResult.setIsPermitted(roleValidator.isServicePermitted(serviceInstanceSearchResult));
 
@@ -343,6 +350,43 @@ public class AaiServiceImpl implements AaiService {
         }
 
         return results;
+    }
+
+    protected String relatedOwningEntityId(ServiceInstance serviceInstance) {
+        /*
+        For reference, consider the service-instance structure below. Method will null-safely extract the
+        `relationship-value` where `relationship-key` == `owning-entity.owning-entity-id`.
+
+        {
+          "service-instance-id": "5d521981-33be-4bb5-bb20-5616a9c52a5a",
+          ...
+          "relationship-list": {
+            "relationship": [
+              {
+                "related-to": "owning-entity",
+                "related-link": "/aai/v11/business/owning-entities/owning-entity/4d4ecf59-41f1-40d4-818d-885234680a42",
+                "relationship-data": [
+                  {
+                    "relationship-key": "owning-entity.owning-entity-id",
+                    "relationship-value": "4d4ecf59-41f1-40d4-818d-885234680a42"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+        */
+
+        Stream<RelationshipData> allRelationships =
+            Optional.ofNullable(serviceInstance.relationshipList)
+                .map(it -> it.getRelationship())
+                .map(it -> it.stream().flatMap(r -> emptyIfNull(r.getRelationDataList()).stream()))
+                .orElse(Stream.empty());
+
+        return allRelationships
+            .filter(r -> StringUtils.equals(r.getRelationshipKey(), OWNING_ENTITY_ID))
+            .map(it -> it.getRelationshipValue())
+            .findAny().orElse(null);
     }
 
     private boolean serviceInstanceMatchesIdentifier(String instanceIdentifier, ServiceInstance serviceInstance) {
@@ -672,7 +716,7 @@ public class AaiServiceImpl implements AaiService {
             return aaiTree.stream().map(VpnBindingKt::from).collect(Collectors.toList());
         } catch (ExceptionWithRequestInfo exception) {
             if (Objects.equals(404, exception.getHttpCode())) {
-                return Collections.emptyList();
+                return emptyList();
             }
             throw exception;
         }
@@ -688,7 +732,7 @@ public class AaiServiceImpl implements AaiService {
             return aaiTree.stream().map(Network::from).collect(Collectors.toList());
         } catch (ExceptionWithRequestInfo exception) {
             if (Objects.equals(404, exception.getHttpCode())) {
-                return Collections.emptyList();
+                return emptyList();
             }
             throw exception;
         }
