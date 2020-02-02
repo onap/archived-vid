@@ -27,7 +27,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <epsdk.version>2.6.0</epsdk.version>
         <epsdk.overlay.version>2.5.0</epsdk.overlay.version>
-        <springframework.version>5.2.0.RELEASE</springframework.version>
+        <springframework.version>5.2.3.RELEASE</springframework.version>
         <springframework.orm.version>4.3.22.RELEASE</springframework.orm.version>
         <!-- epsdk-core is importing this class, which is only on spring-orm 4 but not in orm 5:
          org.springframework.orm.hibernate4.HibernateTransactionManager
