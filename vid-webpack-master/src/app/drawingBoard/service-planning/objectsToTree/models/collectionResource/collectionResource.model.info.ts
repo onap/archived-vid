@@ -28,11 +28,9 @@ export class CollectionResourceModelInfo implements ILevelNodeInfo{
 
   updateDynamicInputsDataFromModel = (currentModel): any => [];
 
-  getModel = (collectionResourceModelId: string, instance: CollectionResourceInstance, serviceHierarchy): CollectionResourceModel => {
-    const uniqueIdOrName = this._sharedTreeService.modelUniqueNameOrId(instance);
-    return new CollectionResourceModel(this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, uniqueIdOrName, collectionResourceModelId));
+  getModel = (instanceModel): CollectionResourceModel => {
+    return new CollectionResourceModel(instanceModel);
   };
-
 
   createInstanceTreeNode = (instance: any, model: any, parentModel: any, storeKey: string, serviceModelId: string): any => {
       let node = new CollectionResourceTreeNode(instance, model, storeKey);

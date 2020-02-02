@@ -26,14 +26,11 @@ export class ConfigurationModelInfo implements ILevelNodeInfo{
   getType = () : string => "Configuration";
 
   /***********************************************************
-   * return configuration model
-   * @param configurationModelId - current Model id
-   * @param serviceHierarchy - serviceHierarchy
+   * @param instanceModel - The model of the instance (usually extracted from serviceHierarchy store)
    ************************************************************/
-  getModel = (configurationModelId : string, serviceHierarchy) : any =>{
-    const model = this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, configurationModelId);
-    if (!_.isNil(model)) {
-      return model;
+  getModel = (instanceModel: any) : any =>{
+    if (!_.isNil(instanceModel)) {
+      return instanceModel;
     }
     return {};
   };
