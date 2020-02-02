@@ -14,6 +14,7 @@ describe('Available Models Tree Service', () => {
   let injector;
   let service: AvailableModelsTreeService;
   let httpMock: HttpTestingController;
+  let sharedTreeService: SharedTreeService;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -27,6 +28,7 @@ describe('Available Models Tree Service', () => {
       injector = getTestBed();
       service = injector.get(AvailableModelsTreeService);
       httpMock = injector.get(HttpTestingController);
+      sharedTreeService = injector.get(SharedTreeService);
   })().then(done).catch(done.fail));
 
 
@@ -99,6 +101,8 @@ describe('Available Models Tree Service', () => {
       "isEcompGeneratedNaming": false,
       "typeName": "VRF",
       "componentInfoType": "VRF",
+      "data": {
+      },
       "getModel" : ()=>{
         return  {
           min : 1
@@ -158,7 +162,7 @@ describe('Available Models Tree Service', () => {
                   "physicalName": "sriovnet0",
                   "instanceId": "46fcb25a-e7ba-4d96-99ba-3bb6eae6aba7",
                   "serviceName": "LPPVPN",
-                  "serv§iceUUID": "VPN1271",
+                  "serviceUUID": "VPN1271",
                   "tenantName": "ecomp_ispt",
                   "lcpCloudRegionId": "USA,EMEA",
                   "modelInfo": {
@@ -220,6 +224,8 @@ describe('Available Models Tree Service', () => {
         }
       }
     };
+
+    spyOn(sharedTreeService, 'modelByIdentifiers').and.returnValue({});
 
     const serviceModelId :string = '4117a0b6-e234-467d-b5b9-fe2f68c8b0fc';
 

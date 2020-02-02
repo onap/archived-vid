@@ -122,6 +122,7 @@ export class ObjectToModelTreeService {
     node.getMenuAction = (node, serviceId) => levelNodeInfo.getMenuAction(node, serviceId);
     node.showNodeIcons = (node, serviceId) => levelNodeInfo.showNodeIcons(node, serviceId);
     node.typeName = levelNodeInfo.typeName;
+    node.modelTypeName = levelNodeInfo.name;
     node.getModel = levelNodeInfo.getModel.bind(levelNodeInfo);
     node.getInfo = !_.isNil(levelNodeInfo.getInfo) ? levelNodeInfo.getInfo.bind(levelNodeInfo) : () => {
     };

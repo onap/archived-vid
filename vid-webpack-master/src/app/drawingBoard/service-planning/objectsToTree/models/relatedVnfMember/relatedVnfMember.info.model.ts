@@ -11,7 +11,6 @@ import {
   removeRelatedVnfMemberInstance,
   undoDeleteActionRelatedVnfMemberInstance
 } from "../../../../../shared/storeUtil/utils/relatedVnfMember/relatedVnfMember.actions";
-import {VnfInstance} from "../../../../../shared/models/vnfInstance";
 import {VNFModel} from "../../../../../shared/models/vnfModel";
 import {VnfTreeNode} from "../../../../../shared/models/vnfTreeNode";
 import {InputType} from "../../../../../shared/models/inputTypes";
@@ -48,14 +47,12 @@ export class RelatedVnfMemberInfoModel implements ILevelNodeInfo {
   };
 
   /***********************************************************
-   * return vnf model
-   * @param vnfModelId - current Model id
-   * @param instance - vnf instance
-   * @param serviceHierarchy - serviceHierarchy
+   * return a NodeModel object instance
+   * @param instanceModel - The model of the instance (usually extracted from
+   *        serviceHierarchy store)
    ************************************************************/
-  getModel = (vnfModelId: string, instance: VnfInstance, serviceHierarchy): VNFModel => {
-    const uniqueIdOrName = this._sharedTreeService.modelUniqueNameOrId(instance);
-    return new VNFModel(this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, uniqueIdOrName, vnfModelId));
+  getModel = (instanceModel: any): VNFModel => {
+    return new VNFModel(instanceModel);
   };
 
 
