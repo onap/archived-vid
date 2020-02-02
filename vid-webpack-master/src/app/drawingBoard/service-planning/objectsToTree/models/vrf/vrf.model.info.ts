@@ -3,7 +3,6 @@ import {ComponentInfoType} from "../../../component-info/component-info-model";
 import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {ModelInformationItem} from "../../../../../shared/components/model-information/model-information.component";
-import {VrfInstance} from "../../../../../shared/models/vrfInstance";
 import {VrfTreeNode} from "../../../../../shared/models/vrfTreeNode";
 import {VrfModel} from "../../../../../shared/models/vrfModel";
 import {NgRedux} from "@angular-redux/store";
@@ -50,9 +49,8 @@ export class VrfModelInfo implements ILevelNodeInfo {
 
   updateDynamicInputsDataFromModel = (currentModel): any => [];
 
-  getModel = (vrfModelId: string, instance: VrfInstance, serviceHierarchy): VrfModel => {
-    const uniqueIdOrName = this._sharedTreeService.modelUniqueNameOrId(instance);
-    return new VrfModel(this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, uniqueIdOrName, vrfModelId));
+  getModel = (instanceModel: any): VrfModel => {
+    return new VrfModel(instanceModel);
   };
 
 
@@ -111,7 +109,13 @@ export class VrfModelInfo implements ILevelNodeInfo {
     let counter: number = !_.isNil(this._store.getState().service.serviceInstance[serviceModelId]) ?
       (this._store.getState().service.serviceInstance[serviceModelId].existingVRFCounterMap[node.data.modelUniqueId] || 0) : 0;
     counter -= this._sharedTreeService.getExistingInstancesWithDeleteMode(node, serviceModelId, 'vrfs');
-    const model = node.data.getModel(node.data.name, node.data, serviceHierarchy);
+
+    const instanceModel = this._sharedTreeService.modelByIdentifiers(
+      serviceHierarchy, node.data.modelTypeName,
+      this._sharedTreeService.modelUniqueNameOrId(node.data), node.data.name
+    );
+
+    const model = node.data.getModel(instanceModel);
     const maxInstances: number = model.max;
     const isReachedLimit = !(maxInstances > counter);
     const showAddIcon = this._sharedTreeService.shouldShowAddIcon() && !isReachedLimit;

@@ -121,11 +121,11 @@ export class ObjectToModelTreeService {
     node.getNodeCount = (node, serviceId) => levelNodeInfo.getNodeCount(node, serviceId);
     node.getMenuAction = (node, serviceId) => levelNodeInfo.getMenuAction(node, serviceId);
     node.showNodeIcons = (node, serviceId) => levelNodeInfo.showNodeIcons(node, serviceId);
-    node.typeName = levelNodeInfo.typeName;
     node.getModel = levelNodeInfo.getModel.bind(levelNodeInfo);
-    node.getInfo = !_.isNil(levelNodeInfo.getInfo) ? levelNodeInfo.getInfo.bind(levelNodeInfo) : () => {
-    };
+    node.getInfo = !_.isNil(levelNodeInfo.getInfo) ? levelNodeInfo.getInfo.bind(levelNodeInfo) : () => {};
     node.componentInfoType = levelNodeInfo.componentInfoType;
+    node.typeName = levelNodeInfo.typeName;
+    node.modelTypeName = levelNodeInfo.name;
     return node;
   }
 }
