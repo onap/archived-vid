@@ -5,8 +5,8 @@ import {ITreeNode} from "angular-tree-component/dist/defs/api";
 import {AvailableNodeIcons} from "../../../available-models-tree/available-models-tree.service";
 import {PnfInstance} from "app/shared/models/pnfInstance";
 import {PNFModel} from "../../../../../shared/models/pnfModel";
-import {PnfTreeNode} from "../../../../../shared/models/pnfTreeNode";
 import {SharedTreeService} from "../../shared.tree.service";
+import {NodeModelResponseInterface} from "../../../../../shared/models/nodeModel";
 
 
 export class PnfModelInfo implements ILevelNodeInfo{
@@ -31,9 +31,8 @@ export class PnfModelInfo implements ILevelNodeInfo{
     return {};
   }
 
-  getModel = (pnfModelId: string, instance: PnfInstance, serviceHierarchy): PNFModel => {
-    const uniqueIdOrName = this._sharedTreeService.modelUniqueNameOrId(instance);
-    return new PNFModel(this._sharedTreeService.modelByIdentifiers(serviceHierarchy, this.name, uniqueIdOrName, pnfModelId));
+  getModel = (instanceModel: any): PNFModel => {
+    return new PNFModel(instanceModel);
   };
 
   getNextLevelObject(): any { return null;  }

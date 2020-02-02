@@ -19,7 +19,6 @@ import {NodeInstance} from "../../../shared/models/nodeInstance";
 
 @Injectable()
 export class SharedTreeService {
-  private _sharedTreeService: SharedTreeService;
   constructor(private _store: NgRedux<AppState>) {
   }
 
@@ -63,12 +62,12 @@ export class SharedTreeService {
    * @param modelTypeName "vnfs" | "networks" | "vfModules" | "collectionResources" | ...
    * @param modelUniqueNameOrId Either an entry name (i.e. "originalName"), modelCustomizationId or modelInvariantId.
    *                      Note that modelInvariantId will work only where model lacks a modelCustomizationId.
-   * @param modeName An optional entry name (i.e. "originalName"); will not try to use as id
+   * @param modelName An optional entry name (i.e. "originalName"); will not try to use as id
    */
-  modelByIdentifiers = (serviceModelFromHierarchy, modelTypeName: string, modelUniqueNameOrId: string, modeName?: string): any => {
+  modelByIdentifiers = (serviceModelFromHierarchy, modelTypeName: string, modelUniqueNameOrId: string, modelName?: string): any => {
     const logErrorAndReturnUndefined = () =>
       console.info(`modelByIdentifiers: could not find a model matching query`, {
-        modelTypeName, modelUniqueNameOrId, modeName, serviceModelFromHierarchy
+        modelTypeName, modelUniqueNameOrId, modelName, serviceModelFromHierarchy
       });
 
     if (_.isNil(serviceModelFromHierarchy)) return logErrorAndReturnUndefined();
@@ -77,7 +76,7 @@ export class SharedTreeService {
     if (_.isNil(modelsOfType)) return logErrorAndReturnUndefined();
 
     const modelIfModelIdentifierIsEntryName = modelsOfType[modelUniqueNameOrId];
-    const modelIfModeNameExists = _.isNil(modeName) ? null : modelsOfType[modeName];
+    const modelIfModeNameExists = _.isNil(modelName) ? null : modelsOfType[modelName];
 
     if (!_.isNil(modelIfModelIdentifierIsEntryName)) {
       return modelIfModelIdentifierIsEntryName;
@@ -421,7 +420,13 @@ export class SharedTreeService {
     AuditInfoModalComponent.openInstanceAuditInfoModal.next({
       instanceId: serviceModelId,
       type: instanceType,
-      model: modelInfoService.getModel(node.data.modelName, instance, this._store.getState().service.serviceHierarchy[serviceModelId]),
+      model: modelInfoService.getModel(
+        this.modelByIdentifiers(
+          this._store.getState().service.serviceHierarchy[serviceModelId],
+          modelInfoService.name,
+          this.modelUniqueNameOrId(instance), node.data.modelName
+        )
+      ),
       instance
     });
   }

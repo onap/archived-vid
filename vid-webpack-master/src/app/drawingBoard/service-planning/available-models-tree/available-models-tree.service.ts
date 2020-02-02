@@ -77,7 +77,13 @@ export class AvailableModelsTreeService {
   shouldOpenVRFModal(nodes, serviceModelId: string , service)  {
     for(const node of nodes){
       if(node.type === 'VRF' && service.serviceInstance[serviceModelId].existingVRFCounterMap && !service.serviceInstance[serviceModelId].existingVRFCounterMap[node.modelUniqueId]){
-        const vrfModel : VrfModel = node.getModel(node.name, node, service.serviceInstance[serviceModelId]);
+        const serviceHierarchy = service.serviceHierarchy[serviceModelId];
+
+        const instanceModel = this._sharedTreeService.modelByIdentifiers(
+          serviceHierarchy, node.modelTypeName, node.modelCustomizationId, node.name
+        );
+
+        const vrfModel : VrfModel = node.getModel(instanceModel);
         const vrfCounter : number = service.serviceInstance[serviceModelId].existingVRFCounterMap[node.modelUniqueId];
         console.log('vrfCounter', vrfCounter);
         if(vrfModel.min > 0 && (_.isNil(vrfCounter) || vrfCounter === 0)){
