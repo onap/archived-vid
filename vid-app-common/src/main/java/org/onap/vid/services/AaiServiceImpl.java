@@ -173,7 +173,7 @@ public class AaiServiceImpl implements AaiService {
         }
     }
 
-    private List<ServiceInstanceSearchResult> getServicesByOwningEntityId(List<String> owningEntities, RoleValidator roleValidator) {
+    List<ServiceInstanceSearchResult> getServicesByOwningEntityId(List<String> owningEntities, RoleValidator roleValidator) {
         AaiResponse<OwningEntityResponse> owningEntityResponse = aaiClient.getServicesByOwningEntityId(owningEntities);
         List<ServiceInstanceSearchResult> serviceInstanceSearchResultList = new ArrayList<>();
         if (owningEntityResponse.getT() != null) {

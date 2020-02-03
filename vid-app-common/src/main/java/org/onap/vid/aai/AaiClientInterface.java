@@ -29,6 +29,7 @@ import org.onap.vid.aai.model.AaiGetOperationalEnvironments.OperationalEnvironme
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.ModelVer;
+import org.onap.vid.aai.model.OwningEntityResponse;
 import org.onap.vid.aai.model.PortDetailsTranslator;
 import org.onap.vid.aai.model.Properties;
 import org.onap.vid.aai.model.ResourceType;
@@ -53,7 +54,7 @@ public interface AaiClientInterface extends ProbeInterface {
 
     AaiResponse getServices();
 
-    AaiResponse getServicesByOwningEntityId(List<String> owningEntityIds);
+    AaiResponse<OwningEntityResponse> getServicesByOwningEntityId(List<String> owningEntityIds);
 
     AaiResponse<GetTenantsResponse[]> getTenants(String globalCustomerId, String serviceType);
 
