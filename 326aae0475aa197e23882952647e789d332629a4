@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5305a2df_b617ddbe",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AaiServiceImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-03T12:07:24Z",
+      "side": 1,
+      "message": "please add comment about this is and with example",
+      "revId": "326aae0475aa197e23882952647e789d332629a4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3880e8e9_9f59679d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AaiServiceTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-03T12:07:24Z",
+      "side": 1,
+      "message": "omitted",
+      "range": {
+        "startLine": 270,
+        "startChar": 43,
+        "endLine": 270,
+        "endChar": 52
+      },
+      "revId": "326aae0475aa197e23882952647e789d332629a4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
