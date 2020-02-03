@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98e359c0_a1be45c5",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/objectToModelTree/objectToModelTree.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-03T13:05:17Z",
+      "side": 1,
+      "message": "move both downwards",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 0
+      },
+      "revId": "34e1e0a0ac3687d54e6d7184b4c5c87c7cf05a2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f772321c_5dfa7a74",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-03T13:05:17Z",
+      "side": 1,
+      "message": "modelInfoService.name",
+      "range": {
+        "startLine": 408,
+        "startChar": 10,
+        "endLine": 408,
+        "endChar": 19
+      },
+      "revId": "34e1e0a0ac3687d54e6d7184b4c5c87c7cf05a2f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
