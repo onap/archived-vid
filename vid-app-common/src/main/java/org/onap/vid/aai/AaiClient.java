@@ -143,7 +143,7 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
-    public AaiResponse getServicesByOwningEntityId(List<String> owningEntityIds){
+    public AaiResponse<OwningEntityResponse> getServicesByOwningEntityId(List<String> owningEntityIds){
         Response resp = doAaiGet(getUrlFromLIst("business/owning-entities?", "owning-entity-id=", owningEntityIds), false);
         return processAaiResponse(resp, OwningEntityResponse.class, null);
     }

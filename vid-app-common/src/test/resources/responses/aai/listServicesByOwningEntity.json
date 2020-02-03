@@ -1,0 +1,53 @@
+{
+  "owning-entity": [{
+    "owning-entity-id": "43b8a85a-0421-4265-9069-117dd6526b8a",
+    "owning-entity-name": "Melissa",
+    "resource-version": "1527418700853",
+    "relationship-list": {
+      "relationship": [{
+        "related-to": "service-instance",
+        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+        "related-link": "/aai/v12/business/customers/customer/CAR_2020_ER/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/af9d52f9-13b2-4657-a198-463677f82dc0",
+        "relationship-data": [{
+          "relationship-key": "customer.global-customer-id",
+          "relationship-value": "CAR_2020_ER"
+        }, {
+          "relationship-key": "service-subscription.service-type",
+          "relationship-value": "MSO-dev-service-type"
+        }, {
+          "relationship-key": "service-instance.service-instance-id",
+          "relationship-value": "af9d52f9-13b2-4657-a198-463677f82dc0"
+        }
+        ],
+        "related-to-property": [{
+          "property-key": "service-instance.service-instance-name",
+          "property-value": "xbghrftgr_shani"
+        }
+        ]
+      },
+      {
+        "related-to": "service-instance",
+        "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+        "related-link": "/aai/v12/business/customers/customer/AUTO_2021_DR/service-subscriptions/service-subscription/JUST-another-service-type/service-instances/service-instance/49769492-5def-4c89-8e73-b236f958fa40",
+        "relationship-data": [{
+          "relationship-key": "customer.global-customer-id",
+          "relationship-value": "AUTO_2021_DR"
+        }, {
+          "relationship-key": "service-subscription.service-type",
+          "relationship-value": "JUST-another-service-type"
+        }, {
+          "relationship-key": "service-instance.service-instance-id",
+          "relationship-value": "49769492-5def-4c89-8e73-b236f958fa40"
+        }
+        ],
+        "related-to-property": [{
+          "property-key": "service-instance.service-instance-name",
+          "property-value": "fghghfhgf"
+        }
+        ]
+      }
+      ]
+    }
+  }
+  ]
+}
