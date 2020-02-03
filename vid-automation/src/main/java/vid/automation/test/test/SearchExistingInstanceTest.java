@@ -1,7 +1,10 @@
 package vid.automation.test.test;
 
-import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
@@ -11,9 +14,6 @@ import vid.automation.test.sections.SearchExistingPage;
 import vid.automation.test.sections.SideMenu;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
-
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 public class SearchExistingInstanceTest extends VidBaseTestCase {
 
@@ -27,7 +27,7 @@ public class SearchExistingInstanceTest extends VidBaseTestCase {
     }
 
     @Test
-    private void testSearchExistingInstanceByOwningEntitySingleValue() {
+    public void testSearchExistingInstanceByOwningEntitySingleValue() {
         SearchExistingPage searchExistingPage = new SearchExistingPage();
         SideMenu.navigateToSearchExistingPage();
         searchExistingPage.searchByOwningEntity("Melissa");
