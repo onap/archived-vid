@@ -208,7 +208,7 @@ export class SharedTreeService {
    ****************************************************/
   shouldShowUpgrade(node, serviceModelId): boolean {
     if (FeatureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE, this._store) &&
-      this.isThereAnUpdatedLatestVersion(serviceModelId)) {
+      (this.isThereAnUpdatedLatestVersion(serviceModelId)) || this.isDiffCustomizationUuid(node, serviceModelId)) {
       return this.shouldShowButtonGeneric(node, VNFMethods.UPGRADE, serviceModelId);
     }
     else {
@@ -216,7 +216,25 @@ export class SharedTreeService {
     }
   }
 
-  private isThereAnUpdatedLatestVersion(serviceModelId) : boolean{
+
+  isDiffCustomizationUuid(node, serviceModelId) : boolean {
+    const vfModuleServiceHierarchy =  this.getVfModuleHierarchyThroughParentModelName(node, serviceModelId);
+    if(_.isNil(vfModuleServiceHierarchy)){
+      return true;
+    }
+    return node.data && !_.isNil(vfModuleServiceHierarchy) && vfModuleServiceHierarchy.customizationUuid  && (vfModuleServiceHierarchy.customizationUuid !== node.data.modelCustomizationId);
+  }
+
+  getVfModuleHierarchyThroughParentModelName(node, serviceModelId) {
+    if(node.parent && node.parent.data && node.data){
+      const vnfHierarchy =  this._store.getState().service.serviceHierarchy[serviceModelId].vnfs[node.parent.data.modelName];
+      return vnfHierarchy ? vnfHierarchy.vfModules[node.data.modelName] : null;
+    }
+    return null;
+  }
+
+
+  isThereAnUpdatedLatestVersion(serviceModelId) : boolean{
     let serviceInstance = this.getServiceInstance(serviceModelId);
     return !_.isNil(serviceInstance.latestAvailableVersion) && (Number(serviceInstance.modelInfo.modelVersion) < serviceInstance.latestAvailableVersion);
   }
