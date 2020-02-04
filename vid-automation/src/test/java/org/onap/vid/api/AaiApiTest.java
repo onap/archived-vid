@@ -47,6 +47,7 @@ import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroups
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetInstanceGroupsByCloudRegionRequiredMissing;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegion;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetL3NetworksByCloudRegionSpecificState;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetModelsByOwningEntity;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetails;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsInvalidRequest;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetNetworkCollectionDetailsRequiredMissing;
@@ -903,20 +904,34 @@ public class AaiApiTest extends BaseApiAaiTest {
     }
 
     @Test
-    public void searchServiceInstances_serviceInstanceOfAnotherSubscriber_authIsFollowingFeatureToggle() {
+    public void searchServiceInstancesBySubscriber_serviceInstanceOfAnotherSubscriber_authIsFollowingFeatureToggle() {
         String craigRobertsSubscriberId = "31739f3e-526b-11e6-beb8-9e71128cae77";
-        String aServiceInstanceId = "4ea864f2-b946-473a-b51c-51a7c10b8391";
         String aServiceOwningEntityId = "f160c875-ddd1-4ef5-84d8-d098784daa3a";
         String currentUserAuthorizedOwningEntityId = "SILVIA ROBBINS"; // this will need to change with translateOwningEntityNameToOwningEntityId
 
-        boolean expectedPermission = Features.FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY.isActive();
-
         SimulatorApi.registerExpectation(GET_SUBSCRIBERS_FOR_CUSTOMER_CRAIG_ROBERTS,
             ImmutableMap.of(aServiceOwningEntityId, currentUserAuthorizedOwningEntityId), CLEAR_THEN_SET);
+
+        searchServicesAndAssertIsPermitted("subscriberId=" + craigRobertsSubscriberId, "4ea864f2-b946-473a-b51c-51a7c10b8391");
+    }
+
+    @Test
+    public void searchServiceInstancesByOwningEntity_serviceInstanceOfAnotherSubscriber_authIsFollowingFeatureToggle() {
+        String owningEntityName = "someOwning";
+        String owningEntityId = "SILVIA ROBBINS"; // this will need to change with translateOwningEntityNameToOwningEntityId
+
+        SimulatorApi.registerExpectationFromPreset(new PresetAAIGetModelsByOwningEntity(owningEntityName, owningEntityId, "fakeSubscriberId"), CLEAR_THEN_SET);
+
+        searchServicesAndAssertIsPermitted("owningEntity=" + owningEntityName, "af9d52f9-13b2-4657-a198-463677f82dc0");
+    }
+
+    private void searchServicesAndAssertIsPermitted(String queryParams, String aServiceInstanceId) {
+        boolean expectedPermission = Features.FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY.isActive();
+
         SimulatorApi.registerExpectationFromPreset(new PresetAAIGetSubscribersGet(), APPEND);
 
         JsonNode serviceInstancesResult = restTemplate
-            .getForObject(uri + "/search_service_instances?subscriberId=" + craigRobertsSubscriberId, JsonNode.class);
+            .getForObject(uri + "/search_service_instances?" + queryParams, JsonNode.class);
 
         assertThat(serviceInstancesResult.path("service-instances").isArray(), is(true));
 
@@ -929,7 +944,6 @@ public class AaiApiTest extends BaseApiAaiTest {
 
         assertThat(aServiceResult.toString(),
             aServiceResult.path("isPermitted").booleanValue(), is(expectedPermission));
-
     }
 
     private void assertResponse(Object expected, String response) {

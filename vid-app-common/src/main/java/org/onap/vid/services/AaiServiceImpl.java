@@ -208,6 +208,7 @@ public class AaiServiceImpl implements AaiService {
                 extractRelationshipData(relationship, serviceInstanceSearchResult, roleValidator);
                 extractRelatedToProperty(relationship, serviceInstanceSearchResult);
                 serviceInstanceSearchResult.setOwningEntityId(owningEntityId);
+                serviceInstanceSearchResult.setIsPermitted(roleValidator.isServicePermitted(serviceInstanceSearchResult));
                 serviceInstanceSearchResultList.add(serviceInstanceSearchResult);
             }
         }
@@ -228,9 +229,6 @@ public class AaiServiceImpl implements AaiService {
                     serviceInstanceSearchResult.setSubscriberId(relationshipData.getRelationshipValue());
                 }
             }
-
-            boolean isPermitted = roleValidator.isServicePermitted(serviceInstanceSearchResult);
-            serviceInstanceSearchResult.setIsPermitted(isPermitted);
         }
     }
 

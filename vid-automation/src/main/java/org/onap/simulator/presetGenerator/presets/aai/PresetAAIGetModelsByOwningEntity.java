@@ -1,18 +1,31 @@
 package org.onap.simulator.presetGenerator.presets.aai;
 
 import com.google.common.collect.ImmutableMap;
-import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
-import org.springframework.http.HttpMethod;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import org.onap.simulator.presetGenerator.presets.BasePresets.BaseAAIPreset;
+import org.springframework.http.HttpMethod;
 
 public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
-    String oeName;
+
+    private static final String DEFAULT_OWNING_ENTITY_ID = "43b8a85a-0421-4265-9069-117dd6526b8a";
+    private static final String DEFAULT_SUBSCRIBER_ID = "CAR_2020_ER";
+
+    private String oeName;
+    private String oeId;
+    private String subscriberId;
 
     public PresetAAIGetModelsByOwningEntity(String oeName) {
         this.oeName = oeName;
+        this.oeId = DEFAULT_OWNING_ENTITY_ID;
+        this.subscriberId = DEFAULT_SUBSCRIBER_ID;
+    }
+
+    public PresetAAIGetModelsByOwningEntity(String oeName, String oeId, String subscriberId) {
+        this.oeName = oeName;
+        this.oeId = oeId;
+        this.subscriberId = subscriberId;
     }
 
     @Override
@@ -37,7 +50,7 @@ public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
         return "{" +
                 "      \"owning-entity\": [" +
                 "        {" +
-                "          \"owning-entity-id\": \"43b8a85a-0421-4265-9069-117dd6526b8a\"," +
+            "          \"owning-entity-id\": \"" + oeId + "\"," +
                 "          \"owning-entity-name\": \"" + oeName + "\"," +
                 "          \"resource-version\": \"1527418700853\"," +
                 "          \"relationship-list\": {" +
@@ -45,11 +58,11 @@ public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
                 "              {" +
                 "                \"related-to\": \"service-instance\"," +
                 "                \"relationship-label\": \"org.onap.relationships.inventory.BelongsTo\"," +
-                "                \"related-link\": \"/aai/v12/business/customers/customer/CAR_2020_ER/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/af9d52f9-13b2-4657-a198-463677f82dc0\"," +
+            "                \"related-link\": \"/aai/v12/business/customers/customer/" + subscriberId + "/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/af9d52f9-13b2-4657-a198-463677f82dc0\"," +
                 "                \"relationship-data\": [" +
                 "                  {" +
                 "                    \"relationship-key\": \"customer.global-customer-id\"," +
-                "                    \"relationship-value\": \"CAR_2020_ER\"" +
+            "                    \"relationship-value\": \"" + subscriberId + "\"" +
                 "                  }," +
                 "                  {" +
                 "                    \"relationship-key\": \"service-subscription.service-type\"," +
@@ -70,11 +83,11 @@ public class PresetAAIGetModelsByOwningEntity extends BaseAAIPreset {
                 "              {" +
                 "                \"related-to\": \"service-instance\"," +
                 "                \"relationship-label\": \"org.onap.relationships.inventory.BelongsTo\"," +
-                "                \"related-link\": \"/aai/v12/business/customers/customer/CAR_2020_ER/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/49769492-5def-4c89-8e73-b236f958fa40\"," +
+            "                \"related-link\": \"/aai/v12/business/customers/customer/" + DEFAULT_SUBSCRIBER_ID + "/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/49769492-5def-4c89-8e73-b236f958fa40\"," +
                 "                \"relationship-data\": [" +
                 "                  {" +
                 "                    \"relationship-key\": \"customer.global-customer-id\"," +
-                "                    \"relationship-value\": \"CAR_2020_ER\"" +
+            "                    \"relationship-value\": \"" + DEFAULT_SUBSCRIBER_ID + "\"" +
                 "                  }," +
                 "                  {" +
                 "                    \"relationship-key\": \"service-subscription.service-type\"," +
