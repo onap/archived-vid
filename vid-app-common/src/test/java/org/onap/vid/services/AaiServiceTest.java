@@ -300,11 +300,11 @@ public class AaiServiceTest {
 
         //then
         ServiceInstanceSearchResult expected1 = new ServiceInstanceSearchResult(
-            "af9d52f9-13b2-4657-a198-463677f82dc0", "256cddb4-3aa1-43cc-a08f-315bb50b275e", "MSO-dev-service-type", "xbghrftgr_shani", null, null, null, null, true);
+            "af9d52f9-13b2-4657-a198-463677f82dc0", "256cddb4-3aa1-43cc-a08f-315bb50b275e", "MSO-dev-service-type", "xbghrftgr_shani", null, null, null, "43b8a85a-0421-4265-9069-117dd6526b8a", true);
         ServiceInstanceSearchResult expected2 = new ServiceInstanceSearchResult(
-            "49769492-5def-4c89-8e73-b236f958fa40", "e02fd6f2-7fc2-434b-a92d-15abdb24b68d", "JUST-another-service-type", "fghghfhgf",  null, null, null, null, true);
+            "49769492-5def-4c89-8e73-b236f958fa40", "e02fd6f2-7fc2-434b-a92d-15abdb24b68d", "JUST-another-service-type", "fghghfhgf",  null, null, null, "43b8a85a-0421-4265-9069-117dd6526b8a", true);
         ServiceInstanceSearchResult expected3 = new ServiceInstanceSearchResult(
-            "1d8fd482-2f53-4d62-a7bd-20e4bab14c45", "256cddb4-3aa1-43cc-a08f-315bb50b275e", "MSO-dev-service-type", "Bryant", null, null, null, null, true);
+            "1d8fd482-2f53-4d62-a7bd-20e4bab14c45", "256cddb4-3aa1-43cc-a08f-315bb50b275e", "MSO-dev-service-type", "Bryant", null, null, null, "26dcc4aa-725a-447d-8346-aa26dfaa4eb7", true);
 
         assertThat(result, jsonEquals(ImmutableList.of(expected1, expected2, expected3)).when(IGNORING_ARRAY_ORDER).whenIgnoringPaths("[*].subscriberName")); //ignore in array
     }

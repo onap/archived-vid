@@ -179,7 +179,7 @@ public class AaiServiceImpl implements AaiService {
         if (owningEntityResponse.getT() != null) {
             for (OwningEntity owningEntity : owningEntityResponse.getT().getOwningEntity()) {
                 if (owningEntity.getRelationshipList() != null) {
-                    serviceInstanceSearchResultList = convertRelationshipToSearchResult(owningEntity, serviceInstanceSearchResultList, roleValidator);
+                    serviceInstanceSearchResultList.addAll(convertRelationshipToSearchResult(owningEntity, roleValidator, owningEntity.getOwningEntityId()));
                 }
             }
         }
@@ -192,20 +192,22 @@ public class AaiServiceImpl implements AaiService {
         if (projectByIdResponse.getT() != null) {
             for (Project project : projectByIdResponse.getT().getProject()) {
                 if (project.getRelationshipList() != null) {
-                    serviceInstanceSearchResultList = convertRelationshipToSearchResult(project, serviceInstanceSearchResultList, roleValidator);
+                    serviceInstanceSearchResultList.addAll(convertRelationshipToSearchResult(project, roleValidator, null));
                 }
             }
         }
         return serviceInstanceSearchResultList;
     }
 
-    private List<ServiceInstanceSearchResult> convertRelationshipToSearchResult(AaiRelationResponse owningEntityResponse, List<ServiceInstanceSearchResult> serviceInstanceSearchResultList, RoleValidator roleValidator) {
-        if (owningEntityResponse.getRelationshipList().getRelationship() != null) {
-            List<Relationship> relationshipList = owningEntityResponse.getRelationshipList().getRelationship();
+    private List<ServiceInstanceSearchResult> convertRelationshipToSearchResult(AaiRelationResponse aaiRelationResponse, RoleValidator roleValidator, String owningEntityId) {
+        List<ServiceInstanceSearchResult> serviceInstanceSearchResultList = new ArrayList<>();
+        if (aaiRelationResponse.getRelationshipList().getRelationship() != null) {
+            List<Relationship> relationshipList = aaiRelationResponse.getRelationshipList().getRelationship();
             for (Relationship relationship : relationshipList) {
                 ServiceInstanceSearchResult serviceInstanceSearchResult = new ServiceInstanceSearchResult();
                 extractRelationshipData(relationship, serviceInstanceSearchResult, roleValidator);
                 extractRelatedToProperty(relationship, serviceInstanceSearchResult);
+                serviceInstanceSearchResult.setOwningEntityId(owningEntityId);
                 serviceInstanceSearchResultList.add(serviceInstanceSearchResult);
             }
         }
