@@ -53,8 +53,18 @@ export class SharedTreeService {
       : (nodeInstance.modelInfo.modelCustomizationId || nodeInstance.modelInfo.modelInvariantId);
   };
 
-  modelUniqueNameOrId = (instance): string =>
-    instance.originalName ? instance.originalName : this.modelUniqueId(instance);
+  modelUniqueNameOrId = (instance): string => {
+    if (_.isNil(instance)) {
+      return null;
+    }
+
+    const innerInstance = _.find(instance) || {};
+
+    return instance.originalName
+      || this.modelUniqueId(instance)
+      || innerInstance.originalName
+      || this.modelUniqueId(innerInstance);
+  };
 
   /**
    * Finds a model inside a full service model
@@ -207,7 +217,7 @@ export class SharedTreeService {
    ****************************************************/
   shouldShowUpgrade(node, serviceModelId): boolean {
     if (FeatureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE, this._store) &&
-      (this.isThereAnUpdatedLatestVersion(serviceModelId)) || this.isDiffCustomizationUuid(node, serviceModelId)) {
+      (this.isThereAnUpdatedLatestVersion(serviceModelId)) || this.isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer(node, serviceModelId)) {
       return this.shouldShowButtonGeneric(node, VNFMethods.UPGRADE, serviceModelId);
     }
     else {
@@ -216,18 +226,43 @@ export class SharedTreeService {
   }
 
 
-  isDiffCustomizationUuid(node, serviceModelId) : boolean {
-    const vfModuleServiceHierarchy =  this.getVfModuleHierarchyThroughParentModelName(node, serviceModelId);
-    if(_.isNil(vfModuleServiceHierarchy)){
-      return true;
+  isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer(vfModuleNode, serviceModelId) : boolean {
+    /*
+    for `true`, should all:
+    1. parent vnf found by model-mane
+    2. vfmodule found by invariant
+    3. vfmodule diff by customization
+     */
+
+    if (_.isNil(vfModuleNode.data)) {
+      return false;
     }
-    return node.data && !_.isNil(vfModuleServiceHierarchy) && vfModuleServiceHierarchy.customizationUuid  && (vfModuleServiceHierarchy.customizationUuid !== node.data.modelCustomizationId);
+
+    const vnfHierarchy = this.getParentVnfHierarchy(vfModuleNode, serviceModelId);
+    if (_.isNil(vnfHierarchy)) {
+      return false;
+    }
+
+    const vfModuleHierarchyByInvariantId =  this.getVfModuleHFromVnfHierarchyByInvariantId(vfModuleNode, vnfHierarchy);
+    if(_.isNil(vfModuleHierarchyByInvariantId)){
+      return false;
+    }
+
+    return vfModuleHierarchyByInvariantId.customizationUuid
+      && (vfModuleHierarchyByInvariantId.customizationUuid !== vfModuleNode.data.modelCustomizationId);
   }
 
-  getVfModuleHierarchyThroughParentModelName(node, serviceModelId) {
-    if(node.parent && node.parent.data && node.data){
-      const vnfHierarchy =  this._store.getState().service.serviceHierarchy[serviceModelId].vnfs[node.parent.data.modelName];
-      return vnfHierarchy ? vnfHierarchy.vfModules[node.data.modelName] : null;
+  getParentVnfHierarchy(vfModuleNode, serviceModelId) {
+    if (vfModuleNode.parent && vfModuleNode.parent.data) {
+      return this._store.getState().service.serviceHierarchy[serviceModelId].vnfs[vfModuleNode.parent.data.modelName];
+    } else {
+      return null;
+    }
+  }
+
+  getVfModuleHFromVnfHierarchyByInvariantId(vfModuleNode, parentVnfHierarchy) {
+    if(vfModuleNode.data.modelInvariantId && parentVnfHierarchy && parentVnfHierarchy.vfModules){
+      return _.find(parentVnfHierarchy.vfModules, o => o.invariantUuid === vfModuleNode.data.modelInvariantId);
     }
     return null;
   }

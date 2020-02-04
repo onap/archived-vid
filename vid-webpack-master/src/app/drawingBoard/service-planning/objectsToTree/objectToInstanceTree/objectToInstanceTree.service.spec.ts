@@ -2586,6 +2586,7 @@ describe('Model Tree Generator service', () => {
       {
         "action": 'None',
         "modelId": "afacccf6-397d-45d6-b5ae-94c39734b168",
+        "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
         "modelCustomizationId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
         "modelUniqueId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
         "missingData": true,
@@ -2638,6 +2639,7 @@ describe('Model Tree Generator service', () => {
           "parentType": 'VNF',
           "action": 'None',
           "modelId": "f8360508-3f17-4414-a2ed-6bc71161e8db",
+          "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
           "modelCustomizationId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
           "modelUniqueId": "a55961b2-2065-4ab0-a5b7-2fcee1c227e3",
           "missingData": true,
@@ -2741,6 +2743,7 @@ describe('Model Tree Generator service', () => {
         "parentType": '',
         "action": 'None',
         "modelId": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
+        "modelInvariantId": "379f816b-a7aa-422f-be30-17114ff50b7c",
         "modelCustomizationId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
         "modelUniqueId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
         "missingData": false,

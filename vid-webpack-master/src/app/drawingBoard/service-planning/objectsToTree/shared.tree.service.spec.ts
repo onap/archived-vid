@@ -340,13 +340,21 @@ describe('Shared Tree Service', () => {
     });
 
 
-  const isDiffCustomizationUuidProvider = [
-    ['currentVfModule customizationUuid and customizationUuid vfModuleHierarchy are diff' ,true,  'mDNS 01222020 0', 'mdns012220200..Mdns01222020..base_dns..module-0', '82160e6e-d9c4-45ef-bd19-01573ab11b61'],
-    ['currentVfModule customizationUuid and customizationUuid vfModuleHierarchy are same' , false, 'mDNS 01222020 0', 'mdns012220200..Mdns01222020..base_dns..module-0', 'c9b32003-febc-44e0-a97f-7630fa7fa4a0'],
-    ['vnfHierarchy is not part of the current model' , true, 'VNF_NOT_PART_OF_THE_MODEL', 'mdns012220200..Mdns01222020..base_dns..module-0',  'c9b32003-febc-44e0-a97f-7630fa7fa4a0'],
-    ['vfModuleHierarchy is not part of the current model', true, 'mDNS 01222020 1', 'VFM_NOT_PART_OF_THE_MODEL',  'c9b32003-febc-44e0-a97f-7630fa7fa4a0']];
+  const isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDifferProvider = [
+    ['node is part of model, but vfmodule diff by customization',
+      true, 'mDNS 01222020 0', '9fdc68e9-9f53-431c-b8a2-7e337b9a0d0a', '82160e6e-d9c4-45ef-bd19-01573ab11b61'],
 
-  each(isDiffCustomizationUuidProvider).test('isDiffCustomizationUuid: when  %s should return %s', (description, expected, vnfModelName, vfModuleModelName, customizationUuid) => {
+    ['vnf model-name not found',
+      false, 'mDNS 01222020 1', '9fdc68e9-9f53-431c-b8a2-7e337b9a0d0a', '82160e6e-d9c4-45ef-bd19-01573ab11b61'],
+
+    ['vfmodule invariant-id not found',
+      false, 'mDNS 01222020 0', 'wrong invariant-id', '82160e6e-d9c4-45ef-bd19-01573ab11b61'],
+
+    ['vfmodule customization-id match',
+      false, 'mDNS 01222020 0', '9fdc68e9-9f53-431c-b8a2-7e337b9a0d0a', 'c9b32003-febc-44e0-a97f-7630fa7fa4a0'],
+  ];
+
+  each(isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDifferProvider).test('isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer: when  %s should return %s', (description, expected, vnfModelName, invariantUuid, customizationUuid) => {
     const serviceModelId : string = 'a243da28-c11e-45a8-9f26-0284a9a789bc';
     spyOn(store, 'getState').and.returnValue({
       service : {
@@ -355,7 +363,8 @@ describe('Shared Tree Service', () => {
             vnfs : {
               [vnfModelName] : {
                 vfModules : {
-                  [vfModuleModelName] : {
+                  vfModuleModelName : {
+                    invariantUuid : invariantUuid,
                     customizationUuid : customizationUuid
                   }
                 }
@@ -368,8 +377,9 @@ describe('Shared Tree Service', () => {
 
     const node = <any>{
       data:{
+        modelInvariantId : '9fdc68e9-9f53-431c-b8a2-7e337b9a0d0a',
         modelCustomizationId : 'c9b32003-febc-44e0-a97f-7630fa7fa4a0',
-        modelName : vfModuleModelName
+        modelName : 'vfModuleModelName'
       },
       parent : {
         data : {
@@ -378,7 +388,7 @@ describe('Shared Tree Service', () => {
       }
     };
 
-    const isDiffCustomizationUuidResponse : boolean = service.isDiffCustomizationUuid(node, serviceModelId);
+    const isDiffCustomizationUuidResponse : boolean = service.isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer(node, serviceModelId);
     expect(isDiffCustomizationUuidResponse).toEqual(expected);
   });
 

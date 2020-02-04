@@ -3,6 +3,7 @@ import {NodeModel} from "./nodeModel";
 import {ServiceNodeTypes} from "./ServiceNodeTypes";
 import * as _ from 'lodash';
 import {ServiceInstanceActions} from "./serviceInstanceActions";
+
 export enum TreeLevel {
   Level_0 , Level_1, Level_2
 
@@ -16,6 +17,7 @@ interface TreeNodeInstanceInterface {
 export class TreeNodeModel {
   type: String;
   modelId: string;
+  modelInvariantId?: string;
   modelCustomizationId?: string;
   modelUniqueId?: string;
   id: string;
@@ -32,6 +34,7 @@ export class TreeNodeModel {
   instanceName?: string;
 
   constructor(instance: ChildNodeInstance, nodeModel: NodeModel){
+    this.modelInvariantId = nodeModel.invariantUuid;
     this.modelCustomizationId = nodeModel.customizationUuid;
     this.modelId = nodeModel.uuid;
     this.modelUniqueId = this.modelCustomizationId || this.modelId;

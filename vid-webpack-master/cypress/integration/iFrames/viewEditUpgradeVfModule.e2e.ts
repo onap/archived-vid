@@ -202,8 +202,9 @@ describe('View Edit Page: Upgrade VFModule', function () {
   }
 
   function verifyMenuActionUpgradeDoesNotExist() {
-    cy.getElementByDataTestsId('node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14-menu-btn').click()
-    .getElementByDataTestsId('context-menu-upgrade').should('not.exist');
+    cy.getElementByDataTestsId('node-522159d5-d6e0-4c2a-aa44-5a542a12a830-vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1-menu-btn').click().then(() => {
+      cy.getElementByDataTestsId('context-menu-upgrade').should('not.exist');
+    });
   }
 
   function setLatestVersionMockToEmptyResponse(serviceUuid: string) {
