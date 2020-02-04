@@ -149,7 +149,7 @@ public class AaiClient implements AaiClientInterface {
     }
 
     @Override
-    public AaiResponse getServicesByProjectNames(List<String> projectNames){
+    public AaiResponse<ProjectResponse> getServicesByProjectNames(List<String> projectNames){
         Response resp = doAaiGet(getUrlFromLIst("business/projects?", "project-name=",  projectNames), false);
         return processAaiResponse(resp, ProjectResponse.class, null);
     }

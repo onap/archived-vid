@@ -1,0 +1,95 @@
+{
+  "project": [
+    {
+      "project-name": "x1",
+      "resource-version": "1527026201826",
+      "relationship-list": {
+        "relationship": [
+          {
+            "related-to": "service-instance",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Emanuel/service-instances/service-instance/3f826016-3ac9-4928-9561-beee75fd91d5",
+            "relationship-data": [
+              {
+                "relationship-key": "customer.global-customer-id",
+                "relationship-value": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"
+              },
+              {
+                "relationship-key": "service-subscription.service-type",
+                "relationship-value": "Emanuel"
+              },
+              {
+                "relationship-key": "service-instance.service-instance-id",
+                "relationship-value": "3f826016-3ac9-4928-9561-beee75fd91d5"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "service-instance.service-instance-name",
+                "property-value": "Lital_SRIOV2_001"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "project-name": "y2",
+      "resource-version": "1527026341826",
+      "relationship-list": {
+        "relationship": [
+          {
+            "related-to": "service-instance",
+            "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+            "related-link": "/aai/v12/business/customers/customer/3d15d7ea-4174-49b6-89ec-e569381f7231/service-subscriptions/service-subscription/vMOG/service-instances/service-instance/7e4f8130-5dee-47c4-8770-1abc5f5ded83",
+            "relationship-data": [
+              {
+                "relationship-key": "customer.global-customer-id",
+                "relationship-value": "3d15d7ea-4174-49b6-89ec-e569381f7231"
+              },
+              {
+                "relationship-key": "service-subscription.service-type",
+                "relationship-value": "vMOG"
+              },
+              {
+                "relationship-key": "service-instance.service-instance-id",
+                "relationship-value": "7e4f8130-5dee-47c4-8770-1abc5f5ded83"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "service-instance.service-instance-name",
+                "property-value": "justAname"
+              }
+            ]
+          },
+          {
+            "related-to": "service-instance",
+            "relationship-label": "org.onap.relationships.inventory.Uses",
+            "related-link": "/aai/v12/business/customers/customer/a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb/service-subscriptions/service-subscription/Yoda/service-instances/service-instance/ff2d9326-1ef5-4760-aba0-0eaf372ae675",
+            "relationship-data": [
+              {
+                "relationship-key": "customer.global-customer-id",
+                "relationship-value": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb"
+              },
+              {
+                "relationship-key": "service-subscription.service-type",
+                "relationship-value": "Yoda"
+              },
+              {
+                "relationship-key": "service-instance.service-instance-id",
+                "relationship-value": "ff2d9326-1ef5-4760-aba0-0eaf372ae675"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "service-instance.service-instance-name",
+                "property-value": "anotherName"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

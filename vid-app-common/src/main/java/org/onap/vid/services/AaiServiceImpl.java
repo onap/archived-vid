@@ -186,7 +186,7 @@ public class AaiServiceImpl implements AaiService {
         return serviceInstanceSearchResultList;
     }
 
-    private List<ServiceInstanceSearchResult> getServicesByProjectNames(List<String> projectNames, RoleValidator roleValidator) {
+    List<ServiceInstanceSearchResult> getServicesByProjectNames(List<String> projectNames, RoleValidator roleValidator) {
         AaiResponse<ProjectResponse> projectByIdResponse = aaiClient.getServicesByProjectNames(projectNames);
         List<ServiceInstanceSearchResult> serviceInstanceSearchResultList = new ArrayList<>();
         if (projectByIdResponse.getT() != null) {

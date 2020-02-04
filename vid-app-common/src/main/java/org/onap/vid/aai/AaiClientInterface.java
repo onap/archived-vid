@@ -31,6 +31,7 @@ import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.ModelVer;
 import org.onap.vid.aai.model.OwningEntityResponse;
 import org.onap.vid.aai.model.PortDetailsTranslator;
+import org.onap.vid.aai.model.ProjectResponse;
 import org.onap.vid.aai.model.Properties;
 import org.onap.vid.aai.model.ResourceType;
 import org.onap.vid.model.SubscriberList;
@@ -76,7 +77,7 @@ public interface AaiClientInterface extends ProbeInterface {
 
     ModelVer getLatestVersionByInvariantId(String modelInvariantId);
 
-    AaiResponse getServicesByProjectNames(List<String> projectNames);
+    AaiResponse<ProjectResponse> getServicesByProjectNames(List<String> projectNames);
 
     AaiResponse getServiceModelsByDistributionStatus();
 

@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -55,6 +56,7 @@ import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.LogicalLinkResponse;
 import org.onap.vid.aai.model.OwningEntityResponse;
+import org.onap.vid.aai.model.ProjectResponse;
 import org.onap.vid.aai.model.Relationship;
 import org.onap.vid.aai.model.RelationshipData;
 import org.onap.vid.aai.model.RelationshipList;
@@ -286,21 +288,53 @@ public class AaiServiceTest {
 
     @Test
     public void testGetServicesByOwningEntityId() {
-        List<String>  owningEntityIds = ImmutableList.of("43b8a85a-0421-4265-9069-117dd6526b8a", "26dcc4aa-725a-447d-8346-aa26dfaa4eb7");
-        RoleValidator roleValidator  = mock(RoleValidator.class);
 
+        //given
+        List<String>  owningEntityIds = ImmutableList.of("43b8a85a-0421-4265-9069-117dd6526b8a", "26dcc4aa-725a-447d-8346-aa26dfaa4eb7");
         OwningEntityResponse owningEntityResponse = TestUtils.readJsonResourceFileAsObject("/responses/aai/listServicesByOwningEntity.json", OwningEntityResponse.class);
-        when(roleValidator.isServicePermitted(any(WithPermissionProperties.class))).thenReturn(true);
         when(aaiClientInterface.getServicesByOwningEntityId(owningEntityIds)).thenReturn(new AaiResponse<>(owningEntityResponse, "", 200));
+        RoleValidator roleValidator = createAlwaysTrueRoleValidator();
+
+        //when
         List<ServiceInstanceSearchResult> result = aaiService.getServicesByOwningEntityId(owningEntityIds, roleValidator);
 
-
+        //then
         ServiceInstanceSearchResult expected1 = new ServiceInstanceSearchResult(
             "af9d52f9-13b2-4657-a198-463677f82dc0", "256cddb4-3aa1-43cc-a08f-315bb50b275e", "MSO-dev-service-type", "xbghrftgr_shani", null, null, null, null, true);
         ServiceInstanceSearchResult expected2 = new ServiceInstanceSearchResult(
             "49769492-5def-4c89-8e73-b236f958fa40", "e02fd6f2-7fc2-434b-a92d-15abdb24b68d", "JUST-another-service-type", "fghghfhgf",  null, null, null, null, true);
         ServiceInstanceSearchResult expected3 = new ServiceInstanceSearchResult(
             "1d8fd482-2f53-4d62-a7bd-20e4bab14c45", "256cddb4-3aa1-43cc-a08f-315bb50b275e", "MSO-dev-service-type", "Bryant", null, null, null, null, true);
+
+        assertThat(result, jsonEquals(ImmutableList.of(expected1, expected2, expected3)).when(IGNORING_ARRAY_ORDER).whenIgnoringPaths("[*].subscriberName")); //ignore in array
+    }
+
+    @NotNull
+    private RoleValidator createAlwaysTrueRoleValidator() {
+        RoleValidator roleValidator  = mock(RoleValidator.class);
+        when(roleValidator.isServicePermitted(any(WithPermissionProperties.class))).thenReturn(true);
+        return roleValidator;
+    }
+
+    @Test
+    public void testGetServicesByProjectNames() {
+
+        //given
+        List<String>  projectNames = ImmutableList.of("x1", "y2");
+        ProjectResponse projectResponse = TestUtils.readJsonResourceFileAsObject("/responses/aai/listServicesByProject.json", ProjectResponse.class);
+        when(aaiClientInterface.getServicesByProjectNames(projectNames)).thenReturn(new AaiResponse<>(projectResponse, "", 200));
+        RoleValidator roleValidator = createAlwaysTrueRoleValidator();
+
+        //when
+        List<ServiceInstanceSearchResult> result = aaiService.getServicesByProjectNames(projectNames, roleValidator);
+
+        //then
+        ServiceInstanceSearchResult expected1 = new ServiceInstanceSearchResult(
+            "3f826016-3ac9-4928-9561-beee75fd91d5", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", "Emanuel", "Lital_SRIOV2_001", null, null, null, null, true);
+        ServiceInstanceSearchResult expected2 = new ServiceInstanceSearchResult(
+            "7e4f8130-5dee-47c4-8770-1abc5f5ded83", "3d15d7ea-4174-49b6-89ec-e569381f7231", "vMOG", "justAname",  null, null, null, null, true);
+        ServiceInstanceSearchResult expected3 = new ServiceInstanceSearchResult(
+            "ff2d9326-1ef5-4760-aba0-0eaf372ae675", "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", "Yoda", "anotherName", null, null, null, null, true);
 
         assertThat(result, jsonEquals(ImmutableList.of(expected1, expected2, expected3)).when(IGNORING_ARRAY_ORDER).whenIgnoringPaths("[*].subscriberName")); //ignore in array
     }
