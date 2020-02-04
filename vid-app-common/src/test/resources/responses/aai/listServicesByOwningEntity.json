@@ -1,0 +1,97 @@
+{
+  "owning-entity": [
+    {
+      "owning-entity-id": "43b8a85a-0421-4265-9069-117dd6526b8a",
+      "owning-entity-name": "Melissa",
+      "resource-version": "1527418700853",
+      "relationship-list": {
+        "relationship": [
+          {
+            "related-to": "service-instance",
+            "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+            "related-link": "/aai/v12/business/customers/customer/256cddb4-3aa1-43cc-a08f-315bb50b275e/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/af9d52f9-13b2-4657-a198-463677f82dc0",
+            "relationship-data": [
+              {
+                "relationship-key": "customer.global-customer-id",
+                "relationship-value": "256cddb4-3aa1-43cc-a08f-315bb50b275e"
+              },
+              {
+                "relationship-key": "service-subscription.service-type",
+                "relationship-value": "MSO-dev-service-type"
+              },
+              {
+                "relationship-key": "service-instance.service-instance-id",
+                "relationship-value": "af9d52f9-13b2-4657-a198-463677f82dc0"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "service-instance.service-instance-name",
+                "property-value": "xbghrftgr_shani"
+              }
+            ]
+          },
+          {
+            "related-to": "service-instance",
+            "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+            "related-link": "/aai/v12/business/customers/customer/e02fd6f2-7fc2-434b-a92d-15abdb24b68d/service-subscriptions/service-subscription/JUST-another-service-type/service-instances/service-instance/49769492-5def-4c89-8e73-b236f958fa40",
+            "relationship-data": [
+              {
+                "relationship-key": "customer.global-customer-id",
+                "relationship-value": "e02fd6f2-7fc2-434b-a92d-15abdb24b68d"
+              },
+              {
+                "relationship-key": "service-subscription.service-type",
+                "relationship-value": "JUST-another-service-type"
+              },
+              {
+                "relationship-key": "service-instance.service-instance-id",
+                "relationship-value": "49769492-5def-4c89-8e73-b236f958fa40"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "service-instance.service-instance-name",
+                "property-value": "fghghfhgf"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "owning-entity-id": "26dcc4aa-725a-447d-8346-aa26dfaa4eb7",
+      "owning-entity-name": "Kobe",
+      "resource-version": "1527418700844",
+      "relationship-list": {
+        "relationship": [
+          {
+            "related-to": "service-instance",
+            "relationship-label": "org.onap.relationships.inventory.BelongsTo",
+            "related-link": "/aai/v12/business/customers/customer/256cddb4-3aa1-43cc-a08f-315bb50b275e/service-subscriptions/service-subscription/MSO-dev-service-type/service-instances/service-instance/1d8fd482-2f53-4d62-a7bd-20e4bab14c45",
+            "relationship-data": [
+              {
+                "relationship-key": "customer.global-customer-id",
+                "relationship-value": "256cddb4-3aa1-43cc-a08f-315bb50b275e"
+              },
+              {
+                "relationship-key": "service-subscription.service-type",
+                "relationship-value": "MSO-dev-service-type"
+              },
+              {
+                "relationship-key": "service-instance.service-instance-id",
+                "relationship-value": "1d8fd482-2f53-4d62-a7bd-20e4bab14c45"
+              }
+            ],
+            "related-to-property": [
+              {
+                "property-key": "service-instance.service-instance-name",
+                "property-value": "Bryant"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

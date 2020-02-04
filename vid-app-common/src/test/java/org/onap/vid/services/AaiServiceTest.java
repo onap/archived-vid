@@ -20,11 +20,14 @@
 
 package org.onap.vid.services;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -34,6 +37,7 @@ import static org.testng.Assert.assertNotNull;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,13 +54,17 @@ import org.onap.vid.aai.model.AaiGetPnfResponse;
 import org.onap.vid.aai.model.AaiGetPnfs.Pnf;
 import org.onap.vid.aai.model.AaiGetTenatns.GetTenantsResponse;
 import org.onap.vid.aai.model.LogicalLinkResponse;
+import org.onap.vid.aai.model.OwningEntityResponse;
 import org.onap.vid.aai.model.Relationship;
 import org.onap.vid.aai.model.RelationshipData;
 import org.onap.vid.aai.model.RelationshipList;
 import org.onap.vid.aai.model.ServiceRelationships;
+import org.onap.vid.model.ServiceInstanceSearchResult;
 import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.roles.RoleValidator;
 import org.onap.vid.roles.RoleValidatorFactory;
+import org.onap.vid.roles.WithPermissionProperties;
+import org.onap.vid.testUtils.TestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -274,6 +282,27 @@ public class AaiServiceTest {
         } else {
             assertThat(aaiService.relatedOwningEntityId(serviceInstance), is(nullValue()));
         }
+    }
+
+    @Test
+    public void testGetServicesByOwningEntityId() {
+        List<String>  owningEntityIds = ImmutableList.of("43b8a85a-0421-4265-9069-117dd6526b8a", "26dcc4aa-725a-447d-8346-aa26dfaa4eb7");
+        RoleValidator roleValidator  = mock(RoleValidator.class);
+
+        OwningEntityResponse owningEntityResponse = TestUtils.readJsonResourceFileAsObject("/responses/aai/listServicesByOwningEntity.json", OwningEntityResponse.class);
+        when(roleValidator.isServicePermitted(any(WithPermissionProperties.class))).thenReturn(true);
+        when(aaiClientInterface.getServicesByOwningEntityId(owningEntityIds)).thenReturn(new AaiResponse<>(owningEntityResponse, "", 200));
+        List<ServiceInstanceSearchResult> result = aaiService.getServicesByOwningEntityId(owningEntityIds, roleValidator);
+
+
+        ServiceInstanceSearchResult expected1 = new ServiceInstanceSearchResult(
+            "af9d52f9-13b2-4657-a198-463677f82dc0", "256cddb4-3aa1-43cc-a08f-315bb50b275e", "MSO-dev-service-type", "xbghrftgr_shani", null, null, null, null, true);
+        ServiceInstanceSearchResult expected2 = new ServiceInstanceSearchResult(
+            "49769492-5def-4c89-8e73-b236f958fa40", "e02fd6f2-7fc2-434b-a92d-15abdb24b68d", "JUST-another-service-type", "fghghfhgf",  null, null, null, null, true);
+        ServiceInstanceSearchResult expected3 = new ServiceInstanceSearchResult(
+            "1d8fd482-2f53-4d62-a7bd-20e4bab14c45", "256cddb4-3aa1-43cc-a08f-315bb50b275e", "MSO-dev-service-type", "Bryant", null, null, null, null, true);
+
+        assertThat(result, jsonEquals(ImmutableList.of(expected1, expected2, expected3)).when(IGNORING_ARRAY_ORDER).whenIgnoringPaths("[*].subscriberName")); //ignore in array
     }
 
 }
