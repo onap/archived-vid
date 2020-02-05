@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "58813234_bc7ae644",
+        "filename": "features.properties.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-05T11:44:10Z",
+      "side": 1,
+      "message": "Please add a space between \"*\" and \"F\".",
+      "range": {
+        "startLine": 214,
+        "startChar": 1,
+        "endLine": 214,
+        "endChar": 2
+      },
+      "revId": "824cbb7c8117cb3c6663a48bbe2d71370c41c518",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "881737bd_83ab69b9",
+        "filename": "features.properties.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-05T11:44:10Z",
+      "side": 1,
+      "message": "I suggest a different name, as it is not \"hide\":\nFLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF\n\n\"\nWhen flag is true new VF Modules will inherit LCP-Region and Tenant from parent VNF.\nWhen off, user is requested to specify LCP-Region and Tenant for each VF Module.\n\"",
+      "range": {
+        "startLine": 218,
+        "startChar": 2,
+        "endLine": 220,
+        "endChar": 0
+      },
+      "revId": "824cbb7c8117cb3c6663a48bbe2d71370c41c518",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
