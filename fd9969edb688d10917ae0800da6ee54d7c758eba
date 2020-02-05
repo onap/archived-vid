@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5984c75a_bec21512",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-05T11:31:32Z",
+      "side": 1,
+      "message": "I suggest a different name, as it is not \"hide\":\nFLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF",
+      "range": {
+        "startLine": 89,
+        "startChar": 4,
+        "endLine": 89,
+        "endChar": 41
+      },
+      "revId": "fd9969edb688d10917ae0800da6ee54d7c758eba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44e5e330_a6ea27ed",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-05T11:31:32Z",
+      "side": 1,
+      "message": "how do you know these are the correct names?\nplease use one of these:\n1) FormControlNames.LCPCLOUD_REGION_ID defined in this class.\n2) Better: Get the values from _sharedControllersService.",
+      "range": {
+        "startLine": 139,
+        "startChar": 35,
+        "endLine": 139,
+        "endChar": 65
+      },
+      "revId": "fd9969edb688d10917ae0800da6ee54d7c758eba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
