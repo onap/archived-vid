@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0589aef7_cbaebd0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-05T12:00:19Z",
+      "side": 1,
+      "message": "FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF as well",
+      "revId": "d755325a3e50432e3430284deaec5c6884a3e12d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
