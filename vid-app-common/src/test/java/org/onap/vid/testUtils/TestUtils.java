@@ -21,9 +21,7 @@
 package org.onap.vid.testUtils;
 
 import static com.fasterxml.jackson.module.kotlin.ExtensionsKt.jacksonObjectMapper;
-import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.beanutils.PropertyUtils.getPropertyDescriptors;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
@@ -52,7 +50,9 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.ws.rs.client.Client;
@@ -61,7 +61,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -174,15 +173,27 @@ public class TestUtils {
     }
 
     public static String[] allPropertiesOf(Class<?> aClass) {
-        return Arrays.stream(getPropertyDescriptors(aClass))
+        return getPropertyDescriptorsRecursively(aClass).stream()
             .map(PropertyDescriptor::getDisplayName)
+            .distinct()
             .toArray(String[]::new);
     }
 
+    private static List<PropertyDescriptor> getPropertyDescriptorsRecursively(Class<?> aClass) {
+        List<PropertyDescriptor> result = new LinkedList<>();
+
+        for (Class<?> i = aClass; i != null && i != Object.class; i = i.getSuperclass()) {
+            Collections.addAll(result, getPropertyDescriptors(i));
+        }
+
+        return result;
+    }
+
     private static <T> List<String> allStringPropertiesOf(T object) {
-        return Arrays.stream(getPropertyDescriptors(object.getClass()))
+        return getPropertyDescriptorsRecursively(object.getClass()).stream()
             .filter(descriptor -> descriptor.getPropertyType().isAssignableFrom(String.class))
             .map(PropertyDescriptor::getDisplayName)
+            .distinct()
             .collect(toList());
     }
 
@@ -221,16 +232,15 @@ public class TestUtils {
      * @return The modified object
      */
     public static <T> T setStringsInStringProperties(T object) {
-        try {
-            final List<String> stringFields = allStringPropertiesOf(object);
+        allStringPropertiesOf(object).forEach(it -> {
+            try {
+                FieldUtils.writeField(object, it, it, true);
+            } catch (IllegalAccessException e) {
+                // YOLO
+            }
+        });
 
-            BeanUtils.populate(object, stringFields.stream()
-                .collect(toMap(identity(), identity())));
-
-            return object;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return object;
     }
 
     public static void registerCloudConfigurationValueGenerator() {

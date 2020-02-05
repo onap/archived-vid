@@ -12,6 +12,7 @@ import org.onap.vid.model.serviceInstantiation.Vnf
 import org.onap.vid.mso.RestMsoImplementation
 import org.onap.vid.properties.Features
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
+import org.onap.vid.utils.isNotActive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
@@ -59,9 +60,9 @@ class VnfCommand @Autowired constructor(
             val vfModules:List<VfModule> = request.vfModules.values.stream().flatMap { vfKey -> vfKey.values.stream() }.collect(Collectors.toList<VfModule>())
 
             try {
-                childJobs = pushChildrenJobsToBroker(vfModules.filter { filterModuleByNeedToCreateBase(it) }, dataForChild, JobType.VolumeGroupInstantiation)
+                childJobs = pushChildrenJobsToBroker(vfModulesForChildrenJobs(vfModules), dataForChild, JobType.VolumeGroupInstantiation)
             } catch (e: AsdcCatalogException) {
-                LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to retrieve service definitions from SDC, for VfModule is BaseModule.. Error: " + e.message , e)
+                LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to retrieve service definitions from SDC, for VfModule is BaseModule.. Error: " + e.message, e)
                 //return Job.JobStatus.FAILED
                 throw e;
             }
@@ -70,11 +71,26 @@ class VnfCommand @Autowired constructor(
         return Job.JobStatus.COMPLETED_WITH_NO_ACTION
     }
 
-    private fun filterModuleByNeedToCreateBase(it: VfModule):Boolean {
+    private fun vfModulesForChildrenJobs(vfModules: List<VfModule>): List<VfModule> =
+            vfModules
+                    .filter { filterModuleByNeedToCreateBase(it) }
+                    .map { childVfModuleWithVnfRegionAndTenant(it) }
+
+    internal fun childVfModuleWithVnfRegionAndTenant(vfModule: VfModule): VfModule {
+        if (featureManager.isNotActive(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)) {
+            return vfModule
+        }
+
+        val vnfLcpCloudRegionId = getRequest().lcpCloudRegionId
+        val vnfTenantId = getRequest().tenantId
+        return vfModule.cloneWith(vnfLcpCloudRegionId, vnfTenantId)
+    }
+
+    private fun filterModuleByNeedToCreateBase(vfModule: VfModule): Boolean {
         return needToCreateBaseModule ==
-            commandUtils.isVfModuleBaseModule(
-                    serviceModelInfoFromRequest().modelVersionId,
-                    it.modelInfo.modelVersionId)
+                commandUtils.isVfModuleBaseModule(
+                        serviceModelInfoFromRequest().modelVersionId,
+                        vfModule.modelInfo.modelVersionId)
     }
 
     override fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String, testApi: String?): MsoRestCallPlan {
