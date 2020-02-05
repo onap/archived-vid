@@ -59,6 +59,7 @@ public enum Features implements Feature {
     FLAG_2004_INSTANTIATION_TEMPLATES_POPUP,
     FLAG_2006_VFM_SDNC_PRELOAD_FILES,
     FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY,
+    FLAG_2006_HIDE_TENANT_REGION_VFMODULE,
     ;
 
     public boolean isActive() {

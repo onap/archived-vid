@@ -132,7 +132,17 @@ export class VfModuleControlGenerator {
     if (this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
       result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }
-    return result;
+
+    // in order to avoid 2 seperate if
+    if (!!this.store.getState().global.flags['FLAG_2006_HIDE_TENANT_REGION_VFMODULE']) {
+      // remove controls
+      const removeControlsNames = ['lcpCloudRegionId', 'tenantId'];
+      result = result.filter((item : FormControlModel)=>{
+        return !removeControlsNames.includes(item.controlName);
+      });
+    }
+
+      return result;
   }
 
   getSdncExtraContents() : object[] {
