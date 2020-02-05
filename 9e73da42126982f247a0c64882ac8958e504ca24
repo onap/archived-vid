@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b66c7bf3_401cc533",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AaiServiceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-05T10:13:23Z",
+      "side": 1,
+      "message": "i suggest extracting these uuids to variables, and reusing those below in `new ServiceInstanceSearchResult`",
+      "range": {
+        "startLine": 293,
+        "startChar": 57,
+        "endLine": 293,
+        "endChar": 95
+      },
+      "revId": "9e73da42126982f247a0c64882ac8958e504ca24",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
