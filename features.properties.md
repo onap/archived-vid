@@ -210,3 +210,11 @@
 * FLAG_MORE_AUDIT_INFO_LINK_ON_AUDIT_INFO
   On the "audit info" modal (available on Instantiation Status page), shows a link navigating to
   the read-only RETRY page with more audit info.
+  
+* FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY 
+  When flag is true the user will be provided with edit permissions by owning entity id even the user have no permission by Subscriber,
+  when the flag is false the user provided with edit permission by Subscriber.
+  
+* FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF
+  When flag is true new VF Modules on Alacarte service will inherit LCP-Region and Tenant from parent VNF.
+  When off, user is requested to specify LCP-Region and Tenant for each VF Module.
