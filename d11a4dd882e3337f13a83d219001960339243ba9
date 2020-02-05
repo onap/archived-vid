@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01c7c79e_35a3526a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AaiServiceTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-05T10:11:05Z",
+      "side": 1,
+      "message": "FYI, can do this:\n\n```\nreturn mock(RoleValidator.class, withSettings().defaultAnswer(o -\u003e true));\n```",
+      "range": {
+        "startLine": 316,
+        "startChar": 15,
+        "endLine": 316,
+        "endChar": 28
+      },
+      "revId": "d11a4dd882e3337f13a83d219001960339243ba9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
