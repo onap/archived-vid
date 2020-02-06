@@ -4,7 +4,7 @@ import {NgRedux} from '@angular-redux/store';
 import {ControlGeneratorUtil, SDN_C_PRE_LOAD} from "../control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {LogService} from "../../../../utils/log/log.service";
 import {
   FormControlModel,
@@ -12,12 +12,14 @@ import {
   ValidatorOptions
 } from "../../../../models/formControlModels/formControl.model";
 import {FormControlNames, VfModuleControlGenerator} from "./vfModule.control.generator";
-import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
+import {FeatureFlagsService, Features} from "../../../../services/featureFlag/feature-flags.service";
 import {VfModuleInstance} from "../../../../models/vfModuleInstance";
 import {VfModule} from "../../../../models/vfModule";
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
 import {AppState} from "../../../../store/reducers";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
+import {instance, mock, when} from "ts-mockito";
+import each from "jest-each";
 
 class MockAppStore<T> {
   getState() {
@@ -921,6 +923,8 @@ describe('VFModule Control Generator', () => {
   let service: VfModuleControlGenerator;
   let httpMock: HttpTestingController;
   let store : NgRedux<AppState>;
+  let mockFeatureFlagsService: FeatureFlagsService = mock(FeatureFlagsService);
+
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -933,7 +937,7 @@ describe('VFModule Control Generator', () => {
         FormBuilder,
         LogService,
         SharedTreeService,
-        {provide:FeatureFlagsService, useClass: MockFeatureFlagsService},
+        {provide: FeatureFlagsService, useValue: instance(mockFeatureFlagsService)},
         {provide: NgRedux, useClass: MockAppStore}]
     });
     await TestBed.compileComponents();
@@ -945,6 +949,23 @@ describe('VFModule Control Generator', () => {
     jest.spyOn(console, 'error');
 
   })().then(done).catch(done.fail));
+
+  let formControlsWithoutLcpRegionTenantLegacy : string[] =
+    [FormControlNames.INSTANCE_NAME,
+      FormControlNames.VOLUME_GROUP_NAME,
+      FormControlNames.ROLLBACK_ON_FAILURE,
+      SDN_C_PRE_LOAD,];
+
+  let formControlsWithLcpRegionTenantLegacy : string[] =
+        [FormControlNames.INSTANCE_NAME,
+        FormControlNames.VOLUME_GROUP_NAME,
+        FormControlNames.LCPCLOUD_REGION_ID,
+        FormControlNames.LEGACY_REGION,
+        FormControlNames.TENANT_ID,
+        FormControlNames.ROLLBACK_ON_FAILURE,
+        SDN_C_PRE_LOAD,];
+
+
 
   test(' getMacroFormControls gets vnfStoreKey === null', () => {
     const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
@@ -1058,20 +1079,15 @@ describe('VFModule Control Generator', () => {
     expect(console.error).toHaveBeenCalled();
   });
 
-  test('getAlaCarteFormControls should return the correct order of controls', () => {
+  each([
+    [true, 4, formControlsWithoutLcpRegionTenantLegacy],
+    [false, 7,formControlsWithLcpRegionTenantLegacy]
+  ]).
+  test('getAlaCarteFormControls should return the correct order of controls', (flag: boolean, controlAmount: number, orderedControls: string[]) => {
+    when(mockFeatureFlagsService.getFlagState(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)).thenReturn(flag);
     const controls:FormControlModel[] = getAlaCarteFormControls();
 
-    const orderedControls : string[] = [
-      FormControlNames.INSTANCE_NAME,
-      FormControlNames.VOLUME_GROUP_NAME,
-      FormControlNames.LCPCLOUD_REGION_ID,
-      FormControlNames.LEGACY_REGION,
-      FormControlNames.TENANT_ID,
-      FormControlNames.ROLLBACK_ON_FAILURE,
-      SDN_C_PRE_LOAD,
-    ];
-
-    expect(controls.length).toEqual(7);
+    expect(controls.length).toEqual(controlAmount);
     for(let i = 0 ; i < orderedControls.length ; i++) {
      expect(controls[i].controlName).toEqual(orderedControls[i]);
     }
@@ -1092,26 +1108,6 @@ describe('VFModule Control Generator', () => {
     const controls: FormControlModel[] = service.getAlaCarteFormControls(serviceId, vnfStoreKey, vfModuleUUID, uuidData, true);
     return controls;
   }
-
-  test('getAlaCarteFormControls responce with wrong order of controls', () => {
-    const controls:FormControlModel[] = getAlaCarteFormControls();
-
-    const orderedControls : string[] = [
-      FormControlNames.INSTANCE_NAME,
-      FormControlNames.VOLUME_GROUP_NAME,
-      FormControlNames.LCPCLOUD_REGION_ID,
-      FormControlNames.TENANT_ID, // TENANT_ID must be after LEGACY_REGION
-      FormControlNames.LEGACY_REGION,
-      FormControlNames.ROLLBACK_ON_FAILURE,
-      SDN_C_PRE_LOAD,
-    ];
-
-    for(let i = 0 ; i < orderedControls.length ; i++) {
-      if (controls[i].controlName === 'legacyRegion') {
-        expect(orderedControls[i]).toEqual('tenantId');
-      }
-    }
-  });
 
   test('getMacroFormControls should return the correct order of controls', () => {
     const serviceId: string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";
@@ -1147,25 +1143,6 @@ describe('VFModule Control Generator', () => {
     const instanceNameControl: FormControlModel = <FormControlModel>controls.find(item => item.controlName == controllerName);
     const instanceNameValidator: ValidatorModel = instanceNameControl.validations.find(val => val.validatorName === ValidatorOptions.pattern);
     expect(instanceNameValidator.validatorArg).toEqual(/^[a-zA-Z0-9._-]*$/);
-  });
-
-  test(' getAlaCarteFormControls gets null service', () => {
-    const controls:FormControlModel[] = getAlaCarteFormControls();
-    expect(controls.length).toEqual(7);
-
-    const orderedControls : string[] = [
-      FormControlNames.INSTANCE_NAME,
-      FormControlNames.VOLUME_GROUP_NAME,
-      FormControlNames.LCPCLOUD_REGION_ID,
-      FormControlNames.LEGACY_REGION,
-      FormControlNames.TENANT_ID,
-      FormControlNames.ROLLBACK_ON_FAILURE,
-      SDN_C_PRE_LOAD,
-    ];
-
-    for(let i = 0 ; i < orderedControls.length ; i++) {
-      expect(controls[i].controlName).toEqual(orderedControls[i]);
-    }
   });
 
 
