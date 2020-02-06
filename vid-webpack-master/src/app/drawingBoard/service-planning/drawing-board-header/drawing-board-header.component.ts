@@ -3,7 +3,7 @@ import {ContextMenuComponent, ContextMenuService} from 'ngx-contextmenu';
 import {DialogService} from 'ng2-bootstrap-modal';
 import {MsoService} from '../../../shared/services/msoService/mso.service'
 import * as _ from 'lodash';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ServiceInstance} from "../../../shared/models/serviceInstance";
 import {OwningEntity} from "../../../shared/models/owningEntity";
 import {MessageBoxData} from "../../../shared/components/messageBox/messageBox.data";
@@ -55,7 +55,8 @@ export class DrawingBoardHeader {
               private _servicePopupService : ServicePopupService,
               private _drawingBoardHeaderService : DrawingBoardHeaderService,
               private _store: NgRedux<AppState>,
-              private _drawingBoardPermissions : DrawingBoardPermissions) {
+              private _drawingBoardPermissions : DrawingBoardPermissions,
+              private _router : Router) {
     this.store = _store;
     this.drawingBoardPermissions = _drawingBoardPermissions;
     this.drawingBoardHeaderService = _drawingBoardHeaderService;
@@ -128,7 +129,9 @@ export class DrawingBoardHeader {
   }
 
   public editService(): void {
-    this._iframeService.addClassOpenModal(this.parentElementClassName);
+    if(IframeService.isIframe()){
+      this._iframeService.addClassOpenModal(this.parentElementClassName);
+    }
     this.dialogService.addDialog(GenericFormPopupComponent, {
       type: PopupType.SERVICE,
       uuidData: <any>{
@@ -219,11 +222,20 @@ export class DrawingBoardHeader {
       if (this.mode !== DrawingBoardModes.RETRY_EDIT) {
         instanceFields.rollbackOnFailure = instanceFields.rollbackOnFailure === 'true';
         this.msoService.submitMsoTask(instanceFields).subscribe((result) => {
-          window.parent.postMessage("navigateToInstantiationStatus", '*');
+          if(IframeService.isIframe()){
+            window.parent.postMessage("navigateToInstantiationStatus", '*');
+          }else {
+
+          }
         });
       } else {
         this.msoService.retryBulkMsoTask(this.jobId, instanceFields).subscribe((result) => {
-          window.parent.postMessage("navigateToInstantiationStatus", '*');
+          if(IframeService.isIframe()){
+            window.parent.postMessage("navigateToInstantiationStatus", '*');
+          }else {
+            this._router.navigate(['/instantiationStatus']);
+          }
+
         });
       }
   }

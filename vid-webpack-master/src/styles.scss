@@ -126,10 +126,11 @@ tooltip-content {
 }
 
 service-planning {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  border: 1px solid #d2d2d2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .required:after {
@@ -241,4 +242,8 @@ sdc-checkbox {
 
 sdc-modal {
   z-index:  10000 !important;
+}
+
+side-menu {
+  z-index: 10001;
 }

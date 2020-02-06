@@ -12,6 +12,7 @@ import {ErrorMsgService} from "../../../shared/components/error-msg/error-msg.se
 import {DrawingBoardModes} from "../drawing-board.modes";
 import {ServiceInstance} from "../../../shared/models/serviceInstance";
 import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
+import {SideMenuComponent} from "../../../shared/components/sideMenu/side-menu.component";
 
 @Injectable()
 export class DrawingBoardHeaderService{

@@ -85,10 +85,20 @@ $grid-border: 1px #d2d2d2 solid;
     grid-area: instance-form;
   }
 
-  .popup-content {
+  .popup-content-inside-iframe {
     display: grid;
     grid-template-columns: 400px auto 30px 93px;
     grid-template-rows: 50px calc(100vh - 180px);
+    grid-template-areas:
+      "header-left header-right quantity-label quantity"
+      "model-information instance-form instance-form instance-form";
+    padding: 0;
+  }
+
+  .popup-content {
+    display: grid;
+    grid-template-columns: 400px auto 30px 93px;
+    grid-template-rows: 50px calc(100vh - 235px);
     grid-template-areas:
       "header-left header-right quantity-label quantity"
       "model-information instance-form instance-form instance-form";
@@ -172,11 +182,11 @@ $grid-border: 1px #d2d2d2 solid;
     line-height: 34px;
   }
 }
-//
-//@media (min-width: 1200px) {
-//  .service-model,
-//  .service-instance {
-//    width: 1050px;
-//    margin: 30px auto;
-//  }
-//}
+
+.modalOutsideIframe {
+  width: 70%;
+  border: 1px solid gray;
+  margin: auto;
+  margin-top: 30px;
+  outline: none;
+}

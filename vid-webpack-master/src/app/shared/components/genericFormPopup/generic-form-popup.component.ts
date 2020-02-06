@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormPopupDetails} from "../../models/formControlModels/formPopupDetails.model";
 import {DialogComponent, DialogService} from "ng2-bootstrap-modal";
 import {FormGroup} from "@angular/forms";
@@ -14,6 +14,10 @@ import {GenericFormPopupService} from "./generic-form-popup.service";
 import {FormControlModel} from "../../models/formControlModels/formControl.model";
 import {FormGeneralErrorsService} from "../formGeneralErrors/formGeneralErrors.service";
 import {updateCurrentModalModeAction} from "../../storeUtil/utils/global/global.actions";
+import {ModalDirective} from "ngx-bootstrap";
+import {Subject} from "rxjs/Subject";
+import {ServiceInfoModel} from "../../server/serviceInfo/serviceInfo.model";
+import {SideMenuComponent} from "../sideMenu/side-menu.component";
 import {DrawingBoardTreeService} from "../../../drawingBoard/service-planning/drawing-board-tree/drawing-board-tree.service";
 
 
@@ -54,6 +58,8 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   serviceModelId : string;
   servicesQty = 1;
   quantityOptions = _.range(1, 51)
+  isIframe : boolean = true;
+  modalIsOpen : boolean = false;
 
   constructor(dialogService: DialogService,
               private _iframeService: IframeService,
@@ -81,6 +87,8 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
   }
 
   ngOnInit(): void {
+    this.isIframe = IframeService.isIframe();
+    SideMenuComponent.closeSideMenu.next();
     this._store.dispatch(updateCurrentModalModeAction(this.isUpdateMode));
     this._route
       .queryParams

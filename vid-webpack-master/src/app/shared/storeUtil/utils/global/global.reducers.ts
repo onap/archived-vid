@@ -8,9 +8,14 @@ import {
   UpdateGenericModalHelper,
   DeleteGenericModalHelper,
   DeleteGenericModalTabelDataHelper,
-  UpdateGenericModalTableDataHelper, UpdateCurrentModalModeAction
+  UpdateGenericModalTableDataHelper,
+  UpdateCurrentModalModeAction,
+  UpdateSideMenuItemsAction,
+  UpdateApplicationVersionAction, UpdateAppNameAction
 } from "./global.actions";
 import * as _ from "lodash";
+import {VersionModel} from "../../../components/sideMenu/version.model";
+import {SideMenuModel} from "../../../components/sideMenu/side-menu.model";
 
 export interface GlobalState {
   name : string;
@@ -19,7 +24,9 @@ export interface GlobalState {
   genericModalCriteria : { [key: string]: any };
   genericModalHelper : { [key: string]: any };
   isUpdateModalMode?: boolean;
-
+  applicationVersion?: VersionModel;
+  sideMenuItems : SideMenuModel[] | null;
+  appName : string;
 }
 
 const initialState: GlobalState = {
@@ -30,7 +37,10 @@ const initialState: GlobalState = {
     roles : []
   },
   genericModalHelper : {},
-  isUpdateModalMode : null
+  isUpdateModalMode : null,
+  applicationVersion : null,
+  sideMenuItems : null,
+  appName : null
 };
 
 export const globalReducer =
@@ -91,6 +101,18 @@ export const globalReducer =
           newState.isUpdateModalMode = (<UpdateCurrentModalModeAction>action).isUpdateModalMode;
         }
         return newState;
+      }
+      case GlobalActions.UPDATE_SIDE_MENU_ITEMS : {
+        Object.assign(state, (<UpdateSideMenuItemsAction>action));
+        return Object.assign({}, state);
+      }
+      case GlobalActions.UPDATE_APPLICATION_VERSION : {
+        Object.assign(state, (<UpdateApplicationVersionAction>action));
+        return Object.assign({}, state);
+      }
+      case GlobalActions.UPDATE_APP_NAME : {
+        Object.assign(state, (<UpdateAppNameAction>action));
+        return Object.assign({}, state);
       }
       default:
         return state;
