@@ -1,4 +1,6 @@
 import {Action, ActionCreator} from "redux";
+import {SideMenuModel} from "../../../components/sideMenu/side-menu.model";
+import {VersionModel} from "../../../components/sideMenu/version.model";
 
 export enum GlobalActions {
   UPDATE_NAME = 'UPDATE_NAME',
@@ -12,13 +14,27 @@ export enum GlobalActions {
   DELETE_GENERIC_MODAL_TABLE_DATA_HELPER = 'DELETE_GENERIC_MODAL_TABLE_DATA_HELPER',
   UPDATE_GENERIC_CURRNT_VRF_HELPER = 'UPDATE_GENERIC_CURRNT_VRF_HELPER',
   DELETE_GENERIC_CURRNT_VRF_HELPER = 'DELETE_GENERIC_CURRNT_VRF_HELPER',
-  UPDATE_CURRENT_MODAL_MODE = 'UPDATE_CURRENT_MODAL_MODE'
+  UPDATE_CURRENT_MODAL_MODE = 'UzPDATE_CURRENT_MODAL_MODE',
+  UPDATE_SIDE_MENU_ITEMS = 'UPDATE_SIDE_MENU_ITEMS',
+  UPDATE_APPLICATION_VERSION = 'UPDATE_APPLICATION_VERSION',
+  UPDATE_APP_NAME = 'UPDATE_APP_NAME'
+}
+
+export interface UpdateSideMenuItemsAction extends Action {
+  sideMenuItems: SideMenuModel[];
+}
+
+export interface UpdateAppNameAction extends Action {
+  appName: string;
+}
+
+export interface UpdateApplicationVersionAction extends Action {
+  applicationVersion: VersionModel;
 }
 
 export interface UpdateCurrentModalModeAction extends Action {
   isUpdateModalMode?: boolean;
 }
-
 
 export interface UpdateGlobalAction extends Action {
   name?: string;
@@ -116,4 +132,19 @@ export const clearAllGenericModalhelper: ActionCreator<ClearGenericModalHelper> 
 export const updateCurrentModalModeAction: ActionCreator<UpdateCurrentModalModeAction> = (isUpdateModalMode? :boolean) => ({
   type : GlobalActions.UPDATE_CURRENT_MODAL_MODE,
   isUpdateModalMode
+});
+
+export const updateSideMenuItemsAction: ActionCreator<UpdateSideMenuItemsAction> = (sideMenuItems :SideMenuModel[]) => ({
+  type : GlobalActions.UPDATE_SIDE_MENU_ITEMS,
+  sideMenuItems
+});
+
+export const updateVersionAction: ActionCreator<UpdateApplicationVersionAction> = (applicationVersion : VersionModel) => ({
+  type : GlobalActions.UPDATE_APPLICATION_VERSION,
+  applicationVersion
+});
+
+export const updateAppNameAction: ActionCreator<UpdateAppNameAction> = (appName : string) => ({
+  type : GlobalActions.UPDATE_APP_NAME,
+  appName
 });

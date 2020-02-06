@@ -1,4 +1,7 @@
-<div id="instance-popup" class="modal-dialog">
+<div  bsModal [config]="{backdrop: 'static'}"
+     tabindex="-1" role="dialog" aria-labelledby="dialog-static-name"
+     [ngClass]="{'modalOutsideIframe' : !isIframe}">
+  <div id="instance-popup" [ngClass]="{'modal-lg' : !isIframe}" class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">
       <button type="button"
@@ -9,7 +12,7 @@
             class="modal-title">{{formPopupDetails?.title}}
       </span>
     </div>
-    <div class="modal-body popup-content">
+    <div class="modal-body" [ngClass]="{'popup-content' : !isIframe, 'popup-content-inside-iframe': isIframe}">
       <div class="header-left">
         <div>MODEL: <span>"{{formPopupDetails?.leftSubTitle}}"</span></div>
       </div>
@@ -74,4 +77,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

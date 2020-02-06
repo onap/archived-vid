@@ -60,6 +60,9 @@ export module Constants {
 
     public static GET_SYSTEM_PROP_VNF_PROV_STATUS_PATH = 'get_system_prop_vnf_prov_status';
     public static GET_USER_ID = 'getuserID';
+    public static GET_MENU= '../../get_menu';
+    public static GET_VERSION= '../../version';
+    public static GET_APP_NAME= '../../get_app_name';
     public static INSTANTIATE_ROOT_PATH = '#/instantiate?subscriberId=';
     public static INSTANTIATE_PATH = '/instantiate';
     public static INVALID_STRING = '/INVALID_STRING/';

@@ -11,6 +11,7 @@ import {AppState} from "../../store/reducers";
 import {FormGroup} from "@angular/forms";
 import * as _ from "lodash";
 import {clearAllGenericModalhelper} from "../../storeUtil/utils/global/global.actions";
+import {SideMenuComponent} from "../sideMenu/side-menu.component";
 @Component({
   selector: 'search-members-modal',
   templateUrl: 'search-elements-modal.component.html',
@@ -25,6 +26,8 @@ export class SearchElementsModalComponent extends DialogComponent<{ modalInforma
   disableSetElements: boolean = true;
   disableSearchByNetworkRole: boolean = false;
   dynamicFormGroup: FormGroup = null;
+  isIframe : boolean = true;
+  modalIsOpen : boolean = false;
 
   constructor(dialogService: DialogService,
               private _iframeService: IframeService,
@@ -47,6 +50,8 @@ export class SearchElementsModalComponent extends DialogComponent<{ modalInforma
   @ViewChild('ElementsTableComponent', {static: false}) membersTable;
 
   ngOnInit(selectedRowsIds?: string[]): void {
+    this.isIframe = IframeService.isIframe();
+    SideMenuComponent.closeSideMenu.next();
     const genericModalHelper = this._store.getState().global.genericModalHelper;
     if(!_.isNil(genericModalHelper) && !_.isNil(genericModalHelper[`${this.modalInformation.type}_TABLE_DATA`]) && !_.isNil(genericModalHelper[`selected${this.modalInformation.type}`])){
       this.elementsData = this._store.getState().global.genericModalHelper[`${this.modalInformation.type}_TABLE_DATA`];

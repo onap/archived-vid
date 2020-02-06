@@ -5,6 +5,7 @@ import {ViewEditResolver} from "../shared/resolvers/viewEdit/viewEdit.resolver";
 import {DrawingBoardGuard} from "./guards/servicePlanningGuard/drawingBoardGuard";
 import {RetryResolver} from "../shared/resolvers/retry/retry.resolver";
 import {RecreateResolver} from "../shared/resolvers/recreate/recreate.resolver";
+import {SideMenuResolver} from "../shared/resolvers/sideMenu/sideMenu.resolver";
 
 export const DrawingBoardRoutes: Route[] = [
   {
@@ -15,7 +16,8 @@ export const DrawingBoardRoutes: Route[] = [
         component: ServicePlanningComponent,
         resolve: {
           flags: FlagsResolve,
-          viewEditResolver: ViewEditResolver
+          viewEditResolver: ViewEditResolver,
+          sideMenu : SideMenuResolver
         },
         canActivate: [DrawingBoardGuard]
       },
@@ -24,7 +26,8 @@ export const DrawingBoardRoutes: Route[] = [
         component: ServicePlanningComponent,
         resolve: {
           flags: FlagsResolve,
-          viewEditResolver: ViewEditResolver
+          viewEditResolver: ViewEditResolver,
+          sideMenu : SideMenuResolver
         }
       },
       {
@@ -32,7 +35,8 @@ export const DrawingBoardRoutes: Route[] = [
         component: ServicePlanningComponent,
         resolve: {
           flags: FlagsResolve,
-          viewEditResolver: RecreateResolver
+          viewEditResolver: RecreateResolver,
+          sideMenu : SideMenuResolver
         }
       },
       {
@@ -40,7 +44,8 @@ export const DrawingBoardRoutes: Route[] = [
         component: ServicePlanningComponent,
         resolve: {
           flags: FlagsResolve,
-          viewEditResolver: RetryResolver
+          viewEditResolver: RetryResolver,
+          sideMenu : SideMenuResolver
         },
         canActivate: [DrawingBoardGuard]
       },
@@ -49,14 +54,16 @@ export const DrawingBoardRoutes: Route[] = [
         component: ServicePlanningComponent,
         resolve: {
           flags: FlagsResolve,
-          viewEditResolver: RetryResolver
+          viewEditResolver: RetryResolver,
+          sideMenu : SideMenuResolver
         }
       },
       {
         path: '',
         component: ServicePlanningComponent,
         resolve: {
-          flags: FlagsResolve
+          flags: FlagsResolve,
+          sideMenu : SideMenuResolver
         },
       }
     ]
@@ -66,6 +73,7 @@ export const DrawingBoardRoutes: Route[] = [
     component: ServicePlanningEmptyComponent,
     resolve: {
       flags: FlagsResolve,
+      sideMenu : SideMenuResolver
     }
   },
 ];

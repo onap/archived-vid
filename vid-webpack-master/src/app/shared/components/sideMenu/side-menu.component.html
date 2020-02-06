@@ -1,0 +1,36 @@
+<nav role="navigation">
+  <div id="menuToggle">
+    <input #sideMenuCheckbox style="display: none;" type="checkbox"/>
+
+    <div class="container">
+      <div class="upper-icon">
+        <custom-icon
+          (click)="openCloseSideMenu()"
+          [name]="getIconType()"
+          [mode]="getIconColor()"
+          size="large"
+        ></custom-icon>
+      </div>
+      <div class="applicationInfo" *ngIf="isOpen">
+        <div class="applicationInfoData">{{appName}}</div>
+        <div class="applicationInfoData">{{applicationVersion?.build}}</div>
+      </div>
+    </div>
+
+    <ul id="menu">
+      <a *ngFor="let sideMenuItem of sideMenuItems"
+         href="javascript:void(0)"
+         (click)="redirect(sideMenuItem)">
+        <li>
+          <custom-icon
+            class="icon-position"
+            [name]="sideMenuService.getRouteIcon(sideMenuItem)"
+            [mode]="'primary'"
+            [size]="'medium'"
+          ></custom-icon>
+          <div>{{sideMenuItem.label}}</div>
+        </li>
+      </a>
+    </ul>
+  </div>
+</nav>
