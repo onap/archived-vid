@@ -23,6 +23,7 @@ import {SharedControllersService} from "../sharedControlles/shared.controllers.s
 import {MessageModal} from "../../../messageModal/message-modal.service";
 import {ButtonType} from "../../../customModal/models/button.type";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
+import {FeatureFlagsService, Features} from "../../../../services/featureFlag/feature-flags.service";
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -47,7 +48,8 @@ export class VfModuleControlGenerator {
               private store: NgRedux<AppState>,
               private http: HttpClient,
               private _aaiService: AaiService,
-              private _logService: LogService) {
+              private _logService: LogService,
+              private _featureFlagsService:FeatureFlagsService) {
     this.aaiService = _aaiService;
   }
 
@@ -124,9 +126,11 @@ export class VfModuleControlGenerator {
     const vfModuleInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode));
     let result: FormControlModel[] = [];
     this.pushInstanceAndVGToForm(result, vfModuleInstance, serviceId, vnfModel, true);
-    result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vfModuleInstance, result));
-    result.push(this._sharedControllersService.getLegacyRegion(vfModuleInstance));
-    result.push(this._sharedControllersService.getTenantControl(serviceId, vfModuleInstance));
+    if( !this._featureFlagsService.getFlagState(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)) {
+      result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vfModuleInstance, result));
+      result.push(this._sharedControllersService.getLegacyRegion(vfModuleInstance));
+      result.push(this._sharedControllersService.getTenantControl(serviceId, vfModuleInstance));
+    }
     result.push(this._sharedControllersService.getRollbackOnFailureControl(vfModuleInstance));
     result.push(this._sharedControllersService.getSDNCControl(vfModuleInstance, this.getSdncExtraContents()));
     if (this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
