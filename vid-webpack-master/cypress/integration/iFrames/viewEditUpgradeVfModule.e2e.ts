@@ -143,7 +143,6 @@ describe('View Edit Page: Upgrade VFModule', function () {
     afterEach(() => {
       cy.screenshot();
     });
-
     it(`Upgrade a VFModule: another case e2e`, function () {
 
       const serviceType = 'Emanuel';
@@ -183,6 +182,50 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
         cy.readFile('../vid-app-common/src/test/resources/payload_jsons/vfmodule/upgrade_vfmodule_e2e__fe_input_cypress.json').then((expectedResult) => {
+          cy.deepCompare(xhr.request.body, expectedResult);
+        });
+      });
+
+    });
+
+    it(`Upgrade a VFModule: upgrade vfmodule when upgraded already service, vnf and borther vfmodule e2e`, function () {
+
+      const serviceType = 'Emanuel';
+      const subscriberId = 'a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb';
+      const serviceModelId = 'a243da28-c11e-45a8-9f26-0284a9a789bc';
+      const serviceInstanceId = 'b153e8ce-2d00-4466-adc0-14bad70f150c';
+      const serviceInvariantUuid = "dd5a69b7-c50c-4dde-adc2-966b79bb8fd6";
+
+      cy.initDrawingBoardUserPermission();
+
+      cy.route(`**/rest/models/services/${serviceModelId}`,
+        'fixture:../support/jsonBuilders/mocks/jsons/upgradeVfModule/upgrade_vfmodule_e2e__upgraded_service_model.json')
+      .as('serviceModel2');
+
+      cy.route(`**/aai_get_service_instance_topology/${subscriberId}/${serviceType}/${serviceInstanceId}`,
+        'fixture:../support/jsonBuilders/mocks/jsons/upgradeVfModule/upgrade_vfmodule_e2e__upgraded_service_instance.json')
+      .as('serviceInstance2');
+
+      cy.route(`**/aai_get_newest_model_version_by_invariant/${serviceInvariantUuid}`, {
+          "modelVersionId": "a243da28-c11e-45a8-9f26-0284a9a789bc",
+          "modelName": "CHARLOTTE 01222020 Svc",
+          "modelVersion": "3.0",
+          "distributionStatus": "DISTRIBUTION_COMPLETE_OK",
+          "resourceVersion": "1580246673596",
+          "modelDescription": "test model for VF module replacement",
+          "orchestrationType": null
+        }
+      ).as("newestModelVersion2");
+
+      cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
+
+      upgradeTheVFM('node-3412fe1f-e103-4777-90c0-f66d888f4bed-mdns012220200..Mdns01222020..dns_az_01..module-1', false);
+
+      mockAsyncBulkResponse();
+      cy.getDrawingBoardDeployBtn().click();
+
+      cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
+        cy.readFile('../vid-app-common/src/test/resources/payload_jsons/vfmodule/upgrade_vfmodule_not_related_to_current_model_e2e__fe_input_cypress.json').then((expectedResult) => {
           cy.deepCompare(xhr.request.body, expectedResult);
         });
       });
