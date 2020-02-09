@@ -34,10 +34,12 @@ export class TreeNodeModel {
   instanceName?: string;
 
   constructor(instance: ChildNodeInstance, nodeModel: NodeModel){
-    this.modelInvariantId = nodeModel.invariantUuid;
-    this.modelCustomizationId = nodeModel.customizationUuid;
-    this.modelId = nodeModel.uuid;
-    this.modelUniqueId = this.modelCustomizationId || this.modelId;
+    if (instance.modelInfo) {
+      this.modelInvariantId = instance.modelInfo.modelInvariantId;
+      this.modelCustomizationId = instance.modelInfo.modelCustomizationId;
+      this.modelId = instance.modelInfo.modelVersionId;
+      this.modelUniqueId = this.modelCustomizationId || this.modelId;
+    }
     this.missingData = false;
     this.id = instance.trackById;
     this.action = !_.isNil(instance.action) ? instance.action : ServiceInstanceActions.Create;
