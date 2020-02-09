@@ -1,0 +1,137 @@
+{
+  "service": {
+    "uuid": "a243da28-c11e-45a8-9f26-0284a9a789bc",
+    "invariantUuid": "dd5a69b7-c50c-4dde-adc2-966b79bb8fd6",
+    "name": "CHARLOTTE 01222020 Svc",
+    "version": "3.0",
+    "toscaModelURL": null,
+    "category": "Emanuel",
+    "serviceType": "",
+    "serviceRole": "",
+    "description": "test model for VF module replacement",
+    "serviceEcompNaming": "true",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "anyAlacarteWhichNotExcluded",
+      "modelCategory": "other",
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
+    }
+  },
+  "vnfs": {
+    "CHARLOTTE 01222020 0": {
+      "uuid": "803fdb3e-b4c9-451c-a020-f15cd1fda041",
+      "invariantUuid": "2ef6541d-d5bb-41ea-bcce-8fb2396a74da",
+      "description": "VSP model for VF module replacement testing",
+      "name": "CHARLOTTE 01222020",
+      "version": "3.0",
+      "customizationUuid": "94ad4ac3-9c06-4bb3-9ac8-0714ef78a912",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "nf_naming_code": "fapn",
+        "nf_function": "FIRSTNET-APN-DNS",
+        "availability_zone_max_count": "1",
+        "nf_role": "vAPNDNS",
+        "ecomp_generated_naming": "true",
+        "node_count": "4.0",
+        "dns_image_name": "16.04 for KVM VMs - NO TOOLS",
+        "nf_type": "DNS",
+        "route_eth0": "172.20.27.128/32 via 172.26.18.1 dev eth0 ",
+        "dns_flavor_name": "nv.c2r4d20"
+      },
+      "type": "VF",
+      "modelCustomizationName": "CHARLOTTE 01222020 0",
+      "vfModules": {
+        "mdns012220200..Mdns01222020..base_dns..module-0": {
+          "uuid": "ed404f69-f351-4566-9fde-1199b3a6a647",
+          "invariantUuid": "44fc8655-f639-44e0-ad1f-4cd434ac17da",
+          "customizationUuid": "c9b32003-febc-44e0-a97f-7630fa7fa4a0",
+          "description": null,
+          "name": "Mdns01222020..base_dns..module-0",
+          "version": "3",
+          "modelCustomizationName": "Mdns01222020..base_dns..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base_dns",
+            "baseModule": true
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        },
+        "mdns012220200..Mdns01222020..dns_az_01..module-1": {
+          "uuid": "c449aaf8-2467-41a9-9015-730ab48ca19b",
+          "invariantUuid": "a60135d6-8e3d-47bc-87dd-f56d60d6beb0",
+          "customizationUuid": "2f74b6b2-8627-403e-b696-4c43fe5b19a5",
+          "description": null,
+          "name": "Mdns01222020..dns_az_01..module-1",
+          "version": "3",
+          "modelCustomizationName": "Mdns01222020..dns_az_01..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": null,
+            "initialCount": 0,
+            "vfModuleLabel": "dns_az_01",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        }
+      },
+      "volumeGroups": {},
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {
+    "mdns012220200..Mdns01222020..base_dns..module-0": {
+      "uuid": "ed404f69-f351-4566-9fde-1199b3a6a647",
+      "invariantUuid": "44fc8655-f639-44e0-ad1f-4cd434ac17da",
+      "customizationUuid": "c9b32003-febc-44e0-a97f-7630fa7fa4a0",
+      "description": null,
+      "name": "Mdns01222020..base_dns..module-0",
+      "version": "3",
+      "modelCustomizationName": "Mdns01222020..base_dns..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base_dns",
+        "baseModule": true
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "mdns012220200..Mdns01222020..dns_az_01..module-1": {
+      "uuid": "c449aaf8-2467-41a9-9015-730ab48ca19b",
+      "invariantUuid": "a60135d6-8e3d-47bc-87dd-f56d60d6beb0",
+      "customizationUuid": "2f74b6b2-8627-403e-b696-4c43fe5b19a5",
+      "description": null,
+      "name": "Mdns01222020..dns_az_01..module-1",
+      "version": "3",
+      "modelCustomizationName": "Mdns01222020..dns_az_01..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": null,
+        "initialCount": 0,
+        "vfModuleLabel": "dns_az_01",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    }
+  },
+  "volumeGroups": {},
+  "pnfs": {},
+  "vnfGroups": {},
+  "vrfs": {}
+}
