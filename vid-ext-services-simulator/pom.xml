@@ -15,7 +15,7 @@
         <springframework.version>5.1.9.RELEASE</springframework.version>
         <hibernate.version>5.3.4.Final</hibernate.version>
         <jackson.version>2.9.9</jackson.version>
-        <jackson.databind.version>2.9.9.3</jackson.databind.version>
+        <jackson.databind.version>2.9.10.1</jackson.databind.version>
         <!-- Skip assembling the zip by default -->
         <skipassembly>true</skipassembly>
         <!-- Tests usually require some setup that maven cannot do, so skip. -->
