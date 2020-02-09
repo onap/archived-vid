@@ -69,7 +69,7 @@ describe('Default Data Generator Service', () => {
     expect(result.platformName).toBeNull();
     expect(result.modelInfo.modelType).toEqual('VF');
     expect(result.modelInfo.modelInvariantId).toEqual(serviceHierarchy.vnfs[vnfName].invariantUuid);
-    expect(result.modelInfo.modelVersionId).toEqual(formValues.modelInfo.modelVersionId);
+    expect(result.modelInfo.modelVersionId).toEqual(serviceHierarchy.vnfs[vnfName].uuid);
     expect(result.modelInfo.modelName).toEqual(serviceHierarchy.vnfs[vnfName].name);
     expect(result.modelInfo.modelVersion).toEqual(serviceHierarchy.vnfs[vnfName].version);
     expect(result.modelInfo.modelCustomizationId).toEqual(serviceHierarchy.vnfs[vnfName].customizationUuid);
@@ -114,6 +114,15 @@ describe('Default Data Generator Service', () => {
       const newVfModule = service.createNewVfModuleTreeNode(<any>{
         instanceName: "",
         instanceParams: {},
+        modelInfo: {
+          "modelCustomizationName": "VF_vGeraldine 0",
+          "modelName": "VF_vGeraldine 0",
+          "modelCustomizationId": "91415b44-753d-494c-926a-456a9172bbb9",
+          "modelInvariantId": "4160458e-f648-4b30-a176-43881ffffe9e",
+          "modelVersionId": "d6557200-ecf2-4641-8094-5393ae3aae60",
+          "modelType": "vnf",
+          "modelVersion": "1"
+        },
         volumeGroupName: "",
         isMissingData : false,
         trackById: Math.random().toString()
@@ -128,6 +137,15 @@ describe('Default Data Generator Service', () => {
       const newVfModule = service.createNewVfModuleTreeNode(<any>{
         instanceName: "",
         instanceParams: {},
+        modelInfo: {
+          "modelCustomizationName": "VF_vGeraldine 0",
+          "modelName": "VF_vGeraldine 0",
+          "modelCustomizationId": "91415b44-753d-494c-926a-456a9172bbb9",
+          "modelInvariantId": "4160458e-f648-4b30-a176-43881ffffe9e",
+          "modelVersionId": "d6557200-ecf2-4641-8094-5393ae3aae60",
+          "modelType": "vnf",
+          "modelVersion": "1"
+        },
         volumeGroupName: "",
         isMissingData : false,
         trackById: Math.random().toString()
@@ -152,6 +170,15 @@ describe('Default Data Generator Service', () => {
         rollbackOnFailure: "rollbackOnFailure",
         originalName : null,
         vfModules: {},
+        modelInfo: {
+          "modelCustomizationName": "VF_vGeraldine 0",
+          "modelName": "VF_vGeraldine 0",
+          "modelCustomizationId": "91415b44-753d-494c-926a-456a9172bbb9",
+          "modelInvariantId": "4160458e-f648-4b30-a176-43881ffffe9e",
+          "modelVersionId": "d6557200-ecf2-4641-8094-5393ae3aae60",
+          "modelType": "vnf",
+          "modelVersion": "1"
+        },
         isMissingData: false,
         trackById: Math.random().toString(),
         vnfStoreKey: "abc"
@@ -174,6 +201,15 @@ describe('Default Data Generator Service', () => {
         rollbackOnFailure: "rollbackOnFailure",
         originalName : null,
         vfModules: {},
+        modelInfo: {
+          "modelCustomizationName": "VF_vGeraldine 0",
+          "modelName": "VF_vGeraldine 0",
+          "modelCustomizationId": "91415b44-753d-494c-926a-456a9172bbb9",
+          "modelInvariantId": "4160458e-f648-4b30-a176-43881ffffe9e",
+          "modelVersionId": "d6557200-ecf2-4641-8094-5393ae3aae60",
+          "modelType": "vnf",
+          "modelVersion": "1"
+        },
         isMissingData: false,
         trackById: Math.random().toString(),
         vnfStoreKey: "abc"

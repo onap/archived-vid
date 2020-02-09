@@ -34,9 +34,14 @@ export class TreeNodeModel {
   instanceName?: string;
 
   constructor(instance: ChildNodeInstance, nodeModel: NodeModel){
+
     this.modelInvariantId = nodeModel.invariantUuid;
-    this.modelCustomizationId = nodeModel.customizationUuid;
-    this.modelId = nodeModel.uuid;
+    if (instance.modelInfo) {
+      this.modelCustomizationId = instance.modelInfo.modelCustomizationId;
+      this.modelId = instance.modelInfo.modelVersionId;
+    } else {
+      console.debug("no 'modelInfo' in node-instance", instance)
+    }
     this.modelUniqueId = this.modelCustomizationId || this.modelId;
     this.missingData = false;
     this.id = instance.trackById;

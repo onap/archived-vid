@@ -232,7 +232,7 @@ describe('View only drawing board', function () {
         'status-property-provStatus': '',
         'status-property-inMaint': '',
       },
-      'node-undefined-dc229cd8-c132-4455-8517-5c1787c18b14:0': {
+      'node-dc229cd8-c132-4455-8517-5c1787c18b14-dc229cd8-c132-4455-8517-5c1787c18b14:0': {
         'node-type-indicator': 'M',
         'node-name': 'ss820f_0918_base',
         'status-property-orchStatus': 'Assigned',
