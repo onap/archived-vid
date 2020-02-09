@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c8e8e2cf_8d7b2050",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VnfCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-09T06:23:51Z",
+      "side": 1,
+      "message": "nice",
+      "revId": "fe6392bf837d65bee87039545d21944c0e84bbf9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66c38d25_1d3a8c72",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VnfCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-09T06:23:51Z",
+      "side": 1,
+      "message": "lucky that featureManager already injected here",
+      "range": {
+        "startLine": 80,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 26
+      },
+      "revId": "fe6392bf837d65bee87039545d21944c0e84bbf9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39b29d55_43b9f453",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/VnfCommandTest.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-09T06:23:51Z",
+      "side": 1,
+      "message": "how did you know how to do it ?",
+      "revId": "fe6392bf837d65bee87039545d21944c0e84bbf9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "819c7e12_33115e86",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/model/serviceInstantiation/VfModuleTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-09T06:23:51Z",
+      "side": 1,
+      "message": "Maybe we can add Kotlin extension in test area that will create such default VfModule, like this :\nVfModule.createWithDefault()",
+      "revId": "fe6392bf837d65bee87039545d21944c0e84bbf9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
