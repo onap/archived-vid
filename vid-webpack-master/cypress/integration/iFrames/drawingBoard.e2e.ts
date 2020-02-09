@@ -3415,7 +3415,7 @@ describe('Drawing board', function () {
                 "modelInfo": {
                   "modelType": "VF",
                   "modelInvariantId": "5be7e99e-8eb2-4d97-be63-8081ff3cd10e",
-                  "modelVersionId": "f4d84bb4-a416-4b4e-997e-0059973630b9",
+                  "modelVersionId": "ea81d6f7-0861-44a7-b7d5-d173b562c350",
                   "modelName": "2017-488_PASQUALE-vPE",
                   "modelVersion": "9.0",
                   "modelCustomizationName": "2017-488_PASQUALE-vPE 0"
@@ -3455,7 +3455,7 @@ describe('Drawing board', function () {
                 "modelInfo": {
                   "modelType": "VF",
                   "modelInvariantId": "5be7e99e-8eb2-4d97-be63-8081ff3cd10e",
-                  "modelVersionId": "f4d84bb4-a416-4b4e-997e-0059973630b9",
+                  "modelVersionId": "ea81d6f7-0861-44a7-b7d5-d173b562c350",
                   "modelName": "2017-488_PASQUALE-vPE",
                   "modelVersion": "9.0",
                   "modelCustomizationName": "2017-488_PASQUALE-vPE 0"
@@ -5065,7 +5065,7 @@ describe('Drawing board', function () {
                 "modelInfo": {
                   "modelType": "VF",
                   "modelInvariantId": "5be7e99e-8eb2-4d97-be63-8081ff3cd10e",
-                  "modelVersionId": "f4d84bb4-a416-4b4e-997e-0059973630b9",
+                  "modelVersionId": "ea81d6f7-0861-44a7-b7d5-d173b562c350",
                   "modelName": "2017-488_PASQUALE-vPE",
                   "modelVersion": "9.0",
                   "modelCustomizationName": "2017-488_PASQUALE-vPE 0"

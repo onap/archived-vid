@@ -1,0 +1,193 @@
+{
+  "action": "None_Upgrade",
+  "aicZoneId": null,
+  "aicZoneName": null,
+  "bulkSize": 1,
+  "cloudOwner": null,
+  "collectionResources": {
+  },
+  "existingNames": {
+    "pst-vf-phase-1": ""
+  },
+  "existingNetworksCounterMap": {
+  },
+  "existingVNFCounterMap": {
+    "94ad4ac3-9c06-4bb3-9ac8-0714ef78a912": 1
+  },
+  "existingVnfGroupCounterMap": {
+  },
+  "existingVRFCounterMap": {
+  },
+  "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "instanceId": "b153e8ce-2d00-4466-adc0-14bad70f150c",
+  "instanceName": "PST-Vf-Phase-1",
+  "instanceParams": [
+  ],
+  "isALaCarte": true,
+  "isDirty": false,
+  "lcpCloudRegionId": null,
+  "modelInfo": {
+    "modelInvariantId": "dd5a69b7-c50c-4dde-adc2-966b79bb8fd6",
+    "modelName": "CHARLOTTE 01222020 Svc",
+    "modelType": "service",
+    "modelVersion": "3.0",
+    "modelVersionId": "a243da28-c11e-45a8-9f26-0284a9a789bc"
+  },
+  "networks": {
+  },
+  "orchStatus": "Active",
+  "owningEntityId": null,
+  "owningEntityName": null,
+  "productFamilyId": null,
+  "projectName": null,
+  "rollbackOnFailure": false,
+  "subscriptionServiceType": "Emanuel",
+  "tenantId": null,
+  "tenantName": null,
+  "testApi": "GR_API",
+  "validationCounter": 0,
+  "vidNotions": {
+    "instantiationType": "ALaCarte",
+    "instantiationUI": "anyAlacarteWhichNotExcluded",
+    "modelCategory": "other",
+    "viewEditUI": "legacy"
+  },
+  "vnfGroups": {
+  },
+  "vnfs": {
+    "fa546506-b754-445c-b0d6-d36b6978de77": {
+      "action": "None_Upgrade",
+      "cloudOwner": "irma-aic",
+      "inMaint": false,
+      "instanceId": "fa546506-b754-445c-b0d6-d36b6978de77",
+      "instanceName": "PST-Vf-Phase-1-Vnf",
+      "instanceType": "CHARLOTTE 01222020 Svc/CHARLOTTE 01222020 0",
+      "lcpCloudRegionId": "olson5a",
+      "legacyRegion": null,
+      "lineOfBusiness": null,
+      "modelInfo": {
+        "modelCustomizationId": "94ad4ac3-9c06-4bb3-9ac8-0714ef78a912",
+        "modelCustomizationName": "CHARLOTTE 01222020 0",
+        "modelInvariantId": "2ef6541d-d5bb-41ea-bcce-8fb2396a74da",
+        "modelName": "CHARLOTTE 01222020",
+        "modelType": "vnf",
+        "modelVersion": "3.0",
+        "modelVersionId": "803fdb3e-b4c9-451c-a020-f15cd1fda041"
+      },
+      "networks": {
+      },
+      "orchStatus": "Active",
+      "originalName": "CHARLOTTE 01222020 0",
+      "platformName": null,
+      "productFamilyId": null,
+      "provStatus": "PREPROV",
+      "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08",
+      "trackById": "fa546506-b754-445c-b0d6-d36b6978de77",
+      "upgradedVFMSonsCounter": 1,
+      "uuid": "803fdb3e-b4c9-451c-a020-f15cd1fda041",
+      "vfModules": {
+        "mdns012220200..Mdns01222020..base_dns..module-0": {
+          "82637987-9c31-4ce6-8e0d-5b98a12bb3fb": {
+            "action": "None",
+            "cloudOwner": null,
+            "inMaint": false,
+            "instanceId": "82637987-9c31-4ce6-8e0d-5b98a12bb3fb",
+            "instanceName": "PST-Vf-Phase-1-Base",
+            "instanceType": null,
+            "isBase": true,
+            "lcpCloudRegionId": null,
+            "legacyRegion": null,
+            "lineOfBusiness": null,
+            "modelInfo": {
+              "modelCustomizationId": "82160e6e-d9c4-45ef-bd19-01573ab11b61",
+              "modelCustomizationName": "Mdns01222020..base_dns..module-0",
+              "modelInvariantId": "44fc8655-f639-44e0-ad1f-4cd434ac17da",
+              "modelName": "Mdns01222020..base_dns..module-0",
+              "modelType": "vfModule",
+              "modelVersion": "1",
+              "modelVersionId": "ed404f69-f351-4566-9fde-1199b3a6a647"
+            },
+            "orchStatus": "Active",
+            "originalName": "mdns012220200..Mdns01222020..base_dns..module-0",
+            "platformName": null,
+            "productFamilyId": null,
+            "provStatus": null,
+            "tenantId": null,
+            "trackById": "82637987-9c31-4ce6-8e0d-5b98a12bb3fb",
+            "uuid": "ed404f69-f351-4566-9fde-1199b3a6a647",
+            "volumeGroupName": null
+          }
+        },
+        "mdns012220200..Mdns01222020..dns_az_01..module-1": {
+          "48b9c7ae-490c-44af-b4dc-09b133d2fb89": {
+            "action": "None",
+            "cloudOwner": "irma-aic",
+            "inMaint": false,
+            "instanceId": "48b9c7ae-490c-44af-b4dc-09b133d2fb89",
+            "instanceName": "PST-Vf-Phase-1-Vf-Addon",
+            "instanceType": null,
+            "isBase": false,
+            "lcpCloudRegionId": "olson5a",
+            "legacyRegion": null,
+            "lineOfBusiness": null,
+            "modelInfo": {
+              "modelCustomizationId": "2f74b6b2-8627-403e-b696-4c43fe5b19a5",
+              "modelCustomizationName": "Mdns01222020..dns_az_01..module-1",
+              "modelInvariantId": "a60135d6-8e3d-47bc-87dd-f56d60d6beb0",
+              "modelName": "Mdns01222020..dns_az_01..module-1",
+              "modelType": "vfModule",
+              "modelVersion": "3",
+              "modelVersionId": "c449aaf8-2467-41a9-9015-730ab48ca19b"
+            },
+            "orchStatus": "Active",
+            "originalName": "mdns012220200..Mdns01222020..dns_az_01..module-1",
+            "platformName": null,
+            "productFamilyId": null,
+            "provStatus": null,
+            "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08",
+            "trackById": "48b9c7ae-490c-44af-b4dc-09b133d2fb89",
+            "uuid": "c449aaf8-2467-41a9-9015-730ab48ca19b",
+            "volumeGroupName": null
+          },
+          "5576b76d-30c4-43b2-ac43-f3b0c0e6a61e": {
+            "action": "None_Upgrade",
+            "cloudOwner": "irma-aic",
+            "inMaint": false,
+            "instanceId": "5576b76d-30c4-43b2-ac43-f3b0c0e6a61e",
+            "instanceName": "PST-Vf-Phase-1-Vf-Addon2",
+            "instanceType": null,
+            "isBase": false,
+            "lcpCloudRegionId": "olson5a",
+            "legacyRegion": null,
+            "lineOfBusiness": null,
+            "modelInfo": {
+              "modelCustomizationId": "f34b65fe-fbc5-4eb6-92cd-776d06eaf0ae",
+              "modelCustomizationName": "Mdns01222020..dns_az_01..module-1",
+              "modelInvariantId": "a60135d6-8e3d-47bc-87dd-f56d60d6beb0",
+              "modelName": "Mdns01222020..dns_az_01..module-1",
+              "modelType": "vfModule",
+              "modelVersion": "1",
+              "modelVersionId": "3412fe1f-e103-4777-90c0-f66d888f4bed"
+            },
+            "orchStatus": "Active",
+            "originalName": "mdns012220200..Mdns01222020..dns_az_01..module-1",
+            "platformName": null,
+            "productFamilyId": null,
+            "provStatus": null,
+            "retainAssignments": false,
+            "sdncPreLoad": true,
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content": null,
+            "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08",
+            "trackById": "5576b76d-30c4-43b2-ac43-f3b0c0e6a61e",
+            "uuid": "3412fe1f-e103-4777-90c0-f66d888f4bed",
+            "volumeGroupName": null
+          }
+        }
+      }
+    }
+  },
+  "vrfs": {
+  }
+}

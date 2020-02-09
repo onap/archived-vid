@@ -2261,9 +2261,10 @@ describe('Model Tree Generator service', () => {
           "modelInfo": {
             "modelType": "VF",
             "modelInvariantId": "72e465fe-71b1-4e7b-b5ed-9496118ff7a8",
-            "modelVersionId": "6b528779-44a3-4472-bdff-9cd15ec93450",
+            "modelVersionId": "afacccf6-397d-45d6-b5ae-94c39734b168",
             "modelName": "2017-388_PASQUALE-vPE",
             "modelVersion": "4.0",
+            "modelCustomizationId": "b3c76f73-eeb5-4fb6-9d31-72a889f1811c",
             "modelCustomizationName": "2017-388_PASQUALE-vPE 0"
           }
         },
