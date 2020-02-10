@@ -57,13 +57,13 @@ describe('A la carte', function () {
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
 
         cy.getElementByDataTestsId("openMenuBtn").click({force: true})
-          .getElementByDataTestsId("context-menu-header-edit-item").click({force: true})
-          .getElementByDataTestsId("instanceName")
-          .getElementByDataTestsId("subscriberName")
-          .getElementByDataTestsId("serviceType")
-          .getElementByDataTestsId("owningEntity")
-          .getElementByDataTestsId("project")
-          .getElementByDataTestsId("rollback");
+        .getElementByDataTestsId("context-menu-header-edit-item").click({force: true})
+        .getElementByDataTestsId("instanceName")
+        .getElementByDataTestsId("subscriberName")
+        .getElementByDataTestsId("serviceType")
+        .getElementByDataTestsId("owningEntity")
+        .getElementByDataTestsId("project")
+        .getElementByDataTestsId("rollback");
 
         cy.selectDropdownOptionByText("subscriberName", "SILVIA ROBBINS");
         cy.selectDropdownOptionByText("serviceType", subscriptionServiceType);
@@ -93,13 +93,13 @@ describe('A la carte', function () {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json').then((res) => {
         res['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'] = true;
         cy.server()
-          .route({
-            method: 'GET',
-            delay: 0,
-            status: 200,
-            url: Cypress.config('baseUrl') + "/flags**",
-            response: res
-          }).as('initFlags with multi select');
+        .route({
+          method: 'GET',
+          delay: 0,
+          status: 200,
+          url: Cypress.config('baseUrl') + "/flags**",
+          response: res
+        }).as('initFlags with multi select');
       });
 
 
@@ -111,13 +111,13 @@ describe('A la carte', function () {
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
 
         cy.getElementByDataTestsId("openMenuBtn").click({force: true})
-          .getElementByDataTestsId("context-menu-header-edit-item").click({force: true})
-          .getElementByDataTestsId("instanceName")
-          .getElementByDataTestsId("subscriberName")
-          .getElementByDataTestsId("serviceType")
-          .getElementByDataTestsId("owningEntity")
-          .getElementByDataTestsId("project")
-          .getElementByDataTestsId("rollback");
+        .getElementByDataTestsId("context-menu-header-edit-item").click({force: true})
+        .getElementByDataTestsId("instanceName")
+        .getElementByDataTestsId("subscriberName")
+        .getElementByDataTestsId("serviceType")
+        .getElementByDataTestsId("owningEntity")
+        .getElementByDataTestsId("project")
+        .getElementByDataTestsId("rollback");
 
         cy.selectDropdownOptionByText("subscriberName", "SILVIA ROBBINS");
         cy.selectDropdownOptionByText("serviceType", "TYLER SILVIA");
@@ -215,8 +215,16 @@ describe('A la carte', function () {
       });
     });
 
-    it(`VFModule a-la-carte`, () => {
-      var timeBomb = new Date('12/09/2018');
+    it(`Add ALaCarte VfModule Without LcpRegion Tenant Id And Legacy`, () => {
+      addAlacarteVfmoduleByFlag(true, 'redux-a-la-carte-no-lcp-tenant.json');
+    });
+
+    it(`Add ALaCarte VfModule With LcpRegion Tenant Id And Legacy`, () => {
+      addAlacarteVfmoduleByFlag(false, 'redux-a-la-carte.json');
+    });
+
+    function addAlacarteVfmoduleByFlag  (flag: boolean, expectedJsonFile: string) {
+      let timeBomb = new Date('12/09/2018');
       if (new Date() < timeBomb) {
         return;
       }
@@ -224,6 +232,7 @@ describe('A la carte', function () {
         cy.setTestApiParamToGR();
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.inputs = null;
+        res.global['flags'] = { 'FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF' : flag };
         cy.setReduxState(<any>res);
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
 
@@ -241,31 +250,30 @@ describe('A la carte', function () {
               '2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2',
             ];
 
-            cy.addALaCarteVfModule(vnfName, vfModulesNames[0], 'mimazepubi', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, false)
+            cy.addALaCarteVfModule(vnfName, vfModulesNames[0], 'mimazepubi', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, false, flag)
+            .then(() => {
+              cy.addALaCarteVfModule(vnfName, vfModulesNames[1], 'puwesovabe', 'AAIAIC25', 'my region', 'USP-SIP-IC-24335-T-01', true, true, false, flag)
               .then(() => {
-                cy.addALaCarteVfModule(vnfName, vfModulesNames[1], 'puwesovabe', 'AAIAIC25', 'my region', 'USP-SIP-IC-24335-T-01', true, true, false)
-                  .then(() => {
-                    cy.addALaCarteVfModule(vnfName, vfModulesNames[2], 'bnmgtrx', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, true)
-                      .then(() => {
-                        cy.getReduxState().then((state) => {
-                          const vfModules = state.service.serviceInstance['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs[vnfName].vfModules;
-                          cy.readFile('../vid-automation/src/test/resources/a-la-carte/redux-a-la-carte.json').then((file) => {
-                            for (let vfModulesName of vfModulesNames) {
-                              const vfModule = vfModules[vfModulesName];
-                              let vfModuleObject = vfModule[Object.keys(vfModule)[0]];
-                              file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName].action = "Create";
-                              cy.deepCompare(vfModuleObject, file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName]);
-                            }
-                          });
-                        });
-                      });
+                cy.addALaCarteVfModule(vnfName, vfModulesNames[2], 'bnmgtrx', 'hvf6', '', 'AINWebTool-15-D-iftach', false, false, true, flag)
+                .then(() => {
+                  cy.getReduxState().then((state) => {
+                    const vfModules = state.service.serviceInstance['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].vnfs[vnfName].vfModules;
+                    cy.readFile('../vid-automation/src/test/resources/a-la-carte/' + expectedJsonFile).then((file) => {
+                      for (let vfModulesName of vfModulesNames) {
+                        const vfModule = vfModules[vfModulesName];
+                        let vfModuleObject = vfModule[Object.keys(vfModule)[0]];
+                        file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName].action = "Create";
+                        cy.deepCompare(vfModuleObject, file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName]);
+                      }
+                    });
                   });
+                });
               });
+            });
           });
         });
       });
-    });
-
+    };
 
     function changeServiceEcompNamingToTrue(obj: ServiceModel) {
       obj.service.serviceEcompNaming = "true";
