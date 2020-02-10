@@ -5,20 +5,44 @@ public class PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress extends Prese
     private final String vnfInstanceId;
     private final String volumeGroupInstanceId;
     private final boolean isVolumeGroupPreset;
-    private PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress(Boolean isVolumeGroupPreset, String requestId, String serviceInstanceId, String vnfInstanceId, String volumeGroupInstanceId, String testApi, boolean withTestApi) {
+    private final String lcpCloudRegionId;
+
+    private PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress(Boolean isVolumeGroupPreset,
+        String requestId,
+        String serviceInstanceId,
+        String vnfInstanceId,
+        String volumeGroupInstanceId,
+        String lcpCloudRegionId,
+        String testApi,
+        boolean withTestApi
+    ) {
         super(requestId, isVolumeGroupPreset ? volumeGroupInstanceId : DEFAULT_INSTANCE_ID, testApi, withTestApi);
         this.serviceInstanceId = serviceInstanceId;
         this.vnfInstanceId = vnfInstanceId;
         this.isVolumeGroupPreset = isVolumeGroupPreset;
         this.volumeGroupInstanceId = volumeGroupInstanceId;
+        this.lcpCloudRegionId = lcpCloudRegionId;
     }
 
-    public static PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress forVfModule(String requestId, String serviceInstanceId, String vnfInstanceId, String volumeGroupInstanceId, String testApi, boolean withTestApi) {
-        return new PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress(false, requestId, serviceInstanceId, vnfInstanceId, volumeGroupInstanceId, testApi, withTestApi);
+    public static PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress forVfModule(String requestId,
+        String serviceInstanceId,
+        String vnfInstanceId,
+        String volumeGroupInstanceId,
+        String lcpCloudRegionId,
+        String testApi,
+        boolean withTestApi
+    ) {
+        return new PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress(false, requestId, serviceInstanceId, vnfInstanceId, volumeGroupInstanceId, lcpCloudRegionId, testApi, withTestApi);
     }
 
-    public static PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress forVolumeGroup(String requestId, String serviceInstanceId, String vnfInstanceId, String testApi, boolean withTestApi) {
-        return new PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress(true, requestId, serviceInstanceId, vnfInstanceId, requestId,testApi, withTestApi);
+    public static PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress forVolumeGroup(String requestId,
+        String serviceInstanceId,
+        String vnfInstanceId,
+        String lcpCloudRegionId,
+        String testApi,
+        boolean withTestApi
+    ) {
+        return new PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress(true, requestId, serviceInstanceId, vnfInstanceId, requestId, lcpCloudRegionId, testApi, withTestApi);
     }
 
     @Override
@@ -47,7 +71,7 @@ public class PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress extends Prese
                 "      \"modelCustomizationName\":\"2017488PasqualeVpe..PASQUALE_vRE_BV..module-1\"" +
                 "    }," +
                 "    \"cloudConfiguration\":{" +
-                "      \"lcpCloudRegionId\":\"my region\"," +
+            "      \"lcpCloudRegionId\":\"" + lcpCloudRegionId + "\"," +
                        addCloudOwnerIfNeeded() +
                 "      \"tenantId\":\"092eb9e8e4b7412e8787dd091bc58e86\"" +
                 "    }," +
