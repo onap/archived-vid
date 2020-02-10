@@ -207,9 +207,6 @@ class VfmoduleCommand @Autowired constructor(
         val serviceModelInfo = serviceModelInfoFromRequest()
         val modelNewestUuid = commandUtils.getNewestModelUuid(serviceModelInfo.modelInvariantId);
 
-        check(!modelNewestUuid.equals(serviceModelInfo.modelVersionId, true)) {
-            "Model version id ${serviceModelInfo.modelVersionId} is already the latest version of model's invariant id ${serviceModelInfo.modelInvariantId}" }
-
         val serviceNewestModel = commandUtils.getServiceModel(modelNewestUuid);
 
         return serviceNewestModel;
