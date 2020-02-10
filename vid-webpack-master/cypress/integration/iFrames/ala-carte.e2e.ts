@@ -283,8 +283,5 @@ describe('A la carte', function () {
         .get('.error').contains(INSTANCE_NAME_NOT_MANDATORY_MESSAGE);
     }
 
-
-
-
   });
 });

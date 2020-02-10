@@ -34,7 +34,7 @@ function addMacroVfModule(vnfName: string, vfModuleName: string, instanceName: s
 }
 
 function addALaCarteVfModule(vnfName: string, vfModuleName: string, instanceName: string, lcpRegion: string, legacyRegion: string,
-                     tenant: string, rollback: boolean, sdncPreLoad: boolean, deleteVgName: boolean): Chainable<any> {
+                     tenant: string, rollback: boolean, sdncPreLoad: boolean, deleteVgName: boolean, flag: boolean): Chainable<any> {
   return cy.getElementByDataTestsId('node-' + vnfName).click({force: true}).then(() => {
     cy.getElementByDataTestsId('node-' + vfModuleName + '-add-btn').click({force: true}).then(() => {
       cy.getElementByDataTestsId('instanceName').clear().type(instanceName, {force: true}).then(() => {
@@ -42,11 +42,13 @@ function addALaCarteVfModule(vnfName: string, vfModuleName: string, instanceName
           cy.getElementByDataTestsId('volumeGroupName').clear();
         }
       }).then(() => {
-        cy.selectDropdownOptionByText('lcpRegion', lcpRegion);
-        if (legacyRegion) {
-          cy.typeToInput("lcpRegionText", legacyRegion);
+        if(!flag) {
+          cy.selectDropdownOptionByText('lcpRegion', lcpRegion);
+          if (legacyRegion) {
+            cy.typeToInput("lcpRegionText", legacyRegion);
+          }
+          cy.selectDropdownOptionByText('tenant', tenant);
         }
-        cy.selectDropdownOptionByText('tenant', tenant);
         cy.selectDropdownOptionByText('rollback', String(rollback));
         if (sdncPreLoad) {
           cy.getElementByDataTestsId('sdncPreLoad').check();
