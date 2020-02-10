@@ -1,13 +1,26 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
 public class PresetMSOCreateVnfALaCarteCypress2 extends PresetMSOCreateVnfBase {
+
     private String vnfInstanceName;
+    private final String lcpCloudRegionId;
+    private final String tenantId;
 
     public PresetMSOCreateVnfALaCarteCypress2(String overrideRequestId, String serviceInstanceId, String responseInstanceId, String vnfInstanceName, String testApi, boolean withTestApi) {
         super(overrideRequestId, serviceInstanceId, responseInstanceId);
         this.vnfInstanceName = vnfInstanceName;
         this.msoTestApi = testApi;
         this.withTestApi = withTestApi;
+        lcpCloudRegionId = "just another region";
+        tenantId = "092eb9e8e4b7412e8787dd091bc58e86";
+    }
+
+    public String getLcpCloudRegionId() {
+        return lcpCloudRegionId;
+    }
+
+    public String getTenantId() {
+        return tenantId;
     }
 
     @Override
@@ -21,9 +34,9 @@ public class PresetMSOCreateVnfALaCarteCypress2 extends PresetMSOCreateVnfBase {
                     "\"requestorId\":\"us16807000\"}," +
                 "\"lineOfBusiness\":{\"lineOfBusinessName\":\"zzz1\"}," +
                 "\"cloudConfiguration\":" +
-                    "{\"lcpCloudRegionId\":\"just another region\"," +
+            "{\"lcpCloudRegionId\":\"" + getLcpCloudRegionId() + "\"," +
                     addCloudOwnerIfNeeded() +
-                    "\"tenantId\":\"092eb9e8e4b7412e8787dd091bc58e86\"}," +
+            "\"tenantId\":\"" + getTenantId() + "\"}," +
                 "\"platform\":{\"platformName\":\"xxx1,platform\"}," +
                 "\"modelInfo\":" +
                     "{\"modelCustomizationId\":\"1da7b585-5e61-4993-b95e-8e6606c81e45\"," +

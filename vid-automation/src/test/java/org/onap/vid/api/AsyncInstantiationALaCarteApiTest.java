@@ -41,6 +41,7 @@ import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateNetworkALaC
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteService;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateServiceInstanceGen2WithNamesAlacarteServiceCypress;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleALaCarteCypress;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleALaCarteCypress.Keys;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfALaCarteCypress2;
 import org.onap.simulator.presetGenerator.presets.mso.PresetMSOCreateVnfGroup;
@@ -538,10 +539,14 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
         String vfModule1RequestId = UUID.randomUUID().toString();
         String vfModule2RequestId = UUID.randomUUID().toString();
         String volumeGroupRequestId = UUID.randomUUID().toString();
-        List<PresetMSOBaseCreateInstancePost> createPresets =   ImmutableList.of(
-                new PresetMSOCreateServiceInstanceGen2WithNamesAlacarteServiceCypress(names, 0, DEFAULT_REQUEST_ID, Constants.GR_API, withTestApi),
-                new PresetMSOCreateVnfALaCarteCypress2(vnfRequestId, DEFAULT_INSTANCE_ID, vnfRequestId, "2017-488_PASQUALE-vPE", Constants.GR_API,  withTestApi),
-                new PresetMSOCreateNetworkALaCarteCypress(networkRequestId, DEFAULT_INSTANCE_ID,  networkRequestId, "ExtVL", Constants.GR_API, withTestApi)
+
+        PresetMSOCreateVnfALaCarteCypress2 vnfPreset =
+            new PresetMSOCreateVnfALaCarteCypress2(vnfRequestId, DEFAULT_INSTANCE_ID, vnfRequestId, "2017-488_PASQUALE-vPE", Constants.GR_API, withTestApi);
+
+        List<PresetMSOBaseCreateInstancePost> createPresets = ImmutableList.of(
+            new PresetMSOCreateServiceInstanceGen2WithNamesAlacarteServiceCypress(names, 0, DEFAULT_REQUEST_ID, Constants.GR_API, withTestApi),
+            vnfPreset,
+            new PresetMSOCreateNetworkALaCarteCypress(networkRequestId, DEFAULT_INSTANCE_ID,  networkRequestId, "ExtVL", Constants.GR_API, withTestApi)
         );
         List<PresetMSOOrchestrationRequestGet> inProgressPresets = ImmutableList.of(
                 new PresetMSOOrchestrationRequestGet("instance".equals(whatToFail) ? MSO_FAILED_STATUS : COMPLETE),
@@ -554,18 +559,24 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
         );
         List<BasePreset> presetsWithoutVfModule = getPresets(createPresets, inProgressPresets);
 
+        String overrideLcpCloudRegionId = Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF.isActive() ? vnfPreset.getLcpCloudRegionId() : null;
+        String overrideTenantId = Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF.isActive() ? vnfPreset.getTenantId() : null;
+
+        Map<Keys, String> lcpCloudRegionIdAndTenantIdNames =
+            PresetMSOCreateVfModuleALaCarteCypress.lcpCloudRegionIdAndTenantIdNames(overrideLcpCloudRegionId, overrideTenantId);
+
         ImmutableList<BasePreset> presets = new ImmutableList.Builder<BasePreset>()
                 .addAll(presetsWithoutVfModule)
                 .add(new PresetSDCGetServiceToscaModelGet("2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd", "csar-noDynamicFields-ecompNamingFalse-fullModelDetails.zip"))
                 .add(new PresetSDCGetServiceMetadataGet("2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd", "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0", "csar-noDynamicFields-ecompNamingFalse-fullModelDetails.zip"))
-                .add(new PresetMSOCreateVfModuleALaCarteCypress(vfModule0RequestId, DEFAULT_INSTANCE_ID, vnfRequestId, PresetMSOCreateVfModuleALaCarteCypress.module0Names,  Constants.GR_API, withTestApi))
-                .add(PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress.forVolumeGroup(volumeGroupRequestId, DEFAULT_INSTANCE_ID, vnfRequestId,  Constants.GR_API, withTestApi))
-                .add(PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress.forVfModule(vfModule1RequestId, DEFAULT_INSTANCE_ID, vnfRequestId, volumeGroupRequestId, Constants.GR_API, withTestApi))
+                .add(new PresetMSOCreateVfModuleALaCarteCypress(vfModule0RequestId, DEFAULT_INSTANCE_ID, vnfRequestId, PresetMSOCreateVfModuleALaCarteCypress.module0Names, lcpCloudRegionIdAndTenantIdNames, Constants.GR_API, withTestApi))
+                .add(PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress.forVolumeGroup(volumeGroupRequestId, DEFAULT_INSTANCE_ID, vnfRequestId, overrideLcpCloudRegionId, Constants.GR_API, withTestApi))
+                .add(PresetMSOCreateVfModuleWithVolumeGroupALaCarteCypress.forVfModule(vfModule1RequestId, DEFAULT_INSTANCE_ID, vnfRequestId, volumeGroupRequestId, overrideLcpCloudRegionId, Constants.GR_API, withTestApi))
                 .add(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_JUST_ANOTHER_REGION_TO_ATT_AIC)
                 .add(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC)
                 .add(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MY_REGION_TO_ATT_AIC)
                 .add(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_LCP_REGION_TEXT_TO_ATT_AIC)
-                .add(new PresetMSOCreateVfModuleALaCarteCypress(vfModule2RequestId, DEFAULT_INSTANCE_ID, vnfRequestId, PresetMSOCreateVfModuleALaCarteCypress.module2Names,  Constants.GR_API, withTestApi))
+                .add(new PresetMSOCreateVfModuleALaCarteCypress(vfModule2RequestId, DEFAULT_INSTANCE_ID, vnfRequestId, PresetMSOCreateVfModuleALaCarteCypress.module2Names, lcpCloudRegionIdAndTenantIdNames, Constants.GR_API, withTestApi))
                 .build();
 
         registerExpectationFromPresets(

@@ -1,5 +1,7 @@
 package org.onap.simulator.presetGenerator.presets.mso;
 
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
+
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
@@ -8,7 +10,15 @@ public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOCreateVfMod
     protected final Map<Keys, String> names;
 
     public enum Keys {
+        lcpCloudRegionId, tenantId,
         modelVersionId, modelName, modelVersion, modelCustomizationId, modelCustomizationName, instanceName, modelInvariantId
+    }
+
+    public static Map<Keys, String> lcpCloudRegionIdAndTenantIdNames(String lcpCloudRegionId, String tenantId) {
+      return ImmutableMap.of(
+          Keys.lcpCloudRegionId, defaultIfEmpty(lcpCloudRegionId, "hvf6"),
+          Keys.tenantId, defaultIfEmpty(tenantId, "624eb554b0d147c19ff8885341760481")
+      );
     }
 
     public static final Map<Keys, String> module0Names = ImmutableMap.<Keys, String>builder()
@@ -31,9 +41,9 @@ public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOCreateVfMod
             .put(Keys.modelCustomizationName, "2017488PasqualeVpe..PASQUALE_vPFE_BV..module-2")
             .build();
 
-    public PresetMSOCreateVfModuleALaCarteCypress(String overrideRequestId, String serviceInstanceId, String vnfInstanceId, Map<Keys, String> names, String testApi, boolean withTestApi) {
+    public PresetMSOCreateVfModuleALaCarteCypress(String overrideRequestId, String serviceInstanceId, String vnfInstanceId, Map<Keys, String> names, Map<Keys, String> names2, String testApi, boolean withTestApi) {
         super(overrideRequestId, DEFAULT_INSTANCE_ID, serviceInstanceId, vnfInstanceId, "vfModule");
-        this.names = names;
+        this.names = ImmutableMap.<Keys, String>builder().putAll(names).putAll(names2).build();
         this.msoTestApi = testApi;
         this.withTestApi = withTestApi;
     }
@@ -53,10 +63,9 @@ public class PresetMSOCreateVfModuleALaCarteCypress extends PresetMSOCreateVfMod
                 "      \"modelCustomizationName\":\"" + names.get(Keys.modelCustomizationName) + "\"" +
                 "    }," +
                 "    \"cloudConfiguration\":{" +
-                "      \"lcpCloudRegionId\":\"hvf6\"," +
+                "      \"lcpCloudRegionId\":\"" + defaultIfEmpty(names.get(Keys.lcpCloudRegionId), "hvf6") + "\"," +
                       addCloudOwnerIfNeeded() +
-                "      \"tenantId\":\"624eb554b0d147c19ff8885341760481\"" +
-
+                "      \"tenantId\":\"" + defaultIfEmpty(names.get(Keys.tenantId), "624eb554b0d147c19ff8885341760481") + "\"" +
                 "    }," +
                 "    \"requestInfo\":{" +
                 "      \"instanceName\":\"" + names.get(Keys.instanceName) + "\"," +
