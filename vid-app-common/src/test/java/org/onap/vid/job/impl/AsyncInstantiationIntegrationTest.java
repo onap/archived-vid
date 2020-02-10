@@ -194,7 +194,12 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     void defineMocks() {
         Mockito.reset(restMso);
         Mockito.reset(aaiClient);
+        Mockito.reset(commandUtils);
         mockAaiClientAnyNameFree();
+
+        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VNF)).thenReturn(true);
+        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
+        when(featureManager.isActive(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)).thenReturn(true);
     }
 
     @Test
@@ -376,9 +381,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
            * not looking on audit (yet)
         */
-        reset(restMso);
-        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VNF)).thenReturn(true);
-        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(false);
+        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(false); // this makes the test pass without mocking the vfModules
         final String SERVICE_REQUEST_ID = UUID.randomUUID().toString();
         final String SERVICE_INSTANCE_ID = UUID.randomUUID().toString();
         final String VNF_REQUEST_ID = UUID.randomUUID().toString();
@@ -421,8 +424,6 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
 
         String msoVnfStatus = COMPLETE_STR;
-        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VNF)).thenReturn(true);
-        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
         final String SERVICE_REQUEST_ID = UUID.randomUUID().toString();
         final String SERVICE_INSTANCE_ID = UUID.randomUUID().toString();
         final String VNF_REQUEST_ID = UUID.randomUUID().toString();
@@ -436,7 +437,6 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         //push alacarte with 1 vnf, verify STATUS pending
         UUID uuid = pushALaCarteWithVnf();
         singleServicesAndAssertStatus(JobStatus.PENDING, uuid);
-        reset(restMso);
 
         /*---------- service -----------*/
 
@@ -518,8 +518,6 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
         NetworkDetails networkDetails1 = new NetworkDetails("LukaDoncic", "1");
         NetworkDetails networkDetails2 = new NetworkDetails("KevinDurant", "2");
-
-        reset(restMso);
 
         /*---------- service -----------*/
 
@@ -1019,8 +1017,6 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         JobStatus expectedJobStatus,
         int getStatusCounter) throws IOException, AsdcCatalogException {
 
-        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
-        reset(commandUtils);
         when(commandUtils.isVfModuleBaseModule("6b528779-44a3-4472-bdff-9cd15ec93450", "f8360508-3f17-4414-a2ed-6bc71161e8db")).thenReturn(true);
         when(commandUtils.isVfModuleBaseModule("6b528779-44a3-4472-bdff-9cd15ec93450", "25284168-24bb-4698-8cb4-3f509146eca5")).thenReturn(false);
 
@@ -1271,7 +1267,6 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
                 asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
                 asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
-        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
         enableAddCloudOwnerOnMsoRequest();
 
 
@@ -1318,14 +1313,11 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     public void deployService_failIt_retryDeploy_getRetryAsTemplate_makeSureFalsyIsFailedInTemplate() {
 
         final String SERVICE_REQUEST_ID = UUID.randomUUID().toString();
-        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VNF)).thenReturn(true);
-        when(featureManager.isActive(Features.FLAG_ASYNC_ALACARTE_VFMODULE)).thenReturn(true);
 
         //push alacarte with 1 vnf, verify STATUS pending
         UUID uuid = pushALaCarteWithVnf();
         singleServicesAndAssertStatus(JobStatus.PENDING, uuid);
 
-        reset(restMso);
         //mock mso to answer 200 of create service instance request, verify STATUS in progress
         when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith("serviceInstances"), any())).thenReturn(
             createResponse(200, SERVICE_INSTANCE_ID, SERVICE_REQUEST_ID));
