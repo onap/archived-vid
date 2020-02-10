@@ -10,6 +10,7 @@
             "instanceId": "VF_MODULE_INSTANCE_ID",
             "action": "Create",
             "lcpCloudRegionId": "AAIAIC25",
+            "legacyRegion": "some legacy region",
             "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
             "modelInfo": {
               "modelInvariantId": "b34833bb-6aa9-4ad6-a831-70b06367a091",
@@ -36,6 +37,7 @@
             "provStatus": "Prov Status",
             "inMaint": false,
             "lcpCloudRegionId": "AAIAIC25",
+            "legacyRegion": "some legacy region",
             "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
             "modelInfo": {
               "modelInvariantId": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
@@ -59,6 +61,7 @@
             "provStatus": "Prov Status",
             "inMaint": false,
             "lcpCloudRegionId": "AAIAIC25",
+            "legacyRegion": "some legacy region",
             "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
             "modelInfo": {
               "modelInvariantId": "7253ff5c-97f0-4b8b-937c-77aeb4d79aa1",
