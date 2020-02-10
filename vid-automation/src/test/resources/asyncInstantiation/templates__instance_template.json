@@ -68,8 +68,6 @@
             },
             "instanceName": "hvf6arlba007_lba_Base_01",
             "action": "Create",
-            "lcpCloudRegionId": "hvf6",
-            "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
             "instanceParams": [
               {}
             ],

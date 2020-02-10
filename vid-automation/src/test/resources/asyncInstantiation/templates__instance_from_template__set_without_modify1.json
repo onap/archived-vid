@@ -137,7 +137,6 @@
               }
             ],
             "isMissingData": false,
-            "lcpCloudRegionId": "hvf6",
             "modelInfo": {
               "modelCustomizationId": "4d0818cf-eaa9-4a3f-89c2-639953089e14",
               "modelCustomizationName": "VprobeNcVnf..FE_base_module..module-0",
@@ -150,7 +149,6 @@
             },
             "rollbackOnFailure": true,
             "sdncPreLoad": null,
-            "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
             "uuid": "c5b26cc1-a66f-4b69-aa23-6abc7c647c88"
           }
         }

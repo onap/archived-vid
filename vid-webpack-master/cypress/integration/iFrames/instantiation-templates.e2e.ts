@@ -104,16 +104,12 @@ describe('Drawing Board: Instantiation Templates', function () {
 
         cy.editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
           .getElementByDataTestsId("instanceName").should('have.value', 'hvf6arlba007_lba_Base_01')
-          .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
-          .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
           .getElementByDataTestsId("rollback").should('contain', 'Rollback')
           .getElementByDataTestsId("cancelButton").click();
 
         cy.editNode("node-c09e4530-8fd8-418f-9483-2f57ce927b05-vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1")
           .getElementByDataTestsId("instanceName").should('have.value', 'my_hvf6arlba007_lba_dj_01')
           .getElementByDataTestsId("volumeGroupName").should('have.value', 'my_special_hvf6arlba007_lba_dj_01_vol')
-          .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
-          .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
           .getElementByDataTestsId("rollback").should('contain', 'Rollback')
           .getElementByDataTestsId("sdncPreLoad").should('have.value', 'on')
           .getElementByDataTestsId("cancelButton").click();
@@ -156,8 +152,6 @@ describe('Drawing Board: Instantiation Templates', function () {
         cy.editNode(`node-c09e4530-8fd8-418f-9483-2f57ce927b05-${module1CustomizationId}`, 1);
         cy.clearInput("instanceName");
         cy.typeToInput("instanceName", newVfModuleName);
-        cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
-        cy.selectDropdownOptionByText('tenant', 'DN5242-Nov21-T1');
         cy.getElementByDataTestsId('form-set').click();
 
         // Then...
@@ -177,8 +171,6 @@ describe('Drawing Board: Instantiation Templates', function () {
             {
               instanceName: newVfModuleName,
               volumeGroupName: `${newVfModuleName}_vol`,
-              lcpCloudRegionId: "hvf6",
-              tenantId: "4914ab0ab3a743e58f0eefdacc1dde77",
             }
           );
 
