@@ -21,22 +21,26 @@
 
 package org.onap.vid.controller;
 
+import static org.onap.vid.utils.Logging.getMethodName;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.OK;
+
+import javax.servlet.http.HttpServletRequest;
 import org.onap.portalsdk.core.controller.RestrictedBaseController;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.category.CategoryParametersResponse;
 import org.onap.vid.model.CategoryParameter.Family;
 import org.onap.vid.services.CategoryParameterService;
+import org.onap.vid.services.CategoryParameterServiceWithRoles;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static org.onap.vid.utils.Logging.getMethodName;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 public class PropertyController extends RestrictedBaseController {
@@ -47,7 +51,7 @@ public class PropertyController extends RestrictedBaseController {
     private final SystemPropertiesWrapper systemPropertiesWrapper;
 
     @Autowired
-    public PropertyController(CategoryParameterService service, SystemPropertiesWrapper systemPropertiesWrapper) {
+    public PropertyController(CategoryParameterServiceWithRoles service, SystemPropertiesWrapper systemPropertiesWrapper) {
         categoryParameterService = service;
         this.systemPropertiesWrapper = systemPropertiesWrapper;
     }

@@ -30,6 +30,7 @@ import org.onap.vid.model.CategoryParameterOption;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.ForbiddenException;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Primary
 public class CategoryParameterServiceImpl implements CategoryParameterService {
 
     public static final String OPTION_ALREADY_EXIST_FOR_CATEGORY = "Option %s already exist for category %s";
