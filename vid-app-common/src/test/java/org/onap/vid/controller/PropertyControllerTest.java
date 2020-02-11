@@ -39,6 +39,7 @@ import org.onap.vid.category.CategoryParameterOptionRep;
 import org.onap.vid.category.CategoryParametersResponse;
 import org.onap.vid.model.CategoryParameter.Family;
 import org.onap.vid.services.CategoryParameterService;
+import org.onap.vid.services.CategoryParameterServiceWithRoles;
 import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -58,7 +59,7 @@ public class PropertyControllerTest {
     private ObjectMapper objectMapper;
 
     @Mock
-    private CategoryParameterService service;
+    private CategoryParameterServiceWithRoles service;
     @Mock
     private SystemPropertiesWrapper systemPropertiesWrapper;
 
