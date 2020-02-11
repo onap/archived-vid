@@ -178,13 +178,13 @@
         <pluginRepository>
             <id>JCenter</id>
             <name>JCenter Repository</name>
-            <url>http://jcenter.bintray.com</url>
+            <url>https://jcenter.bintray.com</url>
         </pluginRepository>
 
         <pluginRepository>
             <id>Restlet</id>
             <name>Restlet Repository</name>
-            <url>http://maven.restlet.com</url>
+            <url>https://maven.restlet.com</url>
         </pluginRepository>
     </pluginRepositories>
     <reporting>
