@@ -6,7 +6,7 @@
          name="{{data?.controlName}}"
          [formControl]="form?.controls[data?.controlName]"
          data-toggle="toggle">
-  <label class="checkbox-label" [ngStyle]="{'float' : data.extraContents.length > 0 ? 'left' : 'none'}"
+  <label class="checkbox-label" [ngStyle]="{'float' : data.extraContents && data.extraContents.length > 0 ? 'left' : 'none'}"
          for="{{data?.dataTestId}}">{{data?.displayName}}</label>
   <div *ngFor="let extraContent of data?.extraContents" class="form-conrtols">
     <div [ngSwitch]="extraContent.type">
