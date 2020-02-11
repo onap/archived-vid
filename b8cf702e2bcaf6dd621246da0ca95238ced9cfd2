@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ff98f0c_344a658c",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOCreateVfModuleALaCarteCypress.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-11T08:17:29Z",
+      "side": 1,
+      "message": "why default if empty ? You use it only once, at AsyncInstantiationALaCarteApiTest.java:556\nso you can init it with real values for both cases",
+      "revId": "b8cf702e2bcaf6dd621246da0ca95238ced9cfd2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9f118e9_be6bfd93",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOCreateVfModuleALaCarteCypress.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-11T08:17:29Z",
+      "side": 1,
+      "message": "LcpCloudRegionIdAndTenant",
+      "range": {
+        "startLine": 44,
+        "startChar": 167,
+        "endLine": 44,
+        "endChar": 173
+      },
+      "revId": "b8cf702e2bcaf6dd621246da0ca95238ced9cfd2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
