@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "95be8769_d638bca3",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOCreateVfModuleALaCarteCypress.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-11T13:57:43Z",
+      "side": 1,
+      "message": "to keep the values in the preset context.\n\nbecause it is used only once, these are not really \"variables\": they do not variate: it\u0027s either this value, or the vnf\u0027s value.\n\nnot critical either way.",
+      "parentUuid": "0ff98f0c_344a658c",
+      "revId": "b8cf702e2bcaf6dd621246da0ca95238ced9cfd2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a9f118e9_be6bfd93",
         "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOCreateVfModuleALaCarteCypress.java",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2020-02-11T08:17:29Z",
       "side": 1,
       "message": "LcpCloudRegionIdAndTenant",
+      "range": {
+        "startLine": 44,
+        "startChar": 167,
+        "endLine": 44,
+        "endChar": 173
+      },
+      "revId": "b8cf702e2bcaf6dd621246da0ca95238ced9cfd2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0666b8c1_dd55201d",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOCreateVfModuleALaCarteCypress.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-11T13:57:43Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "a9f118e9_be6bfd93",
       "range": {
         "startLine": 44,
         "startChar": 167,
