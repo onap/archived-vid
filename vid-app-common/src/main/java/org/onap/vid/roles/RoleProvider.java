@@ -31,14 +31,19 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.NotNull;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.web.support.UserUtils;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.RoleParsingException;
+import org.onap.vid.category.CategoryParameterOptionRep;
+import org.onap.vid.category.CategoryParametersResponse;
+import org.onap.vid.model.CategoryParameter.Family;
 import org.onap.vid.model.ModelConstants;
 import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.services.AaiService;
+import org.onap.vid.services.CategoryParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,21 +59,27 @@ public class RoleProvider {
     private Function<HttpServletRequest, Integer> getUserIdFunction;
     private Function<HttpServletRequest, Map> getRolesFunction;
     private final RoleValidatorFactory roleValidatorFactory;
+    private final CategoryParameterService categoryParameterService;
+
 
     @Autowired
-    public RoleProvider(AaiService aaiService, RoleValidatorFactory roleValidatorFactory) {
+    public RoleProvider(AaiService aaiService, RoleValidatorFactory roleValidatorFactory,
+        CategoryParameterService categoryParameterService) {
         this.aaiService=aaiService;
         this.roleValidatorFactory = roleValidatorFactory;
+        this.categoryParameterService = categoryParameterService;
         getUserIdFunction = UserUtils::getUserId;
         getRolesFunction = UserUtils::getRoles;
     }
 
     RoleProvider(AaiService aaiService, RoleValidatorFactory roleValidatorFactory,
-        Function<HttpServletRequest, Integer> getUserIdFunction, Function<HttpServletRequest, Map> getRolesFunction) {
+        Function<HttpServletRequest, Integer> getUserIdFunction, Function<HttpServletRequest, Map> getRolesFunction,
+        CategoryParameterService categoryParameterService) {
         this.aaiService = aaiService;
         this.roleValidatorFactory = roleValidatorFactory;
         this.getRolesFunction = getRolesFunction;
         this.getUserIdFunction = getUserIdFunction;
+        this.categoryParameterService = categoryParameterService;
     }
 
     public List<Role> getUserRoles(HttpServletRequest request) {
@@ -79,6 +90,8 @@ public class RoleProvider {
 
         List<Role> roleList = new ArrayList<>();
         Map roles = getRolesFunction.apply(request);
+        final Map<String, String> owningEntityMap = owningEntityNameToOwningEntityIdMapper();
+
         for (Object role : roles.keySet()) {
             org.onap.portalsdk.core.domain.Role sdkRol = (org.onap.portalsdk.core.domain.Role) roles.get(role);
 
@@ -90,7 +103,7 @@ public class RoleProvider {
                     continue;
                 }
                 String[] roleParts = splitRole((sdkRol.getName()), logPrefix);
-                roleList.add(createRoleFromStringArr(roleParts, logPrefix));
+                roleList.add(createRoleFromStringArr(roleParts, logPrefix, owningEntityMap));
                 String msg = String.format("%s User %s got permissions %s", logPrefix, userId, Arrays.toString(roleParts));
                 LOG.debug(EELFLoggerDelegate.debugLogger, msg);
             } catch (Exception e) {
@@ -140,9 +153,9 @@ public class RoleProvider {
         return replacement;
     }
 
-    public Role createRoleFromStringArr(String[] roleParts, String rolePrefix) throws RoleParsingException {
+    public Role createRoleFromStringArr(String[] roleParts, String rolePrefix, Map<String, String> owningEntityMap) throws RoleParsingException {
         String globalCustomerID = replaceSubscriberNameToGlobalCustomerID(roleParts[0], rolePrefix);
-        String owningEntityId = translateOwningEntityNameToOwningEntityId(roleParts[0]);
+        String owningEntityId = translateOwningEntityNameToOwningEntityId(roleParts[0], owningEntityMap);
 
         try {
             if (roleParts.length > 2) {
@@ -162,8 +175,19 @@ public class RoleProvider {
 
     }
 
-    private String translateOwningEntityNameToOwningEntityId(String owningEntityName) {
-        return owningEntityName; // TODO: translate to id
+    // in case the owningEntity name is not found in the owningEntityMap - return the name
+    protected String translateOwningEntityNameToOwningEntityId(String owningEntityName, Map<String, String> owningEntityMap) {
+        return owningEntityMap.getOrDefault(owningEntityName, owningEntityName);
+    }
+
+    @NotNull
+    protected Map<String, String> owningEntityNameToOwningEntityIdMapper() {
+        CategoryParametersResponse categoryParametersResponse = categoryParameterService.getCategoryParameters(Family.PARAMETER_STANDARDIZATION);
+        Map<String, List<CategoryParameterOptionRep>> categoryMap = categoryParametersResponse.getCategoryParameters();
+        List<CategoryParameterOptionRep> owningEntityList = categoryMap.get("owningEntity");
+
+        return owningEntityList.stream().collect(
+            Collectors.toMap(CategoryParameterOptionRep::getName, CategoryParameterOptionRep::getId));
     }
 
     public RoleValidator getUserRolesValidator(HttpServletRequest request) {
