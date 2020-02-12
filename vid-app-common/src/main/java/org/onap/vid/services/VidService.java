@@ -23,10 +23,13 @@ package org.onap.vid.services;
 
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.model.ServiceModel;
+import org.springframework.lang.NonNull;
 
 public interface VidService extends ProbeInterface {
 
 	ServiceModel getService(String uuid) throws AsdcCatalogException;
+
+	@NonNull ServiceModel getServiceModelOrThrow(String modelVersionId);
 
     void invalidateServiceCache();
 }

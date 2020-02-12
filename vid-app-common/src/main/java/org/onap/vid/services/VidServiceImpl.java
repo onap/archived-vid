@@ -52,6 +52,7 @@ import org.onap.vid.properties.VidProperties;
 import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.lang.NonNull;
 import org.togglz.core.manager.FeatureManager;
 
 /**
@@ -99,17 +100,26 @@ public class VidServiceImpl implements VidService {
                 });
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.onap.vid.controller.VidService#getService(java.lang.String)
-     */
     @Override
     public ServiceModel getService(String uuid) throws AsdcCatalogException {
         if (featureManager.isActive(FLAG_SERVICE_MODEL_CACHE)) {
             return getServiceFromCache(uuid);
         } else {
             return getServiceFromSdc(uuid);
+        }
+    }
+
+    @NonNull
+    @Override
+    public ServiceModel getServiceModelOrThrow(String modelVersionId) {
+        try {
+            final ServiceModel serviceModel = getService(modelVersionId);
+            if (serviceModel == null) {
+                throw new GenericUncheckedException("Model version '" + modelVersionId + "' not found");
+            }
+            return serviceModel;
+        } catch (AsdcCatalogException e) {
+            throw new GenericUncheckedException("Exception while loading model version '" + modelVersionId + "'", e);
         }
     }
 

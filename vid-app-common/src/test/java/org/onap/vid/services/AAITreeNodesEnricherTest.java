@@ -23,26 +23,36 @@ package org.onap.vid.services;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toList;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Streams;
+import java.util.Collection;
 import java.util.List;
+import net.javacrumbs.jsonunit.core.Option;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.model.ModelVer;
 import org.onap.vid.asdc.parser.ServiceModelInflator;
 import org.onap.vid.asdc.parser.ServiceModelInflator.Names;
+import org.onap.vid.exceptions.GenericUncheckedException;
+import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.aaiTree.AAITreeNode;
-import org.testng.annotations.BeforeTest;
+import org.onap.vid.model.aaiTree.NodeType;
+import org.onap.vid.properties.Features;
+import org.onap.vid.testUtils.TestUtils;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
 
@@ -59,9 +69,9 @@ public class AAITreeNodesEnricherTest {
     @InjectMocks
     private AAITreeNodesEnricher aaiTreeNodesEnricher;
 
-    @BeforeTest
+    @BeforeMethod
     public void initMocks() {
-        MockitoAnnotations.initMocks(this);
+        TestUtils.initMockitoMocks(this);
     }
 
     private final static String nullString = "null placeholder";
@@ -142,6 +152,150 @@ public class AAITreeNodesEnricherTest {
         assertThat(toStrings(nodesUnderTest), containsInAnyOrder(toStringsArray(nodesWithVersionIdsAndCustomizationNames(versionIds, expectedNames))));
     }
 
+    @DataProvider
+    public static Object[][] enrichVfModulesFilteredOutCases() {
+        AAITreeNode volumeGroup = new AAITreeNode();
+        volumeGroup.setType(NodeType.VOLUME_GROUP);
+
+        AAITreeNode vfModuleWithoutData = new AAITreeNode();
+        vfModuleWithoutData.setType(NodeType.VF_MODULE);
+
+        AAITreeNode vfModuleWithModelCustomizationName = new AAITreeNode();
+        vfModuleWithModelCustomizationName.setType(NodeType.VF_MODULE);
+        vfModuleWithModelCustomizationName.setModelCustomizationName("foo");
+
+        AAITreeNode vfModuleWithKeyInModel = new AAITreeNode();
+        vfModuleWithKeyInModel.setType(NodeType.VF_MODULE);
+        vfModuleWithKeyInModel.setKeyInModel("foo");
+
+        return new Object[][]{
+            {"no nodes", null, true},
+            {"no vfmodules", volumeGroup, true},
+            {"flag is off", vfModuleWithoutData, false},
+            {"all vfmodules with either getKeyInModel or getModelCustomizationId", vfModuleWithModelCustomizationName, true},
+            {"all vfmodules with either getKeyInModel or getModelCustomizationId", vfModuleWithKeyInModel, true},
+        };
+    }
+
+    @Test(dataProvider = "enrichVfModulesFilteredOutCases")
+    public void enrichVfModulesWithModelCustomizationNameFromOtherVersions_givenFilteredOutCases_doNothing(String reasonToSkip, AAITreeNode node, boolean flagState) {
+        when(featureManager.isActive(Features.FLAG_EXP_TOPOLOGY_TREE_VFMODULE_NAMES_FROM_OTHER_TOSCA_VERSIONS))
+            .thenReturn(flagState);
+
+        when(aaiClient.getSortedVersionsByInvariantId(any()))
+            .thenThrow(new AssertionError("did not expect reaching getSortedVersionsByInvariantId"));
+
+        List<AAITreeNode> nodes = (node == null) ? emptyList() : ImmutableList.of(node);
+        aaiTreeNodesEnricher.enrichVfModulesWithModelCustomizationNameFromOtherVersions(nodes, "modelInvariantId");
+    }
+
+    @FunctionalInterface
+    public interface Creator<T, R> {
+        R by(T t);
+    }
+
+    @Test
+    public void enrichVfModulesWithModelCustomizationNameFromOtherVersions() {
+        /*
+        Verifies the following
+
+        [*] aaiClient.getSortedVersionsByInvariantId response is exhausted
+            and all models fetched from sdc
+            -> we can see that model #1 info is populated in nodes
+        [*] relevant nodes enriched
+        [*] where data not found: nodes not enriched
+        [*] where data there already: node left pristine
+        [*] where node is not vfmodule: node left pristine
+
+         */
+
+        String modelInvariantId = "modelInvariantId";
+
+        ///////////// HELPERS
+
+        Creator<Integer, AAITreeNode> nodeMissingData = n -> {
+            AAITreeNode node = new AAITreeNode();
+            node.setType(NodeType.VF_MODULE);
+            node.setModelCustomizationId("model-customization-id-" + n);
+            return node;
+        };
+
+        Creator<Integer, AAITreeNode> nodeWithData = n -> {
+            AAITreeNode node = nodeMissingData.by(n);
+            node.setModelCustomizationName("modelCustomizationName-" + n);
+            node.setKeyInModel("modelKey-" + n);
+            return node;
+        };
+
+        Creator<Integer, ImmutableMap<String, Names>> namesMap = n -> ImmutableMap.of(
+            "model-customization-id-" + n,
+            new Names("modelCustomizationName-" + n, "modelKey-" + n)
+        );
+
+        Creator<Integer, ModelVer> modelVer = n -> {
+            ModelVer m = new ModelVer();
+            m.setModelVersion("model-version-" + n);
+            m.setModelVersionId("model-version-id-" + n);
+            return m;
+        };
+
+        ///////////// SET-UP
+
+        when(featureManager.isActive(Features.FLAG_EXP_TOPOLOGY_TREE_VFMODULE_NAMES_FROM_OTHER_TOSCA_VERSIONS))
+            .thenReturn(true);
+
+        /*
+        +-------------+----------+----------+----------+-----------+-----------+
+        |             | model v1 | model v2 | model v3 | model v77 | model v99 |
+        +-------------+----------+----------+----------+-----------+-----------+
+        | in AAI list |   v      |   v      |          |   v       |           |
+        | in SDC      |   v      |   v      |          |           |           |
+        | in nodes    |   v      |          |   v      |   v       |   v       |
+        +-------------+----------+----------+----------+-----------+-----------+
+         */
+        when(aaiClient.getSortedVersionsByInvariantId(modelInvariantId))
+            .thenReturn(ImmutableList.of(modelVer.by(3), modelVer.by(77), modelVer.by(2), modelVer.by(1)));
+
+        ServiceModel serviceModel_1 = mock(ServiceModel.class);
+        when(sdcService.getServiceModelOrThrow("model-version-id-1")).thenReturn(serviceModel_1);
+        when(serviceModelInflator.toNamesByCustomizationId(serviceModel_1)).thenReturn(namesMap.by(1));
+
+        ServiceModel serviceModel_2 = mock(ServiceModel.class);
+        when(sdcService.getServiceModelOrThrow("model-version-id-2")).thenReturn(serviceModel_2);
+        when(serviceModelInflator.toNamesByCustomizationId(serviceModel_2)).thenReturn(namesMap.by(2));
+
+        ServiceModel serviceModel_3 = mock(ServiceModel.class);
+        when(sdcService.getServiceModelOrThrow("model-version-id-3")).thenReturn(serviceModel_3);
+        when(serviceModelInflator.toNamesByCustomizationId(serviceModel_3)).thenReturn(namesMap.by(3));
+
+        when(sdcService.getServiceModelOrThrow("model-version-id-77")).thenThrow(GenericUncheckedException.class);
+
+        AAITreeNode nodeWithDataAlready = nodeMissingData.by(1);
+        nodeWithDataAlready.setModelCustomizationName("significant-customization-name");
+        nodeWithDataAlready.setKeyInModel("significant-key-in-model");
+
+        AAITreeNode nodeNotVfModule = nodeMissingData.by(1);
+        nodeNotVfModule.setType(NodeType.GENERIC_VNF);
+
+        Collection<AAITreeNode> nodes = ImmutableList.of(
+            nodeMissingData.by(1), nodeMissingData.by(77),
+            nodeMissingData.by(3), nodeMissingData.by(99),
+            nodeWithDataAlready, nodeNotVfModule
+        );
+
+        ///////////// TEST
+
+        aaiTreeNodesEnricher.enrichVfModulesWithModelCustomizationNameFromOtherVersions(nodes, modelInvariantId);
+
+        assertThat(nodes, jsonEquals(ImmutableList.of(
+            nodeWithData.by(1),
+            nodeWithData.by(3),
+            nodeMissingData.by(77), // not in sdcService
+            nodeMissingData.by(99), // not in aaiClient
+            nodeWithDataAlready, // pristine
+            nodeNotVfModule // pristine
+        )).when(Option.IGNORING_ARRAY_ORDER));
+    }
 
 
     @NotNull
