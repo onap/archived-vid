@@ -77,6 +77,8 @@ public interface AaiClientInterface extends ProbeInterface {
 
     ModelVer getLatestVersionByInvariantId(String modelInvariantId);
 
+    List<ModelVer> getSortedVersionsByInvariantId(String modelInvariantId);
+
     AaiResponse<ProjectResponse> getServicesByProjectNames(List<String> projectNames);
 
     AaiResponse getServiceModelsByDistributionStatus();

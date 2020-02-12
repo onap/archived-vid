@@ -61,6 +61,7 @@ import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 public class AAIServiceTreeIntegrativeTest {
 
@@ -80,8 +81,12 @@ public class AAIServiceTreeIntegrativeTest {
     ServiceModelInflator serviceModelInflator;
 
     @Mock
+    FeatureManager featureManager;
+
+    @Mock
     Logging logging;
 
+    private AAITreeNodesEnricher aaiTreeNodesEnricher;
     private AAITreeNodeBuilder aaiTreeNodeBuilder;
 
     private AAITreeConverter aaiTreeConverter = new AAITreeConverter(new ModelUtil());
@@ -133,7 +138,6 @@ public class AAIServiceTreeIntegrativeTest {
             "\"relationship-key\": \"owning-entity.owning-entity-id\"," +
             "\"relationship-value\": \"43b8a85a-0421-4265-9069-117dd6526b8a\"}]}]}}";
 
-    //TODO Amichai: if in the future it is neede, add here the SUFFIX to the URL: "?format=simple"
     private static String genericVnfRequestUri = "/aai/v12/network/generic-vnfs/generic-vnf/59bde732-9b84-46bd-a59a-3c45fee0538b";
 
     private String genericVnfResponseString(boolean isDuplicatedKeysInTenantRelation) {
@@ -300,6 +304,8 @@ public class AAIServiceTreeIntegrativeTest {
         TestUtils.initMockitoMocks(this);
         reboundLoggingWithMdcMock();
         aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClient, logging);
+
+        aaiTreeNodesEnricher = new AAITreeNodesEnricher(aaiClient, sdcService, featureManager, serviceModelInflator);
     }
 
     private void reboundLoggingWithMdcMock() {
@@ -320,7 +326,7 @@ public class AAIServiceTreeIntegrativeTest {
                  "11c6dc3e-cd6a-41b3-a50e-b5a10f7157d0", new ServiceModelInflator.Names("vnf-model-customization-name", "vnf-key-in-model")
         ));
 
-        ServiceInstance root = new AAIServiceTree(aaiClient, aaiTreeNodeBuilder, aaiTreeConverter, sdcService, serviceModelInflator, executorService)
+        ServiceInstance root = new AAIServiceTree(aaiTreeNodeBuilder, aaiTreeNodesEnricher, aaiTreeConverter, executorService)
                 .getServiceInstanceTopology(globalCustomerID, serviceType, serviceInstanceId);
 
         assertServiceNode(root, 1);
@@ -370,7 +376,8 @@ public class AAIServiceTreeIntegrativeTest {
         when(sdcService.getService(any())).thenReturn(
                 TestUtils.readJsonResourceFileAsObject("/getTopology/serviceWithCR/serviceWithCRModel.json", ServiceModel.class));
 
-        ServiceInstance serviceInstance = new AAIServiceTree(aaiClient, aaiTreeNodeBuilder, aaiTreeConverter, sdcService, new ServiceModelInflator(), executorService)
+        ServiceInstance serviceInstance = new AAIServiceTree(aaiTreeNodeBuilder,
+            new AAITreeNodesEnricher(aaiClient, sdcService, featureManager, new ServiceModelInflator()), aaiTreeConverter, executorService)
                 .getServiceInstanceTopology("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", "Emanuel", "a565e6ad-75d1-4493-98f1-33234b5c17e2");
 
         String expected = TestUtils.readFileAsString("/getTopology/serviceWithCR/getTopologyWithCR.json");
@@ -437,7 +444,7 @@ public class AAIServiceTreeIntegrativeTest {
         when(sdcService.getService(any())).thenReturn(mock(ServiceModel.class));
         when(serviceModelInflator.toNamesByVersionId(any())).thenReturn(ImmutableMap.of());
 
-        new AAIServiceTree(aaiClient, aaiTreeNodeBuilder, aaiTreeConverter, sdcService, serviceModelInflator, executorService)
+        new AAIServiceTree(aaiTreeNodeBuilder, aaiTreeNodesEnricher, aaiTreeConverter, executorService)
                 .getServiceInstanceTopology(globalCustomerID, serviceType, serviceInstanceId);
     }
 

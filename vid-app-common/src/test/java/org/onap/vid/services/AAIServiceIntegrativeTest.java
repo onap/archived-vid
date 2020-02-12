@@ -64,11 +64,9 @@ public class AAIServiceIntegrativeTest extends TestWithAaiClient {
         AaiClient aaiClient = new AaiClient(aaiRestInterface, null, cacheProvider);
         ExecutorService executorService = MoreExecutors.newDirectExecutorService();
         AAIServiceTree aaiServiceTree = new AAIServiceTree(
-                aaiClient,
-                new AAITreeNodeBuilder(aaiClient, logging),
+            new AAITreeNodeBuilder(aaiClient, logging),
+            new AAITreeNodesEnricher(aaiClient, null, null, null),
                 new AAITreeConverter(new ModelUtil()),
-                null,
-                null,
                 executorService
         );
         return new AaiServiceImpl(aaiClient, null, aaiServiceTree, executorService, logging);
