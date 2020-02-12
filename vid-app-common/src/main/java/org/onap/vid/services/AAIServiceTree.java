@@ -21,29 +21,18 @@
 package org.onap.vid.services;
 
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.ImmutableList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.util.AAITreeConverter;
 import org.onap.vid.asdc.AsdcCatalogException;
-import org.onap.vid.asdc.parser.ServiceModelInflator;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.aaiTree.AAITreeNode;
@@ -57,15 +46,9 @@ import org.springframework.stereotype.Component;
 public class AAIServiceTree {
 
     private final AAITreeNodeBuilder aaiTreeNodeBuilder;
-
+    private final AAITreeNodesEnricher aaiTreeNodesEnricher;
     private final AAITreeConverter aaiTreeConverter;
-
-    private final AaiClientInterface aaiClient;
-
     private final VidService sdcService;
-
-    private final ServiceModelInflator serviceModelInflator;
-
     private final ExecutorService executorService;
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AAIServiceTree.class);
@@ -89,14 +72,17 @@ public class AAIServiceTree {
     }
 
     @Inject
-    public AAIServiceTree(AaiClientInterface aaiClient, AAITreeNodeBuilder aaiTreeNodeBuilder,
-                          AAITreeConverter aaiTreeConverter, VidService sdcService,
-                          ServiceModelInflator serviceModelInflator, ExecutorService executorService) {
-        this.aaiClient = aaiClient;
+    public AAIServiceTree(
+        AAITreeNodeBuilder aaiTreeNodeBuilder,
+        AAITreeNodesEnricher aaiTreeNodesEnricher,
+        AAITreeConverter aaiTreeConverter,
+        VidService sdcService,
+        ExecutorService executorService
+    ) {
         this.aaiTreeNodeBuilder = aaiTreeNodeBuilder;
+        this.aaiTreeNodesEnricher = aaiTreeNodesEnricher;
         this.aaiTreeConverter = aaiTreeConverter;
         this.sdcService = sdcService;
-        this.serviceModelInflator = serviceModelInflator;
         this.executorService = executorService;
     }
 
@@ -116,7 +102,7 @@ public class AAIServiceTree {
         List<AAITreeNode> aaiTreeNodes = fetchAAITree(url, payload, method, pathsToSearch, nodesAccumulator);
 
         if (enrichWithModelVersion) {
-            enrichNodesWithModelVersionAndModelName(nodesAccumulator);
+            aaiTreeNodesEnricher.enrichNodesWithModelVersionAndModelName(nodesAccumulator);
         }
 
         return aaiTreeNodes;
@@ -134,12 +120,12 @@ public class AAIServiceTree {
         AAITreeNode aaiTree = fetchAAITree(getURL, null, HttpMethod.GET, AAI_TREE_PATHS, nodesAccumulator).get(0);
 
         //Populate nodes with model-name & model-version (from aai)
-        enrichNodesWithModelVersionAndModelName(nodesAccumulator);
+        aaiTreeNodesEnricher.enrichNodesWithModelVersionAndModelName(nodesAccumulator);
 
         final ServiceModel serviceModel = getServiceModel(aaiTree.getModelVersionId());
 
         //Populate nodes with model-customization-name (from sdc model)
-        enrichNodesWithModelCustomizationName(nodesAccumulator, serviceModel);
+        aaiTreeNodesEnricher.enrichNodesWithModelCustomizationName(nodesAccumulator, serviceModel);
 
         return aaiTreeConverter.convertTreeToUIModel(aaiTree, globalCustomerId, serviceType, getInstantiationType(serviceModel), getInstanceRole(serviceModel), getInstanceType(serviceModel));
     }
@@ -177,74 +163,16 @@ public class AAIServiceTree {
         }
     }
 
-    private ServiceModel getServiceModel(String modelVersionId) {
+    public ServiceModel getServiceModel(String modelVersionId) {
         try {
             final ServiceModel serviceModel = sdcService.getService(modelVersionId);
-            if (serviceModel == null) {
+            if (serviceModel == null) { 
                 throw new GenericUncheckedException("Model version '" + modelVersionId + "' not found");
             }
             return serviceModel;
         } catch (AsdcCatalogException e) {
             throw new GenericUncheckedException("Exception while loading model version '" + modelVersionId + "'", e);
         }
-
-    }
-
-    void enrichNodesWithModelCustomizationName(Collection<AAITreeNode> nodes, ServiceModel serviceModel) {
-        final Map<String, ServiceModelInflator.Names> customizationNameByVersionId = serviceModelInflator.toNamesByVersionId(serviceModel);
-
-        nodes.forEach(node -> {
-            final ServiceModelInflator.Names names = customizationNameByVersionId.get(node.getModelVersionId());
-            if (names != null) {
-                node.setKeyInModel(names.getModelKey());
-                node.setModelCustomizationName(names.getModelCustomizationName());
-            }
-        });
-    }
-
-
-    private void enrichNodesWithModelVersionAndModelName(Collection<AAITreeNode> nodes) {
-
-        Collection<String> invariantIDs = getModelInvariantIds(nodes);
-
-        Map<String, String> modelVersionByModelVersionId = new HashMap<>();
-        Map<String, String> modelNameByModelVersionId = new HashMap<>();
-
-        JsonNode models = getModels(aaiClient, invariantIDs);
-        if (models!=null) {
-            for (JsonNode model : models) {
-                JsonNode modelVersions = model.get("model-vers").get("model-ver");
-                for (JsonNode modelVersion : modelVersions) {
-                    final String modelVersionId = modelVersion.get("model-version-id").asText();
-                    modelVersionByModelVersionId.put(modelVersionId, modelVersion.get("model-version").asText());
-                    modelNameByModelVersionId.put(modelVersionId, modelVersion.get("model-name").asText());
-                }
-            }
-        }
-
-        nodes.forEach(node -> {
-            node.setModelVersion(modelVersionByModelVersionId.get(node.getModelVersionId()));
-            node.setModelName(modelNameByModelVersionId.get(node.getModelVersionId()));
-        });
-
-    }
-
-    private JsonNode getModels(AaiClientInterface aaiClient, Collection<String> invariantIDs) {
-        Response response = aaiClient.getVersionByInvariantId(ImmutableList.copyOf(invariantIDs));
-        try {
-            JsonNode responseJson = JACKSON_OBJECT_MAPPER.readTree(response.readEntity(String.class));
-            return responseJson.get("model");
-        } catch (Exception e) {
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to getVersionByInvariantId from A&AI", e);
-        }
-        return JACKSON_OBJECT_MAPPER.createObjectNode();
-    }
-
-    private Set<String> getModelInvariantIds(Collection<AAITreeNode> nodes) {
-        return nodes.stream()
-                .map(AAITreeNode::getModelInvariantId)
-                .filter(Objects::nonNull)
-                .collect(toSet());
     }
 
     public static class AaiRelationship {
