@@ -67,7 +67,7 @@
         <patch_version/>
 
         <reportportal.argline>-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar -Drp.enable=true -Drp.mode=DEFAULT -Drp.tags="CICD;BE_UNIT;BUILD_${env.BUILD_NUMBER}"</reportportal.argline>
-        <frontendTestsPhase>generate-resources</frontendTestsPhase>
+        <frontendTestsPhase>none</frontendTestsPhase>
 
     </properties>
 
@@ -304,9 +304,7 @@
                 <version>${surefire.version}</version>
                 <configuration>
                     <includes>
-                        <include>**/Test*.java</include>
-                        <include>**/*Test.java</include>
-                        <include>**/*TestCase.java</include>
+                        <include>**/VfmoduleCommandTest.*</include>
                     </includes>
                     <excludes>
                         <exclude>**/selenium/*.java</exclude>
