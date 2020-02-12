@@ -132,11 +132,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.1</version>
                 <configuration>
-                    <includes>
-                        <include>**/Test*.java</include>
-                        <include>**/*Test.java</include>
-                        <include>**/*TestCase.java</include>
-                    </includes>
                     <additionalClasspathElements>
                         <additionalClasspathElement>${basedir}/war</additionalClasspathElement>
                     </additionalClasspathElements>
