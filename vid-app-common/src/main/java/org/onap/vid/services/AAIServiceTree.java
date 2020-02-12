@@ -32,8 +32,6 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.util.AAITreeConverter;
-import org.onap.vid.asdc.AsdcCatalogException;
-import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.model.aaiTree.NodeType;
@@ -122,7 +120,7 @@ public class AAIServiceTree {
         //Populate nodes with model-name & model-version (from aai)
         aaiTreeNodesEnricher.enrichNodesWithModelVersionAndModelName(nodesAccumulator);
 
-        final ServiceModel serviceModel = getServiceModel(aaiTree.getModelVersionId());
+        final ServiceModel serviceModel = sdcService.getServiceModelOrThrow(aaiTree.getModelVersionId());
 
         //Populate nodes with model-customization-name (from sdc model)
         aaiTreeNodesEnricher.enrichNodesWithModelCustomizationName(nodesAccumulator, serviceModel);
@@ -160,18 +158,6 @@ public class AAIServiceTree {
             return serviceModel.getService().getInstantiationType();
         } else {
             return null;
-        }
-    }
-
-    private ServiceModel getServiceModel(String modelVersionId) {
-        try {
-            final ServiceModel serviceModel = sdcService.getService(modelVersionId);
-            if (serviceModel == null) {
-                throw new GenericUncheckedException("Model version '" + modelVersionId + "' not found");
-            }
-            return serviceModel;
-        } catch (AsdcCatalogException e) {
-            throw new GenericUncheckedException("Exception while loading model version '" + modelVersionId + "'", e);
         }
     }
 

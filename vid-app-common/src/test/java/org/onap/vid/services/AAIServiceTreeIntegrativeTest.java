@@ -304,7 +304,7 @@ public class AAIServiceTreeIntegrativeTest {
         TestUtils.initMockitoMocks(this);
         reboundLoggingWithMdcMock();
         aaiTreeNodeBuilder = new AAITreeNodeBuilder(aaiClient, logging);
-        aaiTreeNodesEnricher = new AAITreeNodesEnricher(aaiClient, serviceModelInflator);
+        aaiTreeNodesEnricher = new AAITreeNodesEnricher(aaiClient, null, null, serviceModelInflator);
     }
 
     private void reboundLoggingWithMdcMock() {
@@ -320,7 +320,7 @@ public class AAIServiceTreeIntegrativeTest {
 
         when(aaiGetVersionByInvariantIdResponse.readEntity(String.class)).thenReturn(getVersionByInvariantIdResponseString);
 
-        when(sdcService.getService(any())).thenReturn(mock(ServiceModel.class));
+        when(sdcService.getServiceModelOrThrow(any())).thenReturn(mock(ServiceModel.class));
         when(serviceModelInflator.toNamesByVersionId(any())).thenReturn(ImmutableMap.of(
                  "11c6dc3e-cd6a-41b3-a50e-b5a10f7157d0", new ServiceModelInflator.Names("vnf-model-customization-name", "vnf-key-in-model")
         ));
@@ -372,11 +372,11 @@ public class AAIServiceTreeIntegrativeTest {
         when(aaiGetVersionByInvariantIdResponse.readEntity(String.class)).
                 thenReturn(TestUtils.readFileAsString("/getTopology/serviceWithCR/service-design-and-creation.json"));
 
-        when(sdcService.getService(any())).thenReturn(
+        when(sdcService.getServiceModelOrThrow(any())).thenReturn(
                 TestUtils.readJsonResourceFileAsObject("/getTopology/serviceWithCR/serviceWithCRModel.json", ServiceModel.class));
 
         ServiceInstance serviceInstance = new AAIServiceTree(aaiTreeNodeBuilder,
-            new AAITreeNodesEnricher(aaiClient, new ServiceModelInflator()), aaiTreeConverter, sdcService, executorService)
+            new AAITreeNodesEnricher(aaiClient, null, null, new ServiceModelInflator()), aaiTreeConverter, sdcService, executorService)
                 .getServiceInstanceTopology("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", "Emanuel", "a565e6ad-75d1-4493-98f1-33234b5c17e2");
 
         String expected = TestUtils.readFileAsString("/getTopology/serviceWithCR/getTopologyWithCR.json");
