@@ -21,11 +21,15 @@
 package org.onap.vid.roles;
 
 
+import static java.util.Collections.emptyMap;
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +38,15 @@ import org.assertj.core.util.Lists;
 import org.mockito.Mock;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.RoleParsingException;
+import org.onap.vid.category.CategoryParametersResponse;
+import org.onap.vid.model.CategoryParameter.Family;
 import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.services.AaiService;
+import org.onap.vid.services.CategoryParameterService;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class RoleProviderTest {
@@ -49,6 +58,9 @@ public class RoleProviderTest {
     private static final String SAMPLE_SERVICE = "sampleService";
     private static final String SAMPLE_TENANT = "sampleTenant";
     private static final String SAMPLE_ROLE_PREFIX = "prefix";
+    private static final String EXISTING_OWNING_ENTITY_NAME = "WayneHolland";
+    private static final String EXISTING_OWNING_ENTITY_ID = "d61e6f2d-12fa-4cc2-91df-7c244011d6fc";
+    private static final String NOT_EXISTING_OWNING_ENTITY_NAME = "notExistingOwningEntity";
 
     @Mock
     private AaiService aaiService;
@@ -62,13 +74,21 @@ public class RoleProviderTest {
     @Mock
     private RoleValidatorFactory roleValidatorFactory;
 
+    @Mock
+    private CategoryParameterService categoryParameterService;
+
     private RoleProvider roleProvider;
 
 
     @BeforeMethod
     public void setUp() {
         initMocks(this);
-        roleProvider = new RoleProvider(aaiService, roleValidatorFactory, httpServletRequest -> 5, httpServletRequest -> createRoles());
+        roleProvider = new RoleProvider(aaiService, roleValidatorFactory, httpServletRequest -> 5,
+            httpServletRequest -> createRoles(),
+            categoryParameterService);
+
+        when(categoryParameterService.getCategoryParameters(any()))
+            .thenReturn(new CategoryParametersResponse(emptyMap()));
     }
 
     @Test
@@ -84,7 +104,7 @@ public class RoleProviderTest {
         setSubscribers();
         String[] roleParts = {SAMPLE_SUBSCRIBER, SAMPLE_SERVICE, SAMPLE_TENANT};
 
-        Role role = roleProvider.createRoleFromStringArr(roleParts, SAMPLE_ROLE_PREFIX);
+        Role role = roleProvider.createRoleFromStringArr(roleParts, SAMPLE_ROLE_PREFIX, emptyMap());
 
         assertThat(role.getEcompRole()).isEqualTo(EcompRole.READ);
         assertThat(role.getSubscriberId()).isEqualTo(SAMPLE_SUBSCRIBER_ID);
@@ -98,7 +118,7 @@ public class RoleProviderTest {
 
         String[] roleParts = {SAMPLE_SUBSCRIBER, SAMPLE_SERVICE};
 
-        Role role = roleProvider.createRoleFromStringArr(roleParts, SAMPLE_ROLE_PREFIX);
+        Role role = roleProvider.createRoleFromStringArr(roleParts, SAMPLE_ROLE_PREFIX, emptyMap());
 
         assertThat(role.getEcompRole()).isEqualTo(EcompRole.READ);
         assertThat(role.getSubscriberId()).isEqualTo(SAMPLE_SUBSCRIBER_ID);
@@ -110,7 +130,7 @@ public class RoleProviderTest {
     public void shouldRaiseExceptionWhenRolePartsAreIncomplete() throws RoleParsingException {
         setSubscribers();
 
-        roleProvider.createRoleFromStringArr(new String[]{SAMPLE_SUBSCRIBER}, SAMPLE_ROLE_PREFIX);
+        roleProvider.createRoleFromStringArr(new String[]{SAMPLE_SUBSCRIBER}, SAMPLE_ROLE_PREFIX, emptyMap());
     }
 
     @Test
@@ -158,6 +178,28 @@ public class RoleProviderTest {
         assertThat(result).isEqualTo(expectedRoleValidator);
     }
 
+    @DataProvider
+    public static Object[][] owningEntityNameAndId() {
+        return new Object[][] {
+            {"owning entity name exist on the response, id is returned ", EXISTING_OWNING_ENTITY_NAME, EXISTING_OWNING_ENTITY_ID},
+            {"owning entity name dont exist on the response, name is returned", NOT_EXISTING_OWNING_ENTITY_NAME, NOT_EXISTING_OWNING_ENTITY_NAME},
+        };
+    }
+
+    @Test(dataProvider = "owningEntityNameAndId")
+    public void translateOwningEntityNameToOwningEntityId_shouldTranslateNameToId(String description,
+        String owningEntityName, String expectedId) {
+        String owningEntityId = roleProvider.translateOwningEntityNameToOwningEntityId(owningEntityName,
+            ImmutableMap.of(
+                EXISTING_OWNING_ENTITY_NAME, EXISTING_OWNING_ENTITY_ID,
+                "anyName", "anyId"
+            ));
+
+        Assert.assertEquals(owningEntityId, expectedId);
+    }
+
+
+
     private String owningEntityId() {
         // while translateOwningEntityNameToOwningEntityId does nothing, no translation happens.
         // this will be changed later.
@@ -179,5 +221,45 @@ public class RoleProviderTest {
         org.onap.portalsdk.core.domain.Role role2 = new org.onap.portalsdk.core.domain.Role();
         role2.setName("sampleSubscriber___sampleService___sampleTenant");
         return ImmutableMap.of(1L, role1, 2L, role2);
+    }
+
+    @Test
+    public void owningEntityNameToOwningEntityIdMapper_readsOwningEntityCorrectly() throws JsonProcessingException {
+
+        final String categoryParametersResponse = ""
+            + "{ "
+            + " \"categoryParameters\": { "
+            + " \"lineOfBusiness\": [ "
+            + "      { \"id\": \"ONAP\", \"name\": \"ONAP\" }, "
+            + "      { \"id\": \"zzz1\", \"name\": \"zzz1\" } "
+            + "    ], "
+            + " \"owningEntity\": [ "
+            + "      { \"id\": \"aaa1\", \"name\": \"aaa1\" }, "
+            + "      { \"id\": \"" + EXISTING_OWNING_ENTITY_ID + "\", \"name\": \"" + EXISTING_OWNING_ENTITY_NAME + "\" }, "
+            + "      { \"id\": \"Melissa\", \"name\": \"Melissa\" }     ], "
+            + " \"project\": [ "
+            + "      { \"id\": \"WATKINS\", \"name\": \"WATKINS\" }, "
+            + "      { \"id\": \"x1\", \"name\": \"x1\" }, "
+            + "      { \"id\": \"yyy1\", \"name\": \"yyy1\" } "
+            + "    ], "
+            + " \"platform\": [ "
+            + "      { \"id\": \"platform\", \"name\": \"platform\" }, "
+            + "      { \"id\": \"xxx1\", \"name\": \"xxx1\" } "
+            + "    ] "
+            + "  } "
+            + "}";
+
+        CategoryParametersResponse categoryParameterResponse =
+            new ObjectMapper().readValue(categoryParametersResponse, CategoryParametersResponse.class);
+
+        when(categoryParameterService.getCategoryParameters(Family.PARAMETER_STANDARDIZATION))
+            .thenReturn(categoryParameterResponse);
+
+        org.hamcrest.MatcherAssert.assertThat(roleProvider.owningEntityNameToOwningEntityIdMapper(),
+            jsonEquals(ImmutableMap.of(
+                "aaa1", "aaa1",
+                "Melissa", "Melissa",
+                EXISTING_OWNING_ENTITY_NAME, EXISTING_OWNING_ENTITY_ID
+            )));
     }
 }
