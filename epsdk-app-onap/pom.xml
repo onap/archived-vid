@@ -134,7 +134,7 @@
                 <configuration>
                     <includes>
                         <include>**/Test*.java</include>
-                        <include>**/*Test.java</include>
+                        <include>**/*Test.class</include>
                         <include>**/*TestCase.java</include>
                     </includes>
                     <additionalClasspathElements>
