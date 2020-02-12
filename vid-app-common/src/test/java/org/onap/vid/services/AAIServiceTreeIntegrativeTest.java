@@ -61,6 +61,7 @@ import org.onap.vid.utils.Logging;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 public class AAIServiceTreeIntegrativeTest {
 
@@ -75,6 +76,9 @@ public class AAIServiceTreeIntegrativeTest {
 
     @Mock
     VidService sdcService;
+
+    @Mock
+    FeatureManager featureManager;
 
     @Mock
     ServiceModelInflator serviceModelInflator;
@@ -320,7 +324,7 @@ public class AAIServiceTreeIntegrativeTest {
                  "11c6dc3e-cd6a-41b3-a50e-b5a10f7157d0", new ServiceModelInflator.Names("vnf-model-customization-name", "vnf-key-in-model")
         ));
 
-        ServiceInstance root = new AAIServiceTree(aaiClient, aaiTreeNodeBuilder, aaiTreeConverter, sdcService, serviceModelInflator, executorService)
+        ServiceInstance root = new AAIServiceTree(aaiClient, aaiTreeNodeBuilder, aaiTreeConverter, sdcService, featureManager, serviceModelInflator, executorService)
                 .getServiceInstanceTopology(globalCustomerID, serviceType, serviceInstanceId);
 
         assertServiceNode(root, 1);
@@ -370,7 +374,7 @@ public class AAIServiceTreeIntegrativeTest {
         when(sdcService.getService(any())).thenReturn(
                 TestUtils.readJsonResourceFileAsObject("/getTopology/serviceWithCR/serviceWithCRModel.json", ServiceModel.class));
 
-        ServiceInstance serviceInstance = new AAIServiceTree(aaiClient, aaiTreeNodeBuilder, aaiTreeConverter, sdcService, new ServiceModelInflator(), executorService)
+        ServiceInstance serviceInstance = new AAIServiceTree(aaiClient, aaiTreeNodeBuilder, aaiTreeConverter, sdcService, featureManager, new ServiceModelInflator(), executorService)
                 .getServiceInstanceTopology("a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", "Emanuel", "a565e6ad-75d1-4493-98f1-33234b5c17e2");
 
         String expected = TestUtils.readFileAsString("/getTopology/serviceWithCR/getTopologyWithCR.json");
@@ -437,7 +441,7 @@ public class AAIServiceTreeIntegrativeTest {
         when(sdcService.getService(any())).thenReturn(mock(ServiceModel.class));
         when(serviceModelInflator.toNamesByVersionId(any())).thenReturn(ImmutableMap.of());
 
-        new AAIServiceTree(aaiClient, aaiTreeNodeBuilder, aaiTreeConverter, sdcService, serviceModelInflator, executorService)
+        new AAIServiceTree(aaiClient, aaiTreeNodeBuilder, aaiTreeConverter, sdcService, featureManager, serviceModelInflator, executorService)
                 .getServiceInstanceTopology(globalCustomerID, serviceType, serviceInstanceId);
     }
 

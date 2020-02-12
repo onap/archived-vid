@@ -23,6 +23,9 @@ package org.onap.vid.services;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
+import static org.apache.commons.lang3.StringUtils.isAllEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,28 +33,34 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.AaiClientInterface;
+import org.onap.vid.aai.model.ModelVer;
 import org.onap.vid.aai.util.AAITreeConverter;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.parser.ServiceModelInflator;
+import org.onap.vid.asdc.parser.ServiceModelInflator.Names;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.model.ServiceModel;
 import org.onap.vid.model.aaiTree.AAITreeNode;
 import org.onap.vid.model.aaiTree.NodeType;
 import org.onap.vid.model.aaiTree.ServiceInstance;
+import org.onap.vid.properties.Features;
 import org.onap.vid.utils.Tree;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.togglz.core.manager.FeatureManager;
 
 @Component
 public class AAIServiceTree {
@@ -67,6 +76,8 @@ public class AAIServiceTree {
     private final ServiceModelInflator serviceModelInflator;
 
     private final ExecutorService executorService;
+
+    private final FeatureManager featureManager;
 
     private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(AAIServiceTree.class);
 
@@ -91,11 +102,13 @@ public class AAIServiceTree {
     @Inject
     public AAIServiceTree(AaiClientInterface aaiClient, AAITreeNodeBuilder aaiTreeNodeBuilder,
                           AAITreeConverter aaiTreeConverter, VidService sdcService,
+                          FeatureManager featureManager,
                           ServiceModelInflator serviceModelInflator, ExecutorService executorService) {
         this.aaiClient = aaiClient;
         this.aaiTreeNodeBuilder = aaiTreeNodeBuilder;
         this.aaiTreeConverter = aaiTreeConverter;
         this.sdcService = sdcService;
+        this.featureManager = featureManager;
         this.serviceModelInflator = serviceModelInflator;
         this.executorService = executorService;
     }
@@ -140,6 +153,7 @@ public class AAIServiceTree {
 
         //Populate nodes with model-customization-name (from sdc model)
         enrichNodesWithModelCustomizationName(nodesAccumulator, serviceModel);
+        enrichVfModulesWithModelCustomizationNameFromOtherVersions(nodesAccumulator, aaiTree.getModelInvariantId());
 
         return aaiTreeConverter.convertTreeToUIModel(aaiTree, globalCustomerId, serviceType, getInstantiationType(serviceModel), getInstanceRole(serviceModel), getInstanceType(serviceModel));
     }
@@ -200,6 +214,64 @@ public class AAIServiceTree {
                 node.setModelCustomizationName(names.getModelCustomizationName());
             }
         });
+    }
+
+    void enrichVfModulesWithModelCustomizationNameFromOtherVersions(Collection<AAITreeNode> nodes, String modelInvariantId) {
+        if (!featureManager.isActive(Features.FLAG_EXP_TOPOLOGY_TREE_VFMODULE_NAMES_FROM_OTHER_TOSCA_VERSIONS)) {
+            return;
+        }
+
+        final Predicate<AAITreeNode> nodeWithMissingData =
+            (AAITreeNode node) -> isAllEmpty(node.getKeyInModel(), node.getModelCustomizationId());
+
+        final Predicate<AAITreeNode> vfModuleWithMissingData =
+            nodeWithMissingData.and(node -> node.getType() == NodeType.VF_MODULE);
+
+        if (nodes.stream().noneMatch(vfModuleWithMissingData)) {
+            return;
+        }
+
+        List<ModelVer> allModelVersions = aaiClient.getSortedVersionsByInvariantId(modelInvariantId);
+
+        if (allModelVersions == null || allModelVersions.isEmpty()) {
+            return;
+        }
+
+        final ListIterator<ModelVer> modelVersionsIterator = allModelVersions.listIterator();
+        final Map<String, ServiceModelInflator.Names> namesByCustomizationId = new HashMap<>();
+
+        nodes.stream().filter(vfModuleWithMissingData).forEach(node -> {
+            String modelCustomizationId = node.getModelCustomizationId();
+
+            fetchCustomizationIdsFromToscaModels(namesByCustomizationId, modelVersionsIterator, modelCustomizationId);
+
+            final ServiceModelInflator.Names names = namesByCustomizationId.get(modelCustomizationId);
+            if (names != null) {
+                node.setKeyInModel(defaultIfEmpty(node.getKeyInModel(), names.getModelKey()));
+                node.setModelCustomizationName(defaultIfEmpty(node.getModelCustomizationName(), names.getModelCustomizationName()));
+            }
+        });
+    }
+
+    /**
+     * Loads namesByCustomizationId with all customization IDs from the list of modelVersions. Will seize loading
+     * if yieldCustomizationId presents in namesByCustomizationId.
+     * @param namesByCustomizationId Mutable Map to fill-up
+     * @param modelVersions Iterable of model-version-ids to load
+     * @param yieldCustomizationId The key to stop loading on
+     */
+    private void fetchCustomizationIdsFromToscaModels(
+        Map<String, Names> namesByCustomizationId, ListIterator<ModelVer> modelVersions, String yieldCustomizationId
+    ) {
+        while (modelVersions.hasNext() && !namesByCustomizationId.containsKey(yieldCustomizationId)) {
+            final String nextModelVersionId = modelVersions.next().getModelVersionId();
+
+            if (isNotEmpty(nextModelVersionId)) {
+                namesByCustomizationId.putAll(serviceModelInflator.toNamesByCustomizationId(
+                        getServiceModel(nextModelVersionId)
+                    ));
+            }
+        }
     }
 
 

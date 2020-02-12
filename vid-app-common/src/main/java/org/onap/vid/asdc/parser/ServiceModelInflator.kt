@@ -26,10 +26,21 @@ import org.springframework.stereotype.Component
 @Component
 class ServiceModelInflator {
 
+    private data class Ids (val modelCustomizationId: String?, val modelVersionId: String)
     data class Names (val modelCustomizationName: String?, val modelKey: String?)
 
     fun toNamesByVersionId(model: ServiceModel): Map<String, Names> {
-        return emptyMap<String, Names>()
+        return toNamesByIds(model).mapKeys { it.key.modelVersionId }
+    }
+
+    fun toNamesByCustomizationId(model: ServiceModel): Map<String, Names> {
+        return toNamesByIds(model)
+                .filterKeys { it.modelCustomizationId != null }
+                .mapKeys { it.key.modelCustomizationId!! }
+    }
+
+    private fun toNamesByIds(model: ServiceModel): Map<Ids, Names> {
+        return emptyMap<Ids, Names>()
                 .plus(inflate(model.networks))
                 .plus(inflate(model.vnfs))
                 .plus(inflate(model.vnfGroups))
@@ -37,31 +48,31 @@ class ServiceModelInflator {
                 .plus(inflate(model.collectionResources))
     }
 
-    private fun inflate(instances: Map<String, *>): Map<String, Names> {
+    private fun inflate(instances: Map<String, *>): Map<Ids, Names> {
         return instances.entries.map { inflate(it.key, it.value) }.fold(emptyMap()) { acc, it -> acc.plus(it) }
     }
 
-    private fun inflate(modelKey: String, vnf: VNF): Map<String, Names> {
-        return mapOf(vnf.uuid to Names(vnf.modelCustomizationName, modelKey))
+    private fun inflate(modelKey: String, vnf: VNF): Map<Ids, Names> {
+        return mapOf(Ids(vnf.customizationUuid, vnf.uuid) to Names(vnf.modelCustomizationName, modelKey))
                 .plus(inflate(vnf.vfModules))
                 .plus(inflate(vnf.volumeGroups))
     }
 
-    private fun inflate(modelKey: String, cr: CR): Map<String, Names> {
-        return mapOf(cr.uuid to Names(null, modelKey))
+    private fun inflate(modelKey: String, cr: CR): Map<Ids, Names> {
+        return mapOf(Ids(cr.customizationUuid, cr.uuid) to Names(null, modelKey))
                 .plus(inflate(cr.networksCollection))
     }
 
-    private fun inflate(modelKey: String, instance: Any?): Map<String, Names> {
+    private fun inflate(modelKey: String, instance: Any?): Map<Ids, Names> {
         return when (instance) {
-            is Network -> mapOf(instance.uuid to Names(instance.modelCustomizationName, modelKey))
-            is VfModule -> mapOf(instance.uuid to Names(instance.modelCustomizationName, modelKey))
-            is VolumeGroup -> mapOf(instance.uuid to Names(instance.modelCustomizationName, modelKey))
-            is ResourceGroup -> mapOf(instance.uuid to Names(instance.modelCustomizationName, modelKey))
+            is Network -> mapOf(Ids(instance.customizationUuid, instance.uuid) to Names(instance.modelCustomizationName, modelKey))
+            is VfModule -> mapOf(Ids(instance.customizationUuid, instance.uuid) to Names(instance.modelCustomizationName, modelKey))
+            is VolumeGroup -> mapOf(Ids(instance.customizationUuid, instance.uuid) to Names(instance.modelCustomizationName, modelKey))
+            is ResourceGroup -> mapOf(Ids(null, instance.uuid) to Names(instance.modelCustomizationName, modelKey))
             is VNF -> inflate(modelKey, instance)
             is CR -> inflate(modelKey, instance)
-            is NetworkCollection -> mapOf(instance.uuid to Names(null, modelKey))
-            is Node -> mapOf(instance.uuid to Names(null, modelKey))
+            is NetworkCollection -> mapOf(Ids(null, instance.uuid) to Names(null, modelKey))
+            is Node -> mapOf(Ids(instance.customizationUuid, instance.uuid) to Names(null, modelKey))
 
             else -> {
                 // sink

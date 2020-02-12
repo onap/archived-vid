@@ -195,7 +195,7 @@ public class AAIServiceTreeTest {
     }
 
     @Test
-    public void whenBuildTreeForOneResource_resultAsExpected() throws IOException {
+    public void whenBuildTreeForOneResource_resultAsExpected() {
 
         AaiClient aaiClientMock = mock(AaiClient.class);
         ExecutorService executorService = MoreExecutors.newDirectExecutorService();
@@ -203,6 +203,7 @@ public class AAIServiceTreeTest {
                 aaiClientMock,
                 new AAITreeNodeBuilder(aaiClientMock, new Logging()),
                 new AAITreeConverter(new ModelUtil()),
+                null,
                 null,
                 null,
                 executorService

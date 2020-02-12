@@ -69,6 +69,7 @@ public class AAIServiceIntegrativeTest extends TestWithAaiClient {
                 new AAITreeConverter(new ModelUtil()),
                 null,
                 null,
+                null,
                 executorService
         );
         return new AaiServiceImpl(aaiClient, null, aaiServiceTree, executorService, logging);

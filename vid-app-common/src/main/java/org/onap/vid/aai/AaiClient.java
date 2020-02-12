@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
@@ -490,6 +491,15 @@ public class AaiClient implements AaiClientInterface {
 
     @Override
     public ModelVer getLatestVersionByInvariantId(String modelInvariantId) {
+        return maxModelVer(getAllVersionsByInvariantId(modelInvariantId));
+    }
+
+    @Override
+    public List<ModelVer> getSortedVersionsByInvariantId(String modelInvariantId) {
+        return sortedModelVer(getAllVersionsByInvariantId(modelInvariantId));
+    }
+
+    private Stream<ModelVer> getAllVersionsByInvariantId(String modelInvariantId) {
         if (modelInvariantId.isEmpty()) {
             throw new GenericUncheckedException("no invariant-id provided to getLatestVersionByInvariantId; request is rejected");
         }
@@ -497,8 +507,7 @@ public class AaiClient implements AaiClientInterface {
         Response response = doAaiPut("query?format=resource&depth=0",  "{\"start\": [\"service-design-and-creation/models/model/" + modelInvariantId + "\"],\"query\": \"query/serviceModels-byDistributionStatus?distributionStatus=DISTRIBUTION_COMPLETE_OK\"}",false);
         AaiResponse<ModelVersions> aaiResponse = processAaiResponse(response, ModelVersions.class, null, VidObjectMapperType.FASTERXML);
 
-        Stream<ModelVer> modelVerStream = toModelVerStream(aaiResponse.getT());
-        return maxModelVer(modelVerStream);
+        return toModelVerStream(aaiResponse.getT());
     }
 
     protected Stream<ModelVer> toModelVerStream(ModelVersions modelVersions) {
@@ -525,6 +534,16 @@ public class AaiClient implements AaiClientInterface {
                 .filter(modelVer -> StringUtils.isNotEmpty(modelVer.getModelVersion()))
                 .max(comparing(ModelVer::getModelVersion, comparing(DefaultArtifactVersion::new)))
                 .orElseThrow(() -> new GenericUncheckedException("Could not find any version"));
+    }
+
+    protected List<ModelVer> sortedModelVer(Stream<ModelVer> modelVerStream) {
+        if (modelVerStream == null)
+            return null;
+
+        return modelVerStream
+            .filter(modelVer -> StringUtils.isNotEmpty(modelVer.getModelVersion()))
+            .sorted(comparing(ModelVer::getModelVersion, comparing(DefaultArtifactVersion::new)))
+            .collect(Collectors.toList());
     }
 
     @Override
