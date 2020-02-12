@@ -13,7 +13,10 @@
             "userId": "1",
             "password": "1"
           },
-          "roles": ["SILVIA ROBBINS___TYLER SILVIA", "SILVIA ROBBINS___DARREN MCGEE", "CAR_2020_ER___DARREN MCGEE", "CAR_2020_ER___MSO-dev-service-type", "CAR_2020_ER___TYLER SILVIA","READ___LOGS___PERMITTED","Emanuel___mySubType", "global-customer-id___service-instance-type"],
+          "roles": [
+            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+            "SILVIA ROBBINS___TYLER SILVIA", "SILVIA ROBBINS___DARREN MCGEE", "CAR_2020_ER___DARREN MCGEE", "CAR_2020_ER___MSO-dev-service-type", "CAR_2020_ER___TYLER SILVIA","READ___LOGS___PERMITTED","Emanuel___mySubType", "global-customer-id___service-instance-type"
+          ],
           "subscriberNames": ["SILVIA ROBBINS", "CAR_2020_ER", "Emanuel", "global-customer-id"],
           "serviceTypes": ["TYLER SILVIA", "DARREN MCGEE", "MSO-dev-service-type"],
           "tenants": ["092eb9e8e4b7412e8787dd091bc58e86"]
@@ -23,7 +26,10 @@
             "userId": "3",
             "password": "3"
           },
-          "roles": ["Emanuel___Emanuel"],
+          "roles": [
+            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+            "Emanuel___Emanuel"
+          ],
           "subscriberNames": ["Emanuel"],
           "serviceTypes": ["Emanuel"],
           "tenants": ["c630e297a3ae486497d63eacec1d7c14", "d3b49834f7164cbe831bfbfa35ef649b"]
@@ -33,7 +39,10 @@
              "userId": "667",
              "password": "667"
            },
-           "roles": ["CRAIG/ROBERTS___AIM Transport"],
+           "roles": [
+             "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+             "CRAIG/ROBERTS___AIM Transport"
+           ],
            "subscriberNames": ["CRAIG/ROBERTS"],
            "serviceTypes": ["AIM Transport"],
            "tenants": null
@@ -43,7 +52,10 @@
             "userId": "4",
             "password": "4"
           },
-          "roles": ["Emanuel___vWINIFRED", "Emanuel___vRichardson"],
+          "roles": [
+            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+            "Emanuel___vWINIFRED", "Emanuel___vRichardson"
+          ],
           "subscriberNames": ["Emanuel"],
           "serviceTypes": ["vWINIFRED", "vRichardson"],
           "tenants": ["092eb9e8e4b7412e8787dd091bc58e86"]
@@ -54,6 +66,7 @@
             "password": "822"
           },
           "roles": [
+            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
             "JULIO ERICKSON___Emanuel",
             "JULIO ERICKSON___vRichardson"
 
@@ -68,6 +81,7 @@
             "password": "312"
           },
           "roles": [
+            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
             "Emanuel___vRichardson"
           ],
           "subscriberNames": ["Emanuel"],
@@ -80,6 +94,7 @@
             "password": "312"
           },
           "roles": [
+            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
             "Emanuel___vWINIFRED___test-hvf6-09"
           ],
           "subscriberNames": ["Emanuel"],
