@@ -133,9 +133,9 @@
                 <version>2.22.1</version>
                 <configuration>
                     <includes>
-                        <include>**/Test*.java</include>
-                        <include>**/*Test.java</include>
-                        <include>**/*TestCase.java</include>
+                        <include>**/Test*.*</include>
+                        <include>**/*Test.*</include>
+                        <include>**/*TestCase.*</include>
                     </includes>
                     <additionalClasspathElements>
                         <additionalClasspathElement>${basedir}/war</additionalClasspathElement>
