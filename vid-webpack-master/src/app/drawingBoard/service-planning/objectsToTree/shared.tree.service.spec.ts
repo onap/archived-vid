@@ -44,6 +44,7 @@ import {VfModuleUpgradePopupService} from "../../../shared/components/genericFor
 import {SharedControllersService} from "../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 import {ModalService} from "../../../shared/components/customModal/services/modal.service";
 import {CreateDynamicComponentService} from "../../../shared/components/customModal/services/create-dynamic-component.service";
+import {instance, mock} from "ts-mockito";
 
 class MockAppStore<T> {
   getState() {
@@ -80,6 +81,8 @@ describe('Shared Tree Service', () => {
   let service: SharedTreeService;
   let _objectToInstanceTreeService: ObjectToInstanceTreeService;
   let store: NgRedux<AppState>;
+  let _featureFlagsService: FeatureFlagsService;
+
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgReduxTestingModule, SdcUiComponentsModule],
@@ -118,7 +121,7 @@ describe('Shared Tree Service', () => {
         VpnStepService,
         ModalService,
         CreateDynamicComponentService,
-        {provide: NgRedux, useClass: MockAppStore}
+        {provide: NgRedux, useClass: MockAppStore},
       ]
     });
     await TestBed.compileComponents();
@@ -126,6 +129,7 @@ describe('Shared Tree Service', () => {
     service = injector.get(SharedTreeService);
     _objectToInstanceTreeService = injector.get(ObjectToInstanceTreeService);
     store = injector.get(NgRedux);
+    _featureFlagsService = injector.get(FeatureFlagsService);
   })().then(done).catch(done.fail));
 
   test('SharedTreeService should be defined', () => {
@@ -390,6 +394,20 @@ describe('Shared Tree Service', () => {
 
     const isDiffCustomizationUuidResponse : boolean = service.isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer(node, serviceModelId);
     expect(isDiffCustomizationUuidResponse).toEqual(expected);
+  });
+
+
+  test('when service model in instance is not latest upgrade button should appear', () => {
+    let node = <any>  {};
+    let serviceModelId : string = '08c5fa17-769a-4231-bd92-aed4b0ed086d';
+    spyOn(_featureFlagsService,  "getFlagState").and.returnValue(true);
+    spyOn(service, 'isThereAnUpdatedLatestVersion').and.returnValue(true);
+    spyOn(service, 'isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer').and.returnValue(false);
+    spyOn(service, 'shouldShowButtonGeneric');
+
+    service.shouldShowUpgrade(node, serviceModelId);
+
+    expect(service.shouldShowButtonGeneric).toBeCalledTimes(1);
   });
 
 });
