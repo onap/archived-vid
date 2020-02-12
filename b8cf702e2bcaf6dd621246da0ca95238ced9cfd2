@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "fc94b140_77115eb6",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOCreateVfModuleALaCarteCypress.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-12T05:44:52Z",
+      "side": 1,
+      "message": "But if just get it as parameter without default, once you will remove the flag you don\u0027t need to change anything in preset.\nGoing ahead , the flag will be on, and there will be no meaning for that default.",
+      "parentUuid": "95be8769_d638bca3",
+      "revId": "b8cf702e2bcaf6dd621246da0ca95238ced9cfd2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a9f118e9_be6bfd93",
         "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOCreateVfModuleALaCarteCypress.java",
         "patchSetId": 1
