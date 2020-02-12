@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import org.onap.vid.category.CategoryParameterOptionRep
 import org.onap.vid.category.CategoryParametersResponse
 import org.onap.vid.model.CategoryParameter
+import org.onap.vid.properties.Features
 import org.onap.vid.roles.RoleProvider
 import org.onap.vid.roles.WithPermissionPropertiesOwningEntity
 import org.springframework.beans.factory.annotation.Qualifier
@@ -22,7 +23,7 @@ class CategoryParameterServiceWithRoles(
 
     private val owningEntityKey = "owningEntity"
 
-    private fun shouldTreatPermissions() = false
+    private fun shouldTreatPermissions() = featureManager.isActive(Features.FLAG_2006_LIMIT_OWNING_ENTITY_SELECTION_BY_ROLES)
 
     override fun getCategoryParameters(familyName: CategoryParameter.Family?): CategoryParametersResponse {
         val categoryParameters =
@@ -50,10 +51,11 @@ class CategoryParameterServiceWithRoles(
                 ?.filter { userRolesValidator.isServicePermitted(it) }
     }
 
-
-    class OwningEntityOptionRep(categoryParameterOptionRep: CategoryParameterOptionRep) :
-            CategoryParameterOptionRep(categoryParameterOptionRep.id, categoryParameterOptionRep.name),
-            WithPermissionPropertiesOwningEntity {
+    /**
+     * Encapsulates a CategoryParameterOptionRep where id field  contains an owningEntityId
+     */
+    class OwningEntityOptionRep(option: CategoryParameterOptionRep) :
+            CategoryParameterOptionRep(option.id, option.name), WithPermissionPropertiesOwningEntity {
         override val owningEntityId: String?
             @JsonIgnore get() = id
     }

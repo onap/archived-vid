@@ -215,6 +215,10 @@
   When flag is true the user will be provided with edit permissions by owning entity id even the user have no permission by Subscriber,
   when the flag is false the user provided with edit permission by Subscriber.
   
+* FLAG_2006_LIMIT_OWNING_ENTITY_SELECTION_BY_ROLES
+  While service instantiation, when flag is enabled, a user will not be able to choose Owning Entity which she has no 
+  matching role for. Relevant roles can be provided by using FLAG_2006_USER_PERMISSIONS_BY_OWNING_ENTITY.
+  
 * FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF
   When flag is true new VF Modules on Alacarte service will inherit LCP-Region and Tenant from parent VNF.
   When off, user is requested to specify LCP-Region and Tenant for each VF Module.
