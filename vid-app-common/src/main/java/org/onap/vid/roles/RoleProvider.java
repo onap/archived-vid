@@ -35,10 +35,14 @@ import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.web.support.UserUtils;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.exceptions.RoleParsingException;
+import org.onap.vid.category.CategoryParameterOptionRep;
+import org.onap.vid.category.CategoryParametersResponse;
+import org.onap.vid.model.CategoryParameter.Family;
 import org.onap.vid.model.ModelConstants;
 import org.onap.vid.model.Subscriber;
 import org.onap.vid.model.SubscriberList;
 import org.onap.vid.services.AaiService;
+import org.onap.vid.services.CategoryParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,21 +58,27 @@ public class RoleProvider {
     private Function<HttpServletRequest, Integer> getUserIdFunction;
     private Function<HttpServletRequest, Map> getRolesFunction;
     private final RoleValidatorFactory roleValidatorFactory;
+    private final CategoryParameterService categoryParameterService;
+
 
     @Autowired
-    public RoleProvider(AaiService aaiService, RoleValidatorFactory roleValidatorFactory) {
+    public RoleProvider(AaiService aaiService, RoleValidatorFactory roleValidatorFactory,
+        CategoryParameterService categoryParameterService) {
         this.aaiService=aaiService;
         this.roleValidatorFactory = roleValidatorFactory;
+        this.categoryParameterService = categoryParameterService;
         getUserIdFunction = UserUtils::getUserId;
         getRolesFunction = UserUtils::getRoles;
     }
 
     RoleProvider(AaiService aaiService, RoleValidatorFactory roleValidatorFactory,
-        Function<HttpServletRequest, Integer> getUserIdFunction, Function<HttpServletRequest, Map> getRolesFunction) {
+        Function<HttpServletRequest, Integer> getUserIdFunction, Function<HttpServletRequest, Map> getRolesFunction,
+        CategoryParameterService categoryParameterService) {
         this.aaiService = aaiService;
         this.roleValidatorFactory = roleValidatorFactory;
         this.getRolesFunction = getRolesFunction;
         this.getUserIdFunction = getUserIdFunction;
+        this.categoryParameterService = categoryParameterService;
     }
 
     public List<Role> getUserRoles(HttpServletRequest request) {
@@ -162,8 +172,20 @@ public class RoleProvider {
 
     }
 
-    private String translateOwningEntityNameToOwningEntityId(String owningEntityName) {
-        return owningEntityName; // TODO: translate to id
+    protected String translateOwningEntityNameToOwningEntityId(String owningEntityName) {
+        CategoryParametersResponse categoryParametersResponse = categoryParameterService.getCategoryParameters(Family.PARAMETER_STANDARDIZATION);
+        Map<String, List<CategoryParameterOptionRep>> categoryMap = categoryParametersResponse.getCategoryParameters();
+        List<CategoryParameterOptionRep> owningEntityList = categoryMap.get("owningEntity");
+
+        for (CategoryParameterOptionRep owningEntity : owningEntityList){
+            if(owningEntityName.equals(owningEntity.getName())){
+                return owningEntity.getId();
+            }
+        }
+
+        // in case match wasn't found - return name
+        LOG.debug(EELFLoggerDelegate.debugLogger, "Could not find owning entity id for " + owningEntityName + " using owning entity name");
+        return owningEntityName;
     }
 
     public RoleValidator getUserRolesValidator(HttpServletRequest request) {
