@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "59e7dd72_6b584ed3",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-13T12:02:06Z",
+      "side": 1,
+      "message": "rename to something with more meaning.\nLike isVfMoudleCanBeUpgraded",
+      "revId": "41a6284972e31feb2bb4ff4ac609217f5d759f1d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
