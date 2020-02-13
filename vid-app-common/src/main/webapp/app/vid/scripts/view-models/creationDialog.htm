@@ -9,7 +9,7 @@
 			</div>
 
 			<div class="error" ng-show="isErrorVisible">
-				<button class="btn-danger" att-button size="small" ng-click="showReportWindow()">Create report</button>
+				<button class="btn-danger" att-button size="small" ng-click="showReportWindow()" ng-if="isShowErrorReport()">Create report</button>
 				<img src="app/vid/images/error.png"></img>
 				{{error}} <br>
 			</div>
