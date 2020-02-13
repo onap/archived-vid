@@ -400,10 +400,10 @@ describe('Shared Tree Service', () => {
     [true, false, true, true],
     [true, false, false, false],
   ]).
-  test('when flag is %s the UpdatedLatestVersion is %s and Vfmodule CustomizationUuid Differ is %s isShouldShowButtonGenericMustToBeCalled should return %s', (
+  test('when flag is %s the UpdatedLatestVersion is %s and Vfmodule not exists on hierarchy is %s isShouldShowButtonGenericMustToBeCalled should return %s', (
      flag: boolean,
      isThereAnUpdatedLatestVersion: boolean,
-     isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer: boolean,
+     isVfModuleCustomizationIdNotExistsOnModel: boolean,
      isShouldShowButtonGenericMustToBeCalled: boolean
      ) => {
       let node = <any>  {};
@@ -416,10 +416,46 @@ describe('Shared Tree Service', () => {
         }
       });
       spyOn(service, 'isThereAnUpdatedLatestVersion').and.returnValue(isThereAnUpdatedLatestVersion);
-      spyOn(service, 'isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer').and.returnValue(isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer);
+      spyOn(service, 'isVfModuleCustomizationIdNotExistsOnModel').and.returnValue(isVfModuleCustomizationIdNotExistsOnModel);
 
       expect(service.isVfMoudleCouldBeUpgraded(node, serviceModelId)).toEqual(isShouldShowButtonGenericMustToBeCalled);
     });
+
+  each([
+    ['Vfm customization uuid not exists in model', 'not-existing-customization-uuid', 'service-model-id', true],
+    ['Vfm customization uuid exists in model', 'existing-customization-uuid', 'service-model-id', false]
+  ]).
+  test('%s when vfModuleNode is  %s and serviceModelId is %s ', (
+    description,
+    modelCustomizationId,
+    serviceModelId: string,
+    isExistsOnHierarchy: boolean,
+    ) => {
+
+    const vfModuleNode = { data: {
+        modelCustomizationId : modelCustomizationId
+      }};
+
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
+      service : {
+        "serviceHierarchy": {
+          [serviceModelId]: {
+            "vfModules": {
+              "module-1": {
+                "customizationUuid": "3d7f41c8-333b-4fee-b50d-5687e9c2170f",
+              },
+              "module-2": {
+                "customizationUuid": "existing-customization-uuid",
+              }
+            }
+          }
+        }
+      }
+    });
+    expect(service.isVfModuleCustomizationIdNotExistsOnModel(vfModuleNode, serviceModelId)).toEqual(isExistsOnHierarchy);
+
+
+  });
 
 });
 

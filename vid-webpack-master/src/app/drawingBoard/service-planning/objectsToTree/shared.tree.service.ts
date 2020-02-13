@@ -222,7 +222,18 @@ export class SharedTreeService {
 
   isVfMoudleCouldBeUpgraded(node, serviceModelId): boolean{
     return (FeatureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE, this._store) &&
-      ((this.isThereAnUpdatedLatestVersion(serviceModelId)) || this.isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer(node, serviceModelId)))
+      (this.isThereAnUpdatedLatestVersion(serviceModelId) || this.isVfModuleCustomizationIdNotExistsOnModel(node, serviceModelId)))
+  }
+
+  isVfModuleCustomizationIdNotExistsOnModel(vfModuleNode, serviceModelId) {
+
+    // prevent undefined
+    if (_.isNil(vfModuleNode.data) || _.isNil(vfModuleNode.data.modelCustomizationId)) {
+      return false;
+    }
+
+    let vfModulesHierarchyByGivenModelId = this._store.getState().service.serviceHierarchy[serviceModelId].vfModules;
+    return  !_.some(vfModulesHierarchyByGivenModelId, vfmodel => vfmodel.customizationUuid === vfModuleNode.data.modelCustomizationId);
   }
 
 
