@@ -75,6 +75,17 @@ function getNodeWithData(menuAction:string){
   return node
 }
 
+const vfModuleNodeNotExistsOnHierarchy = { data: {
+    modelCustomizationId : 'fb62fb6c-66af-4bdf-a880-88c85479b5d2'
+  }};
+
+const vfModuleNodeExistsOnHierarchy = { data: {
+    modelCustomizationId : '0997d15d-845f-41fe-8a88-bbd46553b621'
+  }};
+
+
+
+
 describe('Shared Tree Service', () => {
   let injector;
   let service: SharedTreeService;
@@ -400,10 +411,10 @@ describe('Shared Tree Service', () => {
     [true, false, true, true],
     [true, false, false, false],
   ]).
-  test('when flag is %s the UpdatedLatestVersion is %s and Vfmodule CustomizationUuid Differ is %s isShouldShowButtonGenericMustToBeCalled should return %s', (
+  test('when flag is %s the UpdatedLatestVersion is %s and Vfmodule not exists on hierarchy is %s isShouldShowButtonGenericMustToBeCalled should return %s', (
      flag: boolean,
      isThereAnUpdatedLatestVersion: boolean,
-     isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer: boolean,
+     isVfModuleCustomizationIdNotExistsOnModel: boolean,
      isShouldShowButtonGenericMustToBeCalled: boolean
      ) => {
       let node = <any>  {};
@@ -416,10 +427,41 @@ describe('Shared Tree Service', () => {
         }
       });
       spyOn(service, 'isThereAnUpdatedLatestVersion').and.returnValue(isThereAnUpdatedLatestVersion);
-      spyOn(service, 'isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer').and.returnValue(isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer);
+      spyOn(service, 'isVfModuleCustomizationIdNotExistsOnModel').and.returnValue(isVfModuleCustomizationIdNotExistsOnModel);
 
       expect(service.isVfMoudleCouldBeUpgraded(node, serviceModelId)).toEqual(isShouldShowButtonGenericMustToBeCalled);
     });
+
+  each([
+    ['Vfm customization uuid not exists in model', vfModuleNodeNotExistsOnHierarchy, 'fa59d7f3-be3d-4081-95e8-f46624b1ed56', true],
+    ['Vfm customization uuid exists in model', vfModuleNodeExistsOnHierarchy, 'fa59d7f3-be3d-4081-95e8-f46624b1ed56', false]
+  ]).
+  test('%s when vfModuleNode %s and serviceModelId %s ', (
+    description,
+    modelCustomizationId,
+    serviceModelId: string,
+    isExistsOnHierarchy: boolean,
+    ) => {
+    jest.spyOn(store, 'getState').mockReturnValue(<any>{
+      service : {
+        "serviceHierarchy": {
+          "fa59d7f3-be3d-4081-95e8-f46624b1ed56": {
+            "vfModules": {
+              "module-1": {
+                "customizationUuid": "3d7f41c8-333b-4fee-b50d-5687e9c2170f",
+              },
+              "module-2": {
+                "customizationUuid": "0997d15d-845f-41fe-8a88-bbd46553b621",
+              }
+            }
+          }
+        }
+      }
+    });
+    expect(service.isVfModuleCustomizationIdNotExistsOnModel(modelCustomizationId, serviceModelId)).toEqual(isExistsOnHierarchy);
+
+
+  });
 
 });
 
