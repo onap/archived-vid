@@ -80,6 +80,7 @@ describe('Shared Tree Service', () => {
   let service: SharedTreeService;
   let _objectToInstanceTreeService: ObjectToInstanceTreeService;
   let store: NgRedux<AppState>;
+
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgReduxTestingModule, SdcUiComponentsModule],
@@ -391,6 +392,34 @@ describe('Shared Tree Service', () => {
     const isDiffCustomizationUuidResponse : boolean = service.isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer(node, serviceModelId);
     expect(isDiffCustomizationUuidResponse).toEqual(expected);
   });
+
+  each([
+    [false, true, true, false],
+    [true, true, true, true],
+    [true, true, false, true],
+    [true, false, true, true],
+    [true, false, false, false],
+  ]).
+  test('when flag is %s the UpdatedLatestVersion is %s and Vfmodule CustomizationUuid Differ is %s isShouldShowButtonGenericMustToBeCalled should return %s', (
+     flag: boolean,
+     isThereAnUpdatedLatestVersion: boolean,
+     isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer: boolean,
+     isShouldShowButtonGenericMustToBeCalled: boolean
+     ) => {
+      let node = <any>  {};
+      let serviceModelId : string = '08c5fa17-769a-4231-bd92-aed4b0ed086d';
+      jest.spyOn(store, 'getState').mockReturnValue(<any>{
+        global: {
+          "flags": {
+            "FLAG_FLASH_REPLACE_VF_MODULE": flag,
+          },
+        }
+      });
+      spyOn(service, 'isThereAnUpdatedLatestVersion').and.returnValue(isThereAnUpdatedLatestVersion);
+      spyOn(service, 'isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer').and.returnValue(isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer);
+
+      expect(service.isShouldShowButtonGenericMustToBeCalled(node, serviceModelId)).toEqual(isShouldShowButtonGenericMustToBeCalled);
+    });
 
 });
 
