@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6f0bcf5a_382f2799",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-13T08:58:09Z",
+      "side": 1,
+      "message": "why do you need to inject it ? you use its static method",
+      "revId": "174581abd31702329641022e25920f5da71af0a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "713efb9e_00a33ddd",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-13T08:58:09Z",
+      "side": 1,
+      "message": "please add description to each case",
+      "revId": "174581abd31702329641022e25920f5da71af0a5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
