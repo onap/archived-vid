@@ -907,7 +907,7 @@ public class AaiApiTest extends BaseApiAaiTest {
     public void searchServiceInstancesBySubscriber_serviceInstanceOfAnotherSubscriber_authIsFollowingFeatureToggle() {
         String craigRobertsSubscriberId = "31739f3e-526b-11e6-beb8-9e71128cae77";
         String aServiceOwningEntityId = "f160c875-ddd1-4ef5-84d8-d098784daa3a";
-        String currentUserAuthorizedOwningEntityId = "SILVIA ROBBINS"; // this will need to change with translateOwningEntityNameToOwningEntityId
+        String currentUserAuthorizedOwningEntityId = "d61e6f2d-12fa-4cc2-91df-7c244011d6fc";
 
         SimulatorApi.registerExpectation(GET_SUBSCRIBERS_FOR_CUSTOMER_CRAIG_ROBERTS,
             ImmutableMap.of(aServiceOwningEntityId, currentUserAuthorizedOwningEntityId), CLEAR_THEN_SET);
