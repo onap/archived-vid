@@ -1,0 +1,170 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b4cbb2c_9bcea022",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-13T16:16:29Z",
+      "side": 1,
+      "message": "i think commit message should describe the result of the change",
+      "revId": "557254cd510442071ea90993ec3c1a73c04f8dde",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cec85b05_db3e36a0",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-13T16:16:29Z",
+      "side": 1,
+      "message": "consider building these inside the test",
+      "range": {
+        "startLine": 78,
+        "startChar": 6,
+        "endLine": 78,
+        "endChar": 39
+      },
+      "revId": "557254cd510442071ea90993ec3c1a73c04f8dde",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c95ba1de_d4907f4f",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-13T16:16:29Z",
+      "side": 1,
+      "message": "maybe change value to \"not-existing-customization\"",
+      "range": {
+        "startLine": 79,
+        "startChar": 28,
+        "endLine": 79,
+        "endChar": 64
+      },
+      "revId": "557254cd510442071ea90993ec3c1a73c04f8dde",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b86c2b24_91d608ac",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-13T16:16:29Z",
+      "side": 1,
+      "message": "can inline `fa59d7f3...`, and can change its value to something like \u0027service-model-id\u0027",
+      "range": {
+        "startLine": 461,
+        "startChar": 83,
+        "endLine": 461,
+        "endChar": 97
+      },
+      "revId": "557254cd510442071ea90993ec3c1a73c04f8dde",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f404689_9c426969",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-13T16:16:29Z",
+      "side": 1,
+      "message": "nice!",
+      "revId": "557254cd510442071ea90993ec3c1a73c04f8dde",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b62629e_cd801840",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-13T16:16:29Z",
+      "side": 1,
+      "message": "too many brackets",
+      "range": {
+        "startLine": 225,
+        "startChar": 7,
+        "endLine": 225,
+        "endChar": 8
+      },
+      "revId": "557254cd510442071ea90993ec3c1a73c04f8dde",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5909ae98_29fe47a1",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-13T16:16:29Z",
+      "side": 1,
+      "message": "// prevent undefined",
+      "revId": "557254cd510442071ea90993ec3c1a73c04f8dde",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "074ffdf2_8de9fa86",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-13T16:16:29Z",
+      "side": 1,
+      "message": "_.some() returns boolean",
+      "range": {
+        "startLine": 235,
+        "startChar": 29,
+        "endLine": 235,
+        "endChar": 36
+      },
+      "revId": "557254cd510442071ea90993ec3c1a73c04f8dde",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
