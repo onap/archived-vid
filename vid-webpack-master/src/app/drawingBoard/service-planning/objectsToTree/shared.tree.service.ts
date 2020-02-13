@@ -217,7 +217,7 @@ export class SharedTreeService {
    ****************************************************/
   shouldShowUpgrade(node, serviceModelId): boolean {
     if (FeatureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE, this._store) &&
-      (this.isThereAnUpdatedLatestVersion(serviceModelId)) || this.isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer(node, serviceModelId)) {
+      ((this.isThereAnUpdatedLatestVersion(serviceModelId)) || this.isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer(node, serviceModelId))) {
       return this.shouldShowButtonGeneric(node, VNFMethods.UPGRADE, serviceModelId);
     }
     else {
