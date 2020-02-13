@@ -80,6 +80,8 @@ describe('Shared Tree Service', () => {
   let service: SharedTreeService;
   let _objectToInstanceTreeService: ObjectToInstanceTreeService;
   let store: NgRedux<AppState>;
+  let _featureFlagsService: FeatureFlagsService;
+
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgReduxTestingModule, SdcUiComponentsModule],
@@ -126,6 +128,7 @@ describe('Shared Tree Service', () => {
     service = injector.get(SharedTreeService);
     _objectToInstanceTreeService = injector.get(ObjectToInstanceTreeService);
     store = injector.get(NgRedux);
+    _featureFlagsService = injector.get(FeatureFlagsService)
   })().then(done).catch(done.fail));
 
   test('SharedTreeService should be defined', () => {
@@ -391,6 +394,36 @@ describe('Shared Tree Service', () => {
     const isDiffCustomizationUuidResponse : boolean = service.isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer(node, serviceModelId);
     expect(isDiffCustomizationUuidResponse).toEqual(expected);
   });
+
+  each([
+    [true, true, true, 1],
+    [true, false, true, 1],
+    [true, true, false, 1],
+    [false, true, true,0],
+    [true, false, false, 0],
+  ]).
+  test('when service model in instance is not latest upgrade button should appear',
+    (flag: boolean,
+     isThereAnUpdatedLatestVersion: boolean,
+     isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer: boolean,
+     callAmountToshouldShowButtonGeneric: number) => {
+      let node = <any>  {};
+      let serviceModelId : string = '08c5fa17-769a-4231-bd92-aed4b0ed086d';
+      jest.spyOn(store, 'getState').mockReturnValue(<any>{
+        global: {
+          "flags": {
+            "FLAG_FLASH_REPLACE_VF_MODULE": flag,
+          },
+        }
+      });
+      spyOn(service, 'isThereAnUpdatedLatestVersion').and.returnValue(isThereAnUpdatedLatestVersion);
+      spyOn(service, 'isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer').and.returnValue(isVfmoduleAlmostPartOfModelOnlyCustomizationUuidDiffer);
+      spyOn(service, 'shouldShowButtonGeneric');
+
+      service.shouldShowUpgrade(node, serviceModelId);
+
+      expect(service.shouldShowButtonGeneric).toBeCalledTimes(callAmountToshouldShowButtonGeneric);
+    });
 
 });
 
