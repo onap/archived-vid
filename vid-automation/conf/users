@@ -14,7 +14,7 @@
             "password": "1"
           },
           "roles": [
-            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+            "WayneHolland___LOB", "Melissa___LOB", "aaa1___LOB",
             "SILVIA ROBBINS___TYLER SILVIA", "SILVIA ROBBINS___DARREN MCGEE", "CAR_2020_ER___DARREN MCGEE", "CAR_2020_ER___MSO-dev-service-type", "CAR_2020_ER___TYLER SILVIA","READ___LOGS___PERMITTED","Emanuel___mySubType", "global-customer-id___service-instance-type"
           ],
           "subscriberNames": ["SILVIA ROBBINS", "CAR_2020_ER", "Emanuel", "global-customer-id"],
@@ -27,7 +27,7 @@
             "password": "3"
           },
           "roles": [
-            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+            "WayneHolland___LOB", "Melissa___LOB", "aaa1___LOB",
             "Emanuel___Emanuel"
           ],
           "subscriberNames": ["Emanuel"],
@@ -40,7 +40,7 @@
              "password": "667"
            },
            "roles": [
-             "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+             "WayneHolland___LOB", "Melissa___LOB", "aaa1___LOB",
              "CRAIG/ROBERTS___AIM Transport"
            ],
            "subscriberNames": ["CRAIG/ROBERTS"],
@@ -53,7 +53,7 @@
             "password": "4"
           },
           "roles": [
-            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+            "WayneHolland___LOB", "Melissa___LOB", "aaa1___LOB",
             "Emanuel___vWINIFRED", "Emanuel___vRichardson"
           ],
           "subscriberNames": ["Emanuel"],
@@ -66,7 +66,7 @@
             "password": "822"
           },
           "roles": [
-            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+            "WayneHolland___LOB", "Melissa___LOB", "aaa1___LOB",
             "JULIO ERICKSON___Emanuel",
             "JULIO ERICKSON___vRichardson"
 
@@ -81,7 +81,7 @@
             "password": "312"
           },
           "roles": [
-            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+            "WayneHolland___LOB", "Melissa___LOB", "aaa1___LOB",
             "Emanuel___vRichardson"
           ],
           "subscriberNames": ["Emanuel"],
@@ -94,7 +94,7 @@
             "password": "312"
           },
           "roles": [
-            "d61e6f2d-12fa-4cc2-91df-7c244011d6fc___LOB", "Melissa___LOB", "aaa1___LOB",
+            "WayneHolland___LOB", "Melissa___LOB", "aaa1___LOB",
             "Emanuel___vWINIFRED___test-hvf6-09"
           ],
           "subscriberNames": ["Emanuel"],

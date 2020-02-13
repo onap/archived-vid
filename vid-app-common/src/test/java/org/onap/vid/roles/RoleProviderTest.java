@@ -201,9 +201,7 @@ public class RoleProviderTest {
 
 
     private String owningEntityId() {
-        // while translateOwningEntityNameToOwningEntityId does nothing, no translation happens.
-        // this will be changed later.
-        return SAMPLE_SUBSCRIBER;
+        return EXISTING_OWNING_ENTITY_ID;
     }
 
     private void setSubscribers() {
