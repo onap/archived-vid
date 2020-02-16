@@ -66,10 +66,9 @@
             "password": "822"
           },
           "roles": [
-            "WayneHolland___LOB", "Melissa___LOB", "aaa1___LOB",
+            "WayneHolland___LOB",
             "JULIO ERICKSON___Emanuel",
             "JULIO ERICKSON___vRichardson"
-
           ],
           "subscriberNames": ["JULIO ERICKSON"],
           "serviceTypes": ["Emanuel", "vRichardson"],

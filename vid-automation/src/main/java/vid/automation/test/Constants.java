@@ -516,7 +516,7 @@ public class Constants {
         public static final String EMANUEL_EMANUEL = "emanuelEmanuel";
         public static final String CRAIG_ROBERTS_AIM_TRANSPORT = "FIREWALL_AIM_Trans";
         public static final String EMANUEL_vWINIFRED = "emanuelvWINIFRED";
-        public static final String SUPRE_USER = "su";
+        public static final String PORFIRIO_GERHARDT = "Porfirio Gerhardt";
     }
 
     public class RegisterToSimulator {

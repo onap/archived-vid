@@ -42,6 +42,10 @@ public class UserCredentials extends User {
 		this.copyData(user);
 	}
 
+	public UserCredentials(vid.automation.test.model.User user) {
+		this(user.credentials.userId, user.credentials.password, "", "", "");
+	}
+
 	public String getPassword() {
 		return password;
 	}
