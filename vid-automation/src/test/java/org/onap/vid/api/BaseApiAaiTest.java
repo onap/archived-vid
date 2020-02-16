@@ -1,6 +1,15 @@
 package org.onap.vid.api;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
+import static org.hamcrest.Matchers.either;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static vid.automation.test.services.SimulatorApi.registerExpectation;
+
 import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -8,22 +17,12 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.testng.annotations.BeforeClass;
+import vid.automation.test.services.CategoryParamsService;
 import vid.automation.test.services.SimulatorApi;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import static net.javacrumbs.jsonunit.JsonMatchers.jsonStringEquals;
-import static org.hamcrest.Matchers.either;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static vid.automation.test.services.SimulatorApi.registerExpectation;
-
-/**
- * Created by Oren on 11/1/17.
- */
 public class BaseApiAaiTest extends BaseApiTest {
+
+    protected final CategoryParamsService categoryParamsService = new CategoryParamsService();
 
     @BeforeClass
     public void login() {
