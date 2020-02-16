@@ -669,6 +669,19 @@ public class NewServiceInstanceTest extends ModernUITestBase {
             + "                    \"instanceName\": \""+vgName+"\""
             + "                }}";
 
+        String vnfLcpCloudRegionId = "some legacy region";
+        String vnfTenantId = "092eb9e8e4b7412e8787dd091bc58e86";
+
+        String vfmoduleLcpCloudRegionId;
+        String vfmoduleTenantId;
+
+        if (FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF.isActive()) {
+            vfmoduleLcpCloudRegionId = vnfLcpCloudRegionId;
+            vfmoduleTenantId = vnfTenantId;
+        } else {
+            vfmoduleLcpCloudRegionId = "hvf6";
+            vfmoduleTenantId = "bae71557c5bb4d5aac6743a4e5f1d054";
+        }
 
         registerExpectationFromPresets(
             ImmutableList.of(
@@ -678,16 +691,16 @@ public class NewServiceInstanceTest extends ModernUITestBase {
                     requestorID, serviceModelInfo),
                 PRESET_SOME_LEGACY_REGION_TO_ATT_AIC,
                 new PresetMSOOrchestrationRequestGet(COMPLETE, serviceRequestId),
-                new PresetMSOCreateVnfALaCarteE2E(vnfRequestId, serviceInstanceId, vnfInstanceId, "ONAP", requestorID, serviceModelInfo),
+                new PresetMSOCreateVnfALaCarteE2E(vnfRequestId, serviceInstanceId, vnfInstanceId, "ONAP", requestorID, vnfLcpCloudRegionId, vnfTenantId, serviceModelInfo),
                 new PresetMSOOrchestrationRequestGet(COMPLETE, vnfRequestId),
                 PRESET_MTN6_TO_ATT_AIC,
-                new PresetMSOCreateVfModuleALaCarteE2E(vfm0RequestId, vfm0InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, null, vfm0, null),
+                new PresetMSOCreateVfModuleALaCarteE2E(vfm0RequestId, vfm0InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, null, vfm0, null, vfmoduleLcpCloudRegionId, vfmoduleTenantId),
                 new PresetMSOOrchestrationRequestGet(COMPLETE, vfm0RequestId),
-                new PresetMSOCreateVfModuleALaCarteE2E(vg1RequestId, vg1InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, vgName, vg1, null),
+                new PresetMSOCreateVfModuleALaCarteE2E(vg1RequestId, vg1InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, vgName, vg1, null, vfmoduleLcpCloudRegionId, vfmoduleTenantId),
                 new PresetMSOOrchestrationRequestGet(COMPLETE, vg1RequestId),
-                new PresetMSOCreateVfModuleALaCarteE2E(vfm1RequestId, vfm1InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, null, vfm1, vgRelatedInstance),
+                new PresetMSOCreateVfModuleALaCarteE2E(vfm1RequestId, vfm1InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, null, vfm1, vgRelatedInstance, vfmoduleLcpCloudRegionId, vfmoduleTenantId),
                 new PresetMSOOrchestrationRequestGet(COMPLETE, vfm1RequestId),
-                new PresetMSOCreateVfModuleALaCarteE2E(vfm12RequestId, vfm12InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, null, vfm12, null),
+                new PresetMSOCreateVfModuleALaCarteE2E(vfm12RequestId, vfm12InstanceId, serviceInstanceId, vnfInstanceId, requestorID, serviceModelInfo, null, vfm12, null, vfmoduleLcpCloudRegionId, vfmoduleTenantId),
                 new PresetMSOOrchestrationRequestGet(COMPLETE, vfm12RequestId)
             ),
             APPEND

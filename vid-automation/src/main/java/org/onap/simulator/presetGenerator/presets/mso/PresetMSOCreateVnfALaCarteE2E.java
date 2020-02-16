@@ -6,6 +6,8 @@ public class PresetMSOCreateVnfALaCarteE2E extends PresetMSOCreateVnfBase {
 
     private final String requestorId;
     protected String lineOfBusinessName;
+    protected final String lcpCloudRegionId;
+    protected final String tenantId;
     protected final ModelInfo serviceModelInfo;
 
     public PresetMSOCreateVnfALaCarteE2E(
@@ -14,10 +16,12 @@ public class PresetMSOCreateVnfALaCarteE2E extends PresetMSOCreateVnfBase {
         String vnfInstanceId,
         String lineOfBusinessName,
         String requestorId,
-        ModelInfo serviceModelInfo) {
+        String lcpCloudRegionId, String tenantId, ModelInfo serviceModelInfo) {
         super(overrideRequestId, serviceInstanceId, vnfInstanceId);
         this.lineOfBusinessName = lineOfBusinessName;
         this.requestorId = requestorId;
+        this.lcpCloudRegionId = lcpCloudRegionId;
+        this.tenantId = tenantId;
         this.serviceModelInfo = serviceModelInfo;
     }
 
@@ -35,9 +39,9 @@ public class PresetMSOCreateVnfALaCarteE2E extends PresetMSOCreateVnfBase {
             + "            \"modelVersion\": \"4.0\""
             + "        },"
             + "        \"cloudConfiguration\": {"
-            + "            \"lcpCloudRegionId\": \"some legacy region\","
+            + "            \"lcpCloudRegionId\": \"" + lcpCloudRegionId + "\","
             +               addCloudOwnerIfNeeded()
-            + "            \"tenantId\": \"092eb9e8e4b7412e8787dd091bc58e86\""
+            + "            \"tenantId\": \"" + tenantId + "\""
             + "        },"
             + "        \"requestInfo\": {"
             + "            \"productFamilyId\":\"e433710f-9217-458d-a79d-1c7aff376d89\","

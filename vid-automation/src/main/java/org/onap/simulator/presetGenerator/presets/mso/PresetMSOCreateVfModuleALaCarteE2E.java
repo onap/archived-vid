@@ -11,6 +11,8 @@ public class PresetMSOCreateVfModuleALaCarteE2E extends PresetMSOCreateVfModuleB
     private final String instanceName;
     private final ModelInfoWithCustomization resourceModelInfo;
     private final String relatedInstance;
+    protected final String lcpCloudRegionId;
+    protected final String tenantId;
 
     public PresetMSOCreateVfModuleALaCarteE2E(
         String overrideRequestId,
@@ -21,13 +23,15 @@ public class PresetMSOCreateVfModuleALaCarteE2E extends PresetMSOCreateVfModuleB
         ModelInfo serviceModelInfo,
         String instanceName,
         ModelInfoWithCustomization resourceModelInfo,
-        String relatedInstance) {
+        String relatedInstance, String lcpCloudRegionId, String tenantId) {
             super(overrideRequestId, responseInstanceId, serviceInstanceId, vnfInstanceId, resourceModelInfo.resourceType);
             this.requestorId = requestorId;
             this.serviceModelInfo = serviceModelInfo;
             this.instanceName = instanceName;
             this.resourceModelInfo = resourceModelInfo;
             this.relatedInstance = relatedInstance;
+            this.lcpCloudRegionId = lcpCloudRegionId;
+            this.tenantId = tenantId;
     }
 
     @Override
@@ -36,9 +40,9 @@ public class PresetMSOCreateVfModuleALaCarteE2E extends PresetMSOCreateVfModuleB
             + "    \"requestDetails\": {"
             +   resourceModelInfo.createMsoModelInfo()
             + "        \"cloudConfiguration\": {"
-            + "            \"lcpCloudRegionId\": \"hvf6\","
+            + "            \"lcpCloudRegionId\": \"" + lcpCloudRegionId + "\","
             +               addCloudOwnerIfNeeded()
-            + "            \"tenantId\": \"bae71557c5bb4d5aac6743a4e5f1d054\""
+            + "            \"tenantId\": \"" + tenantId + "\""
             + "        },"
             + "        \"requestInfo\": {"
             +           addInstanceName()
