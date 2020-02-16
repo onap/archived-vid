@@ -37,6 +37,7 @@ import org.onap.vid.services.AsyncInstantiationBusinessLogic
 import org.onap.vid.testUtils.TestUtils
 import org.onap.vid.testUtils.TestUtils.initMockitoMocks
 import org.testng.annotations.BeforeMethod
+import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
 import org.togglz.core.manager.FeatureManager
 import org.mockito.Mockito.`when` as _when
@@ -65,8 +66,22 @@ class VnfCommandTest {
 
     @Test(dataProvider = "trueAndFalse", dataProviderClass = TestUtils::class)
     fun `childVfModuleWithVnfRegionAndTenant -- given vfmodule -- tenant and region are copied from vnf`(featureToggleOn: Boolean) {
+        runChildVfModuleWithVnfRegionAndTenant(featureToggleOn, Action.Create, featureToggleOn)
+    }
 
-        val vfModule = FakeResourceCreator.createVfModule(Action.Create)
+    @DataProvider
+    fun allPossibleActions(): Array<Array<out Any?>> {
+        return Action.values().map { arrayOf(it) }.toTypedArray()
+    }
+
+    @Test(dataProvider = "allPossibleActions")
+    fun `childVfModuleWithVnfRegionAndTenant -- given vfmodule in different actions -- only "action_Create" copies tenant and region from vnf`(vfModuleAction: Action) {
+        runChildVfModuleWithVnfRegionAndTenant(true, vfModuleAction, vfModuleAction == Action.Create)
+    }
+
+    private fun runChildVfModuleWithVnfRegionAndTenant(featureToggleOn: Boolean, vfModuleAction: Action, isCopyVnfToVfmoduleExpected: Boolean) {
+
+        val vfModule = FakeResourceCreator.createVfModule(vfModuleAction)
                         .cloneWith("vfmodule-lcp-cloud-region-id", "vfmodule-tenant-id")
 
         _when(featureManager.isActive(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)).thenReturn(featureToggleOn)
@@ -77,7 +92,7 @@ class VnfCommandTest {
 
         vnfCommand.init(jobSharedData, mapOf())
 
-        val expectedSource = if (featureToggleOn) "vnf" else "vfmodule"
+        val expectedSource = if (isCopyVnfToVfmoduleExpected) "vnf" else "vfmodule"
 
         assertThat(vnfCommand.childVfModuleWithVnfRegionAndTenant(vfModule),
                 allOf(

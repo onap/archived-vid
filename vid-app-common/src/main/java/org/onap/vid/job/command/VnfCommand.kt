@@ -12,7 +12,6 @@ import org.onap.vid.model.serviceInstantiation.Vnf
 import org.onap.vid.mso.RestMsoImplementation
 import org.onap.vid.properties.Features
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
-import org.onap.vid.utils.isNotActive
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
@@ -77,7 +76,7 @@ class VnfCommand @Autowired constructor(
                     .map { childVfModuleWithVnfRegionAndTenant(it) }
 
     internal fun childVfModuleWithVnfRegionAndTenant(vfModule: VfModule): VfModule {
-        if (featureManager.isNotActive(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)) {
+        if (!shouldEntailRegionAndTenantToVfModule(vfModule)) {
             return vfModule
         }
 
@@ -85,6 +84,10 @@ class VnfCommand @Autowired constructor(
         val vnfTenantId = getRequest().tenantId
         return vfModule.cloneWith(vnfLcpCloudRegionId, vnfTenantId)
     }
+
+    private fun shouldEntailRegionAndTenantToVfModule(vfModule: VfModule) =
+            vfModule.action == Action.Create
+                    && featureManager.isActive(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)
 
     private fun filterModuleByNeedToCreateBase(vfModule: VfModule): Boolean {
         return needToCreateBaseModule ==
