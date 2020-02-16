@@ -19,6 +19,7 @@ import static vid.automation.test.infra.Features.FLAG_1908_INFRASTRUCTURE_VPN;
 import static vid.automation.test.infra.Features.FLAG_1908_MACRO_NOT_TRANSPORT_NEW_VIEW_EDIT;
 import static vid.automation.test.infra.Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF;
 import static vid.automation.test.infra.Features.FLAG_5G_IN_NEW_INSTANTIATION_UI;
 import static vid.automation.test.infra.Features.FLAG_ENABLE_WEBPACK_MODERN_UI;
 import static vid.automation.test.infra.ModelInfo.aLaCarteNetworkProvider5G;
@@ -1329,7 +1330,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
             Assert.assertEquals(Get.byTestId("model-item-value-serviceName").getText(), serviceInstanceName, "Service name should be shown in vf module");
         }
 
-        if (serviceData.isALaCarte) {
+        if (serviceData.isALaCarte && !FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF.isActive()) {
             String lcpRegion = "hvf6";
             Wait.waitByClassAndText("lcpRegionOption", lcpRegion, 30);
             viewEditPage.selectLcpRegion(lcpRegion, AIC);
