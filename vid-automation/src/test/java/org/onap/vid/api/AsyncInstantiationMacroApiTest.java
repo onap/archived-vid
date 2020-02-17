@@ -18,6 +18,7 @@ import static vid.automation.test.infra.Features.FLAG_1906_INSTANTIATION_API_USE
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPresets;
 import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromCollection;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Arrays;
@@ -300,12 +301,14 @@ public class AsyncInstantiationMacroApiTest extends AsyncInstantiationBase {
     }
 
     @Test
-    public void inProgressJobMoreThan24HoursIsFailedInVidAudit(){
+    public void inProgressJobMoreThan24HoursIsFailedInVidAudit() throws JsonProcessingException {
         addBulkPendingWithCustomList(Collections.singletonList(new PresetMSOOrchestrationRequestGet("IN_PROGRESS",24)));
 
         AtomicReference<ServiceInfo> inProgressJob = new AtomicReference<>();
+        AtomicReference<List<ServiceInfo>> serviceInfoRef = new AtomicReference<>();
         boolean isJobFound = Wait.waitFor(x->{
             List<ServiceInfo> serviceInfoList = serviceListCall().getBody();
+            serviceInfoRef.set(serviceInfoList);
             inProgressJob.set(serviceInfoList.stream().
                     filter(serviceInfo -> serviceInfo.serviceInstanceId.equals(PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID) && serviceInfo.jobStatus.equals(JobStatus.FAILED))
                     .findFirst()
@@ -313,7 +316,9 @@ public class AsyncInstantiationMacroApiTest extends AsyncInstantiationBase {
             return inProgressJob.get() != null;
         }, null, 15, 1);
 
-        org.junit.Assert.assertTrue("Job with DEFAULT_SERVICE_INSTANCE_ID and status FAILED should present", isJobFound);
+        org.junit.Assert.assertTrue(
+            "Job with DEFAULT_SERVICE_INSTANCE_ID=" + PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID
+                + " and status FAILED should present: " + objectMapper.writeValueAsString(serviceInfoRef.get()), isJobFound);
 
         verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList(JobStatus.PENDING.name(), JobStatus.IN_PROGRESS.name(),JobStatus.FAILED.name()), JobAuditStatus.SourceStatus.VID);
         verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList("REQUESTED", "IN_PROGRESS"), JobAuditStatus.SourceStatus.MSO);

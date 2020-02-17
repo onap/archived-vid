@@ -552,6 +552,7 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
         ImmutableList<BasePreset> presets = new ImmutableList.Builder<BasePreset>()
                 .add(new PresetGetSessionSlotCheckIntervalGet())
                 .add(new PresetAAIGetSubscribersGet())
+                .add(PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN3_TO_ATT_SABABA, PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC)
                 .addAll(msoBulkPresets)
                 .addAll(customPresets)
                 .build();
