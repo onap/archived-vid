@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.onap.vid.model.Action.Create;
-import static org.onap.vid.testUtils.TestUtils.setStringsInStringProperties;
+import static org.onap.vid.testUtils.TestUtils.setStringsInStringFields;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
 import com.google.common.collect.ImmutableList;
@@ -190,7 +190,7 @@ public class InstantiationModelSerializationTest {
 
     private ModelInfo newModelInfo() {
         ModelInfo modelInfo = new ModelInfo();
-        setStringsInStringProperties(modelInfo);
+        setStringsInStringFields(modelInfo);
         return modelInfo;
     }
 
