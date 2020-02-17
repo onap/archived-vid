@@ -1,27 +1,29 @@
 package org.onap.vid.api;
 
+import static org.apache.commons.text.CharacterPredicates.DIGITS;
+import static org.apache.commons.text.CharacterPredicates.LETTERS;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.not;
+import static vid.automation.test.utils.RegExMatcher.matchesRegEx;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Scanner;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import org.apache.commons.text.RandomStringGenerator;
 import org.hamcrest.Matcher;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.http.HttpStatus;
-
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Scanner;
-
-import static org.apache.commons.text.CharacterPredicates.DIGITS;
-import static org.apache.commons.text.CharacterPredicates.LETTERS;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.*;
-import static vid.automation.test.utils.RegExMatcher.matchesRegEx;
+import org.testng.annotations.DataProvider;
 
 public class TestUtils {
 
@@ -96,4 +98,10 @@ public class TestUtils {
     public static String generateRandomAlphaNumeric(int length) {
         return generator.generate(length);
     }
+
+    @DataProvider
+    public static Object[][] trueAndFalse() {
+        return new Object[][]{{true}, {false}};
+    }
+
 }

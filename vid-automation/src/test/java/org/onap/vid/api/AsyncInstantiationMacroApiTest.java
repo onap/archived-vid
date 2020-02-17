@@ -1,5 +1,6 @@
 package org.onap.vid.api;
 
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -300,48 +301,42 @@ public class AsyncInstantiationMacroApiTest extends AsyncInstantiationBase {
 
     }
 
-    @Test
-    public void inProgressJobMoreThan24HoursIsFailedInVidAudit() throws JsonProcessingException {
-        addBulkPendingWithCustomList(Collections.singletonList(new PresetMSOOrchestrationRequestGet("IN_PROGRESS",24)));
+    @Test(dataProvider = "trueAndFalse", dataProviderClass = TestUtils.class)
+    public void inProgressJobMoreThan24HoursIsFailedInVidAudit(Boolean over24Hours) throws JsonProcessingException {
 
-        AtomicReference<ServiceInfo> inProgressJob = new AtomicReference<>();
+        // in case 24 did not pass -- IN_PROGRESS should persist; if 24 hour did pass -- fail
+
+        int startedHoursAgo = over24Hours ? 24 : 23;
+        JobStatus jobStatus = over24Hours ? JobStatus.FAILED : JobStatus.IN_PROGRESS;
+
+        List<String> expectedStatuses = over24Hours
+            ? Arrays.asList(JobStatus.PENDING.name(), JobStatus.IN_PROGRESS.name(), JobStatus.FAILED.name())
+            : Arrays.asList(JobStatus.PENDING.name(), JobStatus.IN_PROGRESS.name());
+
         AtomicReference<List<ServiceInfo>> serviceInfoRef = new AtomicReference<>();
-        boolean isJobFound = Wait.waitFor(x->{
+
+        Map<Keys, String> names = addBulkPendingWithCustomList(
+            singletonList(new PresetMSOOrchestrationRequestGet("IN_PROGRESS", startedHoursAgo)));
+
+        boolean isJobFound = Wait.waitFor(x -> {
             List<ServiceInfo> serviceInfoList = serviceListCall().getBody();
             serviceInfoRef.set(serviceInfoList);
-            inProgressJob.set(serviceInfoList.stream().
-                    filter(serviceInfo -> serviceInfo.serviceInstanceId.equals(PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID) && serviceInfo.jobStatus.equals(JobStatus.FAILED))
-                    .findFirst()
-                    .orElse(null));
-            return inProgressJob.get() != null;
-        }, null, 15, 1);
+            ServiceInfo inProgressJob = serviceInfoList.stream()
+                .filter(serviceInfo -> serviceInfo.serviceInstanceName.equals(names.get(Keys.SERVICE_NAME)))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Job with serviceInstanceName=" + Keys.SERVICE_NAME + " not found"));
+
+            org.junit.Assert.assertEquals("Tested job status is not as expected",
+                jobStatus, inProgressJob.getJobStatus());
+
+            verifyAuditStatuses(inProgressJob.jobId, expectedStatuses, JobAuditStatus.SourceStatus.VID);
+            verifyAuditStatuses(inProgressJob.jobId, Arrays.asList("REQUESTED", "IN_PROGRESS"), JobAuditStatus.SourceStatus.MSO);
+
+            return true;
+        }, null, 10, 2);
 
         org.junit.Assert.assertTrue(
-            "Job with DEFAULT_SERVICE_INSTANCE_ID=" + PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID
-                + " and status FAILED should present: " + objectMapper.writeValueAsString(serviceInfoRef.get()), isJobFound);
-
-        verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList(JobStatus.PENDING.name(), JobStatus.IN_PROGRESS.name(),JobStatus.FAILED.name()), JobAuditStatus.SourceStatus.VID);
-        verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList("REQUESTED", "IN_PROGRESS"), JobAuditStatus.SourceStatus.MSO);
-    }
-
-    @Test
-    public void inProgressJobLessThan24HoursIsStillInProgressInVidAudit(){
-        addBulkPendingWithCustomList(Collections.singletonList(new PresetMSOOrchestrationRequestGet("IN_PROGRESS",23)));
-
-        AtomicReference<ServiceInfo> inProgressJob = new AtomicReference<>();
-        boolean isJobFound = Wait.waitFor(x->{
-            List<ServiceInfo> serviceInfoList = serviceListCall().getBody();
-            inProgressJob.set(serviceInfoList.stream().filter(serviceInfo -> serviceInfo.serviceInstanceId.equals(PresetMSOOrchestrationRequestGet.DEFAULT_SERVICE_INSTANCE_ID))
-                    .findFirst()
-                    .orElse(null));
-            return inProgressJob.get() != null;
-        }, null, 15, 1);
-
-        org.junit.Assert.assertTrue("Job with DEFAULT_SERVICE_INSTANCE_ID should present", isJobFound);
-        org.junit.Assert.assertEquals("Tested job status is not as expected", JobStatus.IN_PROGRESS, inProgressJob.get().getJobStatus());
-
-        verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList(JobStatus.PENDING.name(), JobStatus.IN_PROGRESS.name()), JobAuditStatus.SourceStatus.VID);
-        verifyAuditStatuses(inProgressJob.get().jobId, Arrays.asList("REQUESTED", "IN_PROGRESS"), JobAuditStatus.SourceStatus.MSO);
+            "Job with serviceInstanceName=" + Keys.SERVICE_NAME + " should present: " + objectMapper.writeValueAsString(serviceInfoRef.get()), isJobFound);
     }
 
     @Test
