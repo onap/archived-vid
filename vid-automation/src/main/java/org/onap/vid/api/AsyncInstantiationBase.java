@@ -544,7 +544,7 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
                 .toString();
     }
 
-    protected void addBulkPendingWithCustomList(List<BasePreset> customPresets){
+    protected Map<Keys, String> addBulkPendingWithCustomList(List<BasePreset> customPresets){
         Map<Keys, String> names = generateNames();
         final int bulkSize = 2 + customPresets.size();
 
@@ -559,6 +559,8 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
 
         List<String> jobIds = createBulkOfMacroInstances(presets, false, bulkSize, names);
         Assert.assertEquals(jobIds.size(),bulkSize);
+
+        return names;
     }
 
     protected void verifyAuditStatuses(String jobId, List<String> statuses, JobAuditStatus.SourceStatus source) {

@@ -1,13 +1,13 @@
 package vid.automation.test.infra;
 
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import vid.automation.test.Constants;
-
-import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
 public class Wait {
     public static boolean byText(String text) {
@@ -15,6 +15,7 @@ public class Wait {
     }
 
     public static <T> boolean waitFor(Predicate<T> predicate, T input, int numOfRetries, int interval, TimeUnit intervalUnit) {
+        Throwable lastError = null;
         for (int i=0; i<numOfRetries; i++) {
             try {
                 if (predicate.test(input)) {
@@ -22,6 +23,7 @@ public class Wait {
                 }
             }
             catch (Throwable t) {
+                lastError = t;
                 System.out.println(String.format("a retry failed due to: %s %s", t, t.getMessage()));
             }
             try {
@@ -30,7 +32,12 @@ public class Wait {
                 e.printStackTrace();
             }
         }
-        return false;
+
+        if (lastError != null) {
+            throw ExceptionUtils.<RuntimeException>rethrow(lastError);
+        } else {
+            return false;
+        }
     }
 
     public static <T> boolean waitFor(Predicate<T> predicate, T input, int numOfRetries, int interval) {
