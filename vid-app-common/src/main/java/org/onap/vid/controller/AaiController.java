@@ -58,6 +58,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -395,9 +396,17 @@ public class AaiController extends RestrictedBaseController {
         return re;
     }
 
-    @RequestMapping(value = "/aai_get_tenants/{global-customer-id}/{service-type}", method = RequestMethod.GET)
-    public ResponseEntity<String> viewEditGetTenantsFromServiceType(HttpServletRequest request,
-        @PathVariable("global-customer-id") String globalCustomerId, @PathVariable("service-type") String serviceType) {
+    @GetMapping(path = {
+        // allow requests with effectively empty path-variables
+        "/aai_get_tenants/{global-customer-id}/{service-type}",
+        "/aai_get_tenants//",
+        "/aai_get_tenants",
+    })
+    public ResponseEntity<String> viewEditGetTenantsFromServiceType(
+        HttpServletRequest request,
+        @PathVariable(value = "global-customer-id", required = false) String globalCustomerId,
+        @PathVariable(value = "service-type", required = false) String serviceType
+    ) {
 
         ResponseEntity responseEntity;
         try {

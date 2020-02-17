@@ -26,6 +26,7 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toMap;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isAnyEmpty;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 
@@ -557,7 +558,7 @@ public class AaiClient implements AaiClientInterface {
 
     @Override
     public AaiResponse getTenants(String globalCustomerId, String serviceType) {
-        if ((globalCustomerId == null || globalCustomerId.isEmpty()) || ((serviceType == null) || (serviceType.isEmpty()))){
+        if (isAnyEmpty(globalCustomerId, serviceType)) {
             return buildAaiResponseForGetTenantsFailure(" Failed to retrieve LCP Region & Tenants from A&AI, Subscriber ID or Service Type is missing.");
         }
         try {

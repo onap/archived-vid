@@ -23,6 +23,8 @@ import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.assertj.core.util.Arrays.array;
 import static org.assertj.core.util.Lists.list;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -41,6 +43,7 @@ import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
 
@@ -67,17 +70,47 @@ public class GetTenantsTest {
         aaiControllerMvc = MockMvcBuilders.standaloneSetup(aaiController).build();
     }
 
-    @Test
-    public void givenOneTenant_itIsReturned() throws Exception {
+    @DataProvider
+    public static Object[][] anticipatedUrls() {
+        String queryParams = "lineOfBusinessName=lineOfBusinessName&owningEntityName=owningEntityName";
+        return new Object[][] {
+            { false, "/aai_get_tenants/global-customer-id/service-type" },
+            { false, "/aai_get_tenants/global-customer-id/service-type?" + queryParams},
+            { false, "/aai_get_tenants/global-customer-id/service-type?lineOfBusinessName=&owningEntityName=" },
+            { true,  "/aai_get_tenants//?" + queryParams},
+            { true,  "/aai_get_tenants?" + queryParams},
+        };
+    }
+
+    @Test(dataProvider = "anticipatedUrls")
+    public void givenAnyAnticipatedUrl_requestIsHandledValidly(Boolean expectNullSubscriberNameAndServiceType, String getTenantsUrl) throws Exception {
         AaiResponse<GetTenantsResponse[]> aaiResponse =
             new AaiResponse<>(array(oneTenant), null, 200);
 
-        when(aaiService.getTenants("global-customer-id", "service-type", roleValidator))
-            .thenReturn(aaiResponse);
+        // when globalCustomerId or serviceType are empty, it is ok that null is passed to aaiService
+        when(aaiService.getTenants(
+            expectNullSubscriberNameAndServiceType ? isNull() : eq("global-customer-id"),
+            expectNullSubscriberNameAndServiceType ? isNull() : eq("service-type"),
+            eq(roleValidator))
+        ).thenReturn(aaiResponse);
 
-        aaiControllerMvc.perform(get("/aai_get_tenants/global-customer-id/service-type"))
+        aaiControllerMvc.perform(get(getTenantsUrl))
             .andExpect(status().isOk())
             .andExpect(content().string(jsonEquals(list(oneTenant))));
+    }
+
+    @DataProvider
+    public static Object[][] wrongUrls() {
+        return new Object[][] {
+            { "/aai_get_tenants//service-type" },
+            { "/aai_get_tenants/global-customer-id/" },
+        };
+    }
+
+    @Test(dataProvider = "wrongUrls")
+    public void givenUrlWithOnePathParamButWithoutTheOther_reqduestIsRejectedAs404NotFound(String getTenantsUrl) throws Exception {
+        aaiControllerMvc.perform(get(getTenantsUrl))
+            .andExpect(status().isNotFound());
     }
 
 }
