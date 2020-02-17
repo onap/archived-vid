@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69d0d4a6_9ae1952d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-02-17T22:37:39Z",
+      "side": 1,
+      "message": "elegantos",
+      "revId": "6724909fdd5f299e0591df2738bf95d8a3552630",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74c98432_9698ee6f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/AaiController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-02-17T22:37:39Z",
+      "side": 1,
+      "message": "This endpoint serves both legacy pages and modern UI.\n\ni would prefer to distinguish between the two flows.",
+      "range": {
+        "startLine": 399,
+        "startChar": 3,
+        "endLine": 404,
+        "endChar": 6
+      },
+      "revId": "6724909fdd5f299e0591df2738bf95d8a3552630",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
