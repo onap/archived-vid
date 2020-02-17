@@ -189,10 +189,10 @@ public class TestUtils {
         return result;
     }
 
-    private static <T> List<String> allStringPropertiesOf(T object) {
-        return getPropertyDescriptorsRecursively(object.getClass()).stream()
-            .filter(descriptor -> descriptor.getPropertyType().isAssignableFrom(String.class))
-            .map(PropertyDescriptor::getDisplayName)
+    private static <T> List<String> allStringFieldsOf(T object) {
+        return FieldUtils.getAllFieldsList(object.getClass()).stream()
+            .filter(field -> field.getType().isAssignableFrom(String.class))
+            .map(Field::getName)
             .distinct()
             .collect(toList());
     }
@@ -231,8 +231,8 @@ public class TestUtils {
      * @param <T>
      * @return The modified object
      */
-    public static <T> T setStringsInStringProperties(T object) {
-        allStringPropertiesOf(object).forEach(it -> {
+    public static <T> T setStringsInStringFields(T object) {
+        allStringFieldsOf(object).forEach(it -> {
             try {
                 FieldUtils.writeField(object, it, it, true);
             } catch (IllegalAccessException e) {
