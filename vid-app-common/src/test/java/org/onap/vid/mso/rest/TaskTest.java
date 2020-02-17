@@ -66,7 +66,7 @@ public class TaskTest {
     private final String TASK_JSON_WITHOUT_TIMEOUT = templateTaskJson("");
 
     private Task newTaskWithPopulatedFields() {
-        Task task = TestUtils.setStringsInStringProperties(new Task());
+        Task task = TestUtils.setStringsInStringFields(new Task());
         task.setValidResponses(ImmutableList.of("a", "b", "c"));
         return task;
     }
