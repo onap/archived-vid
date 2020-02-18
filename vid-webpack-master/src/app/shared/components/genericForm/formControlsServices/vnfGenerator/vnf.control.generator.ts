@@ -4,7 +4,11 @@ import {AaiService} from "../../../../services/aaiService/aai.service";
 import {NgRedux} from "@angular-redux/store";
 import {HttpClient} from "@angular/common/http";
 import {ControlGeneratorUtil} from "../control.generator.util.service";
-import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
+import {
+  FormControlModel,
+  ValidatorModel,
+  ValidatorOptions
+} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {VNFModel} from "../../../../models/vnfModel";
 import {AppState} from "../../../../store/reducers";
@@ -79,7 +83,7 @@ export class VnfControlGenerator {
       result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
       result.push(this.getPlatformMultiselectControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
-      result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance));
+      result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance, serviceId, result));
       result.push(this._sharedControllersService.getRollbackOnFailureControl(vnfInstance));
     }
     return result;

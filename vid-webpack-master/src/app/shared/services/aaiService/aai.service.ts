@@ -29,7 +29,14 @@ import {VnfInstance} from "../../models/vnfInstance";
 import {VfModuleInstance} from "../../models/vfModuleInstance";
 import {ServiceInstance} from "../../models/serviceInstance";
 import {VfModuleMap} from "../../models/vfModulesMap";
-import {updateAicZones, updateCategoryParameters, updateLcpRegionsAndTenants, updateServiceTypes, updateSubscribers, updateUserId} from "../../storeUtil/utils/general/general.actions";
+import {
+  updateAicZones,
+  updateCategoryParameters,
+  updateLcpRegionsAndTenants,
+  updateServiceTypes,
+  updateSubscribers,
+  updateUserId
+} from "../../storeUtil/utils/general/general.actions";
 import {createServiceInstance, updateModel,} from "../../storeUtil/utils/service/service.actions";
 import {FeatureFlagsService, Features} from "../featureFlag/feature-flags.service";
 import {VnfMember} from "../../models/VnfMember";
@@ -220,6 +227,52 @@ export class AaiService {
     return this.featureFlagsService.getFlagState(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST) ?
       cloudRegionId+AaiService.formatCloudOwnerTrailer(cloudOwner) : cloudRegionId;
   };
+
+
+
+
+
+  dummyLcpRegionsAndTenants = (): Observable<LcpRegionsAndTenants> => {
+    return of(
+      new LcpRegionsAndTenants(
+        [new LcpRegion("foo-id", "foo-name", true, "foo-cloud-owner")],
+        {
+          ['foo-id']: [
+              new Tenant({
+                tenantID: "tenantID",
+                tenantName: "tenantName",
+                ['is-permitted']: true,
+                cloudOwner: "cloudOwner",
+            })
+          ]
+        }
+      )
+    )
+  };
+
+
+  getLcpRegionsByOwningEntityAndLineOfBusiness = (owningEntityName, lineOfBusinessName): Observable<LcpRegionsAndTenants> => {
+    // let pathQuery: string = Constants.Path.AAI_GET_LCP_REGIONS_BY____
+    //   + "?"
+    //   + "owningEntityName=" + owningEntityName
+    //   + "lineOfBusinessName=" + lineOfBusinessName;
+
+    return this.dummyLcpRegionsAndTenants();
+  };
+
+
+  getTenantsByCloudOwnerAndCloudRegionId = (cloudOwner, cloudRegionId): Observable<LcpRegionsAndTenants> => {
+    // let pathQuery: string = Constants.Path.AAI_GET_TENANTS_BY____
+    //   + "?"
+    //   + "cloudOwner=" + cloudOwner
+    //   + "&cloudRegionId=" + cloudRegionId;
+
+    return this.dummyLcpRegionsAndTenants();
+  };
+
+
+
+
 
   public static formatCloudOwnerTrailer(cloudOwner: string):string {
     return " ("+ cloudOwner.trim().toLowerCase().replace(/^[^-]*-/, "").toUpperCase() + ")";
