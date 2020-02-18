@@ -215,6 +215,35 @@ describe('A la carte', function () {
       });
     });
 
+    it(`Add ALaCarte vnf where FLAG_2006_LCP_REGIONS_BY_LINE_OF_BUSINESS`, () => {
+      cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
+        cy.setTestApiParamToGR();
+        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
+        res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.inputs = null;
+        res.global['flags'] = {'FLAG_2006_LCP_REGIONS_BY_LINE_OF_BUSINESS': true};
+        cy.setReduxState(<any>res);
+        cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
+
+        cy.getElementByDataTestsId('node-2017-488_PASQUALE-vPE 0-add-btn').click({force: true}).then(() => {
+          cy.selectDropdownOptionByText('productFamily', 'Emanuel');
+          cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
+          cy.selectDropdownOptionByText('lcpRegion', 'foo-name');
+          cy.selectDropdownOptionByText('tenant', 'tenantID');
+          cy.selectPlatformValue('xxx1');
+          cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
+            const vnfMenuBtnDataTestId = 'node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0-menu-btn';
+
+            cy.getElementByDataTestsId(vnfMenuBtnDataTestId).click({force: true}).then(() => {
+              cy.getElementByDataTestsId('context-menu-edit').click({force: true})
+              .getElementByDataTestsId("lineOfBusiness").should('contain', 'zzz1')
+              .getElementByDataTestsId("lcpRegion").should('contain', 'foo-name')
+              .getElementByDataTestsId("tenant").should('contain', 'tenantName')
+            });
+          });
+        })
+      });
+    });
+
     it(`Add ALaCarte VfModule Without LcpRegion Tenant Id And Legacy`, () => {
       addAlacarteVfmoduleByFlag(true, 'redux-a-la-carte-no-lcp-tenant.json');
     });
