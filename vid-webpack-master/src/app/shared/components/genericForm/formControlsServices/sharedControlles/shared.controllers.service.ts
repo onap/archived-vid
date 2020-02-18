@@ -16,6 +16,8 @@ import {Constants} from "../../../../utils/constants";
 import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
 import {InputFormControl} from "../../../../models/formControlModels/inputFormControl.model";
 import {NodeModel} from "../../../../models/nodeModel";
+import {LcpRegion} from "../../../../models/lcpRegion";
+import {Tenant} from "../../../../models/tenant";
 
 @Injectable()
 export class SharedControllersService {
@@ -24,7 +26,20 @@ export class SharedControllersService {
               private _basicControlGenerator : ControlGeneratorUtil){}
 
 
-  getLineOfBusinessControl = (instance?: any): DropdownFormControl => {
+  getLineOfBusinessControl = (instance?: any, serviceId?: string,  controls?: FormControlModel[]): DropdownFormControl => {
+    const myFlagState = true;
+
+    const service = this._store.getState().service.serviceInstance[serviceId];
+    const owningEntityName: string = service.owningEntityName;
+
+    const changeLcpRegionOptions = (lineOfBusinessNameParam: string, form: FormGroup) => {
+      form.controls['lcpCloudRegionId'].enable();
+      form.controls['lcpCloudRegionId'].reset();
+      this._aaiService.getLcpRegionsByOwningEntityAndLineOfBusiness(owningEntityName, lineOfBusinessNameParam).subscribe(res => {
+        controls.find(item => item.controlName === 'lcpCloudRegionId')['options$'] = res.lcpRegionList;
+      });
+    };
+
     return new DropdownFormControl({
       type: FormControlType.DROPDOWN,
       controlName: 'lineOfBusiness',
@@ -36,14 +51,23 @@ export class SharedControllersService {
       value: instance ? instance.lineOfBusiness : null,
       validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
       onInitSelectedField: ['lineOfBusinessList'],
+      onChange: myFlagState ? changeLcpRegionOptions : undefined,
       onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
     })
   };
 
   getTenantControl = (serviceId: string, instance?: any): DropdownFormControl => {
+    const myFlagState = true;
+
     const service = this._store.getState().service.serviceInstance[serviceId];
     const globalCustomerId: string = service.globalSubscriberId;
     const serviceType: string = service.subscriptionServiceType;
+
+    const onInit = this._basicControlGenerator.getSubscribeInitResult.bind(
+      this._aaiService,
+      this._aaiService.getLcpRegionsAndTenants.bind(this, globalCustomerId, serviceType)
+    );
+
     return new DropdownFormControl({
       type: FormControlType.DROPDOWN,
       controlName: 'tenantId',
@@ -55,9 +79,7 @@ export class SharedControllersService {
       onInitSelectedField: instance ? ['lcpRegionsTenantsMap', instance.lcpCloudRegionId] : null,
       value: instance ? instance.tenantId : null,
       validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
-      onInit: instance ? this._basicControlGenerator.getSubscribeInitResult.bind(
-        this._aaiService,
-        this._aaiService.getLcpRegionsAndTenants.bind(this, globalCustomerId, serviceType)) : () => {
+      onInit: instance && !myFlagState ? onInit : () => {
       }
     })
   };
@@ -90,9 +112,26 @@ export class SharedControllersService {
   }
 
   getLcpRegionControl = (serviceId: string, instance: any, controls: FormControlModel[]): DropdownFormControl => {
+    const myFlagState = true;
+
     const service = this._store.getState().service.serviceInstance[serviceId];
     const globalCustomerId: string = service.globalSubscriberId;
     const serviceType: string = service.subscriptionServiceType;
+    const owningEntityName: string = service.owningEntityName;
+
+    const onInit = this._basicControlGenerator.getSubscribeInitResult.bind(
+      this._aaiService,
+      this._aaiService.getLcpRegionsAndTenants.bind(this, globalCustomerId, serviceType));
+
+    const loadLcpRegionOptions = (_.isNil(instance) || _.isNil(instance.lineOfBusiness))
+      ? () => {}
+      : () => {
+        this._aaiService.getLcpRegionsByOwningEntityAndLineOfBusiness(owningEntityName, instance.lineOfBusiness).subscribe(res => {
+          controls.find(item => item.controlName === 'lcpCloudRegionId')['options$'] = res.lcpRegionList;
+          this.changeTenantsOptionsByCloudRegionId(controls, instance.lcpCloudRegionId);
+        })
+      };
+
     return new DropdownFormControl({
       type: FormControlType.DROPDOWN,
       controlName: 'lcpCloudRegionId',
@@ -100,26 +139,27 @@ export class SharedControllersService {
       dataTestId: 'lcpRegion',
       placeHolder: 'Select LCP Region',
       name: "lcpRegion",
-      isDisabled: false,
+      isDisabled: myFlagState ? _.isNil(instance) || _.isNil(instance.lineOfBusiness) : false,
       value: instance ? instance.lcpCloudRegionId : null,
       validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
       onInitSelectedField: ['lcpRegionList'],
-      onInit: this._basicControlGenerator.getSubscribeInitResult.bind(
-        this._aaiService,
-        this._aaiService.getLcpRegionsAndTenants.bind(this, globalCustomerId, serviceType)),
-      onChange: (param: string, form: FormGroup) => {
+      onInit: myFlagState ? loadLcpRegionOptions : onInit,
+
+      onChange: (lcpCloudRegionIdParam: string, form: FormGroup) => {
         form.controls['tenantId'].enable();
         form.controls['tenantId'].reset();
-        if (!_.isNil(globalCustomerId) && !_.isNil(serviceType)) {
-          this._basicControlGenerator.getSubscribeResult.bind(this, this._aaiService.getLcpRegionsAndTenants(globalCustomerId, serviceType).subscribe(res => {
-            controls.find(item => item.controlName === 'tenantId')['options$'] = res.lcpRegionsTenantsMap[param];
-            if (res.lcpRegionsTenantsMap[param]) {
-              controls.find(item => item.controlName === 'tenantId')['hasEmptyOptions'] = res.lcpRegionsTenantsMap[param].length === 0;
-            }
-          }));
+
+        if (myFlagState) {
+          this.changeTenantsOptionsByCloudRegionId(controls, lcpCloudRegionIdParam)
+        } else {
+          if (!_.isNil(globalCustomerId) && !_.isNil(serviceType)) {
+            this._basicControlGenerator.getSubscribeResult.bind(this,
+              this._aaiService.getLcpRegionsAndTenants(globalCustomerId, serviceType)
+                .subscribe(res => this.setTenantsOptions(controls, res.lcpRegionsTenantsMap[lcpCloudRegionIdParam])));
+          }
         }
 
-        if (Constants.LegacyRegion.MEGA_REGION.indexOf(param) !== -1) {
+        if (Constants.LegacyRegion.MEGA_REGION.indexOf(lcpCloudRegionIdParam) !== -1) {
           form.controls['legacyRegion'].enable();
           controls.find(item => item.controlName === 'legacyRegion').isVisible = true;
 
@@ -132,6 +172,43 @@ export class SharedControllersService {
       }
     })
   };
+
+  private setTenantsOptions = (controls: FormControlModel[], tenants: Tenant[]) => {
+    const tenantsControl = controls.find(item => item.controlName === 'tenantId');
+    tenantsControl['options$'] = tenants;
+    tenantsControl['hasEmptyOptions'] = tenants && tenants.length === 0;
+  };
+
+  private changeTenantsOptionsByCloudRegionId(controls: FormControlModel[], cloudRegionId) {
+    const cloudOwner = this.cloudOwnerByLcpCloudRegionId(controls, cloudRegionId);
+
+    if (_.isNil(cloudOwner)) {
+      return;
+    }
+
+    this._basicControlGenerator.getSubscribeResult.bind(this, this._aaiService.getTenantsByCloudOwnerAndCloudRegionId(cloudOwner, cloudRegionId)
+    .subscribe(res => this.setTenantsOptions(controls, res.lcpRegionsTenantsMap[cloudRegionId])));
+  }
+
+  private cloudOwnerByLcpCloudRegionId(controls: FormControlModel[], cloudRegionId: string) {
+    if (_.isNil(controls) || _.isNil(cloudRegionId)) {
+      return null;
+    }
+
+    const lcpCloudRegionIdControl =
+      controls.find(item => item.controlName === 'lcpCloudRegionId');
+
+    if (_.isNil(lcpCloudRegionIdControl) || _.isNil(lcpCloudRegionIdControl['options$'])) {
+      return null;
+    }
+
+    const lcpRegionOption = lcpCloudRegionIdControl['options$']
+       .find((lcpRegion: LcpRegion) => lcpRegion.id === cloudRegionId);
+
+    return _.isNil(lcpRegionOption)
+      ? null
+      : lcpRegionOption.cloudOwner;
+  }
 
   getSDNCControl = (instance: any, extraContents? : object[]): FormControlModel => {
     return new CheckboxFormControl({
