@@ -4,7 +4,11 @@ import {AaiService} from "../../../../services/aaiService/aai.service";
 import {NgRedux} from "@angular-redux/store";
 import {HttpClient} from "@angular/common/http";
 import {ControlGeneratorUtil} from "../control.generator.util.service";
-import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
+import {
+  FormControlModel,
+  ValidatorModel,
+  ValidatorOptions
+} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {VNFModel} from "../../../../models/vnfModel";
 import {AppState} from "../../../../store/reducers";
@@ -14,6 +18,7 @@ import * as _ from 'lodash';
 import {MultiselectFormControl} from "../../../../models/formControlModels/multiselectFormControl.model";
 import {MultiSelectItem} from "../../../formControls/component/multiselect/multiselect.model";
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
+import {FeatureFlagsService, Features} from "../../../../services/featureFlag/feature-flags.service";
 
 @Injectable()
 export class VnfControlGenerator {
@@ -21,6 +26,7 @@ export class VnfControlGenerator {
   constructor(private genericFormService: GenericFormService,
               private _basicControlGenerator: ControlGeneratorUtil,
               private _sharedControllersService : SharedControllersService,
+              private _featureFlagsService: FeatureFlagsService,
               private store: NgRedux<AppState>,
               private http: HttpClient,
               private _aaiService: AaiService,
@@ -72,14 +78,28 @@ export class VnfControlGenerator {
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
 
     if (!_.isNil(vnfModel)) {
-      const flags = this.store.getState().global.flags;
+      const isMultiSelected =
+        this._featureFlagsService.getFlagState(Features.FLAG_2002_VNF_PLATFORM_MULTI_SELECT);
+      const lcpRegionsByLineOFBusiness =
+        this._featureFlagsService.getFlagState(Features.FLAG_2006_LCP_REGIONS_BY_LINE_OF_BUSINESS);
+
       result.push(this.getInstanceName(vnfInstance, serviceId, vnfName, vnfModel.isEcompGeneratedNaming));
       result.push(this._sharedControllersService.getProductFamilyControl(vnfInstance, result, true));
-      result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
-      result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
-      result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
-      result.push(this.getPlatformMultiselectControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
-      result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance));
+
+      if (lcpRegionsByLineOFBusiness) {
+        result.push(this._sharedControllersService.getLineOfBusinessControlByOwningEntity(vnfInstance, serviceId, result));
+        result.push(this._sharedControllersService.getLcpRegionControlByLineOfBusiness(serviceId, vnfInstance, result));
+        result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
+        result.push(this._sharedControllersService.getTenantControlByLcpRegion(serviceId, vnfInstance));
+        result.push(this.getPlatformMultiselectControl(vnfInstance, result, isMultiSelected));
+      } else {
+        result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
+        result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
+        result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
+        result.push(this.getPlatformMultiselectControl(vnfInstance, result, isMultiSelected));
+        result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance));
+      }
+
       result.push(this._sharedControllersService.getRollbackOnFailureControl(vnfInstance));
     }
     return result;
