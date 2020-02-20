@@ -23,6 +23,7 @@ package org.onap.vid.aai;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.either;
@@ -71,6 +72,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
+import org.hamcrest.Matcher;
 import org.mockito.Mockito;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
@@ -799,19 +801,18 @@ public class AaiClientTest {
     @DataProvider
     public static Object[][]  versionsDataProvider() {
         return new Object[][] {
-                { Stream.of("10","20","30"), "30" },
-                { Stream.of("10","20","20"), "20" },
-                { Stream.of("c","b","a"), "c" },
-                { Stream.of("1.0","2.0","1.8"), "2.0" },
-                { Stream.of("1.0.7","2.0.2","2.0.9"), "2.0.9" },
-                { Stream.of("0","0","0"), "0" },
-                { Stream.of("","10"), "10" },
-
+                { Stream.of("20","10","30"), Stream.of("30","20","10"), "30" },
+                { Stream.of("10","20","20"), Stream.of("20","20","10"), "20" },
+                { Stream.of("c","b","a"), Stream.of("c","b","a"), "c" },
+                { Stream.of("1.0","2.0","1.8"), Stream.of("2.0","1.8","1.0"), "2.0" },
+                { Stream.of("1.0.7","2.0.9","2.0.2"), Stream.of("2.0.9","2.0.2","1.0.7"), "2.0.9" },
+                { Stream.of("0","0","0"), Stream.of("0","0","0"), "0" },
+                { Stream.of("","10"), Stream.of("10",""), "10" },
         };
     }
 
     @Test(dataProvider = "versionsDataProvider")
-    public void maxModelVer(Stream<String> input, String expected) {
+    public void sortedModelVer(Stream<String> input, Stream<String> expectedSorted, String expectedMax) {
         Stream<ModelVer> modelVerStream = input.map(version -> {
             ModelVer mv = new ModelVer();
             mv.setModelVersion(version);
@@ -820,7 +821,23 @@ public class AaiClientTest {
 
         final AaiClient aaiClient = new AaiClient(null, null, null);
 
-        assertThat(aaiClient.maxModelVer(modelVerStream), hasProperty("modelVersion", is(expected)));
+        assertThat(aaiClient.sortedModelVer(modelVerStream),
+            contains(
+                expectedSorted.map(it -> hasProperty("modelVersion", is(it))).toArray(Matcher[]::new)
+            ));
+    }
+
+    @Test(dataProvider = "versionsDataProvider")
+    public void maxModelVer(Stream<String> input, Stream<String> expectedSorted, String expectedMax) {
+        Stream<ModelVer> modelVerStream = input.map(version -> {
+            ModelVer mv = new ModelVer();
+            mv.setModelVersion(version);
+            return mv;
+        });
+
+        final AaiClient aaiClient = new AaiClient(null, null, null);
+
+        assertThat(aaiClient.maxModelVer(modelVerStream), hasProperty("modelVersion", is(expectedMax)));
     }
 
     @Test(expectedExceptions = GenericUncheckedException.class)
