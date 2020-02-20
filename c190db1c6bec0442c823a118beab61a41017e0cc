@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f59e9d7_b9b040a7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAIServiceTree.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-20T12:50:04Z",
+      "side": 1,
+      "message": "private",
+      "range": {
+        "startLine": 166,
+        "startChar": 4,
+        "endLine": 166,
+        "endChar": 11
+      },
+      "revId": "c190db1c6bec0442c823a118beab61a41017e0cc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9073de0_86be0241",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAIServiceTree.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-20T12:50:04Z",
+      "side": 1,
+      "message": "remove space",
+      "range": {
+        "startLine": 169,
+        "startChar": 39,
+        "endLine": 169,
+        "endChar": 40
+      },
+      "revId": "c190db1c6bec0442c823a118beab61a41017e0cc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
