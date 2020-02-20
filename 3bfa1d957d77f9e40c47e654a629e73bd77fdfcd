@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b44af1ef_72705cf2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAIServiceTree.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-02-20T21:54:42Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this line be toggled with the FLAG_EXP_TOPOLOGY_TREE_VFMODULE_NAMES_FROM_OTHER_TOSCA_VERSIONS flag?",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 137
+      },
+      "revId": "3bfa1d957d77f9e40c47e654a629e73bd77fdfcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e41798b9_18610314",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAITreeNodesEnricher.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-02-20T21:54:42Z",
+      "side": 1,
+      "message": "If we are at this line, then we know for sure that we do have at least one vfModuleWithMissingData.(|99).\n\nso maybe instead of using \"noneMatch\" we can filter the nodes only once.\nsince at this point the code filter the nodes list using this predicate twice.",
+      "range": {
+        "startLine": 104,
+        "startChar": 8,
+        "endLine": 104,
+        "endChar": 58
+      },
+      "revId": "3bfa1d957d77f9e40c47e654a629e73bd77fdfcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cde86911_f0f3ce44",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAITreeNodesEnricher.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-02-20T21:54:42Z",
+      "side": 1,
+      "message": "as long as there are :modelVersions.next() but what if we couldn\u0027t find at all?",
+      "range": {
+        "startLine": 148,
+        "startChar": 12,
+        "endLine": 150,
+        "endChar": 109
+      },
+      "revId": "3bfa1d957d77f9e40c47e654a629e73bd77fdfcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
