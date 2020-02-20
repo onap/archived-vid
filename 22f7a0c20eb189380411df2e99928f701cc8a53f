@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "83527a22_43802b97",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/ToscaParserInflatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-20T11:59:43Z",
+      "side": 1,
+      "message": "all",
+      "range": {
+        "startLine": 109,
+        "startChar": 48,
+        "endLine": 109,
+        "endChar": 50
+      },
+      "revId": "22f7a0c20eb189380411df2e99928f701cc8a53f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24972724_bc3d96b6",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/asdc/parser/ToscaParserInflatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-20T11:59:43Z",
+      "side": 1,
+      "message": "no",
+      "range": {
+        "startLine": 148,
+        "startChar": 54,
+        "endLine": 148,
+        "endChar": 57
+      },
+      "revId": "22f7a0c20eb189380411df2e99928f701cc8a53f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
