@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1970223b_0e6f7665",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AAITreeNodesEnricherTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-02-23T13:37:47Z",
+      "side": 1,
+      "message": "So this means we test that even though we have many version, we will iterate the different version until we find the actual customizaitonToFind (so 2 times for Next and 2 times for getServiceModel..) ?",
+      "range": {
+        "startLine": 228,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 67
+      },
+      "revId": "23716ef5c8d80455399fb9239449e09e34d609f3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
