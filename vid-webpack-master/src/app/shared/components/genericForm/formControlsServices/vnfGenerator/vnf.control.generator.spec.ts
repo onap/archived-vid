@@ -6,7 +6,11 @@ import {ControlGeneratorUtil} from "../control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
-import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
+import {
+  FormControlModel,
+  ValidatorModel,
+  ValidatorOptions
+} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {VnfControlGenerator} from "./vnf.control.generator";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
@@ -904,7 +908,9 @@ class MockAppStore<T> {
   }
 }
 
-class MockFeatureFlagsService {}
+class MockFeatureFlagsService {
+  getFlagState = () => false;
+}
 
 describe('VNF Control Generator', () => {
   let injector;

@@ -29,7 +29,14 @@ import {VnfInstance} from "../../models/vnfInstance";
 import {VfModuleInstance} from "../../models/vfModuleInstance";
 import {ServiceInstance} from "../../models/serviceInstance";
 import {VfModuleMap} from "../../models/vfModulesMap";
-import {updateAicZones, updateCategoryParameters, updateLcpRegionsAndTenants, updateServiceTypes, updateSubscribers, updateUserId} from "../../storeUtil/utils/general/general.actions";
+import {
+  updateAicZones,
+  updateCategoryParameters,
+  updateLcpRegionsAndTenants,
+  updateServiceTypes,
+  updateSubscribers,
+  updateUserId
+} from "../../storeUtil/utils/general/general.actions";
 import {createServiceInstance, updateModel,} from "../../storeUtil/utils/service/service.actions";
 import {FeatureFlagsService, Features} from "../featureFlag/feature-flags.service";
 import {VnfMember} from "../../models/VnfMember";
@@ -220,6 +227,45 @@ export class AaiService {
     return this.featureFlagsService.getFlagState(Features.FLAG_1810_CR_ADD_CLOUD_OWNER_TO_MSO_REQUEST) ?
       cloudRegionId+AaiService.formatCloudOwnerTrailer(cloudOwner) : cloudRegionId;
   };
+
+
+
+
+
+  getLcpRegionsByOwningEntityAndLineOfBusiness = (owningEntityName, lineOfBusinessName): Observable<LcpRegion[]> => {
+    // let pathQuery: string = Constants.Path.AAI_GET_LCP_REGIONS_BY____
+    //   + "?"
+    //   + "owningEntityName=" + owningEntityName
+    //   + "lineOfBusinessName=" + lineOfBusinessName;
+
+    return of([
+      new LcpRegion("foo-id", "foo-name", true, "foo-cloud-owner"),
+      new LcpRegion("foo2-id", "foo2-name", true, "foo2-cloud-owner"),
+    ]);
+  };
+
+
+  getTenantsByCloudOwnerAndCloudRegionId = (cloudOwner, cloudRegionId): Observable<Tenant[]> => {
+    // let pathQuery: string = Constants.Path.AAI_GET_TENANTS_BY____
+    //   + "?"
+    //   + "cloudOwner=" + cloudOwner
+    //   + "&cloudRegionId=" + cloudRegionId;
+
+    return of([
+      new Tenant({
+        tenantID: "tenantID", tenantName: "tenantName",
+        cloudOwner: "cloudOwner", ['is-permitted']: true,
+      }),
+      new Tenant({
+        tenantID: "tenant2ID", tenantName: "tenant2Name",
+        cloudOwner: "cloudOwner", ['is-permitted']: true,
+      }),
+    ])
+  };
+
+
+
+
 
   public static formatCloudOwnerTrailer(cloudOwner: string):string {
     return " ("+ cloudOwner.trim().toLowerCase().replace(/^[^-]*-/, "").toUpperCase() + ")";
