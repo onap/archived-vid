@@ -22,6 +22,30 @@
       "revId": "23716ef5c8d80455399fb9239449e09e34d609f3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5f6232e_88681b4d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/AAITreeNodesEnricherTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-23T13:58:01Z",
+      "side": 1,
+      "message": "right",
+      "parentUuid": "1970223b_0e6f7665",
+      "range": {
+        "startLine": 228,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 67
+      },
+      "revId": "23716ef5c8d80455399fb9239449e09e34d609f3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
