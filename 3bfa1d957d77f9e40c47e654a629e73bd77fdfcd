@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "19637694_a5168b0c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAIServiceTree.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-23T11:37:49Z",
+      "side": 1,
+      "message": "flag is internal to the function",
+      "parentUuid": "b44af1ef_72705cf2",
+      "range": {
+        "startLine": 128,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 137
+      },
+      "revId": "3bfa1d957d77f9e40c47e654a629e73bd77fdfcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e41798b9_18610314",
         "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAITreeNodesEnricher.java",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "1fa67bcd_f8e224eb",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAITreeNodesEnricher.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-23T11:37:49Z",
+      "side": 1,
+      "message": "the previous check was to quickly return, before any AAI/SDC call",
+      "parentUuid": "e41798b9_18610314",
+      "range": {
+        "startLine": 104,
+        "startChar": 8,
+        "endLine": 104,
+        "endChar": 58
+      },
+      "revId": "3bfa1d957d77f9e40c47e654a629e73bd77fdfcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cde86911_f0f3ce44",
         "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAITreeNodesEnricher.java",
         "patchSetId": 3
@@ -59,6 +107,30 @@
       "writtenOn": "2020-02-20T21:54:42Z",
       "side": 1,
       "message": "as long as there are :modelVersions.next() but what if we couldn\u0027t find at all?",
+      "range": {
+        "startLine": 148,
+        "startChar": 12,
+        "endLine": 150,
+        "endChar": 109
+      },
+      "revId": "3bfa1d957d77f9e40c47e654a629e73bd77fdfcd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b1b626a_f903021f",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AAITreeNodesEnricher.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-23T11:37:49Z",
+      "side": 1,
+      "message": "i don\u0027t understand the case you\u0027re describing.",
+      "parentUuid": "cde86911_f0f3ce44",
       "range": {
         "startLine": 148,
         "startChar": 12,
