@@ -22,19 +22,28 @@ package org.onap.vid.services;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.hamcrest.collection.IsMapContaining.hasKey;
+import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Streams;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 import net.javacrumbs.jsonunit.core.Option;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -187,6 +196,48 @@ public class AAITreeNodesEnricherTest {
 
         List<AAITreeNode> nodes = (node == null) ? emptyList() : ImmutableList.of(node);
         aaiTreeNodesEnricher.enrichVfModulesWithModelCustomizationNameFromOtherVersions(nodes, "modelInvariantId");
+    }
+
+    @Test
+    public void enrichVfModulesWithModelCustomizationNameFromOtherVersions_givenMissingKeysFoundInFirstSdcModels_sdcRequestsNotExhausted() {
+        when(featureManager.isActive(Features.FLAG_EXP_TOPOLOGY_TREE_VFMODULE_NAMES_FROM_OTHER_TOSCA_VERSIONS))
+            .thenReturn(true);
+
+        final ListIterator<ModelVer> manyVersionsIterator = manyModelVerIteratorMock();
+
+        String customizationIdToFind = "please-find-me";
+        Names anyNames = mock(Names.class);
+
+        when(serviceModelInflator.toNamesByCustomizationId(any()))
+            .thenReturn(singletonMap("uuidBefore", anyNames))
+            .thenReturn(singletonMap(customizationIdToFind, anyNames))
+            .thenReturn(singletonMap("uuidAfter", anyNames))
+        ;
+
+
+        final Map<String, Names> inOutMutableNamesByCustomizationId = new HashMap<>();
+        aaiTreeNodesEnricher.fetchCustomizationIdsFromToscaModelsWhileNeeded(
+            inOutMutableNamesByCustomizationId, manyVersionsIterator, customizationIdToFind);
+
+        assertThat(inOutMutableNamesByCustomizationId, allOf(
+            hasKey(customizationIdToFind),
+            hasKey("uuidBefore"),
+            not(hasKey("uuidAfter")))
+        );
+
+        verify(manyVersionsIterator, times(2)).next();
+        verify(sdcService, times(2)).getServiceModelOrThrow(any());
+    }
+
+    private ListIterator<ModelVer> manyModelVerIteratorMock() {
+        final ModelVer modelVerMock = mock(ModelVer.class);
+        final ListIterator<ModelVer> result = mock(ListIterator.class);
+
+        when(result.next()).thenReturn(modelVerMock);
+        when(result.hasNext())
+            .thenReturn(true, true, true, true, true, true, false);
+
+        return result;
     }
 
     @FunctionalInterface

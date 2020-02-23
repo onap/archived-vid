@@ -130,8 +130,10 @@ public class AAITreeNodesEnricher {
      * @param modelVersions Iterable of model-version-ids to load
      * @param yieldCustomizationId The key to stop loading on
      */
-    private void fetchCustomizationIdsFromToscaModelsWhileNeeded(
-        Map<String, Names> inOutMutableNamesByCustomizationId, ListIterator<ModelVer> modelVersions, String yieldCustomizationId
+    void fetchCustomizationIdsFromToscaModelsWhileNeeded(
+        Map<String, Names> inOutMutableNamesByCustomizationId,
+        ListIterator<ModelVer> modelVersions,
+        String yieldCustomizationId
     ) {
         while (modelVersions.hasNext() && !inOutMutableNamesByCustomizationId.containsKey(yieldCustomizationId)) {
             inOutMutableNamesByCustomizationId.putAll(
