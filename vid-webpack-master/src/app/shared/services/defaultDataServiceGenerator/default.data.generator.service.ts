@@ -359,7 +359,7 @@ export class DefaultDataGeneratorService {
       'modelInfo': {
         'modelType': 'VF',
         'modelInvariantId': serviceHierarchy.vnfs[vnfName].invariantUuid,
-        'modelVersionId': formValues.modelInfo.modelVersionId,
+        'modelVersionId': serviceHierarchy.vnfs[vnfName].uuid,
         'modelName': serviceHierarchy.vnfs[vnfName].name,
         'modelVersion': serviceHierarchy.vnfs[vnfName].version,
         'modelCustomizationId': serviceHierarchy.vnfs[vnfName].customizationUuid,
@@ -382,7 +382,7 @@ export class DefaultDataGeneratorService {
         'modelInfo': {
           'modelType': 'VF',
           'modelInvariantId': serviceHierarchy.network[networkName].invariantUuid,
-          'modelVersionId': formValues.modelInfo.modelVersionId,
+          'modelVersionId': serviceHierarchy.network[networkName].uuid,
           'modelName': serviceHierarchy.network[networkName].name,
           'modelVersion': serviceHierarchy.network[networkName].version,
           'modelCustomizationId': serviceHierarchy.network[networkName].modelCustomizationId,
@@ -401,7 +401,7 @@ export class DefaultDataGeneratorService {
       'modelInfo': {
         'modelType': 'VnfGroup',
         'modelInvariantId': serviceHierarchy.vnfGroups[vnfGroupName].invariantUuid,
-        'modelVersionId': formValues.modelInfo.modelVersionId,
+        'modelVersionId': serviceHierarchy.vnfGroups[vnfGroupName].uuid,
         'modelName': serviceHierarchy.vnfGroups[vnfGroupName].name,
         'modelVersion': serviceHierarchy.vnfGroups[vnfGroupName].version,
         'modelCustomizationId': serviceHierarchy.vnfGroups[vnfGroupName].modelCustomizationId,
