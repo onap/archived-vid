@@ -92,7 +92,7 @@ describe('Drawing board : Collection resource', function () {
       cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
     }
 
-    it('should show left and right trees correctly', () => {
+    it.only('should show left and right trees correctly', () => {
       initCrViewEdit();
       cy.hasClass('orchStatusValue','tag-status-value');
       cy.get('.vf-type').contains('CR');
@@ -108,7 +108,7 @@ describe('Drawing board : Collection resource', function () {
           'node-type-indicator': 'CR',
           'node-name': 'NcmVlanSvcYm161f_77_vTSBC Customer Landing Network Collection'
         },
-        'node-undefined-undefined': {
+        'node-dd182d7d-6949-4b90-b3cc-5befe400742e-undefined': {
           'node-type-indicator': 'NCF',
           'node-name': 'NcmVlanSvcYm161f_77_vTSBC Customer Landing Network Collection'
         }
