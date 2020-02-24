@@ -1,6 +1,10 @@
 import {LogService} from "../../../../utils/log/log.service";
 import {NgRedux} from "@angular-redux/store";
-import {ControlGeneratorUtil, SDN_C_PRE_LOAD, SUPPLEMENTARY_FILE} from "../../../genericForm/formControlsServices/control.generator.util.service";
+import {
+  ControlGeneratorUtil,
+  SDN_C_PRE_LOAD,
+  SUPPLEMENTARY_FILE
+} from "../../../genericForm/formControlsServices/control.generator.util.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
 import {HttpClient} from "@angular/common/http";
 import {GenericFormService} from "../../../genericForm/generic-form.service";
@@ -9,7 +13,6 @@ import {IframeService} from "../../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {BasicPopupService} from "../basic.popup.service";
 import {VfModuleControlGenerator} from "../../../genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator";
-import {SdcUiServices} from "onap-ui-angular";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {UpgradeFormControlNames, VfModuleUpgradePopupService} from "./vfModule.upgrade.popuop.service";
@@ -65,6 +68,7 @@ describe('VFModule popup service', () => {
   let fb: FormBuilder;
   let iframeService: IframeService;
   let store : NgRedux<AppState>;
+  let _sharedTreeService : SharedTreeService;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -95,8 +99,12 @@ describe('VFModule popup service', () => {
     defaultDataGeneratorService = injector.get(DefaultDataGeneratorService);
     fb = injector.get(FormBuilder);
     iframeService = injector.get(IframeService);
+    _sharedTreeService = injector.get(SharedTreeService);
     store = injector.get(NgRedux);
     service.uuidData = {
+      vfModule: {
+        data: {}
+      },
       modelName: 'vfModuleName',
       vFModuleStoreKey: 'vfModuleId'
     };
@@ -133,11 +141,16 @@ describe('VFModule popup service', () => {
     getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, true, true);
   });
 
-  test('get controls should NOT return retainVolumeGroup control with true value', ()=> {
-    let stateCopy =_.cloneDeep(store.getState());
-    stateCopy.service.serviceHierarchy['serviceId'].vfModules['vfModuleName'].volumeGroupAllowed = false;
-    jest.spyOn(store, 'getState').mockReturnValue(stateCopy);
-    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, null, false);
+  [true, false].forEach(notExistsOnModel => {
+    test(`retainVolumeGroup control is shown when vfModule not from model (notExistsOnModel=${notExistsOnModel})`, () => {
+      let stateCopy = _.cloneDeep(store.getState());
+      stateCopy.service.serviceHierarchy['serviceId'].vfModules['vfModuleName'].volumeGroupAllowed = false;
+      jest.spyOn(store, 'getState').mockReturnValue(stateCopy);
+
+      jest.spyOn(_sharedTreeService, 'isVfModuleCustomizationIdNotExistsOnModel').mockReturnValue(notExistsOnModel);
+
+      getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, true, notExistsOnModel);
+    });
   });
 
   test('get controls should contain SUPPLEMENTARY_FILE controller', ()=> {

@@ -175,6 +175,7 @@
             "productFamilyId": null,
             "provStatus": null,
             "retainAssignments": false,
+            "retainVolumeGroups": false,
             "sdncPreLoad": true,
             "supplementaryFile": null,
             "supplementaryFile_hidden": null,
