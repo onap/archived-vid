@@ -29,7 +29,7 @@ describe('Drawing board : VRF', function () {
 
 
   describe('vrf drawing board', () => {
-    it('should show vrf model and vrf instance correctly', () => {
+    it.only('should show vrf model and vrf instance correctly', () => {
       const serviceModelId: string = "f028b2e2-7080-4b13-91b2-94944d4c42d8";
       const vrfEntryName: string = "VRF Entry Configuration 0";
       initDrawingBoardWithColectionResource(serviceModelId);
@@ -208,7 +208,7 @@ describe('Drawing board : VRF', function () {
       configServiceTreeWithMultipleChildren_serviceModel(SERVICE_MODEL_ID);
 
       cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
-      cy.getElementByDataTestsId("node-undefined-undefined").eq(1).click();
+      cy.getElementByDataTestsId("node-vpn-model-version-id-undefined").eq(0).click();
       cy.getElementByDataTestsId("model-item-value-Route target id").should("have.text","mock-global-1");
       cy.getElementByDataTestsId("model-item-value-Route target role").should("have.text","mock-role-x");
       cy.getElementByDataTestsId("model-item-value-Customet VPN ID").should("have.text","VPN1260");
@@ -228,7 +228,7 @@ describe('Drawing board : VRF', function () {
     configServiceTreeWithMultipleChildren_serviceModel(SERVICE_MODEL_ID);
 
     cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
-    cy.getElementByDataTestsId("node-undefined-undefined").eq(0).click();
+    cy.getElementByDataTestsId("node-network-instance-model-version-id-undefined").eq(0).click();
     cy.getElementByDataTestsId("model-item-value-Route target id").should("have.text","mock-global-1");
     cy.getElementByDataTestsId("model-item-value-Route target role").should("have.text","mock-role-x");
   });

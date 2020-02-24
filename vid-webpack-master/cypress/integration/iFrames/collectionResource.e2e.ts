@@ -108,7 +108,7 @@ describe('Drawing board : Collection resource', function () {
           'node-type-indicator': 'CR',
           'node-name': 'NcmVlanSvcYm161f_77_vTSBC Customer Landing Network Collection'
         },
-        'node-undefined-undefined': {
+        'node-dd182d7d-6949-4b90-b3cc-5befe400742e-undefined': {
           'node-type-indicator': 'NCF',
           'node-name': 'NcmVlanSvcYm161f_77_vTSBC Customer Landing Network Collection'
         }
@@ -123,7 +123,7 @@ describe('Drawing board : Collection resource', function () {
           ],
           title: "Collection Resource Instance INFO"
         },
-        'node-undefined-undefined': {
+        'node-dd182d7d-6949-4b90-b3cc-5befe400742e-undefined': {
           labelsAndValues: [
             ['Model version', "1"],
             ['Instance ID', '6b3536cf-3a12-457f-abb5-fa2203e0d923'],
