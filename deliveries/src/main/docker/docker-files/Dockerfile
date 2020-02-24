@@ -1,9 +1,17 @@
-FROM tomcat:9.0-jre8-alpine
+FROM tomcat:9-jdk11-openjdk-slim
 
 # add vim and uncomment alias to speedup troubleshooting purpose
 RUN apk update && apk add openjdk8 vim net-tools
 
-RUN adduser --disabled-password onap onap
+ARG user=onap
+ARG group=onap
+
+# Create a group and user
+RUN groupadd -r $group && useradd -ms /bin/bash $user -g $group && \
+    mkdir /opt/$user && \
+    chown -R $user:$group /opt/$user &&  \
+    mkdir /var/log/$user && \
+    chown -R $user:$group /var/log/$user
 
 # MariaDB variables
 ENV VID_MYSQL_HOST="vid-mariadb-docker-instance" \
@@ -87,7 +95,7 @@ ADD maven/config/server.xml ${VID_TOMCAT_PATH}
 ADD maven/scripts/*.sh /tmp/vid/
 ADD maven/artifacts/vid.war /tmp/vid/stage/
 
-RUN chown onap:onap /tmp/vid /usr/local/tomcat -R
+RUN chown $user:$group /tmp/vid /usr/local/tomcat -R
 RUN chmod +x /tmp/vid/localize.sh
-USER onap
+USER $user
 CMD ["/tmp/vid/localize.sh"]
