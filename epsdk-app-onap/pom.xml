@@ -26,6 +26,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <epsdk.version>2.6.0</epsdk.version>
         <epsdk.overlay.version>2.5.0</epsdk.overlay.version>
+        <jaxb.version>2.3.2</jaxb.version>
         <jackson.version>2.10.1</jackson.version>
         <jackson.databind.version>2.10.1</jackson.databind.version>
         <springframework.version>5.2.3.RELEASE</springframework.version>
@@ -467,10 +468,18 @@
             <version>${springframework.version}</version>
         </dependency>
 
+        <!-- https://eclipse-ee4j.github.io/jaxb-ri/#maven-artifacts -->
+        <!-- API -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <!-- Runtime -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${jaxb.version}</version>
         </dependency>
 
     </dependencies>
