@@ -16,7 +16,6 @@ import {FormControlModel} from "../../../../models/formControlModels/formControl
 import {CheckboxFormControl} from "../../../../models/formControlModels/checkboxFormControl.model";
 import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
 import {mergeObjectByPathAction} from "../../../../storeUtil/utils/general/general.actions";
-import * as _ from "lodash";
 import {VfModuleInstance} from "../../../../models/vfModuleInstance";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 
@@ -49,7 +48,10 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
       this._sharedControllersService.getSDNCControl(null)
     ];
     const vfModuleInstance :VfModuleInstance = this._vfModuleControlGenerator.getVfModuleInstance(serviceId, vnfStoreKey, this.uuidData, isUpdateMode);
-    if(this._store.getState().service.serviceHierarchy[serviceId].vfModules[this.uuidData['modelName']].volumeGroupAllowed){
+
+    let volumeGroupAllowed = this._store.getState().service.serviceHierarchy[serviceId].vfModules[this.uuidData['modelName']].volumeGroupAllowed;
+    let vfModuleNotExistsOnModel = this._sharedTreeService.isVfModuleCustomizationIdNotExistsOnModel(this.uuidData['vfModule'], serviceId);
+    if(volumeGroupAllowed|| vfModuleNotExistsOnModel){
       result.push(this.getRetainVolumeGroupsControl());
     }
     result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
