@@ -45,13 +45,13 @@ describe('Drawing board : VRF', function () {
           'node-type-indicator': 'VRF',
           'node-name': '<Automatically Assigned>'
         },
-        'node-undefined-undefined:0': {
+        'node-network-instance-model-version-id-undefined:0': {
           'node-type-indicator': 'N',
           'node-name': 'NETWORK1_INSTANCE_NAME',
           'status-property-orchStatus': 'Assigned',
           'status-property-provStatus': 'prov'
         },
-        'node-undefined-undefined:1': {
+        'node-vpn-model-version-id-undefined:0': {
           'node-type-indicator': 'VPN',
           'node-name': 'VPN1_INSTANCE_NAME',
           'status-property-orchStatus': 'Assigned',
@@ -208,7 +208,7 @@ describe('Drawing board : VRF', function () {
       configServiceTreeWithMultipleChildren_serviceModel(SERVICE_MODEL_ID);
 
       cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
-      cy.getElementByDataTestsId("node-undefined-undefined").eq(1).click();
+      cy.getElementByDataTestsId("node-vpn-model-version-id-undefined").eq(0).click();
       cy.getElementByDataTestsId("model-item-value-Route target id").should("have.text","mock-global-1");
       cy.getElementByDataTestsId("model-item-value-Route target role").should("have.text","mock-role-x");
       cy.getElementByDataTestsId("model-item-value-Customet VPN ID").should("have.text","VPN1260");
@@ -228,7 +228,7 @@ describe('Drawing board : VRF', function () {
     configServiceTreeWithMultipleChildren_serviceModel(SERVICE_MODEL_ID);
 
     cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${SERVICE_MODEL_ID}&subscriberId=${SUBSCRIBER_ID}&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}`);
-    cy.getElementByDataTestsId("node-undefined-undefined").eq(0).click();
+    cy.getElementByDataTestsId("node-network-instance-model-version-id-undefined").eq(0).click();
     cy.getElementByDataTestsId("model-item-value-Route target id").should("have.text","mock-global-1");
     cy.getElementByDataTestsId("model-item-value-Route target role").should("have.text","mock-role-x");
   });
@@ -384,12 +384,12 @@ describe('Drawing board : VRF', function () {
                 "provStatus": null,
                 "inMaint": false,
                 "modelInfo": {
-                  "modelInvariantId": "vnf-instance-model-invariant-id",
-                  "modelVersionId": "vnf-instance-model-version-id",
-                  "modelCustomizationId": "vnf-instance-model-customization-id",
+                  "modelInvariantId": "b67a289b-1688-496d-86e8-1583c828be0a",
+                  "modelVersionId": "9cac02be-2489-4374-888d-2863b4511a59",
+                  "modelCustomizationId": "dd024d73-9bd1-425d-9db5-476338d53433",
                   "modelType": "vrf"
                 },
-                "uuid": "vnf-instance-model-version-id",
+                "uuid": "9cac02be-2489-4374-888d-2863b4511a59",
                 "productFamilyId": null,
                 "lcpCloudRegionId": "olson3",
                 "cloudOwner": "att-nc",
@@ -437,13 +437,13 @@ describe('Drawing board : VRF', function () {
                     "provStatus": "prov",
                     "inMaint": false,
                     "modelInfo": {
-                      "modelInvariantId": "network-instance-model-invariant-id",
-                      "modelVersionId": "network-instance-model-version-id",
-                      "modelCustomizationId": "network-instance-model-customization-id",
+                      "modelInvariantId": "vpn-instance-model-invariant-id",
+                      "modelVersionId": "vpn-model-version-id",
+                      "modelCustomizationId": "vpn-instance-model-customization-id",
                       "modelName": "modelName",
                       "modelType": "vpnBinding"
                     },
-                    "uuid": "network-instance-model-version-id",
+                    "uuid": "vpn-model-version-id",
                     "productFamilyId": null,
                     "lcpCloudRegionId": null,
                     "legacyRegion": null,
