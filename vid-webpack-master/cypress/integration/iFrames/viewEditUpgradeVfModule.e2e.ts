@@ -219,7 +219,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
       cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
 
-      upgradeTheVFM('node-3412fe1f-e103-4777-90c0-f66d888f4bed-mdns012220200..Mdns01222020..dns_az_01..module-1', false);
+      upgradeTheVFM('node-3412fe1f-e103-4777-90c0-f66d888f4bed-mdns012220200..Mdns01222020..dns_az_01..module-1', true);
 
       mockAsyncBulkResponse();
       cy.getDrawingBoardDeployBtn().click();
