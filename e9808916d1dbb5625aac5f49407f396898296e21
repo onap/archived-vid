@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9cac0da7_c7421f81",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-24T11:03:34Z",
+      "side": 1,
+      "message": "use const rather than let.",
+      "range": {
+        "startLine": 52,
+        "startChar": 4,
+        "endLine": 52,
+        "endChar": 8
+      },
+      "revId": "e9808916d1dbb5625aac5f49407f396898296e21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "147dd736_c71c6bd6",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-24T11:03:34Z",
+      "side": 1,
+      "message": "so `this.uuidData[\u0027vfModule\u0027]` is actually the vfModuleNode object on the right-tree?",
+      "range": {
+        "startLine": 53,
+        "startChar": 101,
+        "endLine": 53,
+        "endChar": 126
+      },
+      "revId": "e9808916d1dbb5625aac5f49407f396898296e21",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
