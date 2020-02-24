@@ -14,6 +14,7 @@
         <encoding>UTF-8</encoding>
         <springframework.version>5.1.9.RELEASE</springframework.version>
         <hibernate.version>5.3.4.Final</hibernate.version>
+        <jaxb.version>2.3.2</jaxb.version>
         <jackson.version>2.9.9</jackson.version>
         <jackson.databind.version>2.9.9.3</jackson.databind.version>
         <!-- Skip assembling the zip by default -->
@@ -145,10 +146,18 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.databind.version}</version>
         </dependency>
+        <!-- https://eclipse-ee4j.github.io/jaxb-ri/#maven-artifacts -->
+        <!-- API -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.2.11</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <!-- Runtime -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${jaxb.version}</version>
         </dependency>
 
         <dependency>
