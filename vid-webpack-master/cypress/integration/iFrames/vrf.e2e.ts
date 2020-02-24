@@ -142,15 +142,15 @@ describe('Drawing board : VRF', function () {
                 cy.get('#VRF').should('have.length', 1);
                 cy.get('#VRF .icon-browse').click({force: true}).then(() => {
                   cy.getElementByDataTestsId('context-menu-changeAssociations').click(); // click on change associations
-                  cy.getElementByDataTestsId(oldNETWORKDataTestId).get('input').should('be.checked'); // check if selected network is checked.
-                  cy.getElementByDataTestsId('setMembersBtn').click({force: true}).then(() => { // click 'NEXT' (set network)
-                    cy.getElementByDataTestsId(oldVPNDataTestId).get('input').should('be.checked'); // check if selected VPN is checked
+                  cy.log("check if selected network is checked").getElementByDataTestsId(oldNETWORKDataTestId).get('input').should('be.checked');
+                  cy.log("click 'NEXT' (set network)").getElementByDataTestsId('setMembersBtn').click({force: true}).then(() => {
+                    cy.log("check if selected VPN is checked").getElementByDataTestsId(oldVPNDataTestId).get('input').should('be.checked');
 
-                    cy.get(".sdcCheckboxMember[data-tests-id='" + newVPNDataTestId + "'] input").check({force: true}).then(() => { // select other VPN
+                    cy.log("select other VPN").get(".sdcCheckboxMember[data-tests-id='" + newVPNDataTestId + "'] input").check({force: true}).then(() => {
                       cy.getElementByDataTestsId('cancelBtn').click().then(() => {
-                        cy.get(".sdcCheckboxMember[data-tests-id='" + newNETWORKDataTestId + "'] input").check({force: true}).then(() => { // select other VPN
+                        cy.log("select other network").get(".sdcCheckboxMember[data-tests-id='" + newNETWORKDataTestId + "'] input").check({force: true}).then(() => {
                           cy.getElementByDataTestsId('setMembersBtn').click();
-                          cy.get(".sdcCheckboxMember[data-tests-id='" + newVPNDataTestId + "'] input")
+                          cy.log("VPN selection exists").get(".sdcCheckboxMember[data-tests-id='" + newVPNDataTestId + "'] input");
                           cy.getElementByDataTestsId('setMembersBtn').click();
 
                           checkSelectedRows(newNETWORKDataTestId, newVPNDataTestId);
@@ -278,9 +278,9 @@ describe('Drawing board : VRF', function () {
   function checkSelectedRows(networkFataTestId: string, vpnDataTestId: string) {
     cy.get('#VRF .icon-browse').click({force: true}).then(() => {
       cy.getElementByDataTestsId('context-menu-changeAssociations').click(); // click on change associations
-      cy.getElementByDataTestsId(networkFataTestId).get('input').should('be.checked'); // check if selected network is checked.
-      cy.getElementByDataTestsId('setMembersBtn').click({force: true}).then(() => { // click 'NEXT' (set network)
-        cy.getElementByDataTestsId(vpnDataTestId).get('input').should('be.checked'); // check if selected VPN is checked
+      cy.log("check if selected network is checked").getElementByDataTestsId(networkFataTestId).get('input').should('be.checked');
+      cy.log("click 'NEXT' (set network)").getElementByDataTestsId('setMembersBtn').click({force: true}).then(() => {
+        cy.log("check if selected VPN is checked").getElementByDataTestsId(vpnDataTestId).get('input').should('be.checked');
         cy.getElementByDataTestsId('setMembersBtn').click();
         cy.getElementByDataTestsId('setMembersBtn').click();
       });
