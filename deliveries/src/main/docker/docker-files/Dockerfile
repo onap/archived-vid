@@ -1,7 +1,11 @@
 FROM tomcat:9-jdk11-openjdk-slim
 
 # add vim and uncomment alias to speedup troubleshooting purpose
-RUN apk update && apk add openjdk8 vim net-tools
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim \
+    net-tools \
+&& rm -rf /var/lib/apt/lists/*
 
 ARG user=onap
 ARG group=onap
