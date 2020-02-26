@@ -61,7 +61,7 @@ public class Workflow {
         this.workflowName = workflowName;
     }
 
-    public void setVnfName(Collection<String> vnfNames) {
+    public void setVnfNames(Collection<String> vnfNames) {
         this.vnfNames = vnfNames;
     }
 }

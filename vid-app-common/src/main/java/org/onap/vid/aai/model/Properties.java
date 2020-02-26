@@ -23,7 +23,6 @@ package org.onap.vid.aai.model;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,12 +57,24 @@ public class Properties {
         return interfaceName;
     }
 
+    public void setInterfaceName(String interfaceName) {
+        this.interfaceName = interfaceName;
+    }
+
     public String getInterfaceId() {
         return interfaceId;
     }
 
+    public void setInterfaceId(String interfaceId) {
+        this.interfaceId = interfaceId;
+    }
+
     public Boolean getIsPortMirrored() {
         return isPortMirrored;
+    }
+
+    public void setPortMirrored(Boolean portMirrored) {
+        isPortMirrored = portMirrored;
     }
 
     public String getTenantId() {

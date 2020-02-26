@@ -62,6 +62,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -87,6 +88,10 @@ import org.mockito.stubbing.OngoingStubbing;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.asdc.AsdcCatalogException;
 import org.onap.vid.asdc.beans.Service;
+import org.onap.vid.model.VidNotions;
+import org.onap.vid.model.VidNotions.InstantiationType;
+import org.onap.vid.model.VidNotions.InstantiationUI;
+import org.onap.vid.model.VidNotions.ModelCategory;
 import org.onap.vid.mso.model.CloudConfiguration;
 import org.springframework.core.env.Environment;
 import org.testng.annotations.DataProvider;
@@ -247,6 +252,18 @@ public class TestUtils {
         BeanMatchers.registerValueGenerator(() -> new CloudConfiguration(
                 randomAlphabetic(7), randomAlphabetic(7), randomAlphabetic(7)
             ), CloudConfiguration.class);
+    }
+
+    public static void registerVidNotionsValueGenerator() {
+        BeanMatchers.registerValueGenerator(() -> new VidNotions(
+            randomEnum(InstantiationUI.class), randomEnum(ModelCategory.class),
+            randomEnum(InstantiationUI.class), randomEnum(InstantiationType.class)
+        ), VidNotions.class);
+    }
+
+    private static <T> T randomEnum(Class<T> enumClass) {
+        T[] values = enumClass.getEnumConstants();
+        return values[RandomUtils.nextInt(0, values.length)];
     }
 
     public static OngoingStubbing<InputStream> mockGetRawBodyWithStringBody(HttpResponse<String> httpResponse, String body) {
