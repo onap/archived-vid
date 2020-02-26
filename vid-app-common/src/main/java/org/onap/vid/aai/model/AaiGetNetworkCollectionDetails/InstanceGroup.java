@@ -44,10 +44,6 @@ public class InstanceGroup {
     @JsonProperty("relationship-list")
     private RelationshipList relationshipList;
 
-    public InstanceGroup(){
-        super();
-    }
-    
     @JsonIgnoreProperties(ignoreUnknown = true)
     public InstanceGroup(
                         @JsonProperty("instance-group-role")
