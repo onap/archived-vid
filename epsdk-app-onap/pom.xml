@@ -27,8 +27,8 @@
         <epsdk.version>2.6.0</epsdk.version>
         <epsdk.overlay.version>2.5.0</epsdk.overlay.version>
         <jaxb.version>2.3.2</jaxb.version>
-        <jackson.version>2.10.1</jackson.version>
-        <jackson.databind.version>2.10.1</jackson.databind.version>
+        <jackson.version>2.10.2</jackson.version>
+        <jackson.databind.version>2.10.2</jackson.databind.version>
         <springframework.version>5.2.3.RELEASE</springframework.version>
         <!-- epsdk-core is importing this class, which is only on spring-orm 4 but not in orm 5:
          org.springframework.orm.hibernate4.HibernateTransactionManager
