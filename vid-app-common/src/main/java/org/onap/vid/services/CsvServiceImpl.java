@@ -20,22 +20,22 @@
 
 package org.onap.vid.services;
 
-import com.opencsv.CSVReader;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import static org.apache.commons.lang3.exception.ExceptionUtils.rethrow;
+import static org.onap.vid.utils.Logging.getMethodName;
 
-import javax.ws.rs.BadRequestException;
+import com.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.onap.vid.utils.Logging.getMethodName;
+import javax.ws.rs.BadRequestException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CsvServiceImpl implements CsvService{
@@ -84,7 +84,7 @@ public class CsvServiceImpl implements CsvService{
     }
 
 
-    private  List<String[]> readCsv(CSVReader reader) throws IOException {
+    private  List<String[]> readCsv(CSVReader reader) {
         try {
             List<String[]> myEntries = new ArrayList<>() ;
             String [] line;
@@ -100,7 +100,7 @@ public class CsvServiceImpl implements CsvService{
         }
         catch (Exception e){
             logger.error("error during reading CSV file. exception:" + e.getMessage());
-            throw e;
+            return rethrow(e);
         }
 
     }
