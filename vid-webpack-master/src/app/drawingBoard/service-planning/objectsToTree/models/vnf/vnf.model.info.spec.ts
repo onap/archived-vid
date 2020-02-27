@@ -416,6 +416,42 @@ describe('Vnf Model Info', () => {
     expect(result['undoDelete']['method']).toHaveBeenCalledWith(node, serviceModelId);
   });
 
+  test("when selectedNode is null  the modelInformationItems created without version and customization id", () => {
+    let expectedVNFInfo = [
+      ModelInformationItem.createInstance('Min instances', "0"),
+      ModelInformationItem.createInstance('Max instances',"1")
+      ];
+    let maxInstances = ModelInformationItem.createInstance('Max instances',"1");
+    jest.spyOn(_sharedTreeService, 'createMaximumToInstantiateModelInformationItem').mockReturnValue(maxInstances);
+    let vnfInstance = getVNFInstance();
+    let model = getVNFModel();
+    let selectedNode = null;
+    let result = vnfModel.createEitherHierarchyOrServiceInstanceInformationItems(model, vnfInstance, selectedNode);
+    expect (result).toEqual(expectedVNFInfo);
+
+  });
+
+  test("when selectedNode is null  the modelInformationItems created with version and customization id", () => {
+    let node = {
+      data : {
+        "vnfStoreKey": "VF_vGeraldine 0:003",
+      }
+    };
+    let expectedVNFInfo = [
+      ModelInformationItem.createInstance('Model version', "6.0"),
+      ModelInformationItem.createInstance('Model customization ID', "customization-ID"),
+      ModelInformationItem.createInstance('Min instances', "0"),
+      ModelInformationItem.createInstance('Max instances',"1")
+    ];
+    let maxInstances = ModelInformationItem.createInstance('Max instances',"1");
+    jest.spyOn(_sharedTreeService, 'createMaximumToInstantiateModelInformationItem').mockReturnValue(maxInstances);
+    let vnfInstance = getVNFInstance();
+    let model = getVNFModel();
+    let selectedNode = node;
+
+    let result =  vnfModel.createEitherHierarchyOrServiceInstanceInformationItems(model, vnfInstance, selectedNode);
+    expect(result).toEqual(expectedVNFInfo);
+  })
   test('getMenuAction: showAuditInfo', ()=>{
     jest.spyOn(_sharedTreeService, 'isRetryMode').mockReturnValue(true);
 
@@ -517,89 +553,93 @@ describe('Vnf Model Info', () => {
 
   function getVNFInstance(){
     return {
-      "action":"None",
-      "instanceName":"4O61SmpFAdCm1oVEs",
-      "instanceId":"66cbb3b5-c823-470c-9520-4e0b85112250",
-      "orchStatus":null,
-      "productFamilyId":null,
-      "lcpCloudRegionId":null,
-      "tenantId":null,
-      "modelInfo":{
-        "modelCustomizationName":"VF_vGeraldine 0",
-        "modelInvariantId":"vnf-instance-model-invariant-id",
-        "modelVersionId":"d6557200-ecf2-4641-8094-5393ae3aae60",
-        "modelType":"vnf"
-      },
-      "instanceType":"7538ifdSoTccmbEkr",
-      "provStatus":null,
-      "inMaint":true,
-      "uuid":"d6557200-ecf2-4641-8094-5393ae3aae60",
-      "originalName":"VF_vGeraldine 0",
-      "legacyRegion":null,
-      "lineOfBusiness":null,
-      "platformName":null,
-      "trackById":"VF_vGeraldine 0:004",
-      "vfModules":{
-        "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1":{
-          "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1:008":{
-            "action":"None",
-            "instanceName":"ss820f_0918_db",
-            "instanceId":"2c1ca484-cbc2-408b-ab86-25a2c15ce280",
-            "orchStatus":"deleted",
-            "productFamilyId":null,
-            "lcpCloudRegionId":null,
-            "tenantId":null,
-            "modelInfo":{
-              "modelCustomizationName":"VfVgeraldine..vflorence_vlc..module-1",
-              "modelCustomizationId":"b200727a-1bf9-4e7c-bd06-b5f4c9d920b9",
-              "modelInvariantId":"09edc9ef-85d0-4b26-80de-1f569d49e750",
-              "modelVersionId":"522159d5-d6e0-4c2a-aa44-5a542a12a830",
-              "modelType":"vfModule"
+      "vnfs": {
+        "VF_vGeraldine 0:003": {
+          "action": "None",
+          "instanceName": "4O61SmpFAdCm1oVEs",
+          "instanceId": "66cbb3b5-c823-470c-9520-4e0b85112250",
+          "orchStatus": null,
+          "productFamilyId": null,
+          "lcpCloudRegionId": null,
+          "tenantId": null,
+          "modelInfo": {
+            "modelCustomizationName": "VF_vGeraldine 0",
+            "modelCustomizationId": "customization-ID",
+            "modelInvariantId": "vnf-instance-model-invariant-id",
+            "modelVersionId": "d6557200-ecf2-4641-8094-5393ae3aae60",
+            "modelType": "vnf",
+            "modelVersion": "6.0"
+          },
+          "instanceType": "7538ifdSoTccmbEkr",
+          "provStatus": null,
+          "inMaint": true,
+          "uuid": "d6557200-ecf2-4641-8094-5393ae3aae60",
+          "originalName": "VF_vGeraldine 0",
+          "legacyRegion": null,
+          "lineOfBusiness": null,
+          "platformName": null,
+          "trackById": "VF_vGeraldine 0:004",
+          "vfModules": {
+            "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1": {
+              "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1:008": {
+                "action": "None",
+                "instanceName": "ss820f_0918_db",
+                "instanceId": "2c1ca484-cbc2-408b-ab86-25a2c15ce280",
+                "orchStatus": "deleted",
+                "productFamilyId": null,
+                "lcpCloudRegionId": null,
+                "tenantId": null,
+                "modelInfo": {
+                  "modelCustomizationName": "VfVgeraldine..vflorence_vlc..module-1",
+                  "modelCustomizationId": "b200727a-1bf9-4e7c-bd06-b5f4c9d920b9",
+                  "modelInvariantId": "09edc9ef-85d0-4b26-80de-1f569d49e750",
+                  "modelVersionId": "522159d5-d6e0-4c2a-aa44-5a542a12a830",
+                  "modelType": "vfModule"
+                },
+                "instanceType": null,
+                "provStatus": null,
+                "inMaint": true,
+                "uuid": "522159d5-d6e0-4c2a-aa44-5a542a12a830",
+                "originalName": "VfVgeraldine..vflorence_vlc..module-1",
+                "legacyRegion": null,
+                "lineOfBusiness": null,
+                "platformName": null,
+                "trackById": "vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1:008",
+                "isBase": false,
+                "volumeGroupName": null
+              }
             },
-            "instanceType":null,
-            "provStatus":null,
-            "inMaint":true,
-            "uuid":"522159d5-d6e0-4c2a-aa44-5a542a12a830",
-            "originalName":"VfVgeraldine..vflorence_vlc..module-1",
-            "legacyRegion":null,
-            "lineOfBusiness":null,
-            "platformName":null,
-            "trackById":"vf_vgeraldine0..VfVgeraldine..vflorence_vlc..module-1:008",
-            "isBase":false,
-            "volumeGroupName":null
-          }
-        },
-        "dc229cd8-c132-4455-8517-5c1787c18b14":{
-          "dc229cd8-c132-4455-8517-5c1787c18b14:009":{
-            "action":"None",
-            "instanceName":"ss820f_0918_base",
-            "instanceId":"3ef042c4-259f-45e0-9aba-0989bd8d1cc5",
-            "orchStatus":"Assigned",
-            "productFamilyId":null,
-            "lcpCloudRegionId":null,
-            "tenantId":null,
-            "modelInfo":{
-              "modelCustomizationId":"8ad8670b-0541-4499-8101-275bbd0e8b6a",
-              "modelInvariantId":"1e463c9c-404d-4056-ba56-28fd102608de",
-              "modelVersionId":"dc229cd8-c132-4455-8517-5c1787c18b14",
-              "modelType":"vfModule"
-            },
-            "instanceType":null,
-            "provStatus":null,
-            "inMaint":false,
-            "uuid":"dc229cd8-c132-4455-8517-5c1787c18b14",
-            "originalName":null,
-            "legacyRegion":null,
-            "lineOfBusiness":null,
-            "platformName":null,
-            "trackById":"dc229cd8-c132-4455-8517-5c1787c18b14:009",
-            "isBase":true,
-            "volumeGroupName":null
-          }
+            "dc229cd8-c132-4455-8517-5c1787c18b14": {
+              "dc229cd8-c132-4455-8517-5c1787c18b14:009": {
+                "action": "None",
+                "instanceName": "ss820f_0918_base",
+                "instanceId": "3ef042c4-259f-45e0-9aba-0989bd8d1cc5",
+                "orchStatus": "Assigned",
+                "productFamilyId": null,
+                "lcpCloudRegionId": null,
+                "tenantId": null,
+                "modelInfo": {
+                  "modelCustomizationId": "8ad8670b-0541-4499-8101-275bbd0e8b6a",
+                  "modelInvariantId": "1e463c9c-404d-4056-ba56-28fd102608de",
+                  "modelVersionId": "dc229cd8-c132-4455-8517-5c1787c18b14",
+                  "modelType": "vfModule"
+                },
+                "instanceType": null,
+                "provStatus": null,
+                "inMaint": false,
+                "uuid": "dc229cd8-c132-4455-8517-5c1787c18b14",
+                "originalName": null,
+                "legacyRegion": null,
+                "lineOfBusiness": null,
+                "platformName": null,
+                "trackById": "dc229cd8-c132-4455-8517-5c1787c18b14:009",
+                "isBase": true,
+                "volumeGroupName": null
+              }
+            }
+          },
+          "networks": {}
         }
-      },
-      "networks":{
-
       }
     };
   }
