@@ -8,6 +8,9 @@ declare namespace Cypress {
 
 function deepCompare(actual : any, expected : any) {
   if(actual !== null && expected !== null){
+    const actualOriginal = JSON.stringify(actual);
+    const expectedOriginal = JSON.stringify(expected);
+
     let diff : any[] = [];
     Cypress._.mergeWith(actual, expected, function (objectValue, sourceValue, key, object, source) {
       if ( !(_.isEqual(objectValue, sourceValue)) && (Object(objectValue) !== objectValue)) {
@@ -24,7 +27,7 @@ function deepCompare(actual : any, expected : any) {
     if(diff.length > 0){
       console.error("diff", diff);
       cy.log("The object are not equals", diff);
-      expect(actual).equals(expected, `diff: ${diff}, actual:${JSON.stringify(actual)}, expected:${JSON.stringify(expected)}`);
+      expect(actual).equals(expected, `diff: ${diff}, actual:${actualOriginal}, expected:${expectedOriginal}`);
     }
   }
 }
