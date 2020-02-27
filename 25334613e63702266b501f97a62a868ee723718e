@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "05ca81f5_8d280495",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-27T12:25:06Z",
+      "side": 1,
+      "message": "is it close this one : https://github.com/onap/vid/pull/7 ?",
+      "revId": "25334613e63702266b501f97a62a868ee723718e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
