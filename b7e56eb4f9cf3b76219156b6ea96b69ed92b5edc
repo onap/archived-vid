@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f5557b60_aafb0217",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/models/vnf/vnf.model.info.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-02-27T11:51:12Z",
+      "side": 1,
+      "message": "is not null",
+      "range": {
+        "startLine": 434,
+        "startChar": 29,
+        "endLine": 434,
+        "endChar": 34
+      },
+      "revId": "b7e56eb4f9cf3b76219156b6ea96b69ed92b5edc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
