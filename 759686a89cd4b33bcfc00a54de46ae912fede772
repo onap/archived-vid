@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "014123e1_7809f34c",
+        "filename": "epsdk-app-onap/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-02-27T12:23:21Z",
+      "side": 1,
+      "message": "better to move these properties to parent pom",
+      "revId": "759686a89cd4b33bcfc00a54de46ae912fede772",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
