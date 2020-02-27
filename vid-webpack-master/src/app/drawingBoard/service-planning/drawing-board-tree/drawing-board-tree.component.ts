@@ -222,21 +222,21 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  public selectNode(node: ITreeNode): void {
-    node.expand();
-    this._sharedTreeService.setSelectedVNF(node);
-    this.highlightNode.emit(node.data.modelUniqueId);
+  public selectNode(selectedNode: ITreeNode): void {
+    selectedNode.expand();
+    this._sharedTreeService.setSelectedVNF(selectedNode);
+    this.highlightNode.emit(selectedNode.data.modelUniqueId);
     if (FeatureFlagsService.getFlagState(Features.FLAG_1906_COMPONENT_INFO, this.store)) {
       const serviceHierarchy = this._store.getState().service.serviceHierarchy[this.serviceModelId];
 
       const instanceModel = this._sharedTreeService.modelByIdentifiers(
-        serviceHierarchy, node.data.modelTypeName,
-        this._sharedTreeService.modelUniqueNameOrId(node.data), node.data.modelName
+        serviceHierarchy, selectedNode.data.modelTypeName,
+        this._sharedTreeService.modelUniqueNameOrId(selectedNode.data), selectedNode.data.modelName
       );
 
-      const model = node.data.getModel(instanceModel);
-      const modelInfoItems = node.data.getInfo(model, node.data);
-      const componentInfoModel: ComponentInfoModel = this._sharedTreeService.addGeneralInfoItems(modelInfoItems, node.data.componentInfoType, model, node.data);
+      const model = selectedNode.data.getModel(instanceModel);
+      const modelInfoItems = selectedNode.data.getInfo(model, selectedNode.data);
+      const componentInfoModel: ComponentInfoModel = this._sharedTreeService.addGeneralInfoItems(modelInfoItems, selectedNode.data.componentInfoType, model, selectedNode.data);
       ComponentInfoService.triggerComponentInfoChange.next(componentInfoModel);
     }
   }

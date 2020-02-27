@@ -339,4 +339,19 @@ export class VnfModelInfo implements ILevelNodeInfo {
     const result = [modelInformation, instanceInfo];
     return _.uniq(_.flatten(result));
   }
+
+  createEitherHierarchyOrServiceInstanceInformationItems(model, serviceInstance, selectedNode): ModelInformationItem[] {
+
+    // if selected node === null the component on left side was clicked
+    const modelInformationItems = _.isNil(selectedNode) ? [
+      ModelInformationItem.createInstance("Min instances", !_.isNil(model.min) ? String(model.min) : null),
+      this._sharedTreeService.createMaximumToInstantiateModelInformationItem(model)
+    ] : [
+      ModelInformationItem.createInstance("Model version", serviceInstance.vnfs[selectedNode.data.vnfStoreKey].modelInfo.modelVersion),
+      ModelInformationItem.createInstance("Model customization ID", serviceInstance.vnfs[selectedNode.data.vnfStoreKey].modelInfo.modelCustomizationId),
+      ModelInformationItem.createInstance("Min instances", !_.isNil(model.min) ? String(model.min) : null),
+      this._sharedTreeService.createMaximumToInstantiateModelInformationItem(model)
+    ];
+    return modelInformationItems;
+  }
 }
