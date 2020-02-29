@@ -477,11 +477,24 @@ export class SharedTreeService {
     });
   }
 
+  getModelVersionEitherFromInstanceOrFromHierarchy(instance, model): string | null{
+    if(instance && instance.instanceModelInfo && instance.instanceModelInfo.modelVersion){
+      return instance.instanceModelInfo.modelVersion;
+    }
+    return model.version;
+  }
+
+  getModelCustomizationIdEitherFromInstanceOrFromHierarchy(instance, model): string | null{
+    if(instance && instance.instanceModelInfo && instance.instanceModelInfo.modelCustomizationId){
+      return instance.instanceModelInfo.modelCustomizationId;
+    }
+    return model.customizationUuid;
+  }
 
   addGeneralInfoItems(modelInfoSpecificItems: ModelInformationItem[], type: ComponentInfoType, model, instance):ComponentInfoModel {
     let modelInfoItems: ModelInformationItem[] = [
-      ModelInformationItem.createInstance("Model version", model ? model.version : null),
-      ModelInformationItem.createInstance("Model customization ID", model ? model.customizationUuid : null),
+      ModelInformationItem.createInstance("Model version", this.getModelVersionEitherFromInstanceOrFromHierarchy(instance, model)),
+      ModelInformationItem.createInstance("Model customization ID", this.getModelCustomizationIdEitherFromInstanceOrFromHierarchy(instance, model)),
       ModelInformationItem.createInstance("Instance ID", instance ? instance.instanceId : null),
       ModelInformationItem.createInstance("Instance type", instance ? instance.instanceType : null),
       ModelInformationItem.createInstance("In maintenance", instance? instance.inMaint : null),

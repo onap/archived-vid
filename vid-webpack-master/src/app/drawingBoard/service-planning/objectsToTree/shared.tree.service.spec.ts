@@ -1533,7 +1533,10 @@ function getNetworkModel(){
 
 function getNetworkInstance() {
   return {
-    "modelCustomizationId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
+    "modelInfo": {
+      "modelCustomizationId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
+      "modelVersion": "37.0"
+    },
     "modelId": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
     "modelUniqueId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
     "missingData": true,

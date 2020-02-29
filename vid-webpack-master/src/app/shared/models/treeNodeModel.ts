@@ -3,6 +3,7 @@ import {NodeModel} from "./nodeModel";
 import {ServiceNodeTypes} from "./ServiceNodeTypes";
 import * as _ from 'lodash';
 import {ServiceInstanceActions} from "./serviceInstanceActions";
+import {ModelInfo} from "./modelInfo";
 
 export enum TreeLevel {
   Level_0 , Level_1, Level_2
@@ -23,6 +24,7 @@ export class TreeNodeModel {
   id: string;
   name: string;
   modelName: string;
+  instanceModelInfo?: ModelInfo;
   missingData: boolean;
   isEcompGeneratedNaming: boolean;
   orchStatus?:string;
@@ -36,6 +38,7 @@ export class TreeNodeModel {
   constructor(instance: ChildNodeInstance, nodeModel: NodeModel){
 
     this.modelInvariantId = nodeModel.invariantUuid;
+    this.instanceModelInfo = instance.modelInfo;
     if (instance.modelInfo) {
       this.modelCustomizationId = instance.modelInfo.modelCustomizationId;
       this.modelId = instance.modelInfo.modelVersionId;
