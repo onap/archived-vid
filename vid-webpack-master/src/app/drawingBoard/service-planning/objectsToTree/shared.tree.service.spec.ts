@@ -44,6 +44,7 @@ import {VfModuleUpgradePopupService} from "../../../shared/components/genericFor
 import {SharedControllersService} from "../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 import {ModalService} from "../../../shared/components/customModal/services/modal.service";
 import {CreateDynamicComponentService} from "../../../shared/components/customModal/services/create-dynamic-component.service";
+import {instance} from "ts-mockito";
 
 class MockAppStore<T> {
   getState() {
@@ -251,11 +252,11 @@ describe('Shared Tree Service', () => {
     let specificNetworkInfo = [
       ModelInformationItem.createInstance('Network role', "network role 1, network role 2")
     ];
-    const actualInfoModel: ComponentInfoModel = service.addGeneralInfoItems(specificNetworkInfo,ComponentInfoType.NETWORK, getNetworkModel(),getNetworkInstance());
+    const actualInfoModel: ComponentInfoModel = service.addGeneralInfoItems(specificNetworkInfo,ComponentInfoType.NETWORK, getNetworkModelInfoFromHierarchy(),getNetworkInstance());
 
     let expectedGeneralInfo = [
-      ModelInformationItem.createInstance('Model version', '37.0'),
-      ModelInformationItem.createInstance('Model customization ID', '94fdd893-4a36-4d70-b16a-ec29c54c184f'),
+      ModelInformationItem.createInstance('Model version', '2.0'),
+      ModelInformationItem.createInstance('Model customization ID', 'customization-id-from-hierarchy'),
       ModelInformationItem.createInstance('Instance ID', 'NETWORK4_INSTANCE_ID'),
       ModelInformationItem.createInstance('Instance type', 'CONTRAIL30_HIMELGUARD'),
       ModelInformationItem.createInstance('In maintenance', false),
@@ -264,6 +265,29 @@ describe('Shared Tree Service', () => {
     expect(actualInfoModel.modelInfoItems).toEqual(expectedGeneralInfo);
   });
 
+  each([
+    ['model version from hierarchy', null, getNetworkModelInfoFromHierarchy(), '2.0'],
+    ['undefined model', null, null, undefined],
+    ['model version from instance', getSelectedModelInfo(), null, '5.0'],
+    ['model version from instance', getSelectedModelInfo(), getNetworkModelInfoFromHierarchy(), '5.0'],
+  ]).
+  test ('getModelVersionEitherFromInstanceOrFromHierarchy should return %s ' ,
+    (description, instance, model, expectedResult) =>{
+    let actualResult = service.getModelVersionEitherFromInstanceOrFromHierarchy(instance, model);
+    expect(actualResult).toEqual(expectedResult);
+  });
+
+  each([
+    ['model CustomizationId from hierarchy', null, getNetworkModelInfoFromHierarchy(), 'customization-id-from-hierarchy'],
+    ['undefined model', null, null, undefined],
+    ['model CustomizationId from instance', getSelectedModelInfo(), null, 'model-customization-id-from-instance'],
+    ['model CustomizationId from instance', getSelectedModelInfo(), getNetworkModelInfoFromHierarchy(), 'model-customization-id-from-instance'],
+  ]).
+  test ('getCustomizationIdEitherFromInstanceOrFromHierarchy should return %s ' ,
+    (description, instance, model, expectedResult) =>{
+      let actualResult = service.getModelCustomizationIdEitherFromInstanceOrFromHierarchy(instance, model);
+      expect(actualResult).toEqual(expectedResult);
+    });
 
   test('statusProperties should be prop on node according to node properties', () => {
     let node = service.addingStatusProperty({orchStatus: 'completed', provStatus: 'inProgress', inMaint: false});
@@ -1506,62 +1530,26 @@ function getStore() {
   }
 }
 
-function getNetworkModel(){
-  return {
-    "customizationUuid":"94fdd893-4a36-4d70-b16a-ec29c54c184f",
-    "name":"ExtVL",
-    "version":"37.0",
-    "description":"ECOMP generic virtual link (network) base type for all other service-level and global networks",
-    "uuid":"ddc3f20c-08b5-40fd-af72-c6d14636b986",
-    "invariantUuid":"379f816b-a7aa-422f-be30-17114ff50b7c",
-    "max":1,
-    "min":0,
-    "isEcompGeneratedNaming":false,
-    "type":"VL",
-    "modelCustomizationName":"ExtVL 0",
-    "roles":["network role 1"," network role 2"],
-    "properties":{
-      "network_role":"network role 1, network role 2",
-      "network_assignments":
-        "{is_external_network=false, ipv4_subnet_default_assignment={min_subnets_count=1}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={min_subnets_count=1}}",
-      "exVL_naming":"{ecomp_generated_naming=true}","network_flows":"{is_network_policy=false, is_bound_to_vpn=false}",
-      "network_homing":"{ecomp_selected_instance_node_target=false}"
-    }
-  };
 
+function getNetworkModelInfoFromHierarchy(){
+  return {
+    "version": "2.0",
+    "customizationUuid":"customization-id-from-hierarchy"
+  }
 }
 
+function getSelectedModelInfo() {
+  return {
+    "instanceModelInfo": {
+      "modelVersion": "5.0",
+      "modelCustomizationId": "model-customization-id-from-instance"
+    }
+  }
+}
 function getNetworkInstance() {
   return {
-    "modelCustomizationId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
-    "modelId": "ddc3f20c-08b5-40fd-af72-c6d14636b986",
-    "modelUniqueId": "94fdd893-4a36-4d70-b16a-ec29c54c184f",
-    "missingData": true,
-    "id": "NETWORK4_INSTANCE_ID",
-    "action": "None",
-    "orchStatus": "Created",
-    "provStatus": "preprov",
     "inMaint": false,
     "instanceId": "NETWORK4_INSTANCE_ID",
     "instanceType": "CONTRAIL30_HIMELGUARD",
-    "instanceName": "NETWORK4_INSTANCE_NAME",
-    "name": "NETWORK4_INSTANCE_NAME",
-    "modelName": "ExtVL 0",
-    "type": "VL",
-    "isEcompGeneratedNaming": false,
-    "networkStoreKey": "NETWORK4_INSTANCE_ID",
-    "typeName": "N",
-    "menuActions": {"edit": {}, "showAuditInfo": {}, "duplicate": {}, "remove": {}, "delete": {}, "undoDelete": {}},
-    "isFailed": false,
-    "statusMessage": "",
-    "statusProperties": [{"key": "Prov Status:", "value": "preprov", "testId": "provStatus"}, {
-      "key": "Orch Status:",
-      "value": "Created",
-      "testId": "orchStatus"
-    }],
-    "trackById": "1wvr73xl999",
-    "parentType": "",
-    "componentInfoType": "Network",
-    "errors": {}
   };
 }

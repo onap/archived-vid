@@ -477,17 +477,34 @@ export class SharedTreeService {
     });
   }
 
+  getModelVersionEitherFromInstanceOrFromHierarchy(selectedNodeData, model): string | undefined {
+    if (selectedNodeData && selectedNodeData.instanceModelInfo && selectedNodeData.instanceModelInfo.modelVersion) {
+      return selectedNodeData.instanceModelInfo.modelVersion;
+    } else if (model && model.version) {
+      return model.version;
+    }
+    return undefined;
+  }
 
-  addGeneralInfoItems(modelInfoSpecificItems: ModelInformationItem[], type: ComponentInfoType, model, instance):ComponentInfoModel {
+  getModelCustomizationIdEitherFromInstanceOrFromHierarchy(selectedNodeData, model): string | undefined {
+    if (selectedNodeData && selectedNodeData.instanceModelInfo && selectedNodeData.instanceModelInfo.modelCustomizationId) {
+      return selectedNodeData.instanceModelInfo.modelCustomizationId;
+    } else if (model && model.customizationUuid) {
+      return model.customizationUuid;
+    }
+    return undefined;
+  }
+
+  addGeneralInfoItems(modelInfoSpecificItems: ModelInformationItem[], type: ComponentInfoType, model, selectedNodeData):ComponentInfoModel {
     let modelInfoItems: ModelInformationItem[] = [
-      ModelInformationItem.createInstance("Model version", model ? model.version : null),
-      ModelInformationItem.createInstance("Model customization ID", model ? model.customizationUuid : null),
-      ModelInformationItem.createInstance("Instance ID", instance ? instance.instanceId : null),
-      ModelInformationItem.createInstance("Instance type", instance ? instance.instanceType : null),
-      ModelInformationItem.createInstance("In maintenance", instance? instance.inMaint : null),
+      ModelInformationItem.createInstance("Model version", this.getModelVersionEitherFromInstanceOrFromHierarchy(selectedNodeData, model)),
+      ModelInformationItem.createInstance("Model customization ID", this.getModelCustomizationIdEitherFromInstanceOrFromHierarchy(selectedNodeData, model)),
+      ModelInformationItem.createInstance("Instance ID", selectedNodeData ? selectedNodeData.instanceId : null),
+      ModelInformationItem.createInstance("Instance type", selectedNodeData ? selectedNodeData.instanceType : null),
+      ModelInformationItem.createInstance("In maintenance", selectedNodeData? selectedNodeData.inMaint : null),
     ];
     modelInfoItems = modelInfoItems.concat(modelInfoSpecificItems);
-    return this.getComponentInfoModelByModelInformationItems(modelInfoItems, type, instance);
+    return this.getComponentInfoModelByModelInformationItems(modelInfoItems, type, selectedNodeData);
   }
 
   getComponentInfoModelByModelInformationItems(modelInfoItems: ModelInformationItem[], type: ComponentInfoType, instance){
