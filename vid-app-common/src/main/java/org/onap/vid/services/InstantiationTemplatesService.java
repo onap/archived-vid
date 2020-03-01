@@ -76,7 +76,7 @@ public class InstantiationTemplatesService {
     }
 
     public Collection<Service> setOnEachServiceIsTemplateExists(Collection<Service> services){
-        if (!featureManager.isActive(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE)){
+        if (!featureManager.isActive(Features.FLAG_2004_INSTANTIATION_TEMPLATES_POPUP)){
             return unsetTemplateExistsToAllServices(services);
 
         }
