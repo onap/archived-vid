@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a9c8d787_2630f8af",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-03-01T06:13:31Z",
+      "side": 1,
+      "message": "you can use _.get(instance, instanceModelInfo.modelVersion, model.version)\n\nBut pay attention that it might yield null if instanceModelInfo.modelVersion is null.\n\nSee here : https://masteringjs.io/tutorials/lodash/get\n\nYou can add the const checkDefault \u003d (v, def) \u003d\u003e v \u003d\u003d null ? def : v; to some util",
+      "revId": "2b28a707e38317d0f010ba53ca04a3b409ef69a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e050f38_d195d9ca",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-03-01T06:13:31Z",
+      "side": 1,
+      "message": "same",
+      "revId": "2b28a707e38317d0f010ba53ca04a3b409ef69a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
