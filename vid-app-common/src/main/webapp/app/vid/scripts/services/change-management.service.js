@@ -112,7 +112,11 @@
 
             $http.get(COMPONENT.GET_SCHEDULER_CHANGE_MANAGEMENTS)
                 .success(function (response) {
-                    deferred.resolve({data: response});
+                    if (response.status === 200) {
+                        deferred.resolve({data: response});
+                    } else {
+                        deferred.reject({message: response, status: response.status});
+                    }
                 })
                 .error(function(data, status, headers, config) {
                     deferred.reject({message: data, status: status});
