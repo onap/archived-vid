@@ -286,6 +286,9 @@ ALTER TABLE `vid_openecomp_epsdk`.`vid_job_audit_status`
 INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (6, 'VNF Scale Out') ON DUPLICATE KEY UPDATE WORKFLOW_DB_ID=6, WORKFLOW_APP_NAME='VNF Scale Out';
 INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (4, 'VNF Config Update') ON DUPLICATE KEY UPDATE WORKFLOW_DB_ID=4, WORKFLOW_APP_NAME='VNF Config Update';
 
+--changeset vid:add_workflow_pnf_software_upgrade
+INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (7, 'PNF Software Upgrade');
+
 UPDATE `vid_openecomp_epsdk`.`fn_function` SET `type` = 'menu', `action` = '*';
 UPDATE `vid_openecomp_epsdk`.`fn_function` SET `type` = 'url' WHERE `FUNCTION_NAME`='Login';
 
