@@ -261,6 +261,7 @@
                 try {
                     var requestInfoData = {};
                     var requestParametersData = {};
+                    var userParam = {};
                     var moduleToScale = _.find(vnf.vfModules, {"scale": true});
                     if (vnf.availableVersions && vnf.availableVersions.length != 0) {
 
@@ -286,6 +287,11 @@
                             };
                             requestParametersData = {
                                 payload: JSON.stringify(payloadObj)
+                            };
+                        } else if (workflowType == "PNF Software Upgrade") {
+                            userParam = {
+                                "name":"targetSoftwareVersion",
+                                "value":vm.getInternalWorkFlowParameter(workflowType, 'text', 'Target software version').value
                             };
                         } else if (workflowType == "VNF Config Update") {
                             requestParametersData = {
@@ -318,6 +324,11 @@
                         requestParametersData = {
                             payload: JSON.stringify(payloadObj)
                         };
+                    } else if (workflowType == "PNF Software Upgrade") {
+                        userParam = {
+                            "name":"targetSoftwareVersion",
+                            "value":vm.getInternalWorkFlowParameter(workflowType, 'text', 'Target software version').value
+                        };
                     } else if (workflowType == "VNF Config Update") {
                         requestParametersData = {
                             payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
@@ -345,6 +356,30 @@
                             configurationParameters: JSON.parse(vm.getInternalWorkFlowParameter("VNF Scale Out", "text", "Configuration Parameters").value)
                         };
                         requestInfoData.instanceName = vnf.name + "_" + (moduleToScale.currentCount + 1);
+                    } else if (workflowType == "PNF Software Upgrade") {
+                        data = {
+                            pnfInstanceId: vnf.id,
+                            modelInfo: {
+                                modelType: 'pnf',
+                                modelInvariantId: vnf.properties['model-invariant-id'],
+                                modelVersionId: vnf.modelVersionId,
+                                modelName: vnf.properties['vnf-name'],
+                                modelVersion: vnf.version,
+                                modelCustomizationName: vnf.properties['model-customization-name'],
+                                modelCustomizationId: vnf.properties['model-customization-id']
+                            },
+                            cloudConfiguration: vnf.cloudConfiguration,
+                            requestInfo: requestInfoData,
+                            requestParameters: {
+                                userParams: [
+                                    {
+                                        "name":"pnfName",
+                                        "value": vnf.name
+                                    },
+                                    userParam
+                                ]
+                            }
+                        };
                     } else {
                         data = {
                             vnfName: vnf.name,
@@ -492,7 +527,7 @@
                 vm.triggerLocalWorkflow();
             } else {
                 let source = vm.getRemoteWorkflowSource(vm.changeManagement.workflow);
-                if (source === "NATIVE") {
+                if (_.toUpper(source) === "NATIVE") {
                     vm.triggerLocalWorkflow();
                 } else {
                     vm.triggerRemoteWorkflow();
@@ -828,7 +863,11 @@
         };
 
         vm.loadRemoteWorkFlows = function () {
-            let vnfModelIDs = vm.changeManagement.vnfNames.map(vnfName => vnfName.modelVersionId);
+            let vnfModelIDs = (vm.changeManagement.vnfNames || []).map(vnfName => vnfName.modelVersionId);
+            if (vnfModelIDs.length === 0) {
+                vm.remoteWorkflows = [];
+                return $q.resolve();
+            }
             return changeManagementService.getSOWorkflows(vnfModelIDs)
                 .then(function (response) {
                     vm.remoteWorkflows = response.data || [];
@@ -928,6 +967,7 @@
         };
 
         vm.getInternalWorkFlowParameters = function (workflow, type) {
+            console.log("getInternalWorkFlowParameters", workflow, type);
             return vm.getAllInternalWorkFlowParameters(workflow).filter(parameter => parameter.type === type);
         };
 
