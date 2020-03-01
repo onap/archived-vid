@@ -44,6 +44,10 @@ public class LocalWorkflowsServiceImpl implements LocalWorkflowsService {
                 new LocalWorkflowParameterDefinition(3, "existingSoftwareVersion", "Existing software version", true, LocalWorkflowType.text, "[-a-zA-Z0-9.]+"),
                 new LocalWorkflowParameterDefinition(4, "newSoftwareVersion", "New software version", true, LocalWorkflowType.text, "[-a-zA-Z0-9.]+")
             )
+        )).put("PNF Software Upgrade", new LocalWorkflowParameterDefinitions(
+            ImmutableList.of(
+                new LocalWorkflowParameterDefinition(6, "targetSoftwareVersion", "Target software version", true, LocalWorkflowType.text, "[-a-zA-Z0-9.]+")
+            )
         ))
         .put("VNF Config Update", new LocalWorkflowParameterDefinitions(
             ImmutableList.of(
