@@ -27,7 +27,7 @@
             var result = [];
             if(changeManagements && metadata && metadata.statuses) {
                 angular.forEach(changeManagements, function(changeManagement) {
-                    var found = metadata.statuses
+                    var found = changeManagement.requestStatus && metadata.statuses
                         .map(function(c) { return c.toLowerCase(); })
                         .indexOf(changeManagement.requestStatus.requestState.toLowerCase()) !== -1;
 
