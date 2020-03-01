@@ -323,3 +323,6 @@ UPDATE `fn_app` SET `APP_IMAGE_URL`=null,`APP_URL`=null,`APP_ALTERNATE_URL`=null
 --changeset vid:service_info_request_summary
 ALTER TABLE `vid_openecomp_epsdk`.`vid_service_info`
   ADD COLUMN `REQUEST_SUMMARY` VARCHAR(400) NULL DEFAULT NULL COLLATE 'utf8_bin';
+
+--changeset vid:add_workflow_pnf_software_upgrade
+INSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (7, 'PNF Software Upgrade');
