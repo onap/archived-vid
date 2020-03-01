@@ -492,7 +492,7 @@
                 vm.triggerLocalWorkflow();
             } else {
                 let source = vm.getRemoteWorkflowSource(vm.changeManagement.workflow);
-                if (source === "NATIVE") {
+                if (_.toUpper(source) === "NATIVE") {
                     vm.triggerLocalWorkflow();
                 } else {
                     vm.triggerRemoteWorkflow();
@@ -828,7 +828,11 @@
         };
 
         vm.loadRemoteWorkFlows = function () {
-            let vnfModelIDs = vm.changeManagement.vnfNames.map(vnfName => vnfName.modelVersionId);
+            let vnfModelIDs = (vm.changeManagement.vnfNames || []).map(vnfName => vnfName.modelVersionId);
+            if (vnfModelIDs.length === 0) {
+                vm.remoteWorkflows = [];
+                return $q.resolve();
+            }
             return changeManagementService.getSOWorkflows(vnfModelIDs)
                 .then(function (response) {
                     vm.remoteWorkflows = response.data || [];
