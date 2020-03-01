@@ -251,7 +251,6 @@
 
         /***converting objects to scheduler format (taken from IST) - was altered for Scale out support ***/
         function extractChangeManagementCallbackDataStr(changeManagement) {
-            console.log(changeManagement);
             var result = {};
             result.requestType = changeManagement.workflow;
             var workflowType = changeManagement.workflow;
@@ -287,6 +286,21 @@
                             requestParametersData = {
                                 payload: JSON.stringify(payloadObj)
                             };
+                        } else if (workflowType == "PNF Software Upgrade") {
+                            requestParametersData = {
+                                userParams: [
+                                    { "name":"pnfId",
+                                      "value":vnf.properties["vnf-id"]
+                                    },
+                                    { "name":"pnfName",
+                                      "value": vnf.name
+                                    },
+                                    { "name":"targetSoftwareVersion",
+                                      "value":vm.getInternalWorkFlowParameter(workflowType, 'text', 'Target software version').value
+                                    }
+                                ]
+                            };
+
                         } else if (workflowType == "VNF Config Update") {
                             requestParametersData = {
                                 payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
@@ -318,7 +332,7 @@
                         requestParametersData = {
                             payload: JSON.stringify(payloadObj)
                         };
-                    } else if (workflowType == "VNF Config Update") {
+                    }  else if (workflowType == "VNF Config Update") {
                         requestParametersData = {
                             payload: vm.getInternalWorkFlowParameter("VNF Config Update", "FILE", "Attach configuration file").value
                         };
@@ -345,24 +359,25 @@
                             configurationParameters: JSON.parse(vm.getInternalWorkFlowParameter("VNF Scale Out", "text", "Configuration Parameters").value)
                         };
                         requestInfoData.instanceName = vnf.name + "_" + (moduleToScale.currentCount + 1);
+                    } else if (workflowType === "PNF Software Upgrade") {
+                         requestParametersData = {
+                             userParams: [
+                                 {
+                                     "name":"pnfId",
+                                     "value":vnf.properties["vnf-id"]
+                                 },
+                                 {
+                                     "name":"pnfName",
+                                     "value": vnf.name
+                                 },
+                                 { "name":"targetSoftwareVersion",
+                                   "value":vm.getInternalWorkFlowParameter(workflowType, 'text', 'Target software version').value
+                                 }
+                             ]
+                         };
+                         data = nativeWorkflowRequestData('pnf', requestParametersData, vnf, requestInfoData);
                     } else {
-                        data = {
-                            vnfName: vnf.name,
-                            vnfInstanceId: vnf.id,
-                            modelInfo: {
-                                modelType: 'vnf',
-                                modelInvariantId: vnf.properties['model-invariant-id'],
-                                modelVersionId: vnf.modelVersionId,
-                                modelName: vnf.properties['vnf-name'],
-                                modelVersion: vnf.version,
-                                modelCustomizationName: vnf.properties['model-customization-name'],
-                                modelCustomizationId: vnf.properties['model-customization-id']
-                            },
-                            cloudConfiguration: vnf.cloudConfiguration,
-                            requestInfo: requestInfoData,
-                            relatedInstanceList: [],
-                            requestParameters: requestParametersData
-                        };
+                         data = nativeWorkflowRequestData('vnf', requestParametersData, vnf, requestInfoData);
                     }
 
                     var serviceInstanceId = '';
@@ -417,6 +432,29 @@
                 result.requestDetails.push(data);
             });
             return JSON.stringify(result);
+        }
+
+        function nativeWorkflowRequestData(modelType, requestParametersData, vnf, requestInfoData) {
+            var data = {
+                   modelInfo: {
+                      modelType: modelType,
+                      modelInvariantId: vnf.properties['model-invariant-id'],
+                      modelVersionId: vnf.modelVersionId,
+                      modelName: vnf.properties['vnf-name'],
+                      modelVersion: vnf.version,
+                      modelCustomizationName: vnf.properties['model-customization-name'],
+                      modelCustomizationId: vnf.properties['model-customization-id']
+                   },
+                   cloudConfiguration: vnf.cloudConfiguration,
+                   requestInfo: requestInfoData,
+                   requestParameters: requestParametersData
+            };
+            data[modelType + 'InstanceId'] = vnf.id;
+            if (modelType == "vnf"){
+               data[modelType + 'Name'] = vnf.name;
+               data['relatedInstanceList'] =  [] ;
+            }
+            return data;
         }
 
         function getWorkflowParametersFromForm() {
@@ -477,8 +515,6 @@
                 widgetParameter: $scope.widgetParameter
             };
 
-            console.log("vm.scheduleWorkflow data:", data);
-
             if (window.parent !== window.self) {
                 window.parent.postMessage(data, VIDCONFIGURATION.SCHEDULER_PORTAL_URL);
             } else {
@@ -492,7 +528,7 @@
                 vm.triggerLocalWorkflow();
             } else {
                 let source = vm.getRemoteWorkflowSource(vm.changeManagement.workflow);
-                if (source === "NATIVE") {
+                if (_.toUpper(source) === "NATIVE") {
                     vm.triggerLocalWorkflow();
                 } else {
                     vm.triggerRemoteWorkflow();
@@ -828,7 +864,11 @@
         };
 
         vm.loadRemoteWorkFlows = function () {
-            let vnfModelIDs = vm.changeManagement.vnfNames.map(vnfName => vnfName.modelVersionId);
+            let vnfModelIDs = (vm.changeManagement.vnfNames || []).map(vnfName => vnfName.modelVersionId);
+            if (vnfModelIDs.length === 0) {
+                vm.remoteWorkflows = [];
+                return $q.resolve();
+            }
             return changeManagementService.getSOWorkflows(vnfModelIDs)
                 .then(function (response) {
                     vm.remoteWorkflows = response.data || [];
