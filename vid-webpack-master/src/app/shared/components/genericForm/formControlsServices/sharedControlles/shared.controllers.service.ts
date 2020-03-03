@@ -18,6 +18,8 @@ import {InputFormControl} from "../../../../models/formControlModels/inputFormCo
 import {NodeModel} from "../../../../models/nodeModel";
 import {LcpRegion} from "../../../../models/lcpRegion";
 import {Tenant} from "../../../../models/tenant";
+import {MultiselectFormControl} from "../../../../models/formControlModels/multiselectFormControl.model";
+import {MultiSelectItem} from "../../../formControls/component/multiselect/multiselect.model";
 
 @Injectable()
 export class SharedControllersService {
@@ -283,5 +285,33 @@ export class SharedControllersService {
     let formControlModel:FormControlModel = this.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, new NodeModel());
     formControlModel.value = instance ? instance.instanceName : null;
     return formControlModel;
+  }
+
+  getPlatformMultiselectControl = (instance: any, controls: FormControlModel[], isMultiSelected: boolean) : MultiselectFormControl => {
+    return new MultiselectFormControl({
+      type: FormControlType.MULTI_SELECT,
+      controlName: 'platformName',
+      displayName: 'Platform',
+      dataTestId: 'multi-selectPlatform',
+      selectedFieldName: 'name',
+      ngValue: 'name',
+      placeHolder: 'Select Platform',
+      isDisabled: false,
+      name: "platform",
+      value: instance ? instance.platformName : '',
+      limitSelection: isMultiSelected ? 1000 : 1,
+      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
+      onInitSelectedField: ['platformList'],
+      onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters),
+      onChange: (param: MultiSelectItem[], form: FormGroup) => {
+        form.controls['platformName'].setValue(param.map((multiSelectItem: MultiSelectItem) => {
+          return multiSelectItem.itemName
+        }).join(','));
+      },
+      convertOriginalDataToArray: (value?: string) => {
+        if (_.isNil(value)) return [];
+        return value.split(',');
+      }
+    });
   }
 }

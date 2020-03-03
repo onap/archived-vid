@@ -64,7 +64,7 @@
       "productFamilyId":"a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
       "lcpCloudRegionId":"hvf6",
       "tenantId":"229bcdc6eaeb4ca59d55221141d01f8e",
-      "platformName":"xxx1",
+      "platformName":"xxx1,platform" ,
       "lineOfBusiness":"zzz1",
       "instanceParams":[
         {

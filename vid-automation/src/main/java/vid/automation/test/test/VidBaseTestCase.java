@@ -357,7 +357,7 @@ public class VidBaseTestCase extends SetupCDTest{
 
         viewEditPage.selectSuppressRollback(suppressRollback);
         if(platform != null){
-            viewEditPage.selectPlatform(platform);
+            viewEditPage.selectPlatform(ImmutableList.of(platform));
         }
         viewEditPage.clickConfirmButton();
         viewEditPage.assertMsoRequestModal(Constants.ViewEdit.MSO_SUCCESSFULLY_TEXT);

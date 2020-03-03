@@ -4,19 +4,11 @@ import {AaiService} from "../../../../services/aaiService/aai.service";
 import {NgRedux} from "@angular-redux/store";
 import {HttpClient} from "@angular/common/http";
 import {ControlGeneratorUtil} from "../control.generator.util.service";
-import {
-  FormControlModel,
-  ValidatorModel,
-  ValidatorOptions
-} from "../../../../models/formControlModels/formControl.model";
+import {FormControlModel} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {VNFModel} from "../../../../models/vnfModel";
 import {AppState} from "../../../../store/reducers";
-import {FormGroup} from "@angular/forms";
-import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
 import * as _ from 'lodash';
-import {MultiselectFormControl} from "../../../../models/formControlModels/multiselectFormControl.model";
-import {MultiSelectItem} from "../../../formControls/component/multiselect/multiselect.model";
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
 import {FeatureFlagsService, Features} from "../../../../services/featureFlag/feature-flags.service";
 
@@ -60,7 +52,7 @@ export class VnfControlGenerator {
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
-      result.push(this.getPlatformMultiselectControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
+      result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
       result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance));
     }
     return result;
@@ -91,12 +83,12 @@ export class VnfControlGenerator {
         result.push(this._sharedControllersService.getLcpRegionByLineOfBusinessControl(serviceId, vnfInstance, result));
         result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
         result.push(this._sharedControllersService.getTenantByLcpRegionControl(serviceId, vnfInstance));
-        result.push(this.getPlatformMultiselectControl(vnfInstance, result, isMultiSelected));
+        result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, isMultiSelected));
       } else {
         result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
         result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
         result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
-        result.push(this.getPlatformMultiselectControl(vnfInstance, result, isMultiSelected));
+        result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, isMultiSelected));
         result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance));
       }
 
@@ -109,32 +101,4 @@ export class VnfControlGenerator {
     const vnfModel : VNFModel = this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName];
     return this._sharedControllersService.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, vnfModel);
   }
-
-  getPlatformMultiselectControl = (instance: any, controls: FormControlModel[], isMultiSelected: boolean) : MultiselectFormControl => {
-    return new MultiselectFormControl({
-      type: FormControlType.MULTI_SELECT ,
-      controlName: 'platformName',
-      displayName: 'Platform',
-      dataTestId: 'multi-selectPlatform',
-      selectedFieldName :  'name' ,
-      ngValue :  'name',
-      placeHolder: 'Select Platform',
-      isDisabled: false,
-      name: "platform",
-      value: instance ? instance.platformName : '',
-      limitSelection : isMultiSelected ? 1000 : 1,
-      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
-      onInitSelectedField: ['platformList'],
-      onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters),
-      onChange : (param: MultiSelectItem[], form: FormGroup) => {
-        form.controls['platformName'].setValue(param.map((multiSelectItem: MultiSelectItem)=>{
-          return multiSelectItem.itemName
-        }).join(','));
-      },
-      convertOriginalDataToArray : (value?: string) => {
-        if(_.isNil(value)) return [];
-        return value.split(',');
-      }
-    });
-  };
 }

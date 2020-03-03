@@ -222,3 +222,7 @@
 * FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF
   When flag is true new VF Modules on Alacarte service will inherit LCP-Region and Tenant from parent VNF.
   When off, user is requested to specify LCP-Region and Tenant for each VF Module.
+  
+* FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT
+  When flag is true the platform will appear as a multi select field, if false the platform will be dropdown list.
+ 

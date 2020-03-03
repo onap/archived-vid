@@ -1,19 +1,17 @@
 package vid.automation.test.sections;
 
+import static org.hamcrest.core.Is.is;
+
+import java.util.List;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
-import vid.automation.test.infra.Features;
 import vid.automation.test.infra.Get;
 import vid.automation.test.infra.SelectOption;
 
-import static org.hamcrest.core.Is.is;
 
-/**
- * Created by itzikliderman on 13/06/2017.
- */
 public class ViewEditPage extends VidBasePage {
     public ViewEditPage selectNodeInstanceToAdd(String vnfName) {
         selectFromDropdownByTestId(Constants.ViewEdit.VNF_OPTION_TEST_ID_PREFIX + vnfName,
@@ -133,8 +131,8 @@ public class ViewEditPage extends VidBasePage {
 //        return this;
 //    }
 
-    public ViewEditPage selectPlatform(String platform) {
-        SelectOption.byValue(platform, Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
+    public ViewEditPage selectPlatform(List<String> platformList) {
+        SelectOption.selectOptionsFromMultiselectById("multi-selectPlatform", platformList);
         return this;
     }
 }
