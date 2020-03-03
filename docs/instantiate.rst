@@ -197,7 +197,7 @@ to push those data using SDNC Rest API:
 ::
 
     curl -X POST \
-    http://sdnc.api.simpledemo.onap.org:30202/restconf/operations/VNF-API:preload-vnf-topology-operation \
+    https://sdnc.api.simpledemo.onap.org:30267/restconf/operations/VNF-API:preload-vnf-topology-operation \
     -H 'Accept: application/json' \
     -H 'Authorization: Basic YWRtaW46S3A4Yko0U1hzek0wV1hsaGFrM2VIbGNzZTJnQXc4NHZhb0dHbUp2VXkyVQ==' \
     -H 'Content-Type: application/json' \
@@ -226,8 +226,8 @@ to push those data using SDNC Rest API:
                 },
                 "vnf-parameters": [
                     {
-                        "name": "oam_net_id",
-                        "value": "oam_network_tXWW"
+                        "vnf-parameter-name": "oam_net_id",
+                        "vnf-parameter-value": "oam_network_tXWW"
                     }
                 ],
                 "vnf-topology-identifier": {
@@ -239,8 +239,7 @@ to push those data using SDNC Rest API:
                 }
             }
         }
-    }
-    '
+    }'
 
 
 Data mapping between ONAP SDNC terminology and ONAP SO
