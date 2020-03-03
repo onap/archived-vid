@@ -111,7 +111,6 @@ export class NcfModelInfo implements ILevelNodeInfo {
     }
 
     return [
-      ModelInformationItem.createInstance("Model version", instance.modelVersion),
       ModelInformationItem.createInstance('Role', instance.instanceGroupRole),
       ModelInformationItem.createInstance('Collection function', instance.instanceGroupFunction),
       ModelInformationItem.createInstance('Number of networks', instance.numberOfNetworks),

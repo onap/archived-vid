@@ -117,7 +117,7 @@ describe('Drawing board : Collection resource', function () {
       const expectedComponentInfo: { [key: string]: any } = {
         'node-ce8c98bc-4691-44fb-8ff0-7a47487c11c4-undefined': {
           labelsAndValues: [
-            //['Model version', "5.0"] //to add once fix in code
+            ['Model version', "5.0"] ,
             ['Instance ID', '84a351ae-3601-45e2-98df-878d6c816abc'],
             ['In maintenance', 'false']
           ],

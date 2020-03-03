@@ -73,7 +73,7 @@ describe('NCF Model Info', () => {
     expect(ncfTreeNode).toMatchObject(expected);
   });
 
-  test('get modelInformation shall return Model version, role, Collection function, Number of networks', () => {
+  test('get modelInformation shall return Role, Collection function, Number of networks', () => {
     const ncf = {
       trackById: "6b3536cf-3a12-457f-abb5-fa2203e0d923",
       instanceGroupRole: "SUB_INTERFACE",
@@ -84,7 +84,6 @@ describe('NCF Model Info', () => {
 
     const actualModelInformationItems = ncfModel.getInfo(null, ncf);
     const expected = [
-      ModelInformationItem.createInstance('Model version', '35'),
       ModelInformationItem.createInstance('Role', 'SUB_INTERFACE'),
       ModelInformationItem.createInstance('Collection function', 'vTSBC Customer Landing Network Collection'),
       ModelInformationItem.createInstance('Number of networks', 1),
