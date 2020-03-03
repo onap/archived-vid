@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b0ffb06_57d30e80",
+        "filename": "vid-automation/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-03-03T07:14:35Z",
+      "side": 1,
+      "message": "maybe we don\u0027t need to import httpcode directly",
+      "revId": "9ba4d0678396bb3d8a0b3ecbe9899bb4895e87c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
