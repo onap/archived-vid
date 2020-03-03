@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1fe868dc_322b5d96",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/network.popup.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-03T15:31:16Z",
+      "side": 1,
+      "message": "please remove the .only",
+      "revId": "6076bb5179bf9cdb7eb72323e83002b8bda02eda",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67532319_5247c6c5",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/network.popup.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-03T15:31:16Z",
+      "side": 1,
+      "message": "shouldn\u0027t this expectation change because fillNetworkPopup\u0027s shouldSelectAdditionalPlatform\u003dtrue on line #178?\nif so -\u003e this will affect one of our backend e2e tests as well (which is good, IMO).",
+      "revId": "6076bb5179bf9cdb7eb72323e83002b8bda02eda",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5bbce69_f34da183",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/networkGenerator/network.control.generator.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-03T15:31:16Z",
+      "side": 1,
+      "message": "in my view, this control must be shared with vnf. no duplication is anticipated here, as this control has 100% feature parity.",
+      "revId": "6076bb5179bf9cdb7eb72323e83002b8bda02eda",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
