@@ -22,6 +22,7 @@ package org.onap.sdc.ci.tests.utilities;
 
 import static org.testng.AssertJUnit.assertTrue;
 
+import com.aventstack.extentreports.Status;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -43,13 +44,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
-
 import org.apache.commons.io.FileUtils;
 import org.onap.sdc.ci.tests.execute.setup.ExtentTestActions;
 import org.onap.sdc.ci.tests.execute.setup.SetupCDTest;
 import org.yaml.snakeyaml.Yaml;
-
-import com.aventstack.extentreports.Status;
 
 public class FileHandling {
 
@@ -310,12 +308,6 @@ public class FileHandling {
 				return flag = true;
 		}
 		return flag;
-	}
-	
-	public static String getMD5OfFile(File file) throws IOException {
-		String content = FileUtils.readFileToString(file);
-		String md5 = GeneralUtility.calculateMD5ByString(content);
-		return md5;
 	}
 	
 	public static File createEmptyFile(String fileToCreate) {
