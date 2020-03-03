@@ -6,7 +6,11 @@ import {HttpClient} from "@angular/common/http";
 import {ControlGeneratorUtil} from "../control.generator.util.service";
 import * as _ from 'lodash';
 
-import {FormControlModel,} from "../../../../models/formControlModels/formControl.model";
+import {
+  FormControlModel,
+  ValidatorModel,
+  ValidatorOptions,
+} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {AppState} from "../../../../store/reducers";
 import {DropdownFormControl} from "../../../../models/formControlModels/dropdownFormControl.model";
@@ -14,6 +18,10 @@ import {FormControlType} from "../../../../models/formControlModels/formControlT
 import {NetworkInstance} from "../../../../models/networkInstance";
 import {NetworkModel} from "../../../../models/networkModel";
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
+import {MultiselectFormControl} from "../../../../models/formControlModels/multiselectFormControl.model";
+import {MultiSelectItem} from "../../../formControls/component/multiselect/multiselect.model";
+import {FormGroup} from "@angular/forms";
+
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -56,6 +64,7 @@ export class NetworkControlGenerator {
     const networkInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode));
     const networkModel = new NetworkModel(this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
     let result: FormControlModel[] = [];
+    const flags = this.store.getState().global.flags;
 
     if (!_.isNil(networkModel)) {
       result.push(this.getInstanceName(networkInstance, serviceId, networkName, networkModel.isEcompGeneratedNaming));
@@ -63,7 +72,7 @@ export class NetworkControlGenerator {
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, networkInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(networkInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, networkInstance));
-      result.push(this.getPlatformControl(networkInstance));
+      result.push(this.getPlatformControl(networkInstance, flags['FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT']));
       result.push(this._sharedControllersService.getLineOfBusinessControl(networkInstance));
     }
     return result;
@@ -80,6 +89,7 @@ export class NetworkControlGenerator {
     let result: FormControlModel[] = [];
     const networkInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode));
     const networkModel = new NetworkModel(this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
+    const flags = this.store.getState().global.flags;
 
     if (!_.isNil(networkModel)) {
       result.push(this.getInstanceName(networkInstance, serviceId, networkName, networkModel.isEcompGeneratedNaming));
@@ -87,7 +97,7 @@ export class NetworkControlGenerator {
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, networkInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(networkInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, networkInstance));
-      result.push(this.getPlatformControl(networkInstance));
+      result.push(this.getPlatformControl(networkInstance, flags['FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT']));
       result.push(this._sharedControllersService.getLineOfBusinessControl(networkInstance));
       result.push(this._sharedControllersService.getRollbackOnFailureControl(networkInstance));
     }
@@ -100,7 +110,15 @@ export class NetworkControlGenerator {
     return this._sharedControllersService.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, networkModel);
   }
 
-  getPlatformControl = (instance: any): DropdownFormControl => {
+  getPlatformControl = (instance: any, isMultiSelect?: boolean): MultiselectFormControl | DropdownFormControl => {
+    const shouldGenerateDropdown =  isMultiSelect === undefined || isMultiSelect === false;
+    if(shouldGenerateDropdown){
+      return this.getPlatformDropdownController(instance);
+    }
+    return this.getPlatformMultiselectControl(instance);
+  };
+
+  getPlatformDropdownController = (instance: any): DropdownFormControl => {
     return new DropdownFormControl({
       type: FormControlType.DROPDOWN,
       controlName: 'platformName',
@@ -115,4 +133,32 @@ export class NetworkControlGenerator {
       onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
     })
   };
-}
+
+  getPlatformMultiselectControl = (instance: any) : MultiselectFormControl => {
+    return new MultiselectFormControl({
+      type: FormControlType.MULTI_SELECT ,
+      controlName: 'platformName',
+      displayName: 'Platform',
+      dataTestId: 'multi-selectPlatform',
+      selectedFieldName :  'name' ,
+      ngValue :  'name',
+      placeHolder: 'Select Platform',
+      isDisabled: false,
+      name: "platform",
+      value: instance ? instance.platformName : '',
+      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
+      onInitSelectedField: ['platformList'],
+      onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters),
+      onChange : (param: MultiSelectItem[], form: FormGroup) => {
+        form.controls['platformName'].setValue(param.map((multiSelectItem: MultiSelectItem)=>{
+          return multiSelectItem.itemName
+        }).join(','));
+      },
+      convertOriginalDataToArray : (value?: string) => {
+        if(_.isNil(value)) return [];
+        return value.split(',');
+      }
+    });
+  };
+
+  }

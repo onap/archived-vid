@@ -195,7 +195,7 @@ describe('A la carte', function () {
         cy.openIframe('app/ui/#/servicePlanning?serviceModelId=2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd');
         cy.getElementByDataTestsId("node-ExtVL 0-add-btn").click({force: true});
 
-        cy.selectDropdownOptionByText("platform", "xxx1");
+        cy.selectPlatformValue("xxx1");
         cy.selectDropdownOptionByText("lcpRegion", "AAIAIC25");
         cy.selectDropdownOptionByText("tenant", "USP-SIP-IC-24335-T-01");
         cy.selectDropdownOptionByText("productFamily", "ERICA");

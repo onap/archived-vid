@@ -7,9 +7,15 @@ import {GenericFormService} from "../../generic-form.service";
 import {FormBuilder} from "@angular/forms";
 import {LogService} from "../../../../utils/log/log.service";
 import {FormControlNames, NetworkControlGenerator} from "./network.control.generator";
-import {FormControlModel, ValidatorModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
+import {
+  FormControlModel,
+  ValidatorModel,
+  ValidatorOptions
+} from "../../../../models/formControlModels/formControl.model";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
+import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
+
 
 class MockAppStore<T> {
   getState(){
@@ -1963,6 +1969,34 @@ describe('Network Control Generator', () => {
       let requiredExist = controls.find(ctrl => ctrl.controlName === mandatoryControls[i]).validations.find(item => item.validatorName === 'required');
       expect(requiredExist).toBeDefined();
     }
+  });
+
+  test('should call platform dropdown control', ()=>{
+    spyOn(service, 'getPlatformDropdownController');
+
+    service.getPlatformControl(null, false);
+
+    expect(service.getPlatformDropdownController).toBeCalledWith(null);
+  });
+
+  test('should call platform multi select control', ()=>{
+    spyOn(service, 'getPlatformMultiselectControl');
+
+    service.getPlatformControl(null, true);
+
+    expect(service.getPlatformMultiselectControl).toBeCalledWith(null);
+  });
+
+  test('should generate platform multi select control', ()=>{
+    const control = service.getPlatformMultiselectControl(null);
+    expect(control.type).toEqual(FormControlType.MULTI_SELECT);
+    expect(control.controlName).toEqual('platformName');
+    expect(control.displayName).toEqual('Platform');
+    expect(control.dataTestId).toEqual('multi-selectPlatform');
+    expect(control.selectedFieldName).toEqual('name');
+    expect(control.value).toEqual('');
+    expect(control.onChange).toBeDefined();
+    expect(control.convertOriginalDataToArray).toBeDefined();
   });
 });
 
