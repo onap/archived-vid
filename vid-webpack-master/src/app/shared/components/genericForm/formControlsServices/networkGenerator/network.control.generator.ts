@@ -9,11 +9,10 @@ import * as _ from 'lodash';
 import {FormControlModel,} from "../../../../models/formControlModels/formControl.model";
 import {LogService} from "../../../../utils/log/log.service";
 import {AppState} from "../../../../store/reducers";
-import {DropdownFormControl} from "../../../../models/formControlModels/dropdownFormControl.model";
-import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
 import {NetworkInstance} from "../../../../models/networkInstance";
 import {NetworkModel} from "../../../../models/networkModel";
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
+
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -56,6 +55,7 @@ export class NetworkControlGenerator {
     const networkInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode));
     const networkModel = new NetworkModel(this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
     let result: FormControlModel[] = [];
+    const flags = this.store.getState().global.flags;
 
     if (!_.isNil(networkModel)) {
       result.push(this.getInstanceName(networkInstance, serviceId, networkName, networkModel.isEcompGeneratedNaming));
@@ -63,7 +63,7 @@ export class NetworkControlGenerator {
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, networkInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(networkInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, networkInstance));
-      result.push(this.getPlatformControl(networkInstance));
+      result.push(this._sharedControllersService.getPlatformMultiselectControl(networkInstance, result, flags['FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT']));
       result.push(this._sharedControllersService.getLineOfBusinessControl(networkInstance));
     }
     return result;
@@ -80,6 +80,7 @@ export class NetworkControlGenerator {
     let result: FormControlModel[] = [];
     const networkInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getNetworkInstance(serviceId, networkStoreKey, isUpdateMode));
     const networkModel = new NetworkModel(this.store.getState().service.serviceHierarchy[serviceId].networks[networkName]);
+    const flags = this.store.getState().global.flags;
 
     if (!_.isNil(networkModel)) {
       result.push(this.getInstanceName(networkInstance, serviceId, networkName, networkModel.isEcompGeneratedNaming));
@@ -87,7 +88,7 @@ export class NetworkControlGenerator {
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, networkInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(networkInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, networkInstance));
-      result.push(this.getPlatformControl(networkInstance));
+      result.push(this._sharedControllersService.getPlatformMultiselectControl(networkInstance, result, flags['FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT']));
       result.push(this._sharedControllersService.getLineOfBusinessControl(networkInstance));
       result.push(this._sharedControllersService.getRollbackOnFailureControl(networkInstance));
     }
@@ -99,20 +100,4 @@ export class NetworkControlGenerator {
     const networkModel: NetworkModel = this.store.getState().service.serviceHierarchy[serviceId].networks[networkName];
     return this._sharedControllersService.getInstanceNameController(instance, serviceId, isEcompGeneratedNaming, networkModel);
   }
-
-  getPlatformControl = (instance: any): DropdownFormControl => {
-    return new DropdownFormControl({
-      type: FormControlType.DROPDOWN,
-      controlName: 'platformName',
-      displayName: 'Platform',
-      dataTestId: 'platform',
-      placeHolder: 'Select Platform',
-      isDisabled: false,
-      name: "platform",
-      value: instance ? instance.platformName : null,
-      validations: [],
-      onInitSelectedField: ['platformList'],
-      onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
-    })
-  };
 }

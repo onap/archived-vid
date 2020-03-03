@@ -14,7 +14,6 @@ import {
 import {LogService} from "../../../../utils/log/log.service";
 import {VnfControlGenerator} from "./vnf.control.generator";
 import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flags.service";
-import {FormControlType} from "../../../../models/formControlModels/formControlTypes.enum";
 import {SharedControllersService} from "../sharedControlles/shared.controllers.service";
 
 class MockAppStore<T> {
@@ -939,19 +938,6 @@ describe('VNF Control Generator', () => {
     httpMock = injector.get(HttpTestingController);
 
   })().then(done).catch(done.fail));
-
-
-  test('should generate platform multi select control', ()=>{
-    const control = service.getPlatformMultiselectControl(null, [],false);
-    expect(control.type).toEqual(FormControlType.MULTI_SELECT);
-    expect(control.controlName).toEqual('platformName');
-    expect(control.displayName).toEqual('Platform');
-    expect(control.dataTestId).toEqual('multi-selectPlatform');
-    expect(control.selectedFieldName).toEqual('name');
-    expect(control.value).toEqual('');
-    expect(control.onChange).toBeDefined();
-    expect(control.convertOriginalDataToArray).toBeDefined();
-  });
 
   test('getMacroFormControls check for mandatory controls', () => {
     const serviceId : string = "6e59c5de-f052-46fa-aa7e-2fca9d674c44";

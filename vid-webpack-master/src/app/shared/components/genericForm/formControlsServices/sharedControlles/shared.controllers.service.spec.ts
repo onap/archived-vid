@@ -11,7 +11,6 @@ import {FormControlModel, ValidatorOptions} from "../../../../models/formControl
 import {ControlGeneratorUtil} from "../control.generator.util.service";
 
 
-
 describe('Shared Controllers Service', () => {
   let injector;
   let service: SharedControllersService;
@@ -117,6 +116,18 @@ describe('Shared Controllers Service', () => {
     const instance = {lcpCloudRegionId : 'olson3'};
     const legacyRegionControl: FormControlModel = service.getLegacyRegion(instance);
     expect(legacyRegionControl.isVisible).toBeFalsy();
+  });
+
+  test('multiSelectFlag is not activated should generate platform multi select control with 1 as limitSelection', ()=>{
+    const control = service.getPlatformMultiselectControl(null, [],false);
+    expect(control.dataTestId).toEqual('multi-selectPlatform');
+    expect(control.limitSelection).toEqual(1);
+  });
+
+  test('multiSelectFlag is activated should generate platform multi select control with 1000 as limitSelection', ()=>{
+    const control = service.getPlatformMultiselectControl(null, [],true);
+    expect(control.dataTestId).toEqual('multi-selectPlatform');
+    expect(control.limitSelection).toEqual(1000);
   });
 });
 
