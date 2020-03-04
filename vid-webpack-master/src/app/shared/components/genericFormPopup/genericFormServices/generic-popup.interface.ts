@@ -16,7 +16,7 @@ import {FormPopupDetails} from "../../../models/formControlModels/formPopupDetai
 export interface GenericPopupInterface {
   onSubmit(that, form: FormGroup, ...args) : void;
   onCancel(that, form) : void;
-  getModelInformation(serviceId : string, modelName : string) : void;
+  getModelInformation(serviceId : string, modelName : string, node: ITreeNode) : void;
   getGenericFormPopupDetails(serviceId : string, modelName : string , storeKey : string, node : ITreeNode, uuidData : Object, isUpdateMode : boolean) : FormPopupDetails;
   getInstance(serviceId : string, modelName : string , storeKey : string) : any;
   getTitle(isUpdateMode : boolean) : string;
