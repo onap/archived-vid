@@ -65,4 +65,13 @@ export class BasicPopupService {
       true
     );
   }
+
+  getVersionEitherFromInstanceOrFromHierarchy(nodeData, model): string | undefined {
+    if(nodeData && nodeData.instanceModelInfo && nodeData.instanceModelInfo.modelVersion) {
+      return nodeData.instanceModelInfo.modelVersion;
+    }else if(model && model.version) {
+      return model.version;
+    }
+    return undefined;
+  }
 }
