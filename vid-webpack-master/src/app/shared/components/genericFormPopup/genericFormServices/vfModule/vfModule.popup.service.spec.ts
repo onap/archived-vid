@@ -15,6 +15,7 @@ import {getTestBed, TestBed} from "@angular/core/testing";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 import {ModalService} from "../../../customModal/services/modal.service";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
+import {ITreeNode} from "angular-tree-component/dist/defs/api";
 
 class MockModalService<T> {}
 
@@ -1979,6 +1980,7 @@ describe('VFModule popup service', () => {
   let defaultDataGeneratorService: DefaultDataGeneratorService;
   let fb: FormBuilder;
   let iframeService: IframeService;
+  let _sharedTreeService : SharedTreeService;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -2008,6 +2010,7 @@ describe('VFModule popup service', () => {
     genericFormService = injector.get(GenericFormService);
     defaultDataGeneratorService = injector.get(DefaultDataGeneratorService);
     fb = injector.get(FormBuilder);
+    _sharedTreeService = injector.get(SharedTreeService);
     iframeService = injector.get(IframeService);
 
   })().then(done).catch(done.fail));
@@ -2041,7 +2044,7 @@ describe('VFModule popup service', () => {
     const serviceId: string = '6b528779-44a3-4472-bdff-9cd15ec93450';
     const vfModuleModelName: string = '2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1';
 
-    service.getModelInformation(serviceId, vfModuleModelName);
+    service.getModelInformation(serviceId, vfModuleModelName, getVfModelNode());
     expect(service.modelInformations.length).toEqual(15);
     expect(service.modelInformations[0].label).toEqual("Subscriber Name");
     expect(service.modelInformations[0].values).toEqual(['SILVIA ROBBINS']);
@@ -2056,7 +2059,7 @@ describe('VFModule popup service', () => {
     expect(service.modelInformations[3].values).toEqual(['2017488PasqualeVpe..PASQUALE_vRE_BV..module-1']);
 
     expect(service.modelInformations[4].label).toEqual("Model version");
-    expect(service.modelInformations[4].values).toEqual(['6']);
+    expect(service.modelInformations[4].values).toEqual(['1']);
 
     expect(service.modelInformations[5].label).toEqual("Description");
     expect(service.modelInformations[5].values).toEqual([null]);
@@ -2127,4 +2130,15 @@ describe('VFModule popup service', () => {
       }
     }, "*");
   });
+
+  function getVfModelNode() {
+    let vfModuleNode: ITreeNode = <any>{
+      data: {
+        instanceModelInfo: {
+          modelVersion: "1",
+        }
+      }
+    };
+    return vfModuleNode;
+  }
 });
