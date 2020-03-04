@@ -14,6 +14,8 @@ import {BasicPopupService} from "./basic.popup.service";
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {ModalService} from "../../customModal/services/modal.service";
+import each from "jest-each";
+import {ITreeNode} from "angular-tree-component/dist/defs/api";
 
 class MockAppStore<T> {}
 
@@ -2036,4 +2038,24 @@ describe('Basic popup service', () => {
   test('when there is no max instances in model , shell return maximum item with Unlimited text', () =>{
     expect(service.createMaximumToInstantiateModelInformationItem({}).values[0]).toEqual('Unlimited (default)');
   });
+
+  each([
+    ['from instance', getModelNode(), {"version": "15"}, "1"],
+    ['from instance', getModelNode(), null, "1"],
+    ['from hierarchy', null, {"version": "15"}, "15"],
+    ['undefined', null, null, undefined],
+  ]).
+  test('getVersionEitherFromInstanceOrFromHierarchy should return model version %s', (description, vfModelNode, model, expectedVersion) => {
+    let expectedResult = service.getVersionEitherFromInstanceOrFromHierarchy(vfModelNode, model);
+    expect(expectedResult).toEqual(expectedVersion);
+  });
+
+  function getModelNode() {
+    let node: ITreeNode = <any>{
+      instanceModelInfo: {
+        modelVersion: "1",
+      }
+    };
+    return node;
+  }
 });
