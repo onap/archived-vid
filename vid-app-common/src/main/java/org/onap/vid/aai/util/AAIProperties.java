@@ -35,12 +35,6 @@ public class AAIProperties extends SystemProperties {
 	/** The Constant AAI_SERVER_URL. */
 	public static final String AAI_SERVER_URL = "aai.server.url";
 	
-	/** The Constant AAI_OLDSERVER_URL_BASE. */
-	public static final String AAI_OLDSERVER_URL_BASE = "aai.oldserver.url.base";
-	
-	/** The Constant AAI_OLDSERVER_URL. */
-	public static final String AAI_OLDSERVER_URL = "aai.oldserver.url";
-	
 	/** The Constant AAI_TRUSTSTORE_FILENAME. */
 	public static final String AAI_TRUSTSTORE_FILENAME = "aai.truststore.filename";
 	

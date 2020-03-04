@@ -66,33 +66,33 @@ A&AI
 
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get all subscribers                                                    |
-|   aai/v13/business/customers?subscriber-type=INFRA&depth=2                                                                    |                                                                        |
+|   aai/v16/business/customers?subscriber-type=INFRA&depth=2                                                                    |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET aai/v13/                                                                                                                  | Get data for a specific subscriber including its available services    |
+| GET aai/v16/                                                                                                                  | Get data for a specific subscriber including its available services    |
 |   business/customers/customer/<global_customer_id>                                                                            |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get all service types                                                  |
-|   aai/v13/service-design-and-creation/services                                                                                |                                                                        |
+|   aai/v16/service-design-and-creation/services                                                                                |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get services by owner entity id                                        |
-|   aai/v13/business/owning-entities?<owning_entitiy_ids>                                                                       |                                                                        |
+|   aai/v16/business/owning-entities?<owning_entitiy_ids>                                                                       |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | GET                                                                                                                           | Get services by project name                                           |
-|   aai/v13/business/projects?<project-names>                                                                                   |                                                                        |
+|   aai/v16/business/projects?<project-names>                                                                                   |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET aai/v13/network/zones                                                                                                     | Get all AIC zones                                                      |
+| GET aai/v16/network/zones                                                                                                     | Get all AIC zones                                                      |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | POST search/named-query                                                                                                       | Get data regarding an instance and the instance's related nodes        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| GET aai/v13/                                                                                                                  | Get AIC zones for a specific service instance                          |
+| GET aai/v16/                                                                                                                  | Get AIC zones for a specific service instance                          |
 |   business/customers/customer/<global_customer_id>/                                                                           |                                                                        |
 |   /service-subscriptions/service-subscription/<service_type>/service-instances/service-instance/<service_instance_id>         |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| PUT Aai/v13/query?format=simple(types:                                                                                        | This is a custom query and has multiple types(declared in the url line)|
+| PUT aai/v16/query?format=simple(types:                                                                                        | This is a custom query and has multiple types(declared in the url line)|
 |   “query/vnfFromModelbyRegion?cloudRegionId”,”                                                                                |                                                                        |
 |   vnf-topology-fromServiceInstance”)                                                                                          |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
-| Aai/v13/                                                                                                                      | Get the human readable version by version id                           |
+| aai/v16/                                                                                                                      | Get the human readable version by version id                           |
 |   service-design-and-creation/models?depth=2                                                                                  |                                                                        |
 +-------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------+
 | business/customers/customer/<global_customer_id>/service-subscriptions/service-subscription/<service_Subscription_Id>?depth=0 | Get all service subscriptions                                          |

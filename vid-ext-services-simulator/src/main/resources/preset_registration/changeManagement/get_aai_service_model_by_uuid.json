@@ -1,7 +1,7 @@
 {
   "simulatorRequest": {
     "method": "GET",
-    "path": "/aai/v13/service-design-and-creation/models",
+    "path": "/aai/v../service-design-and-creation/models",
     "queryParams": {
       "depth": [
         "2"
