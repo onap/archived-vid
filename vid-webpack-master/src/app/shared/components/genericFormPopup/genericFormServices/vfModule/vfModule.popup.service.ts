@@ -62,7 +62,16 @@ export abstract class VfModulePopupServiceBase {
     return vfModules[this.uuidData['modelName']][vfModuleStoreKey];
   }
 
-  getModelInformation(serviceId: string, modelName: string) {
+  getVersionEitherFromInstanceOrFromHierarchy(vfModuleNodeData, model): string | undefined {
+    if(vfModuleNodeData && vfModuleNodeData.instanceModelInfo && vfModuleNodeData.instanceModelInfo.modelVersion) {
+      return vfModuleNodeData.instanceModelInfo.modelVersion;
+    }else if(model && model.version) {
+      return model.version;
+    }
+    return undefined;
+  }
+
+  getModelInformation(serviceId: string, modelName: string, vfModuleModeNode:ITreeNode) {
     this._aaiService.getServiceModelById(serviceId).subscribe((result: any) => {
       this.serviceModel = new ServiceModel(result);
 
@@ -73,7 +82,7 @@ export abstract class VfModulePopupServiceBase {
         new ModelInformationItem("Service Name", "serviceModelName", [this.serviceModel.name], "", true),
         new ModelInformationItem("Service Instance Name", "serviceName", [serviceInstance.instanceName], "", false),
         new ModelInformationItem("Model Name", "modelName", [this.model.name], "", true),
-        new ModelInformationItem("Model version", "modelVersion", [this.model.version], "", true),
+        new ModelInformationItem("Model version", "modelVersion", [this.getVersionEitherFromInstanceOrFromHierarchy(vfModuleModeNode.data, this.model) ], "", true),
         new ModelInformationItem("Description", "description", [this.model.description]),
         new ModelInformationItem("Category", "category", [this.model.category]),
         new ModelInformationItem("Sub Category", "subCategory", [this.model.subCategory]),
@@ -115,11 +124,11 @@ export abstract class VfModulePopupServiceBase {
   abstract getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean);
   abstract getDynamicInputs(UUIDData : Object) : FormControlModel[];
 
-  getGenericFormPopupDetails(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, node: ITreeNode, uuidData: Object, isUpdateMode: boolean): FormPopupDetails {
+  getGenericFormPopupDetails(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, vfModuleNode: ITreeNode, uuidData: Object, isUpdateMode: boolean): FormPopupDetails {
 
     this.uuidData = uuidData;
     this.instance = this.getInstance(serviceId, vnfStoreKey, vfModuleStoreKey);
-    this.getModelInformation(serviceId, uuidData['modelName']);
+    this.getModelInformation(serviceId, uuidData['modelName'], vfModuleNode);
 
     return new FormPopupDetails(this,
       PopupType.VFMODULE,

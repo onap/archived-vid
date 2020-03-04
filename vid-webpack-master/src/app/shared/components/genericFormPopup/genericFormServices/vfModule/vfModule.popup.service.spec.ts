@@ -15,6 +15,8 @@ import {getTestBed, TestBed} from "@angular/core/testing";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 import {ModalService} from "../../../customModal/services/modal.service";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
+import {AppState} from "../../../../store/reducers";
+import {ITreeNode} from "angular-tree-component/dist/defs/api";
 
 class MockModalService<T> {}
 
@@ -1978,6 +1980,7 @@ describe('VFModule popup service', () => {
   let genericFormService: GenericFormService
   let defaultDataGeneratorService: DefaultDataGeneratorService;
   let fb: FormBuilder;
+  let store : NgRedux<AppState>;
   let iframeService: IframeService;
 
   beforeAll(done => (async () => {
@@ -2008,6 +2011,7 @@ describe('VFModule popup service', () => {
     genericFormService = injector.get(GenericFormService);
     defaultDataGeneratorService = injector.get(DefaultDataGeneratorService);
     fb = injector.get(FormBuilder);
+    store = injector.get(NgRedux);
     iframeService = injector.get(IframeService);
 
   })().then(done).catch(done.fail));
@@ -2026,6 +2030,23 @@ describe('VFModule popup service', () => {
     expect (VfModuleInstance).toBeDefined();
   });
 
+  test('getVersionEitherFromInstanceOrFromHierarchy should return model version from instance', () => {
+    const model = {"version": "15"};
+    const vfModelNode = getVfModelNode();
+    let expectedResult = service.getVersionEitherFromInstanceOrFromHierarchy(vfModelNode, model);
+    expect(expectedResult).toEqual("1");
+
+  });
+
+  function getVfModelNode() {
+    let vfModuleNode: ITreeNode = <any>{
+        instanceModelInfo: {
+          modelVersion: "1",
+      }
+    };
+    return vfModuleNode;
+  }
+
   test('getSubLeftTitle should return network model name', () => {
     service.model = {
       'name' : 'Model name'
@@ -2041,7 +2062,7 @@ describe('VFModule popup service', () => {
     const serviceId: string = '6b528779-44a3-4472-bdff-9cd15ec93450';
     const vfModuleModelName: string = '2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1';
 
-    service.getModelInformation(serviceId, vfModuleModelName);
+    service.getModelInformation(serviceId, vfModuleModelName, getVfModelNode());
     expect(service.modelInformations.length).toEqual(15);
     expect(service.modelInformations[0].label).toEqual("Subscriber Name");
     expect(service.modelInformations[0].values).toEqual(['SILVIA ROBBINS']);
