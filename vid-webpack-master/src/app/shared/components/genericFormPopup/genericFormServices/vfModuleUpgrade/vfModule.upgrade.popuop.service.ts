@@ -34,8 +34,8 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
               protected _aaiService: AaiService,
               protected _basicPopupService: BasicPopupService,
               protected _store: NgRedux<AppState>,
-              private _sharedTreeService: SharedTreeService) {
-    super(_basicControlGenerator, _sharedControllersService, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
+              protected _sharedTreeService: SharedTreeService) {
+    super(_basicControlGenerator, _sharedControllersService, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store, _sharedTreeService);
   }
 
   node: ITreeNode;

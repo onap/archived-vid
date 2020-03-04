@@ -21,6 +21,7 @@ import {FormControlModel} from "../../../../models/formControlModels/formControl
 import * as _ from 'lodash';
 import {createVFModuleInstance, updateVFModuleInstance} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 
 export abstract class VfModulePopupServiceBase {
   dynamicInputs: any;
@@ -51,7 +52,8 @@ export abstract class VfModulePopupServiceBase {
     protected _defaultDataGeneratorService: DefaultDataGeneratorService,
     protected _aaiService: AaiService,
     protected _basicPopupService: BasicPopupService,
-    protected _store: NgRedux<AppState>) {
+    protected _store: NgRedux<AppState>,
+    protected _sharedTreeService: SharedTreeService) {
   }
 
   getInstance(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string): any {
@@ -62,7 +64,7 @@ export abstract class VfModulePopupServiceBase {
     return vfModules[this.uuidData['modelName']][vfModuleStoreKey];
   }
 
-  getModelInformation(serviceId: string, modelName: string) {
+  getModelInformation(serviceId: string, modelName: string, vfModuleModeNode:ITreeNode) {
     this._aaiService.getServiceModelById(serviceId).subscribe((result: any) => {
       this.serviceModel = new ServiceModel(result);
 
@@ -73,7 +75,7 @@ export abstract class VfModulePopupServiceBase {
         new ModelInformationItem("Service Name", "serviceModelName", [this.serviceModel.name], "", true),
         new ModelInformationItem("Service Instance Name", "serviceName", [serviceInstance.instanceName], "", false),
         new ModelInformationItem("Model Name", "modelName", [this.model.name], "", true),
-        new ModelInformationItem("Model version", "modelVersion", [this.model.version], "", true),
+        new ModelInformationItem("Model version", "modelVersion", [this._sharedTreeService.getModelVersionEitherFromInstanceOrFromHierarchy(vfModuleModeNode.data, this.model) ], "", true),
         new ModelInformationItem("Description", "description", [this.model.description]),
         new ModelInformationItem("Category", "category", [this.model.category]),
         new ModelInformationItem("Sub Category", "subCategory", [this.model.subCategory]),
@@ -115,11 +117,11 @@ export abstract class VfModulePopupServiceBase {
   abstract getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean);
   abstract getDynamicInputs(UUIDData : Object) : FormControlModel[];
 
-  getGenericFormPopupDetails(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, node: ITreeNode, uuidData: Object, isUpdateMode: boolean): FormPopupDetails {
+  getGenericFormPopupDetails(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, vfModuleNode: ITreeNode, uuidData: Object, isUpdateMode: boolean): FormPopupDetails {
 
     this.uuidData = uuidData;
     this.instance = this.getInstance(serviceId, vnfStoreKey, vfModuleStoreKey);
-    this.getModelInformation(serviceId, uuidData['modelName']);
+    this.getModelInformation(serviceId, uuidData['modelName'], vfModuleNode);
 
     return new FormPopupDetails(this,
       PopupType.VFMODULE,
@@ -165,8 +167,9 @@ export class VfModulePopupService extends VfModulePopupServiceBase implements Ge
               _defaultDataGeneratorService: DefaultDataGeneratorService,
               _aaiService: AaiService,
               _basicPopupService : BasicPopupService,
-              _store: NgRedux<AppState>) {
-    super(_basicControlGenerator, _sharedControllersService, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store);
+              _store: NgRedux<AppState>,
+              _sharedTreeService: SharedTreeService) {
+    super(_basicControlGenerator, _sharedControllersService, _vfModuleControlGenerator, _iframeService, _defaultDataGeneratorService, _aaiService, _basicPopupService, _store, _sharedTreeService);
 
   }
 
