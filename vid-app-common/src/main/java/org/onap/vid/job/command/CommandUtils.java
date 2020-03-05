@@ -20,10 +20,16 @@
 
 package org.onap.vid.job.command;
 
+import static org.apache.commons.collections4.MapUtils.emptyIfNull;
+
 import org.apache.commons.lang3.StringUtils;
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.aai.model.ModelVer;
-import org.onap.vid.asdc.AsdcCatalogException;
+import org.onap.vid.model.Group;
+import org.onap.vid.model.GroupProperties;
 import org.onap.vid.model.ServiceModel;
+import org.onap.vid.model.VfModule;
+import org.onap.vid.mso.model.ModelInfo;
 import org.onap.vid.services.AaiService;
 import org.onap.vid.services.VidService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +37,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommandUtils {
+
+    private static final EELFLoggerDelegate Logger = EELFLoggerDelegate.getLogger(CommandUtils.class);
 
     private final VidService vidService;
     private final AaiService aaiService;
@@ -41,43 +49,32 @@ public class CommandUtils {
         this.aaiService = aaiService;
     }
 
-    public boolean isVfModuleBaseModule(String serviceModelUuid, String vfModuleModelUUID) throws AsdcCatalogException{
-        ServiceModel serviceModel =  getServiceModel(serviceModelUuid);
+    public boolean isVfModuleBaseModule(String serviceModelUuid, ModelInfo vfModuleModelInfo) {
+        ServiceModel serviceModel = getServiceModel(serviceModelUuid);
 
-        if (serviceModel.getVfModules() == null) {
-            throw createAsdcCatalogVfModuleModelUUIDNotFoundException(serviceModelUuid, vfModuleModelUUID);
-        }
-
-        return serviceModel.getVfModules()
-                .values()
-                .stream()
-                .filter(vfModule -> StringUtils.equals(vfModule.getUuid(), vfModuleModelUUID))
-                .findFirst()
-                .orElseThrow(() -> createAsdcCatalogVfModuleModelUUIDNotFoundException(serviceModelUuid, vfModuleModelUUID))
-                .getProperties()
-                .getBaseModule();
+        return emptyIfNull(serviceModel.getVfModules())
+            .values().stream()
+            .filter(toscaModelInfo -> modelsMatch(vfModuleModelInfo, toscaModelInfo))
+            .map(Group::getProperties)
+            .map(GroupProperties::getBaseModule)
+            .findAny().orElseGet(() -> {
+                Logger.debug(EELFLoggerDelegate.debugLogger, "Could not find vfModule in model with uuid {} ({})", serviceModelUuid, vfModuleModelInfo);
+                return false;
+            });
     }
 
-    public ServiceModel getServiceModel(String serviceModelUuid) throws AsdcCatalogException{
-        ServiceModel serviceModel =  vidService.getService(serviceModelUuid);
-
-        if (serviceModel==null) {
-            throw new AsdcCatalogException("Failed to retrieve model with uuid "+serviceModelUuid +" from SDC");
-        }
-
-        return serviceModel;
+    private boolean modelsMatch(ModelInfo instanceModelInfo, VfModule toscaModelInfo) {
+        return StringUtils.equals(toscaModelInfo.getCustomizationUuid(), instanceModelInfo.getModelCustomizationId())
+            || StringUtils.equals(toscaModelInfo.getModelCustomizationName(), instanceModelInfo.getModelCustomizationName());
     }
 
-    public String getNewestModelUuid(String serviceModelInvariantId)
-    {
+    public ServiceModel getServiceModel(String serviceModelUuid) {
+        return vidService.getServiceModelOrThrow(serviceModelUuid);
+    }
+
+    public String getNewestModelUuid(String serviceModelInvariantId) {
         ModelVer serviceModelLatestVersion = aaiService.getNewestModelVersionByInvariantId(serviceModelInvariantId);
-
         return serviceModelLatestVersion.getModelVersionId();
-    }
-
-    private AsdcCatalogException createAsdcCatalogVfModuleModelUUIDNotFoundException(String serviceModelUuid, String vfModuleModelUUID) {
-        return new AsdcCatalogException("Failed to find vfModuleModelUUID: " + vfModuleModelUUID +
-                "in model with uuid: " + serviceModelUuid);
     }
 
 }

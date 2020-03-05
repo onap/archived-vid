@@ -92,8 +92,7 @@ class VnfCommand @Autowired constructor(
     private fun filterModuleByNeedToCreateBase(vfModule: VfModule): Boolean {
         return needToCreateBaseModule ==
                 commandUtils.isVfModuleBaseModule(
-                        serviceModelInfoFromRequest().modelVersionId,
-                        vfModule.modelInfo.modelVersionId)
+                        serviceModelInfoFromRequest().modelVersionId, vfModule.modelInfo)
     }
 
     override fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String, testApi: String?): MsoRestCallPlan {
