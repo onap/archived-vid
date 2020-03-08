@@ -131,7 +131,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     @BeforeClass
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        msoBusinessLogic = new MsoBusinessLogicImpl(msoInterface);
+        msoBusinessLogic = new MsoBusinessLogicImpl(msoInterface, null);
     }
 
     @Test

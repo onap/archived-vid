@@ -36,7 +36,7 @@ public class MsoControllerNewTest {
 
     private MsoController createTestSubject() {
         try {
-            return new MsoController(new MsoBusinessLogicImpl(mock(MsoInterface.class)), mock(RestMsoImplementation.class),
+            return new MsoController(new MsoBusinessLogicImpl(mock(MsoInterface.class), null), mock(RestMsoImplementation.class),
                 new CloudOwnerServiceImpl(null, null));
         } catch (Exception e) {
             return null;
