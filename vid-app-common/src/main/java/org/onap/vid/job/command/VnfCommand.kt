@@ -61,8 +61,7 @@ class VnfCommand @Autowired constructor(
             try {
                 childJobs = pushChildrenJobsToBroker(vfModulesForChildrenJobs(vfModules), dataForChild, JobType.VolumeGroupInstantiation)
             } catch (e: AsdcCatalogException) {
-                LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to retrieve service definitions from SDC, for VfModule is BaseModule.. Error: " + e.message, e)
-                //return Job.JobStatus.FAILED
+                LOGGER.error("Failed to retrieve service definitions from SDC, for VfModule is BaseModule.. Error: " + e.message, e)
                 throw e;
             }
         }
@@ -92,8 +91,7 @@ class VnfCommand @Autowired constructor(
     private fun filterModuleByNeedToCreateBase(vfModule: VfModule): Boolean {
         return needToCreateBaseModule ==
                 commandUtils.isVfModuleBaseModule(
-                        serviceModelInfoFromRequest().modelVersionId,
-                        vfModule.modelInfo.modelVersionId)
+                        serviceModelInfoFromRequest().modelVersionId, vfModule.modelInfo)
     }
 
     override fun planCreateMyselfRestCall(commandParentData: CommandParentData, request: JobAdapter.AsyncJobRequest, userId: String, testApi: String?): MsoRestCallPlan {

@@ -67,7 +67,6 @@ import static org.testng.AssertJUnit.assertTrue;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
@@ -458,13 +457,11 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         when(restMso.GetForObject(endsWith(VNF_REQUEST_ID), eq(AsyncRequestStatus.class))).
             thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
-        try {
-            reset(commandUtils);
-            when(commandUtils.isVfModuleBaseModule(SERVICE_MODEL_VERSION_ID, VF_MODULE_0_MODEL_VERSION_ID)).thenReturn(true);
-            when(commandUtils.isVfModuleBaseModule(SERVICE_MODEL_VERSION_ID, VF_MODULE_1_MODEL_VERSION_ID)).thenReturn(false);
-        } catch (AsdcCatalogException e) {
-
-        }
+        reset(commandUtils);
+        when(commandUtils.isVfModuleBaseModule(eq(SERVICE_MODEL_VERSION_ID),
+            argThat(it -> it.getModelCustomizationId().equals(VF_MODULE_0_MODEL_CUSTOMIZATION_NAME)))).thenReturn(true);
+        when(commandUtils.isVfModuleBaseModule(eq(SERVICE_MODEL_VERSION_ID),
+            argThat(it -> it.getModelCustomizationId().equals(VF_MODULE_1_MODEL_CUSTOMIZATION_NAME)))).thenReturn(false);
 
         /*---------- vf Module without volume group name (base) -----------*/
 
@@ -1015,10 +1012,12 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         RestObject<AsyncRequestStatus> createStatusResponse,
         RestObject<AsyncRequestStatus> deleteStatusResponse,
         JobStatus expectedJobStatus,
-        int getStatusCounter) throws IOException, AsdcCatalogException {
+        int getStatusCounter) {
 
-        when(commandUtils.isVfModuleBaseModule("6b528779-44a3-4472-bdff-9cd15ec93450", "f8360508-3f17-4414-a2ed-6bc71161e8db")).thenReturn(true);
-        when(commandUtils.isVfModuleBaseModule("6b528779-44a3-4472-bdff-9cd15ec93450", "25284168-24bb-4698-8cb4-3f509146eca5")).thenReturn(false);
+        when(commandUtils.isVfModuleBaseModule(eq("6b528779-44a3-4472-bdff-9cd15ec93450"),
+            argThat(it -> it.getModelCustomizationName().equals("2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0")))).thenReturn(true);
+        when(commandUtils.isVfModuleBaseModule(eq("6b528779-44a3-4472-bdff-9cd15ec93450"),
+            argThat(it -> it.getModelCustomizationName().equals("2017488PasqualeVpe..PASQUALE_vRE_BV..module-1")))).thenReturn(false);
 
         createAndDeleteIntegrationTest("/payload_jsons/vfModuleDelete1Create1None1Request.json",
             "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/vnfs/VNF_INSTANCE_ID/vfModules",

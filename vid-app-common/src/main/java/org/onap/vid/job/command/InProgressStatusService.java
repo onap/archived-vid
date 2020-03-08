@@ -20,6 +20,11 @@
 
 package org.onap.vid.job.command;
 
+import static org.onap.vid.utils.TimeUtils.parseZonedDateTime;
+
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.UUID;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.impl.JobSharedData;
@@ -32,12 +37,6 @@ import org.onap.vid.services.AuditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.togglz.core.manager.FeatureManager;
-
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.UUID;
-
-import static org.onap.vid.utils.TimeUtils.parseZonedDateTime;
 
 @Service
 public class InProgressStatusService {
@@ -86,8 +85,7 @@ public class InProgressStatusService {
 
     public void handleFailedMsoResponse(UUID jobUUID, String requestId, RestObject<AsyncRequestStatus> msoResponse) {
         auditService.setFailedAuditStatusFromMso(jobUUID, requestId, msoResponse.getStatusCode(), msoResponse.getRaw());
-        LOGGER.error(EELFLoggerDelegate.errorLogger,
-                "Failed to get orchestration status for {}. Status code: {},  Body: {}",
+        LOGGER.error("Failed to get orchestration status for {}. Status code: {},  Body: {}",
                 requestId, msoResponse.getStatusCode(), msoResponse.getRaw());
     }
 
@@ -108,7 +106,7 @@ public class InProgressStatusService {
         try {
             jobStartTime = parseZonedDateTime(asyncRequestStatusResponse.get().request.startTime);
         } catch (DateTimeParseException | NullPointerException e) {
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to parse start time for {}, body: {}. Current time will be used", requestId, asyncRequestStatusResponse.getRaw(), e);
+            LOGGER.error("Failed to parse start time for {}, body: {}. Current time will be used", requestId, asyncRequestStatusResponse.getRaw(), e);
             jobStartTime = ZonedDateTime.now();
         }
         return jobStartTime;

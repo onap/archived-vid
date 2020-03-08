@@ -71,13 +71,13 @@ abstract class RootServiceCommand @Autowired constructor(
         try {
             val requests = auditService.retrieveRequestsFromMsoByServiceIdAndRequestTypeAndScope(serviceInstanceId, requestType, scope)
             if (requests.isEmpty() || requests[0].requestId == null) {
-                LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to retrieve requestId with type: $type, scope: $scope for service instanceId $serviceInstanceId ")
+                LOGGER.error("Failed to retrieve requestId with type: $type, scope: $scope for service instanceId $serviceInstanceId ")
                 return Job.JobStatus.FAILED
             }
             val createMyselfCommand = planResumeMyselfRestCall(requests[0].requestId, sharedData.userId)
             return executeAndHandleMsoInstanceRequest(createMyselfCommand)
         } catch (exception: Exception) {
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to resume instanceId $serviceInstanceId ", exception)
+            LOGGER.error("Failed to resume instanceId $serviceInstanceId ", exception)
             return Job.JobStatus.FAILED
         }
     }

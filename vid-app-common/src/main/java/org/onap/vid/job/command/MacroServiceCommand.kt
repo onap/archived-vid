@@ -62,13 +62,13 @@ class MacroServiceCommand @Autowired constructor(
 
         //Aai return bad response while checking names uniqueness
         catch (exception : ExceptionWithRequestInfo) {
-            Logger.error(EELFLoggerDelegate.errorLogger, "Failed to check name uniqueness in AAI. VID will try again later", exception)
+            Logger.error("Failed to check name uniqueness in AAI. VID will try again later", exception)
             throw TryAgainException(exception);
         }
 
         //Vid reached to max retries while trying to find unique name in AAI
         catch (exception : MaxRetriesException) {
-            Logger.error(EELFLoggerDelegate.errorLogger, "Failed to find unused name in AAI", exception)
+            Logger.error("Failed to find unused name in AAI", exception)
             throw AbortingException(exception);
         }
     }

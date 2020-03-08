@@ -193,7 +193,7 @@ class VfmoduleCommand @Autowired constructor(
             val replaceMyselfCommand = planReplaceMyselfRestCall(commandParentData)
             return executeAndHandleMsoInstanceRequest(replaceMyselfCommand)
         } catch (exception: Exception) {
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "Failed to replace instanceId ${getRequest().instanceId} ", exception)
+            LOGGER.error("Failed to replace instanceId ${getRequest().instanceId} ", exception)
             return Job.JobStatus.FAILED
         }
     }

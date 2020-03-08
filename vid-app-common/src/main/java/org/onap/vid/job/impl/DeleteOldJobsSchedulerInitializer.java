@@ -64,7 +64,7 @@ public class DeleteOldJobsSchedulerInitializer {
             Trigger deleteOldJobsTrigger = createTrigger();
             schedulerFactoryBean.getScheduler().scheduleJob(jobDetail, deleteOldJobsTrigger);
         } catch (SchedulerException e) {
-            logger.error(EELFLoggerDelegate.errorLogger, "Failed to schedule trigger for delete old jobs: {}", e.getMessage());
+            logger.error("Failed to schedule trigger for delete old jobs: {}", e.getMessage());
             throw new GenericUncheckedException(e);
         }
     }
