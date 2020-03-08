@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "229bece1_6dc40ff3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/CommandUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-03-08T08:35:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7436b4c3_3a345197",
+      "range": {
+        "startLine": 61,
+        "startChar": 61,
+        "endLine": 61,
+        "endChar": 113
+      },
+      "revId": "0d98edb2eca7bb68a2a70a2b75da6484c99e39e5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "65192ca0_5b6fa1b7",
         "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/CommandUtilsTest.java",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "0d98edb2eca7bb68a2a70a2b75da6484c99e39e5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06a5fb8c_437ad777",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/CommandUtilsTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-03-08T08:35:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "65192ca0_5b6fa1b7",
+      "range": {
+        "startLine": 108,
+        "startChar": 9,
+        "endLine": 108,
+        "endChar": 55
+      },
+      "revId": "0d98edb2eca7bb68a2a70a2b75da6484c99e39e5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
