@@ -222,3 +222,7 @@
 * FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF
   When flag is true new VF Modules on Alacarte service will inherit LCP-Region and Tenant from parent VNF.
   When off, user is requested to specify LCP-Region and Tenant for each VF Module.
+  
+* FLAG_EXP_USE_FORMAT_PARAMETER_FOR_CM_DASHBOARD
+  When flag is true VID will use the format=simpleNoTaskInfo parameter in addition to the filter parameter when fetching orchestration requests for the change-management dashboard.
+  When OFF, VID will use only the filter parameter
