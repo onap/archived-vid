@@ -24,7 +24,7 @@ describe('Network popup', function () {
 
   describe('basic UI tests', () => {
 
-    it('Network(A-La-Carte) - create / edit / duplicate / delete', function () {
+    it.only('Network(A-La-Carte) - create / edit / duplicate / delete', function () {
       let redux = getReduxWithVNFSAndNetwork();
       redux.service.serviceHierarchy['6b528779-44a3-4472-bdff-9cd15ec93450'].service.vidNotions.instantiationType = 'ALaCarte';
 

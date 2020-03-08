@@ -29,7 +29,7 @@ describe('A la carte', function () {
     });
 
 
-    it(`service name should be mandatory : serviceEcompNaming = true`, () => {
+    it.only(`service name should be mandatory : serviceEcompNaming = true`, () => {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicService.json').then((res) => {
         jsonBuilderAAIService.basicJson(res,
           Cypress.config('baseUrl') + '/rest/models/services/' + SERVICE_ID,
