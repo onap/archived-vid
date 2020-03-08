@@ -69,7 +69,7 @@ public class JobWorker extends QuartzJobBean {
         try {
             return jobsBrokerService.pull(topic, UUID.randomUUID().toString());
         } catch (Exception e) {
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "failed to pull job from queue, breaking: {}", e, e);
+            LOGGER.error("failed to pull job from queue, breaking: {}", e, e);
             tryMutingJobFromException(e);
 
             return Optional.empty();
@@ -80,7 +80,7 @@ public class JobWorker extends QuartzJobBean {
         try {
             jobsBrokerService.pushBack(nextJob);
         } catch (Exception e) {
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "failed pushing back job to queue: {}", e, e);
+            LOGGER.error("failed pushing back job to queue: {}", e, e);
         }
     }
 
@@ -114,7 +114,7 @@ public class JobWorker extends QuartzJobBean {
             final JobCommand jobCommand = jobCommandFactory.toCommand(job);
             nextCommand = jobCommand.call();
         } catch (Exception e) {
-            LOGGER.error(EELFLoggerDelegate.errorLogger, "error while executing job from queue: {}", e);
+            LOGGER.error("error while executing job from queue: {}", e, e);
             nextCommand = new NextCommand(FAILED);
         }
 
@@ -153,10 +153,10 @@ public class JobWorker extends QuartzJobBean {
                 LOGGER.info(EELFLoggerDelegate.debugLogger, "muting job: {} ({})", jobException.getJobUuid(), jobException.toString());
                 final boolean success = jobsBrokerService.mute(jobException.getJobUuid());
                 if (!success) {
-                    LOGGER.error(EELFLoggerDelegate.errorLogger, "failed to mute job {}", jobException.getJobUuid());
+                    LOGGER.error("failed to mute job {}", jobException.getJobUuid());
                 }
             } catch (Exception e1) {
-                LOGGER.error(EELFLoggerDelegate.errorLogger, "failed to mute job: {}", e1, e1);
+                LOGGER.error("failed to mute job: {}", e1, e1);
             }
         }
     }

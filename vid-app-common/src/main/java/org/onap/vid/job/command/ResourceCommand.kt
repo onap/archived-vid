@@ -153,7 +153,7 @@ abstract class ResourceCommand(
             JobStatus.IN_PROGRESS
         }
         catch (exception: AbortingException) {
-            Logger.error(EELFLoggerDelegate.errorLogger, "caught AbortingException. Set job status to FAILED")
+            Logger.error("caught AbortingException. Set job status to FAILED")
             JobStatus.FAILED;
         }
     }
@@ -330,13 +330,13 @@ abstract class ResourceCommand(
             handleInProgressStatus(jobStatus)
         } catch (e: javax.ws.rs.ProcessingException) {
             // Retry when we can't connect MSO during getStatus
-            Logger.error(EELFLoggerDelegate.errorLogger, "Cannot get orchestration status for {}, will retry: {}", requestId, e, e)
+            Logger.error("Cannot get orchestration status for {}, will retry: {}", requestId, e, e)
             JobStatus.IN_PROGRESS;
         } catch (e: InProgressStatusService.BadResponseFromMso) {
             inProgressStatusService.handleFailedMsoResponse(sharedData.jobUuid, requestId, e.msoResponse)
             JobStatus.IN_PROGRESS
         } catch (e: RuntimeException) {
-            Logger.error(EELFLoggerDelegate.errorLogger, "Cannot get orchestration status for {}, stopping: {}", requestId, e, e)
+            Logger.error("Cannot get orchestration status for {}, stopping: {}", requestId, e, e)
             JobStatus.STOPPED
         }
     }

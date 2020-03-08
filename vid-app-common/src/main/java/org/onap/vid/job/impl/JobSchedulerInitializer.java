@@ -20,23 +20,28 @@
 
 package org.onap.vid.job.impl;
 
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.JobsBrokerService;
 import org.onap.vid.job.command.JobCommandFactory;
-import org.quartz.*;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 import org.togglz.core.manager.FeatureManager;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
-
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 
 @Component
 public class JobSchedulerInitializer {
@@ -94,7 +99,7 @@ public class JobSchedulerInitializer {
         try {
             scheduler.scheduleJob(jobDetail, asyncWorkerTrigger);
         } catch (SchedulerException e) {
-            logger.error(EELFLoggerDelegate.errorLogger, "Failed to schedule trigger for async worker jobs: {}", e.getMessage());
+            logger.error("Failed to schedule trigger for async worker jobs: {}", e.getMessage());
             throw new GenericUncheckedException(e);
         }
     }
