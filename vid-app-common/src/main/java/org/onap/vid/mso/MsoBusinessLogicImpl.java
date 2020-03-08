@@ -88,9 +88,11 @@ import org.onap.vid.mso.rest.RequestList;
 import org.onap.vid.mso.rest.RequestWrapper;
 import org.onap.vid.mso.rest.Task;
 import org.onap.vid.mso.rest.TaskList;
+import org.onap.vid.properties.Features;
 import org.onap.vid.utils.Logging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.togglz.core.manager.FeatureManager;
 
 public class MsoBusinessLogicImpl implements MsoBusinessLogic {
 
@@ -123,9 +125,13 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
      */
     private final MsoInterface msoClientInterface;
 
+
+    private final FeatureManager featureManager;
+
     @Autowired
-    public MsoBusinessLogicImpl(MsoInterface msoClientInterface) {
+    public MsoBusinessLogicImpl(MsoInterface msoClientInterface, FeatureManager featureManager) {
         this.msoClientInterface = msoClientInterface;
+        this.featureManager = featureManager;
     }
 
     public static String validateEndpointPath(String endpointEnvVariable) {
@@ -381,9 +387,20 @@ public class MsoBusinessLogicImpl implements MsoBusinessLogic {
         return dashboardOrchestrationReqs;
     }
 
+    private String simpleNoTaskInfoFilter()
+    {
+        if (featureManager.isActive(Features.FLAG_EXP_USE_FORMAT_PARAMETER_FOR_CM_DASHBOARD)) {
+            return "format=simpleNoTaskInfo&";
+        }
+
+        return "";
+
+    }
+
     private String constructOrchestrationRequestFilter(String filterName, String filterValue) {
-        return String.format("%sfilter=%s:EQUALS:%s",
-                SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS), filterName, filterValue);
+
+        return String.format("%s%sfilter=%s:EQUALS:%s",
+                    SystemProperties.getProperty(MsoProperties.MSO_REST_API_GET_ORC_REQS),simpleNoTaskInfoFilter(), filterName, filterValue);
     }
 
     private List<RequestWrapper> getOrchestrationRequestsByFilter(String filterName, String filterValue) {
