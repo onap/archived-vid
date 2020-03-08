@@ -75,8 +75,8 @@ public class MsoConfig {
 
 
     @Bean
-    public MsoBusinessLogic getMsoBusinessLogic(MsoInterface msoClient){
-        return new MsoBusinessLogicImpl(msoClient);
+    public MsoBusinessLogic getMsoBusinessLogic(MsoInterface msoClient, FeatureManager featureManager){
+        return new MsoBusinessLogicImpl(msoClient, featureManager );
     }
 
     @Bean

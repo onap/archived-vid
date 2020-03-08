@@ -49,7 +49,7 @@ import org.testng.annotations.Test;
 
 public class MsoOperationalEnvironmentTest {
 
-    private MsoBusinessLogic msoBusinessLogic = new MsoBusinessLogicImpl(null);
+    private MsoBusinessLogic msoBusinessLogic = new MsoBusinessLogicImpl(null, null);
     private static final Logger logger = LogManager.getLogger(MsoOperationalEnvironmentTest.class);
 
     @Test(dataProvider = "getOperationalEnvironmentActivationPermutations")

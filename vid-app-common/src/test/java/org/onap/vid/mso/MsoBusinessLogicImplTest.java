@@ -104,6 +104,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 @ContextConfiguration(classes = {SystemProperties.class})
 public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
@@ -123,6 +124,10 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     @Mock
     private RequestDetails msoRequest;
 
+    @Mock
+    private FeatureManager featureManager;
+
+
 
     private MsoBusinessLogicImpl msoBusinessLogic;
     private String userId = "testUserId";
@@ -131,7 +136,7 @@ public class MsoBusinessLogicImplTest extends AbstractTestNGSpringContextTests {
     @BeforeClass
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        msoBusinessLogic = new MsoBusinessLogicImpl(msoInterface);
+        msoBusinessLogic = new MsoBusinessLogicImpl(msoInterface, featureManager);
     }
 
     @Test
