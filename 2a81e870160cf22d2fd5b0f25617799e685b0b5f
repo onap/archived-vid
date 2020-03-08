@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e6a42ac_fe7898ad",
+        "filename": "vid-automation/src/main/java/vid/automation/test/sections/ViewEditPage.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-08T10:51:31Z",
+      "side": 1,
+      "message": "thanks :)",
+      "revId": "2a81e870160cf22d2fd5b0f25617799e685b0b5f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
