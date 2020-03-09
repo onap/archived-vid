@@ -478,19 +478,29 @@ export class SharedTreeService {
   }
 
   getModelVersionEitherFromInstanceOrFromHierarchy(selectedNodeData, model): string | undefined {
-    if (selectedNodeData && selectedNodeData.instanceModelInfo && selectedNodeData.instanceModelInfo.modelVersion) {
-      return selectedNodeData.instanceModelInfo.modelVersion;
-    } else if (model && model.version) {
-      return model.version;
-    }
-    return undefined;
+    return this.getNamedFieldFromInstanceOrFromHierarchy(selectedNodeData, "modelVersion", model, "version");
   }
 
   getModelCustomizationIdEitherFromInstanceOrFromHierarchy(selectedNodeData, model): string | undefined {
-    if (selectedNodeData && selectedNodeData.instanceModelInfo && selectedNodeData.instanceModelInfo.modelCustomizationId) {
-      return selectedNodeData.instanceModelInfo.modelCustomizationId;
-    } else if (model && model.customizationUuid) {
-      return model.customizationUuid;
+    return this.getNamedFieldFromInstanceOrFromHierarchy(selectedNodeData, "modelCustomizationId", model, "customizationUuid");
+  }
+
+  getGetModelInvariantIdEitherFromInstanceOrFromHierarchy(selectedNodeData, model): string | undefined {
+    return this.getNamedFieldFromInstanceOrFromHierarchy(selectedNodeData, "modelInvariantId", model, "invariantUuid");
+  }
+
+  getModelVersionIdEitherFromInstanceOrFromHierarchy(selectedNodeData, model): string | undefined {
+    return this.getNamedFieldFromInstanceOrFromHierarchy (selectedNodeData, "modelVersionId", model, "uuid");
+  }
+
+
+
+  getNamedFieldFromInstanceOrFromHierarchy(selectedNodeData, instanceModelInfoFieldName, model, modelFieldName): string | undefined {
+    if (instanceModelInfoFieldName && selectedNodeData && selectedNodeData.instanceModelInfo
+      && selectedNodeData.instanceModelInfo[instanceModelInfoFieldName]) {
+      return selectedNodeData.instanceModelInfo[instanceModelInfoFieldName];
+    } else if (modelFieldName && model && model[modelFieldName]) {
+      return model[modelFieldName];
     }
     return undefined;
   }
