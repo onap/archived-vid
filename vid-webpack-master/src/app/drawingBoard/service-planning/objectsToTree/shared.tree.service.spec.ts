@@ -289,6 +289,29 @@ describe('Shared Tree Service', () => {
       expect(actualResult).toEqual(expectedResult);
     });
 
+  each([
+    ['UUID from instance', getSelectedModelInfo(), getNetworkModelInfoFromHierarchy(),"UUID-from-instance" ],
+    ['UUID from instance', getSelectedModelInfo(), null,"UUID-from-instance" ],
+    ['UUID from hierarchy', null, getNetworkModelInfoFromHierarchy(),"UUID-from-hierarchy" ],
+    ['UUID undefined', null, null, undefined],
+
+  ]).
+  test('getUuidEitherFromInstanceOrFromHierarchy should %s', (description, instance, model, expectedResult) => {
+    let actualUuid = service.getModelVersionIdEitherFromInstanceOrFromHierarchy(instance, model);
+    expect(actualUuid).toEqual(expectedResult);
+  });
+
+  each([
+    ['from instance', getSelectedModelInfo(), getNetworkModelInfoFromHierarchy(), 'invariantId-from-instance'],
+    ['from instance', getSelectedModelInfo(), null, 'invariantId-from-instance'],
+    ['from hierarchy', null, getNetworkModelInfoFromHierarchy(), 'invariantId-from-hierarchy'],
+    ['undefined', null, null, undefined],
+  ]).
+  test('getInvariantIdEitherFromInstanceOrFromHierarchy should return invariantId %s', (description, instance, model, expectedInvariantId) =>{
+    let actualInvariantId = service.getGetModelInvariantIdEitherFromInstanceOrFromHierarchy(instance, model);
+    expect(actualInvariantId).toEqual(expectedInvariantId);
+  });
+
   test('statusProperties should be prop on node according to node properties', () => {
     let node = service.addingStatusProperty({orchStatus: 'completed', provStatus: 'inProgress', inMaint: false});
     expect(node.statusProperties).toBeDefined();
@@ -1534,7 +1557,9 @@ function getStore() {
 function getNetworkModelInfoFromHierarchy(){
   return {
     "version": "2.0",
-    "customizationUuid":"customization-id-from-hierarchy"
+    "customizationUuid":"customization-id-from-hierarchy",
+    "uuid": "UUID-from-hierarchy",
+    "invariantUuid": "invariantId-from-hierarchy"
   }
 }
 
@@ -1542,7 +1567,9 @@ function getSelectedModelInfo() {
   return {
     "instanceModelInfo": {
       "modelVersion": "5.0",
-      "modelCustomizationId": "model-customization-id-from-instance"
+      "modelCustomizationId": "model-customization-id-from-instance",
+      "modelVersionId": "UUID-from-instance",
+      "modelInvariantId": "invariantId-from-instance"
     }
   }
 }
