@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e724d6fe_9f1f816a",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-09T09:45:54Z",
+      "side": 1,
+      "message": "I prefer \"getModelInvariantId\"",
+      "range": {
+        "startLine": 498,
+        "startChar": 2,
+        "endLine": 498,
+        "endChar": 18
+      },
+      "revId": "6151a426667b3183536a405920ac22308269c37a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a3066681_be425320",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-09T09:45:54Z",
+      "side": 1,
+      "message": "I suggest naming \"getModelVersionId\", as UUID is a type not an identifier. :)",
+      "range": {
+        "startLine": 507,
+        "startChar": 5,
+        "endLine": 507,
+        "endChar": 9
+      },
+      "revId": "6151a426667b3183536a405920ac22308269c37a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad66768b_5962132d",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-09T09:45:54Z",
+      "side": 1,
+      "message": "What do you think about this extracted \"getNamedFieldFromInstanceOrFromHierarchy\"?\n\n\n  getModelVersionIdEitherFromInstanceOrFromHierarchy(selectedNodeData, model): string | undefined {\n    return getNamedFieldFromInstanceOrFromHierarchy(\n               selectedNodeData, \"modelVersionId\", model, \"uuid\");\n  }\n\n\n  getNamedFieldFromInstanceOrFromHierarchy(selectedNodeData, instanceModelInfoFieldName, model, modelFieldName): string | undefined {\n    if (instanceModelInfoFieldName \u0026\u0026 selectedNodeData \u0026\u0026 selectedNodeData.instanceModelInfo\n        \u0026\u0026 selectedNodeData.instanceModelInfo[instanceModelInfoFieldName]) {\n      return selectedNodeData.instanceModelInfo[instanceModelInfoFieldName];\n    } else if (modelFieldName \u0026\u0026 model \u0026\u0026 model[modelFieldName]) {\n      return model[modelFieldName];\n    }\n    return undefined;\n  }",
+      "range": {
+        "startLine": 507,
+        "startChar": 0,
+        "endLine": 514,
+        "endChar": 3
+      },
+      "revId": "6151a426667b3183536a405920ac22308269c37a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
