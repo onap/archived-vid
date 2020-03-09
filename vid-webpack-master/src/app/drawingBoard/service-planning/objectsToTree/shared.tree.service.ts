@@ -495,6 +495,25 @@ export class SharedTreeService {
     return undefined;
   }
 
+  getInvariantUuidEitherFromInstanceOrFromHierarchy(selectedNodeData, model): string | undefined {
+    if (selectedNodeData && selectedNodeData.instanceModelInfo && selectedNodeData.instanceModelInfo.modelInvariantId) {
+      return selectedNodeData.instanceModelInfo.modelInvariantId;
+    } else if (model && model.invariantUuid){
+      return model.invariantUuid;
+    }
+    return undefined;
+  }
+
+  getUuidEitherFromInstanceOrFromHierarchy(selectedNodeData, model ): string| undefined {
+    if (selectedNodeData && selectedNodeData.instanceModelInfo && selectedNodeData.instanceModelInfo.modelVersionId){
+      return selectedNodeData.instanceModelInfo.modelVersionId;
+    } else if (model && model.uuid){
+      return model.uuid;
+    }
+    return undefined;
+  }
+
+
   addGeneralInfoItems(modelInfoSpecificItems: ModelInformationItem[], type: ComponentInfoType, model, selectedNodeData):ComponentInfoModel {
     let modelInfoItems: ModelInformationItem[] = [
       ModelInformationItem.createInstance("Model version", this.getModelVersionEitherFromInstanceOrFromHierarchy(selectedNodeData, model)),
