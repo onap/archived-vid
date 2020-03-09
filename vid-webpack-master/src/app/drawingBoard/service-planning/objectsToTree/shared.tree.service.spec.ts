@@ -44,7 +44,6 @@ import {VfModuleUpgradePopupService} from "../../../shared/components/genericFor
 import {SharedControllersService} from "../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 import {ModalService} from "../../../shared/components/customModal/services/modal.service";
 import {CreateDynamicComponentService} from "../../../shared/components/customModal/services/create-dynamic-component.service";
-import {instance} from "ts-mockito";
 
 class MockAppStore<T> {
   getState() {
@@ -288,6 +287,29 @@ describe('Shared Tree Service', () => {
       let actualResult = service.getModelCustomizationIdEitherFromInstanceOrFromHierarchy(instance, model);
       expect(actualResult).toEqual(expectedResult);
     });
+
+  each([
+    ['UUID from instance', getSelectedModelInfo(), getNetworkModelInfoFromHierarchy(),"UUID-from-instance" ],
+    ['UUID from instance', getSelectedModelInfo(), null,"UUID-from-instance" ],
+    ['UUID from hierarchy', null, getNetworkModelInfoFromHierarchy(),"UUID-from-hierarchy" ],
+    ['UUID undefined', null, null, undefined],
+
+  ]).
+  test('getModelVersionIdEitherFromInstanceOrFromHierarchy should %s', (description, instance, model, expectedResult) => {
+    let actualUuid = service.getModelVersionIdEitherFromInstanceOrFromHierarchy(instance, model);
+    expect(actualUuid).toEqual(expectedResult);
+  });
+
+  each([
+    ['from instance', getSelectedModelInfo(), getNetworkModelInfoFromHierarchy(), 'invariantId-from-instance'],
+    ['from instance', getSelectedModelInfo(), null, 'invariantId-from-instance'],
+    ['from hierarchy', null, getNetworkModelInfoFromHierarchy(), 'invariantId-from-hierarchy'],
+    ['undefined', null, null, undefined],
+  ]).
+  test('getGetModelInvariantIdEitherFromInstanceOrFromHierarchy should return invariantId %s', (description, instance, model, expectedInvariantId) =>{
+    let actualInvariantId = service.getGetModelInvariantIdEitherFromInstanceOrFromHierarchy(instance, model);
+    expect(actualInvariantId).toEqual(expectedInvariantId);
+  });
 
   test('statusProperties should be prop on node according to node properties', () => {
     let node = service.addingStatusProperty({orchStatus: 'completed', provStatus: 'inProgress', inMaint: false});
@@ -1534,7 +1556,9 @@ function getStore() {
 function getNetworkModelInfoFromHierarchy(){
   return {
     "version": "2.0",
-    "customizationUuid":"customization-id-from-hierarchy"
+    "customizationUuid":"customization-id-from-hierarchy",
+    "uuid": "UUID-from-hierarchy",
+    "invariantUuid": "invariantId-from-hierarchy"
   }
 }
 
@@ -1542,7 +1566,9 @@ function getSelectedModelInfo() {
   return {
     "instanceModelInfo": {
       "modelVersion": "5.0",
-      "modelCustomizationId": "model-customization-id-from-instance"
+      "modelCustomizationId": "model-customization-id-from-instance",
+      "modelVersionId": "UUID-from-instance",
+      "modelInvariantId": "invariantId-from-instance"
     }
   }
 }
