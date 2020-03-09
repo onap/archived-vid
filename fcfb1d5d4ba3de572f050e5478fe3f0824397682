@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "087be7f2_b1ec56f4",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-09T10:23:10Z",
+      "side": 1,
+      "message": "please rename in test description as well, to have the correct method name",
+      "range": {
+        "startLine": 298,
+        "startChar": 8,
+        "endLine": 298,
+        "endChar": 49
+      },
+      "revId": "fcfb1d5d4ba3de572f050e5478fe3f0824397682",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57f0e742_94a7142e",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-09T10:23:10Z",
+      "side": 1,
+      "message": "please rename in test description as well, to have the correct method name",
+      "range": {
+        "startLine": 309,
+        "startChar": 8,
+        "endLine": 309,
+        "endChar": 56
+      },
+      "revId": "fcfb1d5d4ba3de572f050e5478fe3f0824397682",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "677b9138_46f30f25",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-09T10:23:10Z",
+      "side": 1,
+      "message": "getGet -\u003e should be get",
+      "range": {
+        "startLine": 488,
+        "startChar": 2,
+        "endLine": 488,
+        "endChar": 8
+      },
+      "revId": "fcfb1d5d4ba3de572f050e5478fe3f0824397682",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
