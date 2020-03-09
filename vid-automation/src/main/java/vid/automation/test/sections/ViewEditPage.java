@@ -2,7 +2,6 @@ package vid.automation.test.sections;
 
 import static org.hamcrest.core.Is.is;
 
-import java.util.List;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.By;
@@ -15,13 +14,13 @@ import vid.automation.test.infra.SelectOption;
 public class ViewEditPage extends VidBasePage {
     public ViewEditPage selectNodeInstanceToAdd(String vnfName) {
         selectFromDropdownByTestId(Constants.ViewEdit.VNF_OPTION_TEST_ID_PREFIX + vnfName,
-                Constants.ViewEdit.ADD_VNF_BUTTON_TEST_ID);
+            Constants.ViewEdit.ADD_VNF_BUTTON_TEST_ID);
         return this;
     }
 
     public ViewEditPage selectVfModuleToAdd(String vfModuleName) {
         selectFromDropdownByTestId(Constants.ViewEdit.VF_MODULE_OPTION_TEST_ID_PREFIX + vfModuleName,
-                Constants.ViewEdit.ADD_VF_MODULE_BUTTON_TEST_ID);
+            Constants.ViewEdit.ADD_VF_MODULE_BUTTON_TEST_ID);
         return this;
     }
 
@@ -44,7 +43,7 @@ public class ViewEditPage extends VidBasePage {
 
     public ViewEditPage selectVolumeGroupToAdd(String volumeGroupName) {
         selectFromDropdownByTestId(Constants.ViewEdit.VOLUME_GROUP_OPTION_TEST_ID_PREFIX + volumeGroupName,
-                Constants.ViewEdit.ADD_VOLUME_GROUP_BUTTON_TEST_ID);
+            Constants.ViewEdit.ADD_VOLUME_GROUP_BUTTON_TEST_ID);
         return this;
     }
 
@@ -56,7 +55,7 @@ public class ViewEditPage extends VidBasePage {
 
     public ViewEditPage selectNetworkToAdd(String networkName) {
         selectFromDropdownByTestId(Constants.ViewEdit.NETWORK_OPTION_TEST_ID_PREFIX + networkName,
-                Constants.ViewEdit.ADD_NETWORK_BUTTON_TEST_ID);
+            Constants.ViewEdit.ADD_NETWORK_BUTTON_TEST_ID);
         return this;
     }
 
@@ -77,7 +76,7 @@ public class ViewEditPage extends VidBasePage {
 
     public ViewEditPage selectTenant(String tenant){
         SelectOption.byValue(tenant, Constants.ViewEdit.TENANT_SELECT_TESTS_ID);
-       // GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.TENANT_SELECT_TESTS_ID, 60);
+        // GeneralUIUtils.clickOnElementByTestId(Constants.ViewEdit.TENANT_SELECT_TESTS_ID, 60);
         return this;
     }
 
@@ -131,8 +130,8 @@ public class ViewEditPage extends VidBasePage {
 //        return this;
 //    }
 
-    public ViewEditPage selectPlatform(List<String> platformList) {
-        SelectOption.selectOptionsFromMultiselectById("multi-selectPlatform", platformList);
+    public ViewEditPage selectPlatform(String platform) {
+        SelectOption.byValue(platform, Constants.OwningEntity.PLATFORM_SELECT_TEST_ID);
         return this;
     }
 }
