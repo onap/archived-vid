@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3b96f31_e12f1066",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/MsoBusinessLogicImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-03-10T10:51:57Z",
+      "side": 1,
+      "message": "FYI - My OCD will not allow this \u0027{\u0027 to be in a new line",
+      "range": {
+        "startLine": 391,
+        "startChar": 0,
+        "endLine": 391,
+        "endChar": 4
+      },
+      "revId": "164620a583677ca5d4b303f094fbaf91e24766f7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
