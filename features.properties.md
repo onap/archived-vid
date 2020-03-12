@@ -225,6 +225,10 @@
   
 * FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT
   When flag is true the platform will appear as a multi select field, if false the platform will be dropdown list.
+  
+* FLAG_2006_NETWORK_LOB_MULTI_SELECT
+  When flag is true the LOB will appear as a multi select field, if false the platform will be dropdown list.
+  
  
   
 * FLAG_EXP_USE_FORMAT_PARAMETER_FOR_CM_DASHBOARD
