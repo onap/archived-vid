@@ -115,7 +115,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
 
     private final Set<Long> threadsIds = new ConcurrentSkipListSet<>();
 
-    private final long FEW = 500;
+    private final long FEW = 1000;
 
     private final String JOBS_SHOULD_MATCH = "the jobs that added and those that pulled must be the same";
     private final String JOBS_PEEKED_SHOULD_MATCH = "the jobs that added and those that peeked must be the same";
