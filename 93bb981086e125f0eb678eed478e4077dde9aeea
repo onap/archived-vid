@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd6bde54_f86593cd",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-12T09:28:45Z",
+      "side": 1,
+      "message": "what is this? a mistake?",
+      "range": {
+        "startLine": 293,
+        "startChar": 3,
+        "endLine": 293,
+        "endChar": 5
+      },
+      "revId": "93bb981086e125f0eb678eed478e4077dde9aeea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01439562_93abb0f1",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-12T09:28:45Z",
+      "side": 1,
+      "message": "what is this param?",
+      "range": {
+        "startLine": 301,
+        "startChar": 187,
+        "endLine": 301,
+        "endChar": 205
+      },
+      "revId": "93bb981086e125f0eb678eed478e4077dde9aeea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e8927b7_7028f64a",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-12T09:28:45Z",
+      "side": 1,
+      "message": "this can/should be shorthanded to\n\n\n{\n      type: FormControlType.MULTI_SELECT,\n      controlName,\n      displayName,\n      dataTestId,\n      placeHolder,\n      selectedFieldName: \u0027name\u0027,\n      ngValue: \u0027name\u0027,\n      isDisabled: false,\n...",
+      "range": {
+        "startLine": 304,
+        "startChar": 4,
+        "endLine": 311,
+        "endChar": 17
+      },
+      "revId": "93bb981086e125f0eb678eed478e4077dde9aeea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f33cceb1_22f01080",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-12T09:28:45Z",
+      "side": 1,
+      "message": "this is too late to check instance, evaluation `instance ? instance.platformName : \u0027\u0027` should happen on caller",
+      "range": {
+        "startLine": 312,
+        "startChar": 13,
+        "endLine": 312,
+        "endChar": 35
+      },
+      "revId": "93bb981086e125f0eb678eed478e4077dde9aeea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e12e5705_871d0600",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-12T09:28:45Z",
+      "side": 1,
+      "message": "does this call bring both LOB and Platform?",
+      "range": {
+        "startLine": 316,
+        "startChar": 93,
+        "endLine": 316,
+        "endChar": 114
+      },
+      "revId": "93bb981086e125f0eb678eed478e4077dde9aeea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
