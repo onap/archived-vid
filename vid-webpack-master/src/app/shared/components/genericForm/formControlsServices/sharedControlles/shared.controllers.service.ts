@@ -48,7 +48,7 @@ export class SharedControllersService {
     return this.getLineOfBusinessControlInternal(changeLcpRegionOptionsOnChange, instance);
   };
 
-  private getLineOfBusinessControlInternal = (onChange: Function, instance?: any): DropdownFormControl => {
+  private getLineOfBusinessControlInternal = (onChange: Function, instance?: any): DropdownFormControl  => {
     return new DropdownFormControl({
       type: FormControlType.DROPDOWN,
       controlName: 'lineOfBusiness',
@@ -288,23 +288,51 @@ export class SharedControllersService {
   }
 
   getPlatformMultiselectControl = (instance: any, controls: FormControlModel[], isMultiSelected: boolean) : MultiselectFormControl => {
+    return this.getMultiSelectFormControl(
+      'platformName',
+      'Platform',
+      'multi-selectPlatform',
+      'Select Platform',
+      "platform",
+      instance,
+      instance ? instance.platformName : null,
+      isMultiSelected,
+      'platformList'
+    );
+  };
+
+  getLobMultiselectControl = (instance: any, controls: FormControlModel[], isMultiSelected: boolean) : MultiselectFormControl => {
+    return this.getMultiSelectFormControl(
+      'lineOfBusiness',
+      'Line of business',
+      'multi-lineOfBusiness',
+      'Select Line Of Business',
+      "lineOfBusiness",
+      instance,
+      instance ? instance.lineOfBusiness : null,
+      isMultiSelected,
+      'lineOfBusinessList');
+  };
+
+  private getMultiSelectFormControl(controlName: string, displayName: string, dataTestId: string, placeholder: string,
+                                    name: string, instance: any, defaultValue, isMultiSelected: boolean, multiSelectList: string) {
     return new MultiselectFormControl({
       type: FormControlType.MULTI_SELECT,
-      controlName: 'platformName',
-      displayName: 'Platform',
-      dataTestId: 'multi-selectPlatform',
+      controlName,
+      displayName,
+      dataTestId,
       selectedFieldName: 'name',
       ngValue: 'name',
-      placeHolder: 'Select Platform',
+      placeHolder: placeholder,
       isDisabled: false,
-      name: "platform",
-      value: instance ? instance.platformName : '',
+      name: name,
+      value: instance ? defaultValue : '',
       limitSelection: isMultiSelected ? 1000 : 1,
       validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
-      onInitSelectedField: ['platformList'],
+      onInitSelectedField: [multiSelectList],
       onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters),
       onChange: (param: MultiSelectItem[], form: FormGroup) => {
-        form.controls['platformName'].setValue(param.map((multiSelectItem: MultiSelectItem) => {
+        form.controls[controlName].setValue(param.map((multiSelectItem: MultiSelectItem) => {
           return multiSelectItem.itemName
         }).join(','));
       },
