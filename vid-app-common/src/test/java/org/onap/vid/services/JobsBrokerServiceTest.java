@@ -116,6 +116,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
     private final Set<Long> threadsIds = new ConcurrentSkipListSet<>();
 
     private final long FEW = 1000;
+    private final long SOME = 2000;
 
     private final String JOBS_SHOULD_MATCH = "the jobs that added and those that pulled must be the same";
     private final String JOBS_PEEKED_SHOULD_MATCH = "the jobs that added and those that peeked must be the same";
@@ -219,7 +220,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
 
     private Job waitForFutureOptionalJob(Future<Optional<Job>> retrievedOptionalJobFuture) {
         try {
-            return retrievedOptionalJobFuture.get(FEW, MILLISECONDS).orElseThrow(NoJobException::new);
+            return retrievedOptionalJobFuture.get(SOME, MILLISECONDS).orElseThrow(NoJobException::new);
         } catch (TimeoutException | InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -227,7 +228,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
 
     private Job waitForFutureJob(Future<Job> retrievedJobFuture) {
         try {
-            return retrievedJobFuture.get(FEW, MILLISECONDS);
+            return retrievedJobFuture.get(SOME, MILLISECONDS);
         } catch (TimeoutException | InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -343,7 +344,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void givenManyJobs_getThemAllThenPushBackandGet_verifySameJobs() {
+    public void givenManyJobs_getThemAllThenPushBackAndGet_verifySameJobs() {
         final List<Job> retrievedJobs1 = putAndGetALotOfJobs(broker);
 
         pushBackJobs(retrievedJobs1, broker);
