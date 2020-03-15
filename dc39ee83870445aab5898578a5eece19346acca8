@@ -1,0 +1,434 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "08dd4c7a_87e022b4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "maybe: FLAG_2006_MODERN_SIDE_MENU  (without \"SHOW\")",
+      "range": {
+        "startLine": 89,
+        "startChar": 14,
+        "endLine": 89,
+        "endChar": 22
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83062a0e_3ff3316d",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/properties/Features.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "Add documentation to features.properties.md",
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c8be887_7ed308dd",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/dev.features.properties",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "revert all changes in this file",
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4dbd9fae_afaacc33",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiation-templates.e2e.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "not only",
+      "range": {
+        "startLine": 90,
+        "startChar": 8,
+        "endLine": 90,
+        "endChar": 13
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1103aebe_0c0e446e",
+        "filename": "vid-webpack-master/src/app/app.component.html",
+        "patchSetId": 9
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "what are these variables uses for? are the values dummy or real?",
+      "range": {
+        "startLine": 3,
+        "startChar": 13,
+        "endLine": 5,
+        "endChar": 32
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "59130f95_dcec1022",
+        "filename": "vid-webpack-master/src/app/app.component.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "why not:\nreturn !isIframe()",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 5
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "684dacb8_40715f46",
+        "filename": "vid-webpack-master/src/app/app.component.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "can we bring here the flags component?",
+      "range": {
+        "startLine": 42,
+        "startChar": 39,
+        "endLine": 42,
+        "endChar": 75
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cff837a1_9b1ad674",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.component.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "i think this should be windows.location (when isIframe() )",
+      "range": {
+        "startLine": 87,
+        "startChar": 5,
+        "endLine": 87,
+        "endChar": 18
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f7001e2_e1191a81",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.component.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "else what? supposedly:\n      this._router.navigate([\u0027/instantiationStatus\u0027]);",
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38287c03_3bad8b5b",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.component.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "1) i would argue that IframeService must be injected. it\u0027ll make mocking the state much easier.\n2) please extract this block to a named method; e.g. \"navigateToInstantiationStatus()\"",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 39
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2bec4408_02591a55",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.component.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "a doubt if this will work, as navigate() is sending a message to window.parent which might me missing.",
+      "range": {
+        "startLine": 250,
+        "startChar": 59,
+        "endLine": 250,
+        "endChar": 72
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3087b845_9e636817",
+        "filename": "vid-webpack-master/src/app/instantiationStatus/instantiationStatus.component.scss",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "all changes in this file may be reverted",
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30881afa_af2dbf3d",
+        "filename": "vid-webpack-master/src/app/shared/components/auditInfoModal/auditInfoModal.component.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "i don\u0027t find the path where isIframe becomes \"true\". can you please explain?\nis it somehow through generic-form-popup.component?",
+      "range": {
+        "startLine": 26,
+        "startChar": 11,
+        "endLine": 26,
+        "endChar": 20
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a96b6ef_72ec89d2",
+        "filename": "vid-webpack-master/src/app/shared/components/auditInfoModal/auditInfoModal.component.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "won\u0027t it be cleaner if the isIframe() will be:\n1) the one which is implemented on iframeService\n2) checked inside addClassOpenModal() / removeClassCloseModal()",
+      "range": {
+        "startLine": 61,
+        "startChar": 25,
+        "endLine": 61,
+        "endChar": 42
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e9734a2_c61a7fd0",
+        "filename": "vid-webpack-master/src/app/shared/resolvers/sideMenu/sideMenu.resolver.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "I commented below, but here it becomes more obvious: this is a cool rx switchMap, but won\u0027t it be easier and simpler to return an observables which already takes the redux state into account?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 75
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2200b0e5_c522535a",
+        "filename": "vid-webpack-master/src/app/shared/resolvers/sideMenu/sideMenu.resolver.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "this is duplicate",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 57
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5af8acac_d0adffe8",
+        "filename": "vid-webpack-master/src/app/shared/resolvers/sideMenu/sideMenu.resolver.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "shouldn\u0027t the .data extraction be encapsukated inside aai\u0027s getAppName()?",
+      "range": {
+        "startLine": 37,
+        "startChar": 54,
+        "endLine": 37,
+        "endChar": 59
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76eb00c4_71d5e04d",
+        "filename": "vid-webpack-master/src/app/shared/services/aaiService/aai.service.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be stored in redux?  like in getServiceModelById and getSubscribers  below...",
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9510737_ee83755b",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/global/global.actions.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "\u0027z\u0027 is a typo here",
+      "range": {
+        "startLine": 17,
+        "startChar": 32,
+        "endLine": 17,
+        "endChar": 33
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16a9980c_8837ad89",
+        "filename": "vid-webpack-master/src/app/shared/utils/iframe.service.ts",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:26:45Z",
+      "side": 1,
+      "message": "this is not bullet-proof because of the following: \n\nhttps://developer.mozilla.org/en-US/docs/Web/API/Window/frameElement\nif the document into which it\u0027s embedded has a different origin, the value is null\n\nso if there is a parent, on same origin -- there is a value which is not null, even if not VID\n\n\nour cases are: \n\n1) self is inside vid\u0027s angular iframe -\u003e return true\n2) self is only inside portal\u0027s iframe -\u003e return false\n3) self is on top -\u003e return false\n\n\nI suggest adding an id to file app/vid/scripts/view-models/iframe.htm , e.g.:\n\u003ciframe ng-src\u003d\"{{url}}\" id\u003d\"vidAngularEmbed\"\u003e\u003c/iframe\u003e\n\nand then doing here:\n\nreturn window.frameElement \u0026\u0026 window.frameElement.id \u003d\u003d\u003d \"vidAngularEmbed\"",
+      "range": {
+        "startLine": 47,
+        "startChar": 26,
+        "endLine": 47,
+        "endChar": 45
+      },
+      "revId": "dc39ee83870445aab5898578a5eece19346acca8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
