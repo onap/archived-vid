@@ -1,11 +1,18 @@
 package org.onap.vid.api;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.onap.vid.api.ChangeManagementUserApiLoggingTest.MSO_GET_CHANGE_MANAGEMENTS_SCALEOUT;
 import static org.onap.vid.api.TestUtils.getNestedPropertyInMap;
 import static org.testng.AssertJUnit.assertEquals;
+import static vid.automation.test.infra.Features.FLAG_2002_ANY_ALACARTE_BESIDES_EXCLUDED_NEW_INSTANTIATION_UI;
+import static vid.automation.test.infra.Features.FLAG_2006_LIMIT_OWNING_ENTITY_SELECTION_BY_ROLES;
+import static vid.automation.test.infra.Features.FLAG_EXP_USE_FORMAT_PARAMETER_FOR_CM_DASHBOARD;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
+import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -32,14 +39,17 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import net.javacrumbs.jsonunit.core.Option;
 import org.onap.simulator.presetGenerator.presets.aaf.AAFGetBasicAuthPreset;
 import org.onap.simulator.presetGenerator.presets.aaf.AAFGetUrlServicePreset;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetCloudOwnersByCloudRegionId;
 import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetSubscribersGet;
+import org.onap.simulator.presetGenerator.presets.aai.PresetAAIGetVpnsByType;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoChangeManagementBase;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfInPlaceSoftwareUpdate;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfReplace;
 import org.onap.simulator.presetGenerator.presets.mso.changeManagement.PresetMsoVnfUpdate;
+import org.onap.simulator.presetGenerator.presets.mso.PresetMSOOrchestrationRequestsGetSlimBody;
 import org.onap.vid.model.mso.ChangeManagementRequest;
 import org.onap.vid.model.mso.ChangeManagementRequestDetails;
 import org.onap.vid.model.mso.CloudConfiguration;
@@ -59,12 +69,15 @@ import org.onap.vid.model.workflow.VnfWorkflowRelationResponse;
 import org.onap.vid.model.workflow.WorkflowsDetail;
 import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import vid.automation.test.infra.FeatureTogglingTest;
+import vid.automation.test.infra.Features;
 import vid.automation.test.services.SimulatorApi;
 import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 import vid.automation.test.utils.InsecureHttpsClient;
@@ -85,6 +98,8 @@ public class ChangeManagementApiTest extends BaseApiTest {
     public static final String GET_VNF_WORKFLOW_RELATION = "get_vnf_workflow_relation";
     public static final String VNF_WORKFLOW_RELATION = "vnf_workflow_relation";
     public static final String SCHEDULER_BY_SCHEDULE_ID = "/scheduler/schedules/{scheduleId}";
+    public static final String MSO = "/mso";
+    public static final String MSO_GET_CHANGE_MANAGEMENTS_FOR_DASHBOARD = "mso_request_orchestration_for_dashboard_slim_payload.json";
 
     @DataProvider
     public static Object[][] requestWithoutServiceInstanceId(Method test) {
@@ -289,6 +304,21 @@ public class ChangeManagementApiTest extends BaseApiTest {
                         "Failed to find response for isntanceId: "+vnfIds.serviceInstanceId));
         stopWatch.stop();
         System.out.print(stopWatch.prettyPrint());
+    }
+
+
+    @Test
+    @FeatureTogglingTest(Features.FLAG_EXP_USE_FORMAT_PARAMETER_FOR_CM_DASHBOARD)
+    public void getOrchestrationForDashbordShouldResponseWithFullBody() {
+        SimulatorApi.registerExpectation(MSO_GET_CHANGE_MANAGEMENTS_SCALEOUT, RegistrationStrategy.CLEAR_THEN_SET);
+        SimulatorApi.registerExpectationFromPreset(new PresetMSOOrchestrationRequestsGetSlimBody(), APPEND);
+        SimulatorApi.registerExpectationFromPreset( new PresetAAIGetSubscribersGet(), RegistrationStrategy.APPEND);
+
+        String expected = getResourceAsString("registration_to_simulator/mso_orchestration_for_dashboard_slim_response.json");
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(buildUri(CHANGE_MANAGEMENT + MSO ), String.class);
+
+        assertThat(responseEntity.getBody(), jsonEquals(expected).when(Option.IGNORING_ARRAY_ORDER).when(Option.IGNORING_EXTRA_FIELDS));
+
     }
 
 //  CONFIG_UPDATE
