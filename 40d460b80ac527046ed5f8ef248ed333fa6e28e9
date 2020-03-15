@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4fa30767_01d90859",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOOrchestrationRequestsGetSlimBody.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:48:19Z",
+      "side": 1,
+      "message": "slim is in the eyes of the viewer. i would call it \"NoTaskInfo\"",
+      "range": {
+        "startLine": 11,
+        "startChar": 46,
+        "endLine": 11,
+        "endChar": 50
+      },
+      "revId": "40d460b80ac527046ed5f8ef248ed333fa6e28e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69062a43_0120420e",
+        "filename": "vid-automation/src/main/java/org/onap/simulator/presetGenerator/presets/mso/PresetMSOOrchestrationRequestsGetSlimBody.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:48:19Z",
+      "side": 1,
+      "message": "please remove the \"\\n\" along the json to keep tidy",
+      "range": {
+        "startLine": 34,
+        "startChar": 35,
+        "endLine": 34,
+        "endChar": 37
+      },
+      "revId": "40d460b80ac527046ed5f8ef248ed333fa6e28e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe3050e6_a94e2390",
+        "filename": "vid-automation/src/main/java/vid/automation/test/infra/Features.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:48:19Z",
+      "side": 1,
+      "message": "please add a trailing comma.",
+      "revId": "40d460b80ac527046ed5f8ef248ed333fa6e28e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d75bc30c_a400f167",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:48:19Z",
+      "side": 1,
+      "message": "what extra fields is the test ignoring? i\u0027m not sure: both the preset and the expectation files looks quite similar.",
+      "range": {
+        "startLine": 320,
+        "startChar": 112,
+        "endLine": 320,
+        "endChar": 133
+      },
+      "revId": "40d460b80ac527046ed5f8ef248ed333fa6e28e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b9d63de_d2113f1d",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-15T19:48:19Z",
+      "side": 1,
+      "message": "i would suggest skiming the result only.\ne.g.:\n\n\n        assertThat(responseEntity.getBody(),\n         jsonEquals(\"{\n    \"requestList\": [\n      {\n        \"request\": {  \"requestId\": \"f01fbb5d-c964-44d4-9080-00e83eae419f\" }\n      }, {\n        \"request\": {  \"requestId\": \"64970886-ed75-4837-8bf1-0eb472fe65e6\" }\n      }]\").when(Option.IGNORING_ARRAY_ORDER).when(Option.IGNORING_EXTRA_FIELDS));\n\n\nyou may also consider using:\n\n        assertThat(responseEntity.getBody(), jsonPartEquals(\"requestList[0].request.requestId\", \"...\")\nAnd\n        assertThat(responseEntity.getBody(), jsonNodePresent(\"requestList[0].request.requestId\")",
+      "revId": "40d460b80ac527046ed5f8ef248ed333fa6e28e9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
