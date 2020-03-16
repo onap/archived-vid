@@ -99,7 +99,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
           .getElementByDataTestsId("lineOfBusiness").should('contain', 'zzz1')
           .getElementByDataTestsId("rollback").should('contain', 'Rollback')
-          .checkPlatformValue('xxx1')
+          cy.checkPlatformValue(`xxx1`)
           .getElementByDataTestsId("cancelButton").click();
 
         cy.editNode("node-c5b26cc1-a66f-4b69-aa23-6abc7c647c88-vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0")
@@ -223,7 +223,7 @@ describe('Drawing Board: Instantiation Templates', function () {
           // edit vnf
           cy.editNode("node-21ae311e-432f-4c54-b855-446d0b8ded72-vProbe_NC_VNF 0");
           if (testCase.modifySomeValues) {
-            cy.selectPlatformValue('platform');
+            cy.selectMultiselectValue("multi-selectPlatform",`multi-selectPlatform-platform`);
             cy.selectDropdownOptionByText("tenant", "CESAR-100-D-spjg61909");
           }
           cy.getElementByDataTestsId('form-set').click();

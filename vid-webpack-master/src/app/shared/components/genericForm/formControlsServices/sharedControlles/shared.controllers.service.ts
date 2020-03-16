@@ -32,6 +32,10 @@ export class SharedControllersService {
     return this.getLineOfBusinessControlInternal(undefined, instance);
   };
 
+  getMultiSelectLineOfBusinessControl = (instance: any, isMultiSelected: boolean): MultiselectFormControl => {
+    return this.getLobMultiselectControl(instance, isMultiSelected);
+  };
+
   getLineOfBusinessByOwningEntityControl = (instance?: any, serviceId?: string, controls?: FormControlModel[]): DropdownFormControl => {
     const service = this._store.getState().service.serviceInstance[serviceId];
     const owningEntityName: string = service.owningEntityName;
@@ -301,7 +305,7 @@ export class SharedControllersService {
     );
   };
 
-  getLobMultiselectControl = (instance: any, controls: FormControlModel[], isMultiSelected: boolean) : MultiselectFormControl => {
+  getLobMultiselectControl = (instance: any, isMultiSelected: boolean) : MultiselectFormControl => {
     return this.getMultiSelectFormControl(
       'lineOfBusiness',
       'Line of business',
