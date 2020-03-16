@@ -103,7 +103,7 @@ describe('Shared Controllers Service', () => {
     const instance = {};
     const sdncPreload: FormControlModel = service.getSDNCControl(instance);
     expect (sdncPreload.displayName).toEqual('SDN-C pre-load');
-    expect (sdncPreload.value).toBeFalsy();
+    expect (sdncPreload.value).toBeTruthy();
   });
 
   test('getlegacyRegion with AAIAIC25 - isVisible true', () => {
