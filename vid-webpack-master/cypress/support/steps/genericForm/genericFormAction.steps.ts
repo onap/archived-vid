@@ -1,20 +1,20 @@
 declare namespace Cypress {
   interface Chainable {
     genericFormSubmitForm: typeof genericFormSubmitForm
-    selectPlatformValue: typeof selectPlatformValue
-    checkPlatformValue: typeof checkPlatformValue
+    selectMultiselectValue: typeof selectMultiselectValue
+    checkMultiSelectValue: typeof checkMultiSelectValue
   }
 }
 
 
-function selectPlatformValue(selectOption: string) {
-      cy.getElementByDataTestsId("multi-selectPlatform").get('.c-btn').click({force: true});
-      cy.getElementByDataTestsId(`multi-selectPlatform-${selectOption}`).click();
-      cy.getElementByDataTestsId("multi-selectPlatform").get('.c-btn').click({force: true});
+function selectMultiselectValue(dataTestsId: string , selectOptionId: string) {
+      cy.getElementByDataTestsId(dataTestsId).find('.c-btn').eq(0).click({force: true})
+      cy.getElementByDataTestsId(selectOptionId).click();
+      cy.getElementByDataTestsId(dataTestsId).find('.c-btn').eq(0).click({force: true})
 }
 
-function checkPlatformValue(value: string){
-  return cy.getElementByDataTestsId("multi-selectPlatform").should("contain", value)
+function checkMultiSelectValue(dataTestsId: string, value: string) {
+  return cy.getElementByDataTestsId(dataTestsId).should("contain", value)
 }
 
 function genericFormSubmitForm(): Chainable<any> {
@@ -23,5 +23,5 @@ function genericFormSubmitForm(): Chainable<any> {
 
 
 Cypress.Commands.add('genericFormSubmitForm', genericFormSubmitForm);
-Cypress.Commands.add('selectPlatformValue', selectPlatformValue);
-Cypress.Commands.add('checkPlatformValue', checkPlatformValue);
+Cypress.Commands.add('selectMultiselectValue', selectMultiselectValue);
+Cypress.Commands.add('checkMultiSelectValue', checkMultiSelectValue);

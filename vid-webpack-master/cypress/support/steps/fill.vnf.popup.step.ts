@@ -11,8 +11,8 @@ function FillVnfPopup(): Chainable<any> {
   cy.selectDropdownOptionByText('productFamily', 'Emanuel');
   cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
   cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-STTest2');
-  cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
-  cy.selectPlatformValue('xxx1');
+  cy.selectMultiselectValue("multi-lineOfBusiness", "multi-lineOfBusiness-zzz1");
+  cy.selectMultiselectValue("multi-selectPlatform",`multi-selectPlatform-xxx1`);
   return cy.getElementByDataTestsId('form-set').click({force : true}).then((done)=>{
     return done;
   });

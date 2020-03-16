@@ -379,7 +379,7 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
                 new PresetMSOOrchestrationRequestGet(COMPLETE, deleteRequestId),
                 new PresetMSOCreateNetworkALaCarteServiceCypress2(createRequestId, serviceInstanceId,
                     "ExtVL", "action-data",
-                    "6b528779-44a3-4472-bdff-9cd15ec93450", "xxx1,platform"),
+                    "6b528779-44a3-4472-bdff-9cd15ec93450", "xxx1,platform", "zzz1,ONAP"),
                 new PresetMSOOrchestrationRequestGet(COMPLETE, createRequestId),
                 PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MTN6_TO_ATT_AIC
         ), RegistrationStrategy.CLEAR_THEN_SET);
