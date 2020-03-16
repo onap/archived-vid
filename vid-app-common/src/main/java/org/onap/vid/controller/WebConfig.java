@@ -28,7 +28,11 @@ import io.joshworks.restclient.http.mapper.ObjectMapper;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import org.apache.commons.lang3.StringUtils;
+import org.onap.portalsdk.core.domain.App;
+import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.aai.AaiClient;
 import org.onap.vid.aai.AaiClientInterface;
@@ -54,6 +58,7 @@ import org.onap.vid.asdc.rest.SdcRestClient;
 import org.onap.vid.client.SyncRestClient;
 import org.onap.vid.logging.VidLoggingInterceptor;
 import org.onap.vid.properties.AsdcClientConfiguration;
+import org.onap.vid.properties.Features;
 import org.onap.vid.properties.VidProperties;
 import org.onap.vid.scheduler.SchedulerService;
 import org.onap.vid.scheduler.SchedulerServiceImpl;
@@ -66,6 +71,7 @@ import org.onap.vid.services.PombaServiceImpl;
 import org.onap.vid.utils.JoshworksJacksonObjectMapper;
 import org.onap.vid.utils.Logging;
 import org.onap.vid.utils.SystemPropertiesWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -83,11 +89,29 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    /**
-     * Gets the object mapper.
-     *
-     * @return the object mapper
-     */
+    @Autowired DataAccessService dataAccessService;
+    @Autowired FeatureManager featureManager;
+    String portalAppPassword = System.getenv(VidProperties.PORTAL_APP_PASSWORD_ENVIRONMENT_VARIABLE_NAME);
+
+    @PostConstruct
+    public void persistPortalAppPassword() {
+        if (featureManager.isActive(Features.FLAG_GUILIN_CONFIG_PORTAL_APP_PASSWORD)) {
+            if (StringUtils.isEmpty(portalAppPassword)) {
+                return;
+            }
+
+            final App defaultApp = (App) dataAccessService.getDomainObject(App.class, 1L, null);
+
+            if (defaultApp == null || StringUtils.equals(defaultApp.getAppPassword(), portalAppPassword)) {
+                return;
+            }
+
+            defaultApp.setAppPassword(portalAppPassword);
+            dataAccessService.saveDomainObject(defaultApp, null);
+        }
+    }
+
+
     @Bean
     public com.fasterxml.jackson.databind.ObjectMapper getObjectMapper() {
         return new com.fasterxml.jackson.databind.ObjectMapper().registerModule(new KotlinModule());

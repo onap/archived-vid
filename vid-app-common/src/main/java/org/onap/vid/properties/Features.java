@@ -94,6 +94,8 @@ public enum Features implements Feature {
     FLAG_2006_NETWORK_LOB_MULTI_SELECT,
     FLAG_2006_VNF_LOB_MULTI_SELECT,
 
+    FLAG_GUILIN_CONFIG_PORTAL_APP_PASSWORD,
+
     ;
 
 
