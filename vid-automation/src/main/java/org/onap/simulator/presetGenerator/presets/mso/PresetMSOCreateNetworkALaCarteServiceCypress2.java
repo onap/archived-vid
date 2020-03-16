@@ -6,21 +6,25 @@ public class PresetMSOCreateNetworkALaCarteServiceCypress2 extends PresetMSOBase
     private String serviceModelName;
     private String serviceModelVersionId;
     private String platformName;
+    private String lineOfBusinessName;
+
 
 
     public PresetMSOCreateNetworkALaCarteServiceCypress2(String overrideRequestId, String serviceInstanceId, String networkName) {
         this(overrideRequestId, serviceInstanceId, networkName, "ComplexService", "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
-            "xxx1");
+            "xxx1", "zzz1");
     }
 
     public PresetMSOCreateNetworkALaCarteServiceCypress2(String overrideRequestId, String serviceInstanceId,
-        String networkName, String serviceModelName, String serviceModelVersionId, String platformName) {
+        String networkName, String serviceModelName, String serviceModelVersionId, String platformName,
+        String lineOfBusinessName) {
         super(overrideRequestId);
         this.serviceInstanceId = serviceInstanceId;
         this.networkName = networkName;
         this.serviceModelName = serviceModelName;
         this.serviceModelVersionId = serviceModelVersionId;
         this.platformName = platformName;
+        this.lineOfBusinessName = lineOfBusinessName;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class PresetMSOCreateNetworkALaCarteServiceCypress2 extends PresetMSOBase
                     "\"source\":\"VID\"," +
                     "\"suppressRollback\":false," +
                     "\"requestorId\":\"us16807000\"}," +
-                "\"lineOfBusiness\":{\"lineOfBusinessName\":\"zzz1\"}," +
+            "\"lineOfBusiness\":{\"lineOfBusinessName\":\"" + lineOfBusinessName + "\"}," +
                 "\"cloudConfiguration\":" +
                     "{\"lcpCloudRegionId\":\"hvf6\"," +
                     addCloudOwnerIfNeeded() +
