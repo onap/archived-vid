@@ -56,17 +56,17 @@ describe('Network popup', function () {
             cy.checkIsOptionSelected('productFamily', 'a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb');
             cy.checkIsOptionSelected('lcpRegion', 'hvf6');
             cy.checkIsOptionSelected('tenant', '229bcdc6eaeb4ca59d55221141d01f8e');
-            cy.checkIsOptionSelected('lineOfBusiness', 'zzz1');
-            cy.checkPlatformValue('xxx1');
+            cy.checkMultiSelectValue("multi-lineOfBusiness", "zzz1");
+            cy.checkMultiSelectValue('multi-selectPlatform', 'xxx1');
             //change platform value
-            cy.selectPlatformValue('platform');
+            cy.selectMultiselectValue('multi-selectPlatform', 'multi-selectPlatform-platform');
             cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
               cy.getElementByDataTestsId('numberButton').contains('1');
               cy.getElementByDataTestsId('node-ddc3f20c-08b5-40fd-af72-c6d14636b986-ExtVL 0-menu-btn').click({force: true})
                 .getElementByDataTestsId('context-menu-edit').click({force: true}).then(() => {
-                cy.checkPlatformValue( 'platform');
+                cy.checkMultiSelectValue('multi-selectPlatform', 'platform');
                 // cancel button should close the dialog
-                cy.getElementByDataTestsId('cancelButton').click({force: true}).then(() => {
+                cy.getElementByDataTestsId('cancelButton').click({force: true, multiple: true}).then(() => {
                   // duplicate network
                   cy.getElementByDataTestsId('node-ddc3f20c-08b5-40fd-af72-c6d14636b986-ExtVL 0-menu-btn').click({force: true})
                     .getElementByDataTestsId('context-menu-duplicate').click({force: true}).then(() => {
@@ -129,8 +129,8 @@ describe('Network popup', function () {
         cy.selectDropdownOptionByText('productFamily', 'Emanuel');
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-STTest2');
-        cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
-        cy.selectPlatformValue('xxx1');
+        cy.selectMultiselectValue("multi-lineOfBusiness", "multi-lineOfBusiness-zzz1");
+        cy.selectMultiselectValue('multi-selectPlatform', 'multi-selectPlatform-xxx1');
         cy.getElementByDataTestsId('form-set').should('not.have.attr', 'disabled');
 
         // clear required dynamic input.
@@ -175,7 +175,7 @@ describe('Network popup', function () {
       //add one network
       cy.getElementByDataTestsId('node-ExtVL 0-add-btn').click({force: true}).then(() => {
         verifyServiceModelNameInModelInfo();
-        cy.fillNetworkPopup(true);
+        cy.fillNetworkPopup(true, true);
       });
 
 
@@ -216,7 +216,8 @@ describe('Network popup', function () {
             "FLAG_ADVANCED_PORTS_FILTER": true,
             "FLAG_REGION_ID_FROM_REMOTE": true,
             "FLAG_ADD_MSO_TESTAPI_FIELD": true,
-            "FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT": true
+            "FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT" :true,
+            "FLAG_2006_NETWORK_LOB_MULTI_SELECT": true
           },
           "type": "[FLAGS] Update"
         },

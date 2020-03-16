@@ -65,7 +65,7 @@
       "lcpCloudRegionId":"hvf6",
       "tenantId":"229bcdc6eaeb4ca59d55221141d01f8e",
       "platformName":"xxx1,platform" ,
-      "lineOfBusiness":"zzz1",
+      "lineOfBusiness":"zzz1,ONAP",
       "instanceParams":[
         {
 
