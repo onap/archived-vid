@@ -1,5 +1,6 @@
 package org.onap.vid.api;
 
+import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -7,7 +8,6 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.onap.vid.api.ChangeManagementUserApiLoggingTest.MSO_GET_CHANGE_MANAGEMENTS_SCALEOUT;
 import static org.onap.vid.api.TestUtils.getNestedPropertyInMap;
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertFalse;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 
 import com.google.common.collect.ImmutableList;
@@ -302,12 +302,13 @@ public class ChangeManagementApiTest extends BaseApiTest {
 
     @Test
     @FeatureTogglingTest(Features.FLAG_EXP_USE_FORMAT_PARAMETER_FOR_CM_DASHBOARD)
-    public void getOrchestrationForDashboardShouldResponseWithFullBody() {
+    public void getOrchestrationForDashboardShouldResponseWithNoTaskInfoBody() {
         SimulatorApi.registerExpectation(MSO_GET_CHANGE_MANAGEMENTS_SCALEOUT, RegistrationStrategy.CLEAR_THEN_SET);
         SimulatorApi.registerExpectationFromPreset(new PresetMSOOrchestrationRequestsGetNoTaskInfoBody(), APPEND);
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(buildUri(CHANGE_MANAGEMENT + MSO ), String.class);
 
-        assertFalse(responseEntity.getBody().contains("requestProcessingData"));
+        String expected = getResourceAsString("changeManagement/responseNoTaskInfoBody.json");
+        assertThat(responseEntity.getBody(), jsonEquals(expected));
 
     }
 
