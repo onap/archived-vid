@@ -47,6 +47,8 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
       this.getRetainAssignmentsControl(),
       this._sharedControllersService.getSDNCControl(null)
     ];
+
+    result[1].value = true;
     const vfModuleInstance :VfModuleInstance = this._vfModuleControlGenerator.getVfModuleInstance(serviceId, vnfStoreKey, this.uuidData, isUpdateMode);
 
     let volumeGroupAllowed = this._store.getState().service.serviceHierarchy[serviceId].vfModules[this.uuidData['modelName']].volumeGroupAllowed;
@@ -83,7 +85,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
       controlName: UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,
       displayName: 'Retain Volume Groups',
       dataTestId: UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,
-      value: true,
+      value: false,
       validations: []
     })
   };
@@ -94,7 +96,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
       controlName: UpgradeFormControlNames.RETAIN_ASSIGNMENTS,
       displayName: 'Retain Assignments',
       dataTestId: UpgradeFormControlNames.RETAIN_ASSIGNMENTS,
-      value: true,
+      value: false,
       validations: []
     })
   };
