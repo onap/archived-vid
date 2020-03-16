@@ -9,6 +9,7 @@ import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flag
 import {DropdownFormControl} from "../../../../models/formControlModels/dropdownFormControl.model";
 import {FormControlModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
 import {ControlGeneratorUtil} from "../control.generator.util.service";
+import each from "jest-each";
 
 
 describe('Shared Controllers Service', () => {
@@ -99,11 +100,19 @@ describe('Shared Controllers Service', () => {
     expect(lcpRegionControl.isDisabled).toBeFalsy();
   });
 
-  test('sdn-preload checkbox is visible', () => {
+  each(
+    [
+      [' checked', true, true],
+      [' not checked', false, false ]
+    ]
+  ).
+  test('sdn-preload checkbox is %s', (
+    description: string, checkedByDefault: boolean, expected: boolean
+  ) => {
     const instance = {};
-    const sdncPreload: FormControlModel = service.getSDNCControl(instance);
+    const sdncPreload: FormControlModel = service.getSDNCControl(instance, checkedByDefault);
     expect (sdncPreload.displayName).toEqual('SDN-C pre-load');
-    expect (sdncPreload.value).toBeFalsy();
+    expect (sdncPreload.value).toBe(expected);
   });
 
   test('getlegacyRegion with AAIAIC25 - isVisible true', () => {
