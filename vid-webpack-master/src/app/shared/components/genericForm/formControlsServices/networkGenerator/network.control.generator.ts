@@ -64,7 +64,7 @@ export class NetworkControlGenerator {
       result.push(this._sharedControllersService.getLegacyRegion(networkInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, networkInstance));
       result.push(this._sharedControllersService.getPlatformMultiselectControl(networkInstance, result, flags['FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT']));
-      result.push(this._sharedControllersService.getLineOfBusinessControl(networkInstance));
+      result.push(this._sharedControllersService.getMultiSelectLineOfBusinessControl(networkInstance, flags['FLAG_2006_NETWORK_LOB_MULTI_SELECT']));
     }
     return result;
 
@@ -89,7 +89,7 @@ export class NetworkControlGenerator {
       result.push(this._sharedControllersService.getLegacyRegion(networkInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, networkInstance));
       result.push(this._sharedControllersService.getPlatformMultiselectControl(networkInstance, result, flags['FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT']));
-      result.push(this._sharedControllersService.getLineOfBusinessControl(networkInstance));
+      result.push(this._sharedControllersService.getMultiSelectLineOfBusinessControl(networkInstance, flags['FLAG_2006_NETWORK_LOB_MULTI_SELECT']));
       result.push(this._sharedControllersService.getRollbackOnFailureControl(networkInstance));
     }
     return result;

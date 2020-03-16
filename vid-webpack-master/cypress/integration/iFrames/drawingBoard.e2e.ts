@@ -377,7 +377,7 @@ describe('Drawing board', function () {
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
         cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP');
-        cy.selectPlatformValue('platform');
+        cy.selectMultiselectValue("multi-selectPlatform",`multi-selectPlatform-platform`);
         cy.genericFormSubmitForm();
 
         cy.getElementByDataTestsId('node-afacccf6-397d-45d6-b5ae-94c39734b168-2017-388_PASQUALE-vPE 0').contains('<Automatically Assigned>');
@@ -397,8 +397,8 @@ describe('Drawing board', function () {
         cy.selectDropdownOptionByText('productFamily', 'ERICA');
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
-        cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP')
-        cy.selectPlatformValue('platform');
+        cy.selectMultiselectValue("multi-lineOfBusiness", "multi-lineOfBusiness-ONAP");
+        cy.selectMultiselectValue("multi-selectPlatform",`multi-selectPlatform-platform`);
 
         cy.genericFormSubmitForm();
 
