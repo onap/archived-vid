@@ -33,8 +33,8 @@
         "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0": {
           "b0732bed-3ddf-43cc-b193-7f18db84e476": {
             "action": "None_Upgrade",
-            "retainAssignments" : false,
-            "sdncPreLoad" : true,
+            "retainAssignments" : true,
+            "sdncPreLoad" : false,
             "instanceName": "PST-VfMod-Replace-5-Vfmod",
             "instanceId": "b0732bed-3ddf-43cc-b193-7f18db84e476",
             "orchStatus": "Active",
