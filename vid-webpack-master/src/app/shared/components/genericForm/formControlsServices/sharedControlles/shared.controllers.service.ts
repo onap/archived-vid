@@ -236,12 +236,13 @@ export class SharedControllersService {
     tenantsControl['hasEmptyOptions'] = tenants && tenants.length === 0;
   };
 
-  getSDNCControl = (instance: any, extraContents? : object[]): FormControlModel => {
+
+  getSDNCControl = (instance: any, checkedByDefault: boolean, extraContents? : object[]): FormControlModel => {
     return new CheckboxFormControl({
       controlName: SDN_C_PRE_LOAD,
       displayName: 'SDN-C pre-load',
       dataTestId: 'sdncPreLoad',
-      value: instance ? instance.sdncPreLoad : false,
+      value: instance ? instance.sdncPreLoad : checkedByDefault,
       validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
       extraContents
     })

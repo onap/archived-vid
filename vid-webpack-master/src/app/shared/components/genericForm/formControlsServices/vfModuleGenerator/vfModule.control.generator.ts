@@ -132,7 +132,7 @@ export class VfModuleControlGenerator {
       result.push(this._sharedControllersService.getTenantControl(serviceId, vfModuleInstance));
     }
     result.push(this._sharedControllersService.getRollbackOnFailureControl(vfModuleInstance));
-    result.push(this._sharedControllersService.getSDNCControl(vfModuleInstance, this.getSdncExtraContents()));
+    result.push(this._sharedControllersService.getSDNCControl(vfModuleInstance, false, this.getSdncExtraContents()));
     if (this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
       result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }

@@ -133,12 +133,12 @@ describe('VFModule popup service', () => {
     }
   }
 
-  test('get controls should return retainAssignments control with true value', ()=> {
-    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_ASSIGNMENTS, true, true);
+  test('get controls should return retainAssignments control with false', ()=> {
+    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_ASSIGNMENTS, false, true);
   });
 
-  test('get controls should return retainVolumeGroup control with true value', ()=> {
-    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, true, true);
+  test('get controls should return retainVolumeGroup control with false', ()=> {
+    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, false, true);
   });
 
   [true, false].forEach(notExistsOnModel => {
@@ -149,7 +149,7 @@ describe('VFModule popup service', () => {
 
       jest.spyOn(_sharedTreeService, 'isVfModuleCustomizationIdNotExistsOnModel').mockReturnValue(notExistsOnModel);
 
-      getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, true, notExistsOnModel);
+      getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, false, notExistsOnModel);
     });
   });
 
@@ -232,7 +232,7 @@ describe('VFModule popup service', () => {
   });
 
 
-  test( 'get controls should return usePreload with false value', () => {
-    getControlByNameAndCheckValue(SDN_C_PRE_LOAD, false, true);
+  test( 'get controls should return usePreload with true value', () => {
+    getControlByNameAndCheckValue(SDN_C_PRE_LOAD, true, true);
   });
 });
