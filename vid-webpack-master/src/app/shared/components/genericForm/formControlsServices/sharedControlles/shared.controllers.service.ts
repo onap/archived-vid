@@ -237,7 +237,7 @@ export class SharedControllersService {
       controlName: SDN_C_PRE_LOAD,
       displayName: 'SDN-C pre-load',
       dataTestId: 'sdncPreLoad',
-      value: instance ? instance.sdncPreLoad : false,
+      value: true,
       validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
       extraContents
     })

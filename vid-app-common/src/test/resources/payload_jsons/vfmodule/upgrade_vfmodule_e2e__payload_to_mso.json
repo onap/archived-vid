@@ -33,7 +33,7 @@
       }
     ],
     "requestParameters": {
-      "retainAssignments": false,
+      "retainAssignments": true,
       "usePreload" : true,
       "userParams": [],
       "testApi": "GR_API"

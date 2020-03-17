@@ -83,7 +83,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
       controlName: UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,
       displayName: 'Retain Volume Groups',
       dataTestId: UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,
-      value: true,
+      value: false,
       validations: []
     })
   };
@@ -94,7 +94,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
       controlName: UpgradeFormControlNames.RETAIN_ASSIGNMENTS,
       displayName: 'Retain Assignments',
       dataTestId: UpgradeFormControlNames.RETAIN_ASSIGNMENTS,
-      value: true,
+      value: false,
       validations: []
     })
   };
