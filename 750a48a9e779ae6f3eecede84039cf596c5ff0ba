@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d79e07c_7cba1483",
+        "filename": "vid-webpack-master/cypress/support/steps/genericForm/genericFormAction.steps.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-17T05:17:13Z",
+      "side": 1,
+      "message": "will be much much better to make it the other way around: keep selectPlatformValue(), and add selectLobValue().\nthe methods should give abstraction to the one who reads the code, hiding the need to repeatedly realize test-ids and behaviors.\nespecially where this magic \"multi-selectPlatform-\" prefix is realized each time.\n\nconsider the readability of these two:\n\n* cy.selectPlatformValue(\u0027xxx1\u0027);\n* cy.selectMultiselectValue(\"multi-selectPlatform\",`multi-selectPlatform-xxx1`);",
+      "revId": "750a48a9e779ae6f3eecede84039cf596c5ff0ba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
