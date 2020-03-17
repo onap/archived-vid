@@ -201,11 +201,6 @@
                 <!-- Optional configuration which provides for running any npm command -->
                 <configuration>
                   <arguments>install --verbose cypress @bahmutov/add-typescript-to-cypress</arguments>
-                  <environmentVariables>
-                    <NO_PROXY>.att.com</NO_PROXY>
-                    <http_proxy>http://one.proxy.att.com:8080</http_proxy>
-                    <https_proxy>http://one.proxy.att.com:8080</https_proxy>
-                  </environmentVariables>
                 </configuration>
               </execution>
 
