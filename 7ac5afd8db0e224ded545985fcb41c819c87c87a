@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d2142314_5fdc0c68",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/network.popup.e2e.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-18T08:46:37Z",
+      "side": 1,
+      "message": "checkLob",
+      "range": {
+        "startLine": 59,
+        "startChar": 15,
+        "endLine": 59,
+        "endChar": 36
+      },
+      "revId": "7ac5afd8db0e224ded545985fcb41c819c87c87a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa3a31d7_81188656",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/network.popup.e2e.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-18T08:46:37Z",
+      "side": 1,
+      "message": "checkPlatform",
+      "range": {
+        "startLine": 60,
+        "startChar": 15,
+        "endLine": 60,
+        "endChar": 36
+      },
+      "revId": "7ac5afd8db0e224ded545985fcb41c819c87c87a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "913d3f45_cfa44e21",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/network.popup.e2e.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-18T08:46:37Z",
+      "side": 1,
+      "message": "checkPlatform",
+      "range": {
+        "startLine": 67,
+        "startChar": 19,
+        "endLine": 67,
+        "endChar": 40
+      },
+      "revId": "7ac5afd8db0e224ded545985fcb41c819c87c87a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f24b7a17_46788c08",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/network.popup.e2e.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-18T08:46:37Z",
+      "side": 1,
+      "message": "may add a trailing comma",
+      "range": {
+        "startLine": 220,
+        "startChar": 50,
+        "endLine": 220,
+        "endChar": 54
+      },
+      "revId": "7ac5afd8db0e224ded545985fcb41c819c87c87a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
