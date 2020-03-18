@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ff5856b_f469c8e6",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-18T04:06:58Z",
+      "side": 1,
+      "message": "again: depends on context\nI would say that given the test \"get controls should return usePreload\" on vfmodule.upgrade - here we should expect no change: keep being falsy by default.",
+      "revId": "3fbfc117a3656af7d322866e7f7a7559e8163395",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92c3174d_65e98dd6",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-18T04:06:58Z",
+      "side": 1,
+      "message": "default should be true for upgrade.\nso two issues: \n1) should be instance ? instance.sdncPreLoad : true\n2) for any non-upgrade scenarios - keep the default false",
+      "revId": "3fbfc117a3656af7d322866e7f7a7559e8163395",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9d985fe_6232852c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popup.service.spec.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-18T04:06:58Z",
+      "side": 1,
+      "message": "fix the test description from true to false, also on other 2 tests below",
+      "revId": "3fbfc117a3656af7d322866e7f7a7559e8163395",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
