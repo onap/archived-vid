@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef01e33f_7470cec8",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-18T16:56:56Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s a proper approach. it leaks the internal behavior of the control to it\u0027s consumer.\nsecondly, it relies on a magic number of positioning. this Will easily break of order will change.\nthird, maybe today you understand what it does, but in a week this row will be very cryptic.",
+      "revId": "56b9466c0a68f5b900cdd4bf21bf89fcbfadb68e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73e85a4b_137ce109",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popup.service.spec.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-18T16:56:56Z",
+      "side": 1,
+      "message": "why \"not\"?",
+      "revId": "56b9466c0a68f5b900cdd4bf21bf89fcbfadb68e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
