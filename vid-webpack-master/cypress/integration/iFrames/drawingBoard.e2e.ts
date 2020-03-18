@@ -397,7 +397,7 @@ describe('Drawing board', function () {
         cy.selectDropdownOptionByText('productFamily', 'ERICA');
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
-        cy.selectLobValue("ONAP");
+        cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP')
         cy.selectPlatformValue(`platform`);
 
         cy.genericFormSubmitForm();
