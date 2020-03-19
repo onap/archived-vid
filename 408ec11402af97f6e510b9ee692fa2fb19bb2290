@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "33e4a274_1a8868dd",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.spec.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-19T04:24:49Z",
+      "side": 1,
+      "message": "ok, nice",
+      "revId": "408ec11402af97f6e510b9ee692fa2fb19bb2290",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3f2cc2b_1e7d0d8b",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-19T04:24:49Z",
+      "side": 1,
+      "message": "sorry, but not.\n\nif there\u0027s instance -\u003e return instance.sdncPreLoad.\n\nno instance implies first opening of the popup; e.g.: user is adding a new vfmodule.\nif there is an \"instance\" value -\u003e it implies 2nd opening for edit.\n\non the latter we would like to show the user\u0027s previous selection. not the default.\n\ntherefore, the correct is:\n\nif (instance) {\n  return instnace.sdncPreload\n} else {\n  return checkedByDefault\n}\n\nor:\nreturn instance ? instnace.sdncPreload : checkedByDefault",
+      "revId": "408ec11402af97f6e510b9ee692fa2fb19bb2290",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
