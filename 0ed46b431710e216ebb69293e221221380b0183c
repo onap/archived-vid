@@ -22,6 +22,30 @@
       "revId": "0ed46b431710e216ebb69293e221221380b0183c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec953326_2347618c",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-19T09:06:47Z",
+      "side": 1,
+      "message": "getFrObject throws on non-ok codes.",
+      "parentUuid": "0484cc9a_3e8dae0a",
+      "range": {
+        "startLine": 312,
+        "startChar": 39,
+        "endLine": 312,
+        "endChar": 51
+      },
+      "revId": "0ed46b431710e216ebb69293e221221380b0183c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
