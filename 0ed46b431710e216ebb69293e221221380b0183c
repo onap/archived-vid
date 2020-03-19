@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0484cc9a_3e8dae0a",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/ChangeManagementApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-03-19T08:56:44Z",
+      "side": 1,
+      "message": "how would that affect the return code?",
+      "range": {
+        "startLine": 312,
+        "startChar": 39,
+        "endLine": 312,
+        "endChar": 51
+      },
+      "revId": "0ed46b431710e216ebb69293e221221380b0183c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
