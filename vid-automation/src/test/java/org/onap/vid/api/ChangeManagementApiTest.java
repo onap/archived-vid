@@ -63,7 +63,6 @@ import org.onap.vid.model.workflow.VnfWorkflowRelationResponse;
 import org.onap.vid.model.workflow.WorkflowsDetail;
 import org.onap.vid.more.LoggerFormatTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StopWatch;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
@@ -176,6 +175,11 @@ public class ChangeManagementApiTest extends BaseApiTest {
     }
 
     @BeforeClass
+    public void login() {
+        super.login();
+    }
+
+    @BeforeClass
     public static void commonSimulatorRegistration() {
         SimulatorApi.registerExpectationFromPreset(
                 PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC,
@@ -190,47 +194,47 @@ public class ChangeManagementApiTest extends BaseApiTest {
 
 //  IN_PLACE_SOFTWARE_UPDATE
     @Test
-    public void testInPlaceSoftwareUpdateHappyPath() throws IOException {
+    public void testInPlaceSoftwareUpdateHappyPath() {
         testHappyPath("mso_in_place_software_update_ok.json", ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
     }
 
     @Test
-    public void testInPlaceSoftwareUpdate409Error() throws IOException {
+    public void testInPlaceSoftwareUpdate409Error() {
         testChangeManagement409Error("mso_in_place_software_update_error_409.json", ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
     }
 
     @Test
-    public void testInPlaceSoftwareUpdate404Error() throws IOException {
+    public void testInPlaceSoftwareUpdate404Error() {
         testChangeManagement404Error("mso_in_place_software_update_error_404.json", ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
     }
 
     @Test
-    public void testInPlaceSoftwareUpdateWithoutVnfInstanceId() throws IOException {
+    public void testInPlaceSoftwareUpdateWithoutVnfInstanceId() {
         testChangeManagementWithoutVnfInstanceId(ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
     }
 
     @Test(dataProvider = "requestWithoutServiceInstanceId")
-    public void testInPlaceSoftwareUpdateWithoutServiceInstanceId(String desc, Consumer<ChangeManagementRequest> dropInstanceIdMethod) throws IOException {
+    public void testInPlaceSoftwareUpdateWithoutServiceInstanceId(String desc, Consumer<ChangeManagementRequest> dropInstanceIdMethod) {
         testChangeManagementServiceInstanceId(dropInstanceIdMethod, ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
     }
 
     @Test(dataProvider = "wrongPayloads")
-    public void testInPlaceSoftwareUpdateInvalidPayload(String payload, String propertyName) throws IOException {
+    public void testInPlaceSoftwareUpdateInvalidPayload(String payload, String propertyName) {
         testChangeManagementInvalidPayload(payload, propertyName, ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
     }
 
     @Test(dataProvider = "requestWithoutPayload")
-    public void testInPlaceSoftwareUpdateWithoutPayload(Consumer<ChangeManagementRequest> dropPayloadMethod) throws IOException {
+    public void testInPlaceSoftwareUpdateWithoutPayload(Consumer<ChangeManagementRequest> dropPayloadMethod) {
         testChangeManagementWithoutPayload(dropPayloadMethod, ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
     }
 
     @Test(dataProvider = "goodPayloads")
-    public void testInPlaceSoftwareUpdateGoodPayload(String payload) throws IOException {
+    public void testInPlaceSoftwareUpdateGoodPayload(String payload) {
         testChangeManagementGoodPayload(payload, "mso_in_place_software_update_ok.json", ChangeManagementRequest.VNF_IN_PLACE_SOFTWARE_UPDATE);
     }
 
     @Test
-    public void testInPlaceSoftwareUpdateSimultaneousCalls() throws IOException, InterruptedException {
+    public void testInPlaceSoftwareUpdateSimultaneousCalls() throws InterruptedException {
         SimulatorApi.clearExpectations();
         final int SIZE = 20;
         StopWatch stopWatch = new StopWatch("InPlaceSoftwareUpdateSimultaneousCalls");
@@ -305,51 +309,50 @@ public class ChangeManagementApiTest extends BaseApiTest {
     public void getOrchestrationForDashboardShouldResponseWithNoTaskInfoBody() {
         SimulatorApi.registerExpectation(MSO_GET_CHANGE_MANAGEMENTS_SCALEOUT, RegistrationStrategy.CLEAR_THEN_SET);
         SimulatorApi.registerExpectationFromPreset(new PresetMSOOrchestrationRequestsGetNoTaskInfoBody(), APPEND);
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(buildUri(CHANGE_MANAGEMENT + MSO ), String.class);
+        String response = restTemplate.getForObject(buildUri(CHANGE_MANAGEMENT + MSO ), String.class);
 
         String expected = getResourceAsString("changeManagement/responseNoTaskInfoBody.json");
-        assertThat(responseEntity.getBody(), jsonEquals(expected));
-
+        assertThat(response, jsonEquals(expected));
     }
 
 //  CONFIG_UPDATE
     @Test
-    public void testConfigUpdateHappyPath() throws IOException {
+    public void testConfigUpdateHappyPath() {
         testHappyPath("mso_config_update_ok.json", ChangeManagementRequest.CONFIG_UPDATE);
     }
 
     @Test
-    public void testConfigUpdate409Error() throws IOException {
+    public void testConfigUpdate409Error() {
         testChangeManagement409Error("mso_config_update_error_409.json", ChangeManagementRequest.CONFIG_UPDATE);
     }
 
     @Test
-    public void testConfigUpdate404Error() throws IOException {
+    public void testConfigUpdate404Error() {
         testChangeManagement404Error("mso_config_update_error_404.json", ChangeManagementRequest.CONFIG_UPDATE);
     }
 
     @Test
-    public void testConfigUpdateWithoutVnfInstanceId() throws IOException {
+    public void testConfigUpdateWithoutVnfInstanceId() {
         testChangeManagementWithoutVnfInstanceId(ChangeManagementRequest.CONFIG_UPDATE);
     }
 
     @Test(dataProvider = "requestWithoutServiceInstanceId")
-    public void testConfigUpdateWithoutServiceInstanceId(String desc, Consumer<ChangeManagementRequest> dropInstanceIdMethod) throws IOException {
+    public void testConfigUpdateWithoutServiceInstanceId(String desc, Consumer<ChangeManagementRequest> dropInstanceIdMethod) {
         testChangeManagementServiceInstanceId(dropInstanceIdMethod, ChangeManagementRequest.CONFIG_UPDATE);
     }
 
     @Test(dataProvider = "wrongConfigPayloads")
-    public void testConfigUpdateInvalidPayload(String payload, String propertyName) throws IOException {
+    public void testConfigUpdateInvalidPayload(String payload, String propertyName) {
         testChangeManagementInvalidPayload(payload, propertyName, ChangeManagementRequest.CONFIG_UPDATE);
     }
 
     @Test(dataProvider = "requestWithoutPayload")
-    public void testConfigUpdateWithoutPayload(Consumer<ChangeManagementRequest> dropPayloadMethod) throws IOException {
+    public void testConfigUpdateWithoutPayload(Consumer<ChangeManagementRequest> dropPayloadMethod) {
         testChangeManagementWithoutPayload(dropPayloadMethod, ChangeManagementRequest.CONFIG_UPDATE);
     }
 
     @Test(dataProvider = "goodConfigPayloads")
-    public void testConfigUpdateGoodPayload(String payload) throws IOException {
+    public void testConfigUpdateGoodPayload(String payload) {
         testChangeManagementGoodPayload(payload, "mso_config_update_ok.json", ChangeManagementRequest.CONFIG_UPDATE);
     }
 
@@ -443,7 +446,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
                 path(CHANGE_MANAGEMENT + WORKFLOW).resolveTemplate("vnfname", vnfName);
     }
 
-    private void testChangeManagement409Error(String expectationPath, String requestType) throws IOException {
+    private void testChangeManagement409Error(String expectationPath, String requestType) {
         VnfIds vnfIds = new VnfIds();
         MsoResponseWrapper2 body = callChangeManagementUpdate(vnfIds, expectationPath, MsoResponseWrapper2.class, requestType);
         Assert.assertEquals(body.getStatus(), 409, requestType + " failed with wrong http status");
@@ -457,14 +460,14 @@ public class ChangeManagementApiTest extends BaseApiTest {
         assertThat(getNestedPropertyInMap(body.getEntity(), "serviceException/text"), containsString(vnfIds.vnfInstanceId));
     }
 
-    private void testChangeManagement404Error(String expectationPath, String requestType) throws IOException {
+    private void testChangeManagement404Error(String expectationPath, String requestType) {
         VnfIds vnfIds = new VnfIds();
         MsoResponseWrapper2 body = callChangeManagementUpdate(vnfIds, expectationPath, MsoResponseWrapper2.class, requestType);
         Assert.assertEquals(body.getStatus(), 404, requestType + " failed with wrong http status");
         assertThat(body.getEntity(), equalTo("<html><head><title>Error</title></head><body>404 - Not Found</body></html>"));
     }
 
-    private void testChangeManagementWithoutVnfInstanceId(String requestType) throws IOException {
+    private void testChangeManagementWithoutVnfInstanceId(String requestType) {
         VnfIds vnfIds = new VnfIds();
         ChangeManagementRequest changeManagementRequest = createChangeManagementRequest(vnfIds, requestType);
         changeManagementRequest.getRequestDetails().get(0).setVnfInstanceId(null);
@@ -472,7 +475,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
         assertThat(exceptionResponse.serviceException.text, containsString("No vnfInstanceId in request"));
     }
 
-    private void testChangeManagementServiceInstanceId(Consumer<ChangeManagementRequest> dropInstanceIdMethod, String requestType) throws IOException {
+    private void testChangeManagementServiceInstanceId(Consumer<ChangeManagementRequest> dropInstanceIdMethod, String requestType) {
         VnfIds vnfIds = new VnfIds();
         ChangeManagementRequest changeManagementRequest = createChangeManagementRequest(vnfIds, requestType);
         dropInstanceIdMethod.accept(changeManagementRequest);
@@ -480,7 +483,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
         assertThat(exceptionResponse.serviceException.text, containsString("No instanceId in request"));
     }
 
-    private void testChangeManagementInvalidPayload(String payload, String propertyName, String requestType) throws IOException {
+    private void testChangeManagementInvalidPayload(String payload, String propertyName, String requestType) {
         VnfIds vnfIds = new VnfIds();
         ChangeManagementRequest changeManagementRequest = createChangeManagementRequest(vnfIds, requestType);
         changeManagementRequest.getRequestDetails().get(0).getRequestParameters().getAdditionalProperties().put("payload",payload);
@@ -489,7 +492,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
         assertThat(exceptionResponse.serviceException.text, containsString("No valid payload"));
     }
 
-    private void testChangeManagementWithoutPayload(Consumer<ChangeManagementRequest> dropPayloadMethod, String requestType) throws IOException {
+    private void testChangeManagementWithoutPayload(Consumer<ChangeManagementRequest> dropPayloadMethod, String requestType) {
         VnfIds vnfIds = new VnfIds();
         ChangeManagementRequest changeManagementRequest = createChangeManagementRequest(vnfIds, requestType);
         dropPayloadMethod.accept(changeManagementRequest);
@@ -506,7 +509,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
         return (MsoExceptionResponse) msoResponseWrapper2.getEntity();
     }
 
-    private void testChangeManagementGoodPayload(String payload, String expectationFileName, String requestType) throws IOException {
+    private void testChangeManagementGoodPayload(String payload, String expectationFileName, String requestType) {
         VnfIds vnfIds = new VnfIds();
         SimulatorApi.registerExpectation(
                 expectationFileName,
@@ -755,7 +758,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
 
     @Test
     //This test requires a simulator which runs on VID and is mocking Scheduler
-    public void testDeleteScheduledWorkflowOk() throws Exception {
+    public void testDeleteScheduledWorkflowOk() {
         //Register required response
         SimulatorApi.registerExpectation(DELETE_SCHEDULE_OK_JSON, RegistrationStrategy.APPEND);
         assertCancelScheduleResponse(HttpStatus.NO_CONTENT);//204
@@ -763,7 +766,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
 
     @Test
     //This test requires a simulator which runs on VID and is mocking Scheduler
-    public void testDeleteScheduledWorkflowNotFound() throws Exception {
+    public void testDeleteScheduledWorkflowNotFound() {
         //Register required response
         SimulatorApi.registerExpectation(DELETE_SCHEDULE_NOT_AUTHORIZED_JSON, RegistrationStrategy.APPEND);
         assertCancelScheduleResponse(HttpStatus.UNAUTHORIZED);//401
