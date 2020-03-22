@@ -67,6 +67,7 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import vid.automation.test.infra.FeatureTogglingTest;
@@ -179,7 +180,7 @@ public class ChangeManagementApiTest extends BaseApiTest {
         super.login();
     }
 
-    @BeforeClass
+    @BeforeMethod
     public static void commonSimulatorRegistration() {
         SimulatorApi.registerExpectationFromPreset(
                 PresetAAIGetCloudOwnersByCloudRegionId.PRESET_MDT1_TO_ATT_NC,
