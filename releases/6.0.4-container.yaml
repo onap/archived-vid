@@ -1,0 +1,8 @@
+distribution_type: 'container'
+container_release_tag: '6.0.4'
+project: 'vid'
+log_dir: 'vid-maven-docker-stage-master/315/'
+ref: 0ed46b431710e216ebb69293e221221380b0183c
+containers:
+  - name: 'vid'
+    version: '6.0.4-20200322T025717Z'
