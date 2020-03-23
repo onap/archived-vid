@@ -17,13 +17,10 @@ import static vid.automation.test.utils.ExtendedHamcrestMatcher.hasItemsFromColl
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.util.concurrent.Uninterruptibles;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -199,20 +196,7 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
     }
 
     protected void assertAndRetryIfNeeded(Runnable asserter, long timeoutInSeconds) {
-        final Instant expiry = Instant.now().plusSeconds(timeoutInSeconds);
-        while (true) {
-            try {
-                asserter.run();
-                break; // we're cool, assertion passed
-            } catch (AssertionError fail) {
-                Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
-                if (Instant.now().isAfter(expiry)) {
-                    throw fail;
-                } else {
-                    System.out.println("retrying after: " + fail);
-                }
-            }
-        }
+        TestUtils.assertAndRetryIfNeeded(timeoutInSeconds, asserter);
     }
 
     protected ImmutableList<JobAuditStatus> vidAuditStatusesCompletedWithErrors(String jobId) {
