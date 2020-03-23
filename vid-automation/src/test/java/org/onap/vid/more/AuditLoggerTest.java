@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsMapContaining.hasKey;
+import static org.onap.vid.api.TestUtils.assertAndRetryIfNeeded;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.APPEND;
 import static vid.automation.test.services.SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET;
 import static vid.automation.test.services.SimulatorApi.registerExpectationFromPreset;
@@ -41,11 +42,11 @@ public class AuditLoggerTest extends BaseApiTest {
         registerExpectationFromPreset(new PresetAAIGetVpnsByType(), APPEND);
         String requestId = getRequestId(() -> restTemplate.getForEntity(buildUri("aai_get_vpn_list"), String.class));
 
-        assertThat("request id must be found in exactly two rows", getRequestLogLines(requestId),
+        assertAndRetryIfNeeded(5, () -> assertThat("request id must be found in exactly two rows", getRequestLogLines(requestId),
             contains(
                 allOf(containsString(requestId), containsString("Entering")),
                 allOf(containsString(requestId), containsString("Exiting"))
-            ));
+            )));
     }
 
     private List<String> getRequestLogLines(String requestId) {

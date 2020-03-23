@@ -11,10 +11,13 @@ import static vid.automation.test.utils.RegExMatcher.matchesRegEx;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.util.concurrent.Uninterruptibles;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import org.apache.commons.text.RandomStringGenerator;
@@ -97,6 +100,23 @@ public class TestUtils {
 
     public static String generateRandomAlphaNumeric(int length) {
         return generator.generate(length);
+    }
+
+    public static void assertAndRetryIfNeeded(long timeoutInSeconds, Runnable asserter) {
+        final Instant expiry = Instant.now().plusSeconds(timeoutInSeconds);
+        while (true) {
+            try {
+                asserter.run();
+                break; // we're cool, assertion passed
+            } catch (AssertionError fail) {
+                Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
+                if (Instant.now().isAfter(expiry)) {
+                    throw fail;
+                } else {
+                    System.out.println("retrying after: " + fail);
+                }
+            }
+        }
     }
 
     @DataProvider

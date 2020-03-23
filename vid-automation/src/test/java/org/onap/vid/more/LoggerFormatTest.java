@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.matchesPattern;
+import static org.onap.vid.api.TestUtils.assertAndRetryIfNeeded;
 import static vid.automation.test.services.SimulatorApi.retrieveRecordedRequests;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -166,30 +167,29 @@ public class LoggerFormatTest extends BaseApiTest {
     }
 
     public static void verifyExistenceOfIncomingReqsInAuditLogs (RestTemplate restTemplate, URI uri, String requestId, String path){
-        List<String> logLines = getRequestLogLines(requestId, LogName.audit2019, restTemplate, uri);
-        String requestIdPrefix = "RequestID=";
-        assertThat("\nENTRY & EXIT logs are expected to include RequestId: " + requestId
-                        + " \nAnd request path: "
-                        + path +
-                        "\nin exactly two rows - inside the audit log matching lines:\n"
-                        + String.join("\n", logLines) + "\n",
+        assertAndRetryIfNeeded(5, () -> {
+            List<String> logLines = getRequestLogLines(requestId, LogName.audit2019, restTemplate, uri);
+            String requestIdPrefix = "RequestID=";
+            assertThat("\nENTRY & EXIT logs are expected to include RequestId: " + requestId
+                    + " \nAnd request path: "
+                    + path +
+                    "\nin exactly two rows - inside the audit log matching lines:\n"
+                    + String.join("\n", logLines) + "\n",
                 logLines,
                 contains(
-                        allOf(
-                                containsString(requestIdPrefix + requestId),
-                                containsString("ENTRY"),
-                                containsString(path)),
-                        allOf(
-                                containsString(requestIdPrefix + requestId),
-                                containsString("EXIT"),
-                                containsString(path))
+                    allOf(
+                        containsString(requestIdPrefix + requestId),
+                        containsString("ENTRY"),
+                        containsString(path)),
+                    allOf(
+                        containsString(requestIdPrefix + requestId),
+                        containsString("EXIT"),
+                        containsString(path))
                 ));
+        });
     }
 
     public static void assertHeadersAndMetricLogs (RestTemplate restTemplate, URI uri, String requestId, String path, int requestsSize){
-        List<String> logLines =
-                getRequestLogLines(requestId, LogName.metrics2019, restTemplate, uri);
-
         List<RecordedRequests> requests = retrieveRecordedRequests();
         List<RecordedRequests> underTestRequests =
                 requests.stream().filter(x -> x.path.contains(path)).collect(toList());
@@ -212,7 +212,9 @@ public class LoggerFormatTest extends BaseApiTest {
             String invocationId = invocationIds.get(0);
             allInvocationIds.add(invocationId);
 
-            assertIdsInMetricsLog(logLines, requestId, invocationId);
+            assertAndRetryIfNeeded(5, () -> assertIdsInMetricsLog(
+                getRequestLogLines(requestId, LogName.metrics2019, restTemplate, uri), requestId, invocationId)
+            );
         });
 
         //make sure no InvocationId is repeated twice
