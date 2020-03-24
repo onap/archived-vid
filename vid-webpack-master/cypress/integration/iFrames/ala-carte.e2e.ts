@@ -92,6 +92,7 @@ describe('A la carte', function () {
     it(`VNF a-la-carte`, () => {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json').then((res) => {
         res['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'] = true;
+        res['FLAG_2006_VNF_LOB_MULTI_SELECT'] = true;
         cy.server()
           .route({
             method: 'GET',
@@ -134,7 +135,7 @@ describe('A la carte', function () {
             cy.selectDropdownOptionByText('lcpRegion', 'AAIAIC25');
             cy.typeToInput("lcpRegionText", "just another region");
             cy.selectDropdownOptionByText('tenant', 'USP-SIP-IC-24335-T-01');
-            cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
+            cy.selectLobValue('zzz1');
 
             cy.selectPlatformValue(`xxx1`);
 
@@ -145,6 +146,7 @@ describe('A la carte', function () {
               cy.getElementByDataTestsId(vnfMenuBtnDataTestId).click({force: true}).then(() => {
                 cy.getElementByDataTestsId('context-menu-edit').click({force: true});
                 cy.selectPlatformValue(`platform`);
+                cy.selectLobValue('ONAP');
                 cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
                   cy.getReduxState().then((state) => {
 
@@ -215,7 +217,7 @@ describe('A la carte', function () {
       });
     });
 
-    it(`Add ALaCarte vnf where FLAG_2006_LCP_REGIONS_BY_LINE_OF_BUSINESS`, () => {
+    it.only(`Add ALaCarte vnf where FLAG_2006_LCP_REGIONS_BY_LINE_OF_BUSINESS`, () => {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/emptyServiceRedux.json').then((res) => {
         cy.setTestApiParamToGR();
         res.service.serviceHierarchy['2f80c596-27e5-4ca9-b5bb-e03a7fd4c0fd'].service.vidNotions.instantiationType = 'ALaCarte';
@@ -226,7 +228,7 @@ describe('A la carte', function () {
 
         cy.getElementByDataTestsId('node-2017-488_PASQUALE-vPE 0-add-btn').click({force: true}).then(() => {
           cy.selectDropdownOptionByText('productFamily', 'Emanuel');
-          cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
+          cy.selectLobValue('zzz1');
           cy.selectDropdownOptionByText('lcpRegion', 'foo-name');
           cy.selectDropdownOptionByText('tenant', 'tenantID');
           cy.selectPlatformValue(`xxx1`);
@@ -265,7 +267,7 @@ describe('A la carte', function () {
           cy.selectDropdownOptionByText('productFamily', 'Emanuel');
           cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
           cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-STTest2');
-          cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
+          cy.selectLobValue('zzz1');
           cy.selectPlatformValue(`xxx1`);
           cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
             const vnfName = '2017-488_PASQUALE-vPE 0';

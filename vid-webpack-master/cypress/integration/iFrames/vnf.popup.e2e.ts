@@ -80,7 +80,7 @@ describe('Vnf popup', function () {
         cy.selectDropdownOptionByText('productFamily', 'Emanuel');
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-STTest2');
-        cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
+        cy.selectLobValue('zzz1');
         cy.selectPlatformValue(`xxx1`);
 
       })

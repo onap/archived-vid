@@ -228,8 +228,9 @@
   
 * FLAG_2006_NETWORK_LOB_MULTI_SELECT
   When flag is true the LOB will appear as a multi select field, if false the platform will be dropdown list.
-  
  
+ * FLAG_2006_VNF_LOB_MULTI_SELECT
+   When flag is true the LOB will appear as a multi select field, if false the platform will be dropdown list.
   
 * FLAG_EXP_USE_FORMAT_PARAMETER_FOR_CM_DASHBOARD
   When flag is true VID will use the format=simpleNoTaskInfo parameter in addition to the filter parameter when fetching orchestration requests for the change-management dashboard.
