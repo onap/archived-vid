@@ -237,6 +237,7 @@ export class AaiService {
     //   + "?"
     //   + "owningEntityName=" + owningEntityName
     //   + "lineOfBusinessName=" + lineOfBusinessName;
+    //  multiple line of business is separated by ','
 
     return of([
       new LcpRegion("foo-id", "foo-name", true, "foo-cloud-owner"),
