@@ -79,6 +79,7 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
           let oldAction = newState.serviceInstance[(<DeleteActionVfModuleInstanceAction>action).serviceId].vnfs[(<DeleteActionVfModuleInstanceAction>action).vnfStoreKey].vfModules[key][firstKey].action;
           if(oldAction === ServiceInstanceActions.None_Delete || oldAction === ServiceInstanceActions.Update_Delete) return newState;
           newState.serviceInstance[(<DeleteActionVfModuleInstanceAction>action).serviceId].vnfs[(<DeleteActionVfModuleInstanceAction>action).vnfStoreKey].vfModules[key][firstKey].action = (oldAction + '_Delete') as ServiceInstanceActions;
+          setLcpCloudRegionIdAndTenantIdFromVnf(newState, (<DeleteActionVfModuleInstanceAction>action).serviceId, (<DeleteActionVfModuleInstanceAction>action).vnfStoreKey, key, firstKey);
           updateIsMissingDataOnDeleteVFModule(newState, (<UndoDeleteActionVfModuleInstanceAction>action).serviceId, (<UndoDeleteActionVfModuleInstanceAction>action).vnfStoreKey, key);
           return newState;
         }
@@ -177,6 +178,13 @@ const updateIsMissingDataOnDeleteVFModule = (state: any, serviceModelId: string,
   });
 };
 
+const  setLcpCloudRegionIdAndTenantIdFromVnf = (state: any, serviceModelId: string, vnfStoreKey: string, key: string, firstKey: string) :void => {
+  let tenantId = state.serviceInstance[serviceModelId].vnfs[vnfStoreKey].tenantId;
+  let lcpCloudRegion = state.serviceInstance[serviceModelId].vnfs[vnfStoreKey].lcpCloudRegionId;
+
+  state.serviceInstance[serviceModelId].vnfs[vnfStoreKey].vfModules[key][firstKey].tenantId = tenantId;
+  state.serviceInstance[serviceModelId].vnfs[vnfStoreKey].vfModules[key][firstKey].lcpCloudRegionId = lcpCloudRegion;
+}
 
 const updateUniqueNames = (oldName : string, newName : string, serviceInstance : ServiceInstance) : void => {
   let existingNames = serviceInstance.existingNames;

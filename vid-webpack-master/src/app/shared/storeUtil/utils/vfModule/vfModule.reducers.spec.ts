@@ -106,28 +106,7 @@ describe('vfModuleReducer', () => {
   test('#UPDATE_VFMODULE_FEILD: should update field with some value', () => {
     const newFieldName = 'newFieldName';
     const newFieldValue = 'newFieldValue';
-    let oldState = {
-      serviceHierarchy: {
-        'serviceModelId': {}
-      },
-      serviceInstance: {
-        'serviceModelId': {
-          vnfs: {
-            'vnfStoreKey': {
-              vfModules: {
-                'modelName': {
-                  'dynamicModelName1': {
-                    isMissingData: true,
-                    action: 'None'
-                  },
-                  'dynamicModelName2': {},
-                }
-              }
-            }
-          }
-        }
-      }
-    };
+    let oldState = getReduxState();
 
     let newState = vfModuleReducer(<any>oldState,
       <UpdateVFModuleField>{
@@ -222,38 +201,22 @@ test('#UPDATE_VFMODULE_POSITION: should update position', () => {
 });
 
 test('#DELETE_ACTION_VF_MODULE_INSTANCE', () => {
-  let vfModule = vfModuleReducer(<any>{
-      serviceHierarchy: {
-        'serviceModelId': {}
-      },
-      serviceInstance: {
-        'serviceModelId': {
-          vnfs: {
-            'vnfStoreKey': {
-              vfModules: {
-                'modelName': {
-                  'dynamicModelName1': {
-                    isMissingData: true,
-                    action: 'None'
-                  },
-                  'dynamicModelName2': {},
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    <DeleteActionVfModuleInstanceAction>{
-      type: VfModuleActions.DELETE_ACTION_VF_MODULE_INSTANCE,
-      dynamicModelName: 'dynamicModelName1',
-      vnfStoreKey: 'vnfStoreKey',
-      serviceId: 'serviceModelId'
-    }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+  let vfModule = vfModuleReducer(<any>getReduxState(), getDeleteActionVfModule())
+    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
 
   expect(vfModule).toBeDefined();
   expect(vfModule.isMissingData).toBeTruthy();
   expect(vfModule.action).toEqual(ServiceInstanceActions.None_Delete);
+});
+
+test('#DELETE_ACTION_VF_MODULE_INSTANCE set tenantId and lcpCloudRegion to VFM', () => {
+  let vfModule = vfModuleReducer(<any>getReduxState(), getDeleteActionVfModule())
+    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+
+  expect(vfModule).toBeDefined();
+  expect(vfModule.tenantId).toEqual('tenantId');
+  expect(vfModule.lcpCloudRegionId).toEqual('lcpCloudRegionId');
+
 });
 
 test('#UNDO_DELETE_ACTION_VF_MODULE_INSTANCE', () => {
@@ -291,28 +254,7 @@ test('#UNDO_DELETE_ACTION_VF_MODULE_INSTANCE', () => {
 });
 
 test('#UPGRADE_VFMODULE', () => {
-  let vfModule = vfModuleReducer(<any>{
-      serviceHierarchy: {
-        'serviceModelId': {}
-      },
-      serviceInstance: {
-        'serviceModelId': {
-          vnfs: {
-            'vnfStoreKey': {
-              vfModules: {
-                'modelName': {
-                  'dynamicModelName1': {
-                    isMissingData: true,
-                    action: 'None'
-                  },
-                  'dynamicModelName2': {},
-                }
-              }
-            }
-          }
-        }
-      }
-    },
+  let vfModule = vfModuleReducer(<any>getReduxState(),
     <UpgradeVfModuleInstanceAction>{
       type: VfModuleActions.UPGRADE_VFMODULE,
       dynamicModelName: 'dynamicModelName1',
@@ -358,5 +300,39 @@ test('#UNDO_UPGRADE_VFMODULE', () => {
   expect(vfModule.action).toEqual(ServiceInstanceActions.None);
 });
 
-})
-;
+function getReduxState() {
+ return {
+   serviceHierarchy: {
+     'serviceModelId': {}
+   },
+   serviceInstance: {
+     'serviceModelId': {
+       vnfs: {
+         'vnfStoreKey': {
+           tenantId: 'tenantId',
+           lcpCloudRegionId: 'lcpCloudRegionId',
+           vfModules: {
+             'modelName': {
+               'dynamicModelName1': {
+                 isMissingData: true,
+                 action: 'None',
+               },
+               'dynamicModelName2': {},
+             }
+           }
+         }
+       }
+     }
+   }
+ }
+}
+
+function getDeleteActionVfModule() {
+  return <DeleteActionVfModuleInstanceAction>{
+    type: VfModuleActions.DELETE_ACTION_VF_MODULE_INSTANCE,
+    dynamicModelName: 'dynamicModelName1',
+    vnfStoreKey: 'vnfStoreKey',
+    serviceId: 'serviceModelId'
+  }
+}
+});
