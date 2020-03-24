@@ -5,6 +5,8 @@ export class VfModuleInstance extends ChildNodeInstance{
   instanceParams: { [key: string] : string; };
   position: any;
   statusMessage?: string;
+  tenantId? :string;
+  lcpCloudRegionId?: string;
 
   constructor() {
     super();
