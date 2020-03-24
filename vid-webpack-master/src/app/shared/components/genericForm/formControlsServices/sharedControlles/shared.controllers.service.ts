@@ -27,47 +27,55 @@ export class SharedControllersService {
               private _aaiService : AaiService,
               private _basicControlGenerator : ControlGeneratorUtil){}
 
-
-  getLineOfBusinessControl = (instance?: any): DropdownFormControl => {
-    return this.getLineOfBusinessControlInternal(undefined, instance);
-  };
-
-  getMultiSelectLineOfBusinessControl = (instance: any, isMultiSelected: boolean): MultiselectFormControl => {
-    return this.getLobMultiselectControl(instance, isMultiSelected);
-  };
-
-  getLineOfBusinessByOwningEntityControl = (instance?: any, serviceId?: string, controls?: FormControlModel[]): DropdownFormControl => {
+  getLineOfBusinessByOwningEntityControl = (isMultiselect: boolean, instance?: any, serviceId?: string, controls?: FormControlModel[]): MultiselectFormControl => {
     const service = this._store.getState().service.serviceInstance[serviceId];
     const owningEntityName: string = service.owningEntityName;
 
-    const changeLcpRegionOptionsOnChange = (lineOfBusinessNameParam: string, form: FormGroup) => {
+    // const changeLcpRegionOptionsOnChange1 = (lineOfBusinessNameParam: string, form: FormGroup) => {
+    //   form.controls['lcpCloudRegionId'].enable();
+    //   form.controls['lcpCloudRegionId'].reset();
+    //   this._basicControlGenerator.getSubscribeInitResult(
+    //     this._aaiService.getLcpRegionsByOwningEntityAndLineOfBusiness.bind(this, owningEntityName, lineOfBusinessNameParam),
+    //     controls.find(item => item.controlName === 'lcpCloudRegionId') as DropdownFormControl, form
+    //   ).subscribe()
+    // };
+
+    const changeLcpRegionOptionsOnChange = (param: MultiSelectItem[], form: FormGroup) => {
       form.controls['lcpCloudRegionId'].enable();
       form.controls['lcpCloudRegionId'].reset();
-      this._basicControlGenerator.getSubscribeInitResult(
-        this._aaiService.getLcpRegionsByOwningEntityAndLineOfBusiness.bind(this, owningEntityName, lineOfBusinessNameParam),
-        controls.find(item => item.controlName === 'lcpCloudRegionId') as DropdownFormControl, form
-      ).subscribe()
+      const selectedLob = param.map((item : MultiSelectItem) => item.itemName).join(',');
+      const lcpBind =  this._aaiService.getLcpRegionsByOwningEntityAndLineOfBusiness.bind(this, owningEntityName, selectedLob);
+      const lcpController =  controls.find(item => item.controlName === 'lcpCloudRegionId') as DropdownFormControl;
+      this._basicControlGenerator.getSubscribeInitResult(lcpBind,lcpController, form)
     };
 
-    return this.getLineOfBusinessControlInternal(changeLcpRegionOptionsOnChange, instance);
+    return this.getLineOfBusinessByOwningEntityMultiselectControl(instance, isMultiselect, changeLcpRegionOptionsOnChange);
   };
 
-  private getLineOfBusinessControlInternal = (onChange: Function, instance?: any): DropdownFormControl  => {
-    return new DropdownFormControl({
-      type: FormControlType.DROPDOWN,
+
+  private getLineOfBusinessByOwningEntityMultiselectControl(instance: any, isMultiSelected: boolean, onChange : Function) {
+    return new MultiselectFormControl({
+      type: FormControlType.MULTI_SELECT,
       controlName: 'lineOfBusiness',
       displayName: 'Line of business',
-      dataTestId: 'lineOfBusiness',
+      dataTestId: 'multi-lineOfBusiness',
+      selectedFieldName: 'name',
+      ngValue: 'name',
       placeHolder: 'Select Line Of Business',
       isDisabled: false,
       name: "lineOfBusiness",
-      value: instance ? instance.lineOfBusiness : null,
+      value: instance ? instance.lineOfBusiness : '',
+      limitSelection: isMultiSelected ? 1000 : 1,
       validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
       onInitSelectedField: ['lineOfBusinessList'],
+      onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters),
       onChange,
-      onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
-    })
-  };
+      convertOriginalDataToArray: (value?: string) => {
+        if (_.isNil(value)) return [];
+        return value.split(',');
+      }
+    });
+  }
 
   getTenantControl = (serviceId: string, instance?: any): DropdownFormControl => {
     const service = this._store.getState().service.serviceInstance[serviceId];
