@@ -47,13 +47,16 @@ export class VnfControlGenerator {
     const flags = this.store.getState().global.flags;
 
     if (!_.isNil(vnfModel)) {
+      const isPlatformMultiSelected = flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'];
+      const isLobMultiSelected = flags['FLAG_2006_VNF_LOB_MULTI_SELECT'];
+
       result.push(this.getInstanceName(vnfInstance, serviceId, vnfName, vnfModel.isEcompGeneratedNaming));
       result.push(this._sharedControllersService.getProductFamilyControl(vnfInstance, result, true));
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
-      result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
-      result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance));
+      result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, isPlatformMultiSelected));
+      result.push(this._sharedControllersService.getLobMultiselectControl(vnfInstance, isLobMultiSelected));
     }
     return result;
   }
@@ -68,28 +71,29 @@ export class VnfControlGenerator {
     let result: FormControlModel[] = [];
     const vnfInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store,this.getVnfInstance(serviceId, vnfStoreKey));
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
+    const flags = this.store.getState().global.flags;
 
     if (!_.isNil(vnfModel)) {
-      const isMultiSelected =
-        this._featureFlagsService.getFlagState(Features.FLAG_2002_VNF_PLATFORM_MULTI_SELECT);
       const lcpRegionsByLineOFBusiness =
         this._featureFlagsService.getFlagState(Features.FLAG_2006_LCP_REGIONS_BY_LINE_OF_BUSINESS);
-
+      const isPlatformMultiSelected = flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'];
+      const isLobMultiSelected = flags['FLAG_2006_VNF_LOB_MULTI_SELECT'];
       result.push(this.getInstanceName(vnfInstance, serviceId, vnfName, vnfModel.isEcompGeneratedNaming));
       result.push(this._sharedControllersService.getProductFamilyControl(vnfInstance, result, true));
 
       if (lcpRegionsByLineOFBusiness) {
-        result.push(this._sharedControllersService.getLineOfBusinessByOwningEntityControl(vnfInstance, serviceId, result));
+        //TODO send currect flag!!!
+        result.push(this._sharedControllersService.getLineOfBusinessByOwningEntityControl(true, vnfInstance, serviceId, result));
         result.push(this._sharedControllersService.getLcpRegionByLineOfBusinessControl(serviceId, vnfInstance, result));
         result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
         result.push(this._sharedControllersService.getTenantByLcpRegionControl(serviceId, vnfInstance));
-        result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, isMultiSelected));
+        result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, isPlatformMultiSelected));
       } else {
         result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
         result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
         result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
-        result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, isMultiSelected));
-        result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance));
+        result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, isPlatformMultiSelected));
+        result.push(this._sharedControllersService.getLobMultiselectControl(vnfInstance, isLobMultiSelected));
       }
 
       result.push(this._sharedControllersService.getRollbackOnFailureControl(vnfInstance));
