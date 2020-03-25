@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c2691bb3_a6a0ebe8",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2020-03-25T20:37:20Z",
+      "side": 1,
+      "message": "oops, will be fixed on the next push",
+      "parentUuid": "f12afa06_7d525a64",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 327,
+        "endChar": 2
+      },
+      "revId": "1941136d369fe283911a9db93ed193e3b6155c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1ed95fb9_1c2dc9ea",
         "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.ts",
         "patchSetId": 1
@@ -69,6 +93,30 @@
       "revId": "1941136d369fe283911a9db93ed193e3b6155c47",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1c7940e1_9af3dfe3",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2020-03-25T20:37:20Z",
+      "side": 1,
+      "message": "key \u003d modelName\nfirstKey \u003d dynamicModelName",
+      "parentUuid": "1ed95fb9_1c2dc9ea",
+      "range": {
+        "startLine": 181,
+        "startChar": 104,
+        "endLine": 181,
+        "endChar": 134
+      },
+      "revId": "1941136d369fe283911a9db93ed193e3b6155c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
