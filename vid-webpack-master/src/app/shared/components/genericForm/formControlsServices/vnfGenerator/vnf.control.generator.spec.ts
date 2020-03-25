@@ -907,9 +907,7 @@ class MockAppStore<T> {
   }
 }
 
-class MockFeatureFlagsService {
-  getFlagState = () => false;
-}
+class MockFeatureFlagsService {}
 
 describe('VNF Control Generator', () => {
   let injector;
