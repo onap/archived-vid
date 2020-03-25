@@ -45,6 +45,30 @@
       "revId": "1941136d369fe283911a9db93ed193e3b6155c47",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8068fdf7_8ea823c4",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-03-25T20:27:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1ed95fb9_1c2dc9ea",
+      "range": {
+        "startLine": 181,
+        "startChar": 104,
+        "endLine": 181,
+        "endChar": 134
+      },
+      "revId": "1941136d369fe283911a9db93ed193e3b6155c47",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
