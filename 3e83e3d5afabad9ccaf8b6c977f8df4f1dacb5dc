@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b09367fa_7cc9695c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2020-03-25T15:31:59Z",
+      "side": 1,
+      "message": "i think it also can be removed",
+      "revId": "3e83e3d5afabad9ccaf8b6c977f8df4f1dacb5dc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
