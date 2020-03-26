@@ -9,6 +9,7 @@ import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flag
 import {DropdownFormControl} from "../../../../models/formControlModels/dropdownFormControl.model";
 import {FormControlModel, ValidatorOptions} from "../../../../models/formControlModels/formControl.model";
 import {ControlGeneratorUtil} from "../control.generator.util.service";
+import {MultiselectFormControl} from "../../../../models/formControlModels/multiselectFormControl.model";
 import each from "jest-each";
 
 
@@ -38,20 +39,15 @@ describe('Shared Controllers Service', () => {
 
   })().then(done).catch(done.fail));
 
-
-
-
-
   test('getLineOfBusinessControl', ()=> {
-    const lineOfBusinessControl :DropdownFormControl  = service.getLineOfBusinessControl();
-    expect(lineOfBusinessControl.name).toEqual('lineOfBusiness');
+    const lineOfBusinessControl :MultiselectFormControl  = service.getLobMultiselectControl(undefined, true);
     expect(lineOfBusinessControl.controlName).toEqual('lineOfBusiness');
     expect(lineOfBusinessControl.displayName).toEqual('Line of business');
-    expect(lineOfBusinessControl.dataTestId).toEqual('lineOfBusiness');
+    expect(lineOfBusinessControl.dataTestId).toEqual('multi-lineOfBusiness');
     expect(lineOfBusinessControl.placeHolder).toEqual('Select Line Of Business');
     expect(lineOfBusinessControl.onInitSelectedField).toEqual(['lineOfBusinessList']);
     expect(lineOfBusinessControl.onInit).toBeDefined();
-    expect(lineOfBusinessControl.value).toBeNull();
+    expect(lineOfBusinessControl.value).toBe("");
     expect(lineOfBusinessControl.validations.find((validation)=> validation.validatorName === ValidatorOptions.required)).toBeDefined();
     expect(lineOfBusinessControl.isDisabled).toBeFalsy();
   });

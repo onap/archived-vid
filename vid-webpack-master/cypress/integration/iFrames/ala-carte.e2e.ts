@@ -92,6 +92,7 @@ describe('A la carte', function () {
     it(`VNF a-la-carte`, () => {
       cy.readFile('cypress/support/jsonBuilders/mocks/jsons/flags.cypress.json').then((res) => {
         res['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'] = true;
+        res['FLAG_2006_VNF_LOB_MULTI_SELECT'] = true;
         cy.server()
           .route({
             method: 'GET',
@@ -134,7 +135,7 @@ describe('A la carte', function () {
             cy.selectDropdownOptionByText('lcpRegion', 'AAIAIC25');
             cy.typeToInput("lcpRegionText", "just another region");
             cy.selectDropdownOptionByText('tenant', 'USP-SIP-IC-24335-T-01');
-            cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
+            cy.selectLobValue('zzz1');
 
             cy.selectPlatformValue(`xxx1`);
 
@@ -145,6 +146,7 @@ describe('A la carte', function () {
               cy.getElementByDataTestsId(vnfMenuBtnDataTestId).click({force: true}).then(() => {
                 cy.getElementByDataTestsId('context-menu-edit').click({force: true});
                 cy.selectPlatformValue(`platform`);
+                cy.selectLobValue('ONAP');
                 cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
                   cy.getReduxState().then((state) => {
 
@@ -236,7 +238,7 @@ describe('A la carte', function () {
           cy.selectDropdownOptionByText('productFamily', 'Emanuel');
           cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
           cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-STTest2');
-          cy.selectDropdownOptionByText('lineOfBusiness', 'zzz1');
+          cy.selectLobValue('zzz1');
           cy.selectPlatformValue(`xxx1`);
           cy.getElementByDataTestsId('form-set').click({force: true}).then(() => {
             const vnfName = '2017-488_PASQUALE-vPE 0';

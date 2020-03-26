@@ -102,7 +102,7 @@
       "legacyRegion": "just another region",
       "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
       "platformName": "xxx1,platform",
-      "lineOfBusiness": "zzz1",
+      "lineOfBusiness": "zzz1,ONAP",
       "instanceParams": [
         {}
       ],
