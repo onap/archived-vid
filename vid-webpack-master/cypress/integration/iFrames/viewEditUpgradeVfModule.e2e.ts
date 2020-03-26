@@ -143,6 +143,49 @@ describe('View Edit Page: Upgrade VFModule', function () {
     afterEach(() => {
       cy.screenshot();
     });
+    it(`Delete not upgraded VFM`, () => {
+
+      const serviceType = 'Emanuel';
+      const subscriberId = 'a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb';
+      const serviceModelId = 'a243da28-c11e-45a8-9f26-0284a9a789bc';
+      const serviceInstanceId = 'b153e8ce-2d00-4466-adc0-14bad70f150c';
+      const serviceInvariantUuid = "dd5a69b7-c50c-4dde-adc2-966b79bb8fd6";
+
+      cy.initDrawingBoardUserPermission();
+      cy.route(`**/rest/models/services/${serviceModelId}`,
+        'fixture:../support/jsonBuilders/mocks/jsons/deleteVfModule/delete_vfmodule_model.json')
+      .as('serviceModel2');
+
+      cy.route(`**/aai_get_service_instance_topology/${subscriberId}/${serviceType}/${serviceInstanceId}`,
+        'fixture:../support/jsonBuilders/mocks/jsons/deleteVfModule/delete_vfmodule_service_instance.json')
+      .as('serviceInstance2');
+
+      cy.route(`**/aai_get_newest_model_version_by_invariant/${serviceInvariantUuid}`, {
+          "modelVersionId": "a243da28-c11e-45a8-9f26-0284a9a789bc",
+          "modelName": "CHARLOTTE 01222020 Svc",
+          "modelVersion": "4.0",
+          "distributionStatus": "DISTRIBUTION_COMPLETE_OK",
+          "resourceVersion": "1580246673596",
+          "modelDescription": "test model for VF module replacement",
+          "orchestrationType": null
+        }
+      ).as("newestModelVersion2");
+
+      cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
+      cy.getElementByDataTestsId(`node-c449aaf8-2467-41a9-9015-730ab48ca19b-mdns012220200..Mdns01222020..dns_az_01..module-1-menu-btn`).click()
+      .drawingBoardTreeClickOnContextMenuOptionByName("Delete");
+      cy.getElementByDataTestsId('delete-status-type').contains('Delete');
+
+      mockAsyncBulkResponse();
+      cy.getDrawingBoardDeployBtn().click();
+
+      cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
+                    cy.readFile('../vid-app-common/src/test/resources/payload_jsons/vfmodule/delete_vfmodule_expected_bulk.json').then((expectedResult) => {
+                      cy.deepCompare(xhr.request.body, expectedResult);
+                    });
+                  });
+    });
+
     it(`Upgrade a VFModule: another case e2e`, function () {
 
       const serviceType = 'Emanuel';

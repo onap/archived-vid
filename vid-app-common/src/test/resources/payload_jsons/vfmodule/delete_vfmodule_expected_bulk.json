@@ -1,0 +1,117 @@
+{
+  "action": "None",
+  "isDirty": true,
+  "vnfs": {
+    "fa546506-b754-445c-b0d6-d36b6978de77": {
+      "action": "None",
+      "instanceName": "PST-Vf-Phase-1-Vnf",
+      "instanceId": "fa546506-b754-445c-b0d6-d36b6978de77",
+      "orchStatus": "Active",
+      "productFamilyId": null,
+      "lcpCloudRegionId": "olson5a",
+      "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08",
+      "cloudOwner": "irma-aic",
+      "modelInfo": {
+        "modelCustomizationName": "CHARLOTTE 01222020 0",
+        "modelCustomizationId": "94ad4ac3-9c06-4bb3-9ac8-0714ef78a912",
+        "modelInvariantId": "2ef6541d-d5bb-41ea-bcce-8fb2396a74da",
+        "modelVersionId": "803fdb3e-b4c9-451c-a020-f15cd1fda041",
+        "modelName": "CHARLOTTE 01222020",
+        "modelType": "vnf",
+        "modelVersion": "1.0"
+      },
+      "instanceType": "CHARLOTTE 01222020 Svc/CHARLOTTE 01222020 0",
+      "provStatus": "PREPROV",
+      "inMaint": false,
+      "uuid": "803fdb3e-b4c9-451c-a020-f15cd1fda041",
+      "originalName": "CHARLOTTE 01222020 0",
+      "legacyRegion": null,
+      "lineOfBusiness": null,
+      "platformName": null,
+      "trackById": "fa546506-b754-445c-b0d6-d36b6978de77",
+      "vfModules": {
+        "mdns012220200..Mdns01222020..dns_az_01..module-1": {
+          "48b9c7ae-490c-44af-b4dc-09b133d2fb89": {
+            "action": "None_Delete",
+            "instanceName": "PST-Vf-Phase-1-Vf-Addon",
+            "instanceId": "48b9c7ae-490c-44af-b4dc-09b133d2fb89",
+            "orchStatus": "Active",
+            "productFamilyId": null,
+            "cloudOwner": "irma-aic",
+            "modelInfo": {
+              "modelCustomizationName": "Mdns01222020..dns_az_01..module-1",
+              "modelCustomizationId": "2f74b6b2-8627-403e-b696-4c43fe5b19a5",
+              "modelInvariantId": "a60135d6-8e3d-47bc-87dd-f56d60d6beb0",
+              "modelVersionId": "c449aaf8-2467-41a9-9015-730ab48ca19b",
+              "modelName": "Mdns01222020..dns_az_01..module-1",
+              "modelType": "vfModule",
+              "modelVersion": "1"
+            },
+            "instanceType": null,
+            "provStatus": null,
+            "inMaint": false,
+            "uuid": "c449aaf8-2467-41a9-9015-730ab48ca19b",
+            "originalName": "mdns012220200..Mdns01222020..dns_az_01..module-1",
+            "legacyRegion": null,
+            "lineOfBusiness": null,
+            "platformName": null,
+            "trackById": "48b9c7ae-490c-44af-b4dc-09b133d2fb89",
+            "isBase": false,
+            "volumeGroupName": null,
+            "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08",
+            "lcpCloudRegionId": "olson5a"
+          }
+        }
+      },
+      "networks": {},
+      "vnfStoreKey": "fa546506-b754-445c-b0d6-d36b6978de77"
+    }
+  },
+  "vrfs": {},
+  "instanceParams": [],
+  "validationCounter": 0,
+  "existingNames": {
+    "pst-vf-phase-1": ""
+  },
+  "existingVNFCounterMap": {
+    "94ad4ac3-9c06-4bb3-9ac8-0714ef78a912": 1
+  },
+  "existingVRFCounterMap": {},
+  "existingVnfGroupCounterMap": {},
+  "existingNetworksCounterMap": {},
+  "networks": {},
+  "vnfGroups": {},
+  "bulkSize": 1,
+  "instanceName": "PST-Vf-Phase-1",
+  "instanceId": "b153e8ce-2d00-4466-adc0-14bad70f150c",
+  "orchStatus": "Active",
+  "productFamilyId": null,
+  "lcpCloudRegionId": null,
+  "tenantId": null,
+  "cloudOwner": null,
+  "modelInfo": {
+    "modelInvariantId": "dd5a69b7-c50c-4dde-adc2-966b79bb8fd6",
+    "modelVersionId": "a243da28-c11e-45a8-9f26-0284a9a789bc",
+    "modelName": "CHARLOTTE 01222020 Svc",
+    "modelType": "service",
+    "modelVersion": "3.0"
+  },
+  "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "subscriptionServiceType": "Emanuel",
+  "owningEntityId": null,
+  "owningEntityName": null,
+  "tenantName": null,
+  "aicZoneId": null,
+  "aicZoneName": null,
+  "projectName": null,
+  "rollbackOnFailure": false,
+  "isALaCarte": true,
+  "collectionResources": {},
+  "testApi": "GR_API",
+  "vidNotions": {
+    "instantiationUI": "anyAlacarteWhichNotExcluded",
+    "modelCategory": "other",
+    "viewEditUI": "legacy",
+    "instantiationType": "ALaCarte"
+  }
+}
