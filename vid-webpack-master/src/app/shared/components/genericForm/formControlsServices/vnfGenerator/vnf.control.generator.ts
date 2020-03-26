@@ -45,13 +45,16 @@ export class VnfControlGenerator {
     const flags = this.store.getState().global.flags;
 
     if (!_.isNil(vnfModel)) {
+      const isPlatformMultiSelected = flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'];
+      const isLobMultiSelected = flags['FLAG_2006_VNF_LOB_MULTI_SELECT'];
+
       result.push(this.getInstanceName(vnfInstance, serviceId, vnfName, vnfModel.isEcompGeneratedNaming));
       result.push(this._sharedControllersService.getProductFamilyControl(vnfInstance, result, true));
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
-      result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
-      result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance));
+      result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, isPlatformMultiSelected));
+      result.push(this._sharedControllersService.getLobMultiselectControl(vnfInstance, isLobMultiSelected));
     }
     return result;
   }
@@ -66,16 +69,18 @@ export class VnfControlGenerator {
     let result: FormControlModel[] = [];
     const vnfInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store,this.getVnfInstance(serviceId, vnfStoreKey));
     const vnfModel = new VNFModel(this.store.getState().service.serviceHierarchy[serviceId].vnfs[vnfName]);
+    const flags = this.store.getState().global.flags;
 
     if (!_.isNil(vnfModel)) {
-      const flags = this.store.getState().global.flags;
+      const isPlatformMultiSelected = flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT'];
+      const isLobMultiSelected = flags['FLAG_2006_VNF_LOB_MULTI_SELECT'];
       result.push(this.getInstanceName(vnfInstance, serviceId, vnfName, vnfModel.isEcompGeneratedNaming));
       result.push(this._sharedControllersService.getProductFamilyControl(vnfInstance, result, true));
       result.push(this._sharedControllersService.getLcpRegionControl(serviceId, vnfInstance, result));
       result.push(this._sharedControllersService.getLegacyRegion(vnfInstance));
       result.push(this._sharedControllersService.getTenantControl(serviceId, vnfInstance));
-      result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, flags['FLAG_2002_VNF_PLATFORM_MULTI_SELECT']));
-      result.push(this._sharedControllersService.getLineOfBusinessControl(vnfInstance));
+      result.push(this._sharedControllersService.getPlatformMultiselectControl(vnfInstance, result, isPlatformMultiSelected));
+      result.push(this._sharedControllersService.getLobMultiselectControl(vnfInstance,isLobMultiSelected));
       result.push(this._sharedControllersService.getRollbackOnFailureControl(vnfInstance));
     }
     return result;

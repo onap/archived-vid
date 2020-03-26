@@ -376,7 +376,7 @@ describe('Drawing board', function () {
         cy.selectDropdownOptionByText('productFamily', 'ERICA');
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
-        cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP');
+        cy.selectLobValue('ONAP');
         cy.selectPlatformValue(`platform`);
         cy.genericFormSubmitForm();
 
@@ -397,7 +397,7 @@ describe('Drawing board', function () {
         cy.selectDropdownOptionByText('productFamily', 'ERICA');
         cy.selectDropdownOptionByText('lcpRegion', 'hvf6');
         cy.selectDropdownOptionByText('tenant', 'AIN Web Tool-15-D-testalexandria');
-        cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP')
+        cy.selectLobValue('ONAP')
         cy.selectPlatformValue(`platform`);
 
         cy.genericFormSubmitForm();
@@ -636,7 +636,9 @@ describe('Drawing board', function () {
           "FLAG_SERVICE_MODEL_CACHE": true,
           "FLAG_1906_COMPONENT_INFO" : false,
           "FLAG_2002_VNF_PLATFORM_MULTI_SELECT" : false,
-          "FLAG_2002_UNLIMITED_MAX" : true
+          "FLAG_2002_UNLIMITED_MAX" : true,
+          "FLAG_2006_VNF_LOB_MULTI_SELECT" : false,
+
         },
         "type": "[FLAGS] Update"
       },
@@ -7368,7 +7370,10 @@ describe('Drawing board', function () {
   function editSecondVnf(vnfNode: string) {
     cy.drawingBoardTreeOpenContextMenuByElementDataTestId(vnfNode, 1)
       .drawingBoardTreeClickOnContextMenuOptionByName('Edit');
-    cy.selectDropdownOptionByText('lineOfBusiness', 'ONAP');
+    //uncheck lob value
+    cy.selectLobValue('zzz1');
+    // select a new lob value
+    cy.selectLobValue('ONAP');
     cy.genericFormSubmitForm();
   }
 
