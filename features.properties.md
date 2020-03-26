@@ -224,12 +224,13 @@
   When off, user is requested to specify LCP-Region and Tenant for each VF Module.
   
 * FLAG_2006_NETWORK_PLATFORM_MULTI_SELECT
-  When flag is true the platform will appear as a multi select field, if false the platform will be dropdown list.
+  When flag is true the platform will appear as a multi select field, if false the platform will be limited to a single value.
   
 * FLAG_2006_NETWORK_LOB_MULTI_SELECT
-  When flag is true the LOB will appear as a multi select field, if false the platform will be dropdown list.
-  
+  When flag is true the LOB will appear as a multi select field, if false the Line Of Business will be limited to a single value.
  
+ * FLAG_2006_VNF_LOB_MULTI_SELECT
+   When flag is true the LOB will appear as a multi select field, if false the Line Of Business  will be limited to a single value.
   
 * FLAG_EXP_USE_FORMAT_PARAMETER_FOR_CM_DASHBOARD
   When flag is true VID will use the format=simpleNoTaskInfo parameter in addition to the filter parameter when fetching orchestration requests for the change-management dashboard.
