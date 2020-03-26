@@ -25,27 +25,6 @@ export class SharedControllersService {
               private _aaiService : AaiService,
               private _basicControlGenerator : ControlGeneratorUtil){}
 
-
-  getLineOfBusinessControl = (instance?: any): DropdownFormControl => {
-    return new DropdownFormControl({
-      type: FormControlType.DROPDOWN,
-      controlName: 'lineOfBusiness',
-      displayName: 'Line of business',
-      dataTestId: 'lineOfBusiness',
-      placeHolder: 'Select Line Of Business',
-      isDisabled: false,
-      name: "lineOfBusiness",
-      value: instance ? instance.lineOfBusiness : null,
-      validations: [new ValidatorModel(ValidatorOptions.required, 'is required')],
-      onInitSelectedField: ['lineOfBusinessList'],
-      onInit: this._basicControlGenerator.getSubscribeInitResult.bind(null, this._aaiService.getCategoryParameters)
-    })
-  };
-
-  getMultiSelectLineOfBusinessControl = (instance: any, isMultiSelected: boolean): MultiselectFormControl => {
-    return this.getLobMultiselectControl(instance, isMultiSelected);
-  };
-
   getTenantControl = (serviceId: string, instance?: any): DropdownFormControl => {
     const service = this._store.getState().service.serviceInstance[serviceId];
     const globalCustomerId: string = service.globalSubscriberId;
