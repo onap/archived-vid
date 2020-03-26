@@ -32,7 +32,7 @@ public class PresetMSOCreateVnfALaCarteCypress2 extends PresetMSOCreateVnfBase {
                     "\"source\":\"VID\"," +
                     "\"suppressRollback\":false," +
                     "\"requestorId\":\"us16807000\"}," +
-                "\"lineOfBusiness\":{\"lineOfBusinessName\":\"zzz1\"}," +
+                "\"lineOfBusiness\":{\"lineOfBusinessName\":\"zzz1,ONAP\"}," +
                 "\"cloudConfiguration\":" +
             "{\"lcpCloudRegionId\":\"" + getLcpCloudRegionId() + "\"," +
                     addCloudOwnerIfNeeded() +

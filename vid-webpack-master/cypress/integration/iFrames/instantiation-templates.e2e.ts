@@ -97,8 +97,8 @@ describe('Drawing Board: Instantiation Templates', function () {
           .getElementByDataTestsId("productFamily").should('contain', 'Emanuel')
           .getElementByDataTestsId("tenant").should('contain', 'DN5242-Nov21-T1')
           .getElementByDataTestsId("lcpRegion").should('contain', 'hvf6')
-          .getElementByDataTestsId("lineOfBusiness").should('contain', 'zzz1')
           .getElementByDataTestsId("rollback").should('contain', 'Rollback')
+          cy.checkLobValue('zzz1')
           cy.checkPlatformValue(`xxx1`)
           .getElementByDataTestsId("cancelButton").click();
 
