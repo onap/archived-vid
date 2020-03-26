@@ -82,6 +82,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
 import vid.automation.test.Constants.BrowseASDC.NewServicePopup;
+import vid.automation.test.Constants.ViewEdit;
 import vid.automation.test.infra.Click;
 import vid.automation.test.infra.FeatureTogglingTest;
 import vid.automation.test.infra.Features;
@@ -1205,10 +1206,9 @@ public class NewServiceInstanceTest extends ModernUITestBase {
         if(!isNetwork){
             SelectOption.byTestIdAndVisibleText("TYLER SILVIA", Constants.ViewEdit.PRODUCT_FAMILY_SELECT_TESTS_ID);
             browseASDCPage.selectProductFamily("e433710f-9217-458d-a79d-1c7aff376d89");
-            browseASDCPage.selectLineOfBusiness("ONAP");
-        } else {
-            SelectOption.selectOptionsFromMultiselectById("multi-lineOfBusiness",ImmutableList.of("ONAP"));
         }
+
+        SelectOption.selectOptionsFromMultiselectById(ViewEdit.LINE_OF_BUSINESS_MULTI_SELECT_TESTS_ID, ImmutableList.of("ONAP"));
 
         assertSetButtonEnabled(VNF_SET_BUTTON_TEST_ID);
 
@@ -1233,7 +1233,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
             GeneralUIUtils.ultimateWait();
             assertThat(Get.selectedOptionText(Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID), startsWith("AAIAIC25"));
             Assert.assertEquals(Get.selectedOptionText(Constants.ViewEdit.TENANT_SELECT_TESTS_ID), "USP-SIP-IC-24335-T-01");
-            Assert.assertEquals(Get.selectedOptionText(Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID), "ONAP");
+            Assert.assertTrue(Get.isOptionSelectedInMultiSelect(Constants.ViewEdit.LINE_OF_BUSINESS_MULTI_SELECT_TESTS_ID, "ONAP"));
 
             Assert.assertTrue(Get.isOptionSelectedInMultiSelect(Constants.OwningEntity.PLATFORM_MULTI_SELECT_TEST_ID, "platform"));
 

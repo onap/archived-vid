@@ -404,6 +404,7 @@ public class Constants {
         public static final String NETWORK_OPTION_TEST_ID_PREFIX = "addNetworkOption-";
         public static final String ADD_NETWORK_BUTTON_TEST_ID = "addNetworkButton" ;
         public static final String LINE_OF_BUSINESS_SELECT_TESTS_ID = "lineOfBusiness";
+        public static final String LINE_OF_BUSINESS_MULTI_SELECT_TESTS_ID = "multi-lineOfBusiness";
         public static final String LINE_OF_BUSINESS_TEXT = "Line Of Business";
 
         public static final String CANCEL_CREATION_BUTTON_ID = "cancelCreation";
