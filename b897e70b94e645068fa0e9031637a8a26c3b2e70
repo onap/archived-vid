@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63962427_d87a77ef",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-03-26T04:26:54Z",
+      "side": 0,
+      "message": "it is ok this line is removed.\nbut this should come with removal of the call from getLineOfBusinessControl to this.getLineOfBusinessControlInternal on line 30.\n\nthe result will be on line 29 puls-minus:\n\n```\n  getLineOfBusinessControl \u003d (instance?: any): DropdownFormControl \u003d\u003e {\n    return new DropdownFormControl({\n      type: FormControlType.DROPDOWN,\n      controlName: \u0027lineOfBusiness\u0027,\n.\n.\n.\n```\n\n\nCurrent state is that getLineOfBusinessControlInternal gets `onChange: Function` but does not use it at all.",
+      "revId": "b897e70b94e645068fa0e9031637a8a26c3b2e70",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
