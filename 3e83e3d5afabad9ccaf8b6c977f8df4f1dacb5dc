@@ -16,6 +16,24 @@
       "revId": "3e83e3d5afabad9ccaf8b6c977f8df4f1dacb5dc",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f909b691_8b7c9bd8",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-03-26T06:16:41Z",
+      "side": 1,
+      "message": "IntelliJ thinks it should stay :-)",
+      "parentUuid": "b09367fa_7cc9695c",
+      "revId": "3e83e3d5afabad9ccaf8b6c977f8df4f1dacb5dc",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
