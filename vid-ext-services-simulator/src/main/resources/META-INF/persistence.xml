@@ -18,6 +18,7 @@
             <property name="hibernate.connection.password" value="euser"/>
             <property name="hibernate.connection.url" value="jdbc:mariadb://localhost:3306/vid_portal"/>
             <property name="hibernate.id.new_generator_mappings" value="false"/>
+            <property name="hibernate.c3p0.idle_test_period" value="30"/>
         </properties>
     </persistence-unit>
 </persistence>
