@@ -143,7 +143,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
     afterEach(() => {
       cy.screenshot();
     });
-    it(`Delete not upgraded VFM`, () => {
+    it(`Delete not upgraded VFM and upgrade another in a single click`, () => {
 
       const serviceType = 'Emanuel';
       const subscriberId = 'a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb';
@@ -172,6 +172,9 @@ describe('View Edit Page: Upgrade VFModule', function () {
       ).as("newestModelVersion2");
 
       cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
+
+      upgradeTheVFM(`node-04b21d26-9780-4956-8329-b22b049329f4-xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0`, false);
+
       cy.getElementByDataTestsId(`node-c449aaf8-2467-41a9-9015-730ab48ca19b-mdns012220200..Mdns01222020..dns_az_01..module-1-menu-btn`).click()
       .drawingBoardTreeClickOnContextMenuOptionByName("Delete");
       cy.getElementByDataTestsId('delete-status-type').contains('Delete');

@@ -1,9 +1,9 @@
 {
-  "action": "None",
+  "action": "None_Upgrade",
   "isDirty": true,
   "vnfs": {
     "fa546506-b754-445c-b0d6-d36b6978de77": {
-      "action": "None",
+      "action": "None_Upgrade",
       "instanceName": "PST-Vf-Phase-1-Vnf",
       "instanceId": "fa546506-b754-445c-b0d6-d36b6978de77",
       "orchStatus": "Active",
@@ -30,6 +30,42 @@
       "platformName": null,
       "trackById": "fa546506-b754-445c-b0d6-d36b6978de77",
       "vfModules": {
+        "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0": {
+          "b0732bed-3ddf-43cc-b193-7f18db84e476": {
+            "action": "None_Upgrade",
+            "instanceName": "PST-VfMod-Replace-5-Vfmod",
+            "instanceId": "b0732bed-3ddf-43cc-b193-7f18db84e476",
+            "orchStatus": "Active",
+            "productFamilyId": null,
+            "lcpCloudRegionId": "olson5a",
+            "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08",
+            "cloudOwner": "irma-aic",
+            "modelInfo": {
+              "modelCustomizationName": "XbiTestModuleReplace..base_ocg..module-0",
+              "modelCustomizationId": "3f1f0fcb-8a88-4612-a794-3912613ed9e8",
+              "modelInvariantId": "d887658e-2a89-4baf-83e2-b189601a1a7c",
+              "modelVersionId": "04b21d26-9780-4956-8329-b22b049329f4",
+              "modelType": "vfModule",
+              "modelVersion": "1"
+            },
+            "instanceType": null,
+            "provStatus": null,
+            "inMaint": false,
+            "uuid": "04b21d26-9780-4956-8329-b22b049329f4",
+            "originalName": "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0",
+            "legacyRegion": null,
+            "lineOfBusiness": null,
+            "platformName": null,
+            "trackById": "b0732bed-3ddf-43cc-b193-7f18db84e476",
+            "isBase": true,
+            "volumeGroupName": null,
+            "retainAssignments": true,
+            "sdncPreLoad": false,
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content": null
+          }
+        },
         "mdns012220200..Mdns01222020..dns_az_01..module-1": {
           "48b9c7ae-490c-44af-b4dc-09b133d2fb89": {
             "action": "None_Delete",
@@ -64,7 +100,8 @@
         }
       },
       "networks": {},
-      "vnfStoreKey": "fa546506-b754-445c-b0d6-d36b6978de77"
+      "vnfStoreKey": "fa546506-b754-445c-b0d6-d36b6978de77",
+      "upgradedVFMSonsCounter": 1
     }
   },
   "vrfs": {},
@@ -94,7 +131,7 @@
     "modelVersionId": "a243da28-c11e-45a8-9f26-0284a9a789bc",
     "modelName": "CHARLOTTE 01222020 Svc",
     "modelType": "service",
-    "modelVersion": "3.0"
+    "modelVersion": "1.0"
   },
   "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
   "subscriptionServiceType": "Emanuel",
