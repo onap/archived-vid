@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "f67a3de8_26bcba1b",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfmodule/delete_vfmodule_expected_bulk.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-03-30T07:12:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a9c6cf61_ec98a80f",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 25
+      },
+      "revId": "137de2ede34e874ca0dcccfaba6daee206fc839c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e4b64098_ceb4faa5",
         "filename": "vid-webpack-master/cypress/integration/iFrames/viewEditUpgradeVfModule.e2e.ts",
         "patchSetId": 1
@@ -93,6 +117,30 @@
       "revId": "137de2ede34e874ca0dcccfaba6daee206fc839c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d755401f_1f82a502",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/viewEditUpgradeVfModule.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-03-30T07:12:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5468d28a_377ffd41",
+      "range": {
+        "startLine": 174,
+        "startChar": 65,
+        "endLine": 178,
+        "endChar": 18
+      },
+      "revId": "137de2ede34e874ca0dcccfaba6daee206fc839c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
