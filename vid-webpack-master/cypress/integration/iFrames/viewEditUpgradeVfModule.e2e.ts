@@ -235,7 +235,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
     });
 
-    it(`Upgrade a VFModule: upgrade vfmodule when upgraded already service, vnf and borther vfmodule e2e`, function () {
+    it(`Upgrade a VFModule: upgrade vfmodule when upgraded already service, vnf and brother vfmodule e2e`, function () {
 
       const serviceType = 'Emanuel';
       const subscriberId = 'a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb';

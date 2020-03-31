@@ -2616,10 +2616,10 @@ describe('Model Tree Generator service', () => {
         "children": [],
         "statusMessage": "Failed Vnf Message",
         "statusProperties": [Object({
-          key: 'Prov Status:',
+          key: 'Prov Status: ',
           value: 'prov',
           testId: 'provStatus'
-        }), Object({ key: 'Orch Status:', value: 'Active', testId: 'orchStatus' }), Object({
+        }), Object({ key: 'Orch Status: ', value: 'Active', testId: 'orchStatus' }), Object({
           key: 'In-maintenance',
           value: '',
           testId: 'inMaint'
@@ -2641,10 +2641,10 @@ describe('Model Tree Generator service', () => {
         "vnfStoreKey": "2017-488_PASQUALE-vPE 0",
         "typeName": "VNF",
         "statusProperties": [Object({
-          key: 'Prov Status:',
+          key: 'Prov Status: ',
           value: undefined,
           testId: 'provStatus'
-        }), Object({ key: 'Orch Status:', value: undefined, testId: 'orchStatus' })],
+        }), Object({ key: 'Orch Status: ', value: undefined, testId: 'orchStatus' })],
         "children": [{
           "parentType": 'VNF',
           "action": 'None',
@@ -2674,10 +2674,15 @@ describe('Model Tree Generator service', () => {
           "dynamicModelName": "2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0zssmp",
           "typeName": "M",
           "statusProperties": [Object({
-            key: 'Prov Status:',
+            key: 'Prov Status: ',
             value: undefined,
             testId: 'provStatus'
-          }), Object({ key: 'Orch Status:', value: undefined, testId: 'orchStatus' })],
+          }), Object({ key: 'Orch Status: ', value: undefined, testId: 'orchStatus' }),
+            Object({
+                key: 'Model Version: ',
+                value: '5',
+                testId: 'modelVersion'
+            })],
         }]
       }]
   }
@@ -2698,10 +2703,10 @@ describe('Model Tree Generator service', () => {
         "vnfStoreKey": "2017-488_PASQUALE-vPE 0",
         "typeName": "VNF",
         "statusProperties": [Object({
-          key: 'Prov Status:',
+          key: 'Prov Status: ',
           value: undefined,
           testId: 'provStatus'
-        }), Object({ key: 'Orch Status:', value: undefined, testId: 'orchStatus' })],
+        }), Object({ key: 'Orch Status: ', value: undefined, testId: 'orchStatus' })],
         "children": [
           {
             "action": 'None',
@@ -2788,10 +2793,10 @@ describe('Model Tree Generator service', () => {
         "networkStoreKey": "ExtVL 0",
         "typeName": "N",
         "statusProperties": [Object({
-          key: 'Prov Status:',
+          key: 'Prov Status: ',
           value: undefined,
           testId: 'provStatus'
-        }), Object({ key: 'Orch Status:', value: undefined, testId: 'orchStatus' })],
+        }), Object({ key: 'Orch Status: ', value: undefined, testId: 'orchStatus' })],
       },
       {
         "parentType": '',

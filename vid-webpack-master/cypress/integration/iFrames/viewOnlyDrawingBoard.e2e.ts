@@ -96,6 +96,13 @@ describe('View only drawing board', function () {
     });
 
     cy.readFile('../vid-automation/src/test/resources/aaiGetInstanceTopology/getServiceInstanceTopologyResult.json').then((res) => {
+      res.vnfs['2017-488_PASQUALE-vPE 0']
+        .vfModules['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0']['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0uvfot']
+      .modelInfo.modelVersion = '2';
+      res.vnfs['2017-488_PASQUALE-vPE 0']
+        .vfModules['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1']['2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1fshmc']
+        .modelInfo.modelVersion = null;
+
       jsonBuilderAndMock.basicJson(
         res,
         Cypress.config('baseUrl') + "/aai_get_service_instance_topology/e433710f-9217-458d-a79d-1c7aff376d89/TYLER SILVIA/f8791436-8d55-4fde-b4d5-72dd2cf13cfb",
@@ -126,6 +133,14 @@ describe('View only drawing board', function () {
     cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0').find("[data-tests-id='status-property-provStatus']").eq(0).should('have.text', 'Prov Status');
     cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0').find("[data-tests-id='status-property-orchStatus']").eq(0).should('have.text', 'Active');
     cy.getElementByDataTestsId('node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0').find("[data-tests-id='status-property-inMaint']").eq(0).should('have.text', '');
+
+    checkVfModuleModelVersion('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0',
+    'node-f8360508-3f17-4414-a2ed-6bc71161e8db-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0',
+      '2');
+
+    checkVfModuleModelVersion('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0',
+      'node-25284168-24bb-4698-8cb4-3f509146eca5-2017488_pasqualevpe0..2017488PasqualeVpe..PASQUALE_vRE_BV..module-1',
+      '');
 
     cy.getElementByDataTestsId("serviceInstance").should('have.text', 'Service instance:');
     cy.getElementByDataTestsId("serviceName").should('have.text', 'mCaNkinstancename');
@@ -326,6 +341,11 @@ describe('View only drawing board', function () {
 
   });
 
+  function checkVfModuleModelVersion(vnfNodeDataTestId: string, vfModuleDataTestId: string, vfModuleModelVersion: string){
+    cy.getElementByDataTestsId(vnfNodeDataTestId)
+    .getElementByDataTestsId(vfModuleDataTestId)
+    .find("[data-tests-id='status-property-modelVersion']").eq(0).should('have.text', vfModuleModelVersion);
+  }
   function testComponentInfoForVNF(){
     const labelsAndValuesForModel = [
       ['Model version', '2.0'],
