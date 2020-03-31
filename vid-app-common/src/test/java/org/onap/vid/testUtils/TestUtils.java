@@ -154,6 +154,17 @@ public class TestUtils {
         }
     }
 
+    public static <T> T readJsonResourceStringAsObject(String jsonResourceString, Class<T> valueType) {
+        ObjectMapper objectMapper =
+                jacksonObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+            return objectMapper.readValue(jsonResourceString, valueType);
+        } catch (IOException e) {
+            return ExceptionUtils.rethrow(e);
+        }
+    }
+
     public static <T> T readJsonResourceFileAsObject(String pathInResource, Class<T> valueType) {
         return readJsonResourceFileAsObject(pathInResource, valueType, false);
     }

@@ -1,0 +1,123 @@
+{
+  "action": "None",
+  "isDirty": false,
+  "vnfs": {
+    "d520268f-7489-4662-be59-f81495b3a069": {
+      "action": "None",
+      "instanceName": "PST-VfMod-Replace-5-Vnf",
+      "instanceId": "d520268f-7489-4662-be59-f81495b3a069",
+      "orchStatus": "Active",
+      "productFamilyId": null,
+      "lcpCloudRegionId": "olson5a",
+      "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08",
+      "cloudOwner": "irma-aic",
+      "modelInfo": {
+        "modelCustomizationName": "xbi test module replace 0",
+        "modelCustomizationId": "84ea2603-b892-4b63-b7ad-e53b902eacdb",
+        "modelInvariantId": "5626a5ec-7dce-4cc1-b025-bdb7abb2f058",
+        "modelVersionId": "fb0fea03-db45-4617-a2a8-0910309e5c86",
+        "modelName": "xbi test module replace",
+        "modelType": "vnf",
+        "modelVersion": "1.0"
+      },
+      "instanceType": "xbi test module replace/xbi test module replace 0",
+      "provStatus": "PREPROV",
+      "inMaint": false,
+      "uuid": "fb0fea03-db45-4617-a2a8-0910309e5c86",
+      "originalName": "xbi test module replace 0",
+      "legacyRegion": null,
+      "lineOfBusiness": null,
+      "platformName": null,
+      "trackById": "d520268f-7489-4662-be59-f81495b3a069",
+      "vfModules": {
+        "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0": {
+          "b0732bed-3ddf-43cc-b193-7f18db84e476": {
+            "action": "None_Delete",
+            "retainAssignments" : true,
+            "sdncPreLoad" : false,
+            "instanceName": "PST-VfMod-Replace-5-Vfmod",
+            "instanceId": "b0732bed-3ddf-43cc-b193-7f18db84e476",
+            "orchStatus": "Active",
+            "productFamilyId": null,
+            "lcpCloudRegionId": "olson5a",
+            "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08",
+            "cloudOwner": "irma-aic",
+            "modelInfo": {
+              "modelCustomizationName": "XbiTestModuleReplace..base_ocg..module-0",
+              "modelCustomizationId": "3f1f0fcb-8a88-4612-a794-3912613ed9e8",
+              "modelInvariantId": "d887658e-2a89-4baf-83e2-b189601a1a7c",
+              "modelName": "XbiTestModuleReplace..base_ocg..module-0",
+              "modelVersionId": "04b21d26-9780-4956-8329-b22b049329f4",
+              "modelType": "vfModule",
+              "modelVersion": "1.0"
+            },
+            "instanceType": null,
+            "provStatus": null,
+            "inMaint": false,
+            "uuid": "04b21d26-9780-4956-8329-b22b049329f4",
+            "originalName": "xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0",
+            "legacyRegion": null,
+            "lineOfBusiness": null,
+            "platformName": null,
+            "trackById": "b0732bed-3ddf-43cc-b193-7f18db84e476",
+            "isBase": true,
+            "volumeGroupName": null,
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content" : null
+          }
+        }
+      },
+      "networks": {},
+      "vnfStoreKey": "d520268f-7489-4662-be59-f81495b3a069",
+      "upgradedVFMSonsCounter": 1
+    }
+  },
+  "vrfs": {},
+  "instanceParams": [],
+  "validationCounter": 0,
+  "existingNames": {
+    "pst-vfmod-replace-5": ""
+  },
+  "existingVNFCounterMap": {
+    "84ea2603-b892-4b63-b7ad-e53b902eacdb": 1
+  },
+  "existingVRFCounterMap": {},
+  "existingVnfGroupCounterMap": {},
+  "existingNetworksCounterMap": {},
+  "networks": {},
+  "vnfGroups": {},
+  "bulkSize": 1,
+  "instanceName": "PST-VfMod-Replace-5",
+  "instanceId": "6196ab1f-2349-4b32-9b6c-cffeb0ccc79c",
+  "orchStatus": "Active",
+  "productFamilyId": null,
+  "lcpCloudRegionId": null,
+  "tenantId": null,
+  "cloudOwner": null,
+  "modelInfo": {
+    "modelInvariantId": "b3a1a119-dede-4ed0-b077-2a617fa519a3",
+    "modelVersionId": "06c415d8-afc2-4bcb-a131-e4db4b8e96ce",
+    "modelName": "xbi test module replace",
+    "modelType": "service",
+    "modelVersion": "1.0"
+  },
+  "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "subscriptionServiceType": "Emanuel",
+  "owningEntityId": null,
+  "owningEntityName": null,
+  "tenantName": null,
+  "aicZoneId": null,
+  "aicZoneName": null,
+  "projectName": null,
+  "rollbackOnFailure": false,
+  "isALaCarte": true,
+  "collectionResources": {},
+  "testApi": "GR_API",
+  "vidNotions": {
+    "instantiationUI": "legacy",
+    "modelCategory": "other",
+    "viewEditUI": "legacy",
+    "instantiationType": "ALaCarte"
+  }
+}
