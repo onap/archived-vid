@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a637676_b335f9d7",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-03-31T19:52:22Z",
+      "side": 1,
+      "message": "nice test",
+      "revId": "ad6c45337a91e2a7957549d8f5de08ee5c82d37b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8cb05e8_a6dd0d24",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/shared.tree.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-03-31T19:52:22Z",
+      "side": 1,
+      "message": "is undefined value is safe here ? what happen in this case ? is the model version field shown ?\nMaybe it\u0027s better to return empty string in getNodeModelVersion instead of undefined ?",
+      "revId": "ad6c45337a91e2a7957549d8f5de08ee5c82d37b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
