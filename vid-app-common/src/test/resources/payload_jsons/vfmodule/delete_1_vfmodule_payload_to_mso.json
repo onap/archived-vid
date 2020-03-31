@@ -1,0 +1,22 @@
+{
+  "requestDetails": {
+    "requestInfo": {
+      "source": "VID",
+      "requestorId": "az2016"
+    },
+    "modelInfo": {
+      "modelType": "vfModule",
+      "modelName": "XbiTestModuleReplace..base_ocg..module-0",
+      "modelVersionId": "04b21d26-9780-4956-8329-b22b049329f4",
+      "modelVersion": "1.0",
+      "modelInvariantId": "d887658e-2a89-4baf-83e2-b189601a1a7c",
+      "modelCustomizationName": "XbiTestModuleReplace..base_ocg..module-0",
+      "modelCustomizationId": "3f1f0fcb-8a88-4612-a794-3912613ed9e8"
+    },
+    "cloudConfiguration": {
+      "lcpCloudRegionId": "olson5a",
+      "cloudOwner": "irma-aic",
+      "tenantId": "7ff7b1a4fe954f71ab79d3160ec3eb08"
+    }
+  }
+}
