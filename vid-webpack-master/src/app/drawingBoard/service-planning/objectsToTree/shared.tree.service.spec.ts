@@ -312,23 +312,55 @@ describe('Shared Tree Service', () => {
   });
 
   test('statusProperties should be prop on node according to node properties', () => {
-    let node = service.addingStatusProperty({orchStatus: 'completed', provStatus: 'inProgress', inMaint: false});
+
+    let node = service.addingStatusProperty({orchStatus: 'completed', provStatus: 'inProgress', type: 'VFmodule', instanceModelInfo:{modelVersion: '1'}, inMaint: false});
     expect(node.statusProperties).toBeDefined();
     expect(node.statusProperties).toEqual([Object({
       key: 'Prov Status:',
       value: 'inProgress',
       testId: 'provStatus'
-    }), Object({key: 'Orch Status:', value: 'completed', testId: 'orchStatus'})]);
-    node = service.addingStatusProperty({orchStatus: 'completed', provStatus: 'inProgress', inMaint: true});
+    }), Object({
+      key: 'Orch Status:',
+      value: 'completed',
+      testId: 'orchStatus'
+    }),
+    Object({
+      key: 'Model Version: ',
+      value: '1',
+      testId: 'modelVersion'
+    })]);
+    node = service.addingStatusProperty({orchStatus: 'completed', provStatus: 'inProgress',type: 'VFmodule',  instanceModelInfo:{}, inMaint: true});
     expect(node.statusProperties).toEqual([Object({
       key: 'Prov Status:',
       value: 'inProgress',
       testId: 'provStatus'
-    }), Object({key: 'Orch Status:', value: 'completed', testId: 'orchStatus'}), Object({
+    }), Object({
+      key: 'Orch Status:',
+      value: 'completed',
+      testId: 'orchStatus'
+    }), Object({
+      key: 'Model Version: ',
+      value: undefined,
+      testId: 'modelVersion'
+    }), Object({
       key: 'In-maintenance',
       value: '',
       testId: 'inMaint'
-    })]);
+    })
+]);
+  });
+  each([
+    ['version 2', '2', '2'],
+    ['undefined', null, undefined]
+  ]).
+  test('getNodeModelVersion should return %s',  (description, nodeVersion, expectedVersion) => {
+    let node = <any>{
+      instanceModelInfo:{
+        modelVersion: nodeVersion
+      }
+    };
+    let actualVersion = service.getNodeModelVersion(node);
+    expect(actualVersion).toEqual(expectedVersion);
   });
 
   each([

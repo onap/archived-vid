@@ -2677,7 +2677,12 @@ describe('Model Tree Generator service', () => {
             key: 'Prov Status:',
             value: undefined,
             testId: 'provStatus'
-          }), Object({ key: 'Orch Status:', value: undefined, testId: 'orchStatus' })],
+          }), Object({ key: 'Orch Status:', value: undefined, testId: 'orchStatus' }),
+            Object({
+                key: 'Model Version: ',
+                value: '5',
+                testId: 'modelVersion'
+            })],
         }]
       }]
   }

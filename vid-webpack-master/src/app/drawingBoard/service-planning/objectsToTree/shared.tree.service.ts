@@ -122,10 +122,20 @@ export class SharedTreeService {
     node['statusProperties'] = [];
     node['statusProperties'].push({key: 'Prov Status:', value: node.provStatus, testId: 'provStatus'});
     node['statusProperties'].push({key: 'Orch Status:', value: node.orchStatus, testId: 'orchStatus'});
+    if(node.type === 'VFmodule') {
+      node['statusProperties'].push({key: 'Model Version: ', value: this.getNodeModelVersion(node), testId: 'modelVersion'});
+    }
     if (node.inMaint) {
       node['statusProperties'].push({key: 'In-maintenance', value: '', testId: 'inMaint'});
     }
     return node;
+  }
+
+   getNodeModelVersion(node): string | undefined {
+    if(!_.isNil(node.instanceModelInfo) && !_.isNil(node.instanceModelInfo.modelVersion)){
+      return node.instanceModelInfo.modelVersion;
+    }
+    return undefined;
   }
 
   /**********************************************
