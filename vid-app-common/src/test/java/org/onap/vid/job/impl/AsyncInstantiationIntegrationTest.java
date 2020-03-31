@@ -1286,6 +1286,79 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         assertThat(requestCaptor.getValue(), jsonEquals(expectedPayloadToMso).when(IGNORING_ARRAY_ORDER));
     }
 
+    @Test
+    public void whenDeletingVfModule_thenExpectedDeleteRequestSent()
+    {
+        String currentServiceInstanceId = "6196ab1f-2349-4b32-9b6c-cffeb0ccc79c";
+        String currentVnfInstanceId = "d520268f-7489-4662-be59-f81495b3a069";
+        String currentVfModuleInstanceId = "b0732bed-3ddf-43cc-b193-7f18db84e476";
+
+        assertTestPayloadFitsExpectedIds(deleteVfModuleBulkPayload(), currentServiceInstanceId, currentVnfInstanceId, currentVfModuleInstanceId);
+
+        String deleteRequestId = randomUuid();
+        String userId = "az2016";
+
+
+        String expectedMsoDeletePath = "/serviceInstantiation/v7/serviceInstances/"
+                + currentServiceInstanceId + "/vnfs/" + currentVnfInstanceId + "/vfModules/" + currentVfModuleInstanceId;
+
+        when(restMso.restCall(eq(HttpMethod.DELETE), eq(RequestReferencesContainer.class), any(), eq(expectedMsoDeletePath), eq(Optional.of(userId))))
+                .thenReturn(createResponse(202, currentVfModuleInstanceId, deleteRequestId));
+
+        when(restMso.GetForObject(eq("/orchestrationRequests/v7/" + deleteRequestId), eq(AsyncRequestStatus.class)))
+                .thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
+                        asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
+                        asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+
+        enableAddCloudOwnerOnMsoRequest();
+
+
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(deleteVfModuleBulkPayload(), userId).get(0);
+        processJobsCountTimesAndAssertStatus(jobUUID, 20, COMPLETED);
+
+
+        ArgumentCaptor<RequestDetailsWrapper> requestCaptor = ArgumentCaptor.forClass(RequestDetailsWrapper.class);
+        verify(restMso, times(1)).restCall(
+                eq(HttpMethod.DELETE),
+                eq(RequestReferencesContainer.class),
+                requestCaptor.capture(),
+                eq(expectedMsoDeletePath),
+                eq(Optional.of(userId))
+        );
+
+        assertThat(requestCaptor.getValue(), jsonEquals(getDeleteVfModulePayloadToMso()));
+    }
+
+
+    private ServiceInstantiation deleteVfModuleBulkPayload() {
+        return readJsonResourceFileAsObject("/payload_jsons/vfmodule/delete_1_vfmodule_expected_bulk.json", ServiceInstantiation.class);
+    }
+
+    private String getDeleteVfModulePayloadToMso() {
+        return "{ " +
+                "  \"requestDetails\": { " +
+                "    \"requestInfo\": { " +
+                "      \"source\": \"VID\", " +
+                "      \"requestorId\": \"az2016\" " +
+                "    }, " +
+                "    \"modelInfo\": { " +
+                "      \"modelType\": \"vfModule\", " +
+                "      \"modelName\": \"XbiTestModuleReplace..base_ocg..module-0\", " +
+                "      \"modelVersionId\": \"04b21d26-9780-4956-8329-b22b049329f4\", " +
+                "      \"modelVersion\": \"1.0\", " +
+                "      \"modelInvariantId\": \"d887658e-2a89-4baf-83e2-b189601a1a7c\", " +
+                "      \"modelCustomizationName\": \"XbiTestModuleReplace..base_ocg..module-0\", " +
+                "      \"modelCustomizationId\": \"3f1f0fcb-8a88-4612-a794-3912613ed9e8\" " +
+                "    }, " +
+                "    \"cloudConfiguration\": { " +
+                "      \"lcpCloudRegionId\": \"olson5a\", " +
+                "      \"cloudOwner\": \"irma-aic\", " +
+                "      \"tenantId\": \"7ff7b1a4fe954f71ab79d3160ec3eb08\" " +
+                "    } " +
+                "  } " +
+                "}";
+    }
+
     private void assertTestPayloadFitsExpectedIds(ServiceInstantiation upgradeVfModulePayload, String serviceInstanceId,
         String vnfInstanceId, String vfModuleInstanceId) {
         /*
