@@ -21,9 +21,9 @@
 package org.onap.vid.properties;
 
 import org.apache.commons.lang3.StringUtils;
-import org.onap.vid.model.ModelConstants;
 import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.portalsdk.core.util.SystemProperties;
+import org.onap.vid.model.ModelConstants;
 /**
  * The Class VidProperties.
  */
@@ -36,6 +36,7 @@ public class VidProperties extends SystemProperties {
 	public static final String MSO_MAX_OPENED_INSTANTIATION_REQUESTS="mso.maxOpenedInstantiationRequests";
 	public static final String MSO_ASYNC_POLLING_INTERVAL_SECONDS="mso.asyncPollingIntervalSeconds";
 	public static final String PROBE_SDC_MODEL_UUID="probe.sdc.model.uuid";
+	public static final String PORTAL_APP_PASSWORD_ENVIRONMENT_VARIABLE_NAME="VID_PORTAL_APP_PASSWORD";
 
 	/** The Constant VID_TRUSTSTORE_FILENAME. */
 	public static final String VID_TRUSTSTORE_FILENAME = "vid.truststore.filename";
