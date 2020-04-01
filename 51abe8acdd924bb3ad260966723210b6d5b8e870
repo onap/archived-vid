@@ -16,6 +16,24 @@
       "revId": "51abe8acdd924bb3ad260966723210b6d5b8e870",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "354d7aa9_75c4b28b",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfmodule/delete_1_vfmodule_expected_bulk.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-04-01T06:05:40Z",
+      "side": 0,
+      "message": "well,\nThe problem is that the delete_vfmodule_expected_bulk.json is actually a bulk request for both Delete and Upgrade. (the name of the file is misleading)\nI wanted to make sure we are testing the two scenarios (not on a single test)\n1. simple delete a single vfmodule\n2. delete a single vfmodule and the upgrade another\n\nWhat do you think?",
+      "parentUuid": "cfbb6a33_704fc371",
+      "revId": "51abe8acdd924bb3ad260966723210b6d5b8e870",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
