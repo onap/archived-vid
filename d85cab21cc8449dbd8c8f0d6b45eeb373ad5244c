@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c3504cc3_f81dbfd0",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/controller/WebConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-01T11:44:36Z",
+      "side": 1,
+      "message": "add explenation",
+      "revId": "d85cab21cc8449dbd8c8f0d6b45eeb373ad5244c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
