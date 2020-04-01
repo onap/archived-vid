@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16d0a735_255f281f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1247,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-01T04:04:54Z",
+      "side": 1,
+      "message": "why is that; and if it is justified -- can just delete the line.",
+      "revId": "ae27cc7e3cf90caeb85facbc95db966a66174fb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f18832f7_2d811660",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1334,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-01T04:04:54Z",
+      "side": 1,
+      "message": "I would argue that a small payload as such should be inlined here (to a expectedDeletePayloadToMso() method, though) instead of being a file.",
+      "range": {
+        "startLine": 1334,
+        "startChar": 94,
+        "endLine": 1334,
+        "endChar": 126
+      },
+      "revId": "ae27cc7e3cf90caeb85facbc95db966a66174fb7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

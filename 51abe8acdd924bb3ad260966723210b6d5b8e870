@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cfbb6a33_704fc371",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfmodule/delete_1_vfmodule_expected_bulk.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-01T04:04:54Z",
+      "side": 0,
+      "message": "How was this payload generated? Wouldn\u0027t it be better to tie up this test with payload_jsons/vfmodule/delete_vfmodule_expected_bulk.json, so that we will eventually have an e2e assurance?",
+      "revId": "51abe8acdd924bb3ad260966723210b6d5b8e870",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
