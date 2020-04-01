@@ -1201,13 +1201,11 @@ public class NewServiceInstanceTest extends ModernUITestBase {
 
         assertSetButtonDisabled(VNF_SET_BUTTON_TEST_ID);
         SelectOption.selectOptionsFromMultiselectById("multi-selectPlatform", ImmutableList.of("platform"));
+        SelectOption.selectOptionsFromMultiselectById("multi-lineOfBusiness",ImmutableList.of("ONAP"));
 
         if(!isNetwork){
             SelectOption.byTestIdAndVisibleText("TYLER SILVIA", Constants.ViewEdit.PRODUCT_FAMILY_SELECT_TESTS_ID);
             browseASDCPage.selectProductFamily("e433710f-9217-458d-a79d-1c7aff376d89");
-            browseASDCPage.selectLineOfBusiness("ONAP");
-        } else {
-            SelectOption.selectOptionsFromMultiselectById("multi-lineOfBusiness",ImmutableList.of("ONAP"));
         }
 
         assertSetButtonEnabled(VNF_SET_BUTTON_TEST_ID);
