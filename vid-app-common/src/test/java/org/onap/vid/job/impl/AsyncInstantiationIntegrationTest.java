@@ -59,6 +59,7 @@ import static org.onap.vid.job.Job.JobStatus.STOPPED;
 import static org.onap.vid.job.impl.JobSchedulerInitializer.WORKERS_TOPICS;
 import static org.onap.vid.model.JobAuditStatus.SourceStatus.VID;
 import static org.onap.vid.testUtils.TestUtils.readJsonResourceFileAsObject;
+import static org.onap.vid.testUtils.TestUtils.readJsonResourceStringAsObject;
 import static org.testng.Assert.assertNull;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertFalse;
@@ -84,6 +85,7 @@ import javax.inject.Inject;
 import javax.ws.rs.ProcessingException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.apache.poi.ss.formula.functions.T;
 import org.jetbrains.annotations.NotNull;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -1293,7 +1295,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         String currentVnfInstanceId = "d520268f-7489-4662-be59-f81495b3a069";
         String currentVfModuleInstanceId = "b0732bed-3ddf-43cc-b193-7f18db84e476";
 
-        assertTestPayloadFitsExpectedIds(deleteVfModulePayload(), currentServiceInstanceId, currentVnfInstanceId, currentVfModuleInstanceId);
+        assertTestPayloadFitsExpectedIds(deleteVfModuleBulkPayload(), currentServiceInstanceId, currentVnfInstanceId, currentVfModuleInstanceId);
 
         String deleteRequestId = randomUuid();
         String userId = "az2016";
@@ -1318,7 +1320,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         enableAddCloudOwnerOnMsoRequest();
 
 
-        UUID jobUUID = asyncInstantiationBL.pushBulkJob(deleteVfModulePayload(), userId).get(0);
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(deleteVfModuleBulkPayload(), userId).get(0);
         processJobsCountTimesAndAssertStatus(jobUUID, 20, COMPLETED);
 
 
@@ -1331,12 +1333,39 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
                 eq(Optional.of(userId))
         );
 
-        JsonNode expectedPayloadToMso = readJsonResourceFileAsObject("/payload_jsons/vfmodule/delete_1_vfmodule_payload_to_mso.json", JsonNode.class);
+        JsonNode expectedPayloadToMso = getDeleteVfModulePayloadToMso(JsonNode.class);
         assertThat(requestCaptor.getValue(), jsonEquals(expectedPayloadToMso).when(IGNORING_ARRAY_ORDER));
     }
 
-    private ServiceInstantiation deleteVfModulePayload() {
+
+    private ServiceInstantiation deleteVfModuleBulkPayload() {
         return readJsonResourceFileAsObject("/payload_jsons/vfmodule/delete_1_vfmodule_expected_bulk.json", ServiceInstantiation.class);
+    }
+
+    private <T> T getDeleteVfModulePayloadToMso(Class<T> deserializeTo)
+    {
+        return readJsonResourceStringAsObject("{\n" +
+                "  \"requestDetails\": {\n" +
+                "    \"requestInfo\": {\n" +
+                "      \"source\": \"VID\",\n" +
+                "      \"requestorId\": \"az2016\"\n" +
+                "    },\n" +
+                "    \"modelInfo\": {\n" +
+                "      \"modelType\": \"vfModule\",\n" +
+                "      \"modelName\": \"XbiTestModuleReplace..base_ocg..module-0\",\n" +
+                "      \"modelVersionId\": \"04b21d26-9780-4956-8329-b22b049329f4\",\n" +
+                "      \"modelVersion\": \"1.0\",\n" +
+                "      \"modelInvariantId\": \"d887658e-2a89-4baf-83e2-b189601a1a7c\",\n" +
+                "      \"modelCustomizationName\": \"XbiTestModuleReplace..base_ocg..module-0\",\n" +
+                "      \"modelCustomizationId\": \"3f1f0fcb-8a88-4612-a794-3912613ed9e8\"\n" +
+                "    },\n" +
+                "    \"cloudConfiguration\": {\n" +
+                "      \"lcpCloudRegionId\": \"olson5a\",\n" +
+                "      \"cloudOwner\": \"irma-aic\",\n" +
+                "      \"tenantId\": \"7ff7b1a4fe954f71ab79d3160ec3eb08\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "}\n", deserializeTo);
     }
 
     private void assertTestPayloadFitsExpectedIds(ServiceInstantiation upgradeVfModulePayload, String serviceInstanceId,
