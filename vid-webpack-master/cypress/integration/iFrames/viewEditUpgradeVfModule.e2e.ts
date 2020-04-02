@@ -134,10 +134,11 @@ describe('View Edit Page: Upgrade VFModule', function () {
   describe('More UI test', () => {
 
     beforeEach(() => {
-      cy.clearSessionStorage();
-      cy.setTestApiParamToGR();
-      cy.initVidMock();
-      cy.login();
+      cy.clearSessionStorage().then(() => {
+        cy.setTestApiParamToGR();
+        cy.initVidMock();
+        cy.login();
+      });
     });
 
     afterEach(() => {
