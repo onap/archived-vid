@@ -25,8 +25,8 @@ function getReduxState(): Chainable<any> {
   });
 }
 
-function clearSessionStorage() : void {
-  cy.window().then((win) => {
+function clearSessionStorage() : Cypress.Chainable<any> {
+  return cy.window().then((win) => {
     win.sessionStorage.clear();
   });
 }
