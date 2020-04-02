@@ -382,7 +382,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
         Click.byTestIdOnceItsAvailable("120d39fb-3627-473d-913c-d228dd0f8e5b", 20);
         clickToCloseModal("setMembersBtn");
 
-        Assert.assertEquals(Get.byTestId("node-type-indicator").getText(),"VRF");
+        assertEquals(Get.byTestId("node-type-indicator").getText(),"VRF");
 
         drawingBoardPage.deploy();
         drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "Service "+serviceInstanceName);
@@ -1150,7 +1150,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
 
     private void assertElementExistAccordingTagNameAndTestId(String tag, String testId) {
         WebElement webElement = Get.byId(testId);
-        Assert.assertEquals(webElement.getTagName(), tag);
+        assertEquals(webElement.getTagName(), tag);
     }
 
     //@Step("create vnf")
@@ -1214,9 +1214,9 @@ public class NewServiceInstanceTest extends ModernUITestBase {
 
 
         Wait.waitByTestId("model-item-value-subscriberName", 10);
-        Assert.assertEquals(Get.byTestId("model-item-value-subscriberName").getText(), "SILVIA ROBBINS", "Subscriber name should be shown in vf module");
+        assertEquals(Get.byTestId("model-item-value-subscriberName").getText(), "SILVIA ROBBINS", "Subscriber name should be shown in vf module");
         if (!vnfData.isGeneratedNaming) {
-            Assert.assertEquals(Get.byTestId("model-item-value-serviceName").getText(), serviceInstanceName, "Subscriber name should be shown in vf module");
+            assertEquals(Get.byTestId("model-item-value-serviceName").getText(), serviceInstanceName, "Subscriber name should be shown in vf module");
         }
 
         vidBasePage.screenshotDeployDialog("createVnf-" + serviceInstanceName);
@@ -1230,10 +1230,10 @@ public class NewServiceInstanceTest extends ModernUITestBase {
             Wait.byText("TYLER SILVIA");
             GeneralUIUtils.ultimateWait();
             assertThat(Get.selectedOptionText(Constants.ViewEdit.LCP_REGION_SELECT_TESTS_ID), startsWith("AAIAIC25"));
-            Assert.assertEquals(Get.selectedOptionText(Constants.ViewEdit.TENANT_SELECT_TESTS_ID), "USP-SIP-IC-24335-T-01");
-            Assert.assertEquals(Get.selectedOptionText(Constants.ViewEdit.LINE_OF_BUSINESS_SELECT_TESTS_ID), "ONAP");
+            assertEquals(Get.selectedOptionText(Constants.ViewEdit.TENANT_SELECT_TESTS_ID), "USP-SIP-IC-24335-T-01");
+            assertTrue(Get.isOptionSelectedInMultiSelect("multi-lineOfBusiness", "ONAP"));
 
-            Assert.assertTrue(Get.isOptionSelectedInMultiSelect(Constants.OwningEntity.PLATFORM_MULTI_SELECT_TEST_ID, "platform"));
+            assertTrue(Get.isOptionSelectedInMultiSelect(Constants.OwningEntity.PLATFORM_MULTI_SELECT_TEST_ID, "platform"));
 
             clickToCloseModal(Constants.CANCEL_BUTTON_TEST_ID);
         } else {
@@ -1276,7 +1276,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
             Input.file("supplementaryFiles/" + inputFileName, "supplementaryFile");
             GeneralUIUtils.ultimateWait();
             WebElement fileName = Get.byTestId("file-name");
-            Assert.assertEquals(fileName.getText(),inputFileName);
+            assertEquals(fileName.getText(),inputFileName);
             browseASDCPage.assertButtonState(setButtonTestId, isValid);
         }
     }
@@ -1286,7 +1286,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
             Click.byTestId("remove-uploaded-file");
             GeneralUIUtils.ultimateWait();
             WebElement fileName = Get.byTestId("file-name");
-            Assert.assertEquals(fileName.getText(),"Choose file");
+            assertEquals(fileName.getText(),"Choose file");
         }
     }
 
@@ -1303,7 +1303,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
         String setButtonTestId = "form-set";
         BrowseASDCPage browseASDCPage = new BrowseASDCPage();
 
-        Assert.assertEquals(isElementByIdRequired("instanceName-label"), !serviceData.vnfData.isGeneratedNaming,"instance name input should be optional when EcompNaming == true, and required when false.");
+        assertEquals(isElementByIdRequired("instanceName-label"), !serviceData.vnfData.isGeneratedNaming,"instance name input should be optional when EcompNaming == true, and required when false.");
 
         if (!serviceData.vnfData.isGeneratedNaming) {
             Input.text("VF instance name", "instanceName");
@@ -1324,21 +1324,21 @@ public class NewServiceInstanceTest extends ModernUITestBase {
 
 
         Wait.waitByTestId("model-item-value-subscriberName", 10);
-        Assert.assertEquals(Get.byTestId("model-item-value-subscriberName").getText(), "SILVIA ROBBINS", "Subscriber name should be shown in vf module");
-        Assert.assertEquals(Get.byTestId("model-item-value-min").getText(), Integer.toString(serviceData.vfData.vfMin), "Min should be shown");
+        assertEquals(Get.byTestId("model-item-value-subscriberName").getText(), "SILVIA ROBBINS", "Subscriber name should be shown in vf module");
+        assertEquals(Get.byTestId("model-item-value-min").getText(), Integer.toString(serviceData.vfData.vfMin), "Min should be shown");
         if (serviceData.vfData.vfMax!=null) {
             if (!serviceData.vfData.vfMax.equals(NO_MAX_INSTANCES_IN_MODEL)) {
-                Assert.assertEquals(Get.byTestId("model-item-value-max").getText(), serviceData.vfData.vfMax, "Max should be shown");
+                assertEquals(Get.byTestId("model-item-value-max").getText(), serviceData.vfData.vfMax, "Max should be shown");
             }
             else {
                 String defaultMaxText = Features.FLAG_2002_UNLIMITED_MAX.isActive() ? "Unlimited (default)" : "1";
-                Assert.assertEquals(Get.byTestId("model-item-value-max").getText(), defaultMaxText, "Max should be shown with default value");
+                assertEquals(Get.byTestId("model-item-value-max").getText(), defaultMaxText, "Max should be shown with default value");
             }
         }
 
         if (serviceData.isGeneratedNaming!=IS_GENERATED_NAMING.TRUE) {
             Wait.byText(serviceInstanceName);
-            Assert.assertEquals(Get.byTestId("model-item-value-serviceName").getText(), serviceInstanceName, "Service name should be shown in vf module");
+            assertEquals(Get.byTestId("model-item-value-serviceName").getText(), serviceInstanceName, "Service name should be shown in vf module");
         }
 
         if (serviceData.isALaCarte && !FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF.isActive()) {
