@@ -16,6 +16,7 @@ import {FormGeneralErrorsService} from "../formGeneralErrors/formGeneralErrors.s
 import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
 import {InstantiationTemplatesModalComponent} from "./instantiationTemplatesModal/instantiation.templates.modal.component";
 import {updateCurrentModalModeAction} from "../../storeUtil/utils/global/global.actions";
+import {DrawingBoardTreeComponent} from "../../../drawingBoard/service-planning/drawing-board-tree/drawing-board-tree.component";
 
 
 export interface PopupModel {
@@ -98,6 +99,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
 
     if (!_.isNil(this.uuidData)) {
       this.uuidData.popupService.closeDialogEvent.subscribe((that) => {
+        DrawingBoardTreeComponent.triggerreCalculateIsDirty.next(that.uuidData.serviceId);
         this.closeDialog(that);
       });
 

@@ -1,0 +1,58 @@
+{
+  "service": {
+    "uuid": "f93e72e1-77fc-4f54-b207-298d766d0886",
+    "invariantUuid": "8c364754-4c76-4abc-b8f3-88da5f67d588",
+    "name": "oam_protected_net NC OVS network 1",
+    "version": "2.0",
+    "toscaModelURL": null,
+    "category": "Network Service",
+    "serviceType": "INFRASTRUCTURE",
+    "serviceRole": "PROVIDER-NETWORK",
+    "description": "OVS Provider Network service model for NC for oam_protected_net_2",
+    "serviceEcompNaming": "false",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "anyAlacarteWhichNotExcluded",
+      "modelCategory": "5G Provider Network",
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
+    }
+  },
+  "vnfs": {},
+  "networks": {
+    "OVS Provider": {
+      "uuid": "01f4c475-3f89-4f00-a2f4-39a873dba0ae",
+      "invariantUuid": "ffb9e45c-e674-4289-aad3-00040ad746e4",
+      "description": "NETWORK_CLOUD_PROVIDER_NETWORK",
+      "name": "NETWORK_CLOUD_PROVIDER_NETWORK",
+      "version": "1.0",
+      "customizationUuid": "23c382c9-9405-4780-8794-e57eb015883d",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "network_role": "oam_protected_net_2",
+        "network_assignments": "{is_external_network=false, is_shared_network=true, is_trunked=false, ipv4_subnet_default_assignment={dhcp_enabled=false, ip_version=4, min_subnets_count=1, use_ipv4=true}, ecomp_generated_network_assignment=false, ipv6_subnet_default_assignment={dhcp_enabled=false, use_ipv6=true, ip_version=6, min_subnets_count=1}, related_networks=[{related_network_role=oam_protected_net_2_tenant}]}",
+        "exVL_naming": "{ecomp_generated_naming=false}",
+        "network_flows": "{is_network_policy=false, is_bound_to_vpn=false}",
+        "network_scope": "GLOBAL",
+        "ecomp_generated_naming": "false",
+        "network_type": "NEUTRON-PROVIDER",
+        "provider_network": "{physical_network_name=oam, is_provider_network=true}",
+        "network_technology": "OVS",
+        "network_homing": "{ecomp_selected_instance_node_target=false}"
+      },
+      "type": "VL",
+      "modelCustomizationName": "OVS Provider"
+    }
+  },
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {},
+  "serviceProxies": {},
+  "vfModules": {},
+  "volumeGroups": {},
+  "pnfs": {},
+  "vnfGroups": {},
+  "vrfs": {}
+}
