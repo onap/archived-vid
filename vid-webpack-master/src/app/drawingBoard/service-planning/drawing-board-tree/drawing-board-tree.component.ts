@@ -51,7 +51,6 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
   @Input() pageMode : DrawingBoardModes;
   static triggerDeleteActionService: Subject<string> = new Subject<string>();
   static triggerUndoDeleteActionService: Subject<string> = new Subject<string>();
-  static triggerreCalculateIsDirty: Subject<string> = new Subject<string>();
   @ViewChild(ContextMenuComponent, {static: false}) public contextMenu: ContextMenuComponent;
 
   constructor(private _contextMenuService: ContextMenuService,
@@ -87,12 +86,12 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
       });
     });
 
+    DrawingBoardTreeService.triggerCheckIsDirty.subscribe((serviceModelId)=>{
+      this.store.dispatch(changeServiceIsDirty(this.nodes, serviceModelId));
+    })
+
     DrawingBoardTreeComponent.triggerUndoDeleteActionService.subscribe((serviceModelId) => {
       this.drawingBoardTreeService.undoDeleteActionService(this.nodes, serviceModelId);
-      this.store.dispatch(changeServiceIsDirty(this.nodes, serviceModelId));
-    });
-
-    DrawingBoardTreeComponent.triggerreCalculateIsDirty.subscribe((serviceModelId) => {
       this.store.dispatch(changeServiceIsDirty(this.nodes, serviceModelId));
     });
 

@@ -24,7 +24,7 @@
   "instanceParams": [
   ],
   "isALaCarte": true,
-  "isDirty": false,
+  "isDirty": true,
   "lcpCloudRegionId": null,
   "modelInfo": {
     "modelInvariantId": "dd5a69b7-c50c-4dde-adc2-966b79bb8fd6",
