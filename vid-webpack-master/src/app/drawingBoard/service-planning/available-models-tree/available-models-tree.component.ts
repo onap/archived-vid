@@ -24,7 +24,6 @@ import {createVnfGroupInstance} from "../../../shared/storeUtil/utils/vnfGroup/v
 import {VnfGroupControlGenerator} from "../../../shared/components/genericForm/formControlsServices/vnfGroupGenerator/vnfGroup.control.generator";
 import {HighlightPipe} from "../../../shared/pipes/highlight/highlight-filter.pipe";
 import * as _ from 'lodash';
-import {DrawingBoardTreeComponent} from "../drawing-board-tree/drawing-board-tree.component";
 import {ComponentInfoModel} from "../component-info/component-info-model";
 import {ComponentInfoService} from "../component-info/component-info.service";
 import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
@@ -166,12 +165,12 @@ export class AvailableModelsTreeComponent {
         let vnfGroup = this._defaultDataGeneratorService.generateVnfGroupInstance(this.serviceHierarchy.vnfGroups[node.data.name], isEcompGeneratedNaming, isAlaCarte, instanceName);
         this._store.dispatch(changeInstanceCounter(node.data.modelUniqueId, serviceId, 1 , <any> {data: {type: 'VnfGroup'}}));
         this._store.dispatch(createVnfGroupInstance(vnfGroup, node.data.name, serviceId, node.data.name));
-        DrawingBoardTreeComponent.triggerreCalculateIsDirty.next(this.serviceModelId);
+        DrawingBoardTreeService.triggerCheckIsDirty.next(this.serviceModelId);
       } else {
         let vfModule = this._defaultDataGeneratorService.generateVFModule(this.serviceHierarchy.vnfs[node.parent.data.name].vfModules[node.data.name], dynamicInputs, isEcompGeneratedNaming, isAlaCarte);
         if (this._sharedTreeService.selectedVNF) {
           this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, null, this._sharedTreeService.selectedVNF));
-          DrawingBoardTreeComponent.triggerreCalculateIsDirty.next(this.serviceModelId);
+          DrawingBoardTreeService.triggerCheckIsDirty.next(this.serviceModelId);
         } else if (this._availableModelsTreeService.getOptionalVNFs(this.serviceModelId, node.parent.data.modelUniqueId).length === 1) {
           let existVnf = this._store.getState().service.serviceInstance[this.serviceModelId].vnfs;
           if(!_.isNil(existVnf)){
@@ -179,7 +178,7 @@ export class AvailableModelsTreeComponent {
               const modelUniqueId = this._sharedTreeService.modelUniqueId(existVnf[vnfKey]);
               if(modelUniqueId === node.parent.data.id){
                 this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, null, vnfKey));
-                DrawingBoardTreeComponent.triggerreCalculateIsDirty.next(this.serviceModelId);
+                DrawingBoardTreeService.triggerCheckIsDirty.next(this.serviceModelId);
               }
             }
           }

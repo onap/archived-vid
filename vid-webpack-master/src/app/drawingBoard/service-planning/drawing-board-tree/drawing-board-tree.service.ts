@@ -5,9 +5,13 @@ import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../shared/store/reducers";
 import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
 import {ServiceInstanceActions} from "../../../shared/models/serviceInstanceActions";
+import {Subject} from "rxjs";
 
 @Injectable()
 export class  DrawingBoardTreeService {
+
+  static triggerCheckIsDirty : Subject<string> = new Subject<string>();
+
   constructor(private store: NgRedux<AppState>){}
   isVFModuleMissingData(node: ITreeNode, serviceModelId : string): boolean {
     if(node.data.type === 'VFmodule' &&!_.isNil(this.store.getState().service.serviceInstance[serviceModelId].vnfs) &&  !_.isNil(this.store.getState().service.serviceInstance[serviceModelId].vnfs[node.parent.data.vnfStoreKey])){

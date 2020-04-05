@@ -13,9 +13,8 @@ import {AaiService} from "../../services/aaiService/aai.service";
 import {GenericFormPopupService} from "./generic-form-popup.service";
 import {FormControlModel} from "../../models/formControlModels/formControl.model";
 import {FormGeneralErrorsService} from "../formGeneralErrors/formGeneralErrors.service";
-import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
-import {InstantiationTemplatesModalComponent} from "./instantiationTemplatesModal/instantiation.templates.modal.component";
 import {updateCurrentModalModeAction} from "../../storeUtil/utils/global/global.actions";
+import {DrawingBoardTreeService} from "../../../drawingBoard/service-planning/drawing-board-tree/drawing-board-tree.service";
 
 
 export interface PopupModel {
@@ -98,6 +97,7 @@ export class GenericFormPopupComponent extends DialogComponent<PopupModel, boole
 
     if (!_.isNil(this.uuidData)) {
       this.uuidData.popupService.closeDialogEvent.subscribe((that) => {
+        DrawingBoardTreeService.triggerCheckIsDirty.next(that.uuidData.serviceId);
         this.closeDialog(that);
       });
 

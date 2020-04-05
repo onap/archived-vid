@@ -1,0 +1,69 @@
+{
+  "action": "None",
+  "instanceName": "oam_protected_net_svc1",
+  "instanceId": "ce2821fc-3b28-4759-9613-1e514d7563c0",
+  "orchStatus": "Active",
+  "productFamilyId": null,
+  "lcpCloudRegionId": null,
+  "tenantId": null,
+  "cloudOwner": null,
+  "modelInfo": {
+    "modelInvariantId": "8c364754-4c76-4abc-b8f3-88da5f67d588",
+    "modelVersionId": "f93e72e1-77fc-4f54-b207-298d766d0886",
+    "modelName": "oam_protected_net NC OVS network 1",
+    "modelType": "service",
+    "modelVersion": "2.0"
+  },
+  "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "subscriptionServiceType": "Emanuel",
+  "owningEntityId": null,
+  "owningEntityName": null,
+  "tenantName": null,
+  "aicZoneId": null,
+  "aicZoneName": null,
+  "projectName": null,
+  "rollbackOnFailure": null,
+  "isALaCarte": true,
+  "vnfs": {},
+  "networks": {
+    "ca61e4c9-982b-4d5f-b9eb-eaaf1cf23b9e": {
+      "action": "None",
+      "instanceName": "GRP-29576-T-E2E-16-SDN_oam_protected_net_2",
+      "instanceId": "ca61e4c9-982b-4d5f-b9eb-eaaf1cf23b9e",
+      "orchStatus": "Active",
+      "lcpCloudRegionId": "olson59a",
+      "tenantId": "11981b4f7fc4426d905edb1487b53bff",
+      "cloudOwner": "irma-aic",
+      "modelInfo": {
+        "modelCustomizationName": "OVS Provider",
+        "modelCustomizationId": "23c382c9-9405-4780-8794-e57eb015883d",
+        "modelInvariantId": "ffb9e45c-e674-4289-aad3-00040ad746e4",
+        "modelVersionId": "01f4c475-3f89-4f00-a2f4-39a873dba0ae",
+        "modelName": "NETWORK_CLOUD_PROVIDER_NETWORK",
+        "modelType": "network",
+        "modelVersion": "1.0"
+      },
+      "instanceType": "NEUTRON-PROVIDER",
+      "inMaint": false,
+      "uuid": "01f4c475-3f89-4f00-a2f4-39a873dba0ae",
+      "originalName": "OVS Provider",
+      "trackById": "ca61e4c9-982b-4d5f-b9eb-eaaf1cf23b9e",
+      "role": "oam_protected_net_2",
+      "physicalName": "oam",
+      "serviceName": "oam_protected_net_svc1",
+      "serviceUUID": "ce2821fc-3b28-4759-9613-1e514d7563c0",
+      "tenantName": "GRP-29576-T-E2E-16-SDN",
+      "boundToVpn": false
+    }
+  },
+  "vrfs": {},
+  "vnfGroups": {},
+  "collectionResources": {},
+  "validationCounter": 0,
+  "existingVNFCounterMap": {},
+  "existingNetworksCounterMap": {
+    "23c382c9-9405-4780-8794-e57eb015883d": 1
+  },
+  "existingVnfGroupCounterMap": {},
+  "existingVRFCounterMap": {}
+}
