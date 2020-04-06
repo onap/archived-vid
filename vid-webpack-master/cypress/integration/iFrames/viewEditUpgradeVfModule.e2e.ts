@@ -175,6 +175,8 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
       cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
 
+      cy.wait('@newestModelVersion2');
+
       deleteTheVfm(`node-c449aaf8-2467-41a9-9015-730ab48ca19b-mdns012220200..Mdns01222020..dns_az_01..module-1`);
 
       upgradeTheVFM(`node-04b21d26-9780-4956-8329-b22b049329f4-xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0`, false);
@@ -185,10 +187,10 @@ describe('View Edit Page: Upgrade VFModule', function () {
       cy.getDrawingBoardDeployBtn().click();
 
       cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
-                    cy.readFile('../vid-app-common/src/test/resources/payload_jsons/vfmodule/delete_vfmodule_expected_bulk.json').then((expectedResult) => {
-                      cy.deepCompare(xhr.request.body, expectedResult);
-                    });
-                  });
+        cy.readFile('../vid-app-common/src/test/resources/payload_jsons/vfmodule/delete_vfmodule_expected_bulk.json').then((expectedResult) => {
+          cy.deepCompare(xhr.request.body, expectedResult);
+        });
+      });
     });
 
     it(`Upgrade a VFModule: another case e2e`, function () {
@@ -223,6 +225,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
       cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
 
+      cy.wait('@newestModelVersion2');
       upgradeTheVFM('node-04b21d26-9780-4956-8329-b22b049329f4-xbitestmodulereplace0..XbiTestModuleReplace..base_ocg..module-0', false);
 
       mockAsyncBulkResponse();
@@ -233,7 +236,6 @@ describe('View Edit Page: Upgrade VFModule', function () {
           cy.deepCompare(xhr.request.body, expectedResult);
         });
       });
-
     });
 
     it(`Upgrade a VFModule: upgrade vfmodule when upgraded already service, vnf and brother vfmodule e2e`, function () {
@@ -267,6 +269,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
 
       cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
 
+      cy.wait('@newestModelVersion2');
       upgradeTheVFM('node-3412fe1f-e103-4777-90c0-f66d888f4bed-mdns012220200..Mdns01222020..dns_az_01..module-1', true);
 
       mockAsyncBulkResponse();
@@ -277,9 +280,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
           cy.deepCompare(xhr.request.body, expectedResult);
         });
       });
-
     });
-
   });
 
 
