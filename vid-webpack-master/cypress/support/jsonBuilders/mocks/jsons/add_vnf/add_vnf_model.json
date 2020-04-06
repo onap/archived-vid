@@ -1,0 +1,117 @@
+{
+  "service": {
+    "uuid": "82255513-e19f-46e5-bdfb-957c6bf57b82",
+    "invariantUuid": "1a94f1d1-ab7a-412e-bf2f-9d02d551e9de",
+    "name": "iperf_vnf_2002_by5924",
+    "version": "2.0",
+    "toscaModelURL": null,
+    "category": "Network L4+",
+    "serviceType": "INFRASTRUCTURE",
+    "serviceRole": "VNF",
+    "description": "iperf_vnf_2002_by5924",
+    "serviceEcompNaming": "false",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "anyAlacarteWhichNotExcluded",
+      "modelCategory": "5G Fabric Configuration",
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
+    }
+  },
+  "vnfs": {
+    "iperf_vnf_2002_by5924 0": {
+      "uuid": "c8087818-6f3e-4451-b339-111a1a3e7970",
+      "invariantUuid": "0153d3b3-0354-489f-89fd-5e7a54afb783",
+      "description": "iperf_vnf_2002_by5924_VSP",
+      "name": "iperf_vnf_2002_by5924",
+      "version": "2.0",
+      "customizationUuid": "fe200ee4-96bb-4a10-9022-a188a20cf145",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "prf_flavor_name": "p1.c8r16d80e120.n0i2",
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "nf_naming_code": "perf",
+        "nf_function": "PERFORMANCE-TEST",
+        "availability_zone_max_count": "1",
+        "nf_role": "vTOOLS",
+        "ecomp_generated_naming": "true",
+        "nf_type": "TEST",
+        "prf_image_name": "Ubuntu 16.04 for KVM VMs with ATT Supported Tools - NO PP"
+      },
+      "type": "VF",
+      "modelCustomizationName": "iperf_vnf_2002_by5924 0",
+      "vfModules": {
+        "iperf_vnf_2002_by59240..IperfVnf2002By5924..base..module-0": {
+          "uuid": "73c3470f-acb9-4180-bd60-31ff7aacc094",
+          "invariantUuid": "4a03b70b-85e3-4e67-a4ff-4123021c1278",
+          "customizationUuid": "949ceef3-366b-4e4e-b0f5-40eb1972ad56",
+          "description": null,
+          "name": "IperfVnf2002By5924..base..module-0",
+          "version": "1",
+          "modelCustomizationName": "IperfVnf2002By5924..base..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base",
+            "baseModule": true
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        }
+      },
+      "volumeGroups": {},
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResources": {},
+  "configurations": {},
+  "fabricConfigurations": {
+    "Fabric Configuration 0": {
+      "uuid": "fa069a04-cb85-4915-8ca0-df372dde6a3c",
+      "invariantUuid": "58fa0e1f-f8db-4dce-8972-b8ee630288cf",
+      "description": "A fabric Configuration object",
+      "name": "Fabric Configuration",
+      "version": "9.0",
+      "customizationUuid": "aaf36ee9-bf72-4c2a-9573-109c10daf97a",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "role": "Fabric Config",
+        "function": "Network Cloud",
+        "ecomp_generated_naming": "false",
+        "type": "5G"
+      },
+      "type": "Configuration"
+    }
+  },
+  "serviceProxies": {},
+  "vfModules": {
+    "iperf_vnf_2002_by59240..IperfVnf2002By5924..base..module-0": {
+      "uuid": "73c3470f-acb9-4180-bd60-31ff7aacc094",
+      "invariantUuid": "4a03b70b-85e3-4e67-a4ff-4123021c1278",
+      "customizationUuid": "949ceef3-366b-4e4e-b0f5-40eb1972ad56",
+      "description": null,
+      "name": "IperfVnf2002By5924..base..module-0",
+      "version": "1",
+      "modelCustomizationName": "IperfVnf2002By5924..base..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base",
+        "baseModule": true
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    }
+  },
+  "volumeGroups": {},
+  "pnfs": {},
+  "vnfGroups": {},
+  "vrfs": {}
+}

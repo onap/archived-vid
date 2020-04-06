@@ -1418,4 +1418,27 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         assertNull(templateOfRetry.getStatusMessage());
     }
 
+    @Test
+    public void oneVnfExistsAddAnotherVnf(){
+        final String VNF_REQUEST_ID = UUID.randomUUID().toString();
+        final String VNF_INSTANCE_ID = UUID.randomUUID().toString();
+
+        ServiceInstantiation serviceInstantiation = readJsonResourceFileAsObject("/payload_jsons/vnf/one_vnf_exists_add_another_vnf_expected_bulk.json",
+            ServiceInstantiation.class);
+        List<UUID> uuids = asyncInstantiationBL.pushBulkJob(serviceInstantiation, USER_ID);
+        assertThat(uuids, hasSize(1));
+
+        //mock mso to answer 200 of create vnf instance request
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), endsWith("e6cc1c4f-05f7-49bc-8e86-ac2eb92baaaa/vnfs"), any())).thenReturn(
+            createResponse(200, VNF_INSTANCE_ID, VNF_REQUEST_ID));
+
+        //mock mso to answer msoVnfStatus (COMPLETE) for vnf creation status,
+        when(restMso.GetForObject(endsWith(VNF_REQUEST_ID), eq(AsyncRequestStatus.class))).
+            thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+
+        processJobsCountTimesAndAssertStatus(uuids.get(0), 200, COMPLETED);
+        verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), endsWith("e6cc1c4f-05f7-49bc-8e86-ac2eb92baaaa/vnfs"), any());
+        verify(restMso, times(1)).GetForObject(any(), any());
+    }
+
 }
