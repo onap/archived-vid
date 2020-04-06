@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "136ed072_694da555",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/viewEditUpgradeVfModule.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T08:54:20Z",
+      "side": 1,
+      "message": "the block is not needed in these cases; only when you need the \"xhr\" object.\nSo \"cy.wait(\u0027@newestModelVersion2\u0027);\" is sufficient.",
+      "range": {
+        "startLine": 229,
+        "startChar": 0,
+        "endLine": 229,
+        "endChar": 50
+      },
+      "revId": "69ba854efce17a99bda7b8d9b1ef35ee8ec52059",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
