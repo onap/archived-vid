@@ -1,0 +1,169 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f0c6e80f_37b8e547",
+        "filename": "epsdk-app-onap/src/main/resources/vid-data-deprecated.sql",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T10:23:26Z",
+      "side": 1,
+      "message": "I suggest using ID\u003d7, as current max is 6 -- for \u0027VNF Scale Out\u0027.",
+      "range": {
+        "startLine": 59,
+        "startChar": 75,
+        "endLine": 59,
+        "endChar": 76
+      },
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9816db74_8b72fac2",
+        "filename": "epsdk-app-onap/src/main/resources/vid-data-deprecated.sql",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T10:23:26Z",
+      "side": 1,
+      "message": "This method of adding entries to the database is deprecated.\nPlease move this statement at end of file \"db.changelog-01.sql\"\n\nVID is using *liquibase* to control ongoing changes on live DB. This allows incremental DB versioning.\n\nResult should be something like:\n\n--changeset vid:add_workflow_pnf_software_upgrade\nINSERT INTO `vid_workflow` (`WORKFLOW_DB_ID`, `WORKFLOW_APP_NAME`) VALUES (7, \u0027PNF Software Upgrade\u0027);\n\n\nNote that the \"on duplicate key\" is not necessary, as liquibase controls applying the change once.",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6863031e_f28ca6d8",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T10:23:26Z",
+      "side": 1,
+      "message": "I would suppose that just defining something like that will be enough, without introducing `userParam` as global:\n\n                        } else if (workflowType \u003d\u003d \"PNF Software Upgrade\") {\n                            requestParametersData \u003d {\n                              userParams: [\n                                    { \"name\":\"pnfId\", \"value\":vnf.properties[\"vnf-id\"] },\n                                    { \"name\":\"pnfName\", \"value\": vnf.name },\n                                    {\n                                      \"name\":\"targetSoftwareVersion\",\n                                      \"value\":vm.getInternalWorkFlowParameter(workflowType, \u0027text\u0027, \u0027Target software version\u0027).value\n                                    }\n                              ]\n                           }\n                        };\n\n\nThis will allow a simplified \"nativeWorkflowRequestData\" method that I suggest below.",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd6a3536_3794bb4b",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T10:23:26Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure this block is not passed-through, so case is not needed to be handled here.",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "785a41c7_1036e26b",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T10:23:26Z",
+      "side": 1,
+      "message": "I suggest extracting this block to function instead of duplicating it.\n\nThe method signature, in that case, will be something like  `nativeWorkflowRequestData(modelType, requestParameters)`\n\nIt may conditionally add vnfInstanceId or pnfInstanceId field-name by modelType, OR: let the caller append it\u0027s non-common fields on the result. (I prefer the former.)",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dec7f4c9_9dc50dd3",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T10:23:26Z",
+      "side": 1,
+      "message": "So, it is assumed that the VNFs list includes also PNF?\nIs that assumption temporal (until a further VID/AAI change), or this should be valid from now on?",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2100f36_5347bce1",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/changeManagement.e2e.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T10:23:26Z",
+      "side": 1,
+      "message": "this change can be reverted back to \"us16807000\" once you have your simulator and tests setup with the given user.",
+      "range": {
+        "startLine": 244,
+        "startChar": 30,
+        "endLine": 244,
+        "endChar": 34
+      },
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "531b8cf4_a5cf9bdb",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/changeManagement.e2e.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T10:23:26Z",
+      "side": 1,
+      "message": "is it intentional the instance id is repeated in both \"pnfInstanceId\" and in userParams(name\u003d\"pnfId\")?",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b87f8541_ffdc817a",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/changeManagement.e2e.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-06T10:23:26Z",
+      "side": 1,
+      "message": "I can assume this implementation is a stub, until a list is of PNFs is available? (I\u0027m echoing my same question from above)",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
