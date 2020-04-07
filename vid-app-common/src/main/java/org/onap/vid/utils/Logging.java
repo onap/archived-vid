@@ -35,6 +35,7 @@ import io.joshworks.restclient.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -122,7 +123,7 @@ public class Logging {
         }
         try {
             response.bufferEntity();
-            logger.debug("Received {} {} Status: {} . Body: {}", method.name(), url, response.getStatus(), response.readEntity(entityClass));
+            logger.debug("Received {} {} Status: {} . Body: {}", method.name(), url, response.getStatus(), new Substring(response.readEntity(entityClass)));
         }
         catch (Exception e) {
             logger.debug("Received {} {} Status: {} . Failed to read response as {}", method.name(), url, response.getStatus(), entityClass.getName());
@@ -132,7 +133,7 @@ public class Logging {
     public <T> void logResponse(final EELFLogger logger, final HttpMethod method, final String url, final HttpResponse<T> response) {
         try {
             logger.debug("Received {} {} Status: {} . Body: {}", method.name(),
-                url, response.getStatus(), IOUtils.toString(response.getRawBody(), StandardCharsets.UTF_8));
+                url, response.getStatus(), new Substring(IOUtils.toString(response.getRawBody(), StandardCharsets.UTF_8)));
             response.getRawBody().reset();
         }
         catch (Exception e) {
@@ -200,6 +201,26 @@ public class Logging {
             } else {
                 return topToString + ": " + rootToString;
             }
+        }
+    }
+
+    /**
+     * This class defers the toString() and truncation to the point in time where logger needs it.
+     * This will save some bytes in memory if logger will decide to discard the logging (mostly because logging level
+     * is filtering the message out).
+     */
+    static class Substring {
+        private final Object obj;
+        private final int maxLen = 1_000_000;
+
+        public Substring(Object obj) {
+            this.obj = obj;
+        }
+
+        @Override
+        public String toString() {
+            // null safe truncation
+            return StringUtils.left(Objects.toString(obj), maxLen);
         }
     }
 

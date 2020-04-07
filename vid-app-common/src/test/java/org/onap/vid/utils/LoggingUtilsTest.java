@@ -21,15 +21,20 @@
 package org.onap.vid.utils;
 
 import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
+import static org.apache.commons.lang3.StringUtils.repeat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.onap.vid.testUtils.RegExMatcher.matchesRegEx;
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -53,6 +58,7 @@ import org.apache.commons.io.IOUtils;
 import org.mockito.ArgumentCaptor;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.testUtils.TestUtils;
+import org.onap.vid.utils.Logging.Substring;
 import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
@@ -116,7 +122,7 @@ public class LoggingUtilsTest {
         assertEquals("POST", argumentCaptor.getAllValues().get(0));
         assertEquals(url, argumentCaptor.getAllValues().get(1));
         assertEquals(200, argumentCaptor.getAllValues().get(2));
-        assertEquals(TEST_OBJECT_JSON, argumentCaptor.getAllValues().get(3));
+        assertThat(argumentCaptor.getAllValues().get(3), samePropertyValuesAs(new Substring(TEST_OBJECT_JSON)));
     }
 
     @Test
@@ -202,6 +208,35 @@ public class LoggingUtilsTest {
         String expectedButDotsEscaped = expectedDescription.replace(".", "\\.");
 
         assertThat(Logging.exceptionToDescription(exceptionToDescribe), matchesRegEx(expectedButDotsEscaped));
+    }
+
+    @Test
+    public void substringClass_givenNull_thenToStringIsNull() {
+        assertThat(new Substring(null), hasToString(equalTo("null")));
+    }
+
+    @Test
+    public void substringClass_givenAnObject_thenToStringIsEqualAndPassThrough() {
+        Object anyObject = mock(Object.class);
+        when(anyObject.toString()).thenReturn(TEST_OBJECT_JSON);
+
+        assertThat(new Substring(anyObject),
+            hasToString(sameInstance(TEST_OBJECT_JSON)));
+    }
+
+    @Test
+    public void substringClass_givenNotLongString_thenToStringIsNotTruncated() {
+        assertThat(new Substring(repeat(TEST_OBJECT_JSON, 100)),
+            hasToString(equalTo(repeat(TEST_OBJECT_JSON, 100))));
+    }
+
+    @Test
+    public void substringClass_givenLongString_thenToStringIsTruncatedToSize() {
+        int expectedLength = 1_000_000; // this is Substring's internal config
+        String headMarker = "head-";
+
+        assertThat(new Substring(headMarker + repeat("x", 2_000_000)),
+            hasToString(equalTo(headMarker + repeat("x", expectedLength - headMarker.length()))));
     }
 
     @Test
