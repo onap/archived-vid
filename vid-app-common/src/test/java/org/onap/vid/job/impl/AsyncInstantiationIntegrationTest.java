@@ -38,6 +38,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Every.everyItem;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.endsWith;
 import static org.mockito.ArgumentMatchers.eq;
@@ -1287,6 +1288,29 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     }
 
     @Test
+    public void viewEdit_oneNetworkExistsAddAnotherNetwork() {
+        String currentServiceInstanceId = "ce2821fc-3b28-4759-9613-1e514d7563c0";
+        String addNetworkRequestId = randomUuid();
+        String userId = "az2016";
+
+
+        String expectedMsoAddNetworkPath = "/serviceInstantiation/v7/serviceInstances/"
+            + currentServiceInstanceId + "/networks";
+        when(restMso.restCall(eq(HttpMethod.POST),eq(RequestReferencesContainer.class),any(), eq(expectedMsoAddNetworkPath), any()))
+            .thenReturn(createResponse(202, currentServiceInstanceId, addNetworkRequestId));
+
+        when(restMso.GetForObject(eq("/orchestrationRequests/v7/" + addNetworkRequestId),eq(AsyncRequestStatus.class)))
+            .thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+
+        List<UUID> uuids= asyncInstantiationBL.pushBulkJob(addNetworkBulkPayload(), userId);
+        assertThat(uuids, hasSize(1));
+        processJobsCountTimesAndAssertStatus(uuids.get(0), 200, COMPLETED);
+
+        verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), eq(expectedMsoAddNetworkPath),any());
+        verify(restMso, times(1)).GetForObject(any(),any());
+    }
+
+    @Test
     public void whenDeletingVfModule_thenExpectedDeleteRequestSent()
     {
         String currentServiceInstanceId = "6196ab1f-2349-4b32-9b6c-cffeb0ccc79c";
@@ -1332,6 +1356,10 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     private ServiceInstantiation deleteVfModuleBulkPayload() {
         return readJsonResourceFileAsObject("/payload_jsons/vfmodule/delete_1_vfmodule_expected_bulk.json", ServiceInstantiation.class);
+    }
+
+    private ServiceInstantiation addNetworkBulkPayload() {
+        return readJsonResourceFileAsObject("/payload_jsons/Network/one_network_exists_add_another_network_expected_bulk.json", ServiceInstantiation.class);
     }
 
     private String getDeleteVfModulePayloadToMso() {
@@ -1422,7 +1450,6 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     public void oneVnfExistsAddAnotherVnf(){
         final String VNF_REQUEST_ID = UUID.randomUUID().toString();
         final String VNF_INSTANCE_ID = UUID.randomUUID().toString();
-
         ServiceInstantiation serviceInstantiation = readJsonResourceFileAsObject("/payload_jsons/vnf/one_vnf_exists_add_another_vnf_expected_bulk.json",
             ServiceInstantiation.class);
         List<UUID> uuids = asyncInstantiationBL.pushBulkJob(serviceInstantiation, USER_ID);
