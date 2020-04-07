@@ -1287,6 +1287,47 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     }
 
     @Test
+    public void whenAddingNewNetwork_thenExpectedAddRequestSent() {
+        String currentServiceInstanceId = "ce2821fc-3b28-4759-9613-1e514d7563c0";
+        String addedNetworkInstanceModelCustomizationName = "OVS Provider";
+
+        assertAddNetworkTestPayloadFitsExpectedIds(addNetworkBulkPayload(), currentServiceInstanceId, addedNetworkInstanceModelCustomizationName);
+
+        String addNetworkRequestId = randomUuid();
+        String userId = "az2016";
+
+        String expectedMsoAddNetworkPath = "/serviceInstantiation/v7/serviceInstances/"
+            + currentServiceInstanceId + "/networks";
+        when(restMso.restCall(eq(HttpMethod.POST),eq(RequestReferencesContainer.class),any(), eq(expectedMsoAddNetworkPath), any()))
+            .thenReturn(createResponse(202, currentServiceInstanceId, addNetworkRequestId));
+
+        when(restMso.GetForObject(eq("/orchestrationRequests/v7/" + addNetworkRequestId),eq(AsyncRequestStatus.class)))
+            .thenReturn(asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
+                asyncRequestStatusResponseAsRestObject(IN_PROGRESS_STR),
+                asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
+
+        enableAddCloudOwnerOnMsoRequest();
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(addNetworkBulkPayload(), userId).get(0);
+        processJobsCountTimesAndAssertStatus(jobUUID, 20, COMPLETED);
+
+        ArgumentCaptor<RequestDetailsWrapper> requestCaptor = ArgumentCaptor.forClass(RequestDetailsWrapper.class);
+        verify(restMso, times(1)).restCall(
+            eq(HttpMethod.POST),
+            eq(RequestReferencesContainer.class),
+            requestCaptor.capture(),
+            eq(expectedMsoAddNetworkPath),
+            any()
+        );
+
+        JsonNode expectedPayloadToMso = readJsonResourceFileAsObject(
+            "/payload_jsons/Network/addNetwork_e2e__payload_to_mso.json", JsonNode.class);
+
+        assertThat(requestCaptor.getValue(), jsonEquals(expectedPayloadToMso).when(IGNORING_ARRAY_ORDER));
+    }
+
+
+
+    @Test
     public void whenDeletingVfModule_thenExpectedDeleteRequestSent()
     {
         String currentServiceInstanceId = "6196ab1f-2349-4b32-9b6c-cffeb0ccc79c";
@@ -1332,6 +1373,19 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
 
     private ServiceInstantiation deleteVfModuleBulkPayload() {
         return readJsonResourceFileAsObject("/payload_jsons/vfmodule/delete_1_vfmodule_expected_bulk.json", ServiceInstantiation.class);
+    }
+
+    private ServiceInstantiation addNetworkBulkPayload() {
+        return readJsonResourceFileAsObject("/payload_jsons/Network/one_network_exists_add_another_network_expected_bulk.json", ServiceInstantiation.class);
+    }
+
+    private void assertAddNetworkTestPayloadFitsExpectedIds(ServiceInstantiation addNetworkPayload, String serviceInstanceId,
+        String addedNetworkModelCustomizationName){
+        assertThat(addNetworkPayload, jsonPartEquals("instanceId", serviceInstanceId));
+        assertThat(addNetworkPayload, jsonNodePresent(
+            "networks"
+                + "." + addedNetworkModelCustomizationName
+        ));
     }
 
     private String getDeleteVfModulePayloadToMso() {
@@ -1422,7 +1476,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     public void oneVnfExistsAddAnotherVnf(){
         final String VNF_REQUEST_ID = UUID.randomUUID().toString();
         final String VNF_INSTANCE_ID = UUID.randomUUID().toString();
-
+        String userId = "az2016";
         ServiceInstantiation serviceInstantiation = readJsonResourceFileAsObject("/payload_jsons/vnf/one_vnf_exists_add_another_vnf_expected_bulk.json",
             ServiceInstantiation.class);
         List<UUID> uuids = asyncInstantiationBL.pushBulkJob(serviceInstantiation, USER_ID);
@@ -1436,7 +1490,9 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
         when(restMso.GetForObject(endsWith(VNF_REQUEST_ID), eq(AsyncRequestStatus.class))).
             thenReturn(asyncRequestStatusResponseAsRestObject(COMPLETE_STR));
 
-        processJobsCountTimesAndAssertStatus(uuids.get(0), 200, COMPLETED);
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(serviceInstantiation, userId).get(0);
+
+        processJobsCountTimesAndAssertStatus(jobUUID, 200, COMPLETED);
         verify(restMso, times(1)).restCall(eq(HttpMethod.POST), any(), any(), endsWith("e6cc1c4f-05f7-49bc-8e86-ac2eb92baaaa/vnfs"), any());
         verify(restMso, times(1)).GetForObject(any(), any());
     }

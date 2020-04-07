@@ -1,0 +1,50 @@
+{
+  "requestDetails": {
+    "cloudConfiguration": {
+      "cloudOwner": "irma-aic",
+      "lcpCloudRegionId": "hvf6",
+      "tenantId": "229bcdc6eaeb4ca59d55221141d01f8e"
+    },
+    "lineOfBusiness": {
+      "lineOfBusinessName": "zzz1"
+    },
+    "modelInfo": {
+      "modelCustomizationId": "23c382c9-9405-4780-8794-e57eb015883d",
+      "modelCustomizationName": "OVS Provider",
+      "modelInvariantId": "ffb9e45c-e674-4289-aad3-00040ad746e4",
+      "modelName": "NETWORK_CLOUD_PROVIDER_NETWORK",
+      "modelType": "network",
+      "modelVersion": "1.0",
+      "modelVersionId": "01f4c475-3f89-4f00-a2f4-39a873dba0ae"
+    },
+    "platform": {
+      "platformName": "xxx1"
+    },
+    "relatedInstanceList": [
+      {
+        "relatedInstance": {
+          "instanceId": "ce2821fc-3b28-4759-9613-1e514d7563c0",
+          "modelInfo": {
+            "modelInvariantId": "8c364754-4c76-4abc-b8f3-88da5f67d588",
+            "modelName": "oam_protected_net NC OVS network 1",
+            "modelType": "service",
+            "modelVersion": "2.0",
+            "modelVersionId": "f93e72e1-77fc-4f54-b207-298d766d0886"
+          }
+        }
+      }
+    ],
+    "requestInfo": {
+      "instanceName": "NETWORK_CLOUD_PROVIDER_NETWORK",
+      "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "requestorId": "az2016",
+      "source": "VID",
+      "suppressRollback": false
+    },
+    "requestParameters": {
+      "testApi": "GR_API",
+      "userParams": [
+      ]
+    }
+  }
+}
