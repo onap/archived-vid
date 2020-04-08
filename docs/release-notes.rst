@@ -1,4 +1,5 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
+.. _release_notes:
 
 VID Release Notes
 =================
@@ -10,14 +11,14 @@ Version: Frankfurt (6.0.x)
 
 **Resolved Issues**
 
-  - `↗ <https://jira.onap.org/browse/VID-365>`__ Upgrade AAI version to v16
-  - `↗ <https://jira.onap.org/browse/VID-479>`__ VID Does not refresh after Add VF Module fails
-  - `↗ <https://jira.onap.org/browse/VID-659>`__ VID generates always the same VF module name during scale out
-  - `↗ <https://jira.onap.org/browse/VID-773>`__ SDNC Preload URL updated to https
+  - `<https://jira.onap.org/browse/VID-365>`__ Upgrade AAI version to v16
+  - `<https://jira.onap.org/browse/VID-479>`__ VID Does not refresh after Add VF Module fails
+  - `<https://jira.onap.org/browse/VID-659>`__ VID generates always the same VF module name during scale out
+  - `<https://jira.onap.org/browse/VID-773>`__ SDNC Preload URL updated to https
 
-  - `↗ <https://jira.onap.org/browse/VID-755>`__ Upgrade direct dependent packages to the latest version
-  - `↗ <https://jira.onap.org/browse/VID-498>`__ Java 11 migration from JDK 8
-  - `↗ <https://jira.onap.org/browse/VID-471>`__ Update to Portal SDK v2.6
+  - `<https://jira.onap.org/browse/VID-755>`__ Upgrade direct dependent packages to the latest version
+  - `<https://jira.onap.org/browse/VID-498>`__ Java 11 migration from JDK 8
+  - `<https://jira.onap.org/browse/VID-471>`__ Update to Portal SDK v2.6
 
 
 **Security Notes**
@@ -32,21 +33,21 @@ Version: El-Alto (5.0.x)
 ------------------------
 **Known Issues**
 
-  - `↗ <https://jira.onap.org/browse/VID-659>`__ VID generates always the same VF module name during scale out
+  - `<https://jira.onap.org/browse/VID-659>`__ VID generates always the same VF module name during scale out
 
 **Resolved Issues**
 
-  - `↗ <https://jira.onap.org/browse/VID-520>`__ Remove "Dissociate" button for Macro-orchestrated PNF resources
-  - `↗ <https://jira.onap.org/browse/VID-517>`__ Added liquidBase for follow changes in DB
-  - `↗ <https://jira.onap.org/browse/VID-488>`__ Added "Report" popup for common diagnosable cases
-  - `↗ <https://jira.onap.org/browse/VID-358>`__ vid-mariadb-galera runs in high-availability mode
+  - `<https://jira.onap.org/browse/VID-520>`__ Remove "Dissociate" button for Macro-orchestrated PNF resources
+  - `<https://jira.onap.org/browse/VID-517>`__ Added liquidBase for follow changes in DB
+  - `<https://jira.onap.org/browse/VID-488>`__ Added "Report" popup for common diagnosable cases
+  - `<https://jira.onap.org/browse/VID-358>`__ vid-mariadb-galera runs in high-availability mode
 
 
 **Security Notes**
 
 *Fixed Security Issues*
 
-  - `↗ <https://jira.onap.org/browse/OJSI-119>`__ Closed plain-text HTTP endpoint, port 30238
+  - `<https://jira.onap.org/browse/OJSI-119>`__ Closed plain-text HTTP endpoint, port 30238
 
 *Known Security Issues*
 
