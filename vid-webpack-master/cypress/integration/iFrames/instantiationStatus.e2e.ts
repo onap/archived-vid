@@ -8,6 +8,7 @@ describe('Instantiation status', function () {
   var jsonBuilderInstantiationBuilder : JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
   var asyncRes: Array<any>;
   const contextMenuCreateAnotherOne = 'context-menu-create-another-one';
+  const contextMenuNewViewEdit = 'context-menu-new-view-edit';
 
   beforeEach(() => {
       cy.clearSessionStorage();
@@ -133,4 +134,19 @@ describe('Instantiation status', function () {
     });
   });
 
+  it('clicking on new view edit, go to expected url', function () {
+    //see cypress/support/jsonBuilders/mocks/jsons/asyncInstantiation.json id:10
+    const jobId = '850dc7d2-5240-437f-9bcd-b1ed7dc339c1';
+    const serviceModelId = 'e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0';
+    const vidBaseUrl = `${Cypress.config().baseUrl}/serviceModels.htm`;
+    const serviceType = 'TYLER%20SILVIA';
+
+    cy.openIframe('app/ui/#/instantiationStatus');
+    clickOnTitleAndThenOnMenuWithJobId(jobId);
+    cy.get('.dropdown-menu').getElementByDataTestsId(contextMenuNewViewEdit).contains('New View/Edit');
+    cy.get('.dropdown-menu').getElementByDataTestsId(contextMenuNewViewEdit).click();
+    cy.location().should((location) => {
+      expect(location.toString()).to.eq(`${vidBaseUrl}#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&serviceType=${serviceType}&jobId=${jobId}`);
+    });
+  });
 });
