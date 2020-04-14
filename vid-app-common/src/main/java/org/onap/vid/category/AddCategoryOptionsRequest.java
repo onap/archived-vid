@@ -35,8 +35,10 @@ public class AddCategoryOptionsRequest {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || this.getClass() != o.getClass()) return false;
+		if (this == o)
+           return true;
+		if (o == null || this.getClass() != o.getClass())
+           return false;
 		AddCategoryOptionsRequest that = (AddCategoryOptionsRequest) o;
 		return Objects.equals(this.options, that.options);
 	}

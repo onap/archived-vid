@@ -61,12 +61,15 @@ public class VnfDetails {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) 
+            return true;
+		if (o == null || getClass() != o.getClass())
+            return false;
 
 		VnfDetails that = (VnfDetails) o;
 
-		if (getUUID() != null ? !getUUID().equals(that.getUUID()) : that.getUUID() != null) return false;
+		if (getUUID() != null ? !getUUID().equals(that.getUUID()) : that.getUUID() != null)
+            return false;
 		return getInvariantUUID() != null ? getInvariantUUID().equals(that.getInvariantUUID()) : that.getInvariantUUID() == null;
 	}
 

@@ -145,7 +145,8 @@ public class VidNotionsBuilder {
         }
         if (featureManager.isActive(Features.FLAG_5G_IN_NEW_INSTANTIATION_UI)) {
             VidNotions.InstantiationUI instantiationUI = determine5GInstantiationUI(csarHelper);
-            if ( instantiationUI != null ) return instantiationUI;
+            if ( instantiationUI != null )
+                return instantiationUI;
         }
         if (featureManager.isActive(Features.FLAG_1908_TRANSPORT_SERVICE_NEW_INSTANTIATION_UI) && isTransportService(csarHelper)){
             return VidNotions.InstantiationUI.TRANSPORT_SERVICE;

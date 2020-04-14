@@ -87,8 +87,10 @@ public class VnfResult {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) 
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         VnfResult vnfResult = (VnfResult) o;
         return Objects.equals(id, vnfResult.id) &&
                 Objects.equals(nodeType, vnfResult.nodeType) &&

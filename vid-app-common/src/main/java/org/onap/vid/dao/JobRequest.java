@@ -96,8 +96,10 @@ public class JobRequest extends VidBaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof JobRequest)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof JobRequest))
+            return false;
         JobRequest that = (JobRequest) o;
         return Objects.equals(getJobId(), that.getJobId()) &&
                 Objects.equals(getRequest(), that.getRequest());

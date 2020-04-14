@@ -54,8 +54,10 @@ public class CategoryParameterOptionRep {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || this.getClass() != o.getClass()) 
+            return false;
         CategoryParameterOptionRep that = (CategoryParameterOptionRep) o;
         return Objects.equals(this.id, that.id) &&
                 Objects.equals(this.name, that.name);
