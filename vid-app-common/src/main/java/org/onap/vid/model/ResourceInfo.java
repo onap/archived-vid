@@ -129,8 +129,10 @@ public class ResourceInfo extends VidBaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) 
+            return true;
+        if (o == null || getClass() != o.getClass()) 
+            return false;
         ResourceInfo that = (ResourceInfo) o;
         return Objects.equals(trackById, that.trackById) &&
                 Objects.equals(instanceId, that.instanceId) &&

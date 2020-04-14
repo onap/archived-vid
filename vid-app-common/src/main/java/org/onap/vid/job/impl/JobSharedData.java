@@ -97,8 +97,10 @@ public class JobSharedData {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof JobSharedData)) return false;
+        if (this == o) 
+            return true;
+        if (!(o instanceof JobSharedData))
+            return false;
         JobSharedData that = (JobSharedData) o;
         return Objects.equals(getJobUuid(), that.getJobUuid()) &&
                 Objects.equals(getUserId(), that.getUserId()) &&

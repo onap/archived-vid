@@ -59,8 +59,10 @@ public class JobData {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof JobData)) return false;
+        if (this == o) 
+            return true;
+        if (!(o instanceof JobData))
+            return false;
         JobData jobData = (JobData) o;
         return Objects.equals(getCommandData(), jobData.getCommandData()) &&
                 Objects.equals(getSharedData(), jobData.getSharedData());

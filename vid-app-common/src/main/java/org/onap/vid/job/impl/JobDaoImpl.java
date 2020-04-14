@@ -214,8 +214,10 @@ public class JobDaoImpl extends VidBaseEntity implements Job {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof JobDaoImpl)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof JobDaoImpl))
+            return false;
         JobDaoImpl daoJob = (JobDaoImpl) o;
         return Objects.equals(getUuid(), daoJob.getUuid());
     }

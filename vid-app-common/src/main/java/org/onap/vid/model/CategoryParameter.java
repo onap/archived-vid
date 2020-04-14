@@ -104,8 +104,10 @@ public class CategoryParameter extends VidBaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || this.getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || this.getClass() != o.getClass()) 
+            return false;
         CategoryParameter that = (CategoryParameter) o;
         return this.idSupported == that.idSupported &&
                 Objects.equals(this.name, that.name) &&

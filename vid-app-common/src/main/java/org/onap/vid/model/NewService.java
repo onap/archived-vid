@@ -228,8 +228,10 @@ public class NewService {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
-		if (!(o instanceof NewService)) return false;
+		if (o == this) 
+            return true;
+		if (!(o instanceof NewService)) 
+            return false;
 		
 		final NewService service = (NewService) o;
 		
