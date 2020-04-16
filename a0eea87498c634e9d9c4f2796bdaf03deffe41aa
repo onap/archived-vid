@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a3c86c7b_122a51c6",
+        "filename": "vid-webpack-master/src/app/instantiationStatus/instantiationStatus.component.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-16T04:49:01Z",
+      "side": 1,
+      "message": "are we abandoning the feature-toggles mechanism by intention?",
+      "revId": "a0eea87498c634e9d9c4f2796bdaf03deffe41aa",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
