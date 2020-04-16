@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7903cf46_2ef2c905",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 1290,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-16T04:46:00Z",
+      "side": 1,
+      "message": "i suppose the test name can be improved; e.g.\nviewEdit_oneNetworkExistsAddAnotherNetwork",
+      "range": {
+        "startLine": 1290,
+        "startChar": 16,
+        "endLine": 1290,
+        "endChar": 63
+      },
+      "revId": "b9446162de33f742342879d88e7e538da55ecf3c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4a3a8e4_eec34b47",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 1319,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-16T04:46:00Z",
+      "side": 1,
+      "message": "why any(); should be the user id.",
+      "range": {
+        "startLine": 1319,
+        "startChar": 12,
+        "endLine": 1319,
+        "endChar": 17
+      },
+      "revId": "b9446162de33f742342879d88e7e538da55ecf3c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b486568b_2a313a9f",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 1322,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-16T04:46:00Z",
+      "side": 1,
+      "message": "This file does not really differ from existing network_instantiation_request.json, used in org.onap.vid.services.MsoRequestBuilderTest#expectedNetworkRequestDetailsParameters() test.\nAlthough values differ, the payload structure is 100% the same.\n\nI suggest only asserting for the success status, maybe also verify the mockito endpoint, but without asserting and adding the payload here.\n\nFor the overall tests structure, see the existing test \"oneVnfExistsAddAnotherVnf\" which is much simpler than the that was duplicated here. If you think it is not sufficient, please explain why.",
+      "revId": "b9446162de33f742342879d88e7e538da55ecf3c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab283423_6a772715",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 1382,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-16T04:46:00Z",
+      "side": 1,
+      "message": "The original `assertTestPayloadFitsExpectedIds` was used by `whenUpgradingVfModule_thenExpectedReplaceRequestSent` as it is a really complex operation. We wanted to verify that the test and the e2e provided file are still talking about the same identities.\n\nWhat is the rationale of the assertion in this `whenAddingNewNetwork_thenExpectedAddRequestSent` case?",
+      "range": {
+        "startLine": 1382,
+        "startChar": 0,
+        "endLine": 1382,
+        "endChar": 125
+      },
+      "revId": "b9446162de33f742342879d88e7e538da55ecf3c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
