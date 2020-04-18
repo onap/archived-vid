@@ -737,10 +737,8 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
                 var lineOfBusiness = getValueFromList(FIELD.ID.LINE_OF_BUSINESS, parameterList);
 
                 if(lineOfBusiness) {
-                    var lineOfBusinessNamesString = _.map(lineOfBusiness, "name").join(", ");
-
                     requestDetails.lineOfBusiness = {
-                        lineOfBusinessName: lineOfBusinessNamesString
+                        lineOfBusinessName: lineOfBusiness
                     };
                 }
 
