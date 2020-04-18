@@ -714,44 +714,22 @@ var CreationService = function($log, AaiService, AsdcService, DataService,VIDCON
 
                 break;
             case COMPONENT.VNF:
-
+            case COMPONENT.NETWORK:
                 requestDetails.requestInfo.productFamilyId = getValueFromList(
                     FIELD.ID.PRODUCT_FAMILY, parameterList);
-
                 var lineOfBusiness = getValueFromList(FIELD.ID.LINE_OF_BUSINESS, parameterList);
-
                 if(lineOfBusiness) {
                     requestDetails.lineOfBusiness = {
                         lineOfBusinessName: lineOfBusiness
                     };
                 }
 
-                requestDetails.platform = {
-                    platformName: getValueFromList(FIELD.ID.PLATFORM, parameterList)
-                };
-
-                break;
-            case COMPONENT.NETWORK:
-                requestDetails.requestInfo.productFamilyId = getValueFromList(
-                    FIELD.ID.PRODUCT_FAMILY, parameterList);
-                var lineOfBusiness = getValueFromList(FIELD.ID.LINE_OF_BUSINESS, parameterList);
-
-                if(lineOfBusiness) {
-                    var lineOfBusinessNamesString = _.map(lineOfBusiness, "name").join(", ");
-
-                    requestDetails.lineOfBusiness = {
-                        lineOfBusinessName: lineOfBusinessNamesString
-                    };
-                }
-
                 var platform = getValueFromList(FIELD.ID.PLATFORM, parameterList);
-                if(platform !== null && platform !== ""){
-                requestDetails.platform = {
-                        platformName: platform
-                };
+                if (platform !== null && platform !== "") {
+                  requestDetails.platform = {
+                    platformName: platform
+                  };
                 }
-
-
 
                 break;
             case COMPONENT.VF_MODULE:

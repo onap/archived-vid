@@ -41,6 +41,9 @@ public class PresetMSOCreateNetworkALaCarteOldViewEdit extends PresetMSOBaseCrea
                 "          \"testApi\": \"GR_API\"," +
                 "          \"userParams\": []" +
                 "        }," +
+                "        \"lineOfBusiness\": {" +
+                "            \"lineOfBusinessName\": \"zzz1\"" +
+                "        }," +
                 "        \"cloudConfiguration\": {" +
                 "          \"lcpCloudRegionId\": \"One\"," +
                 addCloudOwnerIfNeeded() +
