@@ -59,6 +59,14 @@ export class InstantiationStatusComponent implements OnInit {
       visible: () =>  true,
     },
     {
+      name: "New View/Edit",
+      dataTestId: "context-menu-new-view-edit",
+      className: "fa-pencil",
+      click: (item: ServiceInfoModel) => this.instantiationStatusComponentService.forwardToNewViewEdit(item),
+      enabled: () => true,
+      visible: () => this.instantiationStatusComponentService.isNewViewEditVisible(),
+    },
+    {
       name: "Create another one",
       dataTestId: "context-menu-create-another-one",
       className: "fa-clone",

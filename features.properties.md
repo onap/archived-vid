@@ -270,6 +270,11 @@
   
   When toggled off, the only way to configure VID's value is by manually setting a value in the DB.
   See https://jira.onap.org/browse/VID-801 
+  
+  * FLAG_2006_NEW_VIEW_EDIT_BUTTON_IN_INSTANTIATION_STATUS
+  
+    When flag is true the "New view/edit" button will appear in context menu of chosen service in Instantiation Status window. 
+    The click on that button will open the service instance in drawing board (new screens).
  
  
  
