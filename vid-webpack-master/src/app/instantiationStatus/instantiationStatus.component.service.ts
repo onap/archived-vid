@@ -189,6 +189,14 @@ export class InstantiationStatusComponentService {
   isRecreateVisible(): boolean {
     return this._featureFlagsService.getFlagState(Features.FLAG_2004_CREATE_ANOTHER_INSTANCE_FROM_TEMPLATE);
   }
+
+  isNewViewEditVisible(): boolean {
+    return this._featureFlagsService.getFlagState(Features.FLAG_2006_NEW_VIEW_EDIT_BUTTON_IN_INSTANTIATION_STATUS);
+  }
+
+  forwardToNewViewEdit(item: ServiceInfoModel): void {
+    this.navigateToNewViewEdit(item, DrawingBoardModes.EDIT);
+  }
 }
 
 

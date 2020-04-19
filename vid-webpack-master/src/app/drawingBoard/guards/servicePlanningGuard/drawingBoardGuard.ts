@@ -15,7 +15,7 @@ export class DrawingBoardGuard implements CanActivate {
       const viewMode = state.url.includes(DrawingBoardModes.RETRY_EDIT)? DrawingBoardModes.RETRY: DrawingBoardModes.VIEW;
       return this._http.get(url)
         .map((result : DrawingBoardPermissions) => {
-          if(!result.isEditPermitted){
+          if(result.isEditPermitted){
             this.navigateToNewViewEdit(next.queryParams, viewMode);
             return false;
           }else {
