@@ -450,6 +450,7 @@ public class Constants {
         public static final String SOURCE_DROPDOWN_TEST_ID = "sourceDropDown";
         public static final String COLLECTOR_DROPDOWN_TEST_ID = "collectorDropDown";
         public static final String COLLECTOR_INSTANCE_NAME_TEST_ID = "collectorInstanceName";
+        public static final String SOURCE_SUBSCRIBER_NAME = "sourceSubscriberName";
         public static final String SOURCE_INSTANCE_NAME_TEST_ID = "sourceInstanceName";
         public static final String MODEL_NAME_TEST_ID = "modelName";
         public static final String COLLECTOR_NO_RESULT_MSG_TEST_ID = "collectorNoResults";
