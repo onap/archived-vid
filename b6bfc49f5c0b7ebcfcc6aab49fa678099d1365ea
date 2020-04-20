@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b739a8a5_8c091a25",
+        "filename": "features.properties.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-20T07:12:56Z",
+      "side": 1,
+      "message": "I would be happy for a simpler flag name; e.g.:\nFLAG_2006_PORT_MIRRORING_LET_SELECTING_SOURCE_SUBSCRIBER",
+      "range": {
+        "startLine": 279,
+        "startChar": 4,
+        "endLine": 279,
+        "endChar": 76
+      },
+      "revId": "b6bfc49f5c0b7ebcfcc6aab49fa678099d1365ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
