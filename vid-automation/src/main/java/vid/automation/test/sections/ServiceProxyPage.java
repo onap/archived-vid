@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import vid.automation.test.Constants;
+import vid.automation.test.Constants.ConfigurationCreation;
 import vid.automation.test.Constants.ViewEdit;
 import vid.automation.test.infra.SelectOption;
 
@@ -15,6 +16,13 @@ public class ServiceProxyPage extends VidBasePage {
         SelectOption.byTestIdAndVisibleText(source, Constants.ConfigurationCreation.SOURCE_DROPDOWN_TEST_ID);
         return this;
     }
+
+    public ServiceProxyPage chooseSourceSubscriberName(String subscriberName){
+        SelectOption.byTestIdAndVisibleText(subscriberName, "sourceSubscriberName");
+        GeneralUIUtils.ultimateWait();
+      return this;
+    };
+
     public ServiceProxyPage chooseSourceServiceType(String sourceServiceType){
         SelectOption.byTestIdAndVisibleText(sourceServiceType, "sourceServiceType");
         GeneralUIUtils.ultimateWait();
@@ -25,6 +33,12 @@ public class ServiceProxyPage extends VidBasePage {
         GeneralUIUtils.ultimateWait();
         return this;
     }
+
+    public void assertSourceSubscriberName(String sourceSubscriberName){
+        String displayedSubscriberName = getTextByTestID(ConfigurationCreation.SOURCE_SUBSCRIBER_NAME);
+        Assert.assertEquals("The displayed source subscriber name is not correct", sourceSubscriberName + " i", displayedSubscriberName);
+    }
+
     public void assertCollectorServiceType(String collectorServiceType) {
         String displayedCollectorServiceType = SelectOption.getSelectedOption("collectorServiceType");
         Assert.assertEquals("The displayed collector service type is incorrect", collectorServiceType, displayedCollectorServiceType);
