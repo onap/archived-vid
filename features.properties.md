@@ -275,6 +275,11 @@
   
     When flag is true the "New view/edit" button will appear in context menu of chosen service in Instantiation Status window. 
     The click on that button will open the service instance in drawing board (new screens).
+    
+  * FLAG_2006_ADD_SELECT_SUBSCRIBER_FOR_SOURCE_VNF_ON_PMC_INSTANTIATION_FORM
+  
+    When flag is true the "Source Subscriber Name" drop down will be added for the source VNF
+    on the PMC (Port Mirroring Configuration) instantiation form.
  
  
  

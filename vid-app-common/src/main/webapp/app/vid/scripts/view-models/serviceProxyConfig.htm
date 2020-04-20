@@ -64,6 +64,10 @@ limitations under the License.
             </div>
             <form name="proxiesInstanceName" class="bottom">
                 <div class="wrapper-list source-vnf">
+                    <div class="title-txt"><b>Source</b> subscriber name</div>
+                    <select ng-model="sourceServiceType"
+                            required data-tests-id="sourceSubscriberName">
+                    </select>
                     <div class="title-txt"><b>Source</b> Service Type</div>
                     <select ng-model="sourceServiceType"
                             ng-change="onSourceServiceTypeSelected()" name="sourceServiceType" id="sourceServiceType"
