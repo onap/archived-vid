@@ -60,12 +60,36 @@ appDS2.controller(
 
         $scope.serviceTypes = [];
 
-        function init() {
-            loadServiceTypes();
+        $scope.isSourceSubscriberEnabled = function() {
+            return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_2006_PORT_MIRRORING_LET_SELECTING_SOURCE_SUBSCRIBER)
+                && !$scope.configurationByPolicy;
+        };
 
+        function init() {
+            if ($scope.isSourceSubscriberEnabled())  {
+                loadSourceSubscriber();
+            }
+            loadServiceTypes(DataService.getGlobalCustomerId(), handleGetSourceAndCollectorServiceTypesResponse);
             generateMetadata(sourceServiceProxy);
             generateMetadata(collectorServiceProxy);
 
+        }
+
+        function loadSourceSubscriber() {
+            AaiService.getSubList(function (response) {
+                $scope.sourceSubscribers = response;
+                $scope.sourceSubscriber = response.find((subscriber)=>{
+                    return subscriber.globalCustomerId === DataService.getGlobalCustomerId();
+                });
+            }, function (response) { // failure
+                $scope.sourceSubscribers = [];
+            });
+        }
+
+        function getSourceSubscriberId() {
+            return $scope.isSourceSubscriberEnabled()
+                ? $scope.sourceSubscriber && $scope.sourceSubscriber.globalCustomerId
+                : DataService.getGlobalCustomerId()
         }
 
         function setDefaultCollectorServiceType() {
@@ -74,9 +98,18 @@ appDS2.controller(
             loadCollectorProxies();
         }
 
-        function handleGetServiceTypesResponse(response) {
+        function handleGetSourceAndCollectorServiceTypesResponse(response) {
+            handleGetSourceServiceTypesResponse(response)
+            handleGetCollectorServiceTypesResponse(response)
+        }
+
+        function handleGetCollectorServiceTypesResponse(response) {
             $scope.serviceTypes = response.data;
             setDefaultCollectorServiceType();
+        }
+
+        function handleGetSourceServiceTypesResponse(response) {
+            $scope.sourceServiceTypes = response.data;
         }
 
         var handleGetParametersResponse = function(parameters) {
@@ -97,11 +130,14 @@ appDS2.controller(
             $window.history.back();
         };
 
+        $scope.onSourceSubscriberChange = function(selectedSubscriber) {
+            $scope.sourceSubscriber = selectedSubscriber
+            loadServiceTypes(selectedSubscriber.globalCustomerId, handleGetSourceServiceTypesResponse)
+        }
 
-        function loadServiceTypes() {
-            const subscriberId = DataService.getGlobalCustomerId();
+        function loadServiceTypes(subscriberId, handleGetServiceTypesResponseCallback) {
             AaiService.getSubscriberServiceTypes(subscriberId)
-                .then(handleGetServiceTypesResponse)
+                .then(handleGetServiceTypesResponseCallback)
                 .catch(function (error) {
                     $log.error(error);
                 });
@@ -288,7 +324,7 @@ appDS2.controller(
             if (service.name === 'collectorInstanceName' && $scope.configurationByPolicy) {
                 var configurationModel = DataService.getModelInfo(COMPONENT.VNF);
                 AaiService.getPnfInstancesList(
-                    DataService.getGlobalCustomerId(),
+                    getSourceSubscriberId(),
                     serviceType,
                     serviceProxy.sourceModelUuid,
                     serviceProxy.sourceModelInvariant,
@@ -307,7 +343,7 @@ appDS2.controller(
                     });
             } else {
                 AaiService.getVnfInstancesList(
-                    DataService.getGlobalCustomerId(),
+                    getSourceSubscriberId(),
                     serviceType,
                     serviceProxy.sourceModelUuid,
                     serviceProxy.sourceModelInvariant,

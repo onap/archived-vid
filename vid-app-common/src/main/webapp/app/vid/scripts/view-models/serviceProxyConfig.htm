@@ -64,10 +64,18 @@ limitations under the License.
             </div>
             <form name="proxiesInstanceName" class="bottom">
                 <div class="wrapper-list source-vnf">
-                    <div class="title-txt"><b>Source</b> Service Type</div>
+                    <div class="title-txt" ng-if="isSourceSubscriberEnabled()"><b>Source</b> Subscriber name </div>
+                    <select ng-model="sourceSubscriber"
+                            ng-change="onSourceSubscriberChange(sourceSubscriber)" name="sourceSubscriber" id="sourceSubscriber"
+                            ng-options="item['subscriberName'] disable when !(item['isPermitted']) for item in sourceSubscribers"
+                            ng-if="isSourceSubscriberEnabled()"
+                            required data-tests-id="sourceSubscriberName">
+                    </select>
+
+                    <div class="title-txt" ng-class="{'select-vnf-title': isSourceSubscriberEnabled()}"><b>Source</b> Service Type</div>
                     <select ng-model="sourceServiceType"
                             ng-change="onSourceServiceTypeSelected()" name="sourceServiceType" id="sourceServiceType"
-                            ng-options="item['service-type'] disable when !(item['is-permitted']) for item in serviceTypes"
+                            ng-options="item['service-type'] disable when !(item['is-permitted']) for item in sourceServiceTypes"
                             required data-tests-id="sourceServiceType">
                         <option value="" disabled>Select service type</option>
                     </select>
