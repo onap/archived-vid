@@ -59,13 +59,42 @@ appDS2.controller(
         $scope.modelName = DataService.getModelInfo(COMPONENT.VNF).modelCustomizationName;
 
         $scope.serviceTypes = [];
+        $scope.subscribers = [];
+        $scope.sourceServiceTypes = [];
+
+        $scope.isSourceSubscriberEnabled = function() {
+            return featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_2006_PORT_MIRRORING_LET_SELECTING_SOURCE_SUBSCRIBER);
+        };
 
         function init() {
+            loadSubscribers();
             loadServiceTypes();
-
             generateMetadata(sourceServiceProxy);
             generateMetadata(collectorServiceProxy);
 
+        }
+
+        function loadSourceServiceTypes (selectedSubscriber) {
+            $scope.sourceSubscriber = selectedSubscriber;
+            AaiService.getSubscriberServiceTypes(selectedSubscriber['globalCustomerId'])
+                .then(handleGetSourceServiceTypesResponse)
+                .catch(function (error) {
+                    $log.error(error);
+                });
+        }
+
+        function loadSubscribers() {
+            if ($scope.isSourceSubscriberEnabled()) {
+                AaiService.getSubList(function (response) {
+                    $scope.subscribers = response;
+                    $scope.sourceSubscriber = response.find((subscriber) => {
+                        return subscriber.globalCustomerId === DataService.getGlobalCustomerId();
+                    });
+
+                }, function (response) { // failure
+                    $scope.subscribers = [];
+                });
+            }
         }
 
         function setDefaultCollectorServiceType() {
@@ -76,6 +105,7 @@ appDS2.controller(
 
         function handleGetServiceTypesResponse(response) {
             $scope.serviceTypes = response.data;
+            $scope.sourceServiceTypes = response.data;
             setDefaultCollectorServiceType();
         }
 
@@ -96,7 +126,6 @@ appDS2.controller(
         $scope.back = function()  {
             $window.history.back();
         };
-
 
         function loadServiceTypes() {
             const subscriberId = DataService.getGlobalCustomerId();
@@ -248,6 +277,12 @@ appDS2.controller(
             noResults: "collectorNoResults"
         };
 
+        $scope.onSourceSubscriberSelected = function() {
+            clearSourceProxySelection();
+            clearSourceServiceTypeSelection();
+            loadSourceServiceTypes();
+        };
+
         $scope.onSourceServiceTypeSelected = function() {
             clearSourceProxySelection();
             loadSourceProxies();
@@ -262,6 +297,10 @@ appDS2.controller(
             return $scope.collectorType === 'vnf' || featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY);
         };
 
+        function clearSourceServiceTypeSelection() {
+            $scope.sourceServiceType = undefined;
+        }
+
         function clearSourceProxySelection() {
             $scope.sourceInstance = undefined;
         }
@@ -273,16 +312,17 @@ appDS2.controller(
         function loadSourceProxies() {
             var serviceProxy = serviceProxiesList[(sourceServiceProxy.serviceList)[0]];
             var selectedServiceType = $scope.sourceServiceType['service-type'];
-            loadProxyInstances(sourceServiceProxy, selectedServiceType, serviceProxy);
+            var selectedSubscriberId = $scope.sourceSubscriber['globalCustomerId'] || DataService.getGlobalCustomerId();
+            loadProxyInstances(sourceServiceProxy, selectedServiceType, selectedSubscriberId, serviceProxy);
         }
 
         function loadCollectorProxies() {
             var serviceProxy = serviceProxiesList[(collectorServiceProxy.serviceList)[0]];
             var selectedServiceType = $scope.collectorServiceType['service-type'];
-            loadProxyInstances(collectorServiceProxy, selectedServiceType, serviceProxy);
+            loadProxyInstances(collectorServiceProxy, selectedServiceType, DataService.getGlobalCustomerId() , serviceProxy);
         }
 
-        function loadProxyInstances(service, serviceType, serviceProxy) {
+        function loadProxyInstances(service, serviceType, selectedSubscriberId, serviceProxy) {
             $scope[service.instanceListScopePropertyName] = null;
             var configNodeTemplateFields = DataService.getPortMirroningConfigFields();
             if (service.name === 'collectorInstanceName' && $scope.configurationByPolicy) {
@@ -307,7 +347,7 @@ appDS2.controller(
                     });
             } else {
                 AaiService.getVnfInstancesList(
-                    DataService.getGlobalCustomerId(),
+                    selectedSubscriberId,
                     serviceType,
                     serviceProxy.sourceModelUuid,
                     serviceProxy.sourceModelInvariant,
