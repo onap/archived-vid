@@ -1,6 +1,8 @@
 package vid.automation.test.test;
 
 import com.google.common.collect.ImmutableMap;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Assert;
 import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
@@ -17,9 +19,6 @@ import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
 
     private ViewEditPage viewEditPage = new ViewEditPage();
@@ -32,6 +31,7 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     private String pnfInstanceName = "AS-pnf2-10219--as988q";
     private String pnfServiceType = "DARREN MCGEE";
     private String vnfServiceType = "TYLER SILVIA";
+    private String sourceSubscriberName = "SILVIA ROBBINS";
     private String defaultCollectorServiceType = "TYLER SILVIA";
     private String vnfInstanceName = "zhvf6aepdg01";
     private String active = "Active";
@@ -40,6 +40,10 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
 
     private boolean featureFlagLetsSelectingCollector() {
         return Features.FLAG_1810_CR_LET_SELECTING_COLLECTOR_TYPE_UNCONDITIONALLY.isActive();
+    }
+
+    private boolean featureFlagLetSelectingSourceSubscriber() {
+        return Features.FLAG_2006_PORT_MIRRORING_LET_SELECTING_SOURCE_SUBSCRIBER.isActive();
     }
 
     private String expectedPnfCollectorServiceType() {
@@ -234,6 +238,10 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
 
         //select source & collector
         serviceProxyPage.assertCollectorServiceType(defaultCollectorServiceType);
+        if(featureFlagLetSelectingSourceSubscriber()){
+            serviceProxyPage.assertSourceSubscriberName(sourceSubscriberName);
+            serviceProxyPage.chooseSourceSubscriberName(sourceSubscriberName);
+        }
         serviceProxyPage.chooseCollectorServiceType(vnfServiceType);
         serviceProxyPage.chooseCollector(vnfInstanceName);
         serviceProxyPage.assertSelectedInstanceIcon(Constants.ConfigurationCreation.COLLECTOR_INSTANCE_SELECTED_ICON_TEST_ID);
