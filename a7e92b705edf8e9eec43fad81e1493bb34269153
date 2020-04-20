@@ -42,6 +42,48 @@
     },
     {
       "key": {
+        "uuid": "7039b84f_6ca866bf",
+        "filename": "epsdk-app-onap/src/main/resources/vid-data-deprecated.sql",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-20T14:41:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0c6e80f_37b8e547",
+      "range": {
+        "startLine": 59,
+        "startChar": 75,
+        "endLine": 59,
+        "endChar": 76
+      },
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5237f5a2_73d16174",
+        "filename": "epsdk-app-onap/src/main/resources/vid-data-deprecated.sql",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-20T14:41:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9816db74_8b72fac2",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6863031e_f28ca6d8",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 6
@@ -56,6 +98,24 @@
       "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0569d434_9bac3010",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-20T14:41:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6863031e_f28ca6d8",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "860a9986_14ebd092",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-20T14:41:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd6a3536_3794bb4b",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "785a41c7_1036e26b",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 6
@@ -90,6 +168,24 @@
       "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "140cf413_2e6e5ee5",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-20T14:41:09Z",
+      "side": 1,
+      "message": "Have added a new method with arguments (ModelType, workflowType and vnf) . Passing ModelType as undefined as of now, until we have the PNF changes implemented. Please review if the changes are okay.",
+      "parentUuid": "785a41c7_1036e26b",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -133,6 +229,30 @@
     },
     {
       "key": {
+        "uuid": "f4ac6b62_6b19b822",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/changeManagement.e2e.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-20T14:41:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2100f36_5347bce1",
+      "range": {
+        "startLine": 244,
+        "startChar": 30,
+        "endLine": 244,
+        "endChar": 34
+      },
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "531b8cf4_a5cf9bdb",
         "filename": "vid-webpack-master/cypress/integration/iFrames/changeManagement.e2e.ts",
         "patchSetId": 6
@@ -150,6 +270,24 @@
     },
     {
       "key": {
+        "uuid": "b4e0d666_103b6ee7",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/changeManagement.e2e.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-20T14:41:09Z",
+      "side": 1,
+      "message": "It is intentional to differentiate the api endpoint parameter and the naming convention inside SO",
+      "parentUuid": "531b8cf4_a5cf9bdb",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b87f8541_ffdc817a",
         "filename": "vid-webpack-master/cypress/integration/iFrames/changeManagement.e2e.ts",
         "patchSetId": 6
@@ -164,6 +302,24 @@
       "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a4bc77a_031821f2",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/changeManagement.e2e.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-20T14:41:09Z",
+      "side": 1,
+      "message": "Yes that is right",
+      "parentUuid": "b87f8541_ffdc817a",
+      "revId": "a7e92b705edf8e9eec43fad81e1493bb34269153",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
