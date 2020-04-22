@@ -56,6 +56,7 @@ public class BulkRegistration {
         SimulatorApi.registerExpectation(
                 new String [] {
                         Constants.RegisterToSimulator.SearchForServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_SILVIA_ROBBINS,
+                        Constants.RegisterToSimulator.CreateNewServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_CAR_2020_ER,
                         Constants.RegisterToSimulator.SearchForServiceInstance.FILTER_SERVICE_INSTANCE_BY_ID,
                         Constants.RegisterToSimulator.SearchForServiceInstance.NAMED_QUERY_VIEW_EDIT,
                         Constants.RegisterToSimulator.SearchForServiceInstance.GET_SDC_CATALOG_SERVICE_VID_TEST_444,

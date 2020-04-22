@@ -32,6 +32,9 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     private String pnfServiceType = "DARREN MCGEE";
     private String vnfServiceType = "TYLER SILVIA";
     private String sourceSubscriberName = "SILVIA ROBBINS";
+    private String sourceServiceTypeDarenMcGee = "DARREN MCGEE";
+    private String sourceSubscriberNameCar2020 = "CAR_2020_ER";
+
     private String defaultCollectorServiceType = "TYLER SILVIA";
     private String vnfInstanceName = "zhvf6aepdg01";
     private String active = "Active";
@@ -239,7 +242,10 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         //select source & collector
         serviceProxyPage.assertCollectorServiceType(defaultCollectorServiceType);
         if(featureFlagLetSelectingSourceSubscriber()){
+            //assert default Source Subscriber Name, choose another Source Subscriber, choose Source Service Type for chosen subscriber
             serviceProxyPage.assertSourceSubscriberName(sourceSubscriberName);
+            serviceProxyPage.chooseSourceSubscriberName(sourceSubscriberNameCar2020);
+            serviceProxyPage.chooseSourceServiceType(sourceServiceTypeDarenMcGee);
             serviceProxyPage.chooseSourceSubscriberName(sourceSubscriberName);
         }
         serviceProxyPage.chooseCollectorServiceType(vnfServiceType);
