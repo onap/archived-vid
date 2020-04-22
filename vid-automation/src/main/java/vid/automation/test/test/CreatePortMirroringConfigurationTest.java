@@ -8,6 +8,7 @@ import org.onap.sdc.ci.tests.utilities.GeneralUIUtils;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import vid.automation.test.Constants;
+import vid.automation.test.Constants.RegisterToSimulator.CreateNewServiceInstance;
 import vid.automation.test.infra.Exists;
 import vid.automation.test.infra.Features;
 import vid.automation.test.infra.Get;
@@ -18,6 +19,7 @@ import vid.automation.test.sections.VidBasePage;
 import vid.automation.test.sections.ViewEditPage;
 import vid.automation.test.services.BulkRegistration;
 import vid.automation.test.services.SimulatorApi;
+import vid.automation.test.services.SimulatorApi.RegistrationStrategy;
 
 public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
 
@@ -32,6 +34,9 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
     private String pnfServiceType = "DARREN MCGEE";
     private String vnfServiceType = "TYLER SILVIA";
     private String sourceSubscriberName = "SILVIA ROBBINS";
+    private String sourceServiceTypeFromCar2020 = "MSO-dev-service-type";
+    private String sourceSubscriberNameCar2020 = "CAR_2020_ER";
+
     private String defaultCollectorServiceType = "TYLER SILVIA";
     private String vnfInstanceName = "zhvf6aepdg01";
     private String active = "Active";
@@ -195,7 +200,27 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         BulkRegistration.searchExistingServiceInstance();
         BulkRegistration.getNetworkNodeFormData();
         BulkRegistration.createPolicyConfiguration(true, expectedPnfCollectorServiceType());
-        BulkRegistration.createConfiguration("model-version-id=7482279e-5901-492f-a963-6331aa6b995e&model-invariant-id=f2ae9911-95c4-40d0-8908-0175c206ab2d");
+        BulkRegistration.createConfiguration(
+            "model-version-id=7482279e-5901-492f-a963-6331aa6b995e&model-invariant-id=f2ae9911-95c4-40d0-8908-0175c206ab2d");
+
+        String alternateVnfInstanceName = "andromeda";
+
+        if (featureFlagLetSelectingSourceSubscriber()) {
+            SimulatorApi.registerExpectation(
+                CreateNewServiceInstance.GET_SUBSCRIBERS_FOR_CUSTOMER_CAR_2020_ER, RegistrationStrategy.APPEND);
+
+            SimulatorApi.registerExpectation(
+                Constants.RegisterToSimulator.createConfiguration.GET_VNF_INSTANCES,
+                ImmutableMap.of(
+                    "e433710f-9217-458d-a79d-1c7aff376d89", sourceSubscriberNameCar2020,
+                    "TYLER%20SILVIA", sourceServiceTypeFromCar2020,
+                    "model-version-id=2a2ea15f-07c6-4b89-bfca-e8aba39a34d6", "model-version-id=7482279e-5901-492f-a963-6331aa6b995e",
+                    "model-invariant-id=a7eac2b3-8444-40ee-92e3-b3359b32445c", "model-invariant-id=f2ae9911-95c4-40d0-8908-0175c206ab2d",
+                    vnfInstanceName, alternateVnfInstanceName
+                ),
+                RegistrationStrategy.APPEND
+            );
+        }
 
         navigateToViewEditPageOfuspVoiceVidTest444("240376de-870e-48df-915a-31f140eedd2c");
         selectConfigurationNode(policyConfigurationModelName_0, ImmutableMap.<String, String>builder()
@@ -239,7 +264,11 @@ public class CreatePortMirroringConfigurationTest extends VidBaseTestCase {
         //select source & collector
         serviceProxyPage.assertCollectorServiceType(defaultCollectorServiceType);
         if(featureFlagLetSelectingSourceSubscriber()){
+            //assert default Source Subscriber Name, choose another Source Subscriber, choose Source Service Type for chosen subscriber
             serviceProxyPage.assertSourceSubscriberName(sourceSubscriberName);
+            serviceProxyPage.chooseSourceSubscriberName(sourceSubscriberNameCar2020);
+            serviceProxyPage.chooseSourceServiceType(sourceServiceTypeFromCar2020);
+            serviceProxyPage.chooseSource(alternateVnfInstanceName);
             serviceProxyPage.chooseSourceSubscriberName(sourceSubscriberName);
         }
         serviceProxyPage.chooseCollectorServiceType(vnfServiceType);
