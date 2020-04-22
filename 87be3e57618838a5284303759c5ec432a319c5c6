@@ -22,6 +22,30 @@
       "revId": "87be3e57618838a5284303759c5ec432a319c5c6",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66a31fc3_51610067",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/CreatePortMirroringConfigurationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-22T15:02:50Z",
+      "side": 1,
+      "message": "yes, test will 💣 on line 271",
+      "parentUuid": "7d99ee51_b8f5775e",
+      "range": {
+        "startLine": 208,
+        "startChar": 5,
+        "endLine": 222,
+        "endChar": 14
+      },
+      "revId": "87be3e57618838a5284303759c5ec432a319c5c6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }

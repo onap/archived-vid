@@ -87,6 +87,30 @@
       "revId": "734955acdc6ec7238bedaf7269c46e59ae75c92f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b49e8d96_be5482cc",
+        "filename": "vid-automation/src/main/java/vid/automation/test/test/CreatePortMirroringConfigurationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-22T15:02:50Z",
+      "side": 1,
+      "message": "that\u0027s what I did in new patch set.\nwe do not verify the request, but observe the results: having the expected alternative vnf in list",
+      "parentUuid": "1afb021c_4cf6962a",
+      "range": {
+        "startLine": 248,
+        "startChar": 12,
+        "endLine": 248,
+        "endChar": 82
+      },
+      "revId": "734955acdc6ec7238bedaf7269c46e59ae75c92f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
