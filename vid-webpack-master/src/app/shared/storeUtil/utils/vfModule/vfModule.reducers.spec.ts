@@ -114,12 +114,12 @@ describe('vfModuleReducer', () => {
         dynamicModelName: 'dynamicModelName1',
         vnfStoreKey: 'vnfStoreKey',
         serviceId: 'serviceModelId',
-        modelName: 'modelName',
+        modelName: 'vfModuleModelName',
         fieldName: newFieldName,
         fieldValue: newFieldValue
       });
 
-    let vfModule = newState.serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+    let vfModule = newState.serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName']['dynamicModelName1'];
 
     expect(vfModule[newFieldName]).toEqual(newFieldValue);
   });
@@ -202,7 +202,7 @@ test('#UPDATE_VFMODULE_POSITION: should update position', () => {
 
 test('#DELETE_ACTION_VF_MODULE_INSTANCE', () => {
   let vfModule = vfModuleReducer(<any>getReduxState(), getDeleteActionVfModule())
-    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName']['dynamicModelName1'];
 
   expect(vfModule).toBeDefined();
   expect(vfModule.isMissingData).toBeTruthy();
@@ -211,7 +211,7 @@ test('#DELETE_ACTION_VF_MODULE_INSTANCE', () => {
 
 test('#DELETE_ACTION_VF_MODULE_INSTANCE set tenantId and lcpCloudRegion to VFM', () => {
   let vfModule = vfModuleReducer(<any>getReduxState(), getDeleteActionVfModule())
-    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName']['dynamicModelName1'];
 
   expect(vfModule).toBeDefined();
   expect(vfModule.tenantId).toEqual('tenantId');
@@ -260,8 +260,8 @@ test('#UPGRADE_VFMODULE', () => {
       dynamicModelName: 'dynamicModelName1',
       vnfStoreKey: 'vnfStoreKey',
       serviceId: 'serviceModelId',
-      modelName: 'modelName'
-    }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+      modelName: 'vfModuleModelName'
+    }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName']['dynamicModelName1'];
 
   expect(vfModule.action).toEqual(ServiceInstanceActions.None_Upgrade);
 });
@@ -312,7 +312,7 @@ function getReduxState() {
            tenantId: 'tenantId',
            lcpCloudRegionId: 'lcpCloudRegionId',
            vfModules: {
-             'modelName': {
+             'vfModuleModelName': {
                'dynamicModelName1': {
                  isMissingData: true,
                  action: 'None',
@@ -332,7 +332,8 @@ function getDeleteActionVfModule() {
     type: VfModuleActions.DELETE_ACTION_VF_MODULE_INSTANCE,
     dynamicModelName: 'dynamicModelName1',
     vnfStoreKey: 'vnfStoreKey',
-    serviceId: 'serviceModelId'
+    serviceId: 'serviceModelId',
+    vfModuleModelName: 'vfModuleModelName',
   }
 }
 });

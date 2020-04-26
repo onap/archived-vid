@@ -1,0 +1,130 @@
+{
+  "service": {
+    "uuid": "9d87de7d-a44f-491c-a139-f8ef086b6d81",
+    "invariantUuid": "bcbb44f5-5cfe-4bee-9a67-910c70945766",
+    "name": "FEXN_NC_UP_2018-22",
+    "version": "4.0",
+    "toscaModelURL": null,
+    "category": "Mobility",
+    "serviceType": "INFRASTRUCTURE",
+    "serviceRole": "VNF",
+    "description": "Partner Connectivity Firewalls",
+    "serviceEcompNaming": "true",
+    "instantiationType": "A-La-Carte",
+    "inputs": {},
+    "vidNotions": {
+      "instantiationUI": "anyAlacarteWhichNotExcluded",
+      "modelCategory": "5G Fabric Configuration",
+      "viewEditUI": "legacy",
+      "instantiationType": "ALaCarte"
+    }
+  },
+  "vnfs": {
+    "FEXN_NC_UP_2018-22 0": {
+      "uuid": "3f844ea3-1269-45f2-90be-cd50af7047d9",
+      "invariantUuid": "46191534-fc88-4224-bc8b-2566a1a54cf4",
+      "description": "Partner Connectivity Firewalls",
+      "name": "FEXN_NC_UP_2018-22",
+      "version": "3.0",
+      "customizationUuid": "e7919e33-05d6-4fbe-b6aa-5e84e5be1920",
+      "inputs": {},
+      "commands": {},
+      "properties": {
+        "nf_naming": "{ecomp_generated_naming=true}",
+        "multi_stage_design": "false",
+        "nf_naming_code": "fexn",
+        "nf_function": "EPC-EXN-FIREWALL",
+        "exnfw_flavor_name": "ns.c5r8d160e0.cp.n2i2",
+        "exnfw_image_name": "vSRX-18.4-PRE",
+        "availability_zone_max_count": "1",
+        "nf_role": "vFW-EXN",
+        "ecomp_generated_naming": "true",
+        "nf_type": "FIREWALL"
+      },
+      "type": "VF",
+      "modelCustomizationName": "FEXN_NC_UP_2018-22 0",
+      "vfModules": {
+        "fexn_nc_up_2018220..FexnNcUp201822..base_exn..module-0": {
+          "uuid": "020cff53-a5f8-4500-90dc-3a2bb908d57f",
+          "invariantUuid": "f08b0b47-26e5-40d1-b4f8-272401c85166",
+          "customizationUuid": "edbbce52-bf9a-431c-820c-f01162e85bcd",
+          "description": null,
+          "name": "FexnNcUp201822..base_exn..module-0",
+          "version": "1",
+          "modelCustomizationName": "FexnNcUp201822..base_exn..module-0",
+          "properties": {
+            "minCountInstances": 1,
+            "maxCountInstances": 1,
+            "initialCount": 1,
+            "vfModuleLabel": "base_exn",
+            "baseModule": true
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        },
+        "fexn_nc_up_2018220..FexnNcUp201822..module_exn..module-1": {
+          "uuid": "9711106f-f55c-4e08-a878-12fe073e4a7f",
+          "invariantUuid": "605fbf07-018f-4dbf-805a-ce64723f2cd9",
+          "customizationUuid": "fceea9fd-7913-4aaf-87d4-a3251180a753",
+          "description": null,
+          "name": "FexnNcUp201822..module_exn..module-1",
+          "version": "2",
+          "modelCustomizationName": "FexnNcUp201822..module_exn..module-1",
+          "properties": {
+            "minCountInstances": 0,
+            "maxCountInstances": 10,
+            "initialCount": 0,
+            "vfModuleLabel": "module_exn",
+            "baseModule": false
+          },
+          "inputs": {},
+          "volumeGroupAllowed": false
+        }
+      },
+      "volumeGroups": {},
+      "vfcInstanceGroups": {}
+    }
+  },
+  "networks": {},
+  "collectionResources": {},
+  "configurations": {},
+  "serviceProxies": {},
+  "vfModules": {
+    "fexn_nc_up_2018220..FexnNcUp201822..module_exn..module-1": {
+      "uuid": "9711106f-f55c-4e08-a878-12fe073e4a7f",
+      "invariantUuid": "605fbf07-018f-4dbf-805a-ce64723f2cd9",
+      "customizationUuid": "fceea9fd-7913-4aaf-87d4-a3251180a753",
+      "description": null,
+      "name": "FexnNcUp201822..module_exn..module-1",
+      "version": "2",
+      "modelCustomizationName": "FexnNcUp201822..module_exn..module-1",
+      "properties": {
+        "minCountInstances": 0,
+        "maxCountInstances": 10,
+        "initialCount": 0,
+        "vfModuleLabel": "module_exn",
+        "baseModule": false
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    },
+    "fexn_nc_up_2018220..FexnNcUp201822..base_exn..module-0": {
+      "uuid": "020cff53-a5f8-4500-90dc-3a2bb908d57f",
+      "invariantUuid": "f08b0b47-26e5-40d1-b4f8-272401c85166",
+      "customizationUuid": "edbbce52-bf9a-431c-820c-f01162e85bcd",
+      "description": null,
+      "name": "FexnNcUp201822..base_exn..module-0",
+      "version": "1",
+      "modelCustomizationName": "FexnNcUp201822..base_exn..module-0",
+      "properties": {
+        "minCountInstances": 1,
+        "maxCountInstances": 1,
+        "initialCount": 1,
+        "vfModuleLabel": "base_exn",
+        "baseModule": true
+      },
+      "inputs": {},
+      "volumeGroupAllowed": false
+    }
+  }
+}

@@ -281,6 +281,55 @@ describe('View Edit Page: Upgrade VFModule', function () {
         });
       });
     });
+
+    it(`Delete second vfModule when both VFM's have the same model`, function () {
+      const serviceType = 'Mobility';
+      const subscriberId = 'a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb';
+      const serviceModelId = '9d87de7d-a44f-491c-a139-f8ef086b6d81';
+      const serviceInstanceId = 'e1fe9161-2502-4ed7-8df3-dbbbd32534d8';
+      const serviceInvariantUuid = "bcbb44f5-5cfe-4bee-9a67-910c70945766";
+
+      cy.initDrawingBoardUserPermission();
+
+      cy.route(`**/rest/models/services/${serviceModelId}`,
+        'fixture:../support/jsonBuilders/mocks/jsons/deleteVfModule/delete_second_vfm_with_same_model_sdc_model.json')
+      .as('serviceModel2');
+
+      cy.route(`**/aai_get_service_instance_topology/${subscriberId}/${serviceType}/${serviceInstanceId}`,
+        'fixture:../support/jsonBuilders/mocks/jsons/deleteVfModule/delete_second_vfm_with_same_model_service_instance.json')
+      .as('serviceInstance2');
+
+      cy.route(`**/aai_get_newest_model_version_by_invariant/${serviceInvariantUuid}`, {
+          "modelVersionId": "9d87de7d-a44f-491c-a139-f8ef086b6d81",
+          "modelName": "FEXN_NC_UP_2018-22",
+          "modelVersion": "4.0",
+          "distributionStatus": "DISTRIBUTION_COMPLETE_OK",
+          "resourceVersion": "1581017472230",
+          "modelDescription": "Partner Connectivity Firewalls",
+          "orchestrationType": null
+        }
+      ).as("newestModelVersion2");
+
+      cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
+
+      let treeNodeId = `node-9711106f-f55c-4e08-a878-12fe073e4a7f-fexn_nc_up_2018220..FexnNcUp201822..module_exn..module-1-menu-btn`;
+      // delete base vfm
+      deleteTheVfm(`node-020cff53-a5f8-4500-90dc-3a2bb908d57f-fexn_nc_up_2018220..FexnNcUp201822..base_exn..module-0`);
+      // delete first vfm
+      cy.getElementByDataTestsId(treeNodeId).first().click().drawingBoardTreeClickOnContextMenuOptionByName("Delete");
+      // delete second vfm
+      cy.getElementByDataTestsId(treeNodeId).last().click().drawingBoardTreeClickOnContextMenuOptionByName("Delete");
+
+      mockAsyncBulkResponse();
+      cy.getDrawingBoardDeployBtn().click();
+
+      cy.wait('@expectedPostAsyncInstantiation').then(xhr => {
+        cy.readFile('../vid-app-common/src/test/resources/payload_jsons/vfmodule/delete_second_vfmodule_with_the_same_model_expected_bulk.json').then((expectedResult) => {
+          cy.deepCompare(xhr.request.body, expectedResult);
+        });
+      });
+
+    });
   });
 
 
@@ -311,6 +360,12 @@ describe('View Edit Page: Upgrade VFModule', function () {
   function deleteTheVfm(treeNodeId: string) {
     cy.getElementByDataTestsId(`${treeNodeId}-menu-btn`).click()
     .drawingBoardTreeClickOnContextMenuOptionByName("Delete");
+  }
+
+  function deleteTwoVfmodulesWithTheSameTreeNodeId(treeNodeId: string) {
+    cy.getElementByDataTestsId(`${treeNodeId}-menu-btn`).click().first()
+    .drawingBoardTreeClickOnContextMenuOptionByName("Delete");
+
   }
 
   function upgradeTheVFM(treeNodeId: string, shouldVGCheckboxExist :boolean) {
