@@ -1,0 +1,177 @@
+{
+  "action": "None",
+  "isDirty": true,
+  "vnfs": {
+    "786372c5-bec9-460d-ad4a-b2f63bcf5943": {
+      "action": "None",
+      "instanceName": "zauk53afexn01",
+      "instanceId": "786372c5-bec9-460d-ad4a-b2f63bcf5943",
+      "orchStatus": "Active",
+      "productFamilyId": null,
+      "lcpCloudRegionId": "auk53a",
+      "tenantId": "b7fccaab35154434ba69e3370cd3c77d",
+      "cloudOwner": "att-nc",
+      "modelInfo": {
+        "modelCustomizationName": "FEXN_NC_UP_2018-22 0",
+        "modelCustomizationId": "e7919e33-05d6-4fbe-b6aa-5e84e5be1920",
+        "modelInvariantId": "46191534-fc88-4224-bc8b-2566a1a54cf4",
+        "modelVersionId": "3f844ea3-1269-45f2-90be-cd50af7047d9",
+        "modelName": "FEXN_NC_UP_2018-22",
+        "modelType": "vnf",
+        "modelVersion": "3.0"
+      },
+      "instanceType": "FEXN_NC_UP_2018-22/FEXN_NC_UP_2018-22",
+      "provStatus": "PREPROV",
+      "inMaint": false,
+      "uuid": "3f844ea3-1269-45f2-90be-cd50af7047d9",
+      "originalName": "FEXN_NC_UP_2018-22 0",
+      "legacyRegion": null,
+      "lineOfBusiness": null,
+      "platformName": null,
+      "trackById": "786372c5-bec9-460d-ad4a-b2f63bcf5943",
+      "vfModules": {
+        "fexn_nc_up_2018220..FexnNcUp201822..base_exn..module-0": {
+          "320ef1f4-40b6-4340-9cd7-0631fbe14821": {
+            "action": "None_Delete",
+            "instanceName": "zauk53afexn01_base",
+            "instanceId": "320ef1f4-40b6-4340-9cd7-0631fbe14821",
+            "orchStatus": "Active",
+            "productFamilyId": null,
+            "lcpCloudRegionId": "auk53a",
+            "tenantId": "b7fccaab35154434ba69e3370cd3c77d",
+            "cloudOwner": null,
+            "modelInfo": {
+              "modelCustomizationName": "FexnNcUp201822..base_exn..module-0",
+              "modelCustomizationId": "edbbce52-bf9a-431c-820c-f01162e85bcd",
+              "modelInvariantId": "f08b0b47-26e5-40d1-b4f8-272401c85166",
+              "modelVersionId": "020cff53-a5f8-4500-90dc-3a2bb908d57f",
+              "modelName": "FexnNcUp201822..base_exn..module-0",
+              "modelType": "vfModule",
+              "modelVersion": "1"
+            },
+            "instanceType": null,
+            "provStatus": null,
+            "inMaint": false,
+            "uuid": "020cff53-a5f8-4500-90dc-3a2bb908d57f",
+            "originalName": "fexn_nc_up_2018220..FexnNcUp201822..base_exn..module-0",
+            "legacyRegion": null,
+            "lineOfBusiness": null,
+            "platformName": null,
+            "trackById": "320ef1f4-40b6-4340-9cd7-0631fbe14821",
+            "isBase": true,
+            "volumeGroupName": null
+          }
+        },
+        "fexn_nc_up_2018220..FexnNcUp201822..module_exn..module-1": {
+          "cc2a9335-7a20-477d-bc0f-3dcb2def7364": {
+            "action": "None_Delete",
+            "instanceName": "zauk53afexn01_mod_1",
+            "instanceId": "cc2a9335-7a20-477d-bc0f-3dcb2def7364",
+            "orchStatus": "Active",
+            "productFamilyId": null,
+            "lcpCloudRegionId": "auk53a",
+            "tenantId": "b7fccaab35154434ba69e3370cd3c77d",
+            "cloudOwner": "att-nc",
+            "modelInfo": {
+              "modelCustomizationName": "FexnNcUp201822..module_exn..module-1",
+              "modelCustomizationId": "fceea9fd-7913-4aaf-87d4-a3251180a753",
+              "modelInvariantId": "605fbf07-018f-4dbf-805a-ce64723f2cd9",
+              "modelVersionId": "9711106f-f55c-4e08-a878-12fe073e4a7f",
+              "modelName": "FexnNcUp201822..module_exn..module-1",
+              "modelType": "vfModule",
+              "modelVersion": "2"
+            },
+            "instanceType": null,
+            "provStatus": null,
+            "inMaint": false,
+            "uuid": "9711106f-f55c-4e08-a878-12fe073e4a7f",
+            "originalName": "fexn_nc_up_2018220..FexnNcUp201822..module_exn..module-1",
+            "legacyRegion": null,
+            "lineOfBusiness": null,
+            "platformName": null,
+            "trackById": "cc2a9335-7a20-477d-bc0f-3dcb2def7364",
+            "isBase": false,
+            "volumeGroupName": null
+          },
+          "63e35de3-a522-4502-ac18-f963fa956eac": {
+            "action": "None_Delete",
+            "instanceName": "zauk53afexn01_mod_2",
+            "instanceId": "63e35de3-a522-4502-ac18-f963fa956eac",
+            "orchStatus": "Active",
+            "productFamilyId": null,
+            "lcpCloudRegionId": "auk53a",
+            "tenantId": "b7fccaab35154434ba69e3370cd3c77d",
+            "cloudOwner": "att-nc",
+            "modelInfo": {
+              "modelCustomizationName": "FexnNcUp201822..module_exn..module-1",
+              "modelCustomizationId": "fceea9fd-7913-4aaf-87d4-a3251180a753",
+              "modelInvariantId": "605fbf07-018f-4dbf-805a-ce64723f2cd9",
+              "modelVersionId": "9711106f-f55c-4e08-a878-12fe073e4a7f",
+              "modelName": "FexnNcUp201822..module_exn..module-1",
+              "modelType": "vfModule",
+              "modelVersion": "2"
+            },
+            "instanceType": null,
+            "provStatus": null,
+            "inMaint": false,
+            "uuid": "9711106f-f55c-4e08-a878-12fe073e4a7f",
+            "originalName": "fexn_nc_up_2018220..FexnNcUp201822..module_exn..module-1",
+            "legacyRegion": null,
+            "lineOfBusiness": null,
+            "platformName": null,
+            "trackById": "63e35de3-a522-4502-ac18-f963fa956eac",
+            "isBase": false,
+            "volumeGroupName": null
+          }
+        }
+      },
+      "vnfStoreKey": "786372c5-bec9-460d-ad4a-b2f63bcf5943"
+    }
+  },
+  "vrfs": {},
+  "instanceParams": [],
+  "validationCounter": 0,
+  "existingNames": {
+    "zauk53afexn01_svc": ""
+  },
+  "existingVNFCounterMap": {
+    "e7919e33-05d6-4fbe-b6aa-5e84e5be1920": 1
+  },
+  "existingVRFCounterMap": {},
+  "existingVnfGroupCounterMap": {},
+  "existingNetworksCounterMap": {},
+  "networks": {},
+  "vnfGroups": {},
+  "bulkSize": 1,
+  "instanceName": "zauk53afexn01_svc",
+  "instanceId": "e1fe9161-2502-4ed7-8df3-dbbbd32534d8",
+  "orchStatus": "Active",
+  "productFamilyId": null,
+  "lcpCloudRegionId": null,
+  "tenantId": null,
+  "cloudOwner": null,
+  "modelInfo": {
+    "modelInvariantId": "bcbb44f5-5cfe-4bee-9a67-910c70945766",
+    "modelVersionId": "9d87de7d-a44f-491c-a139-f8ef086b6d81",
+    "modelName": "FEXN_NC_UP_2018-22",
+    "modelType": "service",
+    "modelVersion": "4.0"
+  },
+  "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "subscriptionServiceType": "Mobility",
+  "owningEntityId": null,
+  "owningEntityName": null,
+  "tenantName": null,
+  "aicZoneId": null,
+  "aicZoneName": null,
+  "projectName": null,
+  "rollbackOnFailure": false,
+  "isALaCarte": true,
+  "testApi": "GR_API",
+  "vidNotions": {
+    "instantiationUI": "anyAlacarteWhichNotExcluded",
+    "modelCategory": "5G Fabric Configuration",
+    "viewEditUI": "legacy",
+    "instantiationType": "ALaCarte"
+  }
+}
