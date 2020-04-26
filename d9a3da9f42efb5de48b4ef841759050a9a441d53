@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c1b29de9_da1cd576",
+        "filename": "epsdk-app-onap/src/main/resources/db.changelog-01.sql",
+        "patchSetId": 9
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-26T11:22:07Z",
+      "side": 1,
+      "message": "this changeset is ok.\n\nstill, it should better be placed at the end of the file.\nanyhow, in this position it breaks the previous changeset to two.\n\nyou may find these docs insightful: https://www.liquibase.org/documentation/sql_format.html",
+      "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03913388_988ecff9",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-26T11:22:07Z",
+      "side": 1,
+      "message": "It wasn\u0027t my intention; sorry for the confusion. See my comment on line 264 below, and then re-read https://gerrit.onap.org/r/c/vid/+/102674/6/vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js#291\n\nIt is ok to have here a function, but name \"nativeWorkflowRequestData\" is not describing the method, and params are not \"on\".",
+      "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c1cfa22_26dc6e95",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-26T11:22:07Z",
+      "side": 1,
+      "message": "This code is not very clean, so I understand how we\u0027re struggling here aorund it.\nStill, I suggest redoing it one more time.\n\n\nThe case of \"if (workflowType \u003d\u003d\u003d \"PNF Software Upgrade\")\" is redundant\n-----------------------------------------------------------------------\n\nBecause it is very similar to the generic \"else\", I suggest generifying the else with a code similar to this:\n\n                    } else if (workflowType \u003d\u003d\u003d \"PNF Software Upgrade\") {\n                        data \u003d nativeWorkflowRequestData(\u0027pnf\u0027, requestParameters, vnf)\n                    } else {\n                        data \u003d nativeWorkflowRequestData(\u0027vnf\u0027, requestParameters, vnf)\n                    }\n\n\nAnd nativeWorkflowRequestData() will do something like (note the few item with arrow)\n\n\nnativeWorkflowRequestData(modelType, requestParameters) {\n             data \u003d {\n                            modelInfo: {\n                                modelType: modelType,  \u003c\u003d\u003d\u003d\u003d\u003d\n                                modelInvariantId: vnf.properties[\u0027model-invariant-id\u0027],\n                                modelVersionId: vnf.modelVersionId,\n                                modelName: vnf.properties[\u0027vnf-name\u0027],\n                                modelVersion: vnf.version,\n                                modelCustomizationName: vnf.properties[\u0027model-customization-name\u0027],\n                                modelCustomizationId: vnf.properties[\u0027model-customization-id\u0027]\n                            },\n                            cloudConfiguration: vnf.cloudConfiguration,\n                            requestInfo: requestInfoData,\n                            relatedInstanceList: [],\n                            requestParameters: requestParametersData\n                        };\n                    }\n\n           data[modelType + \u0027Name\u0027] \u003d vnf.name,   \u003c\u003d\u003d\u003d\u003d\u003d\n           data[modelType + \u0027InstanceId\u0027] \u003d vnf.id,   \u003c\u003d\u003d\u003d\u003d\u003d\n\n          return data;\n\n}",
+      "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
