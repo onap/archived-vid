@@ -70,20 +70,17 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       return Object.assign({}, state);
     }
     case VfModuleActions.DELETE_ACTION_VF_MODULE_INSTANCE : {
+      let deleteAction = (<DeleteActionVfModuleInstanceAction>action);
       let newState = _.cloneDeep(state);
-      let vfModules = newState.serviceInstance[(<DeleteActionVfModuleInstanceAction>action).serviceId].vnfs[(<DeleteActionVfModuleInstanceAction>action).vnfStoreKey].vfModules;
+      let vfModule = newState.serviceInstance[deleteAction.serviceId].vnfs[deleteAction.vnfStoreKey]
+        .vfModules[deleteAction.vfModuleModelName][deleteAction.dynamicModelName];
+      let oldAction = vfModule.action;
+      if (oldAction === ServiceInstanceActions.None_Delete || oldAction === ServiceInstanceActions.Update_Delete) return newState;
+      newState.serviceInstance[deleteAction.serviceId].vnfs[deleteAction.vnfStoreKey]
+        .vfModules[deleteAction.vfModuleModelName][deleteAction.dynamicModelName].action = (oldAction + '_Delete') as ServiceInstanceActions;
+      setLcpCloudRegionIdAndTenantIdFromVnf(newState, deleteAction.serviceId, deleteAction.vnfStoreKey, deleteAction.vfModuleModelName, deleteAction.dynamicModelName);
+      updateIsMissingDataOnDeleteVFModule(newState, (<UndoDeleteActionVfModuleInstanceAction>action).serviceId, (<UndoDeleteActionVfModuleInstanceAction>action).vnfStoreKey, deleteAction.vfModuleModelName);
 
-      for(let key in vfModules){
-        let firstKey = Object.keys(vfModules[key])[0];
-        if(firstKey === (<DeleteActionVfModuleInstanceAction>action).dynamicModelName){
-          let oldAction = newState.serviceInstance[(<DeleteActionVfModuleInstanceAction>action).serviceId].vnfs[(<DeleteActionVfModuleInstanceAction>action).vnfStoreKey].vfModules[key][firstKey].action;
-          if(oldAction === ServiceInstanceActions.None_Delete || oldAction === ServiceInstanceActions.Update_Delete) return newState;
-          newState.serviceInstance[(<DeleteActionVfModuleInstanceAction>action).serviceId].vnfs[(<DeleteActionVfModuleInstanceAction>action).vnfStoreKey].vfModules[key][firstKey].action = (oldAction + '_Delete') as ServiceInstanceActions;
-          setLcpCloudRegionIdAndTenantIdFromVnf(newState, (<DeleteActionVfModuleInstanceAction>action).serviceId, (<DeleteActionVfModuleInstanceAction>action).vnfStoreKey, key, firstKey);
-          updateIsMissingDataOnDeleteVFModule(newState, (<UndoDeleteActionVfModuleInstanceAction>action).serviceId, (<UndoDeleteActionVfModuleInstanceAction>action).vnfStoreKey, key);
-          return newState;
-        }
-      }
       return newState;
     }
     case VfModuleActions.UNDO_DELETE_ACTION_VF_MODULE_INSTANCE : {
