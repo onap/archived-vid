@@ -49,6 +49,7 @@ export interface DeleteActionVfModuleInstanceAction extends Action {
   dynamicModelName: string;
   vnfStoreKey : string;
   serviceId?: string;
+  vfModuleModelName: string;
 }
 
 export interface UpgradeVfModuleInstanceAction extends Action {
@@ -115,11 +116,12 @@ export const updateVFModuleInstance: ActionCreator<UpdateVFModuleInstanceAction>
   vnfStoreKey : vnfStoreKey
 });
 
-export const deleteActionVfModuleInstance: ActionCreator<DeleteActionVfModuleInstanceAction> = (dynamicModelName, vnfStoreKey, serviceId) => ({
+export const deleteActionVfModuleInstance: ActionCreator<DeleteActionVfModuleInstanceAction> = (dynamicModelName, vnfStoreKey, serviceId, vfModuleModelName) => ({
   type: VfModuleActions.DELETE_ACTION_VF_MODULE_INSTANCE,
   dynamicModelName: dynamicModelName,
   vnfStoreKey : vnfStoreKey,
-  serviceId: serviceId
+  serviceId: serviceId,
+  vfModuleModelName
 });
 
 export const undoDeleteVfModuleInstance: ActionCreator<UndoDeleteActionVfModuleInstanceAction> = (dynamicModelName, vnfStoreKey, serviceId) => ({

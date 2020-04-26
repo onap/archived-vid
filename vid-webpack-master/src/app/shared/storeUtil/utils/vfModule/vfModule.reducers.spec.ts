@@ -1,15 +1,18 @@
 import {
   CreateVFModuleInstanceAction,
-  DeleteActionVfModuleInstanceAction, DeleteVFModuleField,
+  DeleteActionVfModuleInstanceAction,
+  DeleteVFModuleField,
   DeleteVfModuleInstanceAction,
   UndoDeleteActionVfModuleInstanceAction,
-  UpdateVFModluePosition, UpdateVFModuleField,
+  UpdateVFModluePosition,
+  UpdateVFModuleField,
   UpgradeVfModuleInstanceAction,
   VfModuleActions
 } from "./vfModule.actions";
 import {vfModuleReducer} from "./vfModule.reducers";
 import {VfModuleInstance} from "../../../models/vfModuleInstance";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
+import each from "jest-each";
 
 
 describe('vfModuleReducer', () => {
@@ -114,12 +117,12 @@ describe('vfModuleReducer', () => {
         dynamicModelName: 'dynamicModelName1',
         vnfStoreKey: 'vnfStoreKey',
         serviceId: 'serviceModelId',
-        modelName: 'modelName',
+        modelName: 'vfModuleModelName',
         fieldName: newFieldName,
         fieldValue: newFieldValue
       });
 
-    let vfModule = newState.serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+    let vfModule = newState.serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName']['dynamicModelName1'];
 
     expect(vfModule[newFieldName]).toEqual(newFieldValue);
   });
@@ -200,18 +203,22 @@ test('#UPDATE_VFMODULE_POSITION: should update position', () => {
   expect(vfModule.position).toEqual(1);
 });
 
-test('#DELETE_ACTION_VF_MODULE_INSTANCE', () => {
-  let vfModule = vfModuleReducer(<any>getReduxState(), getDeleteActionVfModule())
-    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+  each([
+    ['for the first vfModule', 'dynamicModelName1', true],
+    ['for the second vfModule', 'dynamicModelName2', true],
+  ]).
+test('#DELETE_ACTION_VF_MODULE_INSTANCE %s', (description, dynamicModelName: string, isMissingData: boolean) => {
+    let vfModule = vfModuleReducer(<any>getReduxState(), getDeleteActionVfModule(dynamicModelName))
+      .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName'][dynamicModelName];
 
-  expect(vfModule).toBeDefined();
-  expect(vfModule.isMissingData).toBeTruthy();
-  expect(vfModule.action).toEqual(ServiceInstanceActions.None_Delete);
-});
+    expect(vfModule).toBeDefined();
+    expect(vfModule.isMissingData).toBeTruthy();
+    expect(vfModule.action).toEqual(ServiceInstanceActions.None_Delete);
+  });
 
 test('#DELETE_ACTION_VF_MODULE_INSTANCE set tenantId and lcpCloudRegion to VFM', () => {
-  let vfModule = vfModuleReducer(<any>getReduxState(), getDeleteActionVfModule())
-    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+  let vfModule = vfModuleReducer(<any>getReduxState(), getDeleteActionVfModule('dynamicModelName1'))
+    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName']['dynamicModelName1'];
 
   expect(vfModule).toBeDefined();
   expect(vfModule.tenantId).toEqual('tenantId');
@@ -260,8 +267,8 @@ test('#UPGRADE_VFMODULE', () => {
       dynamicModelName: 'dynamicModelName1',
       vnfStoreKey: 'vnfStoreKey',
       serviceId: 'serviceModelId',
-      modelName: 'modelName'
-    }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+      modelName: 'vfModuleModelName'
+    }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName']['dynamicModelName1'];
 
   expect(vfModule.action).toEqual(ServiceInstanceActions.None_Upgrade);
 });
@@ -312,12 +319,15 @@ function getReduxState() {
            tenantId: 'tenantId',
            lcpCloudRegionId: 'lcpCloudRegionId',
            vfModules: {
-             'modelName': {
+             'vfModuleModelName': {
                'dynamicModelName1': {
                  isMissingData: true,
                  action: 'None',
                },
-               'dynamicModelName2': {},
+               'dynamicModelName2': {
+                 action: 'None',
+                 isMissingData: true,
+               },
              }
            }
          }
@@ -327,12 +337,13 @@ function getReduxState() {
  }
 }
 
-function getDeleteActionVfModule() {
+function getDeleteActionVfModule(dynamicModelName?: string) {
   return <DeleteActionVfModuleInstanceAction>{
     type: VfModuleActions.DELETE_ACTION_VF_MODULE_INSTANCE,
-    dynamicModelName: 'dynamicModelName1',
+    dynamicModelName: dynamicModelName,
     vnfStoreKey: 'vnfStoreKey',
-    serviceId: 'serviceModelId'
+    serviceId: 'serviceModelId',
+    vfModuleModelName: 'vfModuleModelName',
   }
 }
 });

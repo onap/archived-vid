@@ -351,7 +351,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
       },
       delete: {
         method: (node, serviceModelId) => {
-          this._store.dispatch(deleteActionVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId))
+          this._store.dispatch(deleteActionVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId, node.data.modelName))
         },
         visible: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId),
         enable: (node) => this._sharedTreeService.shouldShowDelete(node, serviceModelId)
