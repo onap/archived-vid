@@ -68,6 +68,24 @@
       "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e31f7759_e041f6d3",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-27T11:11:03Z",
+      "side": 1,
+      "message": "my code here was not checked 😊 and you are correct:\n\n1) The method signature should be `nativeWorkflowRequestData(modelType, requestParameters, vnf) {`\n2) after `relatedInstanceList: [],` should be `requestParameters: requestParameters`\n\nThere might be more mistakes around....\n\nIf you\u0027re asking about the separation between the `data` construction from it\u0027s inner `relatedInstanceList` -- I recommend following the current way it is done in separation (only because that is how it is today). If you prefer combining both cases - **on line 349** it is valid (althought not my preference):\n\n                    } else if (workflowType \u003d\u003d\u003d \"PNF Software Upgrade\") {\n\n             var requestParameters \u003d {\n                  userParams: [\n                     {\n                        \"name\":\"pnfId\",\n                        \"value\":vnf.properties[\"vnf-id\"]\n                     },\n                     {\n                        \"name\":\"pnfName\",\n                        \"value\": vnf.name\n                     },\n                     {\n                        \"name\":\"targetSoftwareVersion\",\n                        \"value\":vm.getInternalWorkFlowParameter(workflowType, \u0027text\u0027, \u0027Target software version\u0027).value\n                     }\n                  ]\n               };\n                        data \u003d nativeWorkflowRequestData(\u0027pnf\u0027, requestParameters, vnf)\n                    } else {",
+      "parentUuid": "866ba4d1_7bc0e6e2",
+      "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
