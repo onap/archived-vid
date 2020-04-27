@@ -50,6 +50,24 @@
       "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "866ba4d1_7bc0e6e2",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-27T10:36:05Z",
+      "side": 1,
+      "message": "Sorry Ittay for the misunderstanding. I will change it accordingly. But in this case, do we need to set the below under requestParameters like Eric had done? Because the argument requestParameters is the requestParametersData which need to have this info? Can you please clarify on this.\nrequestParameters: {\n      userParams: [\n\n           {\n              \"name\":\"pnfId\",\n               \"value\":vnf.properties[\"vnf-id\"]\n            },\n            {\n               \"name\":\"pnfName\",\n               \"value\": vnf.name\n             },\n             userParam\n         ]\n      }",
+      "parentUuid": "5c1cfa22_26dc6e95",
+      "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
