@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6d70f2f1_6076baf6",
+        "filename": "epsdk-app-onap/src/main/resources/db.changelog-01.sql",
+        "patchSetId": 9
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-27T18:03:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1b29de9_da1cd576",
+      "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "03913388_988ecff9",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 9
@@ -33,6 +51,24 @@
       "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e424c1ee_80a540c4",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-27T18:03:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03913388_988ecff9",
+      "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -86,6 +122,24 @@
       "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "342b825d_31d24254",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 9
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 6070
+      },
+      "writtenOn": "2020-04-27T18:03:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e31f7759_e041f6d3",
+      "revId": "d9a3da9f42efb5de48b4ef841759050a9a441d53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
