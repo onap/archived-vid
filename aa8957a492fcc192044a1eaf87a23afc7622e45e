@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "e7dfe830_c4c60fe2",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 10
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-28T03:53:20Z",
+      "side": 1,
+      "message": "i\u0027m pretty sure this block is redundant and can be removed.",
+      "range": {
+        "startLine": 363,
+        "startChar": 25,
+        "endLine": 377,
+        "endChar": 27
+      },
+      "revId": "aa8957a492fcc192044a1eaf87a23afc7622e45e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2aecad2c_60627e9c",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
         "patchSetId": 10
