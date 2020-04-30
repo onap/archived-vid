@@ -341,11 +341,13 @@ class MsoRequestBuilder
         return subscriberInfo
     }
 
-    private fun generateCloudConfiguration(lcpCloudRegionId: String?, tenantId: String?): CloudConfiguration {
+    private fun generateCloudConfiguration(lcpCloudRegionId: String?, tenantId: String?): CloudConfiguration? {
+
+        if (lcpCloudRegionId.isNullOrEmpty()) return null
+
         val cloudConfiguration = CloudConfiguration(lcpCloudRegionId, tenantId)
-        if (lcpCloudRegionId != null) {
-            cloudOwnerService.enrichCloudConfigurationWithCloudOwner(cloudConfiguration, lcpCloudRegionId)
-        }
+        cloudOwnerService.enrichCloudConfigurationWithCloudOwner(cloudConfiguration, lcpCloudRegionId)
+
         return cloudConfiguration
     }
 
