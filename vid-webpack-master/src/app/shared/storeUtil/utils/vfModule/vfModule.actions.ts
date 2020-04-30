@@ -11,6 +11,7 @@ export enum VfModuleActions {
   UNDO_UPGRADE_VFMODULE_ACTION = "UNDO_UPGRADE_VFMODULE_ACTION",
   UPDATE_VFMODULE_FEILD = "UPDATE_VFMODULE_FEILD",
   DELETE_VFMODULE_FIELD = "DELETE_VFMODULE_FEILD",
+  PAUSE_ACTION_VFMODULE_INSTANCE = "PAUSE_ACTION_VFMODULE_INSTANCE",
 }
 
 
@@ -87,6 +88,13 @@ export interface UndoDeleteActionVfModuleInstanceAction extends Action {
   vnfStoreKey : string;
   serviceId?: string;
   vfModuleModelName: string;
+}
+
+export interface PauseVFModuleInstanciationAction extends Action {
+  dynamicModelName: string;
+  vnfStoreKey : string;
+  serviceId: string;
+  vfModuleModelName : string;
 }
 
 export const removeVfModuleInstance: ActionCreator<DeleteVfModuleInstanceAction> = (modelName, serviceModelId, vfName, vnfStoreKey, dynamicModelName) => ({
@@ -173,4 +181,12 @@ export const deleteVFModuleField: ActionCreator<DeleteVFModuleField> = (modelNam
   vnfStoreKey,
   serviceId,
   deleteFieldName
+});
+
+export const pauseActionVFModuleInstance: ActionCreator<PauseVFModuleInstanciationAction> = (dynamicModelName, vnfStoreKey, serviceId, vfModuleModelName) => ({
+  type: VfModuleActions.PAUSE_ACTION_VFMODULE_INSTANCE,
+  dynamicModelName,
+  vnfStoreKey,
+  serviceId,
+  vfModuleModelName
 });

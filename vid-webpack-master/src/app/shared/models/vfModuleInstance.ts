@@ -7,6 +7,7 @@ export class VfModuleInstance extends ChildNodeInstance{
   statusMessage?: string;
   tenantId? :string;
   lcpCloudRegionId?: string;
+  pauseInstantiation?: string;
 
   constructor() {
     super();
