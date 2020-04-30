@@ -93,12 +93,12 @@ import java.util.*
 
  */
 
-data class VfModuleOrVolumeGroupRequestDetails(
-        val modelInfo: ModelInfo,
-        val cloudConfiguration: CloudConfiguration,
-        val requestInfo: RequestInfo,
-        val relatedInstanceList: List<RelatedInstance>?,
-        val requestParameters: RequestParametersVfModuleOrVolumeGroup?)
+class VfModuleOrVolumeGroupRequestDetails(
+        modelInfo: ModelInfo,
+        cloudConfiguration: CloudConfiguration?,
+        requestInfo: RequestInfo,
+        relatedInstanceList: List<RelatedInstance>?,
+        requestParameters: RequestParametersVfModuleOrVolumeGroup?)
     : BaseResourceInstantiationRequestDetails(modelInfo, cloudConfiguration, requestInfo, relatedInstanceList, requestParameters)
 
 open class RequestParametersVfModuleOrVolumeGroup internal constructor(
