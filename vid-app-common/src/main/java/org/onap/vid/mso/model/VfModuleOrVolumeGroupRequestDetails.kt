@@ -95,7 +95,7 @@ import java.util.*
 
 data class VfModuleOrVolumeGroupRequestDetails(
         val modelInfo: ModelInfo,
-        val cloudConfiguration: CloudConfiguration,
+        val cloudConfiguration: CloudConfiguration?,
         val requestInfo: RequestInfo,
         val relatedInstanceList: List<RelatedInstance>?,
         val requestParameters: RequestParametersVfModuleOrVolumeGroup?)
