@@ -8,7 +8,7 @@ export enum ServiceInstanceActions{
   Resume = "Resume",
   Update_Delete = 'Update_Delete',
   None_Delete = 'None_Delete',
-  None_Upgrade = 'None_Upgrade'
+  None_Upgrade = 'None_Upgrade',
 }
 export enum ServiceAction {
   INSTANTIATE = 'INSTANTIATE',
@@ -25,4 +25,8 @@ export enum JobStatus {
   STOPPED = 'STOPPED',
   COMPLETED_WITH_ERRORS = 'COMPLETED_WITH_ERRORS',
   CREATING = 'CREATING'
+}
+export enum PauseStatus {
+  NONE_PAUSED = 'None_Paused',
+  AFTER_COMPLETION = 'afterCompletion',
 }

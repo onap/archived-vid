@@ -1,4 +1,5 @@
 import {ChildNodeInstance} from "./nodeInstance";
+import {PauseStatus} from "./serviceInstanceActions";
 
 export class VfModuleInstance extends ChildNodeInstance{
   volumeGroupName: string;
@@ -7,6 +8,7 @@ export class VfModuleInstance extends ChildNodeInstance{
   statusMessage?: string;
   tenantId? :string;
   lcpCloudRegionId?: string;
+  pauseInstantiation?: PauseStatus;
 
   constructor() {
     super();
