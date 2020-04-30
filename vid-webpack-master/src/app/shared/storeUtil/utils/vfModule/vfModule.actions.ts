@@ -86,6 +86,7 @@ export interface UndoDeleteActionVfModuleInstanceAction extends Action {
   dynamicModelName: string;
   vnfStoreKey : string;
   serviceId?: string;
+  vfModuleModelName: string;
 }
 
 export const removeVfModuleInstance: ActionCreator<DeleteVfModuleInstanceAction> = (modelName, serviceModelId, vfName, vnfStoreKey, dynamicModelName) => ({
@@ -124,11 +125,12 @@ export const deleteActionVfModuleInstance: ActionCreator<DeleteActionVfModuleIns
   vfModuleModelName
 });
 
-export const undoDeleteVfModuleInstance: ActionCreator<UndoDeleteActionVfModuleInstanceAction> = (dynamicModelName, vnfStoreKey, serviceId) => ({
+export const undoDeleteVfModuleInstance: ActionCreator<UndoDeleteActionVfModuleInstanceAction> = (dynamicModelName, vnfStoreKey, serviceId, vfModuleModelName) => ({
   type: VfModuleActions.UNDO_DELETE_ACTION_VF_MODULE_INSTANCE,
   dynamicModelName: dynamicModelName,
   vnfStoreKey : vnfStoreKey,
-  serviceId: serviceId
+  serviceId: serviceId,
+  vfModuleModelName
 });
 
 export const updateVFModulePosition: ActionCreator<UpdateVFModluePosition> = (node, instanceId, vnfStoreKey) => ({

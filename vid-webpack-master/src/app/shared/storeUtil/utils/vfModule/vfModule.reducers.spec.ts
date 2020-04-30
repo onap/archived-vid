@@ -204,10 +204,10 @@ test('#UPDATE_VFMODULE_POSITION: should update position', () => {
 });
 
   each([
-    ['for the first vfModule', 'dynamicModelName1', true],
-    ['for the second vfModule', 'dynamicModelName2', true],
+    ['for the first vfModule', 'dynamicModelName1'],
+    ['for the second vfModule', 'dynamicModelName2'],
   ]).
-test('#DELETE_ACTION_VF_MODULE_INSTANCE %s', (description, dynamicModelName: string, isMissingData: boolean) => {
+test('#DELETE_ACTION_VF_MODULE_INSTANCE %s', (description, dynamicModelName: string) => {
     let vfModule = vfModuleReducer(<any>getReduxState(), getDeleteActionVfModule(dynamicModelName))
       .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName'][dynamicModelName];
 
@@ -226,35 +226,13 @@ test('#DELETE_ACTION_VF_MODULE_INSTANCE set tenantId and lcpCloudRegion to VFM',
 
 });
 
-test('#UNDO_DELETE_ACTION_VF_MODULE_INSTANCE', () => {
-  let vfModule = vfModuleReducer(<any>{
-      serviceHierarchy: {
-        'serviceModelId': {}
-      },
-      serviceInstance: {
-        'serviceModelId': {
-          vnfs: {
-            'vnfStoreKey': {
-              vfModules: {
-                'modelName': {
-                  'dynamicModelName1': {
-                    isMissingData: true,
-                    action: 'None_Delete'
-                  },
-                  'dynamicModelName2': {},
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    <UndoDeleteActionVfModuleInstanceAction>{
-      type: VfModuleActions.UNDO_DELETE_ACTION_VF_MODULE_INSTANCE,
-      dynamicModelName: 'dynamicModelName1',
-      vnfStoreKey: 'vnfStoreKey',
-      serviceId: 'serviceModelId'
-    }).serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['modelName']['dynamicModelName1'];
+  each([
+    ['for the first vfModule', 'dynamicModelName1', true],
+    ['for the second vfModule', 'dynamicModelName2', true],
+  ]).
+test('#UNDO_DELETE_ACTION_VF_MODULE_INSTANCE %s', (description, dynamicModelName: string) => {
+  let vfModule = vfModuleReducer(<any>getDeleteRedux(), getUndoDeleteActionVfModule(dynamicModelName))
+    .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName'][dynamicModelName];
 
   expect(vfModule).toBeDefined();
   expect(vfModule.action).toEqual(ServiceInstanceActions.None);
@@ -344,6 +322,44 @@ function getDeleteActionVfModule(dynamicModelName?: string) {
     vnfStoreKey: 'vnfStoreKey',
     serviceId: 'serviceModelId',
     vfModuleModelName: 'vfModuleModelName',
+  }
+}
+
+function getUndoDeleteActionVfModule(dynamicModelName?: string) {
+  return  <UndoDeleteActionVfModuleInstanceAction>{
+    type: VfModuleActions.UNDO_DELETE_ACTION_VF_MODULE_INSTANCE,
+    dynamicModelName: dynamicModelName,
+    vnfStoreKey: 'vnfStoreKey',
+    serviceId: 'serviceModelId',
+    vfModuleModelName: 'vfModuleModelName',
+  }
+}
+
+function getDeleteRedux() {
+  return {
+    serviceHierarchy: {
+      'serviceModelId': {}
+    },
+    serviceInstance: {
+      'serviceModelId': {
+        vnfs: {
+          'vnfStoreKey': {
+            vfModules: {
+              'vfModuleModelName': {
+                'dynamicModelName1': {
+                  isMissingData: true,
+                  action: 'None_Delete'
+                },
+                'dynamicModelName2': {
+                  isMissingData: true,
+                  action: 'None_Delete'
+                },
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 });

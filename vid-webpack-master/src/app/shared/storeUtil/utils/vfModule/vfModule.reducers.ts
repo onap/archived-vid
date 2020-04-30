@@ -70,7 +70,7 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       return Object.assign({}, state);
     }
     case VfModuleActions.DELETE_ACTION_VF_MODULE_INSTANCE : {
-      let deleteAction = (<DeleteActionVfModuleInstanceAction>action);
+      const deleteAction = (<DeleteActionVfModuleInstanceAction>action);
       let newState = _.cloneDeep(state);
       let vfModule = newState.serviceInstance[deleteAction.serviceId].vnfs[deleteAction.vnfStoreKey]
         .vfModules[deleteAction.vfModuleModelName][deleteAction.dynamicModelName];
@@ -79,23 +79,20 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       newState.serviceInstance[deleteAction.serviceId].vnfs[deleteAction.vnfStoreKey]
         .vfModules[deleteAction.vfModuleModelName][deleteAction.dynamicModelName].action = (oldAction + '_Delete') as ServiceInstanceActions;
       setLcpCloudRegionIdAndTenantIdFromVnf(newState, deleteAction.serviceId, deleteAction.vnfStoreKey, deleteAction.vfModuleModelName, deleteAction.dynamicModelName);
-      updateIsMissingDataOnDeleteVFModule(newState, (<UndoDeleteActionVfModuleInstanceAction>action).serviceId, (<UndoDeleteActionVfModuleInstanceAction>action).vnfStoreKey, deleteAction.vfModuleModelName);
+      updateIsMissingDataOnDeleteVFModule(newState, deleteAction.serviceId, deleteAction.vnfStoreKey, deleteAction.vfModuleModelName);
 
       return newState;
     }
     case VfModuleActions.UNDO_DELETE_ACTION_VF_MODULE_INSTANCE : {
+      const undoDeleteAction = (<UndoDeleteActionVfModuleInstanceAction>action);
       let newState = _.cloneDeep(state);
-      let vfModules = newState.serviceInstance[(<DeleteActionVfModuleInstanceAction>action).serviceId].vnfs[(<DeleteActionVfModuleInstanceAction>action).vnfStoreKey].vfModules;
+      let vfModule = newState.serviceInstance[undoDeleteAction.serviceId].vnfs[undoDeleteAction.vnfStoreKey]
+        .vfModules[undoDeleteAction.vfModuleModelName][undoDeleteAction.dynamicModelName];
 
-      for(let key in vfModules){
-        let firstKey = Object.keys(vfModules[key])[0];
-        if(firstKey === (<UndoDeleteActionVfModuleInstanceAction>action).dynamicModelName){
-          let oldAction = newState.serviceInstance[(<UndoDeleteActionVfModuleInstanceAction>action).serviceId].vnfs[(<UndoDeleteActionVfModuleInstanceAction>action).vnfStoreKey].vfModules[key][firstKey].action;
-          newState.serviceInstance[(<UndoDeleteActionVfModuleInstanceAction>action).serviceId].vnfs[(<UndoDeleteActionVfModuleInstanceAction>action).vnfStoreKey].vfModules[key][firstKey].action = (oldAction.split('_')[0]) as ServiceInstanceActions;
-          updateIsMissingDataOnDeleteVFModule(newState, (<UndoDeleteActionVfModuleInstanceAction>action).serviceId, (<UndoDeleteActionVfModuleInstanceAction>action).vnfStoreKey, key);
-          return newState;
-        }
-      }
+          let oldAction = vfModule.action;
+          newState.serviceInstance[undoDeleteAction.serviceId].vnfs[undoDeleteAction.vnfStoreKey]
+            .vfModules[undoDeleteAction.vfModuleModelName][undoDeleteAction.dynamicModelName].action = (oldAction.split('_')[0]) as ServiceInstanceActions;
+          updateIsMissingDataOnDeleteVFModule(newState, undoDeleteAction.serviceId, undoDeleteAction.vnfStoreKey, undoDeleteAction.vfModuleModelName);
       return newState;
     }
 

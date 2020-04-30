@@ -358,7 +358,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
       },
       undoDelete: {
         method: (node, serviceModelId) => {
-          this._store.dispatch(undoDeleteVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId));
+          this._store.dispatch(undoDeleteVfModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId, node.data.modelName));
           this._store.dispatch(deleteVFModuleField(node.data.modelName,  node.parent.data.vnfStoreKey, node.data.servicedId ,node.data.dynamicModelName, 'retainAssignments'));
         },
         visible: (node) => this._sharedTreeService.shouldShowUndoDelete(node),
