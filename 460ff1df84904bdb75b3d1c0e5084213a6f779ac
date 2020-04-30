@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "97d2d491_eb7296ee",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-30T11:13:08Z",
+      "side": 1,
+      "message": "actually, `expect(vfModule.action)` to be unchanged",
+      "revId": "460ff1df84904bdb75b3d1c0e5084213a6f779ac",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f85c845_3c50775b",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-30T11:13:08Z",
+      "side": 1,
+      "message": "maybe, instead of setting this up, use \"CreateVFModuleInstanceAction\" to set-up the redux for pause",
+      "revId": "460ff1df84904bdb75b3d1c0e5084213a6f779ac",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9e47ac7_290df18d",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-30T11:13:08Z",
+      "side": 1,
+      "message": "this line is not needed",
+      "revId": "460ff1df84904bdb75b3d1c0e5084213a6f779ac",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8322b4d9_77accfa4",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/vfModule/vfModule.reducers.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-04-30T11:13:08Z",
+      "side": 1,
+      "message": "this pause-action should not modify the action. it should set a value to a separate new field.",
+      "revId": "460ff1df84904bdb75b3d1c0e5084213a6f779ac",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
