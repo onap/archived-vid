@@ -1,15 +1,22 @@
 import {Action} from "redux";
 import * as _ from "lodash";
 import {
-  CreateVFModuleInstanceAction, DeleteActionVfModuleInstanceAction, DeleteVFModuleField,
-  DeleteVfModuleInstanceAction, UndoDeleteActionVfModuleInstanceAction, UpdateVFModluePosition, UpdateVFModuleField,
-  UpdateVFModuleInstanceAction, UpgradeVfModuleInstanceAction,
+  CreateVFModuleInstanceAction,
+  DeleteActionVfModuleInstanceAction,
+  DeleteVFModuleField,
+  DeleteVfModuleInstanceAction,
+  PauseVFModuleInstanciationAction,
+  UndoDeleteActionVfModuleInstanceAction,
+  UpdateVFModluePosition,
+  UpdateVFModuleField,
+  UpdateVFModuleInstanceAction,
+  UpgradeVfModuleInstanceAction,
   VfModuleActions,
 } from "./vfModule.actions";
 import {ServiceInstance} from "../../../models/serviceInstance";
 import {VfModuleMap} from "../../../models/vfModulesMap";
 import {ServiceState} from "../main.reducer";
-import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
+import {PauseStatus, ServiceInstanceActions} from "../../../models/serviceInstanceActions";
 import {updateServiceValidationCounter} from "../reducersHelper";
 
 
@@ -69,6 +76,16 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       }
       return Object.assign({}, state);
     }
+    case VfModuleActions.PAUSE_ACTION_VFMODULE_INSTANCE : {
+      const pauseVfModuleAction = (<PauseVFModuleInstanciationAction>action);
+      let newState = _.cloneDeep(state);
+
+      newState.serviceInstance[pauseVfModuleAction.serviceId].vnfs[pauseVfModuleAction.vnfStoreKey]
+      .vfModules[pauseVfModuleAction.vfModuleModelName][pauseVfModuleAction.dynamicModelName]
+        .pauseInstantiation = PauseStatus.AFTER_COMPLETION;
+      return newState;
+    }
+
     case VfModuleActions.DELETE_ACTION_VF_MODULE_INSTANCE : {
       const deleteAction = (<DeleteActionVfModuleInstanceAction>action);
       let newState = _.cloneDeep(state);
