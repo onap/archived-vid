@@ -2,7 +2,7 @@ import {
   CreateVFModuleInstanceAction,
   DeleteActionVfModuleInstanceAction,
   DeleteVFModuleField,
-  DeleteVfModuleInstanceAction,
+  DeleteVfModuleInstanceAction, PauseVFModuleInstanciationAction,
   UndoDeleteActionVfModuleInstanceAction,
   UpdateVFModluePosition,
   UpdateVFModuleField,
@@ -238,6 +238,18 @@ test('#UNDO_DELETE_ACTION_VF_MODULE_INSTANCE %s', (description, dynamicModelName
   expect(vfModule.action).toEqual(ServiceInstanceActions.None);
 });
 
+  each([
+    ['for the first vfModule', 'dynamicModelName1', 'Create_Pause'],
+    ['for the second vfModule', 'dynamicModelName2', 'Create_Pause'],
+  ]).
+test('#PAUSE_ACTION_VF_MODULE_INSTANTIATION %s', (description: string, dynamicModelName:string, pauseVfModuleInstantiation: string) => {
+  let vfModule = vfModuleReducer(<any>getReduxState(), getPausedActionVfModule(dynamicModelName))
+  .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName'][dynamicModelName];
+
+  expect(vfModule).toBeDefined();
+  expect(vfModule.action).toEqual(pauseVfModuleInstantiation);
+});
+
 test('#UPGRADE_VFMODULE', () => {
   let vfModule = vfModuleReducer(<any>getReduxState(),
     <UpgradeVfModuleInstanceAction>{
@@ -360,6 +372,44 @@ function getDeleteRedux() {
         }
       }
     }
+  }
+}
+
+function getPausedReux() {
+  return {
+    serviceHierarchy: {
+      'serviceModelId': {}
+    },
+    serviceInstance: {
+      'serviceModelId': {
+        vnfs: {
+          'vnfStoreKey': {
+            tenantId: 'tenantId',
+            lcpCloudRegionId: 'lcpCloudRegionId',
+            vfModules: {
+              'vfModuleModelName': {
+                'dynamicModelName1': {
+                  action: 'Create',
+                },
+                'dynamicModelName2': {
+                  action: 'Create',
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function getPausedActionVfModule(dynamicModelName: string) {
+  return <PauseVFModuleInstanciationAction>{
+    type: VfModuleActions.PAUSE_ACTION_VFMODULE_INSTANCE,
+    dynamicModelName: dynamicModelName,
+    vnfStoreKey: 'vnfStoreKey',
+    serviceId: 'serviceModelId',
+    vfModuleModelName: 'vfModuleModelName'
   }
 }
 });

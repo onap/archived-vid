@@ -8,7 +8,8 @@ export enum ServiceInstanceActions{
   Resume = "Resume",
   Update_Delete = 'Update_Delete',
   None_Delete = 'None_Delete',
-  None_Upgrade = 'None_Upgrade'
+  None_Upgrade = 'None_Upgrade',
+  Create_Pause = 'Create_Pause',
 }
 export enum ServiceAction {
   INSTANTIATE = 'INSTANTIATE',
