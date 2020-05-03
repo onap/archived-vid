@@ -137,6 +137,24 @@
     },
     {
       "key": {
+        "uuid": "e376daa5_6f2f469a",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-03T11:07:55Z",
+      "side": 1,
+      "message": "i understand your concern, and think we can keep the sets slimmer.\nanyhow, you can complement with a test with same technique as of generateReplaceVfModuleRequest_whenRetainAssignmentsProvidedFromFrontend_retainAssignmentsToMsoIsTheSameon in same file:\n\ne.g.\n\n    @Test\n    public void \"replaceVfModule: given no lcpCloudRegionId then don\u0027t serialize cloudConfiguration \"() {\n        String lcpCloudRegionId \u003d null;\n\n        assertThat(generatedVfModuleReplaceRequest(lcpCloudRegionId, null, null, null), jsonNodeAbsent(\"cloudConfiguration\"));\n    }\n\n\nNote also that I\u0027ve imaginated a lcpCloudRegionId param to the existing helper method generatedVfModuleReplaceRequest",
+      "parentUuid": "01b4f9d6_21054adf",
+      "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f85bc462_d5ef2770",
         "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
         "patchSetId": 4
