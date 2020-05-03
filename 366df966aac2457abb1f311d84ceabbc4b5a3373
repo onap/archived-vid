@@ -42,6 +42,48 @@
     },
     {
       "key": {
+        "uuid": "c41558db_d5b59ae2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-05-03T08:40:49Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b003414d_f64f82c4",
+      "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ca892d8_4229e948",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-05-03T08:40:49Z",
+      "side": 1,
+      "message": "The decision is based on the cloud-region-id.\nif we miss it then no reason to send the \"cloudConfiguration\" at all.\nAlso the cloud-owner is based on the region itself.",
+      "parentUuid": "55ca1b74_50329c44",
+      "range": {
+        "startLine": 346,
+        "startChar": 12,
+        "endLine": 346,
+        "endChar": 28
+      },
+      "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d8ae97d7_22cfb6ab",
         "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
         "patchSetId": 4
@@ -71,6 +113,24 @@
       "side": 1,
       "message": "moreover, i think the test should boil down to a unit test on generateCloudConfiguration().\ni don\u0027t believe we need an integrative test on each permutation; especially if it costs so much json and code duplications.",
       "parentUuid": "d8ae97d7_22cfb6ab",
+      "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01b4f9d6_21054adf",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-05-03T08:40:49Z",
+      "side": 1,
+      "message": "what is your suggestion? write a unit test only for the generateCloudConfiguration() and verify that it returns null when required?\n\nI\u0027m not sure it will be enough as we still don\u0027t want to send null to MSO as cloudConfiguration .\nwe want to verify we omit it from the payload. don\u0027t we?",
+      "parentUuid": "dd534d41_09adbee3",
       "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
