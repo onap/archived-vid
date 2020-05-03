@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d8ae97d7_22cfb6ab",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-05-03T04:42:17Z",
+      "side": 1,
+      "message": "maybe you can take replace_vfmodule__payload_to_mso.json and jusr delete the cloudConfifuraton section",
+      "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f85bc462_d5ef2770",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-05-03T04:42:17Z",
+      "side": 1,
+      "message": "looks like duplication of most generatedVfModuleReplaceRequest",
+      "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
