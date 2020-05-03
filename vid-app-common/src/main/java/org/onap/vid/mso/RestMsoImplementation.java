@@ -20,11 +20,11 @@
 
 package org.onap.vid.mso;
 
+import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 import static org.onap.vid.utils.Logging.getMethodCallerName;
 import static org.onap.vid.utils.Logging.getMethodName;
 
 import com.att.eelf.configuration.EELFLogger;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;
 import java.util.Optional;
 import javax.ws.rs.client.Client;
@@ -46,27 +46,17 @@ import org.onap.vid.utils.SystemPropertiesWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 
-/**
- * Created by pickjonathan on 26/06/2017.
- */
 public class RestMsoImplementation {
 
-    
-    /**
-     * The logger.
-     */
     protected EELFLoggerDelegate logger = EELFLoggerDelegate.getLogger(RestMsoImplementation.class);
     private final EELFLogger outgoingRequestsLogger = Logging.getRequestsLogger("mso");
 
-    /** The client. */
     private Client client = null;
-
 
     protected HttpsAuthClient httpsAuthClient;
     protected SystemPropertiesWrapper systemProperties;
     protected final Logging loggingService;
 
-    private static final String START_LOG = " start";
     private static final String APPLICATION_JSON = "application/json";
     private static final String WITH_STATUS = " with status=";
     private static final String URL_LOG = ", url=";
@@ -75,10 +65,6 @@ public class RestMsoImplementation {
     private static final String EXCEPTION_LOG = ", Exception: ";
     private static final String REST_API_SUCCESSFULL_LOG = " REST api was successfull!";
     private static final String REST_MSG_TEMPLATE = "start {}->{}({}, {}, {})";
-    /** The common headers. */
-    /**
-     * Instantiates a new mso rest interface.
-     */
 
     @Autowired
     public RestMsoImplementation(HttpsAuthClient httpsAuthClient, SystemPropertiesWrapper systemProperties, Logging loggingService){
@@ -87,7 +73,6 @@ public class RestMsoImplementation {
         this.loggingService = loggingService;
     }
 
-    @SuppressWarnings("Duplicates")
     protected MultivaluedHashMap<String, Object> initMsoClient()
     {
         final String methodname = "initRestClient()";
@@ -102,10 +87,8 @@ public class RestMsoImplementation {
         byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
         String authStringEnc = new String(authEncBytes);
 
-        MultivaluedHashMap<String, Object> commonHeaders = new MultivaluedHashMap();
+        MultivaluedHashMap<String, Object> commonHeaders = new MultivaluedHashMap<>();
         commonHeaders.put("Authorization",  Collections.singletonList(("Basic " + authStringEnc)));
-
-        String requestIdValue = Logging.extractOrGenerateRequestId();
 
         boolean useSsl = true;
         if ( (mso_url != null) && ( !(mso_url.isEmpty()) ) ) {
@@ -223,7 +206,7 @@ public class RestMsoImplementation {
 
     }
 
-    private <T> RestObject<T> cresToRestObject(Response cres, Class<?> tClass) {
+    private <T> RestObject<T> cresToRestObject(Response cres, Class<T> tClass) {
         RestObject<T> restObject = new RestObject<>();
 
         String rawEntity = null;
@@ -231,7 +214,7 @@ public class RestMsoImplementation {
             cres.bufferEntity();
             rawEntity = cres.readEntity(String.class);
             restObject.setRaw(rawEntity);
-            T t = (T) new ObjectMapper().readValue(rawEntity, tClass);
+            T t = JACKSON_OBJECT_MAPPER.readValue(rawEntity, tClass);
             restObject.set(t);
         }
         catch ( Exception e ) {
