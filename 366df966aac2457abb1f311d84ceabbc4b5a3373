@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "55ca1b74_50329c44",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-03T07:18:22Z",
+      "side": 1,
+      "message": "what about a case where tenantId is not given?",
+      "range": {
+        "startLine": 346,
+        "startChar": 12,
+        "endLine": 346,
+        "endChar": 28
+      },
+      "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b003414d_f64f82c4",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 4
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-03T07:18:22Z",
+      "side": 1,
+      "message": "please add curly brackets on the block (or join two lines to a single one).",
+      "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d8ae97d7_22cfb6ab",
         "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
         "patchSetId": 4
@@ -13,6 +53,24 @@
       "writtenOn": "2020-05-03T04:42:17Z",
       "side": 1,
       "message": "maybe you can take replace_vfmodule__payload_to_mso.json and jusr delete the cloudConfifuraton section",
+      "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd534d41_09adbee3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/services/MsoRequestBuilderTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-03T07:18:22Z",
+      "side": 1,
+      "message": "moreover, i think the test should boil down to a unit test on generateCloudConfiguration().\ni don\u0027t believe we need an integrative test on each permutation; especially if it costs so much json and code duplications.",
+      "parentUuid": "d8ae97d7_22cfb6ab",
       "revId": "366df966aac2457abb1f311d84ceabbc4b5a3373",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
