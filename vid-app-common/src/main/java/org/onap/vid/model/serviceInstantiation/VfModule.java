@@ -49,6 +49,9 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	private final Boolean retainVolumeGroups;
 
 	@JsonInclude(NON_NULL)
+	private final PauseInstantiation pauseInstantiation;
+
+	@JsonInclude(NON_NULL)
 	private Boolean retainAssignments;
 
 	public VfModule(@JsonProperty("modelInfo") ModelInfo modelInfo,
@@ -69,6 +72,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		@Nullable @JsonProperty("retainAssignments") Boolean retainAssignments,
 		@Nullable @JsonProperty("retainVolumeGroups") Boolean retainVolumeGroups,
 		@JsonProperty("position") Integer position,
+		@JsonProperty("pauseInstantiation") PauseInstantiation pauseInstantiation,
 		@JsonProperty("originalName") String originalName) {
 		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
 			position, originalName);
@@ -77,6 +81,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		this.supplementaryParams = supplementaryParams;
 		this.retainAssignments = retainAssignments;
 		this.retainVolumeGroups = retainVolumeGroups;
+		this.pauseInstantiation = pauseInstantiation;
 	}
 
 	public String getVolumeGroupInstanceName() {
@@ -86,6 +91,10 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	public Boolean isUsePreload() {
 
 		return usePreload;
+	}
+
+	public enum PauseInstantiation {
+		afterCompletion
 	}
 
 	public List<UserParamNameAndValue> getSupplementaryParams() {
@@ -117,6 +126,9 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		return retainVolumeGroups;
 	}
 
+	@Nullable
+	public PauseInstantiation getPauseInstantiation() {return pauseInstantiation;}
+
 	public VfModule cloneWith(ModelInfo modelInfo) {
 		return new VfModule(
 				modelInfo,
@@ -137,6 +149,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 				this.isRetainAssignments(),
 				this.isRetainVolumeGroups(),
 				this.getPosition(),
+			    this.getPauseInstantiation(),
 			    this.getOriginalName()
 		);
 	}
@@ -161,6 +174,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 			this.isRetainAssignments(),
 			this.isRetainVolumeGroups(),
 			this.getPosition(),
+			this.getPauseInstantiation(),
 			this.getOriginalName()
 		);
 	}

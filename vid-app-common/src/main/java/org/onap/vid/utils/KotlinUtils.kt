@@ -25,6 +25,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.apache.commons.lang3.StringUtils.isEmpty
 import org.togglz.core.Feature
 import org.togglz.core.manager.FeatureManager
+import java.util.*
 
 inline fun <reified E: Enum<E>> getEnumFromMapOfStrings(map: Map<String, Any>, key:String, defaultValue:E): E {
     return java.lang.Enum.valueOf(E::class.java, (map.getOrDefault(key, defaultValue.name) as String))
@@ -46,3 +47,14 @@ class JoshworksJacksonObjectMapper: io.joshworks.restclient.http.mapper.ObjectMa
 
 @JvmField val JOSHWORKS_JACKSON_OBJECT_MAPPER:
         io.joshworks.restclient.http.mapper.ObjectMapper = JoshworksJacksonObjectMapper()
+
+fun <T> Iterable<T>.takeUntilIncluding(predicate: (T) -> Boolean): List<T> {
+    val list = ArrayList<T>()
+    for (item in this) {
+        list.add(item)
+        if (predicate(item)) {
+            break
+        }
+    }
+    return list
+}

@@ -281,5 +281,9 @@
     When flag is true the "Source Subscriber Name" drop down will be added for the source VNF
     on the PMC (Port Mirroring Configuration) instantiation form.
  
+  * FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION
+  
+    When flag is true, pause upon creation capability for vfmodule is enabled on 
+    the new view edit screen 
  
  
