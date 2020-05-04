@@ -1030,6 +1030,40 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
             getStatusCounter);
     }
 
+    @DataProvider
+    public static Object[][] pauseInstantiation(Method test) {
+        return new Object[][]{
+            {true, 2},
+            {false, 3}
+        };
+    }
+
+    @Test (dataProvider = "pauseInstantiation")
+    public void viewEdit_existingVnfCreate3VfModulesPauseAfterTheSecond(boolean flag, int expectedNumberOfInvocation) {
+        RestObject<RequestReferencesContainer> createVfModuleResponse = createResponseRandomIds(202);
+        RestObject<AsyncRequestStatus> createStatusResponse = asyncRequestStatusResponseAsRestObject(COMPLETE_STR);
+        JobStatus expectedJobStatus = COMPLETED;
+
+        when(featureManager.isActive(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION)).thenReturn(flag);
+
+        when(commandUtils.isVfModuleBaseModule(eq("6b528779-44a3-4472-bdff-9cd15ec93450"),
+            argThat(it -> it.getModelCustomizationName().equals("2017488PasqualeVpe..PASQUALE_base_vPE_BV..module-0")))).thenReturn(true);
+
+        UUID jobUUID = asyncInstantiationBL.pushBulkJob(
+            readJsonResourceFileAsObject("/payload_jsons/vfModuleCreate2AndPauseRequest.json", ServiceInstantiation.class), "userId")
+            .get(0);
+
+        String createPath= "/serviceInstantiation/v7/serviceInstances/f8791436-8d55-4fde-b4d5-72dd2cf13cfb/vnfs/VNF_INSTANCE_ID/vfModules";
+
+        when(restMso.restCall(eq(HttpMethod.POST), eq(RequestReferencesContainer.class), any(), eq(createPath), any())).thenReturn(createVfModuleResponse);
+        when(restMso.GetForObject(endsWith(createVfModuleResponse.get().getRequestReferences().getRequestId()), eq(AsyncRequestStatus.class))).thenReturn(createStatusResponse);
+
+
+        processJobsCountTimesAndAssertStatus(jobUUID, 40, expectedJobStatus);
+
+        verify(restMso, times(expectedNumberOfInvocation)).restCall(eq(HttpMethod.POST), any(), any(), eq(createPath), any());
+    }
+
     //this test is going along with AsyncInstantiationALaCarteApiTest.delete1Create1NetworkFromService API test
     //The API test has only the happy flow scenario, while this test also test additional MSO responses (mostly non happy)
     @Test(dataProvider="createAndDeleteIntegrationTestDataProvider")
