@@ -266,12 +266,12 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
             return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), "mdt1", null,
                 "88a6ca3ee0394ade9403f075db23167e", instanceParams, supplementaryParams, false,
                 usePreload, null, UUID.randomUUID().toString(), null, null,
-                null, null, null, "originalName");
+                null, null, null, null, "originalName");
         }
 
         return new VfModule(vfModuleInfo, instanceName, volumeGroupInstanceName, Action.Create.name(), null, null, null,
                 instanceParams, supplementaryParams, false, false, null, UUID.randomUUID().toString(), null,
-            null, null, null, null, "originalName");
+            null, null, null, null, null, "originalName");
     }
 
     protected ModelInfo createVfModuleModelInfo(String modelName, String modelVersion, String modelVersionId, String modelInvariantId, String modelCustomizationId, String modelCustomizationName) {
@@ -281,7 +281,8 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
     protected VfModule createVfModuleForReplace(ModelInfo vfModuleModelInfo, String instanceName,
         String lcpCloudRegionId, String tenantId, Boolean retainAssignments, Boolean retainVolumeGroups, List<UserParamNameAndValue> supplementaryParams) {
         return new VfModule( vfModuleModelInfo, instanceName, null, Action.Upgrade.name(), lcpCloudRegionId, null, tenantId,
-                null, supplementaryParams, true, null, null, UUID.randomUUID().toString(), null, null, retainAssignments, retainVolumeGroups, null, "originalName");
+                null, supplementaryParams, true, null, null, UUID.randomUUID().toString(), null,
+                null, retainAssignments, retainVolumeGroups, null, null, "originalName");
     }
 
     protected ModelInfo createVnfModelInfo(boolean isAlacarte) {
