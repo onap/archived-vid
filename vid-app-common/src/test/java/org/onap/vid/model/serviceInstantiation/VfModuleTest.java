@@ -55,7 +55,7 @@ public class VfModuleTest {
             null, null, null, null, null,
             null, null, null, true, true,
             null, null, true, null, true,
-            true, null, null);
+            true, null, null, null);
 
         return setStringsInStringFields(vfModule);
     }

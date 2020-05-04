@@ -12,6 +12,7 @@ import org.onap.vid.model.serviceInstantiation.Vnf
 import org.onap.vid.mso.RestMsoImplementation
 import org.onap.vid.properties.Features
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
+import org.onap.vid.utils.takeUntilIncluding
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
@@ -71,6 +72,8 @@ class VnfCommand @Autowired constructor(
 
     private fun vfModulesForChildrenJobs(vfModules: List<VfModule>): List<VfModule> =
             vfModules
+                    .takeUntilIncluding { it.action == Action.Create && it.pauseInstantiation == "afterCompletion" /*todo - change to enum*/
+                            && featureManager.isActive(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION)}
                     .filter { filterModuleByNeedToCreateBase(it) }
                     .map { childVfModuleWithVnfRegionAndTenant(it) }
 

@@ -154,6 +154,7 @@ public class InstantiationModelSerializationTest {
             true,
             true,
             1,
+            null,
             "originalName");
 
         verifySerializationAndDeserialization(vfModule);
@@ -167,7 +168,7 @@ public class InstantiationModelSerializationTest {
         VfModule vfModule = new VfModule(newModelInfo(), null, null, null,
             null, null, null, null, null, false,
             /* HERE ====> */ USE_PRELOAD,
-            null, null, null, null, null, null, null, null);
+            null, null, null, null, null, null, null, null , null);
 
         assertThat(vfModule, jsonPartEquals("sdncPreLoad", USE_PRELOAD));
         assertThat(vfModule, jsonNodeAbsent("usePreload"));
@@ -182,7 +183,7 @@ public class InstantiationModelSerializationTest {
             /* HERE ====> */ VOLUME_GROUP_INSTANCE_NAME,
             null, null, null, null, null, null,
             false, null, null, null, null, null,
-            null, null, null, null);
+            null, null, null, null, null);
 
         assertThat(vfModule, jsonPartEquals("volumeGroupName", VOLUME_GROUP_INSTANCE_NAME));
         assertThat(vfModule, jsonNodeAbsent("volumeGroupInstanceName"));

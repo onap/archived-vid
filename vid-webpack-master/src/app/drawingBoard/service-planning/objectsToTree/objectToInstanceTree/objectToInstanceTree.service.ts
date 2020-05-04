@@ -115,7 +115,8 @@ export class ObjectToInstanceTreeService {
   }
 
   sortElementsByPosition(nodes: any[]): any[] {
-    if (!FeatureFlagsService.getFlagState(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE, this.store)) return nodes;
+    if ((!FeatureFlagsService.getFlagState(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE, this.store)) &&
+        (!FeatureFlagsService.getFlagState(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION, this.store))) return nodes;
     return nodes.sort((nodeA, nodeB) => {
       return nodeA.position - nodeB.position;
     });
