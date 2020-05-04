@@ -35,6 +35,10 @@ export class  DrawingBoardTreeService {
     return FeatureFlagsService.getFlagState(Features.FLAG_1902_NEW_VIEW_EDIT, this.store);
   }
 
+  isPauseVFMInstantiationCreationFlagTrue() {
+    return FeatureFlagsService.getFlagState(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION, this.store);
+  }
+
   /**********************************************
    return all drawing board context menu options
    ***********************************************/
@@ -49,7 +53,8 @@ export class  DrawingBoardTreeService {
       new TreeNodeContextMenuModel('upgrade', 'context-menu-upgrade', 'Upgrade', 'upgrade'),
       new TreeNodeContextMenuModel('undoDelete', 'context-menu-undoDelete', 'Undo Delete', 'undo-delete'),
       new TreeNodeContextMenuModel('undoUpgrade', 'context-menu-undoUpgrade', 'Undo Upgrade', 'undo-delete'),
-      new TreeNodeContextMenuModel('changeAssociations', 'context-menu-changeAssociations', 'Change Associations', 'edit-file-o')
+      new TreeNodeContextMenuModel('changeAssociations', 'context-menu-changeAssociations', 'Change Associations', 'edit-file-o'),
+      new TreeNodeContextMenuModel('pauseInstantiation', 'context-menu-pause', 'Add pause upon completion', 'upgrade')
     ];
   }
 

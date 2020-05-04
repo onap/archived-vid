@@ -67,6 +67,14 @@
           <span>Limit</span><span>{{node?.data?.limitMembers}}</span>
         </div>
         <div class="model-actions notShowOnViewMode ">
+          <ng-template *ngIf="drawingBoardTreeService.isPauseVFMInstantiationCreationFlagTrue()">
+            <span *ngIf="isPaused(node)">
+              <custom-icon
+                [mode]="'secondary'"
+                [name]="'maximum'">
+              </custom-icon>
+            </span>
+          </ng-template>
           <span class="icon-browse"
                 [ngClass]="{'isLinked' : isLinkedInstance(node?.data)}"
                 [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-menu-btn'"

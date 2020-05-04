@@ -74,9 +74,10 @@ describe('Drawing board tree Service', () => {
       new TreeNodeContextMenuModel('upgrade', 'context-menu-upgrade', 'Upgrade', 'upgrade'),
       new TreeNodeContextMenuModel('undoDelete', 'context-menu-undoDelete', 'Undo Delete', 'undo-delete'),
       new TreeNodeContextMenuModel('undoUpgrade', 'context-menu-undoUpgrade', 'Undo Upgrade', 'undo-delete'),
-      new TreeNodeContextMenuModel('changeAssociations', 'context-menu-changeAssociations', 'Change Associations', 'edit-file-o')
+      new TreeNodeContextMenuModel('changeAssociations', 'context-menu-changeAssociations', 'Change Associations', 'edit-file-o'),
+      new TreeNodeContextMenuModel('pauseInstantiation', 'context-menu-pause', 'Add pause upon completion', 'upgrade')
     ];
-    expect(options.length).toEqual(10);
+    expect(options.length).toEqual(11);
     expect(options).toEqual(expected);
   });
 
