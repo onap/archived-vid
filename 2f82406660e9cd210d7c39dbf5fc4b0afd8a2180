@@ -16,6 +16,24 @@
       "revId": "2f82406660e9cd210d7c39dbf5fc4b0afd8a2180",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0bb7122_0d6e8947",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/MsoRequestBuilder.kt",
+        "patchSetId": 5
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-05-04T07:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dac8b80d_77585534",
+      "revId": "2f82406660e9cd210d7c39dbf5fc4b0afd8a2180",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
