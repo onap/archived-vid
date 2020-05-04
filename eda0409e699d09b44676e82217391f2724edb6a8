@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "640c14be_8de31dd0",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/mso/RestMsoImplementation.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-05-04T04:41:07Z",
+      "side": 0,
+      "message": "nice !!",
+      "revId": "eda0409e699d09b44676e82217391f2724edb6a8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
