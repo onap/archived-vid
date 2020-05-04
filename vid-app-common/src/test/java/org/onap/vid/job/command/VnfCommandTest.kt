@@ -26,16 +26,20 @@ import org.hamcrest.core.AllOf.allOf
 import org.mockito.Answers
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.onap.vid.job.JobAdapter
 import org.onap.vid.job.JobsBrokerService
 import org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator
 import org.onap.vid.job.impl.JobSharedData
 import org.onap.vid.model.Action
+import org.onap.vid.model.serviceInstantiation.VfModule
+import org.onap.vid.model.serviceInstantiation.VfModule.PauseInstantiation.afterCompletion
 import org.onap.vid.mso.RestMsoImplementation
 import org.onap.vid.properties.Features
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
 import org.onap.vid.testUtils.TestUtils
 import org.onap.vid.testUtils.TestUtils.initMockitoMocks
+import org.testng.AssertJUnit
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
@@ -102,4 +106,28 @@ class VnfCommandTest {
         )
     }
 
+    @DataProvider
+    fun shoudlPause(): Array<Array<out Any?>> {
+        return arrayOf(
+                arrayOf("action create, pause in module and flag active", Action.Create, true, true, true),
+                arrayOf("action create, pause in module and flag  not active", Action.Create, true, false, false),
+                arrayOf("action not create, pause in module and flag active", Action.None, true, true, false),
+                arrayOf("action create, no pause in module and flag active", Action.Create, false, true, false),
+                arrayOf("action create, no pause in module and flag not active", Action.Create, false, false, false))
+    }
+
+    @Test(dataProvider = "shoudlPause")
+    fun `shouldPauseAfterInstantiation -- given different flag and pause conditions`(desc: String, vfModuleAction: Action, isPause: Boolean, flag: Boolean,
+                                                                                     expectedResult: Boolean) {
+        val vfModule = mock(VfModule::class.java);
+
+        _when(featureManager.isActive(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION)).thenReturn(flag)
+        _when(vfModule.action).thenReturn(vfModuleAction)
+
+        if (isPause) {
+            _when(vfModule.pauseInstantiation).thenReturn(afterCompletion)
+        }
+
+        AssertJUnit.assertEquals(desc, expectedResult, vnfCommand.shoudlPauseAfterInstantiation(vfModule))
+    }
 }

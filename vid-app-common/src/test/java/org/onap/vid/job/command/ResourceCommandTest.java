@@ -320,7 +320,7 @@ public class ResourceCommandTest {
 
         static VfModule createVfModule(Action action) {
             return new VfModule(mock(ModelInfo.class), null, null, action.toString(), null, null, null, null, null,
-                false, false, null, null, null, null, null, null, null, null);
+                false, false, null, null, null, null, null, null, null, null, null);
         }
 
         static Network createNetwork(Action action) {
