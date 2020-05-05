@@ -137,6 +137,7 @@ describe('Change management AKA VNF changes', function () {
           "FLAG_HANDLE_SO_WORKFLOWS": true,
           "FLAG_DISABLE_HOMING": true,
           "FLAG_ADD_MSO_TESTAPI_FIELD": true,
+          "FLAG_GUILIN_CHANGEMG_SUBMIT_TO_SO": true,
         })
       .as('initFlags');
 
