@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "318eb23e_c4a75019",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/models/vfModule/vfModule.model.info.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:59:21Z",
+      "side": 1,
+      "message": "what does it does? how did you encounter this? do we have any unit test to verify this kind of gotchas?",
+      "revId": "48dbc692cff9c7b81a995b37b800cb0b47e0c2b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30f6a882_b81e5712",
+        "filename": "vid-webpack-master/src/app/shared/services/featureFlag/feature-flags.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:59:21Z",
+      "side": 1,
+      "message": "why not have a trailing comma here?",
+      "revId": "48dbc692cff9c7b81a995b37b800cb0b47e0c2b6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
