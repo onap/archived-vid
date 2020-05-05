@@ -21,13 +21,13 @@
 (function () {
     'use strict';
 
-    appDS2.controller("changeManagementController", ["$uibModal", "changeManagementService", "_", "$log",  "SchedulerService", "$filter", "VIDCONFIGURATION", changeManagementController]);
+    appDS2.controller("changeManagementController", ["$uibModal", "changeManagementService", "_", "$log",  "SchedulerService", "$filter", "VIDCONFIGURATION", "featureFlags", changeManagementController]);
 
-    function changeManagementController($uibModal, changeManagementService, _, $log, SchedulerService, $filter, VIDCONFIGURATION) {
+    function changeManagementController($uibModal, changeManagementService, _, $log, SchedulerService, $filter, VIDCONFIGURATION, featureFlags) {
         var vm = this;
 
         vm.lastTimeUpdated = "";
-        vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
+        vm.hasScheduler = !featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_GUILIN_CHANGEMG_SUBMIT_TO_SO) && !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
         vm.currModal = null;
 
         vm.init = function() {
