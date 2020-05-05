@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "519abdc6_afc6c83b",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VnfCommand.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-05-05T12:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d46cf480_d4814297",
+      "range": {
+        "startLine": 75,
+        "startChar": 115,
+        "endLine": 75,
+        "endChar": 140
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "12bad0f9_7e5798a3",
         "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VnfCommand.kt",
         "patchSetId": 1
@@ -68,6 +92,30 @@
       "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d3628d2_938f3882",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VnfCommand.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-05-05T12:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12bad0f9_7e5798a3",
+      "range": {
+        "startLine": 75,
+        "startChar": 42,
+        "endLine": 76,
+        "endChar": 112
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +165,54 @@
     },
     {
       "key": {
+        "uuid": "a8c57e4d_5e329de8",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/serviceInstantiation/VfModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-05-05T12:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd571b68_ddeb4069",
+      "range": {
+        "startLine": 75,
+        "startChar": 17,
+        "endLine": 75,
+        "endChar": 37
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4de419b6_86bcfa64",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/serviceInstantiation/VfModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-05-05T12:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1f937bb_9335562a",
+      "range": {
+        "startLine": 75,
+        "startChar": 40,
+        "endLine": 75,
+        "endChar": 47
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "81a55fa6_ecffe5ae",
         "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
         "patchSetId": 1
@@ -163,6 +259,54 @@
     },
     {
       "key": {
+        "uuid": "6d305df7_3563dd82",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-05-05T12:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93ceaac9_5cc10472",
+      "range": {
+        "startLine": 1042,
+        "startChar": 73,
+        "endLine": 1042,
+        "endChar": 79
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72354a7f_906d014d",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-05-05T12:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81a55fa6_ecffe5ae",
+      "range": {
+        "startLine": 1042,
+        "startChar": 16,
+        "endLine": 1042,
+        "endChar": 54
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d5f20d7d_b57581a3",
         "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
         "patchSetId": 1
@@ -183,6 +327,30 @@
       "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a7fc4a6_c08abbb4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 5609
+      },
+      "writtenOn": "2020-05-05T12:01:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5f20d7d_b57581a3",
+      "range": {
+        "startLine": 1049,
+        "startChar": 0,
+        "endLine": 1049,
+        "endChar": 24
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
