@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b5d46d79_59f7c12f",
+        "filename": "features.properties.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-05-05T13:01:19Z",
+      "side": 1,
+      "message": "complicated sentence. Can you ask Shat to define the feature in one sentence ?",
+      "revId": "94966c2de89de0631e0fd5b1c016b7aef1ed3d95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a214b2f8_1c6ef224",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/VnfCommandTest.kt",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-05-05T13:01:19Z",
+      "side": 1,
+      "message": "nice test",
+      "revId": "94966c2de89de0631e0fd5b1c016b7aef1ed3d95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46dbce3f_2f6a0009",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-05-05T13:01:19Z",
+      "side": 1,
+      "message": "nice test",
+      "revId": "94966c2de89de0631e0fd5b1c016b7aef1ed3d95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95784db4_2da1276c",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/utils/KotlinUtilsTest.kt",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-05-05T13:01:19Z",
+      "side": 1,
+      "message": "very nice",
+      "revId": "94966c2de89de0631e0fd5b1c016b7aef1ed3d95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74b8c7e5_6456546e",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfModuleCreate2AndPauseRequest.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5632
+      },
+      "writtenOn": "2020-05-05T13:01:19Z",
+      "side": 1,
+      "message": "maybe you can find a similar json file and just add to it the string \"pauseInstantiation\": \"afterCompletion\"\nin your test instead of duplicate the whole file",
+      "revId": "94966c2de89de0631e0fd5b1c016b7aef1ed3d95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
