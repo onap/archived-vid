@@ -217,7 +217,7 @@ describe('Change management AKA VNF changes', function () {
       cy.get('#internal-workflow-parameter-text-4-new-software-version')
       .type("3.0");
 
-      cy.route('POST', `${Cypress.config('baseUrl')}/change-management/workflow/zolson3amdns02test2`)
+      cy.route('POST', `${Cypress.config('baseUrl')}/change-management/workflow/zolson3amdns02test2`, {})
       .as('apply_workflow');
 
       cy.get('#submit').click();
@@ -299,7 +299,7 @@ describe('Change management AKA VNF changes', function () {
       cy.get('#internal-workflow-parameter-text-6-target-software-version')
       .type("demo-sw-ver2.0.0");
 
-      cy.route('POST', `${Cypress.config('baseUrl')}/change-management/workflow/zolson3amdns02test2`)
+      cy.route('POST', `${Cypress.config('baseUrl')}/change-management/workflow/zolson3amdns02test2`,{})
       .as('apply_workflow');
 
       cy.get('#submit').click();
