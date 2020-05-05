@@ -28,7 +28,7 @@
 
 
         var vm = this;
-        vm.hasScheduler = !!VIDCONFIGURATION.SCHEDULER_PORTAL_URL;
+        vm.hasScheduler = !featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_GUILIN_CHANGEMG_SUBMIT_TO_SO);
         vm.errorMsg = '';
 
         vm.isSearchedVNF = false;
