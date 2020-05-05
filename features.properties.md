@@ -271,15 +271,22 @@
   When toggled off, the only way to configure VID's value is by manually setting a value in the DB.
   See https://jira.onap.org/browse/VID-801 
   
-  * FLAG_2006_NEW_VIEW_EDIT_BUTTON_IN_INSTANTIATION_STATUS
   
-    When flag is true the "New view/edit" button will appear in context menu of chosen service in Instantiation Status window. 
-    The click on that button will open the service instance in drawing board (new screens).
-    
-  * FLAG_2006_PORT_MIRRORING_LET_SELECTING_SOURCE_SUBSCRIBER
+* FLAG_2006_NEW_VIEW_EDIT_BUTTON_IN_INSTANTIATION_STATUS
+
+  When flag is true the "New view/edit" button will appear in context menu of chosen service in Instantiation Status window. 
+  The click on that button will open the service instance in drawing board (new screens).
   
-    When flag is true the "Source Subscriber Name" drop down will be added for the source VNF
-    on the PMC (Port Mirroring Configuration) instantiation form.
- 
- 
- 
+  
+* FLAG_2006_PORT_MIRRORING_LET_SELECTING_SOURCE_SUBSCRIBER
+
+  When flag is true the "Source Subscriber Name" drop down will be added for the source VNF
+  on the PMC (Port Mirroring Configuration) instantiation form.
+
+
+* FLAG_GUILIN_CHANGEMG_SUBMIT_TO_SO
+
+  When toggled on, Change Management flows are submitted directly to SO. When toggled off, VID will follow the value
+  of SCHEDULER_PORTAL_URL (in the file vidConfiguration.js) allowing Scheduler use.
+  
+  Thus, to use Scheduler this flag should be OFF, and SCHEDULER_PORTAL_URL should be configured.
