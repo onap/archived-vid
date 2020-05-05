@@ -1,0 +1,222 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17125a84_f0d23d49",
+        "filename": "features.properties.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "view/edit or any new vf-module on any drawing board?",
+      "range": {
+        "startLine": 286,
+        "startChar": 70,
+        "endLine": 286,
+        "endChar": 79
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d46cf480_d4814297",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VnfCommand.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "please don\u0027t commit with TODO: if you think it is needed - add it.",
+      "range": {
+        "startLine": 75,
+        "startChar": 115,
+        "endLine": 75,
+        "endChar": 140
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12bad0f9_7e5798a3",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VnfCommand.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "please extract the whole condition to a name (and tested) method; e.g.:\n\nprivate fun shoudlPauseAfterInstantiation(vfModule: VfModule): Boolean { ... }",
+      "range": {
+        "startLine": 75,
+        "startChar": 42,
+        "endLine": 76,
+        "endChar": 112
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd571b68_ddeb4069",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/serviceInstantiation/VfModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "please adjust the json annotation to be like the field name; i.e. \"pauseInstantiation\"",
+      "range": {
+        "startLine": 75,
+        "startChar": 17,
+        "endLine": 75,
+        "endChar": 37
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1f937bb_9335562a",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/serviceInstantiation/VfModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "I think it isimportant to make the enum \"today\", rather than \"one day\"",
+      "range": {
+        "startLine": 75,
+        "startChar": 40,
+        "endLine": 75,
+        "endChar": 47
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81a55fa6_ecffe5ae",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "please rename to something more specific. i suggest:\nviewEdit_existingVnfCreate3VfModulesPauseAfterTheSecond\n\nBTW, the file-name used below is a good example (\"vfModuleCreate2AndPauseRequest\")",
+      "range": {
+        "startLine": 1042,
+        "startChar": 16,
+        "endLine": 1042,
+        "endChar": 54
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93ceaac9_5cc10472",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1042,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "consider: expectedNumberOfInvocation",
+      "range": {
+        "startLine": 1042,
+        "startChar": 73,
+        "endLine": 1042,
+        "endChar": 79
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5f20d7d_b57581a3",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/impl/AsyncInstantiationIntegrationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1049,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "I\u0027m not happy with this method as it \"clutters\" the class scope, with a specific method which has a generic name.\n\nI suggest: replace the method with local invocation of something like this:\n\n        when(commandUtils.isVfModuleBaseModule(any(),\n            argThat(it -\u003e it.getModelCustomizationName().endsWith(\"module-0\")))).thenReturn(true);\n\nNo need for other conditions, as default Mockito result here should be \"false\".",
+      "range": {
+        "startLine": 1049,
+        "startChar": 0,
+        "endLine": 1049,
+        "endChar": 24
+      },
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18589d8c_4e1082f4",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/model/serviceInstantiation/InstantiationModelSerializationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "does this test pass after the addition? technically, it asserts that set-up does not contain null.\nplease add here a value; e.g. \"pauseInstantiation\"",
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f33ef627_08387068",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/objectsToTree/objectToInstanceTree/objectToInstanceTree.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-05T03:46:48Z",
+      "side": 1,
+      "message": "Not sure what it is needed for; anyhow I advise not doing it because:\n\n1) FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE already commonly **active**\n2) FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE has more references in code. I suppose the change made here should be upon each and every of them, or on none. Thus, I prefer the latter.",
+      "revId": "41695c4c998364a2f68cfb786c4e70b5802da6ad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
