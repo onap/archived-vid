@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "41a7f84f_3becfba9",
+        "filename": "features.properties.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-06T09:49:37Z",
+      "side": 1,
+      "message": "I had no idea for a different scope. I don\u0027t want \"ONAP\", and putting here \"Casablanca\" (or similar) sounds weird.",
+      "parentUuid": "b67fc096_9cb0976f",
+      "range": {
+        "startLine": 287,
+        "startChar": 2,
+        "endLine": 287,
+        "endChar": 35
+      },
+      "revId": "8f423a1ec4c87f5d3e82fe13bfc45a3f427a5a25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6aa4e0ba_8195292e",
         "filename": "features.properties.md",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "aebe5dbf_078cfd79",
+        "filename": "features.properties.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-06T09:49:37Z",
+      "side": 1,
+      "message": "change to what?",
+      "parentUuid": "6aa4e0ba_8195292e",
+      "range": {
+        "startLine": 290,
+        "startChar": 5,
+        "endLine": 290,
+        "endChar": 25
+      },
+      "revId": "8f423a1ec4c87f5d3e82fe13bfc45a3f427a5a25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b7a1e7ca_a2b8b554",
         "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/change-management.controller.js",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2020-05-06T08:54:49Z",
       "side": 1,
       "message": "Can you explain the !!",
+      "range": {
+        "startLine": 30,
+        "startChar": 107,
+        "endLine": 30,
+        "endChar": 146
+      },
+      "revId": "8f423a1ec4c87f5d3e82fe13bfc45a3f427a5a25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ddff579_2e64e565",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/change-management.controller.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-06T09:49:37Z",
+      "side": 1,
+      "message": "it evaluates a \"truthy\" value: in this case -- empty string will become `false`",
+      "parentUuid": "b7a1e7ca_a2b8b554",
       "range": {
         "startLine": 30,
         "startChar": 107,
