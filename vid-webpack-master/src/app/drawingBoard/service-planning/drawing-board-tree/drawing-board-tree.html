@@ -66,7 +66,14 @@
         <div class="scaling invalid" *ngIf="node?.data?.errors?.scalingError" [attr.data-tests-id]="'scaling-policy'">
           <span>Limit</span><span>{{node?.data?.limitMembers}}</span>
         </div>
-        <div class="model-actions notShowOnViewMode ">
+        <div class="model-actions notShowOnViewMode" *ngIf="isPaused(node)" style="border-right: none;">
+              <custom-icon
+                [size]="'large'"
+                [name]="'pause-upon-completion'"
+                [testId]="'pause-upon-completion'">
+              </custom-icon>
+        </div>
+        <div class="model-actions notShowOnViewMode">
           <span class="icon-browse"
                 [ngClass]="{'isLinked' : isLinkedInstance(node?.data)}"
                 [attr.data-tests-id]="'node-'+node.data.modelId +'-' +node.data.modelName+'-menu-btn'"
