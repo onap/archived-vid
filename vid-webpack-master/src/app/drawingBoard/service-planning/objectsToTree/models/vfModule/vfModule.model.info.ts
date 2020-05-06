@@ -22,6 +22,7 @@ import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {
   deleteActionVfModuleInstance,
   deleteVFModuleField,
+  pauseActionVFModuleInstance,
   removeVfModuleInstance,
   undoDeleteVfModuleInstance,
   undoUgradeVFModule,
@@ -97,6 +98,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     newVfModule.menuActions = this.getMenuAction(<any>newVfModule, serviceModelId);
     newVfModule.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
     newVfModule.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
+    newVfModule.pauseInstantiation = instance.pauseInstantiation;
 
     newVfModule = this._sharedTreeService.addingStatusProperty(newVfModule);
     return newVfModule;
@@ -387,6 +389,13 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
           return this._sharedTreeService.shouldShowUndoUpgrade(node);
         }
       },
+      pauseInstantiation: {
+        method: (node, serviceModelId) => {
+          this._store.dispatch(pauseActionVFModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId, node.data.modelName));
+        },
+        visible: () => this._sharedTreeService.shouldShowPauseInstantiation(),
+        enable: () => true,
+      }
     };
   }
 
