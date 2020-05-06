@@ -27,7 +27,7 @@
 @mixin highlight-tree-node-content {
   tree-node-content {
     > div {
-      .model-actions {
+      .model-actions, .pause-actions {
         .icon-browse:before {
           display: inline-block;
         }
@@ -137,7 +137,7 @@ drawing-board-tree {
                 border-right: #009FDB 1px solid !important;
               }
 
-              .model-actions {
+              .model-actions, .pause-actions {
                 background-color: #E6F6FB;
                 color: #009FDB;
                 color: #009FDB;
@@ -196,7 +196,7 @@ drawing-board-tree {
             .node-content-wrapper:not(.node-content-wrapper-focused) {
               .instance-type ,
               .model-info ,
-              .model-actions {
+              .model-actions, .pause-actions {
                 background: #F2F2F2;
               }
               .icon-browse:before {
@@ -281,7 +281,7 @@ drawing-board-tree {
                 border-right: none !important;
               }
 
-              .model-actions {
+              .model-actions, .pause-actions {
                 border-style: dashed !important;
                 border-left-style: none !important;
               }
@@ -408,7 +408,7 @@ drawing-board-tree {
                   }
                 }
 
-                .model-actions {
+                .model-actions, .pause-actions{
                   :hover {
                     background: transparent !important;
                   }
@@ -496,7 +496,7 @@ drawing-board-tree {
 
 .cdk-overlay-pane.ngx-contextmenu {
   ul.dropdown-menu {
-    width: 200px;
+    width: 250px;
     box-shadow: none;
     padding: 0;
     padding-top: 10px;

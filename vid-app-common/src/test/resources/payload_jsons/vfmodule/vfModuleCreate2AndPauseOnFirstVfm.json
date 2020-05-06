@@ -1,0 +1,175 @@
+{
+  "action": "Create",
+  "isDirty": true,
+  "vnfs": {
+    "vOCG_1804_VF 0": {
+      "action": "Create",
+      "inMaint": false,
+      "rollbackOnFailure": "true",
+      "originalName": "vOCG_1804_VF 0",
+      "isMissingData": false,
+      "trackById": "v0c2si90m5",
+      "vfModules": {
+        "vocg_1804_vf0..Vocg1804Vf..base_ocg..module-0": {
+          "vocg_1804_vf0..Vocg1804Vf..base_ocg..module-0ousqb": {
+            "instanceName": "vOCG_1804_SVC-VFmodule-base",
+            "rollbackOnFailure": true,
+            "sdncPreLoad": null,
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content": null,
+            "instanceParams": [
+              {}
+            ],
+            "modelInfo": {
+              "modelInvariantId": "e9c795c8-6b98-4db3-bd90-a84b8ca5181b",
+              "modelVersionId": "815db6e5-bdfd-4cb6-9575-82c36df8747a",
+              "modelName": "Vocg1804Vf..base_ocg..module-0",
+              "modelVersion": "4",
+              "modelCustomizationId": "a7b333d7-7633-4197-b40d-80fcfcadee94",
+              "modelCustomizationName": "Vocg1804Vf..base_ocg..module-0",
+              "uuid": "815db6e5-bdfd-4cb6-9575-82c36df8747a",
+              "modelUniqueId": "a7b333d7-7633-4197-b40d-80fcfcadee94"
+            },
+            "uuid": "815db6e5-bdfd-4cb6-9575-82c36df8747a",
+            "isMissingData": false
+          }
+        },
+        "vocg_1804_vf0..Vocg1804Vf..ocgapp_004..module-11": {
+          "vocg_1804_vf0..Vocg1804Vf..ocgapp_004..module-11cxunx": {
+            "instanceName": "vOCG_1804_SVC-VFmodule-1",
+            "volumeGroupName": "vOCG_1804_SVC-VFmodule-1_vol",
+            "rollbackOnFailure": true,
+            "sdncPreLoad": null,
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content": null,
+            "instanceParams": [
+              {}
+            ],
+            "modelInfo": {
+              "modelInvariantId": "d4a5d266-e867-4171-8e2b-8fc99223d938",
+              "modelVersionId": "da10c7fe-cf81-441c-9694-4e9ddf2054d8",
+              "modelName": "Vocg1804Vf..ocgapp_004..module-11",
+              "modelVersion": "2",
+              "modelCustomizationId": "e4feeba0-1d6f-49e3-ae7c-cba83d479b51",
+              "modelCustomizationName": "Vocg1804Vf..ocgapp_004..module-11",
+              "uuid": "da10c7fe-cf81-441c-9694-4e9ddf2054d8",
+              "modelUniqueId": "e4feeba0-1d6f-49e3-ae7c-cba83d479b51"
+            },
+            "uuid": "da10c7fe-cf81-441c-9694-4e9ddf2054d8",
+            "isMissingData": false,
+            "pauseInstantiation": "afterCompletion"
+          }
+        },
+        "vocg_1804_vf0..Vocg1804Vf..ocgapp_001..module-12": {
+          "vocg_1804_vf0..Vocg1804Vf..ocgapp_001..module-12xleyy": {
+            "instanceName": "vOCG_1804_SVC-VFmodule-2",
+            "volumeGroupName": "vOCG_1804_SVC-VFmodule-2_vol",
+            "rollbackOnFailure": true,
+            "sdncPreLoad": null,
+            "supplementaryFile": null,
+            "supplementaryFile_hidden": null,
+            "supplementaryFile_hidden_content": null,
+            "instanceParams": [
+              {}
+            ],
+            "modelInfo": {
+              "modelInvariantId": "e3cb8b85-7a3c-4897-b20b-70640c26d671",
+              "modelVersionId": "b601eef4-62fd-4201-a788-ae30e06a1aec",
+              "modelName": "Vocg1804Vf..ocgapp_001..module-12",
+              "modelVersion": "2",
+              "modelCustomizationId": "fcc82961-865e-4d38-9c7a-207c511405b6",
+              "modelCustomizationName": "Vocg1804Vf..ocgapp_001..module-12",
+              "uuid": "b601eef4-62fd-4201-a788-ae30e06a1aec",
+              "modelUniqueId": "fcc82961-865e-4d38-9c7a-207c511405b6"
+            },
+            "uuid": "b601eef4-62fd-4201-a788-ae30e06a1aec",
+            "isMissingData": false
+          }
+        }
+      },
+      "vnfStoreKey": "vOCG_1804_VF 0",
+      "upgradedVFMSonsCounter": 0,
+      "uuid": "aca3f7b1-15f9-45a5-b182-b8b5aca84a76",
+      "lcpCloudRegionId": "dpa2a",
+      "tenantId": "99ac518f94b6481faccedc32f86f4115",
+      "lineOfBusiness": "ADI",
+      "platformName": "3rdPartyCloud",
+      "modelInfo": {
+        "modelInvariantId": "db23d71a-4cb4-4030-9c9b-e3f886c2b35c",
+        "modelVersionId": "aca3f7b1-15f9-45a5-b182-b8b5aca84a76",
+        "modelName": "vOCG_1804_VF",
+        "modelVersion": "4.0",
+        "modelCustomizationId": "e9ed1da0-c078-426a-8e84-6f4e85eace59",
+        "modelCustomizationName": "vOCG_1804_VF 0",
+        "uuid": "aca3f7b1-15f9-45a5-b182-b8b5aca84a76",
+        "modelUniqueId": "e9ed1da0-c078-426a-8e84-6f4e85eace59"
+      },
+      "instanceName": "vOCG_1804_SVC-VNF",
+      "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+      "instanceParams": [
+        {}
+      ]
+    }
+  },
+  "vrfs": {},
+  "instanceParams": [
+    {}
+  ],
+  "validationCounter": 0,
+  "existingNames": {
+    "vocg_1804_svc-instance": "",
+    "vocg_1804_svc-vnf": "",
+    "vocg_1804_svc-vfmodule-base": "",
+    "vocg_1804_svc-vfmodule-1": "",
+    "vocg_1804_svc-vfmodule-1_vol": "",
+    "vocg_1804_svc-vfmodule-2": "",
+    "vocg_1804_svc-vfmodule-2_vol": ""
+  },
+  "existingVNFCounterMap": {
+    "e9ed1da0-c078-426a-8e84-6f4e85eace59": 1
+  },
+  "existingVRFCounterMap": {},
+  "existingVnfGroupCounterMap": {},
+  "existingNetworksCounterMap": {},
+  "networks": {},
+  "vnfGroups": {},
+  "bulkSize": 1,
+  "instanceName": "vOCG_1804_SVC-instance",
+  "globalSubscriberId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+  "subscriptionServiceType": "Mobility",
+  "owningEntityId": "10c645f5-9924-4b89-bec0-b17cf49d3cad",
+  "projectName": null,
+  "rollbackOnFailure": true,
+  "aicZoneName": null,
+  "owningEntityName": "MOBILITY-CORE",
+  "testApi": "GR_API",
+  "tenantName": null,
+  "modelInfo": {
+    "modelInvariantId": "d1068db8-b933-4919-8972-8bc1aed366c8",
+    "modelVersionId": "f3862254-8df2-4a0a-8137-0a9fe985860c",
+    "modelName": "vOCG_1804_SVC",
+    "modelVersion": "4.0",
+    "uuid": "f3862254-8df2-4a0a-8137-0a9fe985860c",
+    "modelUniqueId": "f3862254-8df2-4a0a-8137-0a9fe985860c"
+  },
+  "isALaCarte": true,
+  "name": "vOCG_1804_SVC",
+  "version": "4.0",
+  "description": "updated HEAT",
+  "category": "Mobility",
+  "uuid": "f3862254-8df2-4a0a-8137-0a9fe985860c",
+  "invariantUuid": "d1068db8-b933-4919-8972-8bc1aed366c8",
+  "serviceType": "",
+  "serviceRole": "",
+  "vidNotions": {
+    "instantiationUI": "anyAlacarteWhichNotExcluded",
+    "modelCategory": "other",
+    "viewEditUI": "legacy",
+    "instantiationType": "ALaCarte"
+  },
+  "isEcompGeneratedNaming": true,
+  "isMultiStepDesign": false,
+  "subscriberName": "Mobility"
+}

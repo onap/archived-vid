@@ -213,6 +213,11 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
     return this.isLabeledAsAction(node, "Delete");
   }
 
+  isPaused(node: ITreeNode): boolean {
+    let isPaused = node.data.pauseInstantiation;
+    return !_.isNil(isPaused);
+  }
+
   private isLabeledAsAction(node: ITreeNode, action) {
     let nodeAction = node.data.action.split('_').pop();
     if (!_.isNil(nodeAction)) {

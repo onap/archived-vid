@@ -2,7 +2,7 @@ import {ChildNodeInstance} from "./nodeInstance";
 import {NodeModel} from "./nodeModel";
 import {ServiceNodeTypes} from "./ServiceNodeTypes";
 import * as _ from 'lodash';
-import {ServiceInstanceActions} from "./serviceInstanceActions";
+import {PauseStatus, ServiceInstanceActions} from "./serviceInstanceActions";
 import {ModelInfo} from "./modelInfo";
 
 export enum TreeLevel {
@@ -34,6 +34,7 @@ export class TreeNodeModel {
   instanceId?: string;
   instanceType?: string;
   instanceName?: string;
+  pauseInstantiation?: PauseStatus;
 
   constructor(instance: ChildNodeInstance, nodeModel: NodeModel){
 

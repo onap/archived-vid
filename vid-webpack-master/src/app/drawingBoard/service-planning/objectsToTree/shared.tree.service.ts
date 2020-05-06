@@ -222,6 +222,9 @@ export class SharedTreeService {
     }
   }
 
+  shouldShowPauseInstantiation(): boolean {
+    return (FeatureFlagsService.getFlagState(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION, this._store));
+  }
   /****************************************************
    * should return true if customer can upgrade a VFM *
    ****************************************************/
