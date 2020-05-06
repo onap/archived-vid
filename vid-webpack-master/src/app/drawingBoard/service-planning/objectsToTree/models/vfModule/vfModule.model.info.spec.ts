@@ -20,6 +20,7 @@ import {VfModuleUpgradePopupService} from "../../../../../shared/components/gene
 import {instance, mock, when} from "ts-mockito";
 import each from "jest-each";
 import {VfModule} from "../../../../../shared/models/vfModule";
+import {VfModuleTreeNode} from "../../../../../shared/models/vfModuleTreeNode";
 
 class MockAppStore<T> {
   getState() {
@@ -125,6 +126,26 @@ describe('VFModule Model Info', () => {
   test('getNextLevelObject should return null', () => {
     let nextLevel = vfModuleModel.getNextLevelObject();
     expect(nextLevel).toBeNull();
+  });
+
+  each([
+    ['afterCompletion', 'afterCompletion'],
+    ['undefined', undefined]
+  ]).
+  test('createNode should return pauseInstantiation status %s', (description, pauseInstantiationStatus) => {
+    const modelName: string = "vfModuleModelName";
+    const vfModuleInstance =  {
+      "vfModuleInstanceName": {
+        "pauseInstantiation": pauseInstantiationStatus,
+      }
+    };
+    const currentModel = {};
+    const parentModel = {};
+    const serviceModelId = "serviceModelId";
+
+    let actual: VfModuleTreeNode = vfModuleModel.createNode(<any>vfModuleInstance, <any>currentModel, <any>parentModel, modelName, 0, serviceModelId);
+    let expected: string = pauseInstantiationStatus;
+    expect(actual.pauseInstantiation).toEqual(expected);
   });
 
   test('getModel should return Module model', () => {
