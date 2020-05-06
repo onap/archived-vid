@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5693e92d_6f867fb0",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-05-06T08:54:49Z",
+      "side": 1,
+      "message": "why not changing this to be based on the feature flag only?",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 145
+      },
+      "revId": "00fab8e3a21a89bd6ef560e20be230e4f0d52b6f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b67fc096_9cb0976f",
+        "filename": "features.properties.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-05-06T08:54:49Z",
+      "side": 1,
+      "message": "why GUILIN?\nafter all this is not new behaviour to ONAP",
+      "range": {
+        "startLine": 287,
+        "startChar": 2,
+        "endLine": 287,
+        "endChar": 35
+      },
+      "revId": "8f423a1ec4c87f5d3e82fe13bfc45a3f427a5a25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6aa4e0ba_8195292e",
+        "filename": "features.properties.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-05-06T08:54:49Z",
+      "side": 1,
+      "message": "wouldn\u0027t you prefer to change this as well?",
+      "range": {
+        "startLine": 290,
+        "startChar": 5,
+        "endLine": 290,
+        "endChar": 25
+      },
+      "revId": "8f423a1ec4c87f5d3e82fe13bfc45a3f427a5a25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7a1e7ca_a2b8b554",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/controller/change-management.controller.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-05-06T08:54:49Z",
+      "side": 1,
+      "message": "Can you explain the !!",
+      "range": {
+        "startLine": 30,
+        "startChar": 107,
+        "endLine": 30,
+        "endChar": 146
+      },
+      "revId": "8f423a1ec4c87f5d3e82fe13bfc45a3f427a5a25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce76ae8b_0533e28e",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-05-06T08:54:49Z",
+      "side": 1,
+      "message": "again",
+      "range": {
+        "startLine": 31,
+        "startChar": 107,
+        "endLine": 31,
+        "endChar": 109
+      },
+      "revId": "8f423a1ec4c87f5d3e82fe13bfc45a3f427a5a25",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
