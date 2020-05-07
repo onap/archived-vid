@@ -29,6 +29,22 @@ Version: Frankfurt (6.0.x)
 
 
 
+Version: Guilin (7.0.x)
+------------------------
+**Known Issues**
+
+
+**Resolved Issues**
+
+
+**Security Notes**
+
+*Fixed Security Issues*
+
+*Known Security Issues*
+
+
+
 Version: El-Alto (5.0.x)
 ------------------------
 **Known Issues**
