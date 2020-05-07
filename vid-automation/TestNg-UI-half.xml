@@ -43,6 +43,13 @@
 
                         if (selectPart == 0) return true;
 
+                        for (groupName: groups.keySet()) {
+                            System.err.println("ittay test " + groupName);
+                            if (groupName.startsWith("partialGroup_")) {
+                                return groupName.equals("partialGroup_" + selectPart);
+                            }
+                        }
+
                         methodClass = method.getDeclaringClass().toString();
                         for (c: classes2) {
                             if (methodClass.contains(c)) return selectPart==2;
