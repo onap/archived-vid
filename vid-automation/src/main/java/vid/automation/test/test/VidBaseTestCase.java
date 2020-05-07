@@ -101,8 +101,8 @@ import vid.automation.test.utils.TestHelper;
 @Listeners(ReportPortalListenerDelegator.class)
 public class VidBaseTestCase extends SetupCDTest{
 
-    protected final UsersService usersService = new UsersService();
-    protected final CategoryParamsService categoryParamsService = new CategoryParamsService();
+    protected static final UsersService usersService = new UsersService();
+    protected static final CategoryParamsService categoryParamsService = new CategoryParamsService();
     protected final RestTemplate restTemplate = InsecureHttpsClient.newRestTemplate();
     protected final URI uri;
     protected final URI envUrI;

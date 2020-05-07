@@ -225,7 +225,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
         assertModelDataCorrect(NewServicePopup.SERVICE_MODEL_FIELD_TO_DATA_TESTS_ID, prefix, service);
     }
 
-    @Test
+    @Test(groups = "partialGroup_4")
     public void createNewServiceInstance_macro_validPopupDataAndUI__ecompNamingFalse() {
 
         ServiceData serviceData = new ServiceData(
@@ -266,7 +266,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
         createNewServiceInstance_macro_validPopupDataAndUI__dynamicFieldsEcompNamingFalse_FLESH("DEV", 5, reduxForStep, "mCaNk");
     }
 
-    @Test
+    @Test(groups = "partialGroup_4")
     public void createNewServiceInstance_macro_validPopupDataAndUI__dynamicFieldsEcompNamingFalse() {
         createNewServiceInstance_macro_validPopupDataAndUI__dynamicFieldsEcompNamingFalse_FLESH("RUNTIME", 0, null, randomAlphabetic(5));
     }
@@ -348,7 +348,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
         });
     }
 
-    @Test
+    @Test(groups = "partialGroup_4")
     @FeatureTogglingTest(FLAG_1908_INFRASTRUCTURE_VPN)
     public void createNewServiceInstance_infraStructureVpn() {
         String requestId = uuid();
@@ -388,7 +388,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
         drawingBoardPage.verifyServiceCompletedOnTime(serviceInstanceName, "Service "+serviceInstanceName);
     }
 
-    @Test
+    @Test(groups = "partialGroup_4")
     @FeatureTogglingTest(FLAG_1908_COLLECTION_RESOURCE_NEW_INSTANTIATION_UI)
     public void createNewServiceInstance_collectionResource() {
         prepareServicePreset(collectionResourceService, false);
@@ -538,7 +538,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
         clickToCloseModal(VNF_SET_BUTTON_TEST_ID);
     }
 
-    @Test
+    @Test(groups = "partialGroup_4")
     public void createNewServiceInstance_macro_validPopupDataAndUI__ecompNamingServiceFalseVnfTrue_vgNameFalse() {
         ServiceData serviceData = new ServiceData(
                 macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetails.modelVersionId,
@@ -555,7 +555,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
 
     }
 
-    @Test
+    @Test(groups = "partialGroup_4")
     public void createNewServiceInstance_macro_validPopupDataAndUI__ecompNamingServiceFalseVnfFalse_vgNameFalse() {
         ServiceData serviceData = new ServiceData(
                 macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse.modelVersionId,
@@ -572,7 +572,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
 
     }
 
-    @Test
+    @Test(groups = "partialGroup_4")
     public void createNewServiceInstance_macro_validPopupDataAndUI__ecompNamingServiceFalseVnfFalse_vgNameTrue() throws Exception {
         ServiceData serviceData = new ServiceData(
                 macroSriovNoDynamicFieldsEcompNamingFalseFullModelDetailsVnfEcompNamingFalse.modelVersionId,
@@ -771,7 +771,7 @@ public class NewServiceInstanceTest extends ModernUITestBase {
         browseASDCPage.goToIframe();
     }
 
-    @Test
+    @Test(groups = "partialGroup_4")
     public void createNewServiceInstance_macro_validPopupDataAndUI() {
 
         List<String> serviceDynamicFields = Arrays.asList("2017488 pasqualevpe0 asn:");

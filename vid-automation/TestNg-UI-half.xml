@@ -31,17 +31,24 @@
                         };
 
                         String [] classes4 = new String [] {
-                            "vid.automation.test.test.DrawingBoardTest",
-                            "vid.automation.test.test.ViewEditServiceInstanceTest"
+                            "vid.automa----tion.test.test.DrawingBoardTest",
+                            "vid.automa-----tion.test.test.ViewEditServiceInstanceTest"
                         };
 
-                        int selectPart = 0;
+                        int selectPart = 4;
 
                         for (g: exclusionGroups) {
                             if (groups.containsKey(g)) return false;
                         }
 
                         if (selectPart == 0) return true;
+
+                        for (groupName: groups.keySet()) {
+                            System.err.println("ittay test " + groupName);
+                            if (groupName.startsWith("partialGroup_")) {
+                                return groupName.equals("partialGroup_" + selectPart);
+                            }
+                        }
 
                         methodClass = method.getDeclaringClass().toString();
                         for (c: classes2) {

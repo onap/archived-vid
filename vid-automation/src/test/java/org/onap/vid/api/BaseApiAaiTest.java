@@ -22,7 +22,7 @@ import vid.automation.test.services.SimulatorApi;
 
 public class BaseApiAaiTest extends BaseApiTest {
 
-    protected final CategoryParamsService categoryParamsService = new CategoryParamsService();
+    protected static final CategoryParamsService categoryParamsService = new CategoryParamsService();
 
     @BeforeClass
     public void login() {
