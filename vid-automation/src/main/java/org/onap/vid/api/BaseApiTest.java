@@ -52,7 +52,7 @@ public class BaseApiTest {
     protected Random random;
     protected final RestTemplate restTemplate = InsecureHttpsClient.newRestTemplate();
 
-    protected final UsersService usersService = new UsersService();
+    protected static final UsersService usersService = new UsersService();
     protected final RestTemplate restTemplateErrorAgnostic = InsecureHttpsClient.newRestTemplate();
 
     @BeforeClass

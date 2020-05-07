@@ -43,6 +43,16 @@
 
                         if (selectPart == 0) return true;
 
+                        for (groupName: groups.keySet()) {
+                            // There's a non-obvious case here:
+                            // If there's a "partialGroup" group, and it is *not* for current `selectPart` then
+                            // don't run the test -- even if it is in a Class which does belong to the `selectPart`
+                            // classes list
+                            if (groupName.startsWith("partialGroup_")) {
+                                return groupName.equals("partialGroup_" + selectPart);
+                            }
+                        }
+
                         methodClass = method.getDeclaringClass().toString();
                         for (c: classes2) {
                             if (methodClass.contains(c)) return selectPart==2;
