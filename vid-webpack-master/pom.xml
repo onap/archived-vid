@@ -155,6 +155,7 @@
                   <arguments>install</arguments>
                   <environmentVariables>
                     <CYPRESS_INSTALL_BINARY>0</CYPRESS_INSTALL_BINARY>
+                    <NODE_ENV>production</NODE_ENV>
                   </environmentVariables>
                 </configuration>
               </execution>
