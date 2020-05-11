@@ -65,6 +65,24 @@
     },
     {
       "key": {
+        "uuid": "3f308984_620705d9",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2020-05-11T14:55:06Z",
+      "side": 1,
+      "message": "Why the test should include step \"add vfmodule\"? the test should verify \"add the pause\".",
+      "parentUuid": "1a213cb3_bada61ca",
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f3667f6f_efe8735c",
         "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
         "patchSetId": 3
@@ -93,6 +111,30 @@
       "writtenOn": "2020-05-11T12:17:12Z",
       "side": 1,
       "message": "method body can be simplified to:\n\n    cy.route(Cypress.config(\u0027baseUrl\u0027) + \u0027/asyncInstantiation/bulk\u0027, []).as(\"expectedPostAsyncInstantiation\")",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 23
+      },
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b6a8bdb_43db5e0e",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2020-05-11T14:55:06Z",
+      "side": 1,
+      "message": "we have similar function in different classes. in the next pr i want to set this function in cypress general steps and will simplify it.",
+      "parentUuid": "0035533b_28443c3c",
       "range": {
         "startLine": 36,
         "startChar": 0,
