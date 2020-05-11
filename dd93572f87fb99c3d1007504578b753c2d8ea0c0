@@ -1,0 +1,215 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3bbc986c_809b7252",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "something is not clear on this filename (maybe some words are missing). What is \"Andet\"?",
+      "range": {
+        "startLine": 19,
+        "startChar": 72,
+        "endLine": 19,
+        "endChar": 111
+      },
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "299d6c6c_ff2f95ad",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "i suggest calling the param \"redux\" or \"reduxState\".",
+      "range": {
+        "startLine": 21,
+        "startChar": 28,
+        "endLine": 21,
+        "endChar": 31
+      },
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a213cb3_bada61ca",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "here the test adds pause, but no vfmodules were added.\nin my opinion the test *must* include at least these steps of \"add vfmodule\".\nin my opinion, the test *should\" include the \"add VNF\" step as well.",
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3667f6f_efe8735c",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "I compared vfModuleCreate2AndPauseOnFirstVfm.json with the \"instance\" part of vfmoduleCreate2AndetPauseRequestOnFirst.json.\nThere are 150 common lines, and few unexpected differences (unexpected by me, i mean):\n\n\"isUpgraded\": false -\u003e removed in vfModuleCreate2AndPauseOnFirstVfm\nempty \"optionalGroupMembersMap\" -\u003e removed in vfModuleCreate2AndPauseOnFirstVfm\n\"upgradedVFMSonsCounter\": 0 -\u003e removed in vfModuleCreate2AndPauseOnFirstVfm\n\nCan you explain what in the test made those vanish? (or how did they went into the preset)\n\n-\n-\n-\n\n\nWhat I suggest is adding an assertion that vfmodules has undefined \"pauseInstantiation\", but \"vocg_1804_vf0..Vocg1804Vf..ocgapp_004..module-11cxunx\" that do have a `\"pauseInstantiation\": \"afterCompletion\"`.\n\nI believe this can replace the whole \"deepCompare\", but this is my opinion.",
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0035533b_28443c3c",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "method body can be simplified to:\n\n    cy.route(Cypress.config(\u0027baseUrl\u0027) + \u0027/asyncInstantiation/bulk\u0027, []).as(\"expectedPostAsyncInstantiation\")",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 23
+      },
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38e039e0_20bf675f",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/pauseVfmodule/vfmoduleCreate2AndetPauseRequestOnFirst.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "This file is named after the test, instead of describing what it provides. therefore in future it will be very hard to reuse it.",
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ffdc954_d232a8f2",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/pauseVfmodule/vfmoduleCreate2AndetPauseRequestOnFirst.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "i suggest keeping this field empty, and filling it with the contents of `cypress.features.json` while the test. this will make the set \"dynamic\" and relevent.",
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "092ad5a6_b43a6989",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/pauseVfmodule/vfmoduleCreate2AndetPauseRequestOnFirst.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "i suggest removing the whole volumeGroup section if possible",
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4bf68dc_e9de5d7b",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/pauseVfmodule/vfmoduleCreate2AndetPauseRequestOnFirst.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "as i stated above, i believe these vfmodules should not be part of this preset",
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa0ccc37_6c6969fb",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/drawing-board-tree.html",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "please ask some frontend developer to review this block.",
+      "range": {
+        "startLine": 69,
+        "startChar": 7,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28493c4d_fdf48772",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/drawing-board-tree.scss",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-11T12:17:12Z",
+      "side": 1,
+      "message": "why not setting the class model-actions on the menu-item, instead of defining the pause-specific class \"pause-actions\" alnog the whole file?",
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
