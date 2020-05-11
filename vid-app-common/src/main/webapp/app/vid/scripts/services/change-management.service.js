@@ -21,9 +21,9 @@
 (function () {
     'use strict';
 
-    appDS2.service('changeManagementService', ['$http', '$q', 'COMPONENT', 'VIDCONFIGURATION', changeManagementService]);
+    appDS2.service('changeManagementService', ['$http', '$q', 'COMPONENT', 'VIDCONFIGURATION', 'featureFlags', changeManagementService]);
 
-    function changeManagementService($http, $q, COMPONENT, VIDCONFIGURATION) {
+    function changeManagementService($http, $q, COMPONENT, VIDCONFIGURATION, featureFlags) {
         this.getWorkflows = function (vnfs) {
             var requestVnfs = _.map(vnfs, function (vnf) {
                 return {
@@ -68,13 +68,17 @@
         this.getMSOChangeManagements = function() {
             var deferred = $q.defer();
 
-            $http.get(COMPONENT.GET_MSO_WORKFLOWS)
-            .success(function (response) {
-                deferred.resolve({data: response});
-            })
-            .error(function(data, status, headers, config) {
-                deferred.reject({message: data, status: status});
-            });
+            if(featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_GUILIN_CHANGEMG_SUBMIT_TO_SO)) {
+                deferred.resolve({data: []}); // no scheduler
+            } else {
+                $http.get(COMPONENT.GET_MSO_WORKFLOWS)
+                .success(function (response) {
+                    deferred.resolve({data: response});
+                })
+                .error(function (data, status, headers, config) {
+                    deferred.reject({message: data, status: status});
+                });
+            }
 
             return deferred.promise;
         };
