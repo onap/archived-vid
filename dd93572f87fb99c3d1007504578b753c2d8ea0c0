@@ -238,6 +238,30 @@
     },
     {
       "key": {
+        "uuid": "be3da0b3_fd298c41",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/drawing-board-tree.html",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2020-05-11T14:56:38Z",
+      "side": 1,
+      "message": "Yoav checked this section.",
+      "parentUuid": "fa0ccc37_6c6969fb",
+      "range": {
+        "startLine": 69,
+        "startChar": 7,
+        "endLine": 74,
+        "endChar": 14
+      },
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "28493c4d_fdf48772",
         "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/drawing-board-tree.scss",
         "patchSetId": 3
