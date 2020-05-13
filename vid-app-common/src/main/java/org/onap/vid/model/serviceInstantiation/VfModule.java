@@ -49,9 +49,6 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	private final Boolean retainVolumeGroups;
 
 	@JsonInclude(NON_NULL)
-	private final PauseInstantiation pauseInstantiation;
-
-	@JsonInclude(NON_NULL)
 	private Boolean retainAssignments;
 
 	public VfModule(@JsonProperty("modelInfo") ModelInfo modelInfo,
@@ -75,13 +72,12 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		@JsonProperty("pauseInstantiation") PauseInstantiation pauseInstantiation,
 		@JsonProperty("originalName") String originalName) {
 		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
-			position, originalName);
+			position, pauseInstantiation, originalName);
 		this.volumeGroupInstanceName = volumeGroupInstanceName;
 		this.usePreload = usePreload;
 		this.supplementaryParams = supplementaryParams;
 		this.retainAssignments = retainAssignments;
 		this.retainVolumeGroups = retainVolumeGroups;
-		this.pauseInstantiation = pauseInstantiation;
 	}
 
 	public String getVolumeGroupInstanceName() {
@@ -91,10 +87,6 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	public Boolean isUsePreload() {
 
 		return usePreload;
-	}
-
-	public enum PauseInstantiation {
-		afterCompletion
 	}
 
 	public List<UserParamNameAndValue> getSupplementaryParams() {
@@ -125,9 +117,6 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 	public Boolean isRetainVolumeGroups() {
 		return retainVolumeGroups;
 	}
-
-	@Nullable
-	public PauseInstantiation getPauseInstantiation() {return pauseInstantiation;}
 
 	public VfModule cloneWith(ModelInfo modelInfo) {
 		return new VfModule(

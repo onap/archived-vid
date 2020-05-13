@@ -56,7 +56,7 @@ public class Network extends BaseResource implements JobAdapter.AsyncJobRequest 
 		@JsonProperty("originalName") String originalName) {
 
 		super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
-            position, originalName);
+            position, null, originalName);
 		this.productFamilyId = productFamilyId;
 		this.platformName = platformName;
 		this.lineOfBusiness = lineOfBusiness;
