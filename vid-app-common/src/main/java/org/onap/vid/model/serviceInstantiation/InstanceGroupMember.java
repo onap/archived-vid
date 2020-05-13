@@ -37,7 +37,7 @@ public class InstanceGroupMember extends BaseResource implements JobAdapter.Asyn
         @JsonProperty("position") Integer position,
         @JsonProperty("originalName") String originalName) {
         super(new ModelInfo(), null, action, null, null, null, null, false, instanceId, trackById, isFailed, statusMessage,
-            position, originalName);
+            position, null, originalName);
     }
 
     @Override

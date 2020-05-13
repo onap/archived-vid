@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobType;
@@ -37,6 +38,10 @@ import org.onap.vid.model.Action;
 import org.onap.vid.mso.model.ModelInfo;
 
 public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
+
+	public enum PauseInstantiation {
+		afterCompletion
+	}
 
 	protected String instanceId;
 
@@ -65,6 +70,8 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 	@JsonInclude(NON_NULL)
 	protected String originalName; //not used at backend, but stored for fronted
 
+	@JsonInclude(NON_NULL)
+	protected final PauseInstantiation pauseInstantiation;
 
 	private static final Map<String, Action> actionStingToEnumMap = ImmutableMap.<String, Action>builder()
 			.put("Delete", Action.Delete)
@@ -91,6 +98,7 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 		@JsonProperty("isFailed") Boolean isFailed,
 		@JsonProperty("statusMessage") String statusMessage,
 		@JsonProperty("position") Integer position,
+		@JsonProperty("pauseInstantiation") PauseInstantiation pauseInstantiation,
 		@JsonProperty("originalName") String originalName) {
 		this.modelInfo = modelInfo;
 		this.modelInfo.setModelType(getModelType());
@@ -105,6 +113,7 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 		this.isFailed = isFailed!= null ? isFailed: false;
 		this.statusMessage = statusMessage;
 		this.position = position;
+		this.pauseInstantiation = pauseInstantiation;
 		this.originalName = originalName;
 	}
 
@@ -193,4 +202,9 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
 	@JsonIgnore
 	public abstract JobType getJobType();
+
+	@Nullable
+	public PauseInstantiation getPauseInstantiation() {
+		return pauseInstantiation;
+	}
 }

@@ -7,8 +7,8 @@ import org.onap.vid.job.*
 import org.onap.vid.job.impl.JobSharedData
 import org.onap.vid.model.Action
 import org.onap.vid.model.serviceInstantiation.BaseResource
+import org.onap.vid.model.serviceInstantiation.BaseResource.PauseInstantiation
 import org.onap.vid.model.serviceInstantiation.VfModule
-import org.onap.vid.model.serviceInstantiation.VfModule.PauseInstantiation
 import org.onap.vid.model.serviceInstantiation.Vnf
 import org.onap.vid.mso.RestMsoImplementation
 import org.onap.vid.properties.Features
