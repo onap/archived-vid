@@ -83,6 +83,24 @@
     },
     {
       "key": {
+        "uuid": "75005b2c_97ca463f",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-13T03:01:24Z",
+      "side": 1,
+      "message": "1) Because otherwise the test-setup will rot and become irrelevant. this will happen when the frontend code will change, but this test will continue to pass. this, effectively, will make the test useless.\n\n2) Because that\u0027s way the preset will be smaller and therefore easier to understand what it does, and how it was created.\n\n3) Because the test-name states \"create two vfmodules and pause after a first vfmodule\". If the test does something else -- the title should reflect this.\n\n\nAll in all, if you want to have the test preset as it is now, I still recommend having only a single vfmodule in the preset, and have an assertion on the \"Deploy\" on the expected fields rather by a full file.",
+      "parentUuid": "3f308984_620705d9",
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f3667f6f_efe8735c",
         "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
         "patchSetId": 3
@@ -141,6 +159,47 @@
         "endLine": 36,
         "endChar": 23
       },
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a40a837_75a657f0",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-13T03:01:24Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "8b6a8bdb_43db5e0e",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 23
+      },
+      "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab096bfe_2c89544f",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/pauseInstantiationOnVfModule.e2e.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-13T03:01:24Z",
+      "side": 1,
+      "message": "BTW, an assertion here can verify the \"paused\" icon is visible after the click.",
       "revId": "dd93572f87fb99c3d1007504578b753c2d8ea0c0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
