@@ -32,8 +32,8 @@ import org.onap.vid.job.JobsBrokerService
 import org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator
 import org.onap.vid.job.impl.JobSharedData
 import org.onap.vid.model.Action
+import org.onap.vid.model.serviceInstantiation.BaseResource.PauseInstantiation.afterCompletion
 import org.onap.vid.model.serviceInstantiation.VfModule
-import org.onap.vid.model.serviceInstantiation.VfModule.PauseInstantiation.afterCompletion
 import org.onap.vid.mso.RestMsoImplementation
 import org.onap.vid.properties.Features
 import org.onap.vid.services.AsyncInstantiationBusinessLogic
