@@ -107,7 +107,7 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
                                 @JsonProperty("vidNotions") VidNotions vidNotions,
                                 @JsonProperty("originalName") String originalName) {
         super(modelInfo, instanceName, action, lcpCloudRegionId, legacyRegion, tenantId, instanceParams, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
-            null, originalName);
+            null, null, originalName);
         this.owningEntityId = owningEntityId;
         this.owningEntityName = owningEntityName;
         this.projectName = projectName;

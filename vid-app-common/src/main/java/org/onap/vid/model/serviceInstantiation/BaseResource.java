@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 import org.onap.vid.job.JobAdapter;
 import org.onap.vid.job.JobType;
@@ -65,6 +66,8 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 	@JsonInclude(NON_NULL)
 	protected String originalName; //not used at backend, but stored for fronted
 
+	@JsonInclude(NON_NULL)
+	private final PauseInstantiation pauseInstantiation;
 
 	private static final Map<String, Action> actionStingToEnumMap = ImmutableMap.<String, Action>builder()
 			.put("Delete", Action.Delete)
@@ -91,6 +94,7 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 		@JsonProperty("isFailed") Boolean isFailed,
 		@JsonProperty("statusMessage") String statusMessage,
 		@JsonProperty("position") Integer position,
+		@JsonProperty("pauseInstantiation") PauseInstantiation pauseInstantiation,
 		@JsonProperty("originalName") String originalName) {
 		this.modelInfo = modelInfo;
 		this.modelInfo.setModelType(getModelType());
@@ -106,6 +110,7 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 		this.statusMessage = statusMessage;
 		this.position = position;
 		this.originalName = originalName;
+		this.pauseInstantiation = pauseInstantiation;
 	}
 
 	private Action actionStringToEnum(String actionAsString) {
@@ -193,4 +198,11 @@ public abstract class BaseResource implements JobAdapter.AsyncJobRequest {
 
 	@JsonIgnore
 	public abstract JobType getJobType();
+
+	@Nullable
+	public PauseInstantiation getPauseInstantiation() {return pauseInstantiation;}
+
+	public enum PauseInstantiation {
+		afterCompletion
+	}
 }

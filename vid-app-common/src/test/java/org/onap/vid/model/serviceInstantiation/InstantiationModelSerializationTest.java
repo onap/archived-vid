@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.onap.vid.model.Action.Create;
-import static org.onap.vid.model.serviceInstantiation.VfModule.PauseInstantiation.afterCompletion;
+import static org.onap.vid.model.serviceInstantiation.BaseResource.PauseInstantiation.afterCompletion;
 import static org.onap.vid.testUtils.TestUtils.setStringsInStringFields;
 import static org.onap.vid.utils.KotlinUtilsKt.JACKSON_OBJECT_MAPPER;
 

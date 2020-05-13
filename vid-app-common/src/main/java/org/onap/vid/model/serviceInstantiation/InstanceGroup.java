@@ -45,7 +45,7 @@ public class InstanceGroup extends BaseResource implements JobAdapter.AsyncJobRe
         @JsonProperty("originalName") String originalName) {
 
         super(modelInfo, instanceName, action, null, null, null, null, rollbackOnFailure, instanceId, trackById, isFailed, statusMessage,
-            position, originalName);
+            position, null, originalName);
         this.vnfGroupMembers = vnfGroupMembers;
     }
 
