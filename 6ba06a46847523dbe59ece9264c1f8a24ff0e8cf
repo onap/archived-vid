@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2c923281_900d7a21",
+        "filename": "vid-app-common/src/test/resources/payload_jsons/vfmodule/vfModuleCreate2AndPauseOnFirstVfm.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-14T14:03:24Z",
+      "side": 1,
+      "message": "this file can be removed from commit, right?",
+      "revId": "6ba06a46847523dbe59ece9264c1f8a24ff0e8cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38f1b929_b1e2bc98",
+        "filename": "vid-webpack-master/cypress/support/jsonBuilders/mocks/jsons/pauseVfmodule/reduxModelOneVnfAndTwoVfmodulesInstanceOneVnf.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-14T14:03:24Z",
+      "side": 1,
+      "message": "this file should be removed from commit, right?",
+      "revId": "6ba06a46847523dbe59ece9264c1f8a24ff0e8cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03658aed_cf7c3dd0",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/drawing-board-tree.html",
+        "patchSetId": 5
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-14T14:03:24Z",
+      "side": 1,
+      "message": "should be \"model-actions\"?",
+      "range": {
+        "startLine": 69,
+        "startChar": 20,
+        "endLine": 69,
+        "endChar": 33
+      },
+      "revId": "6ba06a46847523dbe59ece9264c1f8a24ff0e8cf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
