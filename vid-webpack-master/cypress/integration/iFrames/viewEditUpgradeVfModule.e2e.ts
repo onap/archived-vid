@@ -93,7 +93,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
     it(`should display the more actions button if user is permitted`, function () {
       let SERVICE_INSTANCE_ID="3f93c7cb-2fd0-4557-9514-e189b7b04f9d";
       let SERVICE_TYPE="TYLER%20SILVIA";
-      cy.visit(`/serviceModels.htm#/instantiate?subscriberId=${SUBSCRIBER_ID}&subscriberName=SILVIA%20ROBBINS&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}&aaiModelVersionId=${serviceUuid}&isPermitted=true`);
+      cy.visit(`/serviceModels.htm#/instantiate?subscriberId=${SUBSCRIBER_ID}&subscriberName=SILVIA%20ROBBINS&serviceType=${SERVICE_TYPE}&serviceInstanceId=${SERVICE_INSTANCE_ID}&aaiModelVersionId=${serviceUuid}`);
 
       cy.get("[data-tests-id='service-instanceId-th-id']").should('contain', SERVICE_INSTANCE_ID);
       cy.getElementByDataTestsId("show-new-screen").should('be.visible').should('have.text', 'More actions').click();
