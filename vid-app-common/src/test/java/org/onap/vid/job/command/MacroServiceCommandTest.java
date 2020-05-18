@@ -54,6 +54,7 @@ import org.onap.vid.services.AuditService;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 public class MacroServiceCommandTest {
 
@@ -83,6 +84,9 @@ public class MacroServiceCommandTest {
 
     @Mock
     private AuditService auditService;
+
+    @Mock
+    FeatureManager featureManager;
 
     @InjectMocks
     private MacroServiceCommand macroServiceCommand;

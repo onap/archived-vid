@@ -21,6 +21,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
+import org.togglz.core.manager.FeatureManager
 import java.util.*
 
 @Component
@@ -34,9 +35,10 @@ class MacroServiceCommand @Autowired constructor(
         msoResultHandlerService: MsoResultHandlerService,
         jobAdapter: JobAdapter,
         restMso: RestMsoImplementation,
-        auditService: AuditService
+        auditService: AuditService,
+        featureManager: FeatureManager
 ) : RootServiceCommand(restMso, inProgressStatusService, msoResultHandlerService,
-        watchChildrenJobsBL, jobsBrokerService, jobAdapter, asyncInstantiationBL, auditService, msoRequestBuilder), JobCommand {
+        watchChildrenJobsBL, jobsBrokerService, jobAdapter, asyncInstantiationBL, auditService, msoRequestBuilder, featureManager), JobCommand {
 
 
     companion object {

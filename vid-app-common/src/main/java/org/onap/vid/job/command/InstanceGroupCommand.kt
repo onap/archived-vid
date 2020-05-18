@@ -34,6 +34,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
+import org.togglz.core.manager.FeatureManager
 import java.util.*
 
 @Component
@@ -46,9 +47,10 @@ class InstanceGroupCommand @Autowired constructor(
         inProgressStatusService:InProgressStatusService,
         watchChildrenJobsBL: WatchChildrenJobsBL,
         jobsBrokerService: JobsBrokerService,
-        jobAdapter: JobAdapter
-        ) : ResourceCommand(restMso, inProgressStatusService, msoResultHandlerService,
-        watchChildrenJobsBL, jobsBrokerService, jobAdapter), JobCommand {
+        jobAdapter: JobAdapter,
+        featureManager: FeatureManager
+) : ResourceCommand(restMso, inProgressStatusService, msoResultHandlerService,
+        watchChildrenJobsBL, jobsBrokerService, jobAdapter, featureManager), JobCommand {
 
     companion object {
         private val LOGGER = EELFLoggerDelegate.getLogger(InstanceGroupCommand::class.java)

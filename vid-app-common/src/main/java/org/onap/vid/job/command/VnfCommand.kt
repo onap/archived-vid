@@ -39,7 +39,7 @@ class VnfCommand @Autowired constructor(
         jobAdapter: JobAdapter,
         private val featureManager: FeatureManager
 ) : ResourceCommand(restMso, inProgressStatusService, msoResultHandlerService,
-        watchChildrenJobsBL, jobsBrokerService, jobAdapter), JobCommand {
+        watchChildrenJobsBL, jobsBrokerService, jobAdapter, featureManager), JobCommand {
 
     private var needToCreateBaseModule:Boolean by Delegates.notNull<Boolean>()
 

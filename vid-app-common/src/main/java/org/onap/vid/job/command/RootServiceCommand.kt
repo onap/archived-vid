@@ -13,6 +13,7 @@ import org.onap.vid.services.AsyncInstantiationBusinessLogic
 import org.onap.vid.services.AuditService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
+import org.togglz.core.manager.FeatureManager
 import java.util.*
 
 abstract class RootServiceCommand @Autowired constructor(
@@ -24,9 +25,10 @@ abstract class RootServiceCommand @Autowired constructor(
         jobAdapter: JobAdapter,
         private val asyncInstantiationBL: AsyncInstantiationBusinessLogic,
         private val auditService: AuditService,
-        private val msoRequestBuilder: MsoRequestBuilder
+        private val msoRequestBuilder: MsoRequestBuilder,
+        featureManager: FeatureManager
 ) : ResourceCommand(restMso, inProgressStatusService, msoResultHandlerService,
-        watchChildrenJobsBL, jobsBrokerService, jobAdapter), JobCommand {
+        watchChildrenJobsBL, jobsBrokerService, jobAdapter, featureManager), JobCommand {
 
     lateinit var optimisticUniqueServiceInstanceName: String
 

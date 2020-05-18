@@ -14,6 +14,7 @@ import org.onap.vid.services.AsyncInstantiationBusinessLogic
 import org.onap.vid.testUtils.TestUtils.initMockitoMocks
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
+import org.togglz.core.manager.FeatureManager
 
 class VfmoduleCommandTest {
 
@@ -25,6 +26,8 @@ class VfmoduleCommandTest {
     @Mock lateinit var watchChildrenJobsBL: WatchChildrenJobsBL;
     @Mock lateinit var jobsBrokerService: JobsBrokerService;
     @Mock lateinit var jobAdapter: JobAdapter;
+    @Mock lateinit var featureManager: FeatureManager;
+
 
     @InjectMocks lateinit var vfModuleCommand: VfmoduleCommand;
 

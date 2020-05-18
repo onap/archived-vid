@@ -81,6 +81,7 @@ import org.onap.vid.mso.model.ModelInfo;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 public class ResourceCommandTest {
 
@@ -97,7 +98,8 @@ public class ResourceCommandTest {
                     mock(MsoResultHandlerService.class, RETURNS_MOCKS),
                     mock(WatchChildrenJobsBL.class),
                     mock(JobsBrokerService.class, RETURNS_MOCKS),
-                    mock(JobAdapter.class, RETURNS_MOCKS));
+                    mock(JobAdapter.class, RETURNS_MOCKS),
+                    mock(FeatureManager.class));
             this.mockedJobStatus = mockedJobStatus;
             this.mockState = mockState;
             this.mockPhase = mockPhase;

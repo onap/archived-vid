@@ -174,8 +174,9 @@ public class JobCommandsConfigWithMockedMso {
             InProgressStatusService inProgressStatusService,
             WatchChildrenJobsBL watchChildrenJobsBL,
             RestMsoImplementation restMso,
-            AuditService auditService) {
-        return new ALaCarteServiceCommand(inProgressStatusService, watchChildrenJobsBL, asyncInstantiationBusinessLogic, jobsBrokerService, msoRequestBuilder, msoResultHandlerService, jobAdapter, restMso, auditService);
+            AuditService auditService,
+            FeatureManager featureManager) {
+        return new ALaCarteServiceCommand(inProgressStatusService, watchChildrenJobsBL, asyncInstantiationBusinessLogic, jobsBrokerService, msoRequestBuilder, msoResultHandlerService, jobAdapter, restMso, auditService, featureManager);
     }
 
     @Bean
@@ -189,8 +190,9 @@ public class JobCommandsConfigWithMockedMso {
             InProgressStatusService inProgressStatusService,
             WatchChildrenJobsBL watchChildrenJobsBL,
             RestMsoImplementation restMso,
-            AuditService auditService) {
-        return new MacroServiceCommand(inProgressStatusService, watchChildrenJobsBL, asyncInstantiationBusinessLogic, jobsBrokerService, msoRequestBuilder, msoResultHandlerService, jobAdapter, restMso, auditService);
+            AuditService auditService,
+            FeatureManager featureManager) {
+        return new MacroServiceCommand(inProgressStatusService, watchChildrenJobsBL, asyncInstantiationBusinessLogic, jobsBrokerService, msoRequestBuilder, msoResultHandlerService, jobAdapter, restMso, auditService, featureManager);
     }
 
 
@@ -204,9 +206,10 @@ public class JobCommandsConfigWithMockedMso {
             InProgressStatusService inProgressStatusService,
             WatchChildrenJobsBL watchChildrenJobsBL,
             JobsBrokerService jobsBrokerService,
-            JobAdapter jobAdapter) {
+            JobAdapter jobAdapter,
+            FeatureManager featureManager) {
         return new NetworkCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService,
-                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService, jobAdapter);
+                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService, jobAdapter, featureManager);
     }
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -218,8 +221,10 @@ public class JobCommandsConfigWithMockedMso {
             WatchChildrenJobsBL watchChildrenJobsBL,
             RestMsoImplementation restMso,
             JobsBrokerService jobsBrokerService,
-            JobAdapter jobAdapter) {
-        return new InstanceGroupCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService, inProgressStatusService, watchChildrenJobsBL, jobsBrokerService, jobAdapter);
+            JobAdapter jobAdapter,
+            FeatureManager featureManager) {
+        return new InstanceGroupCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService, inProgressStatusService,
+            watchChildrenJobsBL, jobsBrokerService, jobAdapter, featureManager);
     }
 
     @Bean
@@ -232,9 +237,10 @@ public class JobCommandsConfigWithMockedMso {
             WatchChildrenJobsBL watchChildrenJobsBL,
             RestMsoImplementation restMso,
             JobsBrokerService jobsBrokerService,
-            JobAdapter jobAdapter) {
+            JobAdapter jobAdapter,
+            FeatureManager featureManager) {
         return new InstanceGroupMemberCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService, inProgressStatusService,
-                watchChildrenJobsBL, jobsBrokerService, jobAdapter);
+                watchChildrenJobsBL, jobsBrokerService, jobAdapter, featureManager);
     }
 
 
@@ -265,9 +271,10 @@ public class JobCommandsConfigWithMockedMso {
             InProgressStatusService inProgressStatusService,
             WatchChildrenJobsBL watchChildrenJobsBL,
             JobsBrokerService jobsBrokerService,
-            JobAdapter jobAdapter) {
+            JobAdapter jobAdapter,
+            FeatureManager featureManager) {
         return new VolumeGroupCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService,
-                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService ,jobAdapter);
+                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService ,jobAdapter, featureManager);
     }
 
     @Bean
@@ -280,9 +287,10 @@ public class JobCommandsConfigWithMockedMso {
             InProgressStatusService inProgressStatusService,
             WatchChildrenJobsBL watchChildrenJobsBL,
             JobsBrokerService jobsBrokerService,
-            JobAdapter jobAdapter) {
+            JobAdapter jobAdapter,
+            FeatureManager featureManager) {
         return new VfmoduleCommand(asyncInstantiationBusinessLogic, restMso, msoRequestBuilder, msoResultHandlerService,
-                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService, jobAdapter);
+                inProgressStatusService, watchChildrenJobsBL, jobsBrokerService, jobAdapter, featureManager);
     }
     @Bean
     public AuditService auditService(RestMsoImplementation msoClient, AsyncInstantiationRepository asyncInstantiationRepository) {
