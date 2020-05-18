@@ -78,6 +78,7 @@ import org.onap.vid.model.serviceInstantiation.VfModule;
 import org.onap.vid.model.serviceInstantiation.Vnf;
 import org.onap.vid.mso.RestMsoImplementation;
 import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.properties.FeatureSetsManager;
 import org.springframework.http.HttpMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -97,7 +98,8 @@ public class ResourceCommandTest {
                     mock(MsoResultHandlerService.class, RETURNS_MOCKS),
                     mock(WatchChildrenJobsBL.class),
                     mock(JobsBrokerService.class, RETURNS_MOCKS),
-                    mock(JobAdapter.class, RETURNS_MOCKS));
+                    mock(JobAdapter.class, RETURNS_MOCKS),
+                    mock(FeatureSetsManager.class));
             this.mockedJobStatus = mockedJobStatus;
             this.mockState = mockState;
             this.mockPhase = mockPhase;
