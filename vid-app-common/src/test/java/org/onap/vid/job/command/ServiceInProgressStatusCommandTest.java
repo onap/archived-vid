@@ -20,12 +20,45 @@
 
 package org.onap.vid.job.command;
 
+import static java.util.Collections.emptyList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_NO_ACTION;
+import static org.onap.vid.job.Job.JobStatus.IN_PROGRESS;
+import static org.onap.vid.job.command.ResourceCommandKt.ACTION_PHASE;
+import static org.onap.vid.job.command.ResourceCommandKt.CHILD_JOBS;
+import static org.onap.vid.job.command.ResourceCommandKt.INTERNAL_STATE;
+import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createNetwork;
+import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createService;
+import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createVnf;
+import static org.onap.vid.model.Action.Create;
+import static org.onap.vid.testUtils.TestUtils.testWithSystemProperty;
+import static org.testng.AssertJUnit.assertEquals;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.UUID;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.onap.vid.job.*;
+import org.onap.vid.job.Job;
+import org.onap.vid.job.JobAdapter;
+import org.onap.vid.job.JobType;
+import org.onap.vid.job.JobsBrokerService;
+import org.onap.vid.job.NextCommand;
 import org.onap.vid.job.impl.JobSharedData;
 import org.onap.vid.model.Action;
 import org.onap.vid.model.serviceInstantiation.Network;
@@ -41,27 +74,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.togglz.core.manager.FeatureManager;
-
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.UUID;
-
-import static java.util.Collections.emptyList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-import static org.onap.vid.job.Job.JobStatus.*;
-import static org.onap.vid.job.command.ResourceCommandKt.*;
-import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.*;
-import static org.onap.vid.model.Action.Create;
-import static org.onap.vid.testUtils.TestUtils.testWithSystemProperty;
-import static org.testng.AssertJUnit.assertEquals;
 
 public class ServiceInProgressStatusCommandTest {
 
@@ -134,7 +146,8 @@ public class ServiceInProgressStatusCommandTest {
                 msoResultHandlerService,
                 jobAdapter,
                 restMsoImplementation,
-                auditService
+                auditService,
+                featureManager
         );
     }
 

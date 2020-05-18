@@ -20,7 +20,19 @@
 
 package org.onap.vid.job.command;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.same;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.google.common.collect.ImmutableMap;
+import java.util.Optional;
+import java.util.Set;
 import org.apache.commons.beanutils.BeanUtils;
 import org.mockito.Answers;
 import org.mockito.InjectMocks;
@@ -39,15 +51,7 @@ import org.springframework.http.HttpMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.Optional;
-import java.util.Set;
-
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import org.togglz.core.manager.FeatureManager;
 
 public class InstanceGroupCommandTest {
 
@@ -74,6 +78,8 @@ public class InstanceGroupCommandTest {
     JobAdapter jobAdapter;
 
     @Mock InProgressStatusService inProgressStatusService;
+
+    @Mock FeatureManager featureManager;
 
     @InjectMocks
     private InstanceGroupCommand command;

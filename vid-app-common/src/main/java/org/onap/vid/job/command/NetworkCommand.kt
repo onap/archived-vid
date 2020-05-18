@@ -13,6 +13,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Scope
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
+import org.togglz.core.manager.FeatureManager
 import java.util.*
 
 
@@ -26,9 +27,10 @@ class NetworkCommand @Autowired constructor(
         inProgressStatusService:InProgressStatusService,
         watchChildrenJobsBL: WatchChildrenJobsBL,
         jobsBrokerService: JobsBrokerService,
-        jobAdapter: JobAdapter
-        ) : ResourceCommand(restMso, inProgressStatusService, msoResultHandlerService,
-        watchChildrenJobsBL, jobsBrokerService, jobAdapter), JobCommand {
+        jobAdapter: JobAdapter,
+        private val featureManager: FeatureManager
+) : ResourceCommand(restMso, inProgressStatusService, msoResultHandlerService,
+        watchChildrenJobsBL, jobsBrokerService, jobAdapter, featureManager), JobCommand {
     override fun createChildren(): Job.JobStatus {
         return Job.JobStatus.COMPLETED_WITH_NO_ACTION
     }

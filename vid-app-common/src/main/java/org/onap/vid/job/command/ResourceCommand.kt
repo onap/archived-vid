@@ -33,11 +33,14 @@ import org.onap.vid.job.impl.JobSharedData
 import org.onap.vid.model.Action
 import org.onap.vid.model.RequestReferencesContainer
 import org.onap.vid.model.serviceInstantiation.BaseResource
+import org.onap.vid.model.serviceInstantiation.BaseResource.PauseInstantiation.afterCompletion
 import org.onap.vid.mso.RestMsoImplementation
 import org.onap.vid.mso.model.ModelInfo
+import org.onap.vid.properties.Features
 import org.onap.vid.utils.JACKSON_OBJECT_MAPPER
 import org.onap.vid.utils.getEnumFromMapOfStrings
 import org.springframework.http.HttpMethod
+import org.togglz.core.manager.FeatureManager
 import java.util.*
 
 
@@ -76,7 +79,8 @@ abstract class ResourceCommand(
         protected val msoResultHandlerService: MsoResultHandlerService,
         protected val watchChildrenJobsBL: WatchChildrenJobsBL,
         private val jobsBrokerService: JobsBrokerService,
-        private val jobAdapter: JobAdapter
+        private val jobAdapter: JobAdapter,
+        private val featureManager: FeatureManager
         ) : CommandBase(), JobCommand {
 
     companion object {
