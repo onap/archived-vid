@@ -1,5 +1,17 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
-import {COMPLETED_WITH_ERRORS, INPROGRESS, InstantiationStatusComponentService, PAUSE, PENDING, ServiceStatus, STOPPED, SUCCESS_CIRCLE, UNKNOWN, X_O} from './instantiationStatus.component.service';
+import {
+  COMPLETED_WITH_ERRORS,
+  INPROGRESS,
+  InstantiationStatusComponentService,
+  PAUSE,
+  PAUSE_UPON_COMPLETION,
+  PENDING,
+  ServiceStatus,
+  STOPPED,
+  SUCCESS_CIRCLE,
+  UNKNOWN,
+  X_O
+} from './instantiationStatus.component.service';
 import {ServiceInfoModel} from '../shared/server/serviceInfo/serviceInfo.model';
 import {AaiService} from "../shared/services/aaiService/aai.service";
 import {MsoService} from "../shared/services/msoService/mso.service";
@@ -137,6 +149,7 @@ describe('Instantiation Status Service', () => {
     'StOpPeD': 'Stopped: Due to previous failure, will not be instantiated.',
     'COMPLETED_WITH_ERRORS': 'Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.',
     'UNEXPECTED_RANDOM_STATUS': 'Unexpected status: "UNEXPECTED_RANDOM_STATUS"',
+    'COMPLETED_AND_PAUSED': 'Pause upon completion. you may resume the instantiation.\n Open the service to check it out.',
   })) {
 
     test(`getStatusTooltip should return status popover: status=${status}`, () => {
@@ -196,6 +209,9 @@ describe('Instantiation Status Service', () => {
 
     result = service.getStatus('UNEXPECTED_RANDOM_STATUS');
     expect(result.iconClassName).toEqual(UNKNOWN);
+
+    result = service.getStatus('COMPLETED_AND_PAUSED');
+    expect(result.iconClassName).toEqual(PAUSE_UPON_COMPLETION);
 
     result = service.getStatus(undefined);
     expect(result.iconClassName).toEqual(UNKNOWN);
