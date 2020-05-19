@@ -5,5 +5,5 @@ export enum DrawingBoardModes {
   EDIT = 'EDIT',
   OLD_VIEW_EDIT = 'OLD_VIEW_EDIT',
   CREATE = 'CREATE',
-  RECREATE = 'RECREATE'
+  RECREATE = 'RECREATE',
 }

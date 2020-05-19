@@ -77,7 +77,7 @@
             *ngIf="mode !== 'VIEW' && mode !== 'RETRY'; else viewEditButton"
             [attr.data-tests-id]="'deployBtn'"
             (click)="deployService()"
-            class="deploy-btn">{{drawingBoardHeaderService?.getModeButton(mode)}}</button>
+            class="deploy-btn">{{drawingBoardHeaderService?.getModeButton(mode, serviceModelId)}}</button>
     <ng-template #viewEditButton>
       <button [disabled]="!isPermitted()"
         [attr.data-tests-id]="'editBtn'"

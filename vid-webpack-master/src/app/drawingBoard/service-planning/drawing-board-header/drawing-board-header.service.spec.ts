@@ -170,15 +170,39 @@ describe('Generate path to old View/Edit ', () => {
     expect(result).not.toBeTruthy();
   });
 
+  const resumeButtonShouldBeDisplayed = [
+    ['with', 'be', 'afterCompletion', true],
+    ['with', 'not be', 'NOTafterCompletion', false]
+  ];
 
+  each(resumeButtonShouldBeDisplayed).
+  test('given vfmodule instance %s pauseInstance field then resume button should %s displayed', (description, description1, pauseInstantiationValue: string, expected: boolean) => {
+    jest.spyOn(store, 'getState').mockReturnValue(<any>getServiceInstanceWithVfModules(pauseInstantiationValue));
+    let result = service.shouldDisplayResumeBtn('serviceModelId');
+    expect(result).toEqual(expected);
+  });
+
+  const showModeButtonDataProvider = [
+    ['be displayed',true, 'RESUME'],
+    ['not be displayed', false, 'REDEPLOY']
+  ];
+
+  each(showModeButtonDataProvider).
+  test('check Resume button for paused instance should %s', (description, isAppear, modeButton: string)=> {
+    jest.spyOn(service, 'shouldDisplayResumeBtn').mockReturnValue(isAppear);
+    let result: string = service.getModeButton('RETRY_EDIT', 'serviceModelId');
+    expect(result).toEqual(modeButton);
+
+  });
   test('getModeButton',()=>{
-    let result : string = service.getModeButton("EDIT");
+    jest.spyOn(service, 'shouldDisplayResumeBtn').mockReturnValue(false);
+    let result : string = service.getModeButton("EDIT", "serviceModelId");
     expect(result).toEqual('UPDATE');
 
-    result  = service.getModeButton("");
+    result  = service.getModeButton("", "serviceModelId");
     expect(result).toEqual('DEPLOY');
 
-    result  = service.getModeButton("RETRY_EDIT");
+    result  = service.getModeButton("RETRY_EDIT", "serviceModelId");
     expect(result).toEqual('REDEPLOY');
   });
   test('getButtonText',()=>{
@@ -250,5 +274,31 @@ describe('Generate path to old View/Edit ', () => {
     service.toggleResumeService("serviceInstanceId", isResume);
     expect(store.dispatch).toHaveBeenCalledWith(addServiceAction("serviceInstanceId", serviceAction));
   });
+
+  function getServiceInstanceWithVfModules(pauseInstantiationValue) {
+    return {
+      service: {
+        serviceInstance: {
+          'serviceModelId': {
+            vnfs: {
+              'vfName': {
+                vfModules: {
+                  'modelName': {
+                    'dynamicModelName': {
+                      pauseInstantiation: pauseInstantiationValue
+                    }
+                  },
+                  'modelName1': {
+                    'dynamicModelName1': {
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
 });

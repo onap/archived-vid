@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {addServiceAction} from "../../../shared/storeUtil/utils/service/service.actions";
-import {ServiceInstanceActions} from "../../../shared/models/serviceInstanceActions";
+import {PauseStatus, ServiceInstanceActions} from "../../../shared/models/serviceInstanceActions";
 import {AppState} from "../../../shared/store/reducers";
 import {DrawingBoardTreeComponent} from "../drawing-board-tree/drawing-board-tree.component";
 import {AuditInfoModalComponent} from "../../../shared/components/auditInfoModal/auditInfoModal.component";
@@ -74,7 +74,25 @@ export class DrawingBoardHeaderService{
     return true;
   }
 
-  getModeButton(mode : string) : string {
+  shouldDisplayResumeBtn(serviceInstanceId : string) : boolean{
+    let isPaused:boolean = false;
+    const vnfs = this.store.getState().service.serviceInstance[serviceInstanceId].vnfs;
+    for(let vnfKey in vnfs){
+      _.forOwn(vnfs[vnfKey].vfModules, (vfModule) => {
+        _.forOwn(vfModule, (vfModuleInstance) => {
+          if(vfModuleInstance.pauseInstantiation === PauseStatus.AFTER_COMPLETION){
+            isPaused = true;
+          }
+        })
+      })
+    }
+    return isPaused;
+  }
+
+  getModeButton(mode : string, serviceInstanceId : string) : string {
+    if(this.shouldDisplayResumeBtn(serviceInstanceId)){
+      return 'RESUME';
+    }
     switch (mode) {
       case DrawingBoardModes.EDIT:
         return 'UPDATE';
