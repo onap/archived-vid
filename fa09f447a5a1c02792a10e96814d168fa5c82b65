@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a12cd0ef_a4576784",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/ResourceCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-19T03:41:17Z",
+      "side": 1,
+      "message": "i like the fact that this is just the injection without the logic. 👍",
+      "revId": "fa09f447a5a1c02792a10e96814d168fa5c82b65",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a44d3f59_6478ae3c",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VfmoduleCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-19T03:41:17Z",
+      "side": 1,
+      "message": "no need do declare a local member here. just get the param and put it on parent\u0027s constructor",
+      "range": {
+        "startLine": 35,
+        "startChar": 8,
+        "endLine": 35,
+        "endChar": 19
+      },
+      "revId": "fa09f447a5a1c02792a10e96814d168fa5c82b65",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b5fc9d2_0d4f0e00",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/VolumeGroupCommand.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-19T03:41:17Z",
+      "side": 1,
+      "message": "no need do define a local member; just get the injection and forward it to parent.",
+      "range": {
+        "startLine": 30,
+        "startChar": 8,
+        "endLine": 30,
+        "endChar": 19
+      },
+      "revId": "fa09f447a5a1c02792a10e96814d168fa5c82b65",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0229b0c2_e5f768ec",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/ResourceCommandTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-19T03:41:17Z",
+      "side": 1,
+      "message": "This is the wrong Class here. Should be FeatureManager.",
+      "range": {
+        "startLine": 102,
+        "startChar": 25,
+        "endLine": 102,
+        "endChar": 43
+      },
+      "revId": "fa09f447a5a1c02792a10e96814d168fa5c82b65",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "918a3db4_3c9c47fd",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/VfmoduleCommandTest.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-19T03:41:17Z",
+      "side": 1,
+      "message": "It is better to follow the convention of non-nullable with `lateinit`.\nIn kotlin nullable and non-nullable are generally considered different types.",
+      "revId": "fa09f447a5a1c02792a10e96814d168fa5c82b65",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
