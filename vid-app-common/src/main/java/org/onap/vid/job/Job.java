@@ -21,13 +21,12 @@
 package org.onap.vid.job;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.onap.vid.job.impl.JobSharedData;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.onap.vid.job.impl.JobSharedData;
 
 public interface Job {
 
@@ -68,6 +67,7 @@ public interface Job {
         COMPLETED_WITH_NO_ACTION(true, false),
         CREATING(false),
         PENDING_RESOURCE(false),
+        COMPLETED_AND_PAUSED(true, false),
         ;
 
         private final Boolean finalStatus;

@@ -47,6 +47,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.onap.vid.job.Job.JobStatus.COMPLETED;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_AND_PAUSED;
 import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_ERRORS;
 import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_NO_ACTION;
 import static org.onap.vid.job.Job.JobStatus.FAILED;
@@ -1033,16 +1034,16 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     @DataProvider
     public static Object[][] pauseInstantiation(Method test) {
         return new Object[][]{
-            {true, 2},
-            {false, 3}
+            {true, 2, COMPLETED_AND_PAUSED},
+            {false, 3, COMPLETED}
         };
     }
 
     @Test (dataProvider = "pauseInstantiation")
-    public void viewEdit_existingVnfCreate3VfModulesPauseAfterTheSecond(boolean flag, int expectedNumberOfInvocation) {
+    public void viewEdit_existingVnfCreate3VfModulesPauseAfterTheSecond(boolean flag, int expectedNumberOfInvocation,
+        JobStatus expectedJobStatus) {
         RestObject<RequestReferencesContainer> createVfModuleResponse = createResponseRandomIds(202);
         RestObject<AsyncRequestStatus> createStatusResponse = asyncRequestStatusResponseAsRestObject(COMPLETE_STR);
-        JobStatus expectedJobStatus = COMPLETED;
 
         when(featureManager.isActive(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION)).thenReturn(flag);
 
