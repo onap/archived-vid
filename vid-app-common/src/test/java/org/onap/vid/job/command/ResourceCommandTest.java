@@ -28,6 +28,14 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_ERRORS;
+import static org.onap.vid.job.Job.JobStatus.COMPLETED_WITH_NO_ACTION;
+import static org.onap.vid.job.Job.JobStatus.FAILED;
+import static org.onap.vid.job.Job.JobStatus.IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.PAUSE;
+import static org.onap.vid.job.Job.JobStatus.RESOURCE_IN_PROGRESS;
+import static org.onap.vid.job.Job.JobStatus.STOPPED;
 import static org.onap.vid.job.command.ResourceCommandKt.ACTION_PHASE;
 import static org.onap.vid.job.command.ResourceCommandKt.INTERNAL_STATE;
 import static org.onap.vid.job.command.ResourceCommandTest.FakeResourceCreator.createGroup;
@@ -212,14 +220,14 @@ public class ResourceCommandTest {
     @DataProvider
     public static Object[][] nextStateDeletePhaseProvider() {
         return new Object[][]{
-                {InternalState.CREATING_CHILDREN, Job.JobStatus.COMPLETED, InternalState.WATCHING},
-                {InternalState.WATCHING, Job.JobStatus.COMPLETED, InternalState.DELETE_MYSELF},
-                {InternalState.WATCHING, Job.JobStatus.IN_PROGRESS, InternalState.WATCHING},
-                {InternalState.WATCHING, Job.JobStatus.RESOURCE_IN_PROGRESS, InternalState.WATCHING},
-                {InternalState.DELETE_MYSELF, Job.JobStatus.COMPLETED, InternalState.IN_PROGRESS},
-                {InternalState.IN_PROGRESS, Job.JobStatus.COMPLETED, InternalState.TERMINAL},
-                {InternalState.IN_PROGRESS, Job.JobStatus.IN_PROGRESS, InternalState.IN_PROGRESS},
-                {InternalState.IN_PROGRESS, Job.JobStatus.RESOURCE_IN_PROGRESS, InternalState.IN_PROGRESS},
+                {InternalState.CREATING_CHILDREN, COMPLETED, InternalState.WATCHING},
+                {InternalState.WATCHING, COMPLETED, InternalState.DELETE_MYSELF},
+                {InternalState.WATCHING, IN_PROGRESS, InternalState.WATCHING},
+                {InternalState.WATCHING, RESOURCE_IN_PROGRESS, InternalState.WATCHING},
+                {InternalState.DELETE_MYSELF, COMPLETED, InternalState.IN_PROGRESS},
+                {InternalState.IN_PROGRESS, COMPLETED, InternalState.TERMINAL},
+                {InternalState.IN_PROGRESS, IN_PROGRESS, InternalState.IN_PROGRESS},
+                {InternalState.IN_PROGRESS, RESOURCE_IN_PROGRESS, InternalState.IN_PROGRESS},
         };
     }
 
@@ -228,28 +236,28 @@ public class ResourceCommandTest {
             InternalState internalState, Job.JobStatus jobStatus, InternalState expectedState) {
 
         //there is no meaning to the constructor inputs here
-        MockCommandTestingStateMachine underTest = new MockCommandTestingStateMachine(InternalState.TERMINAL, Delete, Job.JobStatus.FAILED, true);
+        MockCommandTestingStateMachine underTest = new MockCommandTestingStateMachine(InternalState.TERMINAL, Delete, FAILED, true);
         assertEquals(expectedState, underTest.calcNextStateDeletePhase(jobStatus, internalState));
     }
 
     @Test
     public void whenNoNeedToDeleteMyself_internalStateMovesFromWatchingToTerminal() {
-        MockCommandTestingStateMachine underTest = new MockCommandTestingStateMachine(InternalState.WATCHING, Delete, Job.JobStatus.COMPLETED, false);
-        assertEquals(InternalState.TERMINAL, underTest.calcNextStateDeletePhase(Job.JobStatus.COMPLETED, InternalState.WATCHING));
+        MockCommandTestingStateMachine underTest = new MockCommandTestingStateMachine(InternalState.WATCHING, Delete, COMPLETED, false);
+        assertEquals(InternalState.TERMINAL, underTest.calcNextStateDeletePhase(COMPLETED, InternalState.WATCHING));
     }
 
     @DataProvider
     public static Object[][] testShallStopJobDataProvider() {
         return new Object[][]{
-                {Job.JobStatus.IN_PROGRESS, None, false, false},
-                {Job.JobStatus.COMPLETED_WITH_NO_ACTION, None, false, false},
-                {Job.JobStatus.COMPLETED, None, false, false},
-                {Job.JobStatus.FAILED, None, false, true},
-                {Job.JobStatus.COMPLETED_WITH_ERRORS, None, false, true},
-                {Job.JobStatus.COMPLETED_WITH_ERRORS, None, true, false},
-                {Job.JobStatus.FAILED, None, true, false},
-                {Job.JobStatus.FAILED, Delete, true, true},
-                {Job.JobStatus.FAILED, Create, true, true},
+                {IN_PROGRESS, None, false, false},
+                {COMPLETED_WITH_NO_ACTION, None, false, false},
+                {COMPLETED, None, false, false},
+                {FAILED, None, false, true},
+                {COMPLETED_WITH_ERRORS, None, false, true},
+                {COMPLETED_WITH_ERRORS, None, true, false},
+                {FAILED, None, true, false},
+                {FAILED, Delete, true, true},
+                {FAILED, Create, true, true},
         };
     }
 
@@ -257,7 +265,7 @@ public class ResourceCommandTest {
     @Test(dataProvider = "testShallStopJobDataProvider")
     public void testShallStopJob(Job.JobStatus jobStatus, Action action, boolean isService, boolean expectedResult) {
         //in this test, there is no meaning to constructor parameters besides isService
-        MockCommandTestingStateMachine underTest = new MockCommandTestingStateMachine(InternalState.WATCHING, Delete, Job.JobStatus.COMPLETED, false, isService, true);
+        MockCommandTestingStateMachine underTest = new MockCommandTestingStateMachine(InternalState.WATCHING, Delete, COMPLETED, false, isService, true);
 
         BaseResource mockedRequest = mock(BaseResource.class);
         when(underTest.getSharedData().getRequest()).thenReturn(mockedRequest);
@@ -355,27 +363,27 @@ public class ResourceCommandTest {
     @Test(dataProvider = "testIsDescendantHasActionDataProvider")
     public void testIsDescendantHasAction(String desc, Action action, boolean expectedResult, BaseResource request) {
         //in this test, there is no meaning to constructor parameters
-        MockCommand underTest = new MockCommand(InternalState.WATCHING, Delete, Job.JobStatus.COMPLETED);
+        MockCommand underTest = new MockCommand(InternalState.WATCHING, Delete, COMPLETED);
         assertEquals(expectedResult, underTest.isDescendantHasAction(request, action));
     }
 
     @DataProvider
     public static Object[][] testCallDataProvider() {
         return new Object[][]{
-                {"initial state with successful creating children" ,InternalState.INITIAL, Job.JobStatus.COMPLETED, InternalState.WATCHING, Job.JobStatus.RESOURCE_IN_PROGRESS},
-                {"initial state with failed creating children", InternalState.INITIAL, Job.JobStatus.FAILED, null, Job.JobStatus.FAILED},
-                {"watching state with children still in progress" ,InternalState.WATCHING, Job.JobStatus.RESOURCE_IN_PROGRESS, InternalState.WATCHING, Job.JobStatus.RESOURCE_IN_PROGRESS},
-                {"watching state with children that completed with errors" ,InternalState.WATCHING, Job.JobStatus.COMPLETED_WITH_ERRORS, null, Job.JobStatus.COMPLETED_WITH_ERRORS},
-                {"watching state with children that completed with no action" ,InternalState.WATCHING, Job.JobStatus.COMPLETED_WITH_NO_ACTION, InternalState.DELETE_MYSELF, Job.JobStatus.RESOURCE_IN_PROGRESS},
-                {"watching state with children that has completed" ,InternalState.WATCHING, Job.JobStatus.COMPLETED, InternalState.DELETE_MYSELF, Job.JobStatus.RESOURCE_IN_PROGRESS},
-                {"mso call state that failed" ,InternalState.DELETE_MYSELF, Job.JobStatus.FAILED, null, Job.JobStatus.FAILED},
+                {"initial state with successful creating children" ,InternalState.INITIAL, COMPLETED, InternalState.WATCHING, RESOURCE_IN_PROGRESS},
+                {"initial state with failed creating children", InternalState.INITIAL, FAILED, null, FAILED},
+                {"watching state with children still in progress" ,InternalState.WATCHING, RESOURCE_IN_PROGRESS, InternalState.WATCHING, RESOURCE_IN_PROGRESS},
+                {"watching state with children that completed with errors" ,InternalState.WATCHING, COMPLETED_WITH_ERRORS, null, COMPLETED_WITH_ERRORS},
+                {"watching state with children that completed with no action" ,InternalState.WATCHING, COMPLETED_WITH_NO_ACTION, InternalState.DELETE_MYSELF, RESOURCE_IN_PROGRESS},
+                {"watching state with children that has completed" ,InternalState.WATCHING, COMPLETED, InternalState.DELETE_MYSELF, RESOURCE_IN_PROGRESS},
+                {"mso call state that failed" ,InternalState.DELETE_MYSELF, FAILED, null, FAILED},
                 //TODO handle AAI get unique name state {"mso call state that still in progress" ,InternalState.DELETE_MYSELF, Job.JobStatus.FAILED, null, Job.JobStatus.FAILED, false},
-                {"mso call state that success" ,InternalState.DELETE_MYSELF, Job.JobStatus.COMPLETED, InternalState.IN_PROGRESS, Job.JobStatus.RESOURCE_IN_PROGRESS},
-                {"in progress return in progress" ,InternalState.IN_PROGRESS, Job.JobStatus.IN_PROGRESS, InternalState.IN_PROGRESS, Job.JobStatus.RESOURCE_IN_PROGRESS},
-                {"in progress return in pause" ,InternalState.IN_PROGRESS, Job.JobStatus.PAUSE, InternalState.IN_PROGRESS, Job.JobStatus.RESOURCE_IN_PROGRESS},
-                {"in progress return in pause" ,InternalState.IN_PROGRESS, Job.JobStatus.STOPPED, null, Job.JobStatus.STOPPED},
-                {"in progress return in pause" ,InternalState.IN_PROGRESS, Job.JobStatus.FAILED, null, Job.JobStatus.FAILED},
-                {"in progress return in pause" ,InternalState.IN_PROGRESS, Job.JobStatus.COMPLETED, null, Job.JobStatus.COMPLETED},
+                {"mso call state that success" ,InternalState.DELETE_MYSELF, COMPLETED, InternalState.IN_PROGRESS, RESOURCE_IN_PROGRESS},
+                {"in progress return in progress" ,InternalState.IN_PROGRESS, IN_PROGRESS, InternalState.IN_PROGRESS, RESOURCE_IN_PROGRESS},
+                {"in progress return in pause" ,InternalState.IN_PROGRESS, PAUSE, InternalState.IN_PROGRESS, RESOURCE_IN_PROGRESS},
+                {"in progress return in pause" ,InternalState.IN_PROGRESS, STOPPED, null, STOPPED},
+                {"in progress return in pause" ,InternalState.IN_PROGRESS, FAILED, null, FAILED},
+                {"in progress return in pause" ,InternalState.IN_PROGRESS, COMPLETED, null, COMPLETED},
 
         };
     }
@@ -409,18 +417,25 @@ public class ResourceCommandTest {
 
     @Test(dataProvider = "InProgressDataProvider")
     public void whenGetResultFromMso_InProgressReturnThem(Job.JobStatus mockedJobStatus) {
-        Job.JobStatus expectedJobStatus = (mockedJobStatus== Job.JobStatus.PAUSE) ? Job.JobStatus.IN_PROGRESS : mockedJobStatus;
+        Job.JobStatus expectedJobStatus = (mockedJobStatus== PAUSE) ? IN_PROGRESS : mockedJobStatus;
         MockCommand underTest = new MockCommand(InternalState.IN_PROGRESS, Delete, mockedJobStatus);
         when(underTest.getInProgressStatusService().call(any(), any(), any())).thenReturn(mockedJobStatus);
+
+        // we need to mock the request for pause after completion only when the status is completed
+        if(mockedJobStatus == COMPLETED){
+            BaseResource mockedBaseResource = mock(BaseResource.class);
+            when(underTest.getSharedData().getRequest()).thenReturn(mockedBaseResource);
+            when(mockedBaseResource.getPauseInstantiation()).thenReturn(null);
+        }
         assertEquals(expectedJobStatus, underTest.inProgress());
     }
 
     @DataProvider
     public static Object[][] InProgressExceptionsDataProvider() {
         return new Object[][]{
-                {new ProcessingException(""), Job.JobStatus.IN_PROGRESS},
-                {new InProgressStatusService.BadResponseFromMso(null), Job.JobStatus.IN_PROGRESS},
-                {new GenericUncheckedException(""),Job.JobStatus.STOPPED }
+                {new ProcessingException(""), IN_PROGRESS},
+                {new InProgressStatusService.BadResponseFromMso(null), IN_PROGRESS},
+                {new GenericUncheckedException(""), STOPPED }
         };
     }
 
@@ -441,7 +456,7 @@ public class ResourceCommandTest {
     @Test(dataProvider = "testIsNeedToDeleteMySelfDataProvider")
     public void testIsNeedToDeleteMySelf(Action action) {
         boolean expectedResult = (action== Delete);
-        MockCommand underTest = new MockCommand(InternalState.DELETE_MYSELF, Delete, Job.JobStatus.IN_PROGRESS);
+        MockCommand underTest = new MockCommand(InternalState.DELETE_MYSELF, Delete, IN_PROGRESS);
         BaseResource mockedBaseResource = mock(BaseResource.class);
         when(underTest.getSharedData().getRequest()).thenReturn(mockedBaseResource);
         when(mockedBaseResource.getAction()).thenReturn(action);
@@ -451,15 +466,15 @@ public class ResourceCommandTest {
     @DataProvider
     public static Object[][] testWatchingDataProvider() {
         return new Object[][]{
-                {"all children final, no failed child ", Job.JobStatus.COMPLETED, Job.JobStatus.COMPLETED},
-                {"all children final, there is failed child ", Job.JobStatus.COMPLETED_WITH_ERRORS, Job.JobStatus.COMPLETED_WITH_ERRORS},
-                {"not all children final", Job.JobStatus.IN_PROGRESS, Job.JobStatus.IN_PROGRESS},
+                {"all children final, no failed child ", COMPLETED, COMPLETED},
+                {"all children final, there is failed child ", COMPLETED_WITH_ERRORS, COMPLETED_WITH_ERRORS},
+                {"not all children final", IN_PROGRESS, IN_PROGRESS},
         };
     }
 
     @Test(dataProvider = "testWatchingDataProvider")
     public void testWatching(String desc, Job.JobStatus childrenJobsStatus, Job.JobStatus expectedJobStatus) {
-        MockCommand underTest = new MockCommand(InternalState.WATCHING, Delete, Job.JobStatus.IN_PROGRESS);
+        MockCommand underTest = new MockCommand(InternalState.WATCHING, Delete, IN_PROGRESS);
         when(underTest.getWatchChildrenJobsBL().retrieveChildrenJobsStatus(any())).thenReturn(childrenJobsStatus);
         assertEquals(expectedJobStatus, underTest.watchChildren());
     }
@@ -502,7 +517,7 @@ public class ResourceCommandTest {
         private final RuntimeException exceptionToThrow;
 
         public MockCommandThrowExceptionOnCreateChildren(RuntimeException exceptionToThrow) {
-            super(InternalState.CREATING_CHILDREN, Delete, Job.JobStatus.COMPLETED, true);
+            super(InternalState.CREATING_CHILDREN, Delete, COMPLETED, true);
             this.exceptionToThrow = exceptionToThrow;
             doAnswer(returnsFirstArg()).when(this.getWatchChildrenJobsBL()).cumulateJobStatus(any(), any());
         }
@@ -517,8 +532,8 @@ public class ResourceCommandTest {
     @DataProvider
     public static Object[][] exceptionAndStateProvider() {
         return new Object[][]{
-                {new TryAgainException(new Exception()), Job.JobStatus.RESOURCE_IN_PROGRESS},
-                {new AbortingException(new Exception()), Job.JobStatus.FAILED},
+                {new TryAgainException(new Exception()), RESOURCE_IN_PROGRESS},
+                {new AbortingException(new Exception()), FAILED},
         };
     }
 
@@ -548,7 +563,7 @@ public class ResourceCommandTest {
         BaseResource mockedRequest3 = mock(BaseResource.class);
         when(mockedRequest3.getPosition()).thenReturn(thirdPosition);
 
-        MockCommand underTest = new MockCommand(InternalState.CREATING_CHILDREN, Create, Job.JobStatus.IN_PROGRESS);
+        MockCommand underTest = new MockCommand(InternalState.CREATING_CHILDREN, Create, IN_PROGRESS);
         List<Pair<BaseResource, Integer>> sortedList = underTest.setPositionWhereIsMissing(ImmutableList.of(mockedRequest1, mockedRequest2, mockedRequest3));
 
         assertEquals(sortedList.get(0).getSecond(),expectedPositions.get(0));

@@ -21,11 +21,11 @@
 package org.onap.vid.job.command
 
 import org.apache.commons.lang3.StringUtils
+import org.onap.portalsdk.core.service.DataAccessService
 import org.onap.vid.job.Job
 import org.onap.vid.job.Job.JobStatus.*
 import org.onap.vid.job.impl.JobDaoImpl
 import org.onap.vid.utils.DaoUtils
-import org.onap.portalsdk.core.service.DataAccessService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -63,6 +63,7 @@ constructor(private val dataAccessService: DataAccessService) {
                 a == COMPLETED_WITH_ERRORS || b == COMPLETED_WITH_ERRORS-> COMPLETED_WITH_ERRORS
                 a == COMPLETED && b.isFailure -> COMPLETED_WITH_ERRORS
                 b == COMPLETED && a.isFailure -> COMPLETED_WITH_ERRORS
+                a == COMPLETED_AND_PAUSED || b == COMPLETED_AND_PAUSED -> COMPLETED_AND_PAUSED
                 a == COMPLETED || b == COMPLETED -> COMPLETED
                 a.isFailure || b.isFailure -> FAILED
                 else ->  COMPLETED_WITH_NO_ACTION

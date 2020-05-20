@@ -8,5 +8,6 @@ public enum JobStatus {
     PAUSE,
     PENDING,
     STOPPED,
+    COMPLETED_AND_PAUSED,
     COMPLETED_WITH_ERRORS;
 }
