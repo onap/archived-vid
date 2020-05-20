@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "67a8fb30_93409f9d",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2020-05-20T04:20:11Z",
+      "side": 1,
+      "message": "there is no bug there i verified it with extension to unit test, i prefer to stay witj tjis implementation.",
+      "parentUuid": "69a5e82f_32abfaca",
+      "revId": "0e72b7fcb0ff2e99c4ce98f8bc6bc8f759aebdfb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b410d7b4_5ddc0ce8",
         "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.service.ts",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2020-05-20T03:49:07Z",
       "side": 1,
       "message": "Won\u0027t it make the \"RESUME\" appear also when *adding* a pause-point (i.e. while new instance definition, or while VIEW_EDIT)?\n\nAlso, if we already resumed, but now we are in a second iteration of RETRY_EDIT, say: because a failure happened.",
+      "revId": "0e72b7fcb0ff2e99c4ce98f8bc6bc8f759aebdfb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4e4c9b2_d862b2c9",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2020-05-20T04:20:11Z",
+      "side": 1,
+      "message": "your right working on it.",
+      "parentUuid": "b410d7b4_5ddc0ce8",
       "revId": "0e72b7fcb0ff2e99c4ce98f8bc6bc8f759aebdfb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
