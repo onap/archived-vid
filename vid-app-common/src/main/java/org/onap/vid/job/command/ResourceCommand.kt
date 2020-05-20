@@ -230,7 +230,7 @@ abstract class ResourceCommand(
 
             InternalState.IN_PROGRESS -> {
                 when {
-                    jobStatus != JobStatus.COMPLETED -> InternalState.IN_PROGRESS
+                    jobStatus != JobStatus.COMPLETED && jobStatus != JobStatus.COMPLETED_AND_PAUSED -> InternalState.IN_PROGRESS
                     isDescendantHasAction(Action.Create) -> InternalState.CREATING_CHILDREN
                     isDescendantHasAction(Action.Upgrade) -> InternalState.CREATING_CHILDREN
                     else -> InternalState.TERMINAL
@@ -385,8 +385,18 @@ abstract class ResourceCommand(
     protected open fun getExpiryChecker(): ExpiryChecker = ExpiryChecker {false}
 
     protected open fun handleInProgressStatus(jobStatus: JobStatus): JobStatus {
-        return if (jobStatus == JobStatus.PAUSE) JobStatus.IN_PROGRESS else jobStatus
+        if (jobStatus == JobStatus.PAUSE){
+            return JobStatus.IN_PROGRESS
+        } else if (completedAndPaused(jobStatus)){
+            return JobStatus.COMPLETED_AND_PAUSED
+        }
+        return jobStatus
     }
+
+    private fun completedAndPaused(jobStatus: JobStatus) =
+            jobStatus == JobStatus.COMPLETED && getRequest().pauseInstantiation == afterCompletion
+                    && featureManager.isActive(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION)
+
 
     protected open fun watchChildren():JobStatus {
         return watchChildrenJobsBL.retrieveChildrenJobsStatus(childJobs)

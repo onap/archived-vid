@@ -20,26 +20,27 @@
 
 package org.onap.vid.job.command;
 
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.onap.vid.job.Job.JobStatus;
-import org.onap.vid.job.impl.JobDaoImpl;
-import org.onap.vid.utils.DaoUtils;
-import org.onap.portalsdk.core.service.DataAccessService;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-import static org.testng.AssertJUnit.assertEquals;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.onap.portalsdk.core.service.DataAccessService;
+import org.onap.vid.job.Job.JobStatus;
+import org.onap.vid.job.impl.JobDaoImpl;
+import org.onap.vid.utils.DaoUtils;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 public class WatchChildrenJobsBLTest {
     @Mock
@@ -90,8 +91,9 @@ public class WatchChildrenJobsBLTest {
                 {Arrays.asList(JobStatus.COMPLETED_WITH_ERRORS, JobStatus.COMPLETED_WITH_ERRORS), JobStatus.COMPLETED_WITH_ERRORS},
                 {Arrays.asList(JobStatus.COMPLETED_WITH_ERRORS, JobStatus.COMPLETED_WITH_NO_ACTION), JobStatus.COMPLETED_WITH_ERRORS},
                 {Arrays.asList(JobStatus.COMPLETED_WITH_NO_ACTION, JobStatus.COMPLETED_WITH_NO_ACTION), JobStatus.COMPLETED_WITH_NO_ACTION},
-
-
+                {Arrays.asList(JobStatus.COMPLETED_AND_PAUSED, JobStatus.RESOURCE_IN_PROGRESS), JobStatus.IN_PROGRESS},
+                {Arrays.asList(JobStatus.COMPLETED_AND_PAUSED, JobStatus.COMPLETED), JobStatus.COMPLETED_AND_PAUSED},
+                {Arrays.asList(JobStatus.COMPLETED_AND_PAUSED, JobStatus.IN_PROGRESS), JobStatus.IN_PROGRESS},
         };
     }
 
