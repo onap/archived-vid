@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "522108b8_15ad11a9",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/ResourceCommand.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-20T10:40:03Z",
+      "side": 1,
+      "message": "jobStatus !in setOf(JobStatus.COMPLETED, JobStatus.COMPLETED_AND_PAUSED)",
+      "range": {
+        "startLine": 233,
+        "startChar": 20,
+        "endLine": 233,
+        "endChar": 99
+      },
+      "revId": "8097a8b3aa89a089b7e23f8c7009432f9468803c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
