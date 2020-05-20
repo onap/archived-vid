@@ -50,6 +50,24 @@
       "revId": "0e72b7fcb0ff2e99c4ce98f8bc6bc8f759aebdfb",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3305d59d_c7072069",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board.modes.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5673
+      },
+      "writtenOn": "2020-05-20T04:14:50Z",
+      "side": 1,
+      "message": "you\u0027r right.",
+      "parentUuid": "7bfae23a_1c4630a0",
+      "revId": "0e72b7fcb0ff2e99c4ce98f8bc6bc8f759aebdfb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
