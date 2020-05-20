@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69a5e82f_32abfaca",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-20T03:49:07Z",
+      "side": 1,
+      "message": "I suggest simplifying this loop to:\n\n    const vnfs \u003d this.store.getState().service.serviceInstance[serviceInstanceId].vnfs;\n    return _.some(vnfs, vfms \u003d\u003e _.some(vfms, \"pauseInstantiation\", PauseStatus.AFTER_COMPLETION));\n\nThis will also resolve a bug here, that if last vfm of last vnf is not paused -- result will always be \"false\" regardless of previous vfms.",
+      "revId": "0e72b7fcb0ff2e99c4ce98f8bc6bc8f759aebdfb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b410d7b4_5ddc0ce8",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-header/drawing-board-header.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-20T03:49:07Z",
+      "side": 1,
+      "message": "Won\u0027t it make the \"RESUME\" appear also when *adding* a pause-point (i.e. while new instance definition, or while VIEW_EDIT)?\n\nAlso, if we already resumed, but now we are in a second iteration of RETRY_EDIT, say: because a failure happened.",
+      "revId": "0e72b7fcb0ff2e99c4ce98f8bc6bc8f759aebdfb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bfae23a_1c4630a0",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board.modes.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-05-20T03:49:07Z",
+      "side": 1,
+      "message": "This is not needed, as you actually not bringing a new mode, but rather keep using EDIT. Right?",
+      "revId": "0e72b7fcb0ff2e99c4ce98f8bc6bc8f759aebdfb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
