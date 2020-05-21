@@ -3,6 +3,17 @@
 
 import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
 import {AsyncInstantiationModel} from '../../support/jsonBuilders/models/asyncInstantiation.model';
+import {
+  COMPLETED_WITH_ERRORS,
+  INPROGRESS,
+  PAUSE,
+  PAUSE_UPON_COMPLETION,
+  PENDING,
+  STOPPED,
+  SUCCESS_CIRCLE,
+  UNKNOWN,
+  X_O
+} from "../../../src/app/instantiationStatus/instantiationStatus.component.service";
 
 describe('Instantiation status', function () {
   var jsonBuilderInstantiationBuilder : JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
@@ -33,6 +44,9 @@ describe('Instantiation status', function () {
       const serviceAction:any = {INSTANTIATE : 'Instantiate', DELETE: 'Delete', UPDATE: 'Update', UPGRADE: 'Upgrade'};
       cy.openIframe('app/ui/#/instantiationStatus');
       for(let i = 0 ; i < asyncRes.length; i++){
+        cy.getTableRowByIndex('instantiation-status', i).get(`td custom-icon#jobStatusIcon-${i} div`)
+        .should('have.class', `__${getJobIconClass(asyncRes[i].jobStatus)}`);
+
         if(asyncRes[i].project){
           cy.getTableRowByIndex('instantiation-status', i).get('td#project span').contains(asyncRes[i].project);
         }
@@ -59,6 +73,29 @@ describe('Instantiation status', function () {
         }
     }
   });
+
+  function getJobIconClass(status: string) : string{
+    switch(`${status}`.toUpperCase()) {
+      case  'PENDING' :
+        return PENDING;
+      case  'IN_PROGRESS' :
+        return  INPROGRESS;
+      case  'PAUSED' :
+        return PAUSE;
+      case  'FAILED' :
+        return X_O;
+      case  'COMPLETED' :
+        return SUCCESS_CIRCLE;
+      case  'STOPPED' :
+        return STOPPED;
+      case  'COMPLETED_WITH_ERRORS' :
+        return COMPLETED_WITH_ERRORS;
+      case  'COMPLETED_AND_PAUSED' :
+        return PAUSE_UPON_COMPLETION;
+      default:
+        return UNKNOWN;
+    }
+  }
 
   it('should filter rows by filter text', function () {
     cy.openIframe('app/ui/#/instantiationStatus');
