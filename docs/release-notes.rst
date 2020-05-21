@@ -6,7 +6,30 @@ VID Release Notes
 
 Version: Frankfurt (6.0.x)
 ------------------------
+
+:In a nutshell...:
+
+    For an end-user VID is easier to use.
+
+    For a system admin, VID is easier to deploy and manage.
+
+    *Security*
+
+    - Adherence to ONAP Logging Spec v1.2
+    - Update to Portal SDK v2.6
+    - Use common secret template to generate DB credentials
+    - Java 11 migration from JDK 8
+    - And more...
+
+    *Bug fixes*
+
+    - Refresh after Add VF Module fails
+    - Generates different VF module name during scale out
+    - And many more...
+
 **Known Issues**
+
+This section is empty.
 
 
 **Resolved Issues**
@@ -25,8 +48,12 @@ Version: Frankfurt (6.0.x)
 
 *Fixed Security Issues*
 
+This section is empty.
+
+
 *Known Security Issues*
 
+This section is empty.
 
 
 Version: El-Alto (5.0.x)
