@@ -5,4 +5,8 @@ This source repository contains the OpenECOMP Virtual Infrastructure Deployment 
     org.openecomp.ecompsdkos:ecompSDK-analytics
     org.openecomp.ecompsdkos:ecompSDK-workflow
 
-To build it using Maven 3, run: mvn clean install
+# Basic info
+To build project, run: mvn clean install
+
+# VID Developer Guide
+https://wiki.onap.org/display/DW/VID+Development+Guide
