@@ -21,6 +21,7 @@
 package org.onap.vid.asdc.beans.tosca;
 
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 public class ImportTest {
 
@@ -36,6 +37,7 @@ public class ImportTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.getFile();
+        assertNotNull(testSubject);
     }
 
     @Test
@@ -46,5 +48,6 @@ public class ImportTest {
         // default test
         testSubject = createTestSubject();
         testSubject.setFile(file);
+        assertNotNull(testSubject);
     }
 }

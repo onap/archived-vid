@@ -23,6 +23,7 @@ package org.onap.vid.asdc.beans;
 import java.util.Collection;
 
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 
 public class SubResourceTest {
@@ -40,6 +41,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getResourceInstanceName();
+		assertNotNull(testSubject);
 	}
 
 
@@ -51,6 +53,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getResourceName();
+		assertNotNull(testSubject);
 	}
 
 
@@ -62,6 +65,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getResourceInvariantUUID();
+		assertNotNull(testSubject);
 	}
 
 
@@ -73,6 +77,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getResourceVersion();
+		assertNotNull(testSubject);
 	}
 
 
@@ -84,6 +89,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getResoucreType();
+		assertNotNull(testSubject);
 	}
 
 
@@ -95,6 +101,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getResourceUUID();
+		assertNotNull(testSubject);
 	}
 
 
@@ -106,6 +113,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifacts();
+		assertNotNull(testSubject);
 	}
 
 
@@ -117,6 +125,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setResourceInstanceName(resourceInstanceName);
+		assertNotNull(testSubject);
 	}
 
 
@@ -128,6 +137,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setResourceName(resourceName);
+		assertNotNull(testSubject);
 	}
 
 
@@ -139,6 +149,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setResourceInvariantUUID(resourceInvariantUUID);
+		assertNotNull(testSubject);
 	}
 
 
@@ -150,6 +161,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setResourceVersion(resourceVersion);
+		assertNotNull(testSubject);
 	}
 
 
@@ -161,6 +173,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setResoucreType(resourceType);
+		assertNotNull(testSubject);
 	}
 
 
@@ -172,6 +185,7 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setResourceUUID(resourceUUID);
+		assertNotNull(testSubject);
 	}
 
 
@@ -183,5 +197,6 @@ public class SubResourceTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifacts(artifacts);
+		assertNotNull(testSubject);
 	}
 }

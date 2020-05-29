@@ -21,7 +21,7 @@
 package org.onap.vid.asdc.beans.tosca;
 
 import java.util.Map;
-
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 public class NodeTemplateTest {
@@ -38,6 +38,7 @@ public class NodeTemplateTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getType();
+		assertNotNull(testSubject);
 	}
 
 	@Test
@@ -48,6 +49,7 @@ public class NodeTemplateTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setType(type);
+		assertNotNull(testSubject);
 	}
 
 	@Test
@@ -58,6 +60,7 @@ public class NodeTemplateTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getMetadata();
+		assertNotNull(testSubject);
 	}
 
 	@Test
@@ -68,6 +71,7 @@ public class NodeTemplateTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setMetadata(metadata);
+		assertNotNull(testSubject);
 	}
 
 	@Test
@@ -78,6 +82,7 @@ public class NodeTemplateTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getProperties();
+		assertNotNull(testSubject);
 	}
 
 	@Test
@@ -88,6 +93,7 @@ public class NodeTemplateTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setProperties(properties);
+		assertNotNull(testSubject);
 	}
 
 	@Test
@@ -98,6 +104,7 @@ public class NodeTemplateTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getRequirements();
+		assertNotNull(testSubject);
 	}
 
 	@Test
@@ -108,5 +115,6 @@ public class NodeTemplateTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setRequirements(requirements);
+		assertNotNull(testSubject);
 	}
 }

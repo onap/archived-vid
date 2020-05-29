@@ -22,6 +22,7 @@ package org.onap.vid.asdc.beans.tosca;
 
 import java.util.Collection;
 import java.util.Map;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -41,6 +42,7 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getMetadata();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -52,6 +54,7 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setMetadata(metadata);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -63,6 +66,7 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getMembers();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -74,6 +78,7 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setMembers(members);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -85,6 +90,7 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getType();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -96,6 +102,7 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setType(type);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -107,6 +114,7 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getvf_module_type();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -118,6 +126,7 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setvf_module_type(vf_module_type);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -129,6 +138,7 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getProperties();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -140,5 +150,6 @@ public class GroupTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setProperties(properties);
+		assertNotNull(testSubject);
 	}
 }
