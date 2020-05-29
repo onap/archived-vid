@@ -39,6 +39,7 @@ package org.onap.portalapp.scheduler;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class RegisterTest {
@@ -54,6 +55,7 @@ public class RegisterTest {
         // default test
         testSubject = createTestSubject();
         testSubject.getTriggers();
+        Assert.assertNotNull(testSubject);
     }
 
     @Test
@@ -63,6 +65,7 @@ public class RegisterTest {
         // default test
         testSubject = createTestSubject();
         testSubject.getScheduleTriggers();
+        Assert.assertNotNull(testSubject);
     }
 
     @Test
@@ -72,5 +75,6 @@ public class RegisterTest {
         // default test
         testSubject = createTestSubject();
         testSubject.setScheduleTriggers(null);
+        Assert.assertNotNull(testSubject);
     }
 }

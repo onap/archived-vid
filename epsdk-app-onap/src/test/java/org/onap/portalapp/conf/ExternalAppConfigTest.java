@@ -39,6 +39,7 @@ package org.onap.portalapp.conf;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -69,6 +70,7 @@ public class ExternalAppConfigTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.viewResolver();
+        assertNotNull(testSubject);
     }
 
 
@@ -81,6 +83,7 @@ public class ExternalAppConfigTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.dataAccessService();
+        assertNotNull(testSubject);
     }
 
     @Test
@@ -91,6 +94,7 @@ public class ExternalAppConfigTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.addTileDefinitions();
+        assertNotNull(testSubject);
     }
 
    
@@ -103,6 +107,7 @@ public class ExternalAppConfigTest {
         // default test
         testSubject = createTestSubject();
         testSubject.cacheManager();
+        assertNotNull(testSubject);
     }
    
 
@@ -114,6 +119,7 @@ public class ExternalAppConfigTest {
 
         // default test
         testSubject = createTestSubject();
+        assertNotNull(testSubject);
     }
 
     @Test

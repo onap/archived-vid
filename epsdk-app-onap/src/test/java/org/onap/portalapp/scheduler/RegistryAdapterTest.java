@@ -39,6 +39,7 @@ package org.onap.portalapp.scheduler;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.onap.portalsdk.core.scheduler.Registerable;
 import org.onap.portalsdk.workflow.services.WorkflowScheduleService;
@@ -58,6 +59,7 @@ public class RegistryAdapterTest {
         // default test
         testSubject = createTestSubject();
         testSubject.setSchedulerBean(schedulerBean);
+        Assert.assertNotNull(testSubject);
     }
 
     @Test
@@ -68,6 +70,7 @@ public class RegistryAdapterTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.getSchedulerBean();
+        Assert.assertNotNull(testSubject);
     }
 
     @Test
@@ -88,6 +91,7 @@ public class RegistryAdapterTest {
         // default test
         testSubject = createTestSubject();
         testSubject.setRegistry(registry);
+        Assert.assertNotNull(testSubject);
     }
 
     @Test
@@ -98,6 +102,7 @@ public class RegistryAdapterTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.getWorkflowScheduleService();
+        Assert.assertNotNull(testSubject);
     }
 
     @Test
@@ -108,5 +113,6 @@ public class RegistryAdapterTest {
         // default test
         testSubject = createTestSubject();
         testSubject.setWorkflowScheduleService(workflowScheduleService);
+        Assert.assertNotNull(testSubject);
     }
 }

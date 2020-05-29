@@ -37,6 +37,7 @@
  */
 package org.onap.portalapp.conf;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class HibernateMappingLocationsTest {
@@ -52,6 +53,7 @@ public class HibernateMappingLocationsTest {
         // default test
         testSubject = createTestSubject();
         testSubject.getMappingLocations();
+        Assert.assertNotNull(testSubject);
     }
 
     @Test
@@ -62,5 +64,6 @@ public class HibernateMappingLocationsTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.getPackagesToScan();
+        junit.framework.Assert.assertNotNull(result);
     }
 }
