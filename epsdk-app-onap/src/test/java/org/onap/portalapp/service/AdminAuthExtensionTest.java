@@ -39,6 +39,7 @@ package org.onap.portalapp.service;
 
 import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.onap.portalsdk.core.domain.Role;
 import org.onap.portalsdk.core.domain.User;
@@ -57,6 +58,7 @@ public class AdminAuthExtensionTest {
         // default test
         testSubject = createTestSubject();
         testSubject.saveUserExtension(user);
+        Assert.assertNotNull(testSubject);
     }
 
     @Test
@@ -67,6 +69,7 @@ public class AdminAuthExtensionTest {
         // default test
         testSubject = createTestSubject();
         testSubject.editUserExtension(user);
+        Assert.assertNotNull(testSubject);
     }
 
     @Test
@@ -78,5 +81,6 @@ public class AdminAuthExtensionTest {
         // default test
         testSubject = createTestSubject();
         testSubject.saveUserRoleExtension(roles, user);
+        Assert.assertNotNull(testSubject);
     }
 }

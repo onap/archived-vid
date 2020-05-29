@@ -23,6 +23,7 @@ package org.onap.vid.asdc.beans;
 import java.util.Collection;
 
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 public class SecureServicesTest {
 
@@ -38,6 +39,7 @@ public class SecureServicesTest {
         // default test
         testSubject = createTestSubject();
         testSubject.setServices(services);
+        assertNotNull(testSubject);
     }
 
     @Test
@@ -48,6 +50,7 @@ public class SecureServicesTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.getServices();
+        assertNotNull(testSubject);
     }
 
     @Test
@@ -58,6 +61,7 @@ public class SecureServicesTest {
         // default test
         testSubject = createTestSubject();
         result = testSubject.isReadOnly();
+        assertNotNull(testSubject);
     }
 
     @Test
@@ -68,5 +72,6 @@ public class SecureServicesTest {
         // default test
         testSubject = createTestSubject();
         testSubject.setReadOnly(readOnly);
+        assertNotNull(testSubject);
     }
 }

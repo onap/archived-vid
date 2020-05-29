@@ -21,6 +21,7 @@
 package org.onap.vid.asdc.beans;
 
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 
 public class ArtifactTest {
@@ -38,6 +39,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactName();
+		assertNotNull(testSubject);
 	}
 
 
@@ -49,6 +51,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactType();
+		assertNotNull(testSubject);
 	}
 
 
@@ -60,6 +63,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactGroupType();
+		assertNotNull(testSubject);
 	}
 
 
@@ -71,6 +75,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactLabel();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -82,6 +87,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactURL();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -93,6 +99,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactDescription();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -104,6 +111,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactTimeout();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -115,6 +123,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactChecksum();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -126,6 +135,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactUUID();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -137,6 +147,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getArtifactVersion();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -148,6 +159,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.getGeneratedFromUUID();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -159,6 +171,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactName(artifactName);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -170,6 +183,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactType(artifactType);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -181,6 +195,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactGroupType(artifactGroupType);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -192,6 +207,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactLabel(artifactLabel);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -203,6 +219,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactURL(artifactURL);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -214,6 +231,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactDescription(artifactDescription);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -225,6 +243,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactTimeout(artifactTimeout);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -236,6 +255,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactChecksum(artifactChecksum);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -247,6 +267,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactUUID(artifactUUID);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -258,6 +279,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setArtifactVersion(artifactVersion);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -269,6 +291,7 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		testSubject.setGeneratedFromUUID(generatedFromUUID);
+		assertNotNull(testSubject);
 	}
 
 	
@@ -281,6 +304,7 @@ public class ArtifactTest {
 		testSubject = createTestSubject();
 		testSubject.setArtifactUUID("48a52540-8772-4368-9cdb-1f124ea5c931");
 		result = testSubject.hashCode();
+		assertNotNull(testSubject);
 	}
 
 	
@@ -293,5 +317,6 @@ public class ArtifactTest {
 		// default test
 		testSubject = createTestSubject();
 		result = testSubject.equals(o);
+		assertNotNull(testSubject);
 	}
 }
