@@ -118,12 +118,11 @@ describe('Instantiation status', function () {
     cy.get('#' + jobId).find('.menu-div').click();
   }
 
-  it('should disabled correct menu items', function () {
+  it.only('should disabled correct menu items', function () {
 
     cy.openIframe('app/ui/#/instantiationStatus');
 
     // Instantiate action with Job status FAILED - isRetry = true
-
     clickOnTitleAndThenOnMenuWithJobId('5c2cd8e5-27d0-42e3-85a1-85db5eaba459');
     getDisabledDropDownItemByDataTestId('context-menu-retry').should('not.exist');
     getDisabledDropDownItemByDataTestId('context-menu-remove').should('exist');
@@ -152,6 +151,13 @@ describe('Instantiation status', function () {
     getDisabledDropDownItemByDataTestId('context-menu-open').should('not.exist');
     getDisabledDropDownItemByDataTestId('context-menu-hide').should('not.exist');
     getDisabledDropDownItemByDataTestId('context-menu-audit-info').should('not.exist');
+    getDisabledDropDownItemByDataTestId(contextMenuCreateAnotherOne).should('exist');
+
+    //COMPLETED_AND_PAUSED
+    clickOnTitleAndThenOnMenuWithJobId('850dc7d2-5240-437f-9bcd-b1ed7dc339d9');
+    getDisabledDropDownItemByDataTestId('context-menu-retry').should('exist');
+    getDisabledDropDownItemByDataTestId('context-menu-open').should('exist');
+    getDisabledDropDownItemByDataTestId('context-menu-audit-info').should('exist');
     getDisabledDropDownItemByDataTestId(contextMenuCreateAnotherOne).should('exist');
   });
 

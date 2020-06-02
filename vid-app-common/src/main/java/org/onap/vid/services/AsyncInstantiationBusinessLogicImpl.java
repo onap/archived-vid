@@ -435,8 +435,8 @@ public class AsyncInstantiationBusinessLogicImpl implements
     }
 
     private boolean isRetryEnabledForStatus(JobStatus jobStatus) {
-        return featureManager.isActive(Features.FLAG_1902_RETRY_JOB) &&
-                (jobStatus==JobStatus.COMPLETED_WITH_ERRORS || jobStatus==JobStatus.FAILED);
+        return jobStatus==JobStatus.COMPLETED_AND_PAUSED || (featureManager.isActive(Features.FLAG_1902_RETRY_JOB) &&
+                (jobStatus==JobStatus.COMPLETED_WITH_ERRORS || jobStatus==JobStatus.FAILED));
     }
 
     private void setServiceInfoStatus(ServiceInfo serviceInfo, JobStatus jobStatus) {

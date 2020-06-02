@@ -339,6 +339,7 @@
     "serviceModelId": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
     "serviceModelName": "action-data",
     "serviceModelVersion": "1.0",
-    "createdBulkDate": 1524663233000
+    "createdBulkDate": 1524663233000,
+    "isRetryEnabled": true
   }
 ]
