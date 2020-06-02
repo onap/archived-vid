@@ -118,7 +118,7 @@ describe('Instantiation status', function () {
     cy.get('#' + jobId).find('.menu-div').click();
   }
 
-  it.only('should disabled correct menu items', function () {
+  it('should disabled correct menu items', function () {
 
     cy.openIframe('app/ui/#/instantiationStatus');
 
