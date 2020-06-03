@@ -4,16 +4,6 @@
 import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
 import {AsyncInstantiationModel} from '../../support/jsonBuilders/models/asyncInstantiation.model';
 
-export let PENDING : string = "pending";
-export let INPROGRESS : string = "in_progress";
-export let PAUSE : string = "pause";
-export let X_O : string = "x-circle-o";
-export let SUCCESS_CIRCLE : string = "success-circle-o";
-export let STOPPED : string = "stop";
-export let COMPLETED_WITH_ERRORS : string = "success_with_warning";
-export let PAUSE_UPON_COMPLETION : string = "stopped-upon-success";
-export let UNKNOWN : string = "question-mark-circle-o";
-
 describe('Instantiation status', function () {
   var jsonBuilderInstantiationBuilder : JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
   var asyncRes: Array<any>;
@@ -76,23 +66,23 @@ describe('Instantiation status', function () {
   function getJobIconClass(status: string) : string{
     switch(`${status}`.toUpperCase()) {
       case  'PENDING' :
-        return PENDING;
+        return "pending";
       case  'IN_PROGRESS' :
-        return  INPROGRESS;
+        return  "in_progress";
       case  'PAUSED' :
-        return PAUSE;
+        return "pause";
       case  'FAILED' :
-        return X_O;
+        return "x-circle-o";
       case  'COMPLETED' :
-        return SUCCESS_CIRCLE;
+        return "success-circle-o";
       case  'STOPPED' :
-        return STOPPED;
+        return "stop";
       case  'COMPLETED_WITH_ERRORS' :
-        return COMPLETED_WITH_ERRORS;
+        return "success_with_warning";
       case  'COMPLETED_AND_PAUSED' :
-        return PAUSE_UPON_COMPLETION;
+        return "stopped-upon-success";
       default:
-        return UNKNOWN;
+        return "question-mark-circle-o";
     }
   }
 
@@ -114,7 +104,7 @@ describe('Instantiation status', function () {
 
   function clickOnTitleAndThenOnMenuWithJobId(jobId: string) {
     cy.getElementByDataTestsId("instantiation-status-title").click();
-    cy.get('#' + jobId).find('.menu-div').click();
+    cy.get('#' + jobId).find('.menu-div').click({force: true});
   }
 
   it('should disabled correct menu items', function () {
