@@ -3,17 +3,16 @@
 
 import {JsonBuilder} from '../../support/jsonBuilders/jsonBuilder';
 import {AsyncInstantiationModel} from '../../support/jsonBuilders/models/asyncInstantiation.model';
-import {
-  COMPLETED_WITH_ERRORS,
-  INPROGRESS,
-  PAUSE,
-  PAUSE_UPON_COMPLETION,
-  PENDING,
-  STOPPED,
-  SUCCESS_CIRCLE,
-  UNKNOWN,
-  X_O
-} from "../../../src/app/instantiationStatus/instantiationStatus.component.service";
+
+export let PENDING : string = "pending";
+export let INPROGRESS : string = "in_progress";
+export let PAUSE : string = "pause";
+export let X_O : string = "x-circle-o";
+export let SUCCESS_CIRCLE : string = "success-circle-o";
+export let STOPPED : string = "stop";
+export let COMPLETED_WITH_ERRORS : string = "success_with_warning";
+export let PAUSE_UPON_COMPLETION : string = "stopped-upon-success";
+export let UNKNOWN : string = "question-mark-circle-o";
 
 describe('Instantiation status', function () {
   var jsonBuilderInstantiationBuilder : JsonBuilder<AsyncInstantiationModel> = new JsonBuilder<AsyncInstantiationModel>();
