@@ -102,6 +102,10 @@ describe('Instantiation status', function () {
     return cy.get('.dropdown-menu').find('.disabled').find(`[data-tests-id='${testId}']`);
   }
 
+  function getDropDownItemByDataTestId(testId:String) {
+    return cy.get('.dropdown-menu').find(`[data-tests-id='${testId}']`);
+  }
+
   function clickOnTitleAndThenOnMenuWithJobId(jobId: string) {
     cy.getElementByDataTestsId("instantiation-status-title").click();
     cy.get('#' + jobId).find('.menu-div').click({force: true});
@@ -141,13 +145,17 @@ describe('Instantiation status', function () {
     getDisabledDropDownItemByDataTestId('context-menu-hide').should('not.exist');
     getDisabledDropDownItemByDataTestId('context-menu-audit-info').should('not.exist');
     getDisabledDropDownItemByDataTestId(contextMenuCreateAnotherOne).should('exist');
+  });
+
+  it('COMPLETED_AND_PAUSED should have correct menu items', function () {
+    cy.openIframe('app/ui/#/instantiationStatus');
 
     //COMPLETED_AND_PAUSED
     clickOnTitleAndThenOnMenuWithJobId('850dc7d2-5240-437f-9bcd-b1ed7dc339d9');
-    getDisabledDropDownItemByDataTestId('context-menu-retry').should('exist');
-    getDisabledDropDownItemByDataTestId('context-menu-open').should('exist');
-    getDisabledDropDownItemByDataTestId('context-menu-audit-info').should('exist');
-    getDisabledDropDownItemByDataTestId(contextMenuCreateAnotherOne).should('exist');
+    getDropDownItemByDataTestId('context-menu-retry').should('exist');
+    getDropDownItemByDataTestId('context-menu-open').should('exist');
+    getDropDownItemByDataTestId('context-menu-audit-info').should('exist');
+    getDropDownItemByDataTestId(contextMenuCreateAnotherOne).should('exist');
   });
 
   it('clicking on create another one item, go to expected url', function () {
