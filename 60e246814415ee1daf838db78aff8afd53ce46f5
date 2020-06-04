@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5bfaf513_9905d668",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instantiationStatus.e2e.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-06-04T06:34:59Z",
+      "side": 1,
+      "message": "simple mind.",
+      "range": {
+        "startLine": 105,
+        "startChar": 11,
+        "endLine": 105,
+        "endChar": 38
+      },
+      "revId": "60e246814415ee1daf838db78aff8afd53ce46f5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
