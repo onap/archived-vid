@@ -1,3 +1,9 @@
+FROM openjdk:11-jdk-slim as build
+
+ADD maven/artifacts/vid.war /stage/
+WORKDIR /vid
+RUN jar -xf /stage/vid.war
+
 FROM tomcat:9-jdk11-openjdk-slim
 
 # add vim and uncomment alias to speedup troubleshooting purpose
@@ -16,6 +22,10 @@ RUN groupadd -r $group && useradd -ms /bin/bash $user -g $group && \
     chown -R $user:$group /opt/$user &&  \
     mkdir /var/log/$user && \
     chown -R $user:$group /var/log/$user
+
+# Kubernetes variables
+# set to TRUE (in capital) if on Kubernetes
+ENV ON_KUBERNETES="FALSE"
 
 # MariaDB variables
 ENV VID_MYSQL_HOST="vid-mariadb-docker-instance" \
@@ -97,7 +107,7 @@ ENV JAVA_OPTS="-Xmx1536m -Xms1536m"
 
 ADD maven/config/server.xml ${VID_TOMCAT_PATH}
 ADD maven/scripts/*.sh /tmp/vid/
-ADD maven/artifacts/vid.war /tmp/vid/stage/
+COPY --from=build /vid /usr/local/tomcat/webapps/
 
 RUN chown $user:$group /tmp/vid /usr/local/tomcat -R
 RUN chmod +x /tmp/vid/localize.sh
