@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9bfdbba9_8a565637",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-06-25T14:35:45Z",
+      "side": 1,
+      "message": "Maybe message can be:\nRollback on failure flag should always be true while vfm replace",
+      "revId": "fd07e0ebeee703c1c3387cebee7fec1c57c1ee4d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2eca82de_8987baa2",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/model/serviceInstantiation/VfModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-06-25T14:35:45Z",
+      "side": 1,
+      "message": "this method is no longer in use, so better dropped.",
+      "revId": "fd07e0ebeee703c1c3387cebee7fec1c57c1ee4d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
