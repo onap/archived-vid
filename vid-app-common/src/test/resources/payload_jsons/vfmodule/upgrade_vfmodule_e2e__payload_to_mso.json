@@ -4,7 +4,7 @@
       "source": "VID",
       "requestorId": "az2016",
       "instanceName": "PST-VfMod-Replace-5-Vfmod",
-      "suppressRollback": true
+      "suppressRollback": false
     },
     "relatedInstanceList": [{
         "relatedInstance": {

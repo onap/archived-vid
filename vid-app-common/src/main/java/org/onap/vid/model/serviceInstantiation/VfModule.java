@@ -142,6 +142,30 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 			    this.getOriginalName()
 		);
 	}
+	public VfModule cloneWith(ModelInfo modelInfo, boolean shouldRollbackOnFailure) {
+		return new VfModule(
+				modelInfo,
+				this.getInstanceName(),
+				this.getVolumeGroupInstanceName(),
+				this.getAction().toString(),
+				this.getLcpCloudRegionId(),
+				this.getLcpCloudRegionId(),
+				this.getTenantId(),
+				this.getInstanceParams(),
+				this.getSupplementaryParams(),
+				shouldRollbackOnFailure,
+				this.isUsePreload(),
+				this.getInstanceId(),
+				this.getTrackById(),
+				this.getIsFailed(),
+				this.getStatusMessage(),
+				this.isRetainAssignments(),
+				this.isRetainVolumeGroups(),
+				this.getPosition(),
+				this.getPauseInstantiation(),
+				this.getOriginalName()
+		);
+	}
 
 	public VfModule cloneWith(String lcpCloudRegionId, String tenantId) {
 		return new VfModule(
