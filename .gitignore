@@ -1,5 +1,27 @@
 blackDuckHubProjectName.txt
 blackDuckHubProjectVersionName.txt
 vid-parent_bdio.jsonld
+vid-app-common/node/
+vid-automation/test-output/
+
+
 *.iml
 .idea/
+
+# npm files
+package-lock.json
+
+
+# ignore bin and target directories
+target/
+bin/
+
+# Eclipse stuff
+.settings
+.project
+.classpath
+
+# Mac OS
+.DS_Store 
+
+.checkstyle

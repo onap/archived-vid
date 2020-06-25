@@ -20,7 +20,7 @@ RUN groupadd -r $group && useradd -ms /bin/bash $user -g $group && \
 # MariaDB variables
 ENV VID_MYSQL_HOST="vid-mariadb-docker-instance" \
   VID_MYSQL_PORT="3306" \
-  VID_MYSQL_DBNAME="vid_portal" \
+  VID_MYSQL_DBNAME="vid_openecomp_epsdk" \
   VID_MYSQL_USER="vidadmin" \
   VID_MYSQL_PASS="Kp8bJ4SXszM0WXlhak3eHlcse2gAw84vaoGGmJvUy2U" \
   VID_MYSQL_MAXCONNECTIONS="5"
