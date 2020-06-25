@@ -118,7 +118,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 		return retainVolumeGroups;
 	}
 
-	public VfModule cloneWith(ModelInfo modelInfo) {
+	public VfModule cloneWith(ModelInfo modelInfo, boolean shouldRollbackOnFailure) {
 		return new VfModule(
 				modelInfo,
 				this.getInstanceName(),
@@ -129,7 +129,7 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 				this.getTenantId(),
 				this.getInstanceParams(),
 				this.getSupplementaryParams(),
-				this.isRollbackOnFailure(),
+				shouldRollbackOnFailure,
 				this.isUsePreload(),
 				this.getInstanceId(),
 				this.getTrackById(),
@@ -138,8 +138,8 @@ public class VfModule extends BaseResource implements JobAdapter.AsyncJobRequest
 				this.isRetainAssignments(),
 				this.isRetainVolumeGroups(),
 				this.getPosition(),
-			    this.getPauseInstantiation(),
-			    this.getOriginalName()
+				this.getPauseInstantiation(),
+				this.getOriginalName()
 		);
 	}
 

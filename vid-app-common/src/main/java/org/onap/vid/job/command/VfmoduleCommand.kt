@@ -82,7 +82,7 @@ class VfmoduleCommand @Autowired constructor(
     }
 
     private fun planReplaceMyselfRestCall(commandParentData: CommandParentData): MsoRestCallPlan {
-
+        val shouldRollBackOnFailure = true
         val newestModel = fetchNewestServiceModel()
 
         val serviceInstanceId = serviceInstanceIdFromRequest()
@@ -90,7 +90,7 @@ class VfmoduleCommand @Autowired constructor(
 
         val (serviceModelInfo, vnfModelInfo, vfmModelInfo) = newestSelector(newestModel, commandParentData);
 
-        val originalRequestWithNewestVfmModelInfo = getRequest().cloneWith(vfmModelInfo)
+        val originalRequestWithNewestVfmModelInfo = getRequest().cloneWith(vfmModelInfo, shouldRollBackOnFailure)
 
         val requestDetailsWrapper = msoRequestBuilder.generateVfModuleReplaceRequest(
                 originalRequestWithNewestVfmModelInfo, serviceModelInfo, serviceInstanceId,
