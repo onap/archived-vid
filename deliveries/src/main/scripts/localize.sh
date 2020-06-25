@@ -13,20 +13,14 @@ createWritableLogbackConfig() {
   cp -f /tmp/logback.xml /tmp/vid/logback.xml
 }
 
-deployWarOnTomcatManually() {
-  cd /usr/local/tomcat/webapps/
-  mkdir vid
-  cd vid
-  jar -xf /tmp/vid/stage/vid.war
-}
-
-
-createWritableLogbackConfig
-deployWarOnTomcatManually
-
-TEMPLATES_BASE_DIR=/usr/local/tomcat/webapps/vid/WEB-INF
-
-fillTemplateProperties ${TEMPLATES_BASE_DIR}
+if [ "${ON_KUBERNETES}" = "TRUE" ]
+then
+  echo "We're running on Kubernetes, preconfiguration is already handled"
+else
+  createWritableLogbackConfig
+  TEMPLATES_BASE_DIR=/usr/local/tomcat/webapps/vid/WEB-INF
+  fillTemplateProperties ${TEMPLATES_BASE_DIR}
+fi
 
 # Set CATALINA_OPTS if not defined previously
 # Enables late-evaluation of env variables, such as VID_KEYSTORE_PASSWORD
