@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ba66ebd_b5117c82",
+        "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4965
+      },
+      "writtenOn": "2020-06-25T23:59:33Z",
+      "side": 1,
+      "message": "number of passwords in this dockerfile makes me cry but it\u0027s unrelated to this patch...",
+      "revId": "ac3dac5599156660883421d57939ed3634b3b0ef",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
