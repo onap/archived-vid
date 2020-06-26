@@ -16,6 +16,24 @@
       "revId": "ac3dac5599156660883421d57939ed3634b3b0ef",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "592257f5_d1717dd0",
+        "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 2319
+      },
+      "writtenOn": "2020-06-26T09:27:15Z",
+      "side": 1,
+      "message": "well, they can be changed via ENV and so we can imagine there are not the real ones ;)",
+      "parentUuid": "6ba66ebd_b5117c82",
+      "revId": "ac3dac5599156660883421d57939ed3634b3b0ef",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
