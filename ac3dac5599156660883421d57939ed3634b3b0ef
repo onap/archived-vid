@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "041d219a_aa5a2f38",
+        "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-06-28T04:23:06Z",
+      "side": 1,
+      "message": "i think this should be `jar -xf /stage/vid.war \u0026\u0026 rm -f *.war`, otherwise the COPY below will pack the war file as well.",
+      "revId": "ac3dac5599156660883421d57939ed3634b3b0ef",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6ba66ebd_b5117c82",
         "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
         "patchSetId": 2
@@ -49,6 +66,23 @@
       "side": 1,
       "message": "Yup but you need to know that those \"defaults\" are defined in the docker file and are hardcoded even through they are not delivered via helm chart...",
       "parentUuid": "592257f5_d1717dd0",
+      "revId": "ac3dac5599156660883421d57939ed3634b3b0ef",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14a71b2c_ba2cb77e",
+        "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-06-28T04:23:06Z",
+      "side": 1,
+      "message": "this should better be after `RuN chown` below, because the chown op will double the docker image size.\n\nthus, we can have:\n\nRUN chown $user:$group /tmp/vid /usr/local/tomcat -R\nCOPY  --chown\u003d$user:$group --from\u003dbuild /vid /usr/local/tomcat/webapps/vid/",
       "revId": "ac3dac5599156660883421d57939ed3634b3b0ef",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
