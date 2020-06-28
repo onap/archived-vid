@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac6fb1dd_6a5d8518",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-06-28T04:37:43Z",
+      "side": 1,
+      "message": "\u003e It is highly recommended you commit the generated package lock to source control\nhttps://docs.npmjs.com/files/package-locks#using-locked-packages",
+      "revId": "7e6440acec6612467c366c326822ab779da327ff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
