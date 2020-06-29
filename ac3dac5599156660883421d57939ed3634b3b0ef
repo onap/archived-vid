@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a6bac5d7_f1d764df",
+        "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 2319
+      },
+      "writtenOn": "2020-06-29T07:08:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "041d219a_aa5a2f38",
+      "revId": "ac3dac5599156660883421d57939ed3634b3b0ef",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6ba66ebd_b5117c82",
         "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
         "patchSetId": 2
@@ -83,6 +101,24 @@
       "writtenOn": "2020-06-28T04:23:06Z",
       "side": 1,
       "message": "this should better be after `RuN chown` below, because the chown op will double the docker image size.\n\nthus, we can have:\n\nRUN chown $user:$group /tmp/vid /usr/local/tomcat -R\nCOPY  --chown\u003d$user:$group --from\u003dbuild /vid /usr/local/tomcat/webapps/vid/",
+      "revId": "ac3dac5599156660883421d57939ed3634b3b0ef",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "097e81ec_e1051a5b",
+        "filename": "deliveries/src/main/docker/docker-files/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 2319
+      },
+      "writtenOn": "2020-06-29T07:08:56Z",
+      "side": 1,
+      "message": "great proposal!\nNew patchset will take that into account\n\nOn my environnment:\n\nvid:6.0.4 uses 751MB\nPatchset 2 uses 891MB\nPatchset 3 uses 685MB",
+      "parentUuid": "14a71b2c_ba2cb77e",
       "revId": "ac3dac5599156660883421d57939ed3634b3b0ef",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
