@@ -1,7 +1,4 @@
-cypress/integration/iFrames/ala-carte.e2e.ts
-cypress/integration/iFrames/auditInfo.modal.e2e.ts
 cypress/integration/iFrames/browse-sdc.e2e.ts
-cypress/integration/iFrames/changeManagement.e2e.ts
 cypress/integration/iFrames/collectionResource.e2e.ts
 cypress/integration/iFrames/commitDialog.e2e.ts
 cypress/integration/iFrames/drawingBoard.e2e.ts

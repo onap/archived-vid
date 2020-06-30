@@ -1,0 +1,9 @@
+cypress/integration/iFrames/pnf.e2e.ts
+cypress/integration/iFrames/permission.e2e.ts
+cypress/integration/iFrames/auditInfo.modal.e2e.ts
+cypress/integration/iFrames/ala-carte.e2e.ts
+cypress/integration/iFrames/changeManagement.e2e.ts
+cypress/integration/iFrames/vnfGroups.e2e.ts
+cypress/integration/iFrames/serviceWithNetwork.e2e.ts
+cypress/integration/iFrames/serviceWithVnfNetwork.e2e.ts
+cypress/integration/iFrames/viewEdit.e2e.ts
