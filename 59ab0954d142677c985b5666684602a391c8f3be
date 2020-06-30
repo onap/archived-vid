@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "214fd238_ad2cd6e6",
+        "filename": "vid-webpack-master/cypress/pipeline/group2.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-06-30T13:12:45Z",
+      "side": 1,
+      "message": "This one is duplicated between group 1 and 2. i believe it should be removed from group 1.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 50
+      },
+      "revId": "59ab0954d142677c985b5666684602a391c8f3be",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
