@@ -1,4 +1,3 @@
-cypress/integration/iFrames/ala-carte.e2e.ts
 cypress/integration/iFrames/auditInfo.modal.e2e.ts
 cypress/integration/iFrames/browse-sdc.e2e.ts
 cypress/integration/iFrames/changeManagement.e2e.ts
