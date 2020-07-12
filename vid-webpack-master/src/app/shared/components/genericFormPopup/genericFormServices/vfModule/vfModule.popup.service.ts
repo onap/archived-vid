@@ -22,6 +22,7 @@ import * as _ from 'lodash';
 import {createVFModuleInstance, updateVFModuleInstance} from "../../../../storeUtil/utils/vfModule/vfModule.actions";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
+import {PauseStatus} from "../../../../models/serviceInstanceActions";
 
 export abstract class VfModulePopupServiceBase {
   dynamicInputs: any;
@@ -33,10 +34,14 @@ export abstract class VfModulePopupServiceBase {
   closeDialogEvent: Subject<any> = new Subject<any>();
   isUpdateMode: boolean;
   storeVFModule = (that, formValues: any): void => {
+    if(formValues.pauseInstantiation == true || formValues.pauseInstantiation == PauseStatus.AFTER_COMPLETION){
+      formValues.pauseInstantiation = PauseStatus.AFTER_COMPLETION;
+    } else if(formValues.pauseInstantiation == null || formValues.pauseInstantiation == false){
+      formValues.pauseInstantiation = null;
+    }
     formValues.modelInfo = new ModelInfo(that.model);
     formValues.uuid = formValues.modelInfo.uuid;
     formValues.isMissingData = false;
-
     if (!that.uuidData.vFModuleStoreKey) {
       this._store.dispatch(createVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, 0, that.uuidData.vnfStoreKey));
     } else {
@@ -67,7 +72,6 @@ export abstract class VfModulePopupServiceBase {
   getModelInformation(serviceId: string, modelName: string, vfModuleModeNode:ITreeNode) {
     this._aaiService.getServiceModelById(serviceId).subscribe((result: any) => {
       this.serviceModel = new ServiceModel(result);
-
       this.model = this._basicPopupService.getModelFromResponse(result, 'vfModules', modelName);
       const serviceInstance = this._store.getState().service.serviceInstance[serviceId];
       this.modelInformations = [
