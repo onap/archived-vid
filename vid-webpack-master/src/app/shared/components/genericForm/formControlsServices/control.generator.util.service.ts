@@ -24,6 +24,7 @@ import * as _ from 'lodash';
 
 export const SUPPLEMENTARY_FILE = 'supplementaryFile';
 export const SDN_C_PRE_LOAD = 'sdncPreLoad';
+export const PAUSE_INSTANTIATION = 'pauseInstantiation';
 
 @Injectable()
 export class ControlGeneratorUtil {
