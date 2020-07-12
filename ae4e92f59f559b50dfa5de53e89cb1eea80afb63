@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6fa0e40c_950cec6c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-12T15:13:37Z",
+      "side": 1,
+      "message": "should capture a Boolean value, so \nvalue: instance \u0026\u0026 instance.pauseInstantiation \u003d\u003d\u003d PauseStatus.AFTER_COMPLETION",
+      "revId": "ae4e92f59f559b50dfa5de53e89cb1eea80afb63",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68b8a439_8bbcc8c0",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-12T15:13:37Z",
+      "side": 1,
+      "message": "what\u0027s \"required\" for check box? should the user will be required to interact with the control?",
+      "revId": "ae4e92f59f559b50dfa5de53e89cb1eea80afb63",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4b42eaf_c2cee00c",
+        "filename": "vid-webpack-master/src/app/shared/components/genericForm/formControlsServices/vfModuleGenerator/vfModule.control.generator.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-12T15:13:37Z",
+      "side": 1,
+      "message": "why null? I suppose should be either true or false. right?",
+      "revId": "ae4e92f59f559b50dfa5de53e89cb1eea80afb63",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c08f5b1f_070de289",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-12T15:13:37Z",
+      "side": 1,
+      "message": "there\u0027s a mix here between the checkbox\u0027s Boolean and the enumerated pauseInstantiation values.\nI suggest separating the both, so code will be similar to\n formValues.pauseInstantiation \u003d checkboxValue ? PauseStatus.AFTER_COMPLETION : null\n\nsame for the check box itself, I\u0027ll add a comment in place",
+      "revId": "ae4e92f59f559b50dfa5de53e89cb1eea80afb63",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
