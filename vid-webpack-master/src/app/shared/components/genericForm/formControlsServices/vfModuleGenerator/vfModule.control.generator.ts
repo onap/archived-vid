@@ -24,6 +24,7 @@ import {MessageModal} from "../../../messageModal/message-modal.service";
 import {ButtonType} from "../../../customModal/models/button.type";
 import {SharedTreeService} from "../../../../../drawingBoard/service-planning/objectsToTree/shared.tree.service";
 import {FeatureFlagsService, Features} from "../../../../services/featureFlag/feature-flags.service";
+import {PauseStatus} from "../../../../models/serviceInstanceActions";
 
 export enum FormControlNames {
   INSTANCE_NAME = 'instanceName',
@@ -122,7 +123,6 @@ export class VfModuleControlGenerator {
     }
     const vnf: VnfInstance = this.store.getState().service.serviceInstance[serviceId].vnfs[vnfStoreKey];
     const vnfModel = this.newVNFModel(serviceId, vnf);
-
     const vfModuleInstance = this._basicControlGenerator.retrieveInstanceIfUpdateMode(this.store, this.getVfModuleInstance(serviceId, vnfStoreKey, uuidData, isUpdateMode));
     let result: FormControlModel[] = [];
     this.pushInstanceAndVGToForm(result, vfModuleInstance, serviceId, vnfModel, true);
@@ -133,6 +133,7 @@ export class VfModuleControlGenerator {
     }
     result.push(this._sharedControllersService.getRollbackOnFailureControl(vfModuleInstance));
     result.push(this._sharedControllersService.getSDNCControl(vfModuleInstance, false, this.getSdncExtraContents()));
+    result.push(this._sharedControllersService.getPauseInstantiation(vfModuleInstance));
     if (this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
       result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }
