@@ -294,3 +294,9 @@
 
   When toggled on, Change Management flows are submitted directly to SO. When toggled off, VID will use Scheduler.
 
+* FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG
+  
+  This flag tackles issues with responses from SO in the Change Management screen where previously the filtering was 
+  done based only on modelType=VNF - VID now uses SO's Action filter capability to send multiple requests each invoked
+  based on separate 'action' and then aggregates all response together sent from SO. The flag toggles all this 
+  behavior when set to true or false.
