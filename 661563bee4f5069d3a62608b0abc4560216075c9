@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "416d1ecb_6adc0eba",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-13T14:39:40Z",
+      "side": 1,
+      "message": "there is a sleeping defect here. it\u0027ll wake up when PauseStatus enum will have more possible values.\nanyhow, i don\u0027t think it is an issue for now, as it\u0027ll also require diverting from true/false checkbox to some multiple-selection control.",
+      "revId": "661563bee4f5069d3a62608b0abc4560216075c9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
