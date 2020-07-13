@@ -294,3 +294,15 @@
 
   When toggled on, Change Management flows are submitted directly to SO. When toggled off, VID will use Scheduler.
 
+* FLAG_FLASH_REDUCED_RESPONSE_CHANGEMG
+  
+  When toggled on. VID will to use an AAI custom-query vnfs-fromServiceInstance-filter to populate VNFs list while 
+  instantiating new Change-Management workflows. This query is faster, but lacks vfmodules information.
+
+  When toggled off, VID will use AAI custom-query vnf-topology-fromServiceInstance for the same purpose. This query
+  includes also vfModule information. The vfModules data is required when instantiating Scale-Out workflows.
+
+
+
+
+
