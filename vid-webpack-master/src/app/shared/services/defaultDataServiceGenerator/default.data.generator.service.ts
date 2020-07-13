@@ -329,6 +329,8 @@ export class DefaultDataGeneratorService {
       ],
       'trackById': DefaultDataGeneratorService.createRandomTrackById(),
       'rollbackOnFailure' : isALaCarte ? true : null,
+      'position': vfModule.position
+
     };
   }
 

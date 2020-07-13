@@ -28,3 +28,17 @@ function resetUpgradeStatus(newState: any, serviceUuid: string){
   newState.serviceInstance[serviceUuid].upgradedVFMSonsCounter = 0;
   newState.serviceInstance[serviceUuid].isUpgraded = false;
 }
+
+export function calculatePosition(newState :any,serviceUuid: string, vnfStoreKey :string) {
+
+  let totalNumOfVfModules =(Object.keys(newState.serviceInstance[serviceUuid].vnfs[vnfStoreKey].vfModules).length);
+  totalNumOfVfModules = 0;
+  _.forOwn(newState.serviceInstance[serviceUuid].vnfs[vnfStoreKey].vfModules, (vfModuleInstance) => {
+    _.forOwn(vfModuleInstance, (module) => {
+      module.position = totalNumOfVfModules +1;
+      totalNumOfVfModules= totalNumOfVfModules+1;
+    })
+  });
+
+
+}

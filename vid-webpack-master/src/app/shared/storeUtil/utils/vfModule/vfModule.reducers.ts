@@ -18,6 +18,7 @@ import {VfModuleMap} from "../../../models/vfModulesMap";
 import {ServiceState} from "../main.reducer";
 import {PauseStatus, ServiceInstanceActions} from "../../../models/serviceInstanceActions";
 import {updateServiceValidationCounter} from "../reducersHelper";
+import {calculatePosition} from "../reducersHelper";
 
 
 export function vfModuleReducer(state: ServiceState , action: Action) : ServiceState{
@@ -34,12 +35,15 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       let vfModulesMap = newState.serviceInstance[serviceUuid].vnfs[vnfStoreKey].vfModules[vfModuleId] || new VfModuleMap();
       let randomId = generateId();
       vfInstance.action = ServiceInstanceActions.Create;
-      vfModulesMap[vfModuleId + randomId] = vfInstance;
+      let dynamicName = vfModuleId + randomId;
+      vfModulesMap[dynamicName] = vfInstance;
       updateUniqueNames(null, vfInstance.instanceName, newState.serviceInstance[serviceUuid]);
       updateUniqueNames(null, vfInstance.volumeGroupName, newState.serviceInstance[serviceUuid]);
       updateServiceValidationCounter(newState, false, vfInstance['isMissingData'], serviceUuid);
 
       newState.serviceInstance[serviceUuid].vnfs[vnfStoreKey].vfModules[vfModuleId] = vfModulesMap;
+      //update position of newly added VF module
+      calculatePosition(newState,serviceUuid, vnfStoreKey);
       return newState;
     }
     case VfModuleActions.UPDATE_VF_MODULE: {
@@ -60,6 +64,8 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       updateUniqueNames(vfModulesMap[updateVFModuleInstanceAction.dynamicModelName].volumeGroupName, vfInstance.volumeGroupName, newState.serviceInstance[serviceUuid]);
       vfModulesMap[updateVFModuleInstanceAction.dynamicModelName] = vfInstance;
       newState.serviceInstance[serviceUuid].vnfs[vnfId].vfModules[vfModuleId] = vfModulesMap;
+      //retain the position of newly added VF module -- change logic
+      calculatePosition(newState,serviceUuid, vnfStoreKey);
       return newState;
     }
     case VfModuleActions.REMOVE_VNF_MODULE_INSTANCE: {

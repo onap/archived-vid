@@ -10,6 +10,7 @@ export class VfModuleTreeNode extends TreeNodeModel{
   menuActions: { [p: string]: { method: Function; visible: Function; enable: Function } };
   isFailed: boolean;
   statusMessage?: string;
+  position: number;
 
   constructor(vfModuleInstance: VfModuleInstance, vfModuleModel: VfModule, vfModuleModelName: string, dynamicInputs: any, isEcompGeneratedNaming: boolean, dynamicModelName : string){
     super(vfModuleInstance,vfModuleModel);

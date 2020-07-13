@@ -36,6 +36,19 @@
           <div class="failed-msg" [attr.data-tests-id]="'failed-error-message'" *ngIf="node?.data?.isFailed">Failed
           </div>
         </custom-popover>
+        <div *ngIf= "node?.data?.type == 'VFmodule'" class="instance-type" style="position: relative;border: 1px solid #D2D2CD;">
+          <div *ngIf="node?.data?.action == 'Create' && node?.data?.type == 'VFmodule'" class="notShowOnViewMode notShowOnCreateMode newIcon"></div>
+          <div><span title="{{node.data.position}}"
+                     [attr.data-tests-id]="'node-position-indicator'">{{node?.data?.position}}</span></div>
+          <div *ngIf="isLinkedInstance(node?.data)">
+            <custom-icon
+              [ngClass]="'link'"
+              class="icon-link"
+              [size]="'small'"
+              [name]="'link'">
+            </custom-icon>
+          </div>
+        </div>
         <div class="instance-type" style="position: relative;border: 1px solid #D2D2CD;">
           <div *ngIf="node?.data?.action == 'Create'" class="notShowOnViewMode notShowOnCreateMode newIcon"></div>
           <div><span title="{{node.data.type}}"
@@ -67,11 +80,11 @@
           <span>Limit</span><span>{{node?.data?.limitMembers}}</span>
         </div>
         <div class="model-actions notShowOnViewMode" *ngIf="isPaused(node)" style="border-right: none;">
-              <custom-icon
-                [size]="'large'"
-                [name]="'pause-upon-completion'"
-                [testId]="'pause-upon-completion'">
-              </custom-icon>
+          <custom-icon
+            [size]="'large'"
+            [name]="'pause-upon-completion'"
+            [testId]="'pause-upon-completion'">
+          </custom-icon>
         </div>
         <div class="model-actions notShowOnViewMode">
           <span class="icon-browse"

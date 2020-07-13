@@ -99,7 +99,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     newVfModule.isFailed = _.isNil(instance.isFailed) ? false : instance.isFailed;
     newVfModule.statusMessage = !_.isNil(instance.statusMessage) ? instance.statusMessage : "";
     newVfModule.pauseInstantiation = instance.pauseInstantiation;
-
+    newVfModule.position = instance.position;
     newVfModule = this._sharedTreeService.addingStatusProperty(newVfModule);
     return newVfModule;
   }
@@ -424,7 +424,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
   }
 
   updatePosition(that, node, instanceId, parentStoreKey): void {
-    that.store.dispatch(updateVFModulePosition(node, instanceId, parentStoreKey));
+    this._store.dispatch(updateVFModulePosition(node, instanceId, parentStoreKey));
   }
 
 
