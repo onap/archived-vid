@@ -22,6 +22,30 @@
       "revId": "fc655175f0a5a53c2e319692953dab8e0c662146",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11fb154e_4d17bb7b",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 6338
+      },
+      "writtenOn": "2020-07-14T15:29:38Z",
+      "side": 1,
+      "message": "Yes Ittay, but for the existing vf module with Pause as \u0027afterCompletion\u0027 this scenario was failing. Hence kept one more check here.",
+      "parentUuid": "24782dbd_7c8f0f91",
+      "range": {
+        "startLine": 37,
+        "startChar": 37,
+        "endLine": 37,
+        "endChar": 66
+      },
+      "revId": "fc655175f0a5a53c2e319692953dab8e0c662146",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
