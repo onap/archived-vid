@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e1031ffa_de7fd3db",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/reducersHelper.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-14T13:00:00Z",
+      "side": 1,
+      "message": "what this line do? isn\u0027t the value replaced on next line?",
+      "revId": "9ba0b8ccfa546a2fd76e0fc2ff68a748abe64848",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f7b3f96_e759d0fd",
+        "filename": "vid-webpack-master/src/app/shared/storeUtil/utils/reducersHelper.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-14T13:00:00Z",
+      "side": 1,
+      "message": "won\u0027t this override any previous value?",
+      "revId": "9ba0b8ccfa546a2fd76e0fc2ff68a748abe64848",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
