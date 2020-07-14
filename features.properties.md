@@ -288,8 +288,12 @@
   
   When flag is true, pause upon creation capability for vfmodule is enabled on 
   the new view edit screen
-    
-    
+  
+* FLAG_2008_DISABLE_DRAG_FOR_BASE_MODULE
+   
+  When flag is true, the base module instantiation cannot be dragged from the first position
+  and any VF module other than base, cannot take the first position
+      
 * FLAG_GUILIN_CHANGEMG_SUBMIT_TO_SO
 
   When toggled on, Change Management flows are submitted directly to SO. When toggled off, VID will use Scheduler.

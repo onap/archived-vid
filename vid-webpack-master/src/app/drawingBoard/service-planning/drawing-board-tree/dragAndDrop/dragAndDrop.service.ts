@@ -13,9 +13,31 @@ export class DragAndDropService {
     return FeatureFlagsService.getFlagState(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE, this.store);
   }
 
+  /***********************************************************************************************
+   if the dragged node is a base module instance
+   ***********************************************************************************************/
+  isBaseModule(serviceModelId, from): boolean {
+    return this.store.getState().service.serviceHierarchy[serviceModelId].vfModules[from.data.modelName].properties.baseModule;
+  }
+
+  isNewFlag(): boolean {
+    return FeatureFlagsService.getFlagState(Features.FLAG_2008_DISABLE_DRAG_FOR_BASE_MODULE, this.store);
+  }
 
   /***********************************************************************************************
-   if the falg is ON and nodes have same parent
+   if the dragged node is a base module instance
+   ***********************************************************************************************/
+  isBaseModule(serviceModelId, from): boolean {
+    try {
+      return this.store.getState().service.serviceHierarchy[serviceModelId].vfModules[from.data.modelName].properties.baseModule;
+    }catch(e) {
+      return false;
+    }
+  }
+
+
+  /***********************************************************************************************
+   if the flag is ON and nodes have same parent
    ***********************************************************************************************/
   isAllowDrop(from: any, to: any): boolean {
     return this.isFlagOn() && this.isSameParent(from, to);
@@ -42,11 +64,22 @@ export class DragAndDropService {
 
     if (!this.isFlagOn()) return;
 
+    if(to.parent.index == 0) return;
+
+    /* The base VF Module shouldn't be move-able from its default position */
+    if(this.isBaseModule(instanceId, from)) return;
+
+    if(this.isNewFlag()) {
+      if ((to.parent.index == 0) || this.isBaseModule(instanceId, from )) return;
+    }
+
     if (this.isAllowDrop(from, to)) {
       let vfModules = nodes.find((parent) => {
         return parent.trackById === to.parent.parent.data.trackById;
       }).children;
+
       this.array_move(vfModules, from.index, to.parent.index, instanceId, to.parent.parent.data.vnfStoreKey);
+
     }
 
     /*  let firstLevelNames : DragAndDropModel[] = [
