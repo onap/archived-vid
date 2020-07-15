@@ -133,7 +133,11 @@ export class VfModuleControlGenerator {
     }
     result.push(this._sharedControllersService.getRollbackOnFailureControl(vfModuleInstance));
     result.push(this._sharedControllersService.getSDNCControl(vfModuleInstance, false, this.getSdncExtraContents()));
-    result.push(this._sharedControllersService.getPauseInstantiation(vfModuleInstance));
+
+    if(this._featureFlagsService.getFlagState(Features.FLAG_2008_PAUSE_INSTANTIATION_ON_VFMODULE_POPUP)){
+      console.log(Features.FLAG_2008_PAUSE_INSTANTIATION_ON_VFMODULE_POPUP);
+      result.push(this._sharedControllersService.getPauseInstantiation(vfModuleInstance));
+    }
     if (this.store.getState().global.flags['FLAG_SUPPLEMENTARY_FILE']) {
       result = this._basicControlGenerator.concatSupplementaryFile(result, vfModuleInstance);
     }
