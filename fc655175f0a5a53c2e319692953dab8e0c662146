@@ -46,6 +46,30 @@
       "revId": "fc655175f0a5a53c2e319692953dab8e0c662146",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5e603020_efd7f484",
+        "filename": "vid-webpack-master/src/app/shared/components/genericFormPopup/genericFormServices/vfModule/vfModule.popup.service.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-15T03:50:40Z",
+      "side": 1,
+      "message": "I meant having both -\nformValues.pauseInstantiation \u003d\u003d\u003d true || formValues.pauseInstantiation \u003d\u003d\u003d PauseStatus.AFTER_COMPLETION\n\nit is subtle and only a suggestion",
+      "parentUuid": "11fb154e_4d17bb7b",
+      "range": {
+        "startLine": 37,
+        "startChar": 37,
+        "endLine": 37,
+        "endChar": 66
+      },
+      "revId": "fc655175f0a5a53c2e319692953dab8e0c662146",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
