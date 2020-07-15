@@ -9,7 +9,7 @@ import {
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../../store/reducers";
 import {AaiService} from "../../../../services/aaiService/aai.service";
-import {ControlGeneratorUtil, SDN_C_PRE_LOAD} from "../control.generator.util.service";
+import {ControlGeneratorUtil, PAUSE_INSTANTIATION, SDN_C_PRE_LOAD} from "../control.generator.util.service";
 import * as _ from "lodash";
 import {FormGroup} from "@angular/forms";
 import {Constants} from "../../../../utils/constants";
@@ -18,6 +18,7 @@ import {InputFormControl} from "../../../../models/formControlModels/inputFormCo
 import {NodeModel} from "../../../../models/nodeModel";
 import {MultiselectFormControl} from "../../../../models/formControlModels/multiselectFormControl.model";
 import {MultiSelectItem} from "../../../formControls/component/multiselect/multiselect.model";
+import {PauseStatus} from "../../../../models/serviceInstanceActions";
 
 @Injectable()
 export class SharedControllersService {
@@ -131,6 +132,15 @@ export class SharedControllersService {
       extraContents
     })
   };
+
+  getPauseInstantiation = (instance: any) : FormControlModel => {
+    return new CheckboxFormControl({
+      controlName: PAUSE_INSTANTIATION,
+      displayName: 'Pause upon Completion',
+      dataTestId: 'pauseInstantiation',
+      value: instance && instance.pauseInstantiation === PauseStatus.AFTER_COMPLETION
+    })
+  }
 
   getProductFamilyControl = (instance : any, controls : FormControlModel[], isMandatory?: boolean) : DropdownFormControl => {
     return new DropdownFormControl({

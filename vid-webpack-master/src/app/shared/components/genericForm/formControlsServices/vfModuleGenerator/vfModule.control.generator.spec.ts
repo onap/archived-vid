@@ -1080,8 +1080,8 @@ describe('VFModule Control Generator', () => {
   });
 
   each([
-    [true, 4, formControlsWithoutLcpRegionTenantLegacy],
-    [false, 7,formControlsWithLcpRegionTenantLegacy]
+    [true, 5, formControlsWithoutLcpRegionTenantLegacy],
+    [false, 8,formControlsWithLcpRegionTenantLegacy]
   ]).
   test('getAlaCarteFormControls should return the correct order of controls', (flag: boolean, controlAmount: number, orderedControls: string[]) => {
     when(mockFeatureFlagsService.getFlagState(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)).thenReturn(flag);
