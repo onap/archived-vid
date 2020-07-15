@@ -1080,11 +1080,14 @@ describe('VFModule Control Generator', () => {
   });
 
   each([
-    [true, 5, formControlsWithoutLcpRegionTenantLegacy],
-    [false, 8,formControlsWithLcpRegionTenantLegacy]
+    [true,  true,  5, formControlsWithoutLcpRegionTenantLegacy],
+    [false, true,  8, formControlsWithLcpRegionTenantLegacy],
+    [true,  false, 4, formControlsWithoutLcpRegionTenantLegacy],
+    [false, false, 7, formControlsWithLcpRegionTenantLegacy],
   ]).
-  test('getAlaCarteFormControls should return the correct order of controls', (flag: boolean, controlAmount: number, orderedControls: string[]) => {
-    when(mockFeatureFlagsService.getFlagState(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)).thenReturn(flag);
+  test('getAlaCarteFormControls should return the correct order of controls', (tenantControls: boolean, pauseControl: boolean, controlAmount: number, orderedControls: string[]) => {
+    when(mockFeatureFlagsService.getFlagState(Features.FLAG_2006_VFMODULE_TAKES_TENANT_AND_REGION_FROM_VNF)).thenReturn(tenantControls);
+    when(mockFeatureFlagsService.getFlagState(Features.FLAG_2008_PAUSE_INSTANTIATION_ON_VFMODULE_POPUP)).thenReturn(pauseControl);
     const controls:FormControlModel[] = getAlaCarteFormControls();
 
     expect(controls.length).toEqual(controlAmount);
