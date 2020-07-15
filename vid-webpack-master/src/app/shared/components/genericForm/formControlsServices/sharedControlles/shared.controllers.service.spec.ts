@@ -111,6 +111,19 @@ describe('Shared Controllers Service', () => {
     expect (sdncPreload.value).toBe(expected);
   });
 
+  each(
+    [
+      [' checked', true, true],
+      [' not checked', false, false ]
+    ]
+  ).
+  test('pause-instantiation checkbox', (description: string) => {
+    const instance = null;
+    const pauseInstantiation: FormControlModel = service.getPauseInstantiation(instance);
+    expect (pauseInstantiation.displayName).toEqual('Pause upon Completion');
+    expect(pauseInstantiation.dataTestId).toEqual('pauseInstantiation');
+  });
+
   test('getlegacyRegion with AAIAIC25 - isVisible true', () => {
     const instance = {lcpCloudRegionId : 'AAIAIC25'};
     const legacyRegionControl: FormControlModel = service.getLegacyRegion(instance);
@@ -134,6 +147,8 @@ describe('Shared Controllers Service', () => {
     expect(control.dataTestId).toEqual('multi-selectPlatform');
     expect(control.limitSelection).toEqual(1000);
   });
+
+
 });
 
 class MockAppStore<T> {
