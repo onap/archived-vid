@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a0b56ff_815d6e4b",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-15T03:46:28Z",
+      "side": 1,
+      "message": "is there a possibility that on index 0 we have a non-base module?\nif yes, we might tighten this check.",
+      "revId": "1ca4122c13faa989f2cb2ce3290f7307028c82fe",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
