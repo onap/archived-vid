@@ -1,0 +1,163 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cbfce986_5ab86d7f",
+        "filename": "features.properties.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-16T04:39:40Z",
+      "side": 1,
+      "message": "nice!",
+      "revId": "316920001c25e3b5e9e8c4592f748ae924008bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3c98801_867c00fd",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-16T04:39:40Z",
+      "side": 1,
+      "message": "please remove the forgotten .only",
+      "revId": "316920001c25e3b5e9e8c4592f748ae924008bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7bc4e69_b5d044dd",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.spec.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-16T04:39:40Z",
+      "side": 1,
+      "message": "both tests are pretty 👍",
+      "revId": "316920001c25e3b5e9e8c4592f748ae924008bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dafc94eb_73ef0d9c",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-16T04:39:40Z",
+      "side": 1,
+      "message": "please consider renaming this old method as well",
+      "revId": "316920001c25e3b5e9e8c4592f748ae924008bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02c4c010_f1ebda0b",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-16T04:39:40Z",
+      "side": 1,
+      "message": "please consider renaming",
+      "revId": "316920001c25e3b5e9e8c4592f748ae924008bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe8c1f4a_f6bd5622",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-16T04:39:40Z",
+      "side": 1,
+      "message": "it\u0027ll be more correct to inject the FeatureToggle service, instead of accessing the state.",
+      "revId": "316920001c25e3b5e9e8c4592f748ae924008bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd4ff040_a44d56e8",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-16T04:39:40Z",
+      "side": 1,
+      "message": "is there a possibility that on index 0 we have a non-base module?\nif yes, we might tighten this check.",
+      "revId": "316920001c25e3b5e9e8c4592f748ae924008bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "663f731d_8caaea03",
+        "filename": "vid-webpack-master/src/app/drawingBoard/service-planning/drawing-board-tree/dragAndDrop/dragAndDrop.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-16T04:39:40Z",
+      "side": 1,
+      "message": "why is it `to.parent`? why not the `to` itself?",
+      "range": {
+        "startLine": 73,
+        "startChar": 11,
+        "endLine": 73,
+        "endChar": 20
+      },
+      "revId": "316920001c25e3b5e9e8c4592f748ae924008bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af68e2f6_0680cbd8",
+        "filename": "vid-webpack-master/src/app/shared/services/featureFlag/feature-flags.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-16T04:39:40Z",
+      "side": 1,
+      "message": "i suggest adding this flag to Featues.java enum in backend, so it\u0027ll be possible to toggle it on once ready.",
+      "revId": "316920001c25e3b5e9e8c4592f748ae924008bce",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
