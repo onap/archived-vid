@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac4d078e_e5f4b26d",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/dev.features.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-07-20T21:51:19Z",
+      "side": 1,
+      "message": "I suggest to setting it ON by default as it will affect all ONAP VID community.\nstart with the toggle OFF. make sure no regression and then proceed",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 51
+      },
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e6c6314_ea91359e",
+        "filename": "vid-automation/src/main/java/vid/automation/test/infra/Features.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-07-20T21:51:19Z",
+      "side": 1,
+      "message": "it is recommended to keep the comma at the end so that next time you will need to add a flag only one line of code will be modified,\nlike:\nFLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE,",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 50
+      },
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aac0e997_f90a0f0c",
+        "filename": "vid-automation/src/test/resources/features.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-07-20T21:51:19Z",
+      "side": 1,
+      "message": "why is this feature toggled OFF?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 27
+      },
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
