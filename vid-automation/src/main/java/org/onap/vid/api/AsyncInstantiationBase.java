@@ -135,7 +135,7 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
     }
 
     protected boolean getExpectedRetryEnabled(JobStatus jobStatus) {
-        return Features.FLAG_1902_RETRY_JOB.isActive() && (jobStatus==JobStatus.FAILED || jobStatus==JobStatus.COMPLETED_WITH_ERRORS);
+        return Features.FLAG_1902_RETRY_JOB.isActive() && (jobStatus==JobStatus.FAILED || jobStatus==JobStatus.COMPLETED_WITH_ERRORS || jobStatus==JobStatus.FAILED_AND_PAUSED);
     }
 
     public List<BasePreset> getPresets(List<PresetMSOBaseDelete> presetOnDeleteList, List<PresetMSOBaseCreateInstancePost> presetOnCreateList, List<PresetMSOOrchestrationRequestGet> presetInProgressList) {
@@ -203,15 +203,17 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
         return ImmutableList.of(
                 vidAuditStatus(jobId, "PENDING", false),
                 vidAuditStatus(jobId, "IN_PROGRESS", false),
-                vidAuditStatus(jobId, "COMPLETED_WITH_ERRORS", true)
+                vidAuditStatus(jobId, getErrorStatus().name(), true)
         );
     }
+
 
     protected ImmutableList<JobAuditStatus> vidAuditStatusesFailed(String jobId) {
         return ImmutableList.of(
                 vidAuditStatus(jobId, "PENDING", false),
                 vidAuditStatus(jobId, "IN_PROGRESS", false),
-                vidAuditStatus(jobId, "FAILED", true)
+                vidAuditStatus(jobId, "FAILED", true),
+                vidAuditStatus(jobId, "FAILED_AND_PAUSED", true)
         );
     }
 
@@ -502,7 +504,7 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
             assertTrue("actual service instance doesn't contain template service name:" + expectedServiceInfo.serviceInstanceName,
                     serviceInfoFromDB.serviceInstanceName.contains(expectedServiceInfo.serviceInstanceName));
 
-            if (expectedServiceInfo.serviceInstanceId != null && ImmutableList.of(JobStatus.COMPLETED, JobStatus.PAUSE, JobStatus.COMPLETED_WITH_ERRORS).contains(serviceInfoFromDB.jobStatus)) {
+            if (expectedServiceInfo.serviceInstanceId != null && ImmutableList.of(JobStatus.COMPLETED, JobStatus.PAUSE, getErrorStatus()).contains(serviceInfoFromDB.jobStatus)) {
                 MatcherAssert.assertThat("service instance id is wrong", serviceInfoFromDB.serviceInstanceId, CoreMatchers.is(expectedServiceInfo.serviceInstanceId));
             }
             if (expectedJobStatus.size()==1) {
@@ -512,7 +514,10 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
             return expectedJobStatus.contains(serviceInfoFromDB.jobStatus);
         }
     }
-
+    protected static JobStatus getErrorStatus() {
+        return Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE.isActive() ?
+            JobStatus.FAILED_AND_PAUSED : JobStatus.COMPLETED_WITH_ERRORS;
+    }
     protected ResponseEntity<List<ServiceInfo>> serviceListCall() {
         return restTemplate.exchange(
                 getServiceInfoUrl(),

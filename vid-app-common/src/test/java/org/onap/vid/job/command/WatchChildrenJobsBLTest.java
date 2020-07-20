@@ -37,15 +37,20 @@ import org.mockito.MockitoAnnotations;
 import org.onap.portalsdk.core.service.DataAccessService;
 import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.job.impl.JobDaoImpl;
+import org.onap.vid.properties.Features;
 import org.onap.vid.utils.DaoUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 public class WatchChildrenJobsBLTest {
     @Mock
     private DataAccessService dataAccessService;
 
+    @Mock
+    private static FeatureManager featureManager;
+    
     @InjectMocks
     private WatchChildrenJobsBL watchChildrenJobsBL;
 
@@ -56,9 +61,9 @@ public class WatchChildrenJobsBLTest {
 
     public static Object[][] dataProviderForChildrenStatusOnly() {
         return new Object[][]{
-                 {Arrays.asList(JobStatus.STOPPED, JobStatus.COMPLETED_WITH_NO_ACTION, JobStatus.COMPLETED), JobStatus.COMPLETED_WITH_ERRORS},
-                 {Arrays.asList(JobStatus.COMPLETED, JobStatus.FAILED, JobStatus.COMPLETED_WITH_NO_ACTION), JobStatus.COMPLETED_WITH_ERRORS},
-                 {Arrays.asList(null, JobStatus.COMPLETED), JobStatus.COMPLETED_WITH_ERRORS},
+                 {Arrays.asList(JobStatus.STOPPED, JobStatus.COMPLETED_WITH_NO_ACTION, JobStatus.COMPLETED), getErrorStatus()},
+                 {Arrays.asList(JobStatus.COMPLETED, JobStatus.FAILED, JobStatus.COMPLETED_WITH_NO_ACTION), getErrorStatus()},
+                 {Arrays.asList(null, JobStatus.COMPLETED), getErrorStatus()},
                  {Arrays.asList(null, JobStatus.IN_PROGRESS), JobStatus.IN_PROGRESS},
                  {Arrays.asList(null, JobStatus.FAILED), JobStatus.FAILED},
                  {new ArrayList<>(), JobStatus.COMPLETED_WITH_NO_ACTION}
@@ -80,16 +85,16 @@ public class WatchChildrenJobsBLTest {
                 {Arrays.asList(JobStatus.COMPLETED, JobStatus.COMPLETED), JobStatus.COMPLETED},
                 {Arrays.asList(JobStatus.COMPLETED, JobStatus.COMPLETED_WITH_NO_ACTION), JobStatus.COMPLETED},
                 {Arrays.asList(JobStatus.FAILED, JobStatus.COMPLETED_WITH_NO_ACTION), JobStatus.FAILED},
-                {Arrays.asList(JobStatus.FAILED, JobStatus.COMPLETED), JobStatus.COMPLETED_WITH_ERRORS},
+                {Arrays.asList(JobStatus.FAILED, JobStatus.COMPLETED), getErrorStatus()},
                 {Arrays.asList(JobStatus.RESOURCE_IN_PROGRESS, JobStatus.FAILED), JobStatus.IN_PROGRESS},
                 {Arrays.asList(JobStatus.PAUSE, JobStatus.FAILED), JobStatus.IN_PROGRESS},
                 {Arrays.asList(JobStatus.PENDING, JobStatus.FAILED), JobStatus.IN_PROGRESS},
                 {Arrays.asList(JobStatus.IN_PROGRESS, JobStatus.COMPLETED), JobStatus.IN_PROGRESS},
                 {Arrays.asList(JobStatus.IN_PROGRESS, JobStatus.IN_PROGRESS),  JobStatus.IN_PROGRESS},
-                {Arrays.asList(JobStatus.COMPLETED, JobStatus.COMPLETED_WITH_ERRORS), JobStatus.COMPLETED_WITH_ERRORS},
-                {Arrays.asList(JobStatus.COMPLETED_WITH_ERRORS, JobStatus.FAILED), JobStatus.COMPLETED_WITH_ERRORS},
-                {Arrays.asList(JobStatus.COMPLETED_WITH_ERRORS, JobStatus.COMPLETED_WITH_ERRORS), JobStatus.COMPLETED_WITH_ERRORS},
-                {Arrays.asList(JobStatus.COMPLETED_WITH_ERRORS, JobStatus.COMPLETED_WITH_NO_ACTION), JobStatus.COMPLETED_WITH_ERRORS},
+                {Arrays.asList(JobStatus.COMPLETED, getErrorStatus()), getErrorStatus()},
+                {Arrays.asList(getErrorStatus(), JobStatus.FAILED), getErrorStatus()},
+                {Arrays.asList(getErrorStatus(), getErrorStatus()), getErrorStatus()},
+                {Arrays.asList(getErrorStatus(), JobStatus.COMPLETED_WITH_NO_ACTION), getErrorStatus()},
                 {Arrays.asList(JobStatus.COMPLETED_WITH_NO_ACTION, JobStatus.COMPLETED_WITH_NO_ACTION), JobStatus.COMPLETED_WITH_NO_ACTION},
                 {Arrays.asList(JobStatus.COMPLETED_AND_PAUSED, JobStatus.RESOURCE_IN_PROGRESS), JobStatus.IN_PROGRESS},
                 {Arrays.asList(JobStatus.COMPLETED_AND_PAUSED, JobStatus.COMPLETED), JobStatus.COMPLETED_AND_PAUSED},
@@ -117,4 +122,11 @@ public class WatchChildrenJobsBLTest {
     public void whenCumulate2JobStatus_thenResultAsExpected(List<JobStatus> jobs, JobStatus expectedChildrenJobsStatus) {
         assertEquals(expectedChildrenJobsStatus, watchChildrenJobsBL.cumulateJobStatus(jobs.get(0), jobs.get(1)));
     }
+    
+    private static JobStatus getErrorStatus() {
+        return featureManager.isActive(Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE) ? 
+            JobStatus.FAILED_AND_PAUSED : JobStatus.COMPLETED_WITH_ERRORS;
+    }
+    
+    
 }

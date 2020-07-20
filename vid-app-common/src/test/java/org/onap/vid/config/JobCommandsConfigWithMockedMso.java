@@ -79,7 +79,7 @@ public class JobCommandsConfigWithMockedMso {
 
     @Bean
     public JobsBrokerService jobsBrokerService(DataAccessService dataAccessService, SessionFactory sessionFactory, VersionService versionService) {
-        return new JobsBrokerServiceInDatabaseImpl(dataAccessService, sessionFactory, 200, 0,versionService);
+        return new JobsBrokerServiceInDatabaseImpl(dataAccessService, sessionFactory, 200, 0,versionService, featureManager());
     }
 
     @Bean
@@ -314,7 +314,7 @@ public class JobCommandsConfigWithMockedMso {
 
     @Bean
     public WatchChildrenJobsBL watchChildrenJobsService(DataAccessService dataAccessService) {
-        return new WatchChildrenJobsBL(dataAccessService);
+        return new WatchChildrenJobsBL(dataAccessService, featureManager());
     }
 
 }

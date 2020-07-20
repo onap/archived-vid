@@ -145,7 +145,7 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
 
     @DataProvider
     Object[][] multipleVnfDataProvider() {
-        return new Object[][]{{MSO_FAILED_STATUS, JobStatus.COMPLETED_WITH_ERRORS},{MSO_COMPLETE_STATUS, JobStatus.COMPLETED}, {"SERVICE_FAILED", JobStatus.FAILED}};
+        return new Object[][]{{MSO_FAILED_STATUS, getErrorStatus() },{MSO_COMPLETE_STATUS, JobStatus.COMPLETED}, {"SERVICE_FAILED", JobStatus.FAILED_AND_PAUSED}};
     }
 
     @Test
@@ -197,7 +197,7 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
         return new Object[][]{
                 {MSO_COMPLETE_STATUS, MSO_COMPLETE_STATUS, JobStatus.COMPLETED},
                 {MSO_FAILED_STATUS, MSO_FAILED_STATUS, JobStatus.FAILED},
-                {MSO_COMPLETE_STATUS, MSO_FAILED_STATUS, JobStatus.COMPLETED_WITH_ERRORS}
+                {MSO_COMPLETE_STATUS, MSO_FAILED_STATUS, getErrorStatus()}
         };
     }
 

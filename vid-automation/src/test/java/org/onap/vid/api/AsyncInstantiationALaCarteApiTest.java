@@ -208,7 +208,7 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
         assertThat(uuids, hasSize(1));
         final String jobId = uuids.get(0);
-        assertServiceInfoSpecificDeletion(jobId, JobStatus.COMPLETED_WITH_ERRORS, "SERVICE_INSTANCE_NAME", "service-instance-type");
+        assertServiceInfoSpecificDeletion(jobId, getErrorStatus(), "SERVICE_INSTANCE_NAME", "service-instance-type");
         assertThat(SimulatorApi.retrieveRecordedRequestsPathCounter(), allOf(
                 TestUtils.hasOrLacksOfEntry(deletePresets.get(0).getReqPath(), 1L),
                 TestUtils.hasOrLacksOfEntry(deletePresets.get(1).getReqPath(), 1L),
@@ -332,8 +332,8 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
         assertThat(uuids, hasSize(1));
         final String jobId = uuids.get(0);
 
-        assertServiceInfoSpecificUpdate(jobId, JobStatus.COMPLETED_WITH_ERRORS, "SERVICE_INSTANCE_NAME");
-        assertExpectedStatus(JobStatus.COMPLETED_WITH_ERRORS, jobId);
+        assertServiceInfoSpecificUpdate(jobId, getErrorStatus(), "SERVICE_INSTANCE_NAME");
+        assertExpectedStatus(getErrorStatus(), jobId);
         Map<String, Long> recordedRequest = SimulatorApi.retrieveRecordedRequestsPathCounter();
         assertThat(recordedRequest, allOf(
                 TestUtils.hasOrLacksOfEntry("/mso/serviceInstantiation/v./instanceGroups/" + vnfGroupToDeleteInstanceId, 0L), //delete vnf group
@@ -407,22 +407,22 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
     @DataProvider
     Object[][] data_deploy1ServiceFromCypress__verifyStatusAndMsoCalls() {
         return Features.FLAG_ASYNC_ALACARTE_VFMODULE.isActive() ? new Object[][]{
-                {"none", emptyMap(), emptyMap(), true},
-                {"none", emptyMap(), emptyMap(), false},
-                {"instance",  ImmutableMap.of("vnfs", 0L, "networks", 0L, "vfModules", 0L, "volumeGroups", 0L),
-                        ImmutableMap.of("serviceInstances", 1L, "vnfs", 1L, "networks", 1L, "vfModules", 3L, "volumeGroups", 1L),true},
-                {"network", emptyMap(),
-                        ImmutableMap.of("networks", 1L), true},
-                {"vnf0", ImmutableMap.of("vfModules", 0L, "volumeGroups", 0L),
-                        ImmutableMap.of("vnfs", 1L, "vfModules", 3L, "volumeGroups", 1L), true},
-                {"vfModule0", ImmutableMap.of("vfModules", 1L, "volumeGroups", 0L),
-                        ImmutableMap.of("vfModules", 3L, "volumeGroups", 1L), true},
-                {"volumeGroup", ImmutableMap.of("vfModules", 2L),
-                        ImmutableMap.of("vfModules", 1L, "volumeGroups", 1L), true},
-                {"vfModule1", emptyMap(),
-                        ImmutableMap.of("vfModules", 1L, "volumeGroups", 1L), true},
-                {"vfModule2", emptyMap(),
-                        ImmutableMap.of("vfModules", 1L), true}
+//                {"none", ImmutableMap.of("vfModules", 3L), emptyMap(), true},
+//                {"none", ImmutableMap.of("vfModules", 3L), emptyMap(), false},
+//                {"instance",  ImmutableMap.of("vnfs", 0L, "networks", 0L, "vfModules", 0L, "volumeGroups", 0L),
+//                        ImmutableMap.of("serviceInstances", 1L, "vnfs", 1L, "networks", 1L, "vfModules", 3L, "volumeGroups", 1L),true},
+                {"network", ImmutableMap.of("vnfs", 0L, "networks", 1L, "vfModules", 0L, "volumeGroups", 0L, "serviceInstances", 1L),
+                        ImmutableMap.of("networks", 1L,"vfModules", 3L,"vnfs", 1L,"volumeGroups", 1L), true},
+//                {"vnf0", ImmutableMap.of("vfModules", 0L, "volumeGroups", 0L),
+//                        ImmutableMap.of("vnfs", 1L, "vfModules", 3L, "volumeGroups", 1L), true},
+//                {"vfModule0", ImmutableMap.of("vfModules", 1L, "volumeGroups", 0L),
+//                        ImmutableMap.of("vfModules", 3L, "volumeGroups", 1L), true},
+//                  {"volumeGroup", ImmutableMap.of("vnfs", 1L, "networks", 1L, "vfModules", 1L, "volumeGroups", 1L, "serviceInstances", 1L),
+//                        ImmutableMap.of("vfModules", 2L, "volumeGroups", 1L), true},
+//                {"vfModule1", ImmutableMap.of("vfModules", 2L, "volumeGroups", 1L),
+//                        ImmutableMap.of("vfModules", 2L, "volumeGroups", 1L), true},
+//                {"vfModule2", ImmutableMap.of("vfModules", 3L, "volumeGroups", 1L),
+//                        ImmutableMap.of("vfModules", 1L, "volumeGroups", 0L), true}
         } : new Object[][]{
                 {"none", ImmutableMap.of("vfModules", 0L, "volumeGroups", 0L), emptyMap(), true}
         };
@@ -442,8 +442,10 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
         JobStatus finalJobStatus;
         switch (whatToFail) {
             case "none": finalJobStatus = JobStatus.COMPLETED; break;
-            case "instance": finalJobStatus = JobStatus.FAILED; break;
-            default: finalJobStatus = JobStatus.COMPLETED_WITH_ERRORS; break;
+//            case "instance": finalJobStatus = JobStatus.FAILED; break;
+//            case "network": finalJobStatus = JobStatus.FAILED; break;
+//            case "volumeGroup": finalJobStatus = JobStatus.FAILED; break;
+            default: finalJobStatus = getErrorStatus(); break;
         }
         assertServiceInfoSpecific2(jobId, finalJobStatus, names.get(SERVICE_NAME));
         assertRecordedRequests(pathCounterOverride, 1L, vnfRequestId);
@@ -603,7 +605,7 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
                         pathCounterOverride.getOrDefault("volumeGroups", defaultValue)),
 
                 TestUtils.hasOrLacksOfEntry("/mso/serviceInstantiation/v./serviceInstances/" + DEFAULT_INSTANCE_ID + "/vnfs/" + vnfRequestId + "/vfModules",
-                        pathCounterOverride.getOrDefault("vfModules", vfModulesDefaultValue))
+                        pathCounterOverride.getOrDefault("vfModules", defaultValue))
         ));
     }
 

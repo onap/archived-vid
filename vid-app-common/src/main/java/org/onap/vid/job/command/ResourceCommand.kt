@@ -387,6 +387,8 @@ abstract class ResourceCommand(
     protected open fun handleInProgressStatus(jobStatus: JobStatus): JobStatus {
         if (jobStatus == JobStatus.PAUSE){
             return JobStatus.IN_PROGRESS
+        } else if (failedAndPaused(jobStatus)){
+            return JobStatus.FAILED_AND_PAUSED
         } else if (completedAndPaused(jobStatus)){
             return JobStatus.COMPLETED_AND_PAUSED
         }
@@ -397,6 +399,9 @@ abstract class ResourceCommand(
             jobStatus == JobStatus.COMPLETED && getRequest().pauseInstantiation == afterCompletion
                     && featureManager.isActive(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION)
 
+    private fun failedAndPaused(jobStatus: JobStatus) =
+            jobStatus == JobStatus.FAILED
+                    && featureManager.isActive(Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE)
 
     protected open fun watchChildren():JobStatus {
         return watchChildrenJobsBL.retrieveChildrenJobsStatus(childJobs)

@@ -45,12 +45,15 @@ import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.exceptions.OperationNotAllowedException;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.JobsBrokerService;
+import org.onap.vid.properties.Features;
 import org.onap.vid.properties.VidProperties;
 import org.onap.vid.services.VersionService;
 import org.onap.vid.utils.DaoUtils;
+import org.powermock.core.classloader.annotations.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.togglz.core.manager.FeatureManager;
 
 @Service
 public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
@@ -64,19 +67,21 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
     private int pollingIntervalSeconds;
 
     private final VersionService versionService;
-
+    private final FeatureManager featureManager;
     @Autowired
     public JobsBrokerServiceInDatabaseImpl(DataAccessService dataAccessService,
                                            SessionFactory sessionFactory,
                                            @Value("0") int maxOpenedInstantiationRequestsToMso,
                                            @Value("10") int pollingIntervalSeconds,
-                                           VersionService versionService) {
+                                           VersionService versionService,
+                                            FeatureManager featureManager) {
         // tha @Value will inject conservative defaults; overridden in @PostConstruct from configuration
         this.dataAccessService = dataAccessService;
         this.sessionFactory = sessionFactory;
         this.maxOpenedInstantiationRequestsToMso = maxOpenedInstantiationRequestsToMso;
         this.pollingIntervalSeconds = pollingIntervalSeconds;
         this.versionService = versionService;
+        this.featureManager = featureManager;
     }
 
     @PostConstruct
@@ -199,7 +204,7 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
                 "and TEMPLATE_Id not in \n" +
                 "(select TEMPLATE_Id from vid_job where" +
                 "   TEMPLATE_Id IS NOT NULL and("+
-                "   (JOB_STATUS='FAILED' and DELETED_AT is null)" + // failed but not deleted
+                "   (JOB_STATUS IN('FAILED') and DELETED_AT is null)" + // failed but not deleted
                 "   or JOB_STATUS='IN_PROGRESS'" +
                 "   or TAKEN_BY IS NOT NULL))" + " \n " +
                 // prefer older jobs, but the earlier in each bulk
@@ -232,14 +237,25 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
                 "    and in_progress_count is NULL \n" +
                 //and that have valid templateId
                 "    and JOB.template_id is not NULL \n"+
-                ")\n" +
+
+                filterFailedStatusForPendingResource()
+
+                + ")" +
+
                 //INDEX_IN_BULK is for order them inside same templateId,
                 //template_id - for order between different templateId (just to be deterministic)
                 "order by INDEX_IN_BULK,JOB.template_id \n" +
                 "limit 1;";
     }
 
-
+    private String filterFailedStatusForPendingResource() {
+        String sql = "and JOB.template_id not in \n" +
+            "(select TEMPLATE_Id from vid_job where" +
+            "   (JOB_STATUS IN('FAILED','FAILED_AND_PAUSED') and DELETED_AT is null)" + // failed but not deleted
+            "   or TAKEN_BY IS NOT NULL)";
+        return featureManager.isActive(Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE) ?
+            sql : "";
+    }
     @Override
     public void pushBack(Job job) {
         final JobDaoImpl remoteDaoJob = (JobDaoImpl) dataAccessService.getDomainObject(JobDaoImpl.class, job.getUuid(), null);

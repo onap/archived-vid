@@ -436,7 +436,12 @@ public class AsyncInstantiationBusinessLogicImpl implements
 
     private boolean isRetryEnabledForStatus(JobStatus jobStatus) {
         return jobStatus==JobStatus.COMPLETED_AND_PAUSED || (featureManager.isActive(Features.FLAG_1902_RETRY_JOB) &&
-                (jobStatus==JobStatus.COMPLETED_WITH_ERRORS || jobStatus==JobStatus.FAILED));
+                (jobStatus==getErrorStatusOnPause() || jobStatus==JobStatus.FAILED));
+    }
+
+    private JobStatus getErrorStatusOnPause() {
+        return featureManager.isActive(Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE) ?
+            JobStatus.FAILED_AND_PAUSED : JobStatus.COMPLETED_WITH_ERRORS;
     }
 
     private void setServiceInfoStatus(ServiceInfo serviceInfo, JobStatus jobStatus) {

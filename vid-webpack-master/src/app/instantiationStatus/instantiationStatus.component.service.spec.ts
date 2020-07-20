@@ -4,7 +4,7 @@ import {
   INPROGRESS,
   InstantiationStatusComponentService,
   PAUSE,
-  PAUSE_UPON_COMPLETION,
+  PAUSE_UPON_COMPLETION, PAUSE_UPON_FAILURE,
   PENDING,
   ServiceStatus,
   STOPPED,
@@ -150,6 +150,7 @@ describe('Instantiation Status Service', () => {
     'COMPLETED_WITH_ERRORS': 'Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.',
     'UNEXPECTED_RANDOM_STATUS': 'Unexpected status: "UNEXPECTED_RANDOM_STATUS"',
     'COMPLETED_AND_PAUSED': 'Pause upon completion. you may resume the instantiation.\n Open the service to check it out.',
+    'FAILED_AND_PAUSED': 'Pause upon completion on error. you may resume the instantiation.\n Open the service to check it out.',
   })) {
 
     test(`getStatusTooltip should return status popover: status=${status}`, () => {
@@ -212,6 +213,9 @@ describe('Instantiation Status Service', () => {
 
     result = service.getStatus('COMPLETED_AND_PAUSED');
     expect(result.iconClassName).toEqual(PAUSE_UPON_COMPLETION);
+
+    result = service.getStatus('FAILED_AND_PAUSED');
+    expect(result.iconClassName).toEqual(PAUSE_UPON_FAILURE);
 
     result = service.getStatus(undefined);
     expect(result.iconClassName).toEqual(UNKNOWN);

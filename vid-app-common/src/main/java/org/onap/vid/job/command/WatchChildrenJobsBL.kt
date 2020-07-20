@@ -25,9 +25,11 @@ import org.onap.portalsdk.core.service.DataAccessService
 import org.onap.vid.job.Job
 import org.onap.vid.job.Job.JobStatus.*
 import org.onap.vid.job.impl.JobDaoImpl
+import org.onap.vid.properties.Features
 import org.onap.vid.utils.DaoUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.togglz.core.manager.FeatureManager
 import java.util.*
 import java.util.stream.Collectors
 import java.util.stream.Stream
@@ -35,8 +37,7 @@ import java.util.stream.Stream
 
 @Service
 class WatchChildrenJobsBL @Autowired
-constructor(private val dataAccessService: DataAccessService) {
-
+constructor(private val dataAccessService: DataAccessService, private val featureManager: FeatureManager) {
     fun retrieveChildrenJobsStatus(childrenJobsIds: List<String>): Job.JobStatus {
         val jobs = getAllChildrenJobs(childrenJobsIds)
 
@@ -55,14 +56,18 @@ constructor(private val dataAccessService: DataAccessService) {
         return cumulateJobStatus(Stream.of(childrenComulatedStatus, fatherJobStatus))
     }
 
+
+    private fun partialFailure()  = if(featureManager.isActive(Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE))
+                                                            FAILED_AND_PAUSED else COMPLETED_WITH_ERRORS
+
     private fun cumulateJobStatus(jobsStatuses: Stream<Job.JobStatus>): Job.JobStatus {
 
         return jobsStatuses.reduce{ a, b ->
             when {
+                a == partialFailure() || b == partialFailure()-> partialFailure()
                 !a.isFinal || !b.isFinal -> IN_PROGRESS
-                a == COMPLETED_WITH_ERRORS || b == COMPLETED_WITH_ERRORS-> COMPLETED_WITH_ERRORS
-                a == COMPLETED && b.isFailure -> COMPLETED_WITH_ERRORS
-                b == COMPLETED && a.isFailure -> COMPLETED_WITH_ERRORS
+                a == COMPLETED && b.isFailure -> partialFailure()
+                b == COMPLETED && a.isFailure -> partialFailure()
                 a == COMPLETED_AND_PAUSED || b == COMPLETED_AND_PAUSED -> COMPLETED_AND_PAUSED
                 a == COMPLETED || b == COMPLETED -> COMPLETED
                 a.isFailure || b.isFailure -> FAILED

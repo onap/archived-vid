@@ -45,21 +45,28 @@ import org.onap.portalsdk.core.util.SystemProperties;
 import org.onap.vid.config.DataSourceConfig;
 import org.onap.vid.config.MockedAaiClientAndFeatureManagerConfig;
 import org.onap.vid.job.Job;
+import org.onap.vid.job.Job.JobStatus;
 import org.onap.vid.model.ResourceInfo;
 import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.ServiceInfo.ServiceAction;
 import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.RequestStatus;
+import org.onap.vid.properties.Features;
 import org.onap.vid.services.AsyncInstantiationBaseTest;
 import org.onap.vid.utils.TimeUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, MockedAaiClientAndFeatureManagerConfig.class})
 public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest {
+
+    @Autowired
+    private FeatureManager featureManager;
 
     @Inject
     private DataAccessService dataAccessService;
@@ -141,7 +148,7 @@ public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest
         AsyncRequestStatus errorMessage= createAsyncRequestStatus("MSO failed resource", "FAILED");
         List<ResourceInfo> requestInfoList= ImmutableList.of(
                 new ResourceInfo("aaaaaa",jobId1, "64f3123a-f9a8-4591-b481-d662134bcb52", Job.JobStatus.COMPLETED, null),
-                new ResourceInfo("bbbbbb",jobId1, "65f3123a-f9a8-4591-b481-kodj9ig87gdu", Job.JobStatus.COMPLETED_WITH_ERRORS, null),
+                new ResourceInfo("bbbbbb",jobId1, "65f3123a-f9a8-4591-b481-kodj9ig87gdu", getErrorStatus(), null),
                 new ResourceInfo("dddddd",jobId1, null, Job.JobStatus.FAILED, null),
                 new ResourceInfo("cccccc",jobId1, null, Job.JobStatus.FAILED, errorMessage),
                 new ResourceInfo("eeeeee",jobId2, null, Job.JobStatus.FAILED, null),
@@ -159,5 +166,9 @@ public class AsyncInstantiationRepositoryTest extends AsyncInstantiationBaseTest
         assertThat(storedByTrackId.values(),
             jsonEquals(requestInfoList.stream().filter(i -> i.getRootJobId().equals(jobId1)).collect(
                 toList())).when(IGNORING_ARRAY_ORDER));
+    }
+    private JobStatus getErrorStatus() {
+        return featureManager.isActive(Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE) ?
+            JobStatus.FAILED_AND_PAUSED : JobStatus.COMPLETED_WITH_ERRORS;
     }
 }

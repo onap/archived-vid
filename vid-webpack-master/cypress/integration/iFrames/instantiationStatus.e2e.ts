@@ -81,6 +81,8 @@ describe('Instantiation status', function () {
         return "success_with_warning";
       case  'COMPLETED_AND_PAUSED' :
         return "stopped-upon-success";
+      case  'FAILED_AND_PAUSED' :
+        return "success_with_warning";
       default:
         return "question-mark-circle-o";
     }
