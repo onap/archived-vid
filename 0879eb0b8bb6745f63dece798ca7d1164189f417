@@ -2,6 +2,74 @@
   "comments": [
     {
       "key": {
+        "uuid": "55e0bf22_4f3b6f36",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/command/ResourceCommand.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "is it needed? what will happen without explicit \u0027FAILED_AND_PAUSED\u0027 on Job-level?",
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f82ccb7_3550763e",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/impl/JobsBrokerServiceInDatabaseImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "what about \u0027FAILED_AND_PAUSED\u0027, is it needed here?",
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ecc7bc9_05f95af7",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/job/impl/JobsBrokerServiceInDatabaseImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "you must have here \"TEMPLATE_Id IS NOT NULL\". otherwise a case where ID is NULL will blow out your SQL Query.\nReason is it\u0027s illegal to have a query like\n\n    \u0027a\u0027 IN (\u0027a\u0027, \u0027b\u0027, null, \u0027c\u0027)\n\nbecause of the null.",
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0c02dde_67defd38",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/services/AsyncInstantiationBusinessLogicImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "i think condition should be either status, regardless of toggle (i.e. `jobStatus in [FAILED, FAILED_AND_PAUSED, COMPLETED_WITH_ERRORS]`)\n\nthus, the toggle will only affect the possibility to get into a \"FAILED_AND_PAUSED\" state. but retry may be possible for both.\n\nalso, with this code you will disable retry for historic sessions which completed with \"COMPLETED_WITH_ERRORS\".",
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ac4d078e_e5f4b26d",
         "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/dev.features.properties",
         "patchSetId": 1
@@ -19,6 +87,63 @@
         "endLine": 37,
         "endChar": 51
       },
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1615be1_fcb83575",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/dal/AsyncInstantiationRepositoryTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "`featureManager` instance is a mock, and you should be able to control it\u0027s status.\nif so, you can just choose to mock FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE as true, and explicitly expect the `FAILED_AND_PAUSED` status.",
+      "range": {
+        "startLine": 151,
+        "startChar": 90,
+        "endLine": 151,
+        "endChar": 104
+      },
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2717d45_3622948e",
+        "filename": "vid-app-common/src/test/java/org/onap/vid/job/command/WatchChildrenJobsBLTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "`featureManager` instance is a mock, and you should be able to control it\u0027s status.\nif so, you can just choose to mock FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE as true, and explicitly expect the `FAILED_AND_PAUSED` status (or vice versa).",
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d25e5c98_d5e42bb2",
+        "filename": "vid-automation/src/main/java/org/onap/vid/api/AsyncInstantiationBase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "here `getErrorStatus` is good, as toggle is controlled in backend, not in test. 👍",
       "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -48,6 +173,57 @@
     },
     {
       "key": {
+        "uuid": "2efbbaf2_c3a33b86",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/AsyncInstantiationALaCarteApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "uncomment to bring back the cases",
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81e859c7_62db0d93",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/AsyncInstantiationALaCarteApiTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "uncomment to bring back the cases",
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e9325a8_cf57cba7",
+        "filename": "vid-automation/src/test/java/org/onap/vid/api/AsyncInstantiationALaCarteApiTest3.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "i think it\u0027ll be ok that Job will keep failing with FAIL status, while an instantiation session will conclude to FAIL_AND_PAUSED.",
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "aac0e997_f90a0f0c",
         "filename": "vid-automation/src/test/resources/features.properties",
         "patchSetId": 1
@@ -64,6 +240,29 @@
         "startChar": 0,
         "endLine": 22,
         "endChar": 27
+      },
+      "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "731b34df_ba2ead70",
+        "filename": "vid-webpack-master/src/app/instantiationStatus/instantiationStatus.component.service.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-07-21T08:09:05Z",
+      "side": 1,
+      "message": "I suggest this text to be improved",
+      "range": {
+        "startLine": 177,
+        "startChar": 66,
+        "endLine": 177,
+        "endChar": 96
       },
       "revId": "0879eb0b8bb6745f63dece798ca7d1164189f417",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
