@@ -47,6 +47,11 @@ committers:
       company: 'ATT'
       id: 'eylonmalin'
       timezone: 'Israel/Lod'
+    - name: 'Ikram Ikramullah'
+      email: 'ikram@research.att.com'
+      company: 'ATT'
+      id: 'ikram'
+      timezone: 'US/Eastern'
 tsc:
     approval: 'https://lists.onap.org/pipermail/onap-tsc'
     changes:
@@ -65,3 +70,6 @@ tsc:
         - type: 'Removal'
           name: 'Wojciech Sliwka'
           link: 'https://lists.onap.org/g/onap-tsc/topic/67968691#5770'
+        - type: 'Addition'
+          name: 'Ikram Ikramullah'
+          link: 'https://lists.onap.org/g/onap-tsc/topic/75678925'
