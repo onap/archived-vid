@@ -2,7 +2,7 @@ import {
   CreateVFModuleInstanceAction,
   DeleteActionVfModuleInstanceAction,
   DeleteVFModuleField,
-  DeleteVfModuleInstanceAction, PauseVFModuleInstanciationAction,
+  DeleteVfModuleInstanceAction, PauseVFModuleInstanciationAction, RemovePauseOnVFModuleInstanciationAction,
   UndoDeleteActionVfModuleInstanceAction,
   UpdateVFModluePosition,
   UpdateVFModuleField,
@@ -251,6 +251,18 @@ test('#PAUSE_ACTION_VF_MODULE_INSTANTIATION %s', (description: string, dynamicMo
   expect(vfModule.pauseInstantiation).toEqual(pauseInstantiation);
 });
 
+  each([
+    ['for the first vfModule', 'dynamicModelName1', null],
+    ['for the third vfModule', 'dynamicModelName3', null],
+    ['for the last vfModule', 'dynamicModelName5', null],
+  ]).
+  test('#REMOVE_PAUSE_ON_VFMODULE_INSTANCE %s', (description: string, dynamicModelName:string, pauseInstantiation: string) => {
+    let vfModule = vfModuleReducer(<any>getPausedRedux(), getRemovePauseActionVfModule(dynamicModelName))
+      .serviceInstance['serviceModelId'].vnfs['vnfStoreKey'].vfModules['vfModuleModelName'][dynamicModelName];
+    expect(vfModule).toBeDefined();
+    expect(vfModule.pauseInstantiation).toEqual(pauseInstantiation);
+  });
+
 test('#UPGRADE_VFMODULE', () => {
   let vfModule = vfModuleReducer(<any>getReduxState(),
     <UpgradeVfModuleInstanceAction>{
@@ -415,4 +427,14 @@ function getPausedActionVfModule(dynamicModelName: string) {
     vfModuleModelName: 'vfModuleModelName'
   }
 }
+
+  function getRemovePauseActionVfModule(dynamicModelName: string) {
+    return <RemovePauseOnVFModuleInstanciationAction>{
+      type: VfModuleActions.REMOVE_PAUSE_ON_VFMODULE_INSTANCE,
+      dynamicModelName: dynamicModelName,
+      vnfStoreKey: 'vnfStoreKey',
+      serviceId: 'serviceModelId',
+      vfModuleModelName: 'vfModuleModelName'
+    }
+  }
 });

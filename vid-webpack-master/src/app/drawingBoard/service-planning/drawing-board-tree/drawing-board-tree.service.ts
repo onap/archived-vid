@@ -54,7 +54,8 @@ export class  DrawingBoardTreeService {
       new TreeNodeContextMenuModel('undoDelete', 'context-menu-undoDelete', 'Undo Delete', 'undo-delete'),
       new TreeNodeContextMenuModel('undoUpgrade', 'context-menu-undoUpgrade', 'Undo Upgrade', 'undo-delete'),
       new TreeNodeContextMenuModel('changeAssociations', 'context-menu-changeAssociations', 'Change Associations', 'edit-file-o'),
-      new TreeNodeContextMenuModel('pauseInstantiation', 'context-menu-pause', 'Add pause upon completion', 'pause-upon-completion')
+      new TreeNodeContextMenuModel('pauseInstantiation', 'context-menu-pause', 'Add pause upon completion', 'pause-upon-completion'),
+      new TreeNodeContextMenuModel('removePause', 'context-menu-removePause', 'Remove Pause', 'pause-upon-completion')
     ];
   }
 

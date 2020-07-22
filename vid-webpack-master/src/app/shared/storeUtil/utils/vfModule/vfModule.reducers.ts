@@ -5,7 +5,7 @@ import {
   DeleteActionVfModuleInstanceAction,
   DeleteVFModuleField,
   DeleteVfModuleInstanceAction,
-  PauseVFModuleInstanciationAction,
+  PauseVFModuleInstanciationAction, RemovePauseOnVFModuleInstanciationAction,
   UndoDeleteActionVfModuleInstanceAction,
   UpdateVFModluePosition,
   UpdateVFModuleField,
@@ -85,10 +85,18 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
     case VfModuleActions.PAUSE_ACTION_VFMODULE_INSTANCE : {
       const pauseVfModuleAction = (<PauseVFModuleInstanciationAction>action);
       let newState = _.cloneDeep(state);
-
       newState.serviceInstance[pauseVfModuleAction.serviceId].vnfs[pauseVfModuleAction.vnfStoreKey]
       .vfModules[pauseVfModuleAction.vfModuleModelName][pauseVfModuleAction.dynamicModelName]
         .pauseInstantiation = PauseStatus.AFTER_COMPLETION;
+      return newState;
+    }
+
+    case VfModuleActions.REMOVE_PAUSE_ON_VFMODULE_INSTANCE : {
+      const removePauseVfModuleAction = (<RemovePauseOnVFModuleInstanciationAction>action);
+      let newState = _.cloneDeep(state);
+      newState.serviceInstance[removePauseVfModuleAction.serviceId].vnfs[removePauseVfModuleAction.vnfStoreKey]
+        .vfModules[removePauseVfModuleAction.vfModuleModelName][removePauseVfModuleAction.dynamicModelName]
+        .pauseInstantiation = null;
       return newState;
     }
 

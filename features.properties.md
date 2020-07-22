@@ -288,6 +288,17 @@
   
   When flag is true, pause upon creation capability for vfmodule is enabled on 
   the new view edit screen
+  
+* FLAG_2008_PAUSE_INSTANTIATION_ON_VFMODULE_POPUP
+  
+  When flag is true, pause instantiation checkbox displayed on vfmodule popup(edit) window 
+  the new view edit screen
+  
+ * FLAG_2008_REMOVE_PAUSE_INSTANTIATION
+    
+  When flag is true, remove pause feature is enabled on drawing-board for vfModules
+  Remove pause will be shown only if the vfModule has pause enabled
+  the new view edit screen  
     
     
 * FLAG_GUILIN_CHANGEMG_SUBMIT_TO_SO

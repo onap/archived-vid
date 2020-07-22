@@ -44,6 +44,8 @@ describe('Create Instance page: Pause after vfModule instantiation ', () => {
       addALaCarteVfModuleEcompGeneratedNamingTrue(vnfName, vfModulesNames[0], uuidAndVfModuleNames[0]);
       addALaCarteVfModuleEcompGeneratedNamingTrue(vnfName, vfModulesNames[1], uuidAndVfModuleNames[1]);
       pauseOnVfModuleInstantiation('node-' + uuidAndVfModuleNames[1], 0)
+      pauseOnVfModuleInstantiation('node-' + uuidAndVfModuleNames[0], 0)
+      removePauseInstantiation('node-'+uuidAndVfModuleNames[0], 0)
       mockAsyncBulkResponse();
       cy.getDrawingBoardDeployBtn().click();
 
@@ -53,7 +55,7 @@ describe('Create Instance page: Pause after vfModule instantiation ', () => {
 
         let unPausedVModule = vfModules[vfModulesNames[0]];
         const unPausedVModuleObject = unPausedVModule[Object.keys(unPausedVModule)[0]];
-        expect(unPausedVModuleObject.pauseInstantiation).equals(undefined);
+        expect(unPausedVModuleObject.pauseInstantiation).equals(null);
 
         let pausedVModule = vfModules[vfModulesNames[1]];
         const pausedVModuleObject = pausedVModule[Object.keys(pausedVModule)[0]];
@@ -92,6 +94,14 @@ describe('Create Instance page: Pause after vfModule instantiation ', () => {
   function pauseOnVfModuleInstantiation(nodeId: string, index: number) {
     cy.drawingBoardTreeOpenContextMenuByElementDataTestId(`${nodeId}`, index)
     .getElementByDataTestsId('context-menu-pause').click({force: true});
+  }
+
+  function removePauseInstantiation(nodeId: string, index: number){
+    cy.getElementByDataTestsId(nodeId + '-menu-btn')
+    .click({force: true}).then(() => {
+      cy.wait(500);
+      cy.getElementByDataTestsId('context-menu-removePause').click();
+    })
   }
 
 });

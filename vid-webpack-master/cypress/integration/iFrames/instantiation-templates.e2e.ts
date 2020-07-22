@@ -160,9 +160,12 @@ describe('Drawing Board: Instantiation Templates', function () {
             ...vnfPath, "vfModules", module1CustomizationId,
           ];
 
+          let vfModules_0Path = [
+            ...vnfPath, "vfModules", "vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0"
+          ];
+
           let serviceInstanceElementOnRedux = state.service.serviceInstance[(templateWithVnfSetup.serviceModelId)];
           let latestVfModule_1Path = findPathOfLatestVfModule(serviceInstanceElementOnRedux, vfModules_1Path);
-
           // This is a funny merge, as values are already there, but that way ensures
           // the values that selected are really deployed, while limiting the cost of
           // maintenance, by taking other vfModule's fields as granted.
@@ -170,9 +173,20 @@ describe('Drawing Board: Instantiation Templates', function () {
             _.get(serviceInstanceElementOnRedux, latestVfModule_1Path),
             {
               instanceName: newVfModuleName,
-              volumeGroupName: `${newVfModuleName}_vol`,
+              volumeGroupName: `${newVfModuleName}_vol`
             }
           );
+
+          // const vnfPath = [
+          //   "vnfs", "vProbe_NC_VNF 0"
+          // ];
+
+          let vfModule_1 = [
+            ...vfModules_1Path, "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi"
+          ]
+          let vfModule_0 = [
+            ...vfModules_0Path, 'vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'
+          ]
 
           assertThatBodyFromDeployRequestEqualsToTemplateFromBackEnd([
             {path: [...vnfPath, "vnfStoreKey"], value: "vProbe_NC_VNF 0"},   // side-effect
@@ -181,6 +195,8 @@ describe('Drawing Board: Instantiation Templates', function () {
             {path: ["existingNames", `${newVfModuleName}_vol`], value: ""},
             {path: latestVfModule_1Path, value: latestVfModule_1ExpectedValue},
             {path: ["validationCounter"], value: null},  // side-effect
+            {path: [...vfModule_1, "position"], value: 2},
+            {path: [...vfModule_0, "position"], value: 1},
           ]);
         });
 
@@ -234,7 +250,6 @@ describe('Drawing Board: Instantiation Templates', function () {
             cy.getElementByDataTestsId('sdncPreLoad').click();
           }
           cy.getElementByDataTestsId('form-set').click();
-
           // Then...
           let vfModule_0Path = [
             ...vnfPath, "vfModules",
@@ -251,6 +266,7 @@ describe('Drawing Board: Instantiation Templates', function () {
             {path: [...vnfPath, "tenantId"], value: "f2f3830e4c984d45bcd00e1a04158a79"},
 
             {path: [...vfModule_0Path, "sdncPreLoad"], value: true},
+            {path: [...vfModule_0Path, "pauseInstantiation"], value: null}
           ] : []);
         })
 
@@ -372,6 +388,31 @@ function assertThatBodyFromDeployRequestEqualsToFile(deviationFromExpected: { pa
 
     cy.readFile(templateWithVnfSetup.instanceTemplateSetWithoutModifyFile).then((expectedResult) => {
       setDeviationInExpected(expectedResult, deviationFromExpected);
+      let actualObj = xhr.request.body;
+      // @ts-ignore
+      let actual_vprobe_0 = xhr.request.body['vnfs']['vProbe_NC_VNF 0']['vfModules'];
+      // @ts-ignore
+      let actual_vprobe_1 = xhr.request.body['vnfs']['vProbe_NC_VNF 0_1']['vfModules'];
+      actual_vprobe_0['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].pauseInstantiation = null;
+      actual_vprobe_0['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].pauseInstantiation = null;
+      actual_vprobe_1['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].pauseInstantiation = null;
+      actual_vprobe_1['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].pauseInstantiation = null;
+
+      actual_vprobe_0['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].position = null;
+      actual_vprobe_0['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].position = null;
+      actual_vprobe_1['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].position = null;
+      actual_vprobe_1['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].position = null;
+      let vnfs = expectedResult['vnfs'];
+      let expected_vProbe_NC_VNF_0_vfModules = vnfs['vProbe_NC_VNF 0']['vfModules'];
+      let expected_vProbe_NC_VNF_0_1_vfModules = vnfs['vProbe_NC_VNF 0_1']['vfModules'];
+      expected_vProbe_NC_VNF_0_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].position = null;
+      expected_vProbe_NC_VNF_0_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].position = null;
+      expected_vProbe_NC_VNF_0_1_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].position = null;
+      expected_vProbe_NC_VNF_0_1_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].position = null;
+      expected_vProbe_NC_VNF_0_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].pauseInstantiation = null;
+      expected_vProbe_NC_VNF_0_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].pauseInstantiation = null;
+      expected_vProbe_NC_VNF_0_1_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].pauseInstantiation = null;
+      expected_vProbe_NC_VNF_0_1_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].pauseInstantiation = null;
       cy.deepCompare(xhr.request.body, expectedResult);
     });
 
