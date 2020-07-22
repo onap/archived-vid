@@ -23,6 +23,7 @@ import {
   deleteActionVfModuleInstance,
   deleteVFModuleField,
   pauseActionVFModuleInstance,
+  removePauseActionVFModuleInstance,
   removeVfModuleInstance,
   undoDeleteVfModuleInstance,
   undoUgradeVFModule,
@@ -393,7 +394,14 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
         method: (node, serviceModelId) => {
           this._store.dispatch(pauseActionVFModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId, node.data.modelName));
         },
-        visible: () => this._sharedTreeService.shouldShowPauseInstantiation(),
+        visible: () => this._sharedTreeService.shouldShowPauseInstantiation(node),
+        enable: () => true,
+      },
+      removePause: {
+        method: (node, serviceModelId) => {
+          this._store.dispatch(removePauseActionVFModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId, node.data.modelName));
+        },
+        visible: () => this._sharedTreeService.shouldShowRemovePause(node),
         enable: () => true,
       }
     };

@@ -60,12 +60,12 @@ describe('Retry Page', function () {
     cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').eq(0).click();
 
     cy.get('.failed-msg').should('have.length', 5);
-    cy.get('.newIcon').should('have.length', 4);
+    cy.get('.newIcon').should('have.length', 5);
 
     //cy.drawingBoardNumberOfExistingElementsShouldContains(4);
     cy.get('.toggle-children-wrapper.toggle-children-wrapper-expanded').eq(0).click().then(()=>{
       cy.get('.failed-msg').should('have.length', 5);
-      cy.get('.newIcon').should('have.length', 4);
+      cy.get('.newIcon').should('have.length', 5);
     });
 
     cy.drawingBoardTreeOpenContextMenuByElementDataTestId('node-afacccf6-397d-45d6-b5ae-94c39734b168-2017-388_PASQUALE-vPE 0')
@@ -138,11 +138,11 @@ describe('Retry Page', function () {
     cy.getElementByDataTestsId('node-69e09f68-8b63-4cc9-b9ff-860960b5db09-2017-488_PASQUALE-vPE 0').eq(0).click();
 
     cy.get('.failed-msg').should('have.length', 4);
-    cy.get('.newIcon').should('have.length', 4);
+    cy.get('.newIcon').should('have.length', 5);
 
     cy.get('.toggle-children-wrapper.toggle-children-wrapper-expanded').eq(0).click().then(()=>{
       cy.get('.failed-msg').should('have.length', 4);
-      cy.get('.newIcon').should('have.length', 4);
+      cy.get('.newIcon').should('have.length', 5);
     });
     cy.assertMenuItemsForNode(['showAuditInfo'],'node-afacccf6-397d-45d6-b5ae-94c39734b168-2017-388_PASQUALE-vPE 0-menu-btn');
     cy.getElementByDataTestsId('isViewOnly-status-test').contains('VIEW ONLY');
