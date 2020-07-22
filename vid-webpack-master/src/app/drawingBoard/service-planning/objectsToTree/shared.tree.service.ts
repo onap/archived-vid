@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../../shared/store/reducers";
-import {ServiceInstanceActions} from "../../../shared/models/serviceInstanceActions";
+import {PauseStatus, ServiceInstanceActions} from "../../../shared/models/serviceInstanceActions";
 import {MessageBoxData} from "../../../shared/components/messageBox/messageBox.data";
 import {MessageBoxService} from "../../../shared/components/messageBox/messageBox.service";
 import * as _ from "lodash";
@@ -222,8 +222,12 @@ export class SharedTreeService {
     }
   }
 
-  shouldShowPauseInstantiation(): boolean {
-    return (FeatureFlagsService.getFlagState(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION, this._store));
+  shouldShowRemovePause(node) : boolean {
+    return node.pauseInstantiation === PauseStatus.AFTER_COMPLETION;
+  }
+
+  shouldShowPauseInstantiation(node): boolean {
+    return (FeatureFlagsService.getFlagState(Features.FLAG_2006_PAUSE_VFMODULE_INSTANTIATION_CREATION, this._store) && node.pauseInstantiation == null);
   }
   /****************************************************
    * should return true if customer can upgrade a VFM *

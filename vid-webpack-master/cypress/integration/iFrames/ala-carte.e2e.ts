@@ -261,6 +261,10 @@ describe('A la carte', function () {
                         const vfModule = vfModules[vfModulesName];
                         let vfModuleObject = vfModule[Object.keys(vfModule)[0]];
                         file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName].action = "Create";
+                        vfModuleObject.pauseInstantiation = null;
+                        vfModuleObject.position = null;
+                        file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName].pauseInstantiation = null;
+                        file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName].position = null;
                         cy.deepCompare(vfModuleObject, file.vnfs[vnfName].vfModules[vfModulesName][vfModulesName]);
                       }
                     });
