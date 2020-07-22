@@ -53,7 +53,7 @@ describe('Create Instance page: Pause after vfModule instantiation ', () => {
 
         let unPausedVModule = vfModules[vfModulesNames[0]];
         const unPausedVModuleObject = unPausedVModule[Object.keys(unPausedVModule)[0]];
-        expect(unPausedVModuleObject.pauseInstantiation).equals(undefined);
+        expect(unPausedVModuleObject.pauseInstantiation).equals(null);
 
         let pausedVModule = vfModules[vfModulesNames[1]];
         const pausedVModuleObject = pausedVModule[Object.keys(pausedVModule)[0]];

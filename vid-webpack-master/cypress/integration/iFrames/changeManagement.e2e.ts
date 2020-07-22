@@ -244,7 +244,7 @@ describe('Change management AKA VNF changes', function () {
               "requestInfo": {
                 "source": "VID",
                 "suppressRollback": false,
-                "requestorId": "us16807000"
+                "requestorId": "demo"
               },
               "relatedInstanceList": [
                 {
@@ -325,7 +325,7 @@ describe('Change management AKA VNF changes', function () {
               "requestInfo": {
                 "source": "VID",
                 "suppressRollback": false,
-                "requestorId": "us16807000"
+                "requestorId": "demo"
               },
               "requestParameters": {
                 "userParams": [
