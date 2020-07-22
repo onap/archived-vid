@@ -234,7 +234,6 @@ describe('Drawing Board: Instantiation Templates', function () {
             cy.getElementByDataTestsId('sdncPreLoad').click();
           }
           cy.getElementByDataTestsId('form-set').click();
-
           // Then...
           let vfModule_0Path = [
             ...vnfPath, "vfModules",
@@ -251,6 +250,8 @@ describe('Drawing Board: Instantiation Templates', function () {
             {path: [...vnfPath, "tenantId"], value: "f2f3830e4c984d45bcd00e1a04158a79"},
 
             {path: [...vfModule_0Path, "sdncPreLoad"], value: true},
+            {path: [...vfModule_0Path, "pauseInstantiation"], value: null},
+            {path: [...vfModule_0Path, "position"], value: null}
           ] : []);
         })
 
@@ -372,6 +373,16 @@ function assertThatBodyFromDeployRequestEqualsToFile(deviationFromExpected: { pa
 
     cy.readFile(templateWithVnfSetup.instanceTemplateSetWithoutModifyFile).then((expectedResult) => {
       setDeviationInExpected(expectedResult, deviationFromExpected);
+      let vnfs = expectedResult['vnfs'];
+      let vProbe_NC_VNF_0_vfModules = vnfs['vProbe_NC_VNF 0']['vfModules'];
+      let vProbe_NC_VNF_0_1_vfModules = vnfs['vProbe_NC_VNF 0_1']['vfModules'];
+      vProbe_NC_VNF_0_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].position = 1;
+      vProbe_NC_VNF_0_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].position = 2;
+      vProbe_NC_VNF_0_1_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0']['vprobe_nc_vnf0..VprobeNcVnf..FE_base_module..module-0ahubg'].position = 3;
+      vProbe_NC_VNF_0_1_vfModules['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1']['vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1yprvi'].position = 4;
+
+
+
       cy.deepCompare(xhr.request.body, expectedResult);
     });
 

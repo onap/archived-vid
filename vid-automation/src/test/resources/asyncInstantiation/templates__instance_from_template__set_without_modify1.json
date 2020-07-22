@@ -124,6 +124,8 @@
             },
             "rollbackOnFailure": true,
             "sdncPreLoad": true,
+            "position": 1,
+            "pauseInstantiation": null,
             "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
             "trackById": "b134410e-3bc0-478e-883e-1b6bdf8a28df",
             "volumeGroupName": "my_special_hvf6arlba007_lba_dj_01_vol"
@@ -149,6 +151,8 @@
             },
             "rollbackOnFailure": true,
             "sdncPreLoad": null,
+            "position": 2,
+            "pauseInstantiation": null,
             "uuid": "c5b26cc1-a66f-4b69-aa23-6abc7c647c88"
           }
         }
@@ -191,6 +195,8 @@
             "instanceName": "hvf6arlba007_lba_Base_02",
             "action": "Create",
             "lcpCloudRegionId": "hvf6",
+            "position": 3,
+            "pauseInstantiation": null,
             "tenantId": "4914ab0ab3a743e58f0eefdacc1dde77",
             "instanceParams": [
               {}
@@ -222,6 +228,8 @@
             "trackById": "b134410e-3bc0-478e-883e-1b6bdf8a28df",
             "isFailed": false,
             "volumeGroupName": "my_special_hvf6arlba007_lba_dj_01_vol",
+            "position": 4,
+            "pauseInstantiation": null,
             "sdncPreLoad": true
           }
         }

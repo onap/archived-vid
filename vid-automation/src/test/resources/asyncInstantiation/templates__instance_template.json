@@ -73,7 +73,9 @@
             ],
             "rollbackOnFailure": true,
             "trackById": "ea2879a6-10bc-4697-90d7-7bc3e71da0fd",
-            "isFailed": false
+            "isFailed": false,
+            "pauseInstantiation": null,
+            "position": 1
           }
         },
         "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
@@ -98,7 +100,9 @@
             "trackById": "b134410e-3bc0-478e-883e-1b6bdf8a28df",
             "isFailed": false,
             "volumeGroupName": "my_special_hvf6arlba007_lba_dj_01_vol",
-            "sdncPreLoad": true
+            "sdncPreLoad": true,
+            "pauseInstantiation": null,
+            "position": 2
           }
         }
       },
@@ -150,7 +154,9 @@
             ],
             "rollbackOnFailure": true,
             "trackById": "ea2879a6-10bc-4697-90d7-7bc3e71da0fd",
-            "isFailed": false
+            "isFailed": false,
+            "pauseInstantiation": null,
+            "position": 3
           }
         },
         "vprobe_nc_vnf0..VprobeNcVnf..FE_Add_On_Module_vlbagent_eph..module-1": {
@@ -175,7 +181,9 @@
             "trackById": "b134410e-3bc0-478e-883e-1b6bdf8a28df",
             "isFailed": false,
             "volumeGroupName": "my_special_hvf6arlba007_lba_dj_01_vol",
-            "sdncPreLoad": true
+            "sdncPreLoad": true,
+            "pauseInstantiation": null,
+            "position": 4
           }
         }
       },
