@@ -126,11 +126,14 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
   nodes = [];
   serviceModelId: string;
   options = {
-    allowDrag: this._dragAndDropService.isFlagOn(),
+    allowDrag: this._dragAndDropService.checkFeatureFlag(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE),
     actionMapping: {
       mouse: {
         drop: (tree:TreeModel, node:TreeNode, $event:any, {from, to}) => {
           this._dragAndDropService.drop(this.store, this.serviceModelId, this.nodes, {from, to});
+        },
+        drag:(tree: TreeModel, node:TreeNode, $event:any) => {
+          this._dragAndDropService.drag(this.store,this.serviceModelId, node);
         }
       }
     },
@@ -255,6 +258,10 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
       return optionLabel.concat(" to V" + this._store.getState().service.serviceInstance[this.serviceModelId].latestAvailableVersion);
     }
     return optionLabel;
+  }
+
+  isAddPositionFlagTrue() {
+    return this._sharedTreeService.isAddPositionFlagTrue();
   }
 }
 
