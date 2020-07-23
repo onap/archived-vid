@@ -15,7 +15,7 @@ import {NetworkTreeNode} from "../../models/networkTreeNode";
 import {createVNFInstance} from "../../storeUtil/utils/vnf/vnf.actions";
 import {changeInstanceCounter} from "../../storeUtil/utils/general/general.actions";
 import {createNetworkInstance} from "../../storeUtil/utils/network/network.actions";
-import {createVFModuleInstance} from "../../storeUtil/utils/vfModule/vfModule.actions";
+import {createVFModuleInstance, updateVFModulePosition} from "../../storeUtil/utils/vfModule/vfModule.actions";
 import {createVnfGroupInstance} from "../../storeUtil/utils/vnfGroup/vnfGroup.actions";
 import {VnfGroupTreeNode} from "../../models/vnfGroupTreeNode";
 import {ModelInfo} from "../../models/modelInfo";
@@ -234,6 +234,7 @@ export class DefaultDataGeneratorService {
               this.addDefaultVfModulesInRedux(
                 serviceId,
                 vfModuleModel.properties.initialCount,
+                vfModuleModel.properties.baseModule,
                 vfModule,
                 vnfModuleUUID,
                 vnfUUID
@@ -282,9 +283,14 @@ export class DefaultDataGeneratorService {
     }
   }
 
-  addDefaultVfModulesInRedux(serviceId: string, numberOfVfModules: number, vfModuleData: any, vfModuleName: string, vnfUUID : string){
+  addDefaultVfModulesInRedux(serviceId: string, numberOfVfModules: number,baseModule:boolean, vfModuleData: any, vfModuleName: string, vnfUUID : string){
     for (let i = 0; i < numberOfVfModules; i++) {
-      this.store.dispatch(createVFModuleInstance(vfModuleData, vfModuleName, serviceId, null, vnfUUID));
+      if(baseModule) {
+        this.store.dispatch(createVFModuleInstance(vfModuleData, vfModuleName, serviceId, 1, vnfUUID));
+      } else {
+        this.store.dispatch(createVFModuleInstance(vfModuleData, vfModuleName, serviceId, i+1, vnfUUID));
+      }
+
     }
   }
 
@@ -460,4 +466,55 @@ export class DefaultDataGeneratorService {
     return newVfModule;
   }
 
+  calculatePositionOfVfmodule(serviceModelId:string) {
+    const serviceInstance = this.store.getState().service.serviceInstance[serviceModelId];
+    const serviceHierarchy = this.store.getState().service.serviceHierarchy[serviceModelId];
+
+    const vnfList = serviceInstance.vnfs;
+    let totalSecondListLength =1;
+    if (!_.isEmpty(vnfList)) {
+      for (let vnfStoreKey in vnfList) {
+        const firstVfModuleInstanceList = vnfList[vnfStoreKey].vfModules;
+        if (!_.isEmpty(firstVfModuleInstanceList)) {
+          for (let vfModuleInstanceKey in firstVfModuleInstanceList) {
+            let secondVfModuleInstanceList = firstVfModuleInstanceList[vfModuleInstanceKey];
+            let numSecondVfModuleInstanceList = Object.keys(secondVfModuleInstanceList).length;
+              totalSecondListLength = totalSecondListLength + numSecondVfModuleInstanceList;
+
+          }
+        } else {
+          //No instances added yet , hence start from 1
+          totalSecondListLength = 1;
+        }
+
+      }
+    }
+
+    return totalSecondListLength;
+  }
+
+
+  updatePositionForRemainingVfModules(serviceModelId: string) {
+
+    const serviceInstance = this.store.getState().service.serviceInstance[serviceModelId];
+    const vnfList = serviceInstance.vnfs;
+    if (!_.isEmpty(vnfList)) {
+      for (let vnfStoreKey in vnfList) {
+        const firstVfModuleInstanceList = vnfList[vnfStoreKey].vfModules;
+        if (!_.isEmpty(firstVfModuleInstanceList)) {
+          for (let vfModuleInstanceKey in firstVfModuleInstanceList) {
+            let secondVfModuleInstanceList = firstVfModuleInstanceList[vfModuleInstanceKey];
+            for(let secondVfModuleInstanceKey in secondVfModuleInstanceList) {
+              let secondVfModuleObj = secondVfModuleInstanceList[secondVfModuleInstanceKey];
+              if(!_.isNil(secondVfModuleObj.position)) {
+                this.store.dispatch(updateVFModulePosition(vfModuleInstanceKey,secondVfModuleInstanceKey, secondVfModuleObj.position+1,serviceModelId, vnfStoreKey));
+              }
+            }
+
+          }
+        }
+
+      }
+    }
+  }
 }
