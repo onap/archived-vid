@@ -347,7 +347,9 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
         enable: (node) => this._sharedTreeService.shouldShowAuditInfo(node)
       },
       remove: {
-        method: (node, serviceModelId) => this._store.dispatch(removeVfModuleInstance(node.data.modelName, serviceModelId, node.parent.data.modelName, node.parent.data.vnfStoreKey, node.data.dynamicModelName)),
+        method: (node, serviceModelId) => {
+          this.removeVFM(serviceModelId,node);
+        },
         visible: (node) => this._sharedTreeService.shouldShowRemoveAndEdit(node),
         enable: (node) => this._sharedTreeService.shouldShowRemoveAndEdit(node),
       },
@@ -423,8 +425,8 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     }
   }
 
-  updatePosition(that, node, instanceId, parentStoreKey): void {
-    this._store.dispatch(updateVFModulePosition(node, instanceId, parentStoreKey));
+  updatePosition(that, node,instanceId, parentStoreKey): void {
+    that.store.dispatch(updateVFModulePosition(node.modelName,node.dynamicModelName, node.position,instanceId, parentStoreKey));
   }
 
 
@@ -443,5 +445,40 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     const instanceInfo = [];
     const result = [modelInformation, instanceInfo];
     return _.uniq(_.flatten(result));
+  }
+
+  private removeVFM(serviceModelId, node) {
+    if (FeatureFlagsService.getFlagState(Features.FLAG_2008_CREATE_VFMODULE_INSTANTIATION_ORDER_NUMBER, this._store)) {
+      let nodeArray = node.parent.children;
+      let totalNumOfNodes = nodeArray.length;
+      let removedNodeIndex = node.index;
+      let remainingNodes = totalNumOfNodes - (removedNodeIndex+1);
+      if(!_.isNull(remainingNodes)) {
+        if(remainingNodes !== 0 && remainingNodes >0) {
+          for(let i= 0;i<remainingNodes;i++) {
+            let temp = nodeArray[removedNodeIndex];
+            nodeArray[removedNodeIndex] = nodeArray[removedNodeIndex + 1];
+            nodeArray[removedNodeIndex + 1] = temp;
+            removedNodeIndex= removedNodeIndex+1;
+          }
+          let removedNode = nodeArray[nodeArray.length - 1];
+          this._store.dispatch(removeVfModuleInstance(removedNode.data.modelName, serviceModelId, removedNode.parent.data.modelName, removedNode.parent.data.vnfStoreKey, removedNode.data.dynamicModelName));
+          nodeArray.pop();
+          nodeArray.forEach((item, index) => {
+            if (item.position !== index + 1) {
+              item.position = index + 1;
+              this._store.dispatch(updateVFModulePosition(item.data.modelName,item.data.dynamicModelName, item.position,serviceModelId, item.parent.data.vnfStoreKey));
+            }
+          });
+
+
+        }else{
+          this._store.dispatch(removeVfModuleInstance(node.data.modelName, serviceModelId, node.parent.data.modelName, node.parent.data.vnfStoreKey, node.data.dynamicModelName));
+
+        }
+      }
+    } else {
+      this._store.dispatch(removeVfModuleInstance(node.data.modelName, serviceModelId, node.parent.data.modelName, node.parent.data.vnfStoreKey, node.data.dynamicModelName));
+    }
   }
 }

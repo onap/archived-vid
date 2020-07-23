@@ -36,7 +36,7 @@
           <div class="failed-msg" [attr.data-tests-id]="'failed-error-message'" *ngIf="node?.data?.isFailed">Failed
           </div>
         </custom-popover>
-        <div *ngIf= "node?.data?.type == 'VFmodule'" class="instance-type" style="position: relative;border: 1px solid #D2D2CD;">
+        <div *ngIf= "node?.data?.type == 'VFmodule' && isAddPositionFlagTrue()" class="instance-type" style="position: relative;border: 1px solid #D2D2CD;">
           <div *ngIf="node?.data?.action == 'Create' && node?.data?.type == 'VFmodule'" class="notShowOnViewMode notShowOnCreateMode newIcon"></div>
           <div><span title="{{node.data.position}}"
                      [attr.data-tests-id]="'node-position-indicator'">{{node?.data?.position}}</span></div>

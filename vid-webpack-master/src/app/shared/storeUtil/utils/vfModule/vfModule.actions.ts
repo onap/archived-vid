@@ -16,7 +16,9 @@ export enum VfModuleActions {
 
 
 export interface UpdateVFModluePosition extends Action {
-  node: any,
+  vfKey: string,
+  dynamicModelName?: string,
+  position: number,
   instanceId : string,
   vnfStoreKey ?: string;
 }
@@ -42,7 +44,8 @@ export interface UpdateVFModuleInstanceAction extends Action {
   vfId: string;
   serviceUuid: string;
   dynamicModelName : string;
-  vnfStoreKey : string
+  vnfStoreKey : string,
+  position : number
 }
 
 
@@ -116,13 +119,14 @@ export const createVFModuleInstance: ActionCreator<CreateVFModuleInstanceAction>
   vnfStoreKey : vnfStoreKey
 });
 
-export const updateVFModuleInstance: ActionCreator<UpdateVFModuleInstanceAction> = (vfInstance, vfId, serviceUuid, dynamicModelName, vnfStoreKey) => ({
+export const updateVFModuleInstance: ActionCreator<UpdateVFModuleInstanceAction> = (vfInstance, vfId, serviceUuid, dynamicModelName, vnfStoreKey, position) => ({
   type: VfModuleActions.UPDATE_VF_MODULE,
   vfInstance: vfInstance,
   vfId: vfId,
   serviceUuid: serviceUuid,
   dynamicModelName : dynamicModelName,
-  vnfStoreKey : vnfStoreKey
+  vnfStoreKey : vnfStoreKey,
+  position : position
 });
 
 export const deleteActionVfModuleInstance: ActionCreator<DeleteActionVfModuleInstanceAction> = (dynamicModelName, vnfStoreKey, serviceId, vfModuleModelName) => ({
@@ -141,12 +145,16 @@ export const undoDeleteVfModuleInstance: ActionCreator<UndoDeleteActionVfModuleI
   vfModuleModelName
 });
 
-export const updateVFModulePosition: ActionCreator<UpdateVFModluePosition> = (node, instanceId, vnfStoreKey) => ({
-  type: VfModuleActions.UPDATE_VFMODULE_POSITION,
-  node: node,
-  instanceId: instanceId,
-  vnfStoreKey : vnfStoreKey
-});
+export const updateVFModulePosition: ActionCreator<UpdateVFModluePosition> = (vfKey,dynamicModelName,position,instanceId, vnfStoreKey) => {
+  return ({
+    type: VfModuleActions.UPDATE_VFMODULE_POSITION,
+    vfKey: vfKey,
+    dynamicModelName: dynamicModelName,
+    position: position,
+    instanceId: instanceId,
+    vnfStoreKey: vnfStoreKey
+  });
+};
 
 export const upgradeVFModule: ActionCreator<UpgradeVfModuleInstanceAction> = (modelName, vnfStoreKey, serviceId, dynamicModelName) => ({
   type: VfModuleActions.UPGRADE_VFMODULE,
