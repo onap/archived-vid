@@ -168,8 +168,19 @@ export class AvailableModelsTreeComponent {
         DrawingBoardTreeService.triggerCheckIsDirty.next(this.serviceModelId);
       } else {
         let vfModule = this._defaultDataGeneratorService.generateVFModule(this.serviceHierarchy.vnfs[node.parent.data.name].vfModules[node.data.name], dynamicInputs, isEcompGeneratedNaming, isAlaCarte);
+        let positionOfNextInstance = null;
+        if(this._sharedTreeService.isAddPositionFlagTrue()) {
+          let baseModule = this.serviceHierarchy.vnfs[node.parent.data.name].vfModules[node.data.name].properties.baseModule;
+          if(baseModule) {
+            //Assign Position of 1 for the instance being created & update the positions(existing position +1) for remaining instances
+            positionOfNextInstance = 1;
+            this._defaultDataGeneratorService.updatePositionForRemainingVfModules(this.serviceModelId);
+          } else {
+            positionOfNextInstance = this._defaultDataGeneratorService.calculatePositionOfVfmodule(this.serviceModelId);
+          }
+        }
         if (this._sharedTreeService.selectedVNF) {
-          this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, null, this._sharedTreeService.selectedVNF));
+          this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, positionOfNextInstance, this._sharedTreeService.selectedVNF));
           DrawingBoardTreeService.triggerCheckIsDirty.next(this.serviceModelId);
         } else if (this._availableModelsTreeService.getOptionalVNFs(this.serviceModelId, node.parent.data.modelUniqueId).length === 1) {
           let existVnf = this._store.getState().service.serviceInstance[this.serviceModelId].vnfs;
@@ -177,7 +188,7 @@ export class AvailableModelsTreeComponent {
             for(let vnfKey in existVnf){
               const modelUniqueId = this._sharedTreeService.modelUniqueId(existVnf[vnfKey]);
               if(modelUniqueId === node.parent.data.id){
-                this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, null, vnfKey));
+                this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, positionOfNextInstance, vnfKey));
                 DrawingBoardTreeService.triggerCheckIsDirty.next(this.serviceModelId);
               }
             }

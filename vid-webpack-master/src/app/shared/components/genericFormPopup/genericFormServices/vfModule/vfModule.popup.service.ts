@@ -40,9 +40,10 @@ export abstract class VfModulePopupServiceBase {
     formValues.uuid = formValues.modelInfo.uuid;
     formValues.isMissingData = false;
     if (!that.uuidData.vFModuleStoreKey) {
-      this._store.dispatch(createVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, 0, that.uuidData.vnfStoreKey));
+      let positionOfNextInstance = this._defaultDataGeneratorService.calculatePositionOfVfmodule(that.uuidData.serviceId);
+      this._store.dispatch(createVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, !_.isNil(positionOfNextInstance)? positionOfNextInstance : null, that.uuidData.vnfStoreKey));
     } else {
-      this._store.dispatch(updateVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, that.uuidData.vFModuleStoreKey, that.uuidData.vnfStoreKey));
+      this._store.dispatch(updateVFModuleInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, that.uuidData.vFModuleStoreKey, that.uuidData.vnfStoreKey, this.getInstance(that.uuidData.serviceId, that.uuidData.vnfStoreKey, that.uuidData.vFModuleStoreKey).position));
     }
   };
 
