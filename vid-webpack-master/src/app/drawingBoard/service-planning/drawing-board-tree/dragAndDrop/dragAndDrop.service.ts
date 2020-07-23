@@ -9,16 +9,30 @@ export class DragAndDropService {
   constructor(private store: NgRedux<AppState>) {
   }
 
-  isFlagOn(): boolean {
-    return FeatureFlagsService.getFlagState(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE, this.store);
+  checkFeatureFlag(flagValue):boolean {
+    let featureFlag :boolean;
+    featureFlag = FeatureFlagsService.getFlagState(flagValue, this.store);
+    return featureFlag;
+  }
+
+  /***********************************************************************************************
+   if the dragged node is a base module instance
+   ***********************************************************************************************/
+  isBaseModule(serviceInstanceId, from): boolean {
+    try {
+      let baseModuleFlag = this.store.getState().service.serviceHierarchy[serviceInstanceId].vnfs[from.parent.data.vnfStoreKey].vfModules[from.data.modelName].properties.baseModule;
+      return (baseModuleFlag != 'undefined' ? baseModuleFlag : false);
+    }catch(e) {
+      return false;
+    }
   }
 
 
   /***********************************************************************************************
-   if the falg is ON and nodes have same parent
+   if the flag is ON and nodes have same parent
    ***********************************************************************************************/
   isAllowDrop(from: any, to: any): boolean {
-    return this.isFlagOn() && this.isSameParent(from, to);
+    return this.checkFeatureFlag(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE) && this.isSameParent(from, to);
   }
 
   private isSameParent(from: any, to: any): boolean {
@@ -40,7 +54,11 @@ export class DragAndDropService {
 
   drop(store, instanceId: string, nodes, {from, to}): void {
 
-    if (!this.isFlagOn()) return;
+    if (!this.checkFeatureFlag(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE)) return;
+
+    if(this.checkFeatureFlag(Features.FLAG_2008_DISABLE_DRAG_FOR_BASE_MODULE)) {
+      if ((to.parent.index == 0 && this.isBaseModule(instanceId, to.parent)) || this.isBaseModule(instanceId, from )) return;
+    }
 
     if (this.isAllowDrop(from, to)) {
       let vfModules = nodes.find((parent) => {
@@ -101,4 +119,17 @@ export class DragAndDropService {
 
     return arr;
   };
+
+  drag(store, serviceModelId: string, fromObj): boolean {
+    if(!this.checkFeatureFlag(Features.FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE)) {
+      return;
+    } else{
+      if (this.checkFeatureFlag(Features.FLAG_2008_DISABLE_DRAG_FOR_BASE_MODULE)) {
+        if(this.isBaseModule(serviceModelId,fromObj)) {
+          return;
+        }
+      }
+    }
+
+  }
 }
