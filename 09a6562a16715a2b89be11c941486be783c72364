@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1e1d2d48_1de4f3f6",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/drawingBoard.e2e.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 7398,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-08-07T12:19:34Z",
+      "side": 1,
+      "message": "Isn\u0027t commenting this line out will make the test redundant?",
+      "revId": "09a6562a16715a2b89be11c941486be783c72364",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
