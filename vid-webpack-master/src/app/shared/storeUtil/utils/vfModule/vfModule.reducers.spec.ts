@@ -177,9 +177,10 @@ test('#UPDATE_VFMODULE_POSITION: should update position', () => {
           vnfs: {
             'vfName': {
               vfModules: {
-                'modelName': {
-                  'dynamicModelName': {
-                    isMissingData: true
+                'vfKey': {
+                  dynamicModelName: {
+                    isMissingData: true,
+                    position :1
                   }
                 }
               }
@@ -190,15 +191,13 @@ test('#UPDATE_VFMODULE_POSITION: should update position', () => {
     },
     <UpdateVFModluePosition>{
       type: VfModuleActions.UPDATE_VFMODULE_POSITION,
-      node: {
-        position: 1,
-        dynamicModelName: "dynamicModelName",
-        modelName: "modelName"
-      },
+      vfKey: "vfKey",
+      dynamicModelName: "dynamicModelName",
+      position: 1,
       instanceId: "serviceModelId",
       vnfStoreKey: "vfName"
 
-    }).serviceInstance['serviceModelId'].vnfs['vfName'].vfModules["modelName"]["dynamicModelName"];
+    }).serviceInstance['serviceModelId'].vnfs['vfName'].vfModules["vfKey"]["dynamicModelName"];
 
   expect(vfModule.position).toEqual(1);
 });
