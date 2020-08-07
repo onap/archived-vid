@@ -13,10 +13,22 @@ class MockAppStore<T> {
     return {
       global: {
         flags: {
-          "FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE": true
+          "FLAG_1911_INSTANTIATION_ORDER_IN_ASYNC_ALACARTE": true,
+          "FLAG_2008_DISABLE_DRAG_FOR_BASE_MODULE":true
         }
       },
       service: {
+        serviceHierarchy:{
+          "serviceInstanceId":{
+            vfModules: {
+              "vfModulesName":{
+                properties:{
+                  baseModule:true
+                }
+              }
+            }
+          }
+        },
         serviceInstance: {
           "serviceInstanceId": {
             vnfs: {
@@ -123,6 +135,7 @@ describe('Drag and drop service', () => {
       index: 0,
       data: {
         instanceName: 'puwesovabe',
+        modelName: 'vocggrapitesting0..VocgGrapiTesting..ocgmgr..module-1'
       },
       parent: {
         data: {
@@ -167,6 +180,7 @@ describe('Drag and drop service', () => {
       index: 0,
       data: {
         instanceName: '2017-488_PASQUALE-vPE',
+        modelName: 'vocggrapitesting0..VocgGrapiTesting..ocgmgr..module-1'
       },
       parent: {}
     };
@@ -207,4 +221,100 @@ describe('Drag and drop service', () => {
     expect(arr[1]).toMatchObject({instanceName: "puwesovabe", position: 2});
 
   });
+
+  test('drag shouldnt execute isAllowDrop when the to index is 0 & the drop node is a base module', () => {
+
+    let from = {
+      id: "04686zg11ur2",
+      index: 1,
+      data: {
+        instanceName: 'puwesovabe',
+        modelName: 'vocggrapitesting0..VocgGrapiTesting..ocgmgr..module-1'
+      },
+      parent: {
+        data: {
+          type: 'VF',
+          index: 0,
+          trackById: 'ckfqe3sb3y8',
+          vnfStoreKey: '2017-488_PASQUALE-vPE 0',
+        }
+      }
+    };
+
+    let to = {
+      parent: {
+        id: "4637423092446",
+        index: 0,
+        data: {
+          instanceName: 'bnmgtrx',
+        },
+        parent: {
+          data: {
+            type: 'VF',
+            trackById: 'ckfqe3sb3y8',
+            vnfStoreKey: '2017-488_PASQUALE-vPE 0',
+          }
+        }
+      }
+    };
+
+
+    jest.spyOn(service, 'isAllowDrop');
+
+    service.drop(store, "serviceInstanceId", nodes, {from, to});
+
+    jest.clearAllMocks();
+
+    expect(service.isAllowDrop).not.toHaveBeenCalled();
+
+  });
+
+  test('drag shouldnt execute isAllowDrop when the from node is base module', () => {
+
+    let from = {
+      id: "04686zg11ur2",
+      index: 0,
+      data: {
+        instanceName: 'puwesovabe',
+        modelName: 'vocggrapitesting0..VocgGrapiTesting..ocgmgr..module-1'
+      },
+      parent: {
+        data: {
+          type: 'VF',
+          index: 0,
+          trackById: 'ckfqe3sb3y8',
+          vnfStoreKey: '2017-488_PASQUALE-vPE 0',
+        }
+      }
+    };
+
+    let to = {
+      parent: {
+        id: "4637423092446",
+        index: 1,
+        data: {
+          instanceName: 'bnmgtrx',
+        },
+        parent: {
+          data: {
+            type: 'VF',
+            trackById: 'ckfqe3sb3y8',
+            vnfStoreKey: '2017-488_PASQUALE-vPE 0',
+          }
+        }
+      }
+    };
+
+
+    jest.spyOn(service, 'isAllowDrop');
+
+    service.drop(store, "serviceInstanceId", nodes, {from, to});
+
+    jest.clearAllMocks();
+
+    expect(service.isAllowDrop).not.toHaveBeenCalled();
+
+  });
+
+
 });

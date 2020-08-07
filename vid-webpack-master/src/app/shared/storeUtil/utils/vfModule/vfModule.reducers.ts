@@ -18,7 +18,6 @@ import {VfModuleMap} from "../../../models/vfModulesMap";
 import {ServiceState} from "../main.reducer";
 import {PauseStatus, ServiceInstanceActions} from "../../../models/serviceInstanceActions";
 import {updateServiceValidationCounter} from "../reducersHelper";
-import {calculatePosition} from "../reducersHelper";
 
 
 export function vfModuleReducer(state: ServiceState , action: Action) : ServiceState{
@@ -29,6 +28,7 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       const serviceUuid = updateVFModuleInstanceAction.serviceUuid;
       const vfModuleId = updateVFModuleInstanceAction.vfId;
       const vnfStoreKey = updateVFModuleInstanceAction.vnfStoreKey;
+      const position = updateVFModuleInstanceAction.index;
 
       let newState = Object.assign({}, state);
 
@@ -42,8 +42,7 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       updateServiceValidationCounter(newState, false, vfInstance['isMissingData'], serviceUuid);
 
       newState.serviceInstance[serviceUuid].vnfs[vnfStoreKey].vfModules[vfModuleId] = vfModulesMap;
-      //update position of newly added VF module
-      calculatePosition(newState,serviceUuid, vnfStoreKey);
+      newState.serviceInstance[serviceUuid].vnfs[vnfStoreKey].vfModules[vfModuleId][dynamicName].position = position;
       return newState;
     }
     case VfModuleActions.UPDATE_VF_MODULE: {
@@ -51,6 +50,7 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       const vfInstance = updateVFModuleInstanceAction.vfInstance;
       const serviceUuid = updateVFModuleInstanceAction.serviceUuid;
       const vfModuleId = updateVFModuleInstanceAction.vfId;
+      const position = updateVFModuleInstanceAction.position;
       const newState = _.cloneDeep(state);
       const vnfs = newState.serviceHierarchy[serviceUuid].vnfs;
       let vnfId = getVfModuleParentVnfId(vnfs, vfModuleId);
@@ -64,8 +64,8 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
       updateUniqueNames(vfModulesMap[updateVFModuleInstanceAction.dynamicModelName].volumeGroupName, vfInstance.volumeGroupName, newState.serviceInstance[serviceUuid]);
       vfModulesMap[updateVFModuleInstanceAction.dynamicModelName] = vfInstance;
       newState.serviceInstance[serviceUuid].vnfs[vnfId].vfModules[vfModuleId] = vfModulesMap;
-      //retain the position of newly added VF module -- change logic
-      calculatePosition(newState,serviceUuid, vnfStoreKey);
+      //retain the position of newly added VF module
+      newState.serviceInstance[serviceUuid].vnfs[vnfId].vfModules[vfModuleId][updateVFModuleInstanceAction.dynamicModelName].position= updateVFModuleInstanceAction.position;
       return newState;
     }
     case VfModuleActions.REMOVE_VNF_MODULE_INSTANCE: {
@@ -130,11 +130,11 @@ export function vfModuleReducer(state: ServiceState , action: Action) : ServiceS
     case VfModuleActions.UPDATE_VFMODULE_POSITION : {
       const updateVFModluePosition = <UpdateVFModluePosition>action;
       const serviceUuid = updateVFModluePosition.instanceId;
-      const dynamicModelName = updateVFModluePosition.node.dynamicModelName;
-      const modelName = updateVFModluePosition.node.modelName;
+      const dynamicModelName = updateVFModluePosition.dynamicModelName;
+      const modelName = updateVFModluePosition.vfKey;
       const newState = _.cloneDeep(state);
 
-      newState.serviceInstance[serviceUuid].vnfs[updateVFModluePosition.vnfStoreKey].vfModules[modelName][dynamicModelName].position = updateVFModluePosition.node.position;
+      newState.serviceInstance[serviceUuid].vnfs[updateVFModluePosition.vnfStoreKey].vfModules[modelName][dynamicModelName].position = updateVFModluePosition.position;
       return newState;
     }
 

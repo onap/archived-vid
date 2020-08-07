@@ -551,4 +551,8 @@ export class SharedTreeService {
       !_.isNil(model.max) ? String(model.max) : Constants.ModelInfo.UNLIMITED_DEFAULT
     );
   }
+
+  isAddPositionFlagTrue():boolean{
+    return FeatureFlagsService.getFlagState(Features.FLAG_2008_CREATE_VFMODULE_INSTANTIATION_ORDER_NUMBER, this._store);
+  }
 }
