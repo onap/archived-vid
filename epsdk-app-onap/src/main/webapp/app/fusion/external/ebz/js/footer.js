@@ -52,11 +52,9 @@ var feedbackText, pageAddress, ECOMP_USAGE_A_PAGE_ID, ECOMP_USAGE_A_FUNCTION_ID,
 							$(".readFeedBackMessage").focus();
 						});
 					} else if (typeof console == "object") {
-							
 						}
 				},
 				error: function () {
-					
 				}
 			});
 		} else {
@@ -65,64 +63,47 @@ var feedbackText, pageAddress, ECOMP_USAGE_A_PAGE_ID, ECOMP_USAGE_A_FUNCTION_ID,
 				console.log("Invalid Input String");
 			}
 		}
-
 	});
-	
 	// Click function definition for OK button in feedback success message
 	$(document).on('click', '.feedbackMsgOKButton', function(e) {
 		$(".feedbackResultMsg, #feedbackResultDivider").slideUp(600, function(){
 			$(".readFeedBackMessage").text("");
-		});
+		})
 		$(".feedbackButtonDiv").slideDown(600, function() {
-			$('.feedbackButton').focus();	
+			$('.feedbackButton').focus();
 		});
 	});
-	
-}( jQuery ));	
-
+}( jQuery ));
 $(function() {
 	var footerHeight = 0,
 	footerTop = 0,
-	$footer = $("#footer");
-
-	positionFooter();
-	
-	portalHook();
-	
+	$footer = $("#footer")
+	positionFooter()
+	portalHook()
 	function portalHook() {
-		
 		var done = false;
-		var script = document.createElement('script');	
-		script.src = "api/analytics"
-		script.async = true;			
+		var script = document.createElement('script');
+		script.src = "api/v3/analytics
+		script.async = true;
 		script.onload = function() {
-
 		runAnalytics();
-
 		}
-
 		document.head.appendChild(script);
-
 	}
-
-
- function positionFooter() {
-
+function positionFooter() {
         footerHeight = $footer.height();
         footerTop = ($(window).scrollTop() + $(window).height() - footerHeight) + "px";
 
         if (($(document.body).height() + footerHeight) < $(window).height()) {
             $footer.addClass('stickyFooter')
                 .animate({
-                    top: footerTop
+                    top: footerTo
                 }, -1)
         } else {
             $footer.removeClass('stickyFooter');
         }
-
-    }	
-
+    }
 	$(window)
 	.scroll(positionFooter)
 	.resize(positionFooter)
-});
+})
