@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "21b55d14_38431fa7",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instanceCreationWithOrderNumber.e2e.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-08-11T18:13:34Z",
+      "side": 1,
+      "message": "isn\u0027t a UT preferred for this test? it will save you many code lines(especially the mocks..)",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 91
+      },
+      "revId": "32af6479c686d217204de3a86940ac1256da4b9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be591283_117dc976",
+        "filename": "vid-webpack-master/cypress/integration/iFrames/instanceCreationWithOrderNumber.e2e.ts",
+        "patchSetId": 6
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1359
+      },
+      "writtenOn": "2020-08-11T18:13:34Z",
+      "side": 1,
+      "message": "Better adding/keeping this state in a separate file form the test file.\nCan\u0027t you load existing mock and make some modifications to the json with code? \nalso isn\u0027t it a duplication of ../mocks/jsons/basicReduxForTestingPosition.json?",
+      "revId": "32af6479c686d217204de3a86940ac1256da4b9f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
