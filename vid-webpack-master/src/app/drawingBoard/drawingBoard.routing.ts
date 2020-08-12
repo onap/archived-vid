@@ -45,6 +45,15 @@ export const DrawingBoardRoutes: Route[] = [
         canActivate: [DrawingBoardGuard]
       },
       {
+        path: 'RESUME',
+        component: ServicePlanningComponent,
+        resolve: {
+          flags: FlagsResolve,
+          viewEditResolver: RetryResolver
+        },
+        canActivate: [DrawingBoardGuard]
+      },
+      {
         path: 'RETRY',
         component: ServicePlanningComponent,
         resolve: {

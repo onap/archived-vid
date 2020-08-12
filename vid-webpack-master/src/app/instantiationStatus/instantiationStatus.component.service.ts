@@ -115,6 +115,7 @@ export class InstantiationStatusComponentService {
   }
 
   navigateToNewViewEdit(item: InstantiationBase, mode: DrawingBoardModes): void {
+    console.log("Mode : ", mode);
     this._store.dispatch(updateDrawingBoardStatus(mode));
     const viewEditUrlTree:UrlTree = this.getNewViewEditUrlTree(item, mode);
     this._router.navigateByUrl(viewEditUrlTree);
@@ -178,6 +179,10 @@ export class InstantiationStatusComponentService {
 
   retry(item: ServiceInfoModel): void {
       this.navigateToNewViewEdit(item, DrawingBoardModes.RETRY_EDIT);
+  }
+
+  resume(item: ServiceInfoModel): void {
+    this.navigateToNewViewEdit(item, DrawingBoardModes.RESUME);
   }
 
   recreate(item: ServiceInfoModel): void {
