@@ -12,7 +12,9 @@ export class DrawingBoardGuard implements CanActivate {
   constructor(private store: NgRedux<AppState>, private _http: HttpClient, private _router : Router) { }
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
       let url : string = `../../roles/service_permissions?subscriberId=${next.queryParams['subscriberId']}&serviceType=${next.queryParams['serviceType']}`;
-      const viewMode = state.url.includes(DrawingBoardModes.RETRY_EDIT)? DrawingBoardModes.RETRY: DrawingBoardModes.VIEW;
+    const viewMode = state.url.includes(DrawingBoardModes.RETRY_EDIT)? DrawingBoardModes.RETRY:
+                      state.url.includes(DrawingBoardModes.RESUME)? DrawingBoardModes.RESUME:
+                        DrawingBoardModes.VIEW;
       return this._http.get(url)
         .map((result : DrawingBoardPermissions) => {
           if(!result.isEditPermitted){
