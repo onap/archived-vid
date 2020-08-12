@@ -68,7 +68,7 @@ export class DrawingBoardHeaderService{
       if (!_.isNil(this.errorMsgService.errorMsgObject) && mode !== DrawingBoardModes.RETRY_EDIT) return true;
       if(validationCounter > 0) return true;
       if(serviceInstance.action !== ServiceInstanceActions.None) return false;
-      if(mode === DrawingBoardModes.RETRY_EDIT) return false;
+      if(mode === DrawingBoardModes.RETRY_EDIT || mode === DrawingBoardModes.RESUME) return false;
       return !serviceInstance.isDirty;
     }
     return true;
@@ -80,6 +80,8 @@ export class DrawingBoardHeaderService{
         return 'UPDATE';
       case DrawingBoardModes.RETRY_EDIT:
         return 'REDEPLOY';
+      case DrawingBoardModes.RESUME:
+        return 'RESUME';
       default: return 'DEPLOY';
     }
   }
@@ -91,6 +93,8 @@ export class DrawingBoardHeaderService{
       case DrawingBoardModes.RETRY_EDIT:
       case DrawingBoardModes.RETRY:
         return 'REDEPLOY';
+      case DrawingBoardModes.RESUME:
+        return 'RESUME';
     }
   }
 

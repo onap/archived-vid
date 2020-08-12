@@ -48,7 +48,15 @@ export class InstantiationStatusComponent implements OnInit {
       className: "fa-repeat",
       click: (item: ServiceInfoModel) => this.retryItem(item),
       enabled: () =>  true,
-      visible: (item: ServiceInfoModel) =>  item.isRetryEnabled,
+      visible: (item: ServiceInfoModel) =>  (item.isRetryEnabled && (item.jobStatus !== JobStatus.COMPLETED_AND_PAUSED)),
+    },
+    {
+      name: "Resume",
+      dataTestId: "context-menu-retry",
+      className: "fa-repeat",
+      click: (item: ServiceInfoModel) => this.resumeItem(item),
+      enabled: () =>  true,
+      visible: (item: ServiceInfoModel) =>  item.jobStatus === JobStatus.COMPLETED_AND_PAUSED,
     },
     {
       name: "Open",
@@ -172,6 +180,12 @@ export class InstantiationStatusComponent implements OnInit {
   retryItem(item: ServiceInfoModel) : void {
     if (item.isRetryEnabled) {
       this._instantiationStatusComponentService.retry(item);
+    }
+  }
+
+  resumeItem(item: ServiceInfoModel) : void {
+    if(item.isRetryEnabled && item.jobStatus === JobStatus.COMPLETED_AND_PAUSED){
+      this._instantiationStatusComponentService.resume(item);
     }
   }
 
