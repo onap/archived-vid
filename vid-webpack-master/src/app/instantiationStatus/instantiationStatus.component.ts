@@ -182,17 +182,17 @@ export class InstantiationStatusComponent implements OnInit {
   isOpenEnabled(item: ServiceInfoModel):boolean {
     switch(item.action) {
       case ServiceAction.DELETE:
-      return _.includes([ JobStatus.PENDING, JobStatus.COMPLETED_WITH_ERRORS, JobStatus.FAILED], item.jobStatus);
+        return _.includes([ JobStatus.PENDING, JobStatus.COMPLETED_WITH_ERRORS, JobStatus.FAILED, JobStatus.FAILED_AND_PAUSED], item.jobStatus);
       case ServiceAction.UPDATE:
-        return _.includes([JobStatus.PENDING, JobStatus.PAUSE, JobStatus.COMPLETED_WITH_ERRORS, JobStatus.COMPLETED, JobStatus.FAILED], item.jobStatus);
+        return _.includes([JobStatus.PENDING, JobStatus.PAUSE, JobStatus.COMPLETED_WITH_ERRORS, JobStatus.COMPLETED, JobStatus.FAILED, JobStatus.FAILED_AND_PAUSED], item.jobStatus);
       default:
-        return _.includes([JobStatus.COMPLETED, JobStatus.PAUSE, JobStatus.COMPLETED_WITH_ERRORS], item.jobStatus);
+        return _.includes([JobStatus.COMPLETED, JobStatus.PAUSE, JobStatus.COMPLETED_WITH_ERRORS, JobStatus.FAILED_AND_PAUSED], item.jobStatus);
     }
   }
 
   isAuditInfoEnabled(item: ServiceInfoModel): boolean {
     if(item.action === ServiceAction.DELETE || item.action=== ServiceAction.UPDATE) {
-      return _.includes([JobStatus.FAILED, JobStatus.IN_PROGRESS, JobStatus.COMPLETED_WITH_ERRORS, JobStatus.PAUSE, JobStatus.COMPLETED], item.jobStatus);
+      return _.includes([JobStatus.FAILED, JobStatus.IN_PROGRESS, JobStatus.COMPLETED_WITH_ERRORS, JobStatus.FAILED_AND_PAUSED, JobStatus.PAUSE, JobStatus.COMPLETED], item.jobStatus);
     }
     return true;// ServiceAction.INSTANTIATE
   }
@@ -205,7 +205,7 @@ export class InstantiationStatusComponent implements OnInit {
   }
 
   isHideEnabled(item: ServiceInfoModel):boolean {
-    return _.includes([JobStatus.COMPLETED, JobStatus.FAILED, JobStatus.STOPPED, JobStatus.COMPLETED_WITH_ERRORS], item.jobStatus);
+    return _.includes([JobStatus.COMPLETED, JobStatus.FAILED, JobStatus.STOPPED, JobStatus.COMPLETED_WITH_ERRORS, JobStatus.FAILED_AND_PAUSED], item.jobStatus);
   }
 
   public onContextMenu($event: MouseEvent, item: any): void {
