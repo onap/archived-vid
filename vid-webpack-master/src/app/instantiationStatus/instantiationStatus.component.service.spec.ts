@@ -1,6 +1,7 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
 import {
   COMPLETED_WITH_ERRORS,
+  FAILED_AND_PAUSED,
   INPROGRESS,
   InstantiationStatusComponentService,
   PAUSE,
@@ -150,6 +151,7 @@ describe('Instantiation Status Service', () => {
     'COMPLETED_WITH_ERRORS': 'Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.',
     'UNEXPECTED_RANDOM_STATUS': 'Unexpected status: "UNEXPECTED_RANDOM_STATUS"',
     'COMPLETED_AND_PAUSED': 'Pause upon completion. you may resume the instantiation.\n Open the service to check it out.',
+    'FAILED_AND_PAUSED': 'Failed and Paused: you may re-deploy the instantiation.\n Open the service to check it out.',
   })) {
 
     test(`getStatusTooltip should return status popover: status=${status}`, () => {
@@ -212,6 +214,9 @@ describe('Instantiation Status Service', () => {
 
     result = service.getStatus('COMPLETED_AND_PAUSED');
     expect(result.iconClassName).toEqual(PAUSE_UPON_COMPLETION);
+
+    result = service.getStatus('FAILED_AND_PAUSED');
+    expect(result.iconClassName).toEqual(FAILED_AND_PAUSED);
 
     result = service.getStatus(undefined);
     expect(result.iconClassName).toEqual(UNKNOWN);
