@@ -68,6 +68,7 @@ public interface Job {
         CREATING(false),
         PENDING_RESOURCE(false),
         COMPLETED_AND_PAUSED(true, false),
+        FAILED_AND_PAUSED(true, true),
         ;
 
         private final Boolean finalStatus;
