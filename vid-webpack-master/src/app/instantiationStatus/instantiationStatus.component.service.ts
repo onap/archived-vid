@@ -23,6 +23,7 @@ export let SUCCESS_CIRCLE : string = "success-circle-o";
 export let STOPPED : string = "stop";
 export let COMPLETED_WITH_ERRORS : string = "success_with_warning";
 export let PAUSE_UPON_COMPLETION : string = "stopped-upon-success";
+export let FAILED_AND_PAUSED : string = "success_with_warning";
 export let UNKNOWN : string = "question-mark-circle-o";
 
 
@@ -172,6 +173,8 @@ export class InstantiationStatusComponentService {
         return new ServiceStatus(COMPLETED_WITH_ERRORS, 'success', 'Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.');
       case  'COMPLETED_AND_PAUSED' :
         return new ServiceStatus(PAUSE_UPON_COMPLETION, 'default','Pause upon completion. you may resume the instantiation.\n Open the service to check it out.' );
+      case 'FAILED_AND_PAUSED' :
+        return new ServiceStatus(FAILED_AND_PAUSED, 'success','Failed and Paused: you may re-deploy the instantiation.\n Open the service to check it out.' );
       default:
         return new ServiceStatus(UNKNOWN, 'primary', `Unexpected status: "${status}"`);
     }
