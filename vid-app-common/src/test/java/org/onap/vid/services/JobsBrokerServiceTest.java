@@ -103,6 +103,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.togglz.core.manager.FeatureManager;
 
 @ContextConfiguration(classes = {DataSourceConfig.class, SystemProperties.class, JobAdapterConfig.class})
 public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
@@ -124,6 +125,9 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
     private static final String DELETE_SERVICE_NOT_EXIST_EXCEPTION_MESSAGE = "Service does not exist";
     private JobsBrokerService broker;
 
+    @Mock
+    private FeatureManager featureManager;
+
     @Inject
     JobAdapter jobAdapter;
     @Inject
@@ -144,7 +148,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
     public void initializeBroker() {
         MockitoAnnotations.initMocks(this);
         when(versionService.retrieveBuildNumber()).thenReturn("aBuildNumber");
-        broker = new JobsBrokerServiceInDatabaseImpl(dataAccessService, sessionFactory, 200, 0, versionService);
+        broker = new JobsBrokerServiceInDatabaseImpl(dataAccessService, sessionFactory, 200, 0, versionService, featureManager);
         ((JobsBrokerServiceInDatabaseImpl) broker).deleteAll();
     }
 
@@ -607,7 +611,7 @@ public class JobsBrokerServiceTest extends AbstractTestNGSpringContextTests {
 
     @Test(dataProvider = "jobs")
     public void givenSomeJobs_pullNextJob_returnNextOrNothingAsExpected(List<Jobber> jobbers, int msoLimit, int expectedIndexSelected, Job.JobStatus topic, String assertionReason) {
-        JobsBrokerServiceInDatabaseImpl aBroker = new JobsBrokerServiceInDatabaseImpl(dataAccessService, sessionFactory, msoLimit, 20, versionService);
+        JobsBrokerServiceInDatabaseImpl aBroker = new JobsBrokerServiceInDatabaseImpl(dataAccessService, sessionFactory, msoLimit, 20, versionService, featureManager);
         final List<JobDaoImpl> jobs = addJobsWithModifiedDate(jobbers, aBroker);
         Optional<Job> nextJob = aBroker.pull(topic, UUID.randomUUID().toString());
         boolean shouldAnyBeSelected = expectedIndexSelected >= 0;
