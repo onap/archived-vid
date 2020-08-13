@@ -135,7 +135,8 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
     }
 
     protected boolean getExpectedRetryEnabled(JobStatus jobStatus) {
-        return Features.FLAG_1902_RETRY_JOB.isActive() && (jobStatus==JobStatus.FAILED || jobStatus==JobStatus.COMPLETED_WITH_ERRORS);
+        return Features.FLAG_1902_RETRY_JOB.isActive() && (jobStatus==JobStatus.FAILED || jobStatus==JobStatus.COMPLETED_WITH_ERRORS
+                || jobStatus==JobStatus.FAILED_AND_PAUSED);
     }
 
     public List<BasePreset> getPresets(List<PresetMSOBaseDelete> presetOnDeleteList, List<PresetMSOBaseCreateInstancePost> presetOnCreateList, List<PresetMSOOrchestrationRequestGet> presetInProgressList) {
@@ -203,7 +204,7 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
         return ImmutableList.of(
                 vidAuditStatus(jobId, "PENDING", false),
                 vidAuditStatus(jobId, "IN_PROGRESS", false),
-                vidAuditStatus(jobId, "COMPLETED_WITH_ERRORS", true)
+                vidAuditStatus(jobId, "COMPLETED_WITH_ERROR", true)
         );
     }
 
@@ -214,7 +215,13 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
                 vidAuditStatus(jobId, "FAILED", true)
         );
     }
-
+    protected ImmutableList<JobAuditStatus> vidAuditStatusesFailedAndPaused(String jobId) {
+        return ImmutableList.of(
+                vidAuditStatus(jobId, "PENDING", false),
+                vidAuditStatus(jobId, "IN_PROGRESS", false),
+                vidAuditStatus(jobId, "FAILED_AND_PAUSED", true)
+        );
+    }
     protected JobAuditStatus vidAuditStatus(String jobId, String jobStatus, boolean isFinal) {
         return new JobAuditStatus(UUID.fromString(jobId), jobStatus, JobAuditStatus.SourceStatus.VID, null, null, isFinal);
     }
@@ -578,4 +585,8 @@ public class AsyncInstantiationBase extends BaseMsoApiTest {
             org.junit.Assert.assertEquals("MSO instanceType  #" + i + " is not as expected", expectedStatus.getInstanceType(), actualStatus.getInstanceType());
         });
     }
+    protected static JobStatus getErrorStatus() {
+            return Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE.isActive() ?
+                            JobStatus.FAILED_AND_PAUSED : JobStatus.COMPLETED_WITH_ERRORS;
+   }
 }
