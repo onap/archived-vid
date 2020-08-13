@@ -25,9 +25,11 @@ import org.onap.portalsdk.core.service.DataAccessService
 import org.onap.vid.job.Job
 import org.onap.vid.job.Job.JobStatus.*
 import org.onap.vid.job.impl.JobDaoImpl
+import org.onap.vid.properties.Features
 import org.onap.vid.utils.DaoUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.togglz.core.manager.FeatureManager
 import java.util.*
 import java.util.stream.Collectors
 import java.util.stream.Stream
@@ -35,7 +37,7 @@ import java.util.stream.Stream
 
 @Service
 class WatchChildrenJobsBL @Autowired
-constructor(private val dataAccessService: DataAccessService) {
+constructor(private val dataAccessService: DataAccessService, private val featureManager: FeatureManager) {
 
     fun retrieveChildrenJobsStatus(childrenJobsIds: List<String>): Job.JobStatus {
         val jobs = getAllChildrenJobs(childrenJobsIds)
@@ -47,14 +49,16 @@ constructor(private val dataAccessService: DataAccessService) {
                     else -> it.status
                 }}
 
-        return cumulateJobStatus(jobsStatuses)
+        return if(featureManager.isActive(Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE))
+            cumulateJobStatusWithPauseOnFailure(jobsStatuses) else cumulateJobStatus(jobsStatuses)
 
     }
 
     fun cumulateJobStatus(childrenComulatedStatus: Job.JobStatus, fatherJobStatus: Job.JobStatus): Job.JobStatus {
-        return cumulateJobStatus(Stream.of(childrenComulatedStatus, fatherJobStatus))
+        return if(featureManager.isActive(Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE))
+            cumulateJobStatusWithPauseOnFailure(Stream.of(childrenComulatedStatus, fatherJobStatus))
+                else cumulateJobStatus(Stream.of(childrenComulatedStatus, fatherJobStatus))
     }
-
     private fun cumulateJobStatus(jobsStatuses: Stream<Job.JobStatus>): Job.JobStatus {
 
         return jobsStatuses.reduce{ a, b ->
@@ -70,7 +74,21 @@ constructor(private val dataAccessService: DataAccessService) {
             }
         } .orElse(COMPLETED_WITH_NO_ACTION)
   }
+    private fun cumulateJobStatusWithPauseOnFailure(jobsStatuses: Stream<Job.JobStatus>): Job.JobStatus {
 
+        return jobsStatuses.reduce{ a, b ->
+            when {
+                a == FAILED_AND_PAUSED || b == FAILED_AND_PAUSED-> FAILED_AND_PAUSED
+                a == COMPLETED && b.isFailure -> FAILED_AND_PAUSED
+                b == COMPLETED && a.isFailure -> FAILED_AND_PAUSED
+                !a.isFinal || !b.isFinal -> IN_PROGRESS
+                a == COMPLETED_AND_PAUSED || b == COMPLETED_AND_PAUSED -> COMPLETED_AND_PAUSED
+                a == COMPLETED || b == COMPLETED -> COMPLETED
+                a.isFailure || b.isFailure -> FAILED
+                else ->  COMPLETED_WITH_NO_ACTION
+            }
+        } .orElse(COMPLETED_WITH_NO_ACTION)
+    }
     private fun getAllChildrenJobs(childrenJobsIds: List<String>): Map<UUID, JobDaoImpl> {
         val jobs:MutableList<JobDaoImpl> = dataAccessService.getList(JobDaoImpl::class.java, filterByJobIds(childrenJobsIds), null, DaoUtils.getPropsMap()) as MutableList<JobDaoImpl>
         return jobs.stream().collect(Collectors.toMap( { it.uuid }, { it }))

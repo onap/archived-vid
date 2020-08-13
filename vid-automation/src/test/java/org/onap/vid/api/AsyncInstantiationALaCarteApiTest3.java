@@ -145,7 +145,12 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
 
     @DataProvider
     Object[][] multipleVnfDataProvider() {
-        return new Object[][]{{MSO_FAILED_STATUS, JobStatus.COMPLETED_WITH_ERRORS},{MSO_COMPLETE_STATUS, JobStatus.COMPLETED}, {"SERVICE_FAILED", JobStatus.FAILED}};
+        return new Object[][]{
+                {
+                    MSO_FAILED_STATUS, Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE.isActive() ? JobStatus.FAILED_AND_PAUSED :
+                                JobStatus.COMPLETED_WITH_ERRORS },
+                {   MSO_COMPLETE_STATUS, JobStatus.COMPLETED },
+                {   "SERVICE_FAILED", JobStatus.FAILED } };
     }
 
     @Test
@@ -197,7 +202,8 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
         return new Object[][]{
                 {MSO_COMPLETE_STATUS, MSO_COMPLETE_STATUS, JobStatus.COMPLETED},
                 {MSO_FAILED_STATUS, MSO_FAILED_STATUS, JobStatus.FAILED},
-                {MSO_COMPLETE_STATUS, MSO_FAILED_STATUS, JobStatus.COMPLETED_WITH_ERRORS}
+                {MSO_COMPLETE_STATUS, MSO_FAILED_STATUS, JobStatus.COMPLETED_WITH_ERRORS},
+                {MSO_FAILED_STATUS, MSO_COMPLETE_STATUS, JobStatus.FAILED_AND_PAUSED}
         };
     }
 
@@ -535,6 +541,8 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
                 return vidAuditStatusesFailed(jobId);
             case IN_PROGRESS:
                 return vidAuditStatusesInProgress(jobId);
+            case FAILED_AND_PAUSED:
+                return vidAuditStatusesFailedAndPaused(jobId);
         }
 
         return null;
