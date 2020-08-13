@@ -71,6 +71,7 @@ public enum Features implements Feature {
     FLAG_2008_CREATE_VFMODULE_INSTANTIATION_ORDER_NUMBER,
     FLAG_2008_PAUSE_INSTANTIATION_ON_VFMODULE_POPUP,
     FLAG_2008_REMOVE_PAUSE_INSTANTIATION,
+    FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE,
     ;
     public boolean isActive() {
         return FeatureContext.getFeatureManager().isActive(this);

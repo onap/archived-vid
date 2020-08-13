@@ -13,6 +13,7 @@ import org.onap.simulator.presetGenerator.presets.sdc.PresetSDCGetServiceToscaMo
 import org.onap.vid.model.asyncInstantiation.ServiceInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import vid.automation.test.infra.Features;
 import vid.automation.test.infra.ModelInfo;
 import vid.automation.test.model.JobStatus;
 import vid.automation.test.model.ServiceAction;
@@ -106,7 +107,8 @@ Legit Preset  ||  deploy 1 Service, 1 VNF which will fail
         assertThat(uuids, hasSize(1));
         originalJobId = uuids.get(0);
 
-        asyncInstantiationBase.assertServiceInfoSpecific1(originalJobId, JobStatus.COMPLETED_WITH_ERRORS, names.get(SERVICE_NAME), "us16807000", firstIds.serviceId, ServiceAction.INSTANTIATE);
+        asyncInstantiationBase.assertServiceInfoSpecific1(originalJobId, Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE.isActive() ?
+                JobStatus.FAILED_AND_PAUSED : JobStatus.COMPLETED_WITH_ERRORS, names.get(SERVICE_NAME), "us16807000", firstIds.serviceId, ServiceAction.INSTANTIATE);
         asyncInstantiationBase.assertAuditStatuses(originalJobId, asyncInstantiationBase.vidAuditStatusesCompletedWithErrors(originalJobId),null);
         assertThat(SimulatorApi.retrieveRecordedRequestsPathCounter(), allOf(
                 hasOrLacksOfEntry(createPresets.get(0).getReqPath(), 1L),
