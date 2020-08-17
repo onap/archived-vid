@@ -20,7 +20,7 @@ export class DragAndDropService {
    ***********************************************************************************************/
   isBaseModule(serviceInstanceId, from): boolean {
     try {
-      let baseModuleFlag = this.store.getState().service.serviceHierarchy[serviceInstanceId].vnfs[from.parent.data.vnfStoreKey].vfModules[from.data.modelName].properties.baseModule;
+      let baseModuleFlag = this.store.getState().service.serviceHierarchy[serviceInstanceId].vnfs[from.parent.data.modelName].vfModules[from.data.modelName].properties.baseModule;
       return (baseModuleFlag != 'undefined' ? baseModuleFlag : false);
     }catch(e) {
       return false;
