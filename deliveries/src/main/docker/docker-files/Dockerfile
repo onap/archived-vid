@@ -8,7 +8,7 @@ RUN rm -f *.war
 FROM tomcat:9-jdk11-openjdk-slim
 
 # add vim and uncomment alias to speedup troubleshooting purpose
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y -qq --no-install-recommends \
     curl \
     vim \
     net-tools \
