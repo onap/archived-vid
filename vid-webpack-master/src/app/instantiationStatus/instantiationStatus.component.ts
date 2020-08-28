@@ -56,7 +56,7 @@ export class InstantiationStatusComponent implements OnInit {
       className: "fa-repeat",
       click: (item: ServiceInfoModel) => this.resumeItem(item),
       enabled: () =>  true,
-      visible: (item: ServiceInfoModel) =>  item.jobStatus === JobStatus.COMPLETED_AND_PAUSED,
+      visible: (item: ServiceInfoModel) =>  (item.isRetryEnabled && (item.jobStatus === JobStatus.COMPLETED_AND_PAUSED)),
     },
     {
       name: "Open",
