@@ -4,11 +4,11 @@ project_creation_date: '2017-02-02'
 project_category: ''
 lifecycle_state: 'Incubation'
 project_lead: &onap_vid_ptl
-    name: 'Ittay Stern'
-    email: 'is9613@att.com'
-    id: 'ittays'
+    name: 'Ikram Ikramullah'
+    email: 'ikram@research.att.com'
+    id: 'ikram'
     company: 'ATT'
-    timezone: 'Asia/Jerusalem'
+    timezone: 'America/New_York'
 primary_contact: *onap_vid_ptl
 issue_tracking:
     type: 'jira'
