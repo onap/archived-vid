@@ -1,0 +1,115 @@
+.leftColumn {
+  padding-left: 0;
+}
+
+.rightColumn {
+  padding-right: 0;
+  text-align: right;
+}
+
+.modal-content {
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.table-panel {
+
+    .table-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .no-result {
+      margin-bottom: 20px;
+      text-align: center;
+      padding: 20px;
+      margin-top: -23px;
+    }
+
+    .table-bordered {
+      width: 100%;
+      margin-top: 10px;
+      font-family: OpenSans-Semibold;
+      font-size: 12px;
+      overflow-x: auto;
+      display: block;
+      color: #5A5A5A;
+
+        .request-id {
+          width: 85px;
+        }
+
+        thead {
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          display: block;
+          background: rgb(242, 242, 242);
+          border-bottom: 1px solid #d2d2d2;
+
+            tr {
+              display: flex;
+
+                th {
+                  flex-grow: 1;
+                  border-right: 1px solid #d2d2d2;
+
+                    &:last-child {
+                      border-right: none;
+                    }
+
+                    &.request-id {
+                      flex-grow: 0;
+                    }
+                }
+            }
+        }
+
+        tbody {
+          border: none !important;
+          max-height: 152px;
+          display: block;
+
+            tr {
+              display: flex;
+              border-bottom: 1px solid #d2d2d2;
+
+                &:last-child {
+                  border-bottom: none;
+                }
+
+                td {
+                  border: none;
+                  border-right: 1px solid #d2d2d2;
+                  flex-grow: 1;
+
+                    &:last-child {
+                      border-right: none;
+                    }
+
+                    &.request-id {
+                      flex-grow: 0;
+                    }
+                }
+            }
+        }
+
+        th {
+          background: #f2f2f2;
+          font-family: OpenSans-Semibold;
+          color: #000000;
+          font-weight: bold;
+          border: none;
+        }
+
+        tr.odd {
+          background-color: rgb(242, 242, 242);
+        }
+
+        tr:hover {
+          background: #e1e1e1;
+        }
+    }
+}

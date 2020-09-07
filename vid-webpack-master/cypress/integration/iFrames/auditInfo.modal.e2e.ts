@@ -84,5 +84,14 @@ describe('Audit information modal', function () {
       })
     });
 
+    it('should hide modelInformationItems', function () {
+      cy.openIframe('app/ui/#/instantiationStatus');
+      cy.get('.icon-menu').eq(7).click().then(() => {
+        cy.getElementByDataTestsId('hide-model-info').click().then(() => {
+          cy.get('#model-info').should('not.be.visible');
+        });
+      });
+    });
+
   });
 });

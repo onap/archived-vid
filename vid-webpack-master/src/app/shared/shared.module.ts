@@ -96,7 +96,7 @@ import {SdcUiComponentsModule} from "onap-ui-angular";
 import {UploadFilesLinkComponent} from "./components/genericForm/genericFormSharedComponent/uploadFiles/upload-files-link.component";
 import { FileUploadModule } from 'ng2-file-upload';
 import {MessageModal} from "./components/messageModal/message-modal.service";
-
+import {AuditInfoTableComponent} from "./components/auditInfoModal/auditInfoModalTable/auditInfoModalTable.component";
 
 
 @NgModule({
@@ -161,7 +161,8 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     LoaderComponent,
     SvgIconComponent,
     TooltipTemplateComponent,
-    UploadFilesLinkComponent
+    UploadFilesLinkComponent,
+    AuditInfoTableComponent
   ],
   exports: [
     PopoverComponent,
