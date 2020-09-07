@@ -5,9 +5,12 @@ import {AppState} from "../../store/reducers";
 import {Subscriber} from "../../models/subscriber";
 import {ServiceInfoModel} from "../../server/serviceInfo/serviceInfo.model";
 import * as _ from 'lodash';
+import {AuditStatus} from "../../server/serviceInfo/AuditStatus.model";
+import {AuditInformationItem} from "../../models/auditInfoControlModels/auditInformationItems.model";
 
 @Injectable()
 export class AuditInfoModalComponentService {
+
   constructor(private _store: NgRedux<AppState>){}
 
   getModelInfo(model, instance, serviceModelId: string): ModelInformationItem[] {
@@ -66,7 +69,7 @@ export class AuditInfoModalComponentService {
     return !_.isNil(type) ? (AuditInfoModalComponentService.getTypeMap()[type] + " Instantiation Information") : 'Service Instantiation Information';
   }
 
-  extractSubscriberNameBySubscriberId(subscriberId: string, store: NgRedux<AppState>) {
+  private extractSubscriberNameBySubscriberId(subscriberId: string, store: NgRedux<AppState>) {
     let result: string = null;
     let filteredArray: any = _.filter(store.getState().service.subscribers, function (o: Subscriber) {
       return o.id === subscriberId
@@ -75,5 +78,19 @@ export class AuditInfoModalComponentService {
       result = filteredArray[0].name;
     }
     return result;
+  }
+
+  static initAuditInfoItems() {
+    return new AuditInformationItem(
+      true,
+      false,
+      [],
+      [],
+      true,
+      false,
+      false,
+      null ,
+      null
+    )
   }
 }

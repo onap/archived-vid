@@ -14,10 +14,10 @@ import {ServiceInfoService} from "../../server/serviceInfo/serviceInfo.service";
 import {IframeService} from "../../utils/iframe.service";
 import {AuditInfoModalComponentService} from "./auditInfoModal.component.service";
 import {ServiceInfoModel} from "../../server/serviceInfo/serviceInfo.model";
-import {HttpClient} from '@angular/common/http';
 import {getTestBed} from "@angular/core/testing";
 import {of} from 'rxjs';
 import {NodeInstance} from "../../models/nodeInstance";
+import {AuditInformationItem} from "../../models/auditInfoControlModels/auditInformationItems.model";
 
 class MockAppStore<T> {
   getState() {
@@ -79,7 +79,6 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
   test('component should be defined', () => {
     expect(component).toBeDefined();
   });
-
   test('setModalTitles should set modal title according to type', () => {
     component.setModalTitles('VNF');
     expect(component.type).toEqual('VNF');
@@ -87,11 +86,11 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
   });
 
   test('initializeProperties should init some component properties', () => {
+    const auditInfoItems = getAuditInitItems();
     component.initializeProperties();
-    expect(component.modelInfoItems).toBeNull();
-    expect(component.vidInfoData).toEqual([]);
-    expect(component.msoInfoData).toEqual([]);
-    expect(component.isLoading).toEqual(true);
+    expect(component.modelInfoItems).toEqual([]);
+    expect(component.auditInfoItems).toEqual(auditInfoItems);
+
   });
 
   test('openAuditInfoModal', () => {
@@ -138,7 +137,7 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
       instance: instance
     });
 
-    expect(component.showVidStatus).toEqual(false);
+    expect(component.auditInfoItems.showVidStatus).toEqual(false);
     expect(component.initializeProperties).toHaveBeenCalled();
     expect(component.setModalTitles).toHaveBeenCalled();
     expect(_serviceInfoService.getAuditStatusForRetry).toHaveBeenCalledWith(instance.trackById);
@@ -167,7 +166,7 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
       instance: instance
     });
 
-    expect(component.showVidStatus).toEqual(false);
+    expect(component.auditInfoItems.showVidStatus).toEqual(false);
     expect(component.initializeProperties).toHaveBeenCalled();
     expect(component.setModalTitles).toHaveBeenCalled();
     expect(_serviceInfoService.getInstanceAuditStatus).toHaveBeenCalledWith(instanceId, type);
@@ -184,7 +183,7 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
     jobData.aLaCarte = true;
     AuditInfoModalComponent.openModal.next(jobData);
 
-    expect(component.showVidStatus).toEqual(true);
+    expect(component.auditInfoItems.showVidStatus).toEqual(false);
     expect(component.initializeProperties).toHaveBeenCalled();
     expect(component.auditInfoModal.show).toHaveBeenCalled();
   });
@@ -195,4 +194,8 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
     AuditInfoModalComponent.openModal.next(jobData);
     expect(component.auditInfoModal.hide).toHaveBeenCalled();
   });
+
+  function getAuditInitItems() {
+    return new AuditInformationItem(true, false, [], [], true, false, false, null , null)
+  }
 });
