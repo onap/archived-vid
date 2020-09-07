@@ -79,9 +79,18 @@ describe('Audit information modal', function () {
       cy.get('.icon-menu').eq(7).click().then(() => {
         cy.getElementByDataTestsId('context-menu-audit-info').click().then(() => {
           cy.setViewportToSmallPopup();
-          cy.get('#glossary_link').should('be.visible');
+          cy.getElementByDataTestsId('hide-model-info').click().then(() => {
+            cy.get('#model-info').should('not.be.visible');
+          });
         });
       })
+    });
+
+    it('should hide modelInformationItems', function () {
+      cy.openIframe('app/ui/#/instantiationStatus');
+      cy.get('.icon-menu').eq(7).click().then(() => {
+
+      });
     });
 
   });
