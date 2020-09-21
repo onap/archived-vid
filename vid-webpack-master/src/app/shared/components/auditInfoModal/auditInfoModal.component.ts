@@ -11,6 +11,9 @@ import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../store/reducers";
 import {AuditInfoModalComponentService} from "./auditInfoModal.component.service";
 import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
+import * as XLSX from 'xlsx';
+import {DatePipe} from "@angular/common";
+import {SpaceToUnderscorePipe} from "../../pipes/spaceToUnderscore/space-to-underscore.pipe";
 
 @Component({
   selector: 'audit-info-modal',
@@ -39,14 +42,19 @@ export class AuditInfoModalComponent {
   type : string = "Service";
   showVidStatus : boolean = true;
   auditInfoModalComponentService : AuditInfoModalComponentService;
+  serviceInstanceName : string;
+  exportMSOStatusFeatureEnabled: boolean;
   constructor(private _serviceInfoService: ServiceInfoService, private _iframeService : IframeService,
               private _auditInfoModalComponentService : AuditInfoModalComponentService,
               private _featureFlagsService: FeatureFlagsService,
+              private datePipe: DatePipe,
+              private spacetoUnderscore: SpaceToUnderscorePipe,
               private store: NgRedux<AppState>) {
     this.auditInfoModalComponentService = this._auditInfoModalComponentService;
     AuditInfoModalComponent.openModal.subscribe((jobData: ServiceInfoModel) => {
       this.isALaCarteFlagOn = this.store.getState().global.flags['FLAG_A_LA_CARTE_AUDIT_INFO'];
       this.showMoreAuditInfoLink = _featureFlagsService.getFlagState(Features.FLAG_MORE_AUDIT_INFO_LINK_ON_AUDIT_INFO);
+      this.exportMSOStatusFeatureEnabled = _featureFlagsService.getFlagState(Features.FLAG_2011_EXPORT_MSO_STATUS);
       this.initializeProperties();
       this.showVidStatus = true;
       if (jobData) {
@@ -57,6 +65,7 @@ export class AuditInfoModalComponent {
         this.serviceModelId = jobData.serviceModelId;
         this.jobId = jobData.jobId;
         this.auditInfoModal.show();
+        this.serviceInstanceName = jobData.serviceInstanceName;
       } else {
         _iframeService.removeClassCloseModal(this.parentElementClassName);
         this.auditInfoModal.hide();
@@ -122,6 +131,21 @@ export class AuditInfoModalComponent {
     this.initializeProperties();
     this.auditInfoModal.hide();
   }
+
+  exportMsoStatusTable(){
+    let currentTime = new Date();
+    let timestamp = this.datePipe.transform(currentTime, "MMMddyyyy")+'_'
+      +currentTime.getHours()+":"+currentTime.getMinutes()+":"+currentTime.getSeconds()
+    let fileName = this.spacetoUnderscore.transform(this.serviceInstanceName)+'_'+timestamp;
+    let msoStatusTableElement = document.getElementById('service-instantiation-audit-info-mso');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(msoStatusTableElement);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    /* save to file */
+    XLSX.writeFile(wb, fileName+'.csv');
+    this._iframeService.addClassOpenModal(this.parentElementClassName);
+  }
+
 
 
   onNavigate(){

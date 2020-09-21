@@ -18,6 +18,8 @@ import {HttpClient} from '@angular/common/http';
 import {getTestBed} from "@angular/core/testing";
 import {of} from 'rxjs';
 import {NodeInstance} from "../../models/nodeInstance";
+import {DatePipe} from "@angular/common";
+import {SpaceToUnderscorePipe} from "../../pipes/spaceToUnderscore/space-to-underscore.pipe";
 
 class MockAppStore<T> {
   getState() {
@@ -61,6 +63,8 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
         AuditInfoModalComponentService,
         ContextMenuService,
         FeatureFlagsService,
+        DatePipe,
+        SpaceToUnderscorePipe,
         {provide: NgRedux, useClass: MockAppStore}
       ],
       declarations: [AuditInfoModalComponent, CapitalizeAndFormatPipe],

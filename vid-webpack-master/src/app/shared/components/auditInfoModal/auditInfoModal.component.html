@@ -88,6 +88,14 @@
 
       </div>
       <div class="modal-footer row">
+        <button *ngIf="exportMSOStatusFeatureEnabled" style= "font-size: 12px" id="exportButton" type="button" class="btn btn-default cancel"
+                (click)="exportMsoStatusTable()" [attr.data-tests-id]="'export-button'">
+          Export
+        </button>
+        <button style= "font-size: 12px" id="refreshButton" type="button" class="btn btn-default cancel"
+                [attr.data-tests-id]="'refresh-button'">
+          Refresh
+        </button>
         <button style= "font-size: 12px" id="cancelButton" type="button" class="btn btn-default cancel" (click)="onCancelClick()" [attr.data-tests-id]="'close-button'">
           Close
         </button>

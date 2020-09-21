@@ -73,6 +73,7 @@
     "rxjs-compat": "^6.3.3",
     "slnodejs": "^2.1.124",
     "tslib": "1.9.x",
+    "xlsx": "^0.16.6",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
