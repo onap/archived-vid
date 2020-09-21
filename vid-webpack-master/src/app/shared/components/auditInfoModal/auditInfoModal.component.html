@@ -1,89 +1,124 @@
 <div class="modal fade" bsModal #auditInfoModal="bs-modal" [config]="{backdrop: 'static'}"
      tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
-  <div id="audit-info-modal" class="">
-    <div class="modal-content">
+  <div style="width: 100%; height: 100%" id="audit-info-modal" class=""
+       [ngStyle]="style" mwlResizable [enableGhostResize]="true"
+       [resizeEdges]="{ bottom: true, right: true, top: true, left: true }" (resizeEnd)="onResizeEnd($event)"
+       [validateResize]="validate">
+  <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" (click)="onCancelClick()">&times;</button>
         <span [attr.data-tests-id]="'audit-info-title'" class="modal-title">{{title}}</span>
+        <br>
+        <span style="font-size: 16px;">
+          <!-- ServiceInstanceName(ServiceModelName/ServiceModelId) -->
+          <span title="Service Instance name">{{serviceInstanceName }}</span><span title="Service Model name">({{serviceModelName}}/</span>
+          <span title="Service Model version">{{serviceModelVersion}})</span>
+
+        </span>
       </div>
-      <div class="modal-body row">
-        <div class="col-md-4 left-panel">
-          <div id="service-model-name" class="row">{{type | uppercase}} MODEL: <span>{{serviceModelName}}</span></div>
-          <div class="row service-model">
-            <model-information [modelInformationItems]="modelInfoItems"></model-information>
-          </div>
-        </div>
+      <div class="modal-body row" style="height: 515px">
+<!--        <div class="col-md-4 left-panel">-->
+<!--          <div id="service-model-name" class="row">{{type | uppercase}} MODEL: <span>{{serviceModelName}}</span></div>-->
+<!--          <div class="row service-model">-->
+<!--            <model-information [modelInformationItems]="modelInfoItems"></model-information>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="col-md-8 right-panel">
-          <div class="row" *ngIf="showVidStatus">
-            <div class="col-md-6 leftColumn"><span class="table-title">VID status</span></div>
-            <div class="col-md-6 rightColumn"><span *ngIf="showMoreAuditInfoLink">
-                <a id="full_screen_link" target="_parent" title="Full-screen audit info" [href]="readOnlyRetryUrl()">
-                  <i class="fa fa-external-link"></i>
-                </a>
-            </span></div>
-          </div>
-          <div class="row" *ngIf="showVidStatus">
-            <table id="service-instantiation-audit-info-vid"  class="table table-bordered">
-              <thead class="thead-dark">
-              <tr class="row">
-                <th class="col-md-4" scope="col">Status</th>
-                <th class="col-md-4" scope="col">Status time</th>
-                <th class="col-md-4" scope="col">Final</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr class="row" *ngFor="let data of vidInfoData">
-                <td class="col-md-4" id="vidJobStatus" [attr.data-tests-id]="'vidJobStatus'">
-                  <custom-ellipsis [id]="data?.jobStatus" [value]="data?.jobStatus | capitalizeAndFormat"></custom-ellipsis>
-                </td>
-                <td class="col-md-4" id="vidStatusTime">
-                  <custom-ellipsis [id]="data?.vidCreated"
-                                   [value]="data?.createdDate | date:'MMM dd, yyyy HH:mm'"></custom-ellipsis>
-                </td>
-                <td class="col-md-4" id="vidFinalStatus">
-                  <custom-ellipsis [id]="data?.final"
-                                   [value]="data?.final ? 'Yes' : 'No'"></custom-ellipsis>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            <div class="no-result" *ngIf="!isLoading && vidInfoData?.length == 0">There is no data.</div>
-          </div>
+<!--          <div class="row" *ngIf="showVidStatus">-->
+<!--            <div class="col-md-6 leftColumn"><span class="table-title">VID status</span></div>-->
+<!--            <div class="col-md-6 rightColumn"><span *ngIf="showMoreAuditInfoLink">-->
+<!--                <a id="full_screen_link" target="_parent" title="Full-screen audit info" [href]="readOnlyRetryUrl()">-->
+<!--                  <i class="fa fa-external-link"></i>-->
+<!--                </a>-->
+<!--            </span></div>-->
+<!--          </div>-->
+<!--          <div class="row" *ngIf="showVidStatus">-->
+<!--            <table id="service-instantiation-audit-info-vid"  class="table table-bordered">-->
+<!--              <thead class="thead-dark">-->
+<!--              <tr class="row">-->
+<!--                <th class="col-md-4" scope="col">Status</th>-->
+<!--                <th class="col-md-4" scope="col">Status time</th>-->
+<!--                <th class="col-md-4" scope="col">Final</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr class="row" *ngFor="let data of vidInfoData">-->
+<!--                <td class="col-md-4" id="vidJobStatus" [attr.data-tests-id]="'vidJobStatus'">-->
+<!--                  <custom-ellipsis [id]="data?.jobStatus" [value]="data?.jobStatus | capitalizeAndFormat"></custom-ellipsis>-->
+<!--                </td>-->
+<!--                <td class="col-md-4" id="vidStatusTime">-->
+<!--                  <custom-ellipsis [id]="data?.vidCreated"-->
+<!--                                   [value]="data?.createdDate | date:'MMM dd, yyyy HH:mm'"></custom-ellipsis>-->
+<!--                </td>-->
+<!--                <td class="col-md-4" id="vidFinalStatus">-->
+<!--                  <custom-ellipsis [id]="data?.final"-->
+<!--                                   [value]="data?.final ? 'Yes' : 'No'"></custom-ellipsis>-->
+<!--                </td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--            <div class="no-result" *ngIf="!isLoading && vidInfoData?.length == 0">There is no data.</div>-->
+<!--          </div>-->
 
           <div class="row">
             <div class="col-md-6 leftColumn"><span class="table-title">MSO status</span></div>
-			<!-- -->
-            <div class="col-md-6 rightColumn"><span><a id="glossary_link" target="_blank" href="#" (click)="onNavigate()">Building Block (BB) glossary</a></span></div>
+            <div class="col-md-6 rightColumn">
+              <span>
+                <a id="glossary_link" target="_blank" href="#" (click)="onNavigate()">Building Block (BB) glossary</a>
+              </span>
+              &nbsp;
+              <span>
+                <a id="full_screen_link" target="_parent" title="Redirect to drawing board" [href]="readOnlyRetryUrl()">
+                  <i class="fa fa-external-link"></i>
+                </a>
+            </span>
+            </div>
           </div>
-          <table id="service-instantiation-audit-info-mso" class="table table-bordered">
+          <div style="max-height: 90%;overflow-y: scroll; max-width: 100%;overflow-x: scroll;">
+          <table id="service-instantiation-audit-info-mso" class="table table-bordered"  style="min-width: 950px;overflow-x: auto;">
             <thead class="thead-dark row">
             <tr class="row">
-              <th scope="col" class="request-id" style="min-width: 275px;max-width: 275px;">Request ID</th>
-              <th scope="col" style="min-width: 100px;max-width: 100px;">Status</th>
-              <th *ngIf="isAlaCarte&&isALaCarteFlagOn" id="instanceName" class="col-md-2" scope="col" style="max-width: 350px;">Instance Name</th>
-
-              <th class="col-md-2" scope="col" style="min-width: 300px;max-width: 300px;">Additional info</th>
+              <th scope="col" class="request-id">Request ID</th>
+              <th *ngIf="isAlaCarte&&isALaCarteFlagOn" id="instanceName" class="col-md-2" scope="col" >Instance Name</th>
+              <th>Model Type</th>
+              <th>Instance Type</th>
+              <th>Start Time</th>
+              <th>Finish Time</th>
+              <th scope="col">Status</th>
+              <th class="col-md-2" scope="col">Additional info</th>
             </tr>
             </thead>
             <tbody>
             <tr class="row" *ngFor="let data of msoInfoData">
-              <td id="msoRequestId" class="request-id" style="min-width: 275px;max-width: 275px;">
+              <td id="msoRequestId" class="col-md-2" style="width: 22%">
                 <custom-ellipsis [id]="data?.requestId" [value]="data?.requestId" [attr.data-tests-id]="'requestId'"></custom-ellipsis>
               </td>
-              <td id="msoJobStatus" style="min-width: 100px;max-width: 100px;">
+              <td *ngIf="isAlaCarte && isALaCarteFlagOn" class="msoInstanceName col-md-2" style="width: 10%">
+                <custom-ellipsis [id]="data?.instanceName" [value]="data?.instanceName"></custom-ellipsis>
+              </td>
+              <td style="width: 7%">
+                <custom-ellipsis [value]="data?.modelType"></custom-ellipsis>
+              </td>
+              <td style="width: 10%">
+                <custom-ellipsis [value]="data?.instanceType"></custom-ellipsis>
+              </td>
+              <td style="width: 10%">
+                <custom-ellipsis [value]="data?.startTime"></custom-ellipsis>
+              </td>
+              <td style="width: 10%">
+                <custom-ellipsis [value]="data?.finishTime"></custom-ellipsis>
+              </td >
+              <td id="msoJobStatus" style="width: 8%">
                 <custom-ellipsis [id]="data?.jobStatus" [value]="data?.jobStatus | capitalizeAndFormat" [attr.data-tests-id]="'jobStatus'"></custom-ellipsis>
               </td>
-              <td *ngIf="isAlaCarte && isALaCarteFlagOn" class="msoInstanceName col-md-2" style="max-width: 350px;">
-                <custom-ellipsis [id]="data?.instanceName" [value]="data?.instanceType + ': ' + data?.instanceName"></custom-ellipsis>
-              </td>
-
-              <td class="col-md-2" id="msoAdditionalInfo" style="min-width: 300px;max-width: 300px;">
+              <td class="col-md-2" id="msoAdditionalInfo" style="width: 33%">
                 <custom-ellipsis [id]="data?.additionalInfo" [value]="data?.additionalInfo" [attr.data-tests-id]="'additionalInfo'"></custom-ellipsis>
               </td>
             </tr>
             </tbody>
           </table>
           <div class="no-result" *ngIf="!isLoading && msoInfoData?.length == 0">There is no data.</div>
+          </div>
         </div>
 
       </div>
