@@ -97,6 +97,7 @@ import {UploadFilesLinkComponent} from "./components/genericForm/genericFormShar
 import { FileUploadModule } from 'ng2-file-upload';
 import {MessageModal} from "./components/messageModal/message-modal.service";
 
+import {ResizableModule} from 'angular-resizable-element';
 
 
 @NgModule({
@@ -115,6 +116,7 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     BootstrapModalModule,
     DataTableModule,
     ModalModule.forRoot(),
+    ResizableModule,
     FileUploadModule
   ],
   declarations: [

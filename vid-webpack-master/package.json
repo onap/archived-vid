@@ -45,6 +45,7 @@
     "@nicky-lenaers/ngx-scroll-to": "3.0.1",
     "@turf/turf": "5.1.6",
     "@types/lodash": "4.14.121",
+    "angular-resizable-element": "^3.3.3",
     "angular-svg-icon": "5.0.0",
     "angular-tree-component": "8.5.2",
     "angular2-datatable": "0.6.0",

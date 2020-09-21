@@ -17,6 +17,7 @@ import {ServiceInfoModel} from "../../server/serviceInfo/serviceInfo.model";
 import {HttpClient} from '@angular/common/http';
 import {getTestBed} from "@angular/core/testing";
 import {of} from 'rxjs';
+import {ResizableModule} from "angular-resizable-element";
 import {NodeInstance} from "../../models/nodeInstance";
 
 class MockAppStore<T> {
@@ -52,6 +53,7 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
         ContextMenuModule,
         ScrollToModule.forRoot(),
         RouterTestingModule,
+        ResizableModule,
         ModalModule.forRoot()
       ],
       providers: [
