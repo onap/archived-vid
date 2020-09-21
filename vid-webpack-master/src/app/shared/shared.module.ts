@@ -96,6 +96,7 @@ import {SdcUiComponentsModule} from "onap-ui-angular";
 import {UploadFilesLinkComponent} from "./components/genericForm/genericFormSharedComponent/uploadFiles/upload-files-link.component";
 import { FileUploadModule } from 'ng2-file-upload';
 import {MessageModal} from "./components/messageModal/message-modal.service";
+import {ResizableModule} from 'angular-resizable-element';
 
 
 
@@ -115,7 +116,8 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     BootstrapModalModule,
     DataTableModule,
     ModalModule.forRoot(),
-    FileUploadModule
+    FileUploadModule,
+    ResizableModule
   ],
   declarations: [
     PopoverComponent,

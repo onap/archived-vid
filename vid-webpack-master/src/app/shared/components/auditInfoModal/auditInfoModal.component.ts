@@ -11,6 +11,7 @@ import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../store/reducers";
 import {AuditInfoModalComponentService} from "./auditInfoModal.component.service";
 import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
+import {ResizeEvent} from "angular-resizable-element";
 
 @Component({
   selector: 'audit-info-modal',
@@ -21,7 +22,7 @@ export class AuditInfoModalComponent {
   static openModal: Subject<ServiceInfoModel> = new Subject<ServiceInfoModel>();
   static openInstanceAuditInfoModal: Subject<{instanceId , type, model, instance}> = new Subject<{instanceId , type, model, instance}>();
   @ViewChild('auditInfoModal', {static: false}) public auditInfoModal: ModalDirective;
-  title: string = 'Service Instantiation Information';
+  title: string = 'Service Information';
   modelInfoItems: ModelInformationItem[] = [];
   serviceModel: ServiceModel;
   serviceModelName: string;
@@ -38,6 +39,8 @@ export class AuditInfoModalComponent {
   showMoreAuditInfoLink: boolean;
   type : string = "Service";
   showVidStatus : boolean = true;
+  serviceModelVersion : any;
+  serviceInstanceName: any;
   auditInfoModalComponentService : AuditInfoModalComponentService;
   constructor(private _serviceInfoService: ServiceInfoService, private _iframeService : IframeService,
               private _auditInfoModalComponentService : AuditInfoModalComponentService,
@@ -57,6 +60,8 @@ export class AuditInfoModalComponent {
         this.serviceModelId = jobData.serviceModelId;
         this.jobId = jobData.jobId;
         this.auditInfoModal.show();
+        this.serviceModelVersion = jobData.serviceModelVersion;
+        this.serviceInstanceName = jobData.serviceInstanceName;
       } else {
         _iframeService.removeClassCloseModal(this.parentElementClassName);
         this.auditInfoModal.hide();
@@ -83,6 +88,31 @@ export class AuditInfoModalComponent {
       _iframeService.addClassOpenModal(this.parentElementClassName);
       this.auditInfoModal.show();
     });
+  }
+
+  public style: object = {};
+
+  validate(event: ResizeEvent): boolean {
+    console.log("event : ", event);
+    if(event.rectangle.width && event.rectangle.height &&
+      ( event.rectangle.width < 800 || event.rectangle.width > 1240)
+    ){
+      return false;
+    } else{
+      return true;
+    }
+  }
+
+  onResizeEnd(event: ResizeEvent): void {
+    console.log('Element was resized', event);
+    this.style = {
+      position: 'fixed',
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
+    console.log("stle : ", this.style);
   }
 
 
