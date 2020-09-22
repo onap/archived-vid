@@ -303,6 +303,13 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
         registerExpectationFromPresets(presets, RegistrationStrategy.CLEAR_THEN_SET);
         final List<String> uuids = createBulkOfInstances(false, 1, ImmutableMap.of(), DELETE_TWO_VNF_GROUPS_MEMBER_AND_ADD_ONE_REQUEST);
 
+        //Temporary sleep, as sometime the simulator behaves unexpected
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         assertThat(uuids, hasSize(1));
         final String jobId = uuids.get(0);
 
@@ -424,35 +431,35 @@ public class AsyncInstantiationALaCarteApiTest extends AsyncInstantiationBase {
 
         if(isAsyncAlacarteVfModuleWithPauseOnFailure) {
             return new Object[][] {
-                    {"none", ImmutableMap.of("vfModules", 3L), emptyMap() , true},
-                    {"none", ImmutableMap.of("vfModules", 3L), emptyMap() , false},
-                    {"instance",
-                            ImmutableMap.of("vnfs", 0L, "networks", 0L, "vfModules", 0L, "volumeGroups", 0L),
-                            ImmutableMap.of("serviceInstances", 1L, "vnfs", 1L, "networks", 1L, "vfModules", 3L, "volumeGroups", 1L),
-                            true},
-                    {"network",
-                            ImmutableMap.of("vnfs", 1L, "networks", 1L, "vfModules", 3L, "volumeGroups", 1L, "serviceInstances", 1L),
-                            ImmutableMap.of("networks", 1L),
-                            true},
-                    {"vnf0",
-                            ImmutableMap.of("vfModules", 0L, "volumeGroups", 0L),
-                            ImmutableMap.of("vnfs", 1L, "vfModules", 3L, "volumeGroups", 1L),
-                            true},
-                    {"vfModule0", ImmutableMap.of("vfModules", 1L, "volumeGroups", 0L),
-                            ImmutableMap.of("vfModules", 3L, "volumeGroups", 1L),
-                            true},
-//                    {"volumeGroup",
-//                            ImmutableMap.of("vnfs", 1L, "networks", 1L, "vfModules", 1L, "volumeGroups", 1L, "serviceInstances", 1L),
-//                            ImmutableMap.of("vfModules", 1L, "volumeGroups", 1L),
-//                            true},
-                    {"vfModule1",
-                            ImmutableMap.of("vfModules", 2L, "volumeGroups", 1L) ,
-                            ImmutableMap.of("vfModules", 2L, "volumeGroups", 1L) ,
-                            true},
-                    {"vfModule2",
-                            ImmutableMap.of("vfModules", 3L, "volumeGroups", 1L),
-                            ImmutableMap.of("vfModules", 1L, "volumeGroups", 0L),
-                            true }
+                {"none", ImmutableMap.of("vfModules", 3L), emptyMap() , true},
+                {"none", ImmutableMap.of("vfModules", 3L), emptyMap() , false},
+                {"instance",
+                    ImmutableMap.of("vnfs", 0L, "networks", 0L, "vfModules", 0L, "volumeGroups", 0L),
+                    ImmutableMap.of("serviceInstances", 1L, "vnfs", 1L, "networks", 1L, "vfModules", 3L, "volumeGroups", 1L),
+                    true},
+                {"network",
+                    ImmutableMap.of("serviceInstances", 1L,"networks", 1L,"vnfs", 0L, "vfModules", 0L, "volumeGroups", 0L ),
+                    ImmutableMap.of("networks", 1L, "vnfs", 1L,"vfModules", 3L, "volumeGroups", 1L),
+                    true},
+                {"vnf0",
+                    ImmutableMap.of("vfModules", 0L, "volumeGroups", 0L),
+                    ImmutableMap.of("vnfs", 1L, "vfModules", 3L, "volumeGroups", 1L),
+                    true},
+                {"vfModule0", ImmutableMap.of("vfModules", 1L, "volumeGroups", 0L),
+                    ImmutableMap.of("vfModules", 3L, "volumeGroups", 1L),
+                    true},
+                {"volumeGroup",
+                    ImmutableMap.of("vnfs", 1L, "networks", 1L, "vfModules", 1L, "volumeGroups", 1L, "serviceInstances", 1L),
+                    ImmutableMap.of("vfModules", 2L, "volumeGroups", 1L),
+                    true},
+                {"vfModule1",
+                    ImmutableMap.of("vfModules", 2L, "volumeGroups", 1L) ,
+                    ImmutableMap.of("vfModules", 2L, "volumeGroups", 1L) ,
+                    true},
+                {"vfModule2",
+                    ImmutableMap.of("vfModules", 3L, "volumeGroups", 1L),
+                    ImmutableMap.of("vfModules", 1L, "volumeGroups", 0L),
+                    true }
             };
         } else if (Features.FLAG_ASYNC_ALACARTE_VFMODULE.isActive()) {
             return new Object[][]{

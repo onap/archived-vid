@@ -234,6 +234,13 @@ public class AsyncInstantiationALaCarteApiTest3 extends AsyncInstantiationBase {
                 RELATED_VNF2_ACTION, "None_Delete"
         ), PAYLOAD_TEMPLATE_1_VNF_GROUP_WITH_3_MEMBERS_REQUEST);
 
+        //Temporary sleep, as sometime the simulator behaves unexpected
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         assertThat(uuids, hasSize(1));
         final String jobId = uuids.get(0);
 

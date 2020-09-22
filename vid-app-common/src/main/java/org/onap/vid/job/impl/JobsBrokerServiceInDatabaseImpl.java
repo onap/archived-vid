@@ -249,7 +249,7 @@ public class JobsBrokerServiceInDatabaseImpl implements JobsBrokerService {
         String sql = "and JOB.template_id not in \n" +
                 "(select TEMPLATE_Id from vid_job where" +
                 "   TEMPLATE_Id IS NOT NULL and (JOB_STATUS IN('FAILED','FAILED_AND_PAUSED') "
-                + " AND JOB_TYPE NOT IN('NetworkInstantiation','InstanceGroup','InstanceGroupMember') and DELETED_AT is null)" + // failed but not deleted
+                + " AND JOB_TYPE NOT IN('InstanceGroup','InstanceGroupMember') and DELETED_AT is null)" + // failed but not deleted
                 "   or TAKEN_BY IS NOT NULL)";
         return featureManager.isActive(Features.FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE) ?
                 sql : "";

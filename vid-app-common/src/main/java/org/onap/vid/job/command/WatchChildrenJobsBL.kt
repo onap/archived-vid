@@ -81,10 +81,10 @@ constructor(private val dataAccessService: DataAccessService, private val featur
                 a == FAILED_AND_PAUSED || b == FAILED_AND_PAUSED-> FAILED_AND_PAUSED
                 a == COMPLETED && b.isFailure -> FAILED_AND_PAUSED
                 b == COMPLETED && a.isFailure -> FAILED_AND_PAUSED
+                a.isFailure || b.isFailure -> FAILED
                 !a.isFinal || !b.isFinal -> IN_PROGRESS
                 a == COMPLETED_AND_PAUSED || b == COMPLETED_AND_PAUSED -> COMPLETED_AND_PAUSED
                 a == COMPLETED || b == COMPLETED -> COMPLETED
-                a.isFailure || b.isFailure -> FAILED
                 else ->  COMPLETED_WITH_NO_ACTION
             }
         } .orElse(COMPLETED_WITH_NO_ACTION)
