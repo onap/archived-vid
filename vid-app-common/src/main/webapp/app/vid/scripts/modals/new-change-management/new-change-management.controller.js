@@ -602,11 +602,9 @@
             vm.vnfNames = [];
             vm.changeManagement.vnfNames = [];
 
-            var instances = vm.changeManagement.serviceType["service-instances"]["service-instance"];
-            // var promiseArrOfGetVnfs = preparePromiseArrOfGetVnfs(instances);
-
             vm.vnfs = [];
             vm.vfModules = [];
+            vm.genericVnfs = [];
 
             let nfRole = null;
             let cloudRegion = null;
@@ -616,24 +614,20 @@
                 cloudRegion = vm.changeManagement.cloudRegion ? vm.changeManagement.cloudRegion : null;
             }
 
-            AaiService.getVnfsByCustomerIdAndServiceType(
+            return AaiService.getVnfsByCustomerIdAndServiceType(
                 vm.changeManagement.subscriberId,
                 vm.changeManagement.serviceType["service-type"],
                 nfRole,
                 cloudRegion,
             ).then(function (response) {
                     vm.isSearchedVNF = true;
-                    var vnfsData = response.data.results;
+                     var vnfsData = response.data.results;
                     if (vnfsData) {
                         for (var i = 0; i < vnfsData.length; i++) {
                             if (vnfsData[i]) {
                                 const nodeType = vnfsData[i]['node-type'];
                                 if (nodeType === "generic-vnf") {
-                                    if (_.find(vnfsData[i]['related-to'], function (node) {
-                                        return node['node-type'] === 'vserver';
-                                    }) !== undefined) {
-                                        vm.vnfs.push(vnfsData[i]);
-                                    }
+                                    vm.genericVnfs.push(vnfsData[i]);
                                 } else if (nodeType === "service-instance") {
                                     vm.serviceInstances.push(vnfsData[i]);
                                 } else if (nodeType === "vf-module") {
@@ -641,6 +635,24 @@
                                 }
                             }
                         }
+
+                        vm.genericVnfs.forEach(function (vnf) {
+                            if (vnf['related-to'].find(function (node) {return node['node-type'] === 'vf-module';}) !== undefined) {
+                                let vfModuleRel = vnf['related-to'].find(function (node) {
+                                    return node['node-type'] === 'vf-module'
+                                })
+                                for (var i = 0; i < vm.vfModules.length; i++) {
+                                    const vfModule = vm.vfModules[i];
+                                    if (vfModule['id'] === vfModuleRel['id']){
+                                        if (vfModule['related-to'].find(function (node) {return node['node-type'] === 'vserver';}) !== undefined) {
+                                            vm.vnfs.push(vnf);
+                                        }
+                                    }
+                                }
+                            } else if (vnf['related-to'].find(function (node) {return node['node-type'] === 'vserver';}) !== undefined) {
+                                vm.vnfs.push(vnf);
+                            }
+                        });
 
                         vm.vnfs = _.flattenDeep(
                             _.remove(vm.vnfs, function (vnf) {
@@ -651,7 +663,7 @@
                             })
                         );
 
-                        var filteredVnfs = _.uniqBy(vm.vnfs, function (vnf) {
+                       var filteredVnfs = _.uniqBy(vm.vnfs, function (vnf) {
                             return vnf.properties['nf-role'];
                         });
 
@@ -679,11 +691,9 @@
                             "model-version-id": vnf.properties["model-version-id"]
                         }
                     );
-
                     versions.push(vnf.properties["model-invariant-id"]);
                 }
             });
-
             if (versions.length > 0) {
                 AaiService.getVnfVersionsByInvariantId(versions).then(function (response) {
                     if (response.data) {
@@ -752,8 +762,7 @@
 
                 var selectedVersionNumber = getVersionNameForId(vm.changeManagement.fromVNFVersion);
 
-                if (isCompatibleNFRole(vnf) &&
-                    selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
+                if (isCompatibleNFRole(vnf) && selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
                     var vServer = {};
 
                     _.forEach(vnf['related-to'], function (node) {
