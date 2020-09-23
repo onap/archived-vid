@@ -11,6 +11,10 @@ import {NgRedux} from "@angular-redux/store";
 import {AppState} from "../../store/reducers";
 import {AuditInfoModalComponentService} from "./auditInfoModal.component.service";
 import {FeatureFlagsService, Features} from "../../services/featureFlag/feature-flags.service";
+import * as XLSX from 'xlsx';
+import {DatePipe} from "@angular/common";
+import {SpaceToUnderscorePipe} from "../../pipes/spaceToUnderscore/space-to-underscore.pipe";
+import {ResizeEvent} from "angular-resizable-element";
 
 @Component({
   selector: 'audit-info-modal',
@@ -21,7 +25,7 @@ export class AuditInfoModalComponent {
   static openModal: Subject<ServiceInfoModel> = new Subject<ServiceInfoModel>();
   static openInstanceAuditInfoModal: Subject<{instanceId , type, model, instance}> = new Subject<{instanceId , type, model, instance}>();
   @ViewChild('auditInfoModal', {static: false}) public auditInfoModal: ModalDirective;
-  title: string = 'Service Instantiation Information';
+  title: string = 'Service Information';
   modelInfoItems: ModelInformationItem[] = [];
   serviceModel: ServiceModel;
   serviceModelName: string;
@@ -39,14 +43,20 @@ export class AuditInfoModalComponent {
   type : string = "Service";
   showVidStatus : boolean = true;
   auditInfoModalComponentService : AuditInfoModalComponentService;
+  serviceInstanceName : string;
+  serviceModelVersion : any;
+  exportMSOStatusFeatureEnabled: boolean;
   constructor(private _serviceInfoService: ServiceInfoService, private _iframeService : IframeService,
               private _auditInfoModalComponentService : AuditInfoModalComponentService,
               private _featureFlagsService: FeatureFlagsService,
+              private datePipe: DatePipe,
+              private spacetoUnderscore: SpaceToUnderscorePipe,
               private store: NgRedux<AppState>) {
     this.auditInfoModalComponentService = this._auditInfoModalComponentService;
     AuditInfoModalComponent.openModal.subscribe((jobData: ServiceInfoModel) => {
       this.isALaCarteFlagOn = this.store.getState().global.flags['FLAG_A_LA_CARTE_AUDIT_INFO'];
       this.showMoreAuditInfoLink = _featureFlagsService.getFlagState(Features.FLAG_MORE_AUDIT_INFO_LINK_ON_AUDIT_INFO);
+      this.exportMSOStatusFeatureEnabled = _featureFlagsService.getFlagState(Features.FLAG_2011_EXPORT_MSO_STATUS);
       this.initializeProperties();
       this.showVidStatus = true;
       if (jobData) {
@@ -57,6 +67,8 @@ export class AuditInfoModalComponent {
         this.serviceModelId = jobData.serviceModelId;
         this.jobId = jobData.jobId;
         this.auditInfoModal.show();
+        this.serviceInstanceName = jobData.serviceInstanceName;
+        this.serviceModelVersion = jobData.serviceModelVersion;
       } else {
         _iframeService.removeClassCloseModal(this.parentElementClassName);
         this.auditInfoModal.hide();
@@ -83,6 +95,29 @@ export class AuditInfoModalComponent {
       _iframeService.addClassOpenModal(this.parentElementClassName);
       this.auditInfoModal.show();
     });
+  }
+
+  public style: object = {};
+  validate(event: ResizeEvent): boolean {
+    console.log("event : ", event);
+    if(event.rectangle.width && event.rectangle.height &&
+      ( event.rectangle.width < 800 || event.rectangle.width > 1240)
+    ){
+      return false;
+    } else{
+      return true;
+    }
+  }
+  onResizeEnd(event: ResizeEvent): void {
+    console.log('Element was resized', event);
+    this.style = {
+      position: 'fixed',
+      left: `${event.rectangle.left}px`,
+      top: `${event.rectangle.top}px`,
+      width: `${event.rectangle.width}px`,
+      height: `${event.rectangle.height}px`
+    };
+    console.log("stle : ", this.style);
   }
 
 
@@ -115,6 +150,20 @@ export class AuditInfoModalComponent {
         this.msoInfoData = res[1];
         this.isLoading = false;
       });
+  }
+
+  exportMsoStatusTable(){
+    let currentTime = new Date();
+    let timestamp = this.datePipe.transform(currentTime, "MMMddyyyy")+'_'
+      +currentTime.getHours()+":"+currentTime.getMinutes()+":"+currentTime.getSeconds()
+    let fileName = this.spacetoUnderscore.transform(this.serviceInstanceName)+'_'+timestamp;
+    let msoStatusTableElement = document.getElementById('service-instantiation-audit-info-mso');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(msoStatusTableElement);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    /* save to file */
+    XLSX.writeFile(wb, fileName+'.csv');
+    this._iframeService.addClassOpenModal(this.parentElementClassName);
   }
 
   onCancelClick() {
