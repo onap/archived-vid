@@ -30,7 +30,8 @@ import org.onap.vid.mso.*;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.AsyncRequestStatusList;
 import org.springframework.stereotype.Service;
-
+import java.text.MessageFormat;
+import org.apache.commons.lang3.StringUtils;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
@@ -59,13 +60,13 @@ public class AuditServiceImpl implements AuditService{
 
     @Override
     public List<JobAuditStatus> getAuditStatusFromMsoByRequestId(UUID jobId, UUID requestId) {
-        String filter = "requestId:EQUALS:" + requestId;
+        String filter = "requestId:EQUALS:" + requestId + "&format=statusDetail";
         return getAuditStatusFromMso(jobId, filter, null);
     }
 
     @Override
     public List<JobAuditStatus> getAuditStatusFromMsoByInstanceId(JobAuditStatus.ResourceTypeFilter resourceTypeFilter, UUID instanceId, UUID jobId) {
-        String filter = resourceTypeFilter.getFilterBy() + ":EQUALS:" + instanceId;
+        String filter = resourceTypeFilter.getFilterBy() + ":EQUALS:" + instanceId + "&format=statusDetail";
         return getAuditStatusFromMso(jobId, filter, instanceId);
     }
 
@@ -156,10 +157,131 @@ public class AuditServiceImpl implements AuditService{
 
     protected List<JobAuditStatus> convertMsoResponseStatusToJobAuditStatus(List<AsyncRequestStatus> msoStatuses, String defaultName){
         return msoStatuses.stream().map(status ->
-                convertAsyncRequestStatusToJobAuditStatus(status, defaultName)
+                convertAsyncRequestStatusToJobAuditStatusAdditionalInfo(status, defaultName)
         ).collect(Collectors.toList());
     }
+    private JobAuditStatus convertAsyncRequestStatusToJobAuditStatusAdditionalInfo(AsyncRequestStatus status, String defaultName) {
+        if (status == null) {
+            return null;
+        }
+        UUID requestId = null;
+        String instanceName = defaultName;
+        String jobStatus = null;
+        String additionalInfo = null;
+        String finishTime = null;
+        String instanceType = null;
+        String modelType = "";
+        String startTime = null;
+        AsyncRequestStatus.Request request = status.request;
+        if (request != null) {
+            if (request.requestId != null) {
+                requestId = UUID.fromString(request.requestId);
+            }
+            instanceName = extractInstanceName(instanceName, request);
+            instanceType = request.requestType;
+            if (request.requestDetails != null && request.requestDetails.modelInfo != null) {
+                modelType = request.requestDetails.modelInfo.modelType;
+            }
+            startTime = request.startTime;
 
+            if (request.requestStatus != null) {
+                jobStatus = request.requestStatus.getRequestState();
+                additionalInfo = buildAdditionalInfo(request);
+
+                if (!request.requestStatus.getAdditionalProperties().isEmpty() &&
+                    request.requestStatus.getAdditionalProperties().get("finishTime") != null) {
+                    finishTime = request.requestStatus.getAdditionalProperties().get("finishTime").toString();
+                } else {
+                    finishTime = request.requestStatus.getTimestamp();
+                }
+            }
+        }
+        return new JobAuditStatus(requestId, instanceName, modelType, instanceType, startTime, finishTime,
+            jobStatus, additionalInfo);
+    }
+    private String buildAdditionalInfo(AsyncRequestStatus.Request request) {
+        String source = "";
+        String statusMessage = "";
+        String flowStatus = "";
+        String subscriptionServiceType = "";
+        String alacarte = "";
+        String testApi = "";
+        String projectName = "";
+        String owningEntityId = "";
+        String owningEntityName = "";
+        String requestScope = "";
+        String tenantId = "";
+        String tenantName = "";
+        String cloudOwner = "";
+        String platformName = "";
+        String lineOfBusiness = "";
+        MessageFormat mfBasedOnService = null;
+        String otherInfo = "";
+        MessageFormat mf = new MessageFormat("{0}" +
+            "{1}" +
+            "{2}" +
+            "{3}" +
+            "{4}" +
+            "{5}"+
+            "{6}");
+        requestScope = request.requestScope;
+        statusMessage = request.requestStatus != null ? "<b>StatusMessage:</b>"+request.requestStatus.getStatusMessage()+ "</br>": "";
+        if(request.requestDetails != null && request.requestDetails.requestInfo != null) {
+            source = "<b>Source:</b> "+request.requestDetails.requestInfo.source + "</br>";
+        }
+        if(request.requestStatus != null && request.requestStatus.getFlowStatus() != null) {
+            flowStatus = "<b>FlowStatus:</b> "+request.requestStatus.getFlowStatus()+ "</br>";
+        }
+        if(request.requestDetails != null && request.requestDetails.requestParameters != null &&
+            request.requestDetails.requestParameters.subscriptionServiceType != null) {
+            subscriptionServiceType = "<b>SubscriptionServiceType:</b> "+request.requestDetails.requestParameters.subscriptionServiceType+ "</br>";
+        }
+        if(request.requestDetails != null && request.requestDetails.requestParameters != null &&
+            request.requestDetails.requestParameters.aLaCarte != null) {
+            alacarte = "<b>Alacarte:</b> "+request.requestDetails.requestParameters.aLaCarte+ "</br>";
+        }
+        if(request.requestDetails != null && request.requestDetails.requestParameters != null &&
+            request.requestDetails.requestParameters.testApi != null) {
+            testApi = "<b>TestAPI:</b> "+request.requestDetails.requestParameters.testApi+ "</br>";
+        }
+
+        if(request.requestDetails != null) {
+            if("service".equals(requestScope)) {
+                mfBasedOnService = new MessageFormat("<b>ProjectName: {0}</br>" +
+                    "<b>OwningEntityId:</b> {1}</br>" +
+                    "<b>OwningEntityName:</b> {2}</br>");
+                projectName = request.requestDetails.project != null ? request.requestDetails.project.projectName : "";
+                owningEntityId = request.requestDetails.owningEntity != null ? request.requestDetails.owningEntity.owningEntityId : "";
+                owningEntityName = request.requestDetails.owningEntity != null ? request.requestDetails.owningEntity.owningEntityName : "";
+                Object[] arr1 = new Object[]{projectName, owningEntityId, owningEntityName};
+                otherInfo = mfBasedOnService.format(arr1);
+            } else if("vnf".equals(requestScope)) {
+                mfBasedOnService = new MessageFormat("<b>TenantId:</b> {0}</br>" +
+                    "<b>TenantName:</b> {1}</br>" +
+                    "<b>CloudOwner:</b> {2}</br>" +
+                    "<b>PlatformName:</b> {3}</br>" +
+                    "<b>LineOfBusiness:</b> {4}</br>");
+                tenantId = request.requestDetails.cloudConfiguration != null ? request.requestDetails.cloudConfiguration.tenantId : "";
+                tenantName= request.requestDetails.cloudConfiguration != null ? request.requestDetails.cloudConfiguration.tenantName : "";
+                cloudOwner= request.requestDetails.cloudConfiguration != null ? request.requestDetails.cloudConfiguration.cloudOwner : "";
+                platformName= request.requestDetails.platform != null ? request.requestDetails.platform.platformName : "";
+                lineOfBusiness= request.requestDetails.lineOfBusiness != null ? request.requestDetails.lineOfBusiness.lineOfBusinessName : "";
+                Object[] arr2 = new Object[]{tenantId, tenantName, cloudOwner,platformName,lineOfBusiness};
+                otherInfo = mfBasedOnService.format(arr2);
+            } else if("vfModule".equals(requestScope)) {
+                mfBasedOnService = new MessageFormat("<b>TenantId:</b> {0}</br>" +
+                    "<b>TenantName:</b> {1}</br>" +
+                    "<b>CloudOwner:</b> {2}</br>");
+                tenantId = request.requestDetails.cloudConfiguration != null ? request.requestDetails.cloudConfiguration.tenantId : "";
+                tenantName= request.requestDetails.cloudConfiguration != null ? request.requestDetails.cloudConfiguration.tenantName : "";
+                cloudOwner= request.requestDetails.cloudConfiguration != null ? request.requestDetails.cloudConfiguration.cloudOwner : "";
+                Object[] arr2 = new Object[]{tenantId, tenantName, cloudOwner};
+                otherInfo = mfBasedOnService.format(arr2);
+            }
+        }
+        Object[] objArray = {source, statusMessage, flowStatus, subscriptionServiceType, alacarte, testApi, otherInfo};
+        return StringUtils.chomp(mf.format(objArray));
+    }
     private JobAuditStatus convertAsyncRequestStatusToJobAuditStatus(AsyncRequestStatus status, String defaultName){
         if (status == null) {
             return null;
