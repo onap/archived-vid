@@ -31,11 +31,7 @@ describe('Audit information modal', function () {
         cy.get('.icon-menu').eq(index).click({force: true}).then(()=>{
           cy.getElementByDataTestsId('context-menu-audit-info').click({force:true}).then(()=>{
             cy.setViewportToSmallPopup();
-            cy.get('#service-model-name').should('contain', row.find('#serviceModelName').text().trim())
-              .getElementByDataTestsId('model-item-value-userId').should('contain', row.find('#userId').text().trim())
-              .get('#service-instantiation-audit-info-vid').should('be.visible')
-              .get('#service-instantiation-audit-info-vid').find('#vidJobStatus').should('be.visible')
-              .get('#service-instantiation-audit-info-mso').should('be.visible')
+              cy.get('#service-instantiation-audit-info-mso').should('be.visible')
               .get('#service-instantiation-audit-info-mso').find('#msoJobStatus').should('be.visible')
               .get('#cancelButton').click({force: true})
               .setViewportToDefault();
@@ -64,8 +60,8 @@ describe('Audit information modal', function () {
             cy.setViewportToSmallPopup();
             cy.get('#service-instantiation-audit-info-mso thead tr th#instanceName').should("be.visible")
               .get('#service-instantiation-audit-info-mso tbody tr').each(function (row, index) {
-              assert.equal(row.find('.request-id').text().trim(), res[index]['requestId']);
-              assert.equal(row.find('.msoInstanceName').text().trim(), 'service: ' + res[index]['instanceName']);
+              assert.equal(row.find('#msoRequestId').text().trim(), res[index]['requestId']);
+              assert.equal(row.find('.msoInstanceName').text().trim(), res[index]['instanceName']);
               assert.equal(row.find('#msoJobStatus').text().trim(), _.capitalize(res[index]['jobStatus']));
               assert.equal(row.find('#msoAdditionalInfo span').text().trim(), res[index]['additionalInfo']);
             });
