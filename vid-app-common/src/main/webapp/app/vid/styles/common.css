@@ -106,7 +106,9 @@ body {
     flex: 1;
 }
 .content.modal-open .body-content-jsp{
-    margin: 0 auto;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-top: 0%;
 }
 .content .body-content-jsp > div.ng-scope > div.overlay{
     display: none;
@@ -125,9 +127,8 @@ body {
 
 .content.modal-open .body-content-jsp  .service-models-page  .service-model-content{
     z-index: 3005;
-    margin: 0 auto;
     flex: none;
-    width: 1100px;
+    width: 100%;
     padding: 10px;
 }
 .content.modal-open{
@@ -136,6 +137,8 @@ body {
 
 .body-content-jsp {
     flex: 1;
+    margin-left: 14%;
+    margin-right: 2%;
 }
 
 .button--inactive {
