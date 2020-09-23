@@ -131,11 +131,8 @@ public class InstantiationStatusTest extends VidBaseTestCase {
     private void checkFailedAuditInfoOnRetry(String instanceName, String requestId, String message) {
         GeneralUIUtils.ultimateWait();
 
-        WebElement webElement = Get.byTestId("model-item-value-instance_name");
-        assertEquals(webElement.getText(), instanceName, "Instance Name must be equal");
-
         WebElement msoTableElement = Get.byId("service-instantiation-audit-info-mso");
-        assertEquals(3, msoTableElement.findElement(By.tagName("thead")).findElements(By.tagName("th")).size(), "Audit info MSO table must contain 3 columns");
+        assertEquals(7, msoTableElement.findElement(By.tagName("thead")).findElements(By.tagName("th")).size(), "Audit info MSO table must contain 7 columns");
         assertEquals(requestId, msoTableElement.findElement(By.id("msoRequestId")).getText(), "Audit info Request Id is not equal");
         assertEquals("Failed", msoTableElement.findElement(By.id("msoJobStatus")).getText(), "Audit info Job Status is not equal");
         assertEquals(message, msoTableElement.findElement(By.id("msoAdditionalInfo")).getText(), "Audit info AdditionalInfo is not equal");

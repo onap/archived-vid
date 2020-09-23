@@ -124,11 +124,11 @@ public class AsyncInstantiationALaCarteApiTest2 extends AsyncInstantiationBase {
 
     @Test
     public void getAuditInfoForALaCarteByServiceInstanceId() throws IOException {
-        final String expectedMsoAuditInfo = "a-la-carte/auditInfoMSOALaCarte.json";
+        final String expectedMsoAuditInfo = "a-la-carte/auditInfoMSOALaCarteNew.json";
         registerExpectationFromPreset(
-                new PresetMSOOrchestrationRequestsGetByServiceInstanceId(),
+                new PresetMSOOrchestrationRequestsGetByServiceInstanceIdExtraInfo(),
                 RegistrationStrategy.CLEAR_THEN_SET);
-        List<JobAuditStatus> actualMsoAudits = getJobMsoAuditStatusForAlaCarte(UUID.randomUUID().toString(), "aa1234d1-5a33-55df-13ab-12abad84e333", "bc305d54-75b4-431b-adb2-eb6b9e546014");
+        List<JobAuditStatus> actualMsoAudits = getJobMsoAuditStatusForAlaCarte(UUID.randomUUID().toString(), "aa1234d1-5a33-55df-13ab-12abad84e333", "937d9e51-03b9-416b-bccd-aa898a85d711");
         List<JobAuditStatus> expectedMsoAudits = getExpectedAuditFromFile(expectedMsoAuditInfo);
         assertThat(actualMsoAudits, is(expectedMsoAudits));
 
@@ -137,13 +137,20 @@ public class AsyncInstantiationALaCarteApiTest2 extends AsyncInstantiationBase {
     @Test
     public void getAuditInfoForALaCarteByRequestId() {
         registerExpectationFromPreset(
-                new PresetMSOOrchestrationRequestsGetByRequestId(),
+                new PresetMSOOrchestrationRequestsGetByRequestIdNew(),
                 RegistrationStrategy.CLEAR_THEN_SET);
         final ImmutableMap<PresetMSOServiceInstanceGen2WithNames.Keys, String> names = ImmutableMap.of(SERVICE_NAME, "serviceInstanceName");
         String uuid = createBulkOfInstances(false, 1, names, CREATE_BULK_OF_ALACARTE_MULTIPLE_VNF_NETWORK_REQUEST_CYPRESS).get(0);
-        List<JobAuditStatus> actualMsoAudits = getJobMsoAuditStatusForAlaCarte( uuid, "405652f4-ceb3-4a75-9474-8aea71480a77", null);
-        List<JobAuditStatus> expectedMsoAudits =  ImmutableList.of(
-                new JobAuditStatus("serviceInstanceName", "FAILED", UUID.fromString("405652f4-ceb3-4a75-9474-8aea71480a77"),"Service Instance was failed.",false, "service"));
+        List<JobAuditStatus> actualMsoAudits = getJobMsoAuditStatusForAlaCarte( uuid, "7ba7900c-3e51-4d87-b1b4-3c53bdfaaa7d", null);
+        List<JobAuditStatus> expectedMsoAudits =  ImmutableList.of(new JobAuditStatus(UUID.fromString("7ba7900c-3e51-4d87-b1b4-3c53bdfaaa7d"),
+                                    "zrdm54cfmgw01_svc",
+                                    "service",
+                                    "createInstance",
+                                    "Mon, 24 Aug 2020 22:37:53 GMT",
+                                    "Mon, 24 Aug 2020 22:38:10 GMT",
+                                    "COMPLETE",
+                                    "<b>Source:</b> VID</br><b>StatusMessage:</b>STATUS: ALaCarte-Service-createInstance request was executed correctly.</br><b>FlowStatus:</b> Successfully completed all Building Blocks</br><b>SubscriptionServiceType:</b> FIRSTNET</br><b>Alacarte:</b> true</br><b>TestAPI:</b> GR_API</br><b>ProjectName: FIRSTNET</br><b>OwningEntityId:</b> 10c645f5-9924-4b89-bec0-b17cf49d3cad</br><b>OwningEntityName:</b> MOBILITY-CORE</br>"
+                                    ));
         assertThat(actualMsoAudits, is(expectedMsoAudits));
 
     }

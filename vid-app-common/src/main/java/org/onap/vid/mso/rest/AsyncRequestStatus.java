@@ -31,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AsyncRequestStatus  {
 
+
     public Request request;
 
     public AsyncRequestStatus(Request request) {
@@ -88,14 +89,61 @@ public class AsyncRequestStatus  {
     public static class RequestDetails {
 
         public RequestInfo requestInfo;
+        public ModelInfo modelInfo;
+        public RequestParameters requestParameters;
+        public Project project;
+        public OwningEntity owningEntity;
+        public CloudConfiguration cloudConfiguration;
+        public LineOfBusiness lineOfBusiness;
+        public Platform platform;
+
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class LineOfBusiness {
+        public String lineOfBusinessName;
+    }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class CloudConfiguration {
+        public String tenantId;
+        public String tenantName;
+        public String cloudOwner;
+        public String lcpCloudRegionId;
+    }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Platform {
+        public String platformName;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RequestInfo {
 
         public String instanceName;
+        public String source;
     }
-
-
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class ModelInfo {
+        public String modelInvariantId;
+        public String modelType;
+        public String modelName;
+        public String modelVersion;
+        public String modelVersionId;
+        public String modelUuid;
+        public String modelInvariantUuid;
+    }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class RequestParameters {
+        public String subscriptionServiceType;
+        public String aLaCarte;
+        public String testApi;
+    }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Project {
+        public String projectName;
+    }
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class OwningEntity {
+        public String owningEntityId;
+        public String owningEntityName;
+    }
 }

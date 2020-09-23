@@ -344,10 +344,10 @@ public class AsyncInstantiationMacroApiTest extends AsyncInstantiationBase {
         SimulatorApi.registerExpectationFromPreset(new PresetMSOOrchestrationRequestsManyInstanceStatusesGet(INSTANCE_GROUP_ID_LABEL, INSTANCE_GROUP_LABEL), SimulatorApi.RegistrationStrategy.CLEAR_THEN_SET);
         final List<JobAuditStatus> expectedAuditStatusList = getAuditStatusesForInstance("VNFGROUP", "df305d54-75b4-431b-adb2-eb6b9e5460df");
         verifyInstanceAuditStatuses(Arrays.asList(
-                new JobAuditStatus("groupTestName", "IN_PROGRESS", UUID.fromString("28502bd2-3aff-4a03-9f2b-5a0d1cb1ca24") , INSTANCE_GROUP_LABEL+" instance creation", null, INSTANCE_GROUP_LABEL),
-                new JobAuditStatus("groupTestName", "COMPLETE",UUID.fromString("28502bd2-3aff-4a03-9f2b-5a0d1cb1ca24") , INSTANCE_GROUP_LABEL+" instance creation", null, INSTANCE_GROUP_LABEL),
-                new JobAuditStatus("groupTestName", "IN_PROGRESS", UUID.fromString("f711f0ff-24b6-4d7f-9314-4b4eae15f48c") , INSTANCE_GROUP_LABEL+" instance deletion", null, INSTANCE_GROUP_LABEL),
-                new JobAuditStatus("groupTestName", "COMPLETE",UUID.fromString("f711f0ff-24b6-4d7f-9314-4b4eae15f48c")  , INSTANCE_GROUP_LABEL+" instance deletion", null, INSTANCE_GROUP_LABEL)),
+                            new JobAuditStatus("groupTestName", "IN_PROGRESS", UUID.fromString("28502bd2-3aff-4a03-9f2b-5a0d1cb1ca24") , "<b>Source:</b> VID</br><b>StatusMessage:</b>"+INSTANCE_GROUP_LABEL+" instance creation</br>", null, "createInstance"),
+                            new JobAuditStatus("groupTestName", "COMPLETE",UUID.fromString("28502bd2-3aff-4a03-9f2b-5a0d1cb1ca24") , "<b>Source:</b> VID</br><b>StatusMessage:</b>"+INSTANCE_GROUP_LABEL+" instance creation</br>", null, "createInstance"),
+                            new JobAuditStatus("groupTestName", "IN_PROGRESS", UUID.fromString("f711f0ff-24b6-4d7f-9314-4b4eae15f48c") , "<b>Source:</b> VID</br><b>StatusMessage:</b>"+INSTANCE_GROUP_LABEL+" instance deletion</br>", null, "deleteInstance"),
+                            new JobAuditStatus("groupTestName", "COMPLETE",UUID.fromString("f711f0ff-24b6-4d7f-9314-4b4eae15f48c")  , "<b>Source:</b> VID</br><b>StatusMessage:</b>"+INSTANCE_GROUP_LABEL+" instance deletion</br>", null, "deleteInstance")),
                 expectedAuditStatusList);
     }
 

@@ -8,7 +8,16 @@
   background-color: #000;
   opacity: 0.5;
 }
+mwlResizable {
+  box-sizing: border-box;
+}
+.modal-dialog{
+  width: 100% !important;
+}
 .modal{
+  width: 100% !important;
+  margin-right: 0%;
+  margin-left: 0%;
 
   #audit-info-modal {
     .leftColumn {
@@ -23,6 +32,8 @@
       border-radius: 0px;
       border: none;
       .modal-header{
+        padding: 5px !important;
+        padding-left: 23px !important;
         background: #009FDB;
         font-size: 24px;
         color: #ffffff;
@@ -49,6 +60,7 @@
           background: #f2f2f2;
           border-right: 1px solid #D2D2D2;
           padding-right: 0px;
+          width: 20%;
           .row:first-child{
             border-bottom: 1px solid #D2D2D2;
             height: 50px;
@@ -64,6 +76,7 @@
           }
         }
         .right-panel{
+          width: 100% !important;
           padding: 30px 30px 15px 30px;
           .row{
             margin: 0px;
@@ -78,79 +91,59 @@
             text-align: center;
             border: 1px solid #d2d2d2;
             padding: 20px;
-            margin-top: -23px;
+            margin-top: 0px;
           }
 
-          .table-bordered{
-            width: 100%;
+          .table-bordered {
             margin-top: 10px;
             font-family: OpenSans-Semibold;
             font-size: 12px;
             overflow-x: auto;
-            display: block;
+            overflow-y: auto;
+            //display: block;
             color: #5A5A5A;
-            .request-id {
-              width: 85px;
-            }
+            position: relative;
             thead {
-              position: sticky;
-              top: 0;
               z-index: 100;
-              display: block;
               background: rgb(242, 242, 242);
               border-bottom: 1px solid #d2d2d2;
               tr {
-                display: flex;
                 th {
-                  flex-grow: 1;
                   border-right: 1px solid #d2d2d2;
-                  &:last-child{
+                  &:last-child {
                     border-right: none;
-                  }
-                  &.request-id {
-                    flex-grow: 0;
                   }
                 }
               }
             }
-
-            tbody {
+            tbody{
               border: none !important;
               max-height: 152px;
-              display: block;
-
-              tr {
-                display: flex;
+              tr{
                 border-bottom: 1px solid #d2d2d2;
                 &:last-child{
                   border-bottom: none;
                 }
-                td {
-                  border: none;
+                td{
                   border-right: 1px solid #d2d2d2;
-                  flex-grow: 1;
                   &:last-child{
                     border-right: none;
-                  }
-                  &.request-id {
-                    flex-grow: 0;
                   }
                 }
               }
             }
-
             th {
               background: #f2f2f2;
               font-family: OpenSans-Semibold;
               color: #000000;
               font-weight: bold;
               border: none;
+              position: sticky;
+              top: 0;
             }
-
             tr.odd {
               background-color: rgb(242, 242, 242);
             }
-
             tr:hover {
               background: #e1e1e1;
             }
