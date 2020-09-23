@@ -1,5 +1,5 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
@@ -96,8 +96,8 @@ import {SdcUiComponentsModule} from "onap-ui-angular";
 import {UploadFilesLinkComponent} from "./components/genericForm/genericFormSharedComponent/uploadFiles/upload-files-link.component";
 import { FileUploadModule } from 'ng2-file-upload';
 import {MessageModal} from "./components/messageModal/message-modal.service";
-
-
+import {SpaceToUnderscorePipe} from "./pipes/spaceToUnderscore/space-to-underscore.pipe";
+import {ResizableModule} from 'angular-resizable-element';
 
 @NgModule({
   imports: [
@@ -115,7 +115,8 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     BootstrapModalModule,
     DataTableModule,
     ModalModule.forRoot(),
-    FileUploadModule
+    FileUploadModule,
+    ResizableModule
   ],
   declarations: [
     PopoverComponent,
@@ -135,6 +136,7 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     NoContentMessageAndIconComponent,
     ModelInformationComponent,
     CapitalizeAndFormatPipe,
+    SpaceToUnderscorePipe,
     ServiceInfoPipe,
     OrderByPipe,
     SafePipe,
@@ -178,6 +180,7 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     NoContentMessageAndIconComponent,
     ModelInformationComponent,
     CapitalizeAndFormatPipe,
+    SpaceToUnderscorePipe,
     ServiceInfoPipe,
     OrderByPipe,
     SafePipe,
@@ -262,7 +265,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [MessageBoxService]
+      providers: [MessageBoxService, DatePipe, SpaceToUnderscorePipe]
     };
   }
 }

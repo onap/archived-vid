@@ -50,6 +50,21 @@ public class RequestStatus {
         this.statusMessage = statusMessage;
         this.timestamp = timestamp;
     }
+    public RequestStatus(String requestState, String statusMessage, String timestamp, String flowStatus) {
+        this.requestState = requestState;
+        this.statusMessage = statusMessage;
+        this.timestamp = timestamp;
+        this.flowStatus = flowStatus;
+    }
+
+    /**
+      * short description of the flow status
+      * (Required)
+      *
+      */
+    @JsonProperty("flowStatus")
+    private String flowStatus;
+
 
     /**
      * percentage complete estimate from 0 to 100
@@ -215,6 +230,28 @@ public class RequestStatus {
         this.additionalProperties.put(name, value);
     }
 
+    /**
+      * additional descriptive information about the status
+      *
+      * @return
+      *     The flowStatus
+      */
+    @JsonProperty("flowStatus")
+    public String getFlowStatus() {
+        return flowStatus;
+    }
+
+    /**
+      * additional descriptive information about the status
+      *
+      * @param flowStatus
+      *     The flowStatus
+      */
+    @JsonProperty("flowStatus")
+    public void setFlowStatus(String flowStatus) {
+        this.flowStatus = flowStatus;
+    }
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(percentProgress).append(requestState).append(statusMessage).append(timestamp).append(wasRolledBack).append(additionalProperties).toHashCode();
@@ -229,7 +266,7 @@ public class RequestStatus {
             return false;
         }
         RequestStatus rhs = ((RequestStatus) other);
-        return new EqualsBuilder().append(percentProgress, rhs.percentProgress).append(requestState, rhs.requestState).append(statusMessage, rhs.statusMessage).append(timestamp, rhs.timestamp).append(wasRolledBack, rhs.wasRolledBack).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(percentProgress, rhs.percentProgress).append(requestState, rhs.requestState).append(statusMessage, rhs.statusMessage).append(timestamp, rhs.timestamp).append(wasRolledBack, rhs.wasRolledBack).append(flowStatus, rhs.flowStatus).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }
