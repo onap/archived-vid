@@ -39,7 +39,16 @@ public class JobAuditStatus {
         this.isFinal = isFinal;
     }
 
-
+    public JobAuditStatus(UUID requestId, String instanceName, String modelType, String instanceType, String startTime, String finishTime, String jobStatus, String additionalInfo) {
+        this.requestId = requestId;
+        this.instanceName = instanceName;
+        this.modelType = modelType;
+        this.instanceType = instanceType;
+        this.startTime = startTime;
+        this.finishTime = finishTime;
+        this.jobStatus = jobStatus;
+        this.additionalInfo = additionalInfo;
+    }
 
 
 
@@ -93,6 +102,34 @@ public class JobAuditStatus {
     public void setFinal(Boolean aFinal) {
         isFinal = aFinal;
     }
+    private String startTime;
+    private String finishTime;
+
+    public void setStartTime(String startTime) {
+            this.startTime = startTime;
+    }
+
+    public void setFinishTime(String finishTime) {
+            this.finishTime = finishTime;
+    }
+
+    public void setModelType(String modelType) {
+            this.modelType = modelType;
+    }
+
+    private String modelType;
+
+    public String getStartTime() {
+            return startTime;
+    }
+
+    public String getFinishTime() {
+            return finishTime;
+    }
+
+    public String getModelType() {
+            return modelType;
+    }
 
     @Override
     public String toString() {
@@ -122,7 +159,8 @@ public class JobAuditStatus {
                 .append(requestId, that.requestId)
                 .append(additionalInfo, that.additionalInfo)
                 .append(instanceName, that.instanceName)
-                .append(isFinal, that.isFinal)
+                .append(modelType, that.modelType)
+                //.append(isFinal, that.isFinal)
                 .isEquals();
     }
 

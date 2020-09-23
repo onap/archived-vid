@@ -126,6 +126,7 @@ public class JobAuditStatus extends VidBaseEntity {
                 .append(source, that.source)
                 .append(requestId, that.requestId)
                 .append(additionalInfo, that.additionalInfo)
+                .append(modelType, that.modelType)
                 // ordinal is not part of equality (similarly to "created" field)
                 .isEquals();
     }
@@ -138,6 +139,7 @@ public class JobAuditStatus extends VidBaseEntity {
                 .append(source)
                 .append(requestId)
                 .append(additionalInfo)
+                
                 // ordinal is not part of equality (similarly to "created" field)
                 .toHashCode();
     }
@@ -163,6 +165,52 @@ public class JobAuditStatus extends VidBaseEntity {
         public String getFilterBy() {
             return filterBy;
         }
+    }
+
+    public JobAuditStatus(UUID requestId, String instanceName,
+                String modelType, String instanceType, String startTime,
+                String finishTime, String jobStatus, String additionalInfo) {
+         this.requestId = requestId;
+         this.instanceName = instanceName;
+         this.modelType = modelType;
+         this.instanceType = instanceType;
+
+         this.startTime = startTime;
+         this.finishTime = finishTime;
+
+         this.jobStatus = jobStatus;
+         this.additionalInfo = additionalInfo;
+         this.created = dateStringToDate(finishTime);
+    }
+    private String modelType;
+    private String startTime;
+    private String finishTime;
+
+    @Transient
+    public String getModelType() {
+        return modelType;
+    }
+
+    public void setModelType(String modelType) {
+        this.modelType = modelType;
+    }
+
+    @Transient
+    public String getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(String finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    @Transient
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
 
