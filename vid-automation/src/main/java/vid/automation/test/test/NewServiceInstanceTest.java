@@ -872,27 +872,8 @@ public class NewServiceInstanceTest extends ModernUITestBase {
 
     private void checkAuditInfoModal(String actualInstanceName, Integer i, String[] statuses) {
 
-        Wait.waitByTestId("vidJobStatus", 10);
-
-        WebElement webElement = Get.byTestId("model-item-value-serviceInstanceName");
-        assertEquals(webElement.getText(), actualInstanceName, "Service Instance Name must be equal");
-
-        WebElement vidTableElement = Get.byId("service-instantiation-audit-info-vid");
-        assertEquals(3, vidTableElement.findElement(By.tagName("thead")).findElements(By.tagName("th")).size(), "VID table must contain 3 columns");
-
-        List<WebElement> vidStatusesElements = vidTableElement.findElements(By.id("vidJobStatus"));
-        List<String> vidStatuses = vidStatusesElements.stream()
-                .map(s ->
-                        convertUITextCapitalizeAndFormatPipe(s.getText()))
-                .collect(Collectors.toList());
-
-        List<String> serviceStatus = Arrays.asList(Arrays.copyOfRange(statuses, i, statuses.length));
-        assertThat("statuses for " + actualInstanceName + " must be as expected", vidStatuses, containsInAnyOrder(serviceStatus.toArray()));
-        String dateString = vidTableElement.findElements(By.id("vidStatusTime")).get(0).getText();
-        assertTrue("vid Status Time column must contains valid date in format : MMM dd, yyyy HH:mm", isDateValid(dateString, "MMM dd, yyyy HH:mm"));
-
         WebElement MSOTableElement = Get.byId("service-instantiation-audit-info-mso");
-        assertEquals(3, MSOTableElement.findElement(By.tagName("thead")).findElements(By.tagName("th")).size(), "MSO table must contain 3 columns");
+        assertEquals(7, MSOTableElement.findElement(By.tagName("thead")).findElements(By.tagName("th")).size(), "MSO table must contain 7 columns");
 
         if (statuses[i].equals(PENDING)) {
             assertEquals(0, MSOTableElement.findElement(By.tagName("tbody")).findElements(By.tagName("tr")).size(), "When status is PENDING MSO table is empty");
