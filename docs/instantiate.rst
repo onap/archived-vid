@@ -21,6 +21,10 @@ be created/deleted.
 In the following description, the service model in SDC was composed of 1 VF
 and 1 Virtual Link (Generic Neutron Network)
 
+.. note::
+   For doing this make sure that while Service Design drag the created VF and Generic NetronNet Virtual Link (under Generic/Network Elemntes list) from the
+   Elements palette to the canvas then connect as mentoned in Create Service section of Service Design under Composition
+
 To be able to instantiate VF-module or Network object, some data need to be
 declared in ONAP SDNC using SDNC Rest API. It is the place where to put
 the instance specific values such as an IP address value specific
@@ -52,6 +56,9 @@ via Rest API, to declare some values for:
 
 see, in the ONAP User Guides, section about adding a CloudSite
 and section about pre-instantiation Operations
+
+.. note::
+   Robot demo script will be used to populate demo models automatically with Demonstration as Subscriber Name in VID by running "demo-k8s.sh onap init"
 
 
 Access to VID portal
@@ -192,12 +199,23 @@ This group of data is usually called "SDNC preload" and will contain:
 - service instance id
 - the list of vnf parameters with values, when not using the default values
 
+.. note::
+   Get all the required vnf-parameters values as listed in HEAT package and populate all the key-values in an example SDNC preload curl command to run
+
+Some of the vnf-parameters in SDNC preload are related to openstack.
+Follow the below steps on openstack to get the values and update those values in SDNC preload template accordingly.
+
+- download the image from cloud images (ubuntu-14.04 as per HEAT env) and create an image
+- create the flavor with m1.medium (suggested as per HEAT env)
+- create OAM_NETWORK ID  & OAM_SUBNET ID (use subnet range from base_vfw.env file)
+- execute openstack security group rule to open all ports for onap
+
 Here is an example of SDNC preload for VNF, using "curl" tool
 to push those data using SDNC Rest API:
 
 ::
 
-    curl -X POST \
+    curl -k -X POST \
     https://sdnc.api.simpledemo.onap.org:30267/restconf/operations/VNF-API:preload-vnf-topology-operation \
     -H 'Accept: application/json' \
     -H 'Authorization: Basic YWRtaW46S3A4Yko0U1hzek0wV1hsaGFrM2VIbGNzZTJnQXc4NHZhb0dHbUp2VXkyVQ==' \
@@ -316,8 +334,8 @@ instantiation.
 
 ::
 
-    curl -X POST \
-    http://sdnc.api.simpledemo.onap.org:30202/restconf/operations/VNF-API:preload-network-topology-operation \
+    curl -k -X POST \
+    https://sdnc.api.simpledemo.onap.org:30267/restconf/operations/VNF-API:preload-network-topology-operation \
     -H 'Accept: application/json' \
     -H 'Authorization: Basic YWRtaW46S3A4Yko0U1hzek0wV1hsaGFrM2VIbGNzZTJnQXc4NHZhb0dHbUp2VXkyVQ==' \
     -H 'Content-Type: application/json' \
