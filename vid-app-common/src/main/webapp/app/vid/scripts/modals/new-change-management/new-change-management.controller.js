@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2020 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -602,11 +603,9 @@
             vm.vnfNames = [];
             vm.changeManagement.vnfNames = [];
 
-            var instances = vm.changeManagement.serviceType["service-instances"]["service-instance"];
-            // var promiseArrOfGetVnfs = preparePromiseArrOfGetVnfs(instances);
-
             vm.vnfs = [];
             vm.vfModules = [];
+            vm.genericVnfs = [];
 
             let nfRole = null;
             let cloudRegion = null;
@@ -616,7 +615,7 @@
                 cloudRegion = vm.changeManagement.cloudRegion ? vm.changeManagement.cloudRegion : null;
             }
 
-            AaiService.getVnfsByCustomerIdAndServiceType(
+            return AaiService.getVnfsByCustomerIdAndServiceType(
                 vm.changeManagement.subscriberId,
                 vm.changeManagement.serviceType["service-type"],
                 nfRole,
@@ -629,11 +628,7 @@
                             if (vnfsData[i]) {
                                 const nodeType = vnfsData[i]['node-type'];
                                 if (nodeType === "generic-vnf") {
-                                    if (_.find(vnfsData[i]['related-to'], function (node) {
-                                        return node['node-type'] === 'vserver';
-                                    }) !== undefined) {
-                                        vm.vnfs.push(vnfsData[i]);
-                                    }
+                                    vm.genericVnfs.push(vnfsData[i]);
                                 } else if (nodeType === "service-instance") {
                                     vm.serviceInstances.push(vnfsData[i]);
                                 } else if (nodeType === "vf-module") {
@@ -641,6 +636,24 @@
                                 }
                             }
                         }
+
+                        vm.genericVnfs.forEach(function (vnf) {
+                            if (vnf['related-to'].find(function (node) {return node['node-type'] === 'vf-module';}) !== undefined) {
+                                let vfModuleRel = vnf['related-to'].find(function (node) {
+                                    return node['node-type'] === 'vf-module'
+                                })
+                                for (var i = 0; i < vm.vfModules.length; i++) {
+                                    const vfModule = vm.vfModules[i];
+                                    if (vfModule['id'] === vfModuleRel['id']){
+                                        if (vfModule['related-to'].find(function (node) {return node['node-type'] === 'vserver';}) !== undefined) {
+                                            vm.vnfs.push(vnf);
+                                        }
+                                    }
+                                }
+                            } else if (vnf['related-to'].find(function (node) {return node['node-type'] === 'vserver';}) !== undefined) {
+                                vm.vnfs.push(vnf);
+                            }
+                        });
 
                         vm.vnfs = _.flattenDeep(
                             _.remove(vm.vnfs, function (vnf) {

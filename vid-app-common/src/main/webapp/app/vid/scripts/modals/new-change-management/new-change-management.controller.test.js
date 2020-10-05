@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2020 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +34,7 @@ describe('Testing workFlows from SO', () => {
 
   beforeEach(inject(function (_$controller_) {
     $notNeeded = jestMock.fn();
+    let lodash = require('lodash')
 
     // mock ChangeManagementService
     $changeManagementService = jestMock.fn();
@@ -59,7 +61,7 @@ describe('Testing workFlows from SO', () => {
       changeManagementService: $changeManagementService,
       Upload: $notNeeded,
       $log: $notNeeded,
-      _: $notNeeded,
+      _: lodash,
       COMPONENT: $flags,
       VIDCONFIGURATION: $notNeeded,
       DataService: $notNeeded,
@@ -421,4 +423,96 @@ describe('Testing workFlows from SO', () => {
     }]);
   });
 });
+
+    test('Verify that vm.searchVNFs return only generic-vnfs with relation to vserver', () => {
+        // given
+        $controller.changeManagement.serviceType = [];
+        let getVnfsByCustomerIdAndServiceType = Promise.resolve({"data":
+                { "results" : [
+                        { "id": "1",
+                            "node-type": "generic-vnf",
+                            "properties": {
+                                "nf-role": "vLB"
+                            },
+                            "related-to": [
+                                { "id": "11",
+                                    "node-type": "vf-module"
+                                },
+                                { "id": "12",
+                                    "node-type": "tenant"
+                                }
+                            ]
+                        },
+                        { "id": "2",
+                            "node-type": "generic-vnf",
+                            "properties": {
+                                "nf-role": "vLB"
+                            },
+                            "related-to": [
+                                { "id": "21",
+                                    "node-type": "tenant"
+                                }
+                            ]
+                        },
+                        { "id": "3",
+                            "node-type": "generic-vnf",
+                            "properties": {
+                                "nf-role": "vLB"
+                            },
+                            "related-to": [
+                                { "id": "31",
+                                    "node-type": "vf-module"
+                                },
+                                { "id": "32",
+                                    "node-type": "tenant"
+                                },
+                                { "id": "33",
+                                    "node-type": "vserver"
+                                }
+                            ]
+                        },
+                        { "id": "11",
+                            "node-type": "vf-module",
+                            "related-to": [
+                                { "id": "111",
+                                    "node-type": "vserver"
+                                }
+                            ]
+                        },
+                        { "id": "31",
+                            "node-type": "vf-module",
+                            "related-to": [
+                                { "id": "311",
+                                    "node-type": "vserver"
+                                }
+                            ]
+                        }
+                    ]
+                }
+        });
+        let expectedVnfs = [
+            {
+                "id": "1",
+                "node-type": "generic-vnf",
+                "properties": {"nf-role": "vLB"},
+                "related-to": [
+                    {"id": "11", "node-type": "vf-module"},
+                    {"id": "12", "node-type": "tenant"}]},
+            {
+                "id": "3",
+                "node-type": "generic-vnf",
+                "properties": {"nf-role": "vLB"},
+                "related-to": [
+                    {"id": "31", "node-type": "vf-module"},
+                    {"id": "32", "node-type": "tenant"},
+                    {"id": "33", "node-type": "vserver"}
+                ]}];
+        $aaiService.getVnfsByCustomerIdAndServiceType = () => getVnfsByCustomerIdAndServiceType;
+
+        // when
+        $controller.searchVNFs().then(() => {
+            expect($controller.vnfs).toHaveLength(2);
+            expect($controller.vnfs).toEqual(expectedVnfs);
+        });
+    });
 });
