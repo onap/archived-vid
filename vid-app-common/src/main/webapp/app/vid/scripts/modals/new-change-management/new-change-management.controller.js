@@ -3,13 +3,14 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2020 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -290,13 +291,13 @@
                             requestParametersData = {
                                 userParams: [
                                     { "name":"pnfId",
-                                      "value":vnf.properties["vnf-id"]
+                                        "value":vnf.properties["vnf-id"]
                                     },
                                     { "name":"pnfName",
-                                      "value": vnf.name
+                                        "value": vnf.name
                                     },
                                     { "name":"targetSoftwareVersion",
-                                      "value":vm.getInternalWorkFlowParameter(workflowType, 'text', 'Target software version').value
+                                        "value":vm.getInternalWorkFlowParameter(workflowType, 'text', 'Target software version').value
                                     }
                                 ]
                             };
@@ -360,9 +361,9 @@
                         };
                         requestInfoData.instanceName = vnf.name + "_" + (moduleToScale.currentCount + 1);
                     } else if (workflowType === "PNF Software Upgrade") {
-                         data = nativeWorkflowRequestData('pnf', requestParametersData, vnf, requestInfoData);
+                        data = nativeWorkflowRequestData('pnf', requestParametersData, vnf, requestInfoData);
                     } else {
-                         data = nativeWorkflowRequestData('vnf', requestParametersData, vnf, requestInfoData);
+                        data = nativeWorkflowRequestData('vnf', requestParametersData, vnf, requestInfoData);
                     }
 
                     var serviceInstanceId = '';
@@ -421,23 +422,23 @@
 
         function nativeWorkflowRequestData(modelType, requestParametersData, vnf, requestInfoData) {
             var data = {
-                   modelInfo: {
-                      modelType: modelType,
-                      modelInvariantId: vnf.properties['model-invariant-id'],
-                      modelVersionId: vnf.modelVersionId,
-                      modelName: vnf.properties['vnf-name'],
-                      modelVersion: vnf.version,
-                      modelCustomizationName: vnf.properties['model-customization-name'],
-                      modelCustomizationId: vnf.properties['model-customization-id']
-                   },
-                   cloudConfiguration: vnf.cloudConfiguration,
-                   requestInfo: requestInfoData,
-                   requestParameters: requestParametersData
+                modelInfo: {
+                    modelType: modelType,
+                    modelInvariantId: vnf.properties['model-invariant-id'],
+                    modelVersionId: vnf.modelVersionId,
+                    modelName: vnf.properties['vnf-name'],
+                    modelVersion: vnf.version,
+                    modelCustomizationName: vnf.properties['model-customization-name'],
+                    modelCustomizationId: vnf.properties['model-customization-id']
+                },
+                cloudConfiguration: vnf.cloudConfiguration,
+                requestInfo: requestInfoData,
+                requestParameters: requestParametersData
             };
             data[modelType + 'InstanceId'] = vnf.id;
             if (modelType == "vnf"){
-               data[modelType + 'Name'] = vnf.name;
-               data['relatedInstanceList'] =  [] ;
+                data[modelType + 'Name'] = vnf.name;
+                data['relatedInstanceList'] =  [] ;
             }
             return data;
         }
@@ -476,7 +477,7 @@
              * [{name: foo, value: bar}, {name: baz, value: fiz}] will become the object {foo: bar, baz: fiz}
              */
             return vm.getAllInternalWorkFlowParameters(
-                    vm.changeManagement.workflow
+                vm.changeManagement.workflow
             ).reduce(function (result, item) {
                 result[item.name] = item.value;
                 return result;
@@ -602,11 +603,9 @@
             vm.vnfNames = [];
             vm.changeManagement.vnfNames = [];
 
-            var instances = vm.changeManagement.serviceType["service-instances"]["service-instance"];
-            // var promiseArrOfGetVnfs = preparePromiseArrOfGetVnfs(instances);
-
             vm.vnfs = [];
             vm.vfModules = [];
+            vm.genericVnfs = [];
 
             let nfRole = null;
             let cloudRegion = null;
@@ -616,7 +615,7 @@
                 cloudRegion = vm.changeManagement.cloudRegion ? vm.changeManagement.cloudRegion : null;
             }
 
-            AaiService.getVnfsByCustomerIdAndServiceType(
+            return AaiService.getVnfsByCustomerIdAndServiceType(
                 vm.changeManagement.subscriberId,
                 vm.changeManagement.serviceType["service-type"],
                 nfRole,
@@ -629,11 +628,7 @@
                             if (vnfsData[i]) {
                                 const nodeType = vnfsData[i]['node-type'];
                                 if (nodeType === "generic-vnf") {
-                                    if (_.find(vnfsData[i]['related-to'], function (node) {
-                                        return node['node-type'] === 'vserver';
-                                    }) !== undefined) {
-                                        vm.vnfs.push(vnfsData[i]);
-                                    }
+                                    vm.genericVnfs.push(vnfsData[i]);
                                 } else if (nodeType === "service-instance") {
                                     vm.serviceInstances.push(vnfsData[i]);
                                 } else if (nodeType === "vf-module") {
@@ -641,6 +636,24 @@
                                 }
                             }
                         }
+
+                        vm.genericVnfs.forEach(function (vnf) {
+                            if (vnf['related-to'].find(function (node) {return node['node-type'] === 'vf-module';}) !== undefined) {
+                                let vfModuleRel = vnf['related-to'].find(function (node) {
+                                    return node['node-type'] === 'vf-module'
+                                })
+                                for (var i = 0; i < vm.vfModules.length; i++) {
+                                    const vfModule = vm.vfModules[i];
+                                    if (vfModule['id'] === vfModuleRel['id']){
+                                        if (vfModule['related-to'].find(function (node) {return node['node-type'] === 'vserver';}) !== undefined) {
+                                            vm.vnfs.push(vnf);
+                                        }
+                                    }
+                                }
+                            } else if (vnf['related-to'].find(function (node) {return node['node-type'] === 'vserver';}) !== undefined) {
+                                vm.vnfs.push(vnf);
+                            }
+                        });
 
                         vm.vnfs = _.flattenDeep(
                             _.remove(vm.vnfs, function (vnf) {
@@ -679,11 +692,9 @@
                             "model-version-id": vnf.properties["model-version-id"]
                         }
                     );
-
                     versions.push(vnf.properties["model-invariant-id"]);
                 }
             });
-
             if (versions.length > 0) {
                 AaiService.getVnfVersionsByInvariantId(versions).then(function (response) {
                     if (response.data) {
@@ -752,8 +763,7 @@
 
                 var selectedVersionNumber = getVersionNameForId(vm.changeManagement.fromVNFVersion);
 
-                if (isCompatibleNFRole(vnf) &&
-                    selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
+                if (isCompatibleNFRole(vnf) && selectedVersionNumber === getVersionNameForId(vnf.properties["model-version-id"])) {
                     var vServer = {};
 
                     _.forEach(vnf['related-to'], function (node) {
