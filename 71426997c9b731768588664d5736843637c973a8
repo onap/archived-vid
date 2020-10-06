@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ee6520a_05d956af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-10-06T05:49:37Z",
+      "side": 1,
+      "message": "I think it should be Guilin, without the trailing g",
+      "revId": "71426997c9b731768588664d5736843637c973a8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ab4af55_ab072b6b",
+        "filename": "deliveries/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-10-06T05:49:37Z",
+      "side": 1,
+      "message": "next version should be 7.0.1.\nonly when Guilin is signed off, 8.0.0 will come as honolulu\n\nsame applies for rest of versions in this change",
+      "revId": "71426997c9b731768588664d5736843637c973a8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98fbc591_cecfe3c5",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-10-06T05:49:37Z",
+      "side": 1,
+      "message": "note there\u0027s a Guilin placeholder here. (it was created along with making 7.0.0 the \"next version\".)\n\nthe nutshell, security, bug fixes and other sections are not mandatory per se, but will cover you nicely once docs review will be done.",
+      "revId": "71426997c9b731768588664d5736843637c973a8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57f7b6fd_d75006fa",
+        "filename": "releases/7.0.0-container.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4379
+      },
+      "writtenOn": "2020-10-06T05:49:37Z",
+      "side": 1,
+      "message": "looks perfect 😊",
+      "revId": "71426997c9b731768588664d5736843637c973a8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
