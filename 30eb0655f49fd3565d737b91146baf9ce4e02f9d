@@ -16,6 +16,24 @@
       "revId": "30eb0655f49fd3565d737b91146baf9ce4e02f9d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5d112b7_2f599cd7",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2020-10-07T13:28:03Z",
+      "side": 1,
+      "message": "I think, we are good without a feature flag here.\nThe existing behavior is kept, we extend the existing behavior only.\n\nWe have a rather small change here, I am not really sure, if we need a feature flag here.\nIf it comes to the PNF orchestration pages, I fully agree - a feature flag will be needed.\n\nFor these VNF Change Management - I think, we`re fine without a feature flag (what was working before will keep working after the change - in the exact same way).",
+      "parentUuid": "351f6ded_a94a06fe",
+      "revId": "30eb0655f49fd3565d737b91146baf9ce4e02f9d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
