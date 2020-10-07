@@ -13,6 +13,11 @@ export class TypeNodeInformation {
           this.existingMappingCounterName = 'existingVNFCounterMap';
           break;
         }
+        case 'PNF' : {
+          this.hierarchyName = 'pnfs';
+          this.existingMappingCounterName = 'existingPNFCounterMap';
+          break;
+        }
         case 'VnfGroup' : {
           this.hierarchyName = 'vnfGroups';
           this.existingMappingCounterName = 'existingVnfGroupCounterMap';

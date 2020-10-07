@@ -27,6 +27,7 @@ export interface PopupModel {
 export enum PopupType {
   SERVICE = 'service',
   VNF = 'vnf',
+  PNF = 'pnf',
   NETWORK = 'network',
   VF_MODULE = 'vf_module',
   VF_MODULE_UPGRADE = 'vf_module_upgrade',

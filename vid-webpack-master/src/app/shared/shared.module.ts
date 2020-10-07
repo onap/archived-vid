@@ -98,6 +98,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import {MessageModal} from "./components/messageModal/message-modal.service";
 import {SpaceToUnderscorePipe} from "./pipes/spaceToUnderscore/space-to-underscore.pipe";
 import {ResizableModule} from 'angular-resizable-element';
+import {PnfPopupService} from "./components/genericFormPopup/genericFormServices/pnf/pnf.popup.service";
 
 @NgModule({
   imports: [
@@ -248,6 +249,7 @@ import {ResizableModule} from 'angular-resizable-element';
     GenericFormPopupService,
     FormGeneralErrorsService,
     VnfPopupService,
+    PnfPopupService,
     AuditInfoModalComponentService,
     VnfPopupService,
     ElementsTableService,

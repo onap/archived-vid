@@ -54,6 +54,16 @@ export class GenericFormPopupService {
           isUpdateMode
         );
       }
+      case 'PNF' : {
+        return uuidData.popupService.getGenericFormPopupDetails(
+          uuidData['serviceId'],
+          uuidData['modelName'],
+          uuidData['pnfStoreKey'],
+          node,
+          uuidData,
+          isUpdateMode
+        );
+      }
       case 'VnfGroup' : {
         return uuidData.popupService.getGenericFormPopupDetails(
           uuidData['serviceId'],
