@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "351f6ded_a94a06fe",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1739
+      },
+      "writtenOn": "2020-10-07T12:54:56Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we have a Feature Flag check here?",
+      "revId": "30eb0655f49fd3565d737b91146baf9ce4e02f9d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
