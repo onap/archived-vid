@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "56acd0c2_f3e2e7c4",
+        "filename": "vid-app-common/src/main/webapp/WEB-INF/conf/onap.features.properties",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 4027
+      },
+      "writtenOn": "2020-10-07T13:27:33Z",
+      "side": 1,
+      "message": "I don\u0027t think this is right, you\u0027re changing default values for many flags",
+      "revId": "e90a53509ea8b0d4d89e79c5c83e4bd12cca2f41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
