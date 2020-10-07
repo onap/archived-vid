@@ -34,6 +34,24 @@
       "revId": "30eb0655f49fd3565d737b91146baf9ce4e02f9d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57330b77_29d47628",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 6726
+      },
+      "writtenOn": "2020-10-07T13:54:44Z",
+      "side": 1,
+      "message": "I agree with Damian, in my opinion the flag for VNF change management is not required in this case",
+      "parentUuid": "e5d112b7_2f599cd7",
+      "revId": "30eb0655f49fd3565d737b91146baf9ce4e02f9d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
