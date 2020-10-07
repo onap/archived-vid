@@ -96,8 +96,7 @@ import {SdcUiComponentsModule} from "onap-ui-angular";
 import {UploadFilesLinkComponent} from "./components/genericForm/genericFormSharedComponent/uploadFiles/upload-files-link.component";
 import { FileUploadModule } from 'ng2-file-upload';
 import {MessageModal} from "./components/messageModal/message-modal.service";
-
-
+import {PnfPopupService} from "./components/genericFormPopup/genericFormServices/pnf/pnf.popup.service";
 
 @NgModule({
   imports: [
@@ -245,6 +244,7 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
     GenericFormPopupService,
     FormGeneralErrorsService,
     VnfPopupService,
+    PnfPopupService,
     AuditInfoModalComponentService,
     VnfPopupService,
     ElementsTableService,

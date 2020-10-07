@@ -47,6 +47,7 @@ export enum PopupType {
   SERVICE_A_LA_CART = 'service a-la-cart',
   SERVICE = 'service',
   VNF_MACRO  ='vnf macro',
+  PNF_MACRO  ='pnf macro',
   VNF_A_LA_CARTE = 'vnf a-la-carte',
   VFMODULE = 'vfModule',
   VFMODULE_UPGRADE = 'vfModule_upgrade',

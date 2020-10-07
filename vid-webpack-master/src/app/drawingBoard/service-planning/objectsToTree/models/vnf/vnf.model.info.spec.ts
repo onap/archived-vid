@@ -23,6 +23,7 @@ import {AaiService} from "../../../../../shared/services/aaiService/aai.service"
 import {HttpClient, HttpHandler} from "@angular/common/http";
 import {FeatureFlagsService} from "../../../../../shared/services/featureFlag/feature-flags.service";
 import {VfModuleUpgradePopupService} from "../../../../../shared/components/genericFormPopup/genericFormServices/vfModuleUpgrade/vfModule.upgrade.popuop.service";
+import { PnfPopupService } from "../../../../../shared/components/genericFormPopup/genericFormServices/pnf/pnf.popup.service";
 
 class MockFeatureFlagsService extends  FeatureFlagsService{
   getAllFlags(): { [p: string]: boolean } {
@@ -58,6 +59,7 @@ describe('Vnf Model Info', () => {
         VfModulePopupService,
         VfModuleUpgradePopupService,
         VnfPopupService,
+        PnfPopupService,
         DefaultDataGeneratorService,
         SharedTreeService,
         DuplicateService,
