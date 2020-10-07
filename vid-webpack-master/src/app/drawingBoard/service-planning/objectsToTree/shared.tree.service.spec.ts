@@ -44,6 +44,7 @@ import {VfModuleUpgradePopupService} from "../../../shared/components/genericFor
 import {SharedControllersService} from "../../../shared/components/genericForm/formControlsServices/sharedControlles/shared.controllers.service";
 import {ModalService} from "../../../shared/components/customModal/services/modal.service";
 import {CreateDynamicComponentService} from "../../../shared/components/customModal/services/create-dynamic-component.service";
+import { PnfPopupService } from "../../../shared/components/genericFormPopup/genericFormServices/pnf/pnf.popup.service";
 
 class MockAppStore<T> {
   getState() {
@@ -91,6 +92,7 @@ describe('Shared Tree Service', () => {
         DefaultDataGeneratorService,
         DialogService,
         VnfPopupService,
+        PnfPopupService,
         ControlGeneratorUtil,
         AaiService,
         LogService,

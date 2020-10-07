@@ -37,7 +37,7 @@ export class ObjectToInstanceTreeService {
     this.numberOfElements = 0;
     let _this = this;
     const serviceModelId:string = serviceInstance.modelInfo.modelVersionId;
-    const firstLevelOptions: ILevelNodeInfo[] = _this._objectToTreeService.getFirstLevelOptions();
+    const firstLevelOptions: ILevelNodeInfo[] = _this._objectToTreeService.getFirstLevelOptions(serviceInstance.isAlaCarte);
     for (let option of firstLevelOptions) {
       _.forOwn(serviceInstance[option.name], function (instance, modelName) {
         nodes.push(_this.getNodeInstance(modelName, null, instance, serviceHierarchy, option, serviceModelId));

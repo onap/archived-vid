@@ -5,6 +5,7 @@ import {VnfGroupInstance} from "./vnfGroupInstance";
 import {VnfMember} from "./VnfMember";
 import {VrfInstance} from "./vrfInstance";
 import {VidNotions} from "./vidNotions";
+import {PnfInstance} from "./pnfInstance";
 
 export class ServiceInstance extends NodeInstance{
   isEcompGeneratedNaming: boolean;
@@ -22,6 +23,7 @@ export class ServiceInstance extends NodeInstance{
   latestAvailableVersion: Number;
   pause: boolean;
   bulkSize: number;
+  pnfs: { [pnf_module_model_name: string]: PnfInstance; };
   vnfs: { [vnf_module_model_name: string]: VnfInstance; };
   vrfs: { [vrf_model_name: string]: VrfInstance; };
   vnfGroups : {[vnf_module_model_name: string]: VnfGroupInstance; };
@@ -34,6 +36,7 @@ export class ServiceInstance extends NodeInstance{
   validationCounter: number;
   existingNames:  {[key: string] : any};
   modelInavariantId?: string;
+  existingPNFCounterMap : { [pnf_module_model_name: string]: number; };
   existingVNFCounterMap : { [vnf_module_model_name: string]: number; };
   existingVRFCounterMap : { [vrf_module_model_name: string]: number; };
   existingVnfGroupCounterMap : { [vnf_group_module_model_name: string]: number; };
@@ -47,10 +50,12 @@ export class ServiceInstance extends NodeInstance{
     super();
     this.isDirty = false;
     this.vnfs = {};
+    this.pnfs = {};
     this.vrfs = {};
     this.instanceParams = [];
     this.validationCounter = 0;
     this.existingNames = {};
+    this.existingPNFCounterMap = {};
     this.existingVNFCounterMap = {};
     this.existingVRFCounterMap = {};
     this.existingVnfGroupCounterMap = {};

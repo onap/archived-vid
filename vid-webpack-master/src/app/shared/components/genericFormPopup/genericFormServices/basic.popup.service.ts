@@ -13,6 +13,7 @@ import {VnfGroupModel} from "../../../models/vnfGroupModel";
 import {FeatureFlagsService} from "../../../services/featureFlag/feature-flags.service";
 import {ModelInformationItem} from "../../model-information/model-information.component";
 import {Constants} from "../../../utils/constants";
+import {PNFModel} from "../../../models/pnfModel";
 
 @Injectable()
 export class BasicPopupService {
@@ -38,6 +39,9 @@ export class BasicPopupService {
     switch (modelType){
       case 'vnfs' : {
         return new VNFModel(rawModel, flags);
+      }
+      case 'pnfs' : {
+        return new PNFModel(rawModel);
       }
       case 'vfModules' : {
         return new VfModule(rawModel, flags);

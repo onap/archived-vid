@@ -24,7 +24,7 @@ var AsdcService = function ($http, $log, PropertyService, UtilityService, VIDCON
     var shouldExcludeMacroFromAsyncInstantiationFlow = function(serviceModel){
         if (DataService.getE2EService())
             return true;
-        if (!_.isEmpty(serviceModel.pnfs))
+        if (!_.isEmpty(serviceModel.pnfs) && !featureFlags.isOn(COMPONENT.FEATURE_FLAGS.FLAG_EXTENDED_MACRO_PNF_CONFIG))
             return true;
         if (!_.isEmpty(serviceModel.collectionResources))
             return true;

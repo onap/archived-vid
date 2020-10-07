@@ -16,6 +16,7 @@ import {FeatureFlagsService} from "../../../../services/featureFlag/feature-flag
 import {getTestBed, TestBed} from "@angular/core/testing";
 import {VfModuleUpgradePopupService} from "../vfModuleUpgrade/vfModule.upgrade.popuop.service";
 import {SharedControllersService} from "../../../genericForm/formControlsServices/sharedControlles/shared.controllers.service";
+import { PnfPopupService } from "../pnf/pnf.popup.service";
 
 class MockAppStore<T> {}
 
@@ -2251,6 +2252,7 @@ describe('vnf new popup service', () => {
     TestBed.configureTestingModule({
       providers : [
         VnfPopupService,
+        PnfPopupService,
         DefaultDataGeneratorService,
         GenericFormService,
         FormBuilder,

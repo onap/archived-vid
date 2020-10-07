@@ -18,7 +18,8 @@ export class ObjectToModelTreeService {
    ************************************************************/
   convertServiceHierarchyModelToTreeNodes(serviceModel): any[] {
     let _this = this;
-    const firstLevelOptions: ILevelNodeInfo[] = _this._objectToTreeService.getFirstLevelOptions();
+    let isALaCarte = serviceModel.service.vidNotions.instantiationType === "ALaCarte";
+    const firstLevelOptions: ILevelNodeInfo[] = _this._objectToTreeService.getFirstLevelOptions(isALaCarte);
     let nodes = [];
     let flags = this._featureFlagsService.getAllFlags();
     for (let option of firstLevelOptions) {
