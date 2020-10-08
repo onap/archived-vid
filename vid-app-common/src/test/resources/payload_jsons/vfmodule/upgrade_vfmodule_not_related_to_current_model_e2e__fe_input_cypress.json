@@ -6,6 +6,8 @@
   "cloudOwner": null,
   "collectionResources": {
   },
+  "pnfs": {},
+  "existingPNFCounterMap": {},
   "existingNames": {
     "pst-vf-phase-1": ""
   },

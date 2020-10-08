@@ -7,6 +7,8 @@
   "existingNetworksCounterMap": {},
   "vnfs": {},
   "vrfs": {},
+  "pnfs": {},
+  "existingPNFCounterMap": {},
   "vnfGroups": {
     "VNF_GROUP1_INSTANCE_ID": {
       "originalName": "groupingservicefortest..ResourceInstanceGroup..0",

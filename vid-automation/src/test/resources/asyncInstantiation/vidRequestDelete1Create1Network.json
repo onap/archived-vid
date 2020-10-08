@@ -7,6 +7,8 @@
   "vrfs":{
 
   },
+  "pnfs": {},
+  "existingPNFCounterMap": {},
   "instanceParams":[
     {
       "2017488_pasqualevpe0_ASN":"AV_vPE"

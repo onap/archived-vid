@@ -1,6 +1,8 @@
 {
   "action": "None_Upgrade",
   "isDirty": true,
+  "pnfs": {},
+  "existingPNFCounterMap": {},
   "vnfs": {
     "d520268f-7489-4662-be59-f81495b3a069": {
       "action": "None_Upgrade",

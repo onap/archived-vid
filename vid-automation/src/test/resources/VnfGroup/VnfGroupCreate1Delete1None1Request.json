@@ -3,6 +3,8 @@
   "isDirty": true,
   "vnfs": {},
   "vrfs": {},
+  "pnfs": {},
+  "existingPNFCounterMap": {},
   "instanceParams": [],
   "validationCounter": 0,
   "existingNames": {

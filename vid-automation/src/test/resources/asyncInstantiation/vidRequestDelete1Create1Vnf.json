@@ -1,6 +1,8 @@
 {
   "action": "None",
   "isDirty": true,
+  "pnfs": {},
+  "existingPNFCounterMap": {},
   "vnfs": {
     "2017-388_PASQUALE-vPE 0": {
       "vfModules": {},

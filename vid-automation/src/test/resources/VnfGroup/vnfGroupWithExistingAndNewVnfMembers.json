@@ -213,5 +213,7 @@
     }
   },
   "vnfs": {},
+  "pnfs": {},
+  "existingPNFCounterMap": {},
   "vrfs": {}
 }

@@ -38,6 +38,8 @@
   "isALaCarte": false,
   "vnfs": {},
   "vrfs": {},
+  "pnfs": {},
+  "existingPNFCounterMap": {},
   "networks": {},
   "vnfGroups": {},
   "validationCounter": 0,
