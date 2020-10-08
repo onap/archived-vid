@@ -52,6 +52,24 @@
       "revId": "30eb0655f49fd3565d737b91146baf9ce4e02f9d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28b98228_a1c6737d",
+        "filename": "vid-app-common/src/main/webapp/app/vid/scripts/modals/new-change-management/new-change-management.controller.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 6726
+      },
+      "writtenOn": "2020-10-08T06:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57330b77_29d47628",
+      "revId": "30eb0655f49fd3565d737b91146baf9ce4e02f9d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
