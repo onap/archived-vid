@@ -7,6 +7,7 @@ declare namespace Cypress {
     initAuditInfoMSOALaCarte: typeof initAuditInfoMSOALaCarte;
     initAsyncInstantiation : typeof  initAsyncInstantiation;
     mockLatestVersionForService : typeof  mockLatestVersionForService;
+    initAuditInfoMSOALaCarteNew: typeof initAuditInfoMSOALaCarteNew;
   }
 }
 
@@ -94,6 +95,19 @@ function initAuditInfoMSOALaCarte(response? : JSON, delay?: number, status?: num
   })
 }
 
+function initAuditInfoMSOALaCarteNew(response? : JSON, delay?: number, status?: number) : void {
+  cy.readFile('../vid-automation/src/test/resources/a-la-carte/auditInfoMSOALaCarteNew.json').then((res) => {
+    cy.server()
+      .route({
+        method: 'GET',
+        delay : delay ? delay : 0,
+        status : status ? status : 200,
+        url : Cypress.config('baseUrl') + "/asyncInstantiation/auditStatus/**/mso**",
+        response : response ? response : res
+      }).as('initAuditInfoMSOALaCarteNew');
+  })
+}
+
 function initAsyncInstantiation(response? : JSON, delay?: number, status?: number) : void {
   cy.readFile('cypress/support/jsonBuilders/mocks/jsons/basicAsyncInstantiation.json').then((res) => {
     cy.server()
@@ -137,6 +151,7 @@ Cypress.Commands.add('preventErrorsOnLoading', preventErrorsOnLoading);
 Cypress.Commands.add('initCategoryParameter', initCategoryParameter);
 Cypress.Commands.add('initAuditInfoMSO', initAuditInfoMSO);
 Cypress.Commands.add('initAuditInfoMSOALaCarte', initAuditInfoMSOALaCarte);
+Cypress.Commands.add('initAuditInfoMSOALaCarteNew', initAuditInfoMSOALaCarteNew);
 Cypress.Commands.add('initAsyncInstantiation', initAsyncInstantiation);
 Cypress.Commands.add('mockLatestVersionForService', mockLatestVersionForService);
 

@@ -151,6 +151,9 @@ export class AuditInfoModalComponent {
       .subscribe((res: AuditStatus[][]) => {
         this.vidInfoData = res[0];
         this.msoInfoData = res[1];
+		console.log("Before ::" + JSON.stringify(this.msoInfoData));
+        this.msoInfoData.sort(this.getSortOrder("startTime"));
+        console.log("After ::"  + JSON.stringify(this.msoInfoData));
         this.isLoading = false;
       });
   }
@@ -186,6 +189,17 @@ export class AuditInfoModalComponent {
     this.dataIsReady = true;
 
   }
+  
+  //Comparer Function
+	getSortOrder(timestamp) {
+	  return (obj1, obj2) =>{
+
+		let firstObj = obj1[timestamp];
+		let secondObj = obj2[timestamp];
+		return ((secondObj < firstObj) ? -1 : ((secondObj > firstObj) ? 1 : 0));
+
+	  }
+	}
 
   readOnlyRetryUrl = (): string =>
     `../../serviceModels.htm?more#/servicePlanning/RETRY?serviceModelId=${this.serviceModelId}&jobId=${this.jobId}`

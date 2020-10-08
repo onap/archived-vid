@@ -87,7 +87,10 @@ describe('Audit information modal', function () {
         cy.get('.icon-menu').eq(index).click({force: true}).then(()=>{
           cy.getElementByDataTestsId('context-menu-audit-info').click({force:true}).then(()=>{
             cy.setViewportToSmallPopup();
-            cy.get('#refreshButton').should('be.visible');
+            cy.get('#refreshButton').should('be.visible')
+			 cy.get('#refreshButton').click({force: true}).then(() => {
+              cy.initAuditInfoMSOALaCarteNew();
+            })
           })
 
           })
