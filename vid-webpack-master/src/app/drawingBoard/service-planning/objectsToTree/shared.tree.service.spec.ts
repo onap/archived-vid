@@ -536,6 +536,13 @@ describe('Shared Tree Service', () => {
 
 
   });
+  
+  test("showPauseWithOrchStatus test", () => {
+    const node = {
+      "orchStatus":"Active"
+    };
+    expect(service.showPauseWithOrchStatus(node)).toEqual(false);
+  });
 
 });
 

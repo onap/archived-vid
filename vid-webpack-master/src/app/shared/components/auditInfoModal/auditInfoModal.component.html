@@ -49,10 +49,10 @@
               </thead>
               <tbody>
               <tr class="row" *ngFor="let data of msoInfoData">
-                <td id="msoRequestId" class="col-md-2" style="width: 22%">
+                <td id="msoRequestId" style="width: 22%">
                   <custom-ellipsis [id]="data?.requestId" [value]="data?.requestId" [attr.data-tests-id]="'requestId'"></custom-ellipsis>
                 </td>
-                <td *ngIf="isAlaCarte && isALaCarteFlagOn" class="msoInstanceName col-md-2" style="width: 10%">
+                <td *ngIf="isAlaCarte && isALaCarteFlagOn" class="msoInstanceName" style="width: 10%">
                   <custom-ellipsis [id]="data?.instanceName" [value]="data?.instanceName"></custom-ellipsis>
                 </td>
                 <td id="msoModelType" style="width: 7%">

@@ -228,6 +228,13 @@ export class SharedTreeService {
     }
     return false;
   }
+  
+  showPauseWithOrchStatus(node): boolean {
+    if(node.orchStatus == "Active"){
+      return false;
+    }
+    return true;
+  }
 
   shouldShowPauseInstantiation(node): boolean {
     if(FeatureFlagsService.getFlagState(Features.FLAG_2008_REMOVE_PAUSE_INSTANTIATION, this._store)){

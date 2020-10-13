@@ -396,8 +396,8 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
         method: (node, serviceModelId) => {
           this._store.dispatch(pauseActionVFModuleInstance(node.data.dynamicModelName, node.parent.data.vnfStoreKey, serviceModelId, node.data.modelName));
         },
-        visible: () => this._sharedTreeService.shouldShowPauseInstantiation(node),
-        enable: () => true,
+        visible: () => (this._sharedTreeService.shouldShowPauseInstantiation(node) && this._sharedTreeService.showPauseWithOrchStatus(node)),
+        enable: () => this._sharedTreeService.showPauseWithOrchStatus(node),
       },
       removePause: {
         method: (node, serviceModelId) => {
