@@ -26,6 +26,8 @@ import {CrActions} from "./cr/cr.actions";
 import {crReducer} from "./cr/cr.reducer";
 import {NcfActions} from "./ncf/ncf.actions";
 import {ncfReducer} from "./ncf/ncf.reducer";
+import {PNFActions} from "./pnf/pnf.actions";
+import {pnfReducer} from "./pnf/pnf.reducers";
 
 export let initialState: ServiceState = {
   serviceHierarchy: {},
@@ -64,6 +66,8 @@ export const MainReducer = function (state: ServiceState = initialState, action:
     return vfModuleReducer(state, action);
   }else if (Object.values(VNFActions).includes(action.type)){
     return vnfReducer(state, action);
+  }else if (Object.values(PNFActions).includes(action.type)){
+    return pnfReducer(state, action);
   }else if (Object.values(VnfGroupActions).includes(action.type)){
     return vnfGroupReducer(state, action);
   }else if(Object.values(RelatedVnfActions).includes(action.type)){

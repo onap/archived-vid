@@ -40,6 +40,7 @@ import {SharedControllersService} from "../../../../shared/components/genericFor
 import {ModalService} from "../../../../shared/components/customModal/services/modal.service";
 import {CreateDynamicComponentService} from "../../../../shared/components/customModal/services/create-dynamic-component.service";
 import {PnfPopupService} from "../../../../shared/components/genericFormPopup/genericFormServices/pnf/pnf.popup.service";
+import {PnfControlGenerator} from "../../../../shared/components/genericForm/formControlsServices/pnfGenerator/pnf.control.generator";
 
 class MockAppStore<T> {
   getState() {
@@ -110,6 +111,7 @@ describe('Model Tree Generator service', () => {
         DialogService,
         FeatureFlagsService,
         VnfControlGenerator,
+        PnfControlGenerator,
         AaiService,
         DialogService,
         DuplicateService,

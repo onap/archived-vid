@@ -21,6 +21,7 @@ import {VnfGroupTreeNode} from "../../models/vnfGroupTreeNode";
 import {ModelInfo} from "../../models/modelInfo";
 import {ServiceInstanceActions} from "../../models/serviceInstanceActions";
 import Parameter = Constants.Parameter;
+import {createPNFInstance} from "../../storeUtil/utils/pnf/pnf.actions";
 
 @Injectable()
 export class DefaultDataGeneratorService {
@@ -214,9 +215,30 @@ export class DefaultDataGeneratorService {
     }
   }
 
+  updatePnfsOnFirstSet(serviceId: string, formServiceValues: any){
+    const serviceHierarchy = this.store.getState().service.serviceHierarchy[serviceId];
+    if (serviceHierarchy && !_.isEmpty(serviceHierarchy.pnfs)) {
+      for (let pnfUUID in serviceHierarchy.pnfs) {
+        const isEcompGeneratedNaming = this.getIsEcompGeneratedNaming(serviceHierarchy.pnfs[pnfUUID]);
+        // let min_pnf_instances_greater_than_0 = true;
+        //TODO: MG uncomment when created pnf with min_instances property
+        let min_pnf_instances_greater_than_0 = serviceHierarchy.pnfs[pnfUUID].properties['min_instances'] && serviceHierarchy.pnfs[pnfUUID].properties['min_instances'] > 0;
+        if(min_pnf_instances_greater_than_0)
+        {
+          this.createPNFInstanceReduxIfNotExist(
+            serviceId,
+            this.generatePNFData(serviceHierarchy, pnfUUID, formServiceValues, isEcompGeneratedNaming)
+          );
+        }
+      }
+    }
+  }
+
   updateReduxOnFirstSet(serviceId: string, formServiceValues: any): void {
+    let state123 = this.store.getState(); //TODO: remove later
     this.updateNetworksOnFirstSet(serviceId, formServiceValues);
     this.updateVnfGroupsOnFirstSet(serviceId, formServiceValues);
+    this.updatePnfsOnFirstSet(serviceId, formServiceValues);
     const serviceHierarchy = this.store.getState().service.serviceHierarchy[serviceId];
     if (serviceHierarchy && !_.isEmpty(serviceHierarchy.vnfs)) {
       for (let vnfUUID in serviceHierarchy.vnfs) {
@@ -266,6 +288,13 @@ export class DefaultDataGeneratorService {
     if(!this.store.getState().service.serviceInstance[serviceId].vnfs[vnfData.modelInfo.modelCustomizationName]){
       this.store.dispatch(createVNFInstance(vnfData, vnfData.modelInfo.modelCustomizationName, serviceId));
       this.store.dispatch(changeInstanceCounter(vnfData.modelInfo.modelUniqueId, serviceId, 1, <any> {data : {type : 'VF'}}));
+    }
+  }
+
+  createPNFInstanceReduxIfNotExist(serviceId: string, pnfData: any): void {
+    if(!this.store.getState().service.serviceInstance[serviceId].pnfs[pnfData.modelInfo.modelCustomizationName]){
+      this.store.dispatch(createPNFInstance(pnfData, pnfData.modelInfo.modelCustomizationName, serviceId));
+      this.store.dispatch(changeInstanceCounter(pnfData.modelInfo.modelUniqueId, serviceId, 1, <any> {data : {type : 'PNF'}}));
     }
   }
 
@@ -373,6 +402,29 @@ export class DefaultDataGeneratorService {
         'modelCustomizationId': serviceHierarchy.vnfs[vnfName].customizationUuid,
         'modelCustomizationName': serviceHierarchy.vnfs[vnfName].modelCustomizationName,
         'modelUniqueId' : serviceHierarchy.vnfs[vnfName].customizationUuid || serviceHierarchy.vnfs[vnfName].uuid,
+      },
+      'trackById': DefaultDataGeneratorService.createRandomTrackById(),
+    }
+  }
+
+  generatePNFData(serviceHierarchy: any, pnfName: string, formValues: any, isEcompGeneratedNaming) {
+    return {
+      'uuid' : serviceHierarchy.pnfs[pnfName].uuid,
+      'isMissingData' :this.setIsMissingData(ServiceNodeTypes.PNF, [], isEcompGeneratedNaming),
+      'productFamilyId': formValues.productFamilyId,
+      'lcpCloudRegionId': null,
+      'tenantId': null,
+      'lineOfBusiness': null,
+      'platformName': null,
+      'modelInfo': {
+        'modelType': 'PNF',
+        'modelInvariantId': serviceHierarchy.pnfs[pnfName].invariantUuid,
+        'modelVersionId': serviceHierarchy.pnfs[pnfName].uuid,
+        'modelName': serviceHierarchy.pnfs[pnfName].name,
+        'modelVersion': serviceHierarchy.pnfs[pnfName].version,
+        'modelCustomizationId': serviceHierarchy.pnfs[pnfName].customizationUuid,
+        'modelCustomizationName': serviceHierarchy.pnfs[pnfName].modelCustomizationName,
+        'modelUniqueId' : serviceHierarchy.pnfs[pnfName].customizationUuid || serviceHierarchy.pnfs[pnfName].uuid,
       },
       'trackById': DefaultDataGeneratorService.createRandomTrackById(),
     }

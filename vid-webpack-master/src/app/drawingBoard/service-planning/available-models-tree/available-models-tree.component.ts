@@ -129,7 +129,7 @@ export class AvailableModelsTreeComponent {
 
   selectNode(node: ITreeNode): void {
     node.expand();
-    this._sharedTreeService.setSelectedVNF(null);
+    this._sharedTreeService.setSelectedNF(null);
     this.highlightInstances.emit(node.data.modelUniqueId);
     if (FeatureFlagsService.getFlagState(Features.FLAG_1906_COMPONENT_INFO, this.store)) {
       const serviceHierarchy = this._store.getState().service.serviceHierarchy[this.serviceModelId];
@@ -179,8 +179,8 @@ export class AvailableModelsTreeComponent {
             positionOfNextInstance = this._defaultDataGeneratorService.calculatePositionOfVfmodule(this.serviceModelId);
           }
         }
-        if (this._sharedTreeService.selectedVNF) {
-          this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, positionOfNextInstance, this._sharedTreeService.selectedVNF));
+        if (this._sharedTreeService.selectedNF) {
+          this.store.dispatch(createVFModuleInstance(vfModule, node.data.name, this.serviceModelId, positionOfNextInstance, this._sharedTreeService.selectedNF));
           DrawingBoardTreeService.triggerCheckIsDirty.next(this.serviceModelId);
         } else if (this._availableModelsTreeService.getOptionalVNFs(this.serviceModelId, node.parent.data.modelUniqueId).length === 1) {
           let existVnf = this._store.getState().service.serviceInstance[this.serviceModelId].vnfs;

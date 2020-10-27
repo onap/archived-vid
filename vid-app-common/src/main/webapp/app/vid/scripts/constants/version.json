@@ -1,1 +1,1 @@
-{"Version": "BUILD_NUMBER"}
+{"Version": "${env.release_version}..${env.${env.release_version}..${env.${env.release_version}..${env.${env.release_version}..${env.${env.release_version}..${env.BUILD_NUMBER}}}}}"}

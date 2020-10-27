@@ -7,6 +7,7 @@ import {ModelInformationItem} from "../../../model-information/model-information
 import {ServiceModel} from "../../../../models/serviceModel";
 import {Subject} from "rxjs/Subject";
 import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
+import {PnfControlGenerator} from "../../../genericForm/formControlsServices/pnfGenerator/pnf.control.generator";
 import {IframeService} from "../../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
@@ -16,6 +17,9 @@ import {AppState} from "../../../../store/reducers";
 import {Subscriber} from "../../../../models/subscriber";
 import {Constants} from "../../../../utils/constants";
 import {PnfInstance} from "../../../../models/pnfInstance";
+import {ModelInfo} from "../../../../models/modelInfo";
+import {changeInstanceCounter} from "../../../../storeUtil/utils/general/general.actions";
+import {createPNFInstance, updatePNFInstance} from "../../../../storeUtil/utils/pnf/pnf.actions";
 import * as _ from 'lodash';
 
 @Injectable()
@@ -31,6 +35,7 @@ export class PnfPopupService implements GenericPopupInterface{
 
   constructor(
     private _basicControlGenerator: ControlGeneratorUtil,
+    private _pnfControlGenerator: PnfControlGenerator,
     private _iframeService: IframeService,
     private _defaultDataGeneratorService: DefaultDataGeneratorService,
     private _aaiService: AaiService,
@@ -59,7 +64,11 @@ export class PnfPopupService implements GenericPopupInterface{
   }
 
   getControls(serviceId: string, modelName: string, pnfStoreKey: string){
-    return [];
+    if(this._store.getState().service.serviceHierarchy[serviceId].service.vidNotions.instantiationType === 'Macro') {
+      return this._pnfControlGenerator.getMacroFormControls(serviceId, pnfStoreKey, modelName);
+    } else {
+      return this._pnfControlGenerator.getAlaCarteFormControls(serviceId, pnfStoreKey, modelName);
+    }
   }
 
   getInstance(serviceId: string, modelName: string, pnfStoreKey: string): any {
@@ -101,7 +110,17 @@ export class PnfPopupService implements GenericPopupInterface{
     return "PNF Instance Details";
   }
 
-  storePNF = (that, formValues: any): void => {};
+  storePNF = (that, formValues: any): void => {
+    formValues.modelInfo = new ModelInfo(that.model);
+    formValues.uuid = formValues.modelInfo.uuid;
+    formValues.isMissingData = false;
+    if(!that.isUpdateMode){
+      that._store.dispatch(changeInstanceCounter(formValues.modelInfo.modelUniqueId, that.uuidData.serviceId, 1 , <any> {data: {type: 'PNF'}}));
+      this._store.dispatch(createPNFInstance(formValues, that.uuidData['modelName'], that.uuidData['serviceId'], that.uuidData['modelName']));
+    }else {
+      that._store.dispatch(updatePNFInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, that.uuidData.pnfStoreKey))
+    }
+  };
 
   getTitle(isUpdateMode: boolean): string {
     return isUpdateMode  ? "Edit PNF instance": "Set a new PNF" ;

@@ -7,10 +7,9 @@ import {
   VNFActions
 } from "./vnf.actions";
 import * as _ from "lodash";
-import {ServiceInstance} from "../../../models/serviceInstance";
 import {ServiceState} from "../main.reducer";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
-import {deleteFirstLevel, updateServiceValidationCounter} from "../reducersHelper";
+import {deleteFirstLevel, updateServiceValidationCounter, calculateNextUniqueModelName, updateUniqueNames} from "../reducersHelper";
 import {ActionOnFirstLevel} from "../firstLevel/firstLevel.actions";
 
 export function vnfReducer(state: ServiceState, action: Action): ServiceState {
@@ -126,27 +125,3 @@ export function vnfReducer(state: ServiceState, action: Action): ServiceState {
 
   }
 }
-
-
-const updateUniqueNames = (oldName: string, newName: string, serviceInstance: ServiceInstance): void => {
-  let existingNames = serviceInstance.existingNames;
-  if (!_.isNil(oldName) && oldName.toLowerCase() in existingNames) {
-    delete existingNames[oldName.toLowerCase()];
-  }
-  if (!_.isNil(newName)) {
-    existingNames[newName.toLowerCase()] = "";
-  }
-};
-
-
-export const calculateNextUniqueModelName = (vnfModelName: string, serviceId: string, state: any, levelName: string): string => {
-  let counter: number = null;
-  while (true) {
-    let pattern = !_.isNil(counter) ? ("_" + counter) : "";
-    if (!_.isNil(state.serviceInstance[serviceId][levelName][vnfModelName + pattern])) {
-      counter = counter ? (counter + 1) : 1;
-    } else {
-      return vnfModelName + pattern;
-    }
-  }
-};
