@@ -22,7 +22,7 @@ describe("AaiService", () => {
   let httpMock: HttpTestingController;
   let aaiService: AaiService;
   let mockFeatureFlagsService: FeatureFlagsService = mock(FeatureFlagsService);
-  let store : NgRedux<AppState>;
+  let store: NgRedux<AppState>;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
@@ -41,8 +41,6 @@ describe("AaiService", () => {
     store = injector.get(NgRedux);
 
   })().then(done).catch(done.fail));
-
-
 
   describe('#resolve tests', () => {
     test('aai service resolve should return the right object', () => {
@@ -173,8 +171,37 @@ describe("AaiService", () => {
     });
   });
 
+  describe('#Pnf modelCustomizationName initialization tests', () => {
+
+    test('initializePnfModelCustomizationName should not reinitialize modelCustomizationName when it exists', () => {
+      let serviceHierarchy = {
+        "pnfs": {
+          "pnfInstance": {
+            "modelCustomizationName": "existingName"
+          }
+        }
+      }
+
+      aaiService.initializePnfModelCustomizationName(serviceHierarchy);
+
+      expect(serviceHierarchy.pnfs["pnfInstance"].modelCustomizationName).toBe("existingName");
+    });
+
+    test('initializePnfModelCustomizationName should initialize modelCustomizationName when it doesnt exist', () => {
+      let serviceHierarchy = {
+        "pnfs": {
+          "pnfInstance": {}
+        }
+      }
+
+      aaiService.initializePnfModelCustomizationName(serviceHierarchy);
+
+      expect((serviceHierarchy.pnfs["pnfInstance"] as any).modelCustomizationName).toBe("pnfInstance");
+    });
+  });
+
   function getTopology() {
-    return  {
+    return {
       "vnfs": {
         "2017-388_PASQUALE-vPE 0": {
           "vfModules": {},
@@ -398,7 +425,7 @@ describe("AaiService", () => {
     }
   }
 
-  function getMockActiveNetworks(){
+  function getMockActiveNetworks() {
     return [
       {
         networkInstanceName: "networkInstanceName",

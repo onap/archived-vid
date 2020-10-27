@@ -7,6 +7,7 @@ import {ModelInformationItem} from "../../../model-information/model-information
 import {ServiceModel} from "../../../../models/serviceModel";
 import {Subject} from "rxjs/Subject";
 import {ControlGeneratorUtil} from "../../../genericForm/formControlsServices/control.generator.util.service";
+import {PnfControlGenerator} from "../../../genericForm/formControlsServices/pnfGenerator/pnf.control.generator";
 import {IframeService} from "../../../../utils/iframe.service";
 import {DefaultDataGeneratorService} from "../../../../services/defaultDataServiceGenerator/default.data.generator.service";
 import {AaiService} from "../../../../services/aaiService/aai.service";
@@ -16,14 +17,17 @@ import {AppState} from "../../../../store/reducers";
 import {Subscriber} from "../../../../models/subscriber";
 import {Constants} from "../../../../utils/constants";
 import {PnfInstance} from "../../../../models/pnfInstance";
+import {ModelInfo} from "../../../../models/modelInfo";
+import {changeInstanceCounter} from "../../../../storeUtil/utils/general/general.actions";
+import {createPNFInstance, updatePNFInstance} from "../../../../storeUtil/utils/pnf/pnf.actions";
 import * as _ from 'lodash';
 
 @Injectable()
-export class PnfPopupService implements GenericPopupInterface{
+export class PnfPopupService implements GenericPopupInterface {
   dynamicInputs: any;
   instance: any;
-  model:any;
-  serviceModel:ServiceModel;
+  model: any;
+  serviceModel: ServiceModel;
   modelInformations: ModelInformationItem[] = [];
   uuidData: Object;
   closeDialogEvent: Subject<any> = new Subject<any>();
@@ -31,6 +35,7 @@ export class PnfPopupService implements GenericPopupInterface{
 
   constructor(
     private _basicControlGenerator: ControlGeneratorUtil,
+    private _pnfControlGenerator: PnfControlGenerator,
     private _iframeService: IframeService,
     private _defaultDataGeneratorService: DefaultDataGeneratorService,
     private _aaiService: AaiService,
@@ -53,17 +58,25 @@ export class PnfPopupService implements GenericPopupInterface{
       this.getControls(serviceId, modelName, pnfStoreKey),
       this._basicPopupService.getDynamicInputs(serviceId, modelName, pnfStoreKey, 'pnfs'),
       this.modelInformations,
-      (that, form: FormGroup) => {that.onSubmit(that, form);},
-      (that: any, form: FormGroup) => {that.onCancel(that, form); }
-      )
+      (that, form: FormGroup) => {
+        that.onSubmit(that, form);
+      },
+      (that: any, form: FormGroup) => {
+        that.onCancel(that, form);
+      }
+    )
   }
 
-  getControls(serviceId: string, modelName: string, pnfStoreKey: string){
-    return [];
+  getControls(serviceId: string, modelName: string, pnfStoreKey: string) {
+    if (this._store.getState().service.serviceHierarchy[serviceId].service.vidNotions.instantiationType === 'Macro') {
+      return this._pnfControlGenerator.getMacroFormControls(serviceId, pnfStoreKey, modelName);
+    } else {
+      return this._pnfControlGenerator.getAlaCarteFormControls(serviceId, pnfStoreKey, modelName);
+    }
   }
 
   getInstance(serviceId: string, modelName: string, pnfStoreKey: string): any {
-    if(_.isNil(pnfStoreKey)){
+    if (_.isNil(pnfStoreKey)) {
       return new PnfInstance();
     }
     return this._store.getState().service.serviceInstance[serviceId].pnfs[pnfStoreKey];
@@ -89,7 +102,7 @@ export class PnfPopupService implements GenericPopupInterface{
         new ModelInformationItem("Service role", "serviceRole", [this.serviceModel.serviceRole]),
         new ModelInformationItem("Minimum to instantiate", "min", [!_.isNil(this.model.min) ? this.model.min.toString() : '0'], "", false),
         this._basicPopupService.createMaximumToInstantiateModelInformationItem(this.model)
-        ];
+      ];
     })
   }
 
@@ -101,10 +114,20 @@ export class PnfPopupService implements GenericPopupInterface{
     return "PNF Instance Details";
   }
 
-  storePNF = (that, formValues: any): void => {};
+  storePNF = (that, formValues: any): void => {
+    formValues.modelInfo = new ModelInfo(that.model);
+    formValues.uuid = formValues.modelInfo.uuid;
+    formValues.isMissingData = false;
+    if (!that.isUpdateMode) {
+      that._store.dispatch(changeInstanceCounter(formValues.modelInfo.modelUniqueId, that.uuidData.serviceId, 1, <any>{data: {type: 'PNF'}}));
+      this._store.dispatch(createPNFInstance(formValues, that.uuidData['modelName'], that.uuidData['serviceId'], that.uuidData['modelName']));
+    } else {
+      that._store.dispatch(updatePNFInstance(formValues, that.uuidData.modelName, that.uuidData.serviceId, that.uuidData.pnfStoreKey))
+    }
+  };
 
   getTitle(isUpdateMode: boolean): string {
-    return isUpdateMode  ? "Edit PNF instance": "Set a new PNF" ;
+    return isUpdateMode ? "Edit PNF instance" : "Set a new PNF";
   }
 
   onCancel(that, form): void {
@@ -116,7 +139,7 @@ export class PnfPopupService implements GenericPopupInterface{
   onSubmit(that, form: FormGroup, ...args): void {
     form.value['instanceParams'] = form.value['instanceParams'] && [form.value['instanceParams']];
     that.storePNF(that, form.value);
-    window.parent.postMessage( {
+    window.parent.postMessage({
       eventId: 'submitIframe',
       data: {
         serviceModelId: that.uuidData.serviceId

@@ -170,7 +170,7 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
             let storeKey: string = node.data.vnfGroupStoreKey;
             this._store.dispatch(removeInstance(node.data.vnfGroupStoreKey, serviceModelId, storeKey, node));
             this._store.dispatch(changeInstanceCounter(node.data.modelUniqueId, serviceModelId, -1, node));
-            this._sharedTreeService.selectedVNF = null;
+            this._sharedTreeService.selectedNF = null;
           } else {
             let messageBoxData: MessageBoxData = new MessageBoxData(
               "Remove VNFGroup",  // modal title
@@ -386,7 +386,7 @@ export class VnfGroupingModelInfo implements ILevelNodeInfo {
   removeGroup(this, node, serviceModelId) {
     this._store.dispatch(removeInstance(node.data.modelName, serviceModelId, node.data.vnfGroupStoreKey, node));
     this._store.dispatch(changeInstanceCounter(node.data.modelUniqueId, serviceModelId, -1, node));
-    this._sharedTreeService.selectedVNF = null;
+    this._sharedTreeService.selectedNF = null;
   }
 
   updatePosition(that, node, instanceId): void {

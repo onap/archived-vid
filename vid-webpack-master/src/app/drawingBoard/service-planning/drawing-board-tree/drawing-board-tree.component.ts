@@ -231,7 +231,7 @@ export class DrawingBoardTreeComponent implements OnInit, AfterViewInit {
 
   public selectNode(node: ITreeNode): void {
     node.expand();
-    this._sharedTreeService.setSelectedVNF(node);
+    this._sharedTreeService.setSelectedNF(node);
     this.highlightNode.emit(node.data.modelUniqueId);
     if (FeatureFlagsService.getFlagState(Features.FLAG_1906_COMPONENT_INFO, this.store)) {
       const serviceHierarchy = this._store.getState().service.serviceHierarchy[this.serviceModelId];

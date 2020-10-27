@@ -215,7 +215,7 @@ export class NetworkModelInfo implements ILevelNodeInfo {
           let storeKey: string = node.data.networkStoreKey;
           this._store.dispatch(removeInstance(node.data.networkStoreKey, serviceModelId, storeKey, node));
           this._store.dispatch(changeInstanceCounter(node.data.modelUniqueId, serviceModelId, -1, node));
-          this._sharedTreeService.selectedVNF = null;
+          this._sharedTreeService.selectedNF = null;
         },
         visible: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowRemoveAndEdit(node),
         enable: (node) => node.data.parentType !== 'VRF' && this._sharedTreeService.shouldShowRemoveAndEdit(node),

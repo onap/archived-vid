@@ -4,25 +4,176 @@ import {NgRedux} from '@angular-redux/store';
 import {DefaultDataGeneratorService} from './default.data.generator.service';
 import {ServiceNodeTypes} from "../../models/ServiceNodeTypes";
 import {VNFModel} from "../../models/vnfModel";
+import {AppState} from "../../store/reducers";
 
-class MockAppStore<T> {}
+class MockAppStore<T> {
+  dispatch() {
+
+  }
+
+  getState() {
+    return {
+      "global": {
+        "flags": {
+          "FLAG_NETWORK_TO_ASYNC_INSTANTIATION": false,
+          "FLAG_SHOW_ASSIGNMENTS": true,
+          "FLAG_FABRIC_CONFIGURATION_ASSIGNMENTS": true,
+          "FLAG_SHOW_VERIFY_SERVICE": false,
+          "FLAG_SERVICE_MODEL_CACHE": true,
+          "FLAG_ADD_MSO_TESTAPI_FIELD": true
+        }
+      },
+      "service": {
+        "serviceHierarchy": {
+          "serviceId": {
+            "service": {
+              "uuid": "6e59c5de-f052-46fa-aa7e-2fca9d674c44",
+              "invariantUuid": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+              "name": "action-data",
+              "version": "1.0",
+              "toscaModelURL": null,
+              "category": "Emanuel",
+              "serviceType": "",
+              "serviceRole": "",
+              "description": "action-data",
+              "serviceEcompNaming": "false",
+              "instantiationType": "Macro",
+              "vidNotions": {
+                "instantiationType": "Macro"
+              },
+            },
+            "globalSubscriberId": "subscriberId",
+            "pnfs": {
+              "pnfInstanceV1": {
+                "name": "pnfName",
+                "pnfStoreKey": "pnfInstanceV1",
+                "version": "1.0",
+                "description": "PNF description",
+                "uuid": "0903e1c0-8e03-4936-b5c2-260653b96413",
+                "invariantUuid": "00beb8f9-6d39-452f-816d-c709b9cbb87d",
+                "properties": {
+                  "min_instances": "1",
+                  "ecomp_generated_naming": "true"
+                }
+              }
+            },
+            "modelInfo": {
+              "modelInvariantId": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+              "modelVersionId": "6b528779-44a3-4472-bdff-9cd15ec93450",
+              "modelName": "action-data",
+              "modelVersion": "1.0",
+              "uuid": "6b528779-44a3-4472-bdff-9cd15ec93450"
+            },
+            "instanceName": "InstanceName",
+            "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+            "productFamilyId": "17cc1042-527b-11e6-beb8-9e71128cae77",
+            "lcpCloudRegionId": "AAIAIC25",
+            "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
+            "aicZoneId": "JAG1",
+            "projectName": null,
+            "rollbackOnFailure": "true",
+            "aicZoneName": "YUDFJULP-JAG1",
+            "owningEntityName": "WayneHolland",
+            "testApi": "GR_API",
+            "tenantName": "USP-SIP-IC-24335-T-01",
+            "bulkSize": 1,
+            "isALaCarte": false,
+            "name": "action-data",
+            "version": "1.0",
+            "description": "",
+            "category": "",
+            "uuid": "6b528779-44a3-4472-bdff-9cd15ec93450",
+            "invariantUuid": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+            "serviceType": "",
+            "serviceRole": "",
+            "isMultiStepDesign": false
+          }
+        },
+        "serviceInstance": {
+          "serviceId": {
+            "globalSubscriberId": "subscriberId",
+            "pnfs": {
+              "pnfInstanceV1": {
+                "name": "pnfName",
+                "pnfStoreKey": "pnfInstanceV1"
+              },
+              "pnfInstanceV2": {
+                "name": "pnfName2",
+                "pnfStoreKey": "pnfInstanceV2"
+              }
+            },
+            "modelInfo": {
+              "modelInvariantId": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+              "modelVersionId": "6b528779-44a3-4472-bdff-9cd15ec93450",
+              "modelName": "action-data",
+              "modelVersion": "1.0",
+              "uuid": "6b528779-44a3-4472-bdff-9cd15ec93450"
+            },
+            "instanceName": "InstanceName",
+            "owningEntityId": "d61e6f2d-12fa-4cc2-91df-7c244011d6fc",
+            "productFamilyId": "17cc1042-527b-11e6-beb8-9e71128cae77",
+            "lcpCloudRegionId": "AAIAIC25",
+            "tenantId": "092eb9e8e4b7412e8787dd091bc58e86",
+            "aicZoneId": "JAG1",
+            "projectName": null,
+            "rollbackOnFailure": "true",
+            "aicZoneName": "YUDFJULP-JAG1",
+            "owningEntityName": "WayneHolland",
+            "testApi": "GR_API",
+            "tenantName": "USP-SIP-IC-24335-T-01",
+            "bulkSize": 1,
+            "isALaCarte": false,
+            "name": "action-data",
+            "version": "1.0",
+            "description": "",
+            "category": "",
+            "uuid": "6b528779-44a3-4472-bdff-9cd15ec93450",
+            "invariantUuid": "e49fbd11-e60c-4a8e-b4bf-30fbe8f4fcc0",
+            "serviceType": "",
+            "serviceRole": "",
+            "isMultiStepDesign": false
+          }
+        },
+        "subscribers": [
+          {
+            "id": "someSubscriberId",
+            "name": "someSubscriberName",
+            "isPermitted": true
+          },
+          {
+            "id": "subscriberId",
+            "name": "subscriberName",
+            "isPermitted": true
+          },
+          {
+            "id": "subscriberId2",
+            "name": "subscriberName2",
+            "isPermitted": true
+          }
+        ]
+      }
+    }
+  }
+}
 
 describe('Default Data Generator Service', () => {
   let injector;
   let service: DefaultDataGeneratorService;
+  let store: NgRedux<AppState>;
   let httpMock: HttpTestingController;
 
   beforeAll(done => (async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-          providers: [DefaultDataGeneratorService,
-            {provide: NgRedux, useClass: MockAppStore}]
+      providers: [DefaultDataGeneratorService,
+        {provide: NgRedux, useClass: MockAppStore}]
     });
     await TestBed.compileComponents();
 
     injector = getTestBed();
     service = injector.get(DefaultDataGeneratorService);
     httpMock = injector.get(HttpTestingController);
+    store = injector.get(NgRedux);
   })().then(done).catch(done.fail));
 
   test('generateVFModule aLaCarte vf module object should missed data', () => {
@@ -124,7 +275,7 @@ describe('Default Data Generator Service', () => {
           "modelVersion": "1"
         },
         volumeGroupName: "",
-        isMissingData : false,
+        isMissingData: false,
         trackById: Math.random().toString()
       }, vfModuleModel, vnfModuleUUID, false, [], "");
       expect(newVfModule.name).toEqual('&lt;Automatically Assigned&gt;');
@@ -147,7 +298,7 @@ describe('Default Data Generator Service', () => {
           "modelVersion": "1"
         },
         volumeGroupName: "",
-        isMissingData : false,
+        isMissingData: false,
         trackById: Math.random().toString()
       }, vfModuleModel, vnfModuleUUID, true, [], "");
       expect(newVfModule.name).toEqual('&lt;Automatically Assigned&gt;');
@@ -159,7 +310,7 @@ describe('Default Data Generator Service', () => {
     test('createNewVnfTreeNode with isEcompGeneratedNaming instance name not filled - missing data true', () => {
       const vnfModel = generateServiceHierarchy().vnfs['VF_vGeraldine 0'];
       const newVnf = service.createNewTreeNode({
-        uuid : '',
+        uuid: '',
         instanceName: "",
         productFamilyId: "productFamilyId",
         lcpCloudRegionId: "lcpCloudRegionId",
@@ -168,7 +319,7 @@ describe('Default Data Generator Service', () => {
         platformName: "platformName",
         lineOfBusiness: "lineOfBusiness",
         rollbackOnFailure: "rollbackOnFailure",
-        originalName : null,
+        originalName: null,
         vfModules: {},
         modelInfo: {
           "modelCustomizationName": "VF_vGeraldine 0",
@@ -182,7 +333,7 @@ describe('Default Data Generator Service', () => {
         isMissingData: false,
         trackById: Math.random().toString(),
         vnfStoreKey: "abc"
-      }, new VNFModel(vnfModel),'VF_vGeraldine 0', 'vnfs');
+      }, new VNFModel(vnfModel), 'VF_vGeraldine 0', 'vnfs');
       expect(newVnf.name).toEqual('VF_vGeraldine 0');
       expect(newVnf.missingData).toEqual(true);
     });
@@ -190,7 +341,7 @@ describe('Default Data Generator Service', () => {
     test('createNewVnfTreeNode with isEcompGeneratedNaming instance name filled - missing data false', () => {
       const vnfModel = generateServiceHierarchy().vnfs['VF_vGeraldine 0'];
       const newVnf = service.createNewTreeNode({
-        uuid : '',
+        uuid: '',
         instanceName: "instanceName",
         productFamilyId: "productFamilyId",
         lcpCloudRegionId: "lcpCloudRegionId",
@@ -199,7 +350,7 @@ describe('Default Data Generator Service', () => {
         platformName: "platformName",
         lineOfBusiness: "lineOfBusiness",
         rollbackOnFailure: "rollbackOnFailure",
-        originalName : null,
+        originalName: null,
         vfModules: {},
         modelInfo: {
           "modelCustomizationName": "VF_vGeraldine 0",
@@ -213,12 +364,73 @@ describe('Default Data Generator Service', () => {
         isMissingData: false,
         trackById: Math.random().toString(),
         vnfStoreKey: "abc"
-      }, vnfModel,'VF_vGeraldine 0', 'vnfs');
+      }, vnfModel, 'VF_vGeraldine 0', 'vnfs');
       expect(newVnf.name).toEqual("instanceName");
       expect(newVnf.missingData).toEqual(false);
     });
   });
 
+  describe('#updatePnfsOnFirstSet tests', () => {
+
+    test('updatePnfsOnFirstSet should call createPNFInstanceReduxIfNotExist when pnfs exists and extended pnf flag is on', () => {
+      jest.spyOn(service, 'isExtendedMacroPnfConfigOn').mockReturnValue(true);
+      spyOn(service, 'createPNFInstanceReduxIfNotExist');
+
+      service.updatePnfsOnFirstSet("serviceId", {})
+
+      expect(service.createPNFInstanceReduxIfNotExist).toHaveBeenCalled();
+    });
+
+    test('updatePnfsOnFirstSet should not call createPNFInstanceReduxIfNotExist when pnfs exists and extended pnf flag is off', () => {
+      jest.spyOn(service, 'isExtendedMacroPnfConfigOn').mockReturnValue(false);
+      spyOn(service, 'createPNFInstanceReduxIfNotExist');
+
+      service.updatePnfsOnFirstSet("serviceId", {})
+
+      expect(service.createPNFInstanceReduxIfNotExist).not.toHaveBeenCalled();
+    });
+
+    test('updatePnfsOnFirstSet should not call createPNFInstanceReduxIfNotExist when min_instances == 0 and extended pnf flag is on', () => {
+      jest.spyOn(service, 'isExtendedMacroPnfConfigOn').mockReturnValue(true);
+      jest.spyOn(service, 'isMinInstancesGreaterThanZero').mockReturnValue(false);
+      spyOn(service, 'createPNFInstanceReduxIfNotExist');
+
+      service.updatePnfsOnFirstSet("serviceId", {})
+
+      expect(service.createPNFInstanceReduxIfNotExist).not.toHaveBeenCalled();
+    });
+
+    test('createPNFInstanceReduxIfNotExist should dispatch proper actions when pnf doesnt exist', () => {
+      let pnfData = {
+        modelInfo: {
+          modelCustomizationName: "pnfName"
+        }
+      };
+      spyOn(store, 'dispatch');
+
+      service.createPNFInstanceReduxIfNotExist("serviceId", pnfData);
+
+      expect(store.dispatch).toHaveBeenCalledWith(jasmine.objectContaining({
+        type: "CREATE_PNF_INSTANCE",
+      }));
+      expect(store.dispatch).toHaveBeenCalledWith(jasmine.objectContaining({
+        type: "CHANGE_INSTANCE_COUNTER",
+      }));
+    });
+
+    test('createPNFInstanceReduxIfNotExist should not dispatch anything when pnf exists', () => {
+      let pnfData = {
+        modelInfo: {
+          modelCustomizationName: "pnfInstanceV1"
+        }
+      };
+      spyOn(store, 'dispatch');
+
+      service.createPNFInstanceReduxIfNotExist("serviceId", pnfData);
+
+      expect(store.dispatch).not.toHaveBeenCalled();
+    });
+  });
 });
 
 
