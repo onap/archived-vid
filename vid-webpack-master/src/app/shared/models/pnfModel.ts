@@ -3,6 +3,8 @@ import {
   Level1ModelProperties,
   Level1ModelResponseInterface
 } from "./nodeModel";
+import {VNFModelResponseInterface} from "./vnfModel";
+import {Utils} from "../utils/utils";
 
 
 
@@ -18,10 +20,11 @@ export class PNFModel extends Level1Model{
   roles: string[] = [];
   properties: PnfProperties;
 
-  constructor(pnfJson?: PNFModelResponseInterface) {
+  constructor(pnfJson?: PNFModelResponseInterface, flags?: { [key: string]: boolean }) {
     super(pnfJson);
     if (pnfJson && pnfJson.properties) {
       this.properties = pnfJson.properties;
+      this.max = Utils.getMaxFirstLevel(this.properties, flags);
     }
   }
 

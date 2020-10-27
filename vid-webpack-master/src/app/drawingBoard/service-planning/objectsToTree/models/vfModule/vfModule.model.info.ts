@@ -146,7 +146,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
    * @param serviceModelId - current service id
    ************************************************************/
   onClickAdd(node: ITreeNode, serviceModelId: string): void {
-    const vnfStoreKey = this._sharedTreeService.getSelectedVNF() || this.getDefaultVNF(node.parent, serviceModelId);
+    const vnfStoreKey = this._sharedTreeService.getSelectedNF() || this.getDefaultVNF(node.parent, serviceModelId);
     if (vnfStoreKey) {
       this._dialogService.addDialog(GenericFormPopupComponent, {
         type: PopupType.VF_MODULE,
@@ -191,7 +191,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
     const vnfs = this._store.getState().service.serviceInstance[serviceModelId].vnfs;
     let count: number = 0;
     if (!_.isNil(this._store.getState().service.serviceInstance) && !_.isNil(this._store.getState().service.serviceInstance[serviceModelId])) {
-      const selectedVNF: string = this._sharedTreeService.getSelectedVNF();
+      const selectedVNF: string = this._sharedTreeService.getSelectedNF();
       if (selectedVNF) {
         count += this.countNumberOfVFModule(vnfs[selectedVNF], node);
       }else {
@@ -235,7 +235,7 @@ export class VFModuleModelInfo implements ILevelNodeInfo {
    * @param serviceModelId - service id
    ************************************************************/
   showNodeIcons(node: ITreeNode, serviceModelId: string): AvailableNodeIcons {
-    const selectedVNF: string = this._sharedTreeService.getSelectedVNF();
+    const selectedVNF: string = this._sharedTreeService.getSelectedNF();
     if (selectedVNF) {
       return this.showVFModuleOnSelectedVNF(node, selectedVNF, serviceModelId);
     } else {

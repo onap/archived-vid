@@ -5,6 +5,7 @@ export class PnfInstance extends Level1Instance {
 
   pnfStoreKey : string;
   statusMessage?: string;
+  position: number;
 
   constructor() {
     super();

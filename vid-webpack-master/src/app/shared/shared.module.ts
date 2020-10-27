@@ -99,6 +99,9 @@ import {MessageModal} from "./components/messageModal/message-modal.service";
 import {SpaceToUnderscorePipe} from "./pipes/spaceToUnderscore/space-to-underscore.pipe";
 import {ResizableModule} from 'angular-resizable-element';
 import {PnfPopupService} from "./components/genericFormPopup/genericFormServices/pnf/pnf.popup.service";
+import {PnfControlGenerator} from "./components/genericForm/formControlsServices/pnfGenerator/pnf.control.generator";
+
+
 
 @NgModule({
   imports: [
@@ -235,6 +238,7 @@ import {PnfPopupService} from "./components/genericFormPopup/genericFormServices
     ServiceControlGenerator,
     ServicePopupService,
     VnfControlGenerator,
+    PnfControlGenerator,
     VfModuleControlGenerator,
     ControlGeneratorUtil,
     SharedControllersService,
