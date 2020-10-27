@@ -71,7 +71,8 @@
                   <custom-ellipsis [id]="data?.jobStatus" [value]="data?.jobStatus | capitalizeAndFormat" [attr.data-tests-id]="'jobStatus'"></custom-ellipsis>
                 </td>
                 <td class="col-md-2" id="msoAdditionalInfo" style="width: 33%">
-                  <custom-ellipsis [id]="data?.additionalInfo" [value]="data?.additionalInfo" [attr.data-tests-id]="'additionalInfo'"></custom-ellipsis>
+				<span [innerHtml]="data?.additionalInfo"></span>
+                  <!--<custom-ellipsis [id]="data?.additionalInfo" [value]="data?.additionalInfo" [attr.data-tests-id]="'additionalInfo'"></custom-ellipsis> -->
                 </td>
               </tr>
               </tbody>

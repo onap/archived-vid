@@ -162,7 +162,10 @@ export class AuditInfoModalComponent {
       +currentTime.getHours()+":"+currentTime.getMinutes()+":"+currentTime.getSeconds()
     let fileName = this.spacetoUnderscore.transform(this.serviceInstanceName)+'_'+timestamp;
     let msoStatusTableElement = document.getElementById('service-instantiation-audit-info-mso');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(msoStatusTableElement);
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(msoStatusTableElement, {
+	  cellDates: true,
+      raw: true
+    });
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     /* save to file */
