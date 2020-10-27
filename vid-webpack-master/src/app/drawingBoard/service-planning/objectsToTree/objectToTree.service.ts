@@ -60,7 +60,7 @@ export class ObjectToTreeService {
     if (FeatureFlagsService.getFlagState(Features.FLAG_EXTENDED_MACRO_PNF_CONFIG, this._store) === true && isALaCarte === false) {
       return [new VnfModelInfo(this._dynamicInputsService, this._sharedTreeService, this._defaultDataGeneratorService, this._dialogService, this._vnfPopupService, this._vfModulePopupService, this._vfModuleUpgradePopupService, this._duplicateService, this._modalService, this._iframeService, this._componentInfoService, this._featureFlagsService, this._store)
         , new NetworkModelInfo(this._dynamicInputsService, this._sharedTreeService, this._dialogService, this._networkPopupService, this._duplicateService, this._modalService, this._iframeService, this._featureFlagsService, this._store),
-        new PnfModelInfoExtended(this._store, this._sharedTreeService, this._dialogService, this._pnfPopupService),
+        new PnfModelInfoExtended(this._store, this._sharedTreeService, this._dialogService, this._pnfPopupService, this._iframeService, this._duplicateService, this._modalService, this._dynamicInputsService),
         new VrfModelInfo(this._store, this._sharedTreeService, this._dialogService, this._iframeService, this._featureFlagsService, this._networkStepService, this._vpnStepService),
         new CollectionResourceModelInfo(this._store, this._sharedTreeService),
         new ConfigurationModelInfo(this._dynamicInputsService, this._sharedTreeService),

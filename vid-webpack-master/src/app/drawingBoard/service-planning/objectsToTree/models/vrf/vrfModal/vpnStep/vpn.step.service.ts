@@ -22,7 +22,7 @@ import {
   clearAssociateVRFMemberInstance,
   createVrfInstance
 } from "../../../../../../../shared/storeUtil/utils/vrf/vrf.actions";
-import {calculateNextUniqueModelName} from "../../../../../../../shared/storeUtil/utils/vnf/vnf.reducers";
+import {calculateNextUniqueModelName} from "../../../../../../../shared/storeUtil/utils/reducersHelper";
 
 @Injectable()
 export class VpnStepService {

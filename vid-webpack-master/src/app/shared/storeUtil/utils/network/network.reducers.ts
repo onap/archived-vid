@@ -8,7 +8,7 @@ import {
   UpdateNetworkInstanceAction
 } from "./network.actions";
 import {ServiceInstance} from "../../../models/serviceInstance";
-import {calculateNextUniqueModelName} from "../vnf/vnf.reducers";
+import {calculateNextUniqueModelName} from "../reducersHelper";
 import {ServiceState} from "../main.reducer";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
 import {deleteFirstLevel, updateServiceValidationCounter} from "../reducersHelper";

@@ -23,8 +23,8 @@ export class ServiceInstance extends NodeInstance{
   latestAvailableVersion: Number;
   pause: boolean;
   bulkSize: number;
-  pnfs: { [pnf_module_model_name: string]: PnfInstance; };
   vnfs: { [vnf_module_model_name: string]: VnfInstance; };
+  pnfs: { [pnf_module_model_name: string]: PnfInstance; };
   vrfs: { [vrf_model_name: string]: VrfInstance; };
   vnfGroups : {[vnf_module_model_name: string]: VnfGroupInstance; };
   networks: { [vnf_module_model_name: string]: NetworkInstance; };
@@ -36,8 +36,8 @@ export class ServiceInstance extends NodeInstance{
   validationCounter: number;
   existingNames:  {[key: string] : any};
   modelInavariantId?: string;
-  existingPNFCounterMap : { [pnf_module_model_name: string]: number; };
   existingVNFCounterMap : { [vnf_module_model_name: string]: number; };
+  existingPNFCounterMap : { [pnf_module_model_name: string]: number; };
   existingVRFCounterMap : { [vrf_module_model_name: string]: number; };
   existingVnfGroupCounterMap : { [vnf_group_module_model_name: string]: number; };
   existingNetworksCounterMap : { [network_module_model_name: string]: number; };

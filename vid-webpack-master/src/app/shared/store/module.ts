@@ -7,6 +7,7 @@ import {AAIEpics} from "../services/aaiService/aai.epics";
 import {createEpicMiddleware} from "redux-observable";
 import {AaiService} from "../services/aaiService/aai.service";
 import {applyMiddleware, createStore} from "redux";
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 @NgModule({
   imports: [NgReduxModule],
@@ -24,10 +25,14 @@ export class StoreModule {
     const persistedState = sessionStorage.getItem('reduxState') ?
       JSON.parse(sessionStorage.getItem('reduxState')) : {};
 
+    const composeEnhancers = composeWithDevTools({});
+
     const configStore = createStore(
       rootReducer,
       <any>persistedState,
-      applyMiddleware(epicMiddleware)
+      composeEnhancers(
+        applyMiddleware(epicMiddleware)
+      )
     );
 
     epicMiddleware.run(rootEpics.createEpics());
