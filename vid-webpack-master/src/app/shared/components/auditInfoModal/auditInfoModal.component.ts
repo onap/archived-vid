@@ -32,7 +32,7 @@ export class AuditInfoModalComponent {
   serviceModelId: string;
   jobId: string;
   vidInfoData: AuditStatus[] = [];
-  msoInfoData: AuditStatus[] = [];
+  msoInfoData : any= [];
   isAlaCarte: boolean;
   parentElementClassName = 'content';
   isLoading = true;
@@ -45,6 +45,7 @@ export class AuditInfoModalComponent {
   auditInfoModalComponentService : AuditInfoModalComponentService;
   serviceInstanceName : string;
   serviceModelVersion : any;
+  serviceInstanceId : any;
   exportMSOStatusFeatureEnabled: boolean;
   dataIsReady : boolean = false;
   jobDataLocal : any;
@@ -68,6 +69,7 @@ export class AuditInfoModalComponent {
         _iframeService.addClassOpenModal(this.parentElementClassName);
         this.serviceModelName = jobData.serviceModelName ? jobData.serviceModelName : '';
         this.serviceModelId = jobData.serviceModelId;
+        this.serviceInstanceId = jobData.serviceInstanceId;
         this.jobId = jobData.jobId;
         this.auditInfoModal.show();
         this.serviceInstanceName = jobData.serviceInstanceName;
@@ -152,6 +154,9 @@ export class AuditInfoModalComponent {
         this.vidInfoData = res[0];
         this.msoInfoData = res[1];
         this.msoInfoData.sort(this.getSortOrder("startTime"));
+        this.msoInfoData.forEach((element ) => {
+           element.instanceColumn = element.instanceName + " | " +"<br>" + element.instanceId;
+        });
         this.isLoading = false;
       });
   }

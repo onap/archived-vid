@@ -28,6 +28,7 @@ import org.onap.vid.job.Job;
 import org.onap.vid.model.JobAuditStatus;
 import org.onap.vid.mso.*;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
+import org.onap.vid.mso.rest.AsyncRequestStatus.Request;
 import org.onap.vid.mso.rest.AsyncRequestStatusList;
 import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
@@ -172,6 +173,7 @@ public class AuditServiceImpl implements AuditService{
         String instanceType = null;
         String modelType = "";
         String startTime = null;
+		String instanceId = "";
         AsyncRequestStatus.Request request = status.request;
         if (request != null) {
             if (request.requestId != null) {
@@ -182,6 +184,9 @@ public class AuditServiceImpl implements AuditService{
             if (request.requestDetails != null && request.requestDetails.modelInfo != null) {
                 modelType = request.requestDetails.modelInfo.modelType;
             }
+			
+			instanceId = extractInstanceId(modelType,request);
+			
             startTime = request.startTime;
 
             if (request.requestStatus != null) {
@@ -197,8 +202,26 @@ public class AuditServiceImpl implements AuditService{
             }
         }
         return new JobAuditStatus(requestId, instanceName, modelType, instanceType, startTime, finishTime,
-            jobStatus, additionalInfo);
+           jobStatus, instanceId, additionalInfo);
     }
+	
+	private String extractInstanceId(String modelType, Request request) {
+        if(null != request.instanceReferences) {
+            if("service".equalsIgnoreCase(modelType)) {
+                return request.instanceReferences.serviceInstanceId;
+            } else if("vfModule".equalsIgnoreCase(modelType)){
+                return request.instanceReferences.vfModuleInstanceId;
+            } else if("vnf".equalsIgnoreCase(modelType)) {
+                return request.instanceReferences.vnfInstanceId;
+            } else if("volumeGroup".equalsIgnoreCase(modelType)){
+                return request.instanceReferences.volumeGroupInstanceId;
+            } else {
+                return "";
+            }
+        }
+        return "";
+    }
+
     private String buildAdditionalInfo(AsyncRequestStatus.Request request) {
         String source = "";
         String statusMessage = "";

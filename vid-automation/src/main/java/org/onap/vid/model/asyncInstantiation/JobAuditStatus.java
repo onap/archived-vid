@@ -47,6 +47,7 @@ public class JobAuditStatus {
         this.startTime = startTime;
         this.finishTime = finishTime;
         this.jobStatus = jobStatus;
+		this.instanceId = instanceId;
         this.additionalInfo = additionalInfo;
     }
 
@@ -64,12 +65,22 @@ public class JobAuditStatus {
     private String additionalInfo;
     private String instanceName;
     private String instanceType;
+	private String instanceId;
 
     public String getInstanceType() {return instanceType;}
 
     public void setInstanceType(String instanceType) {this.instanceType = instanceType; }
 
     private Boolean isFinal;
+
+
+	public String getInstanceId() {
+		return instanceId;
+	}
+	
+	public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
 
     public String getJobStatus() {
         return jobStatus;

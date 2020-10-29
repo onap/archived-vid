@@ -150,12 +150,14 @@
       "uuid":"c8087818-6f3e-4451-b339-111a1a3e7970"
     }
   },
+  "pnfs": {},
   "vrfs":{},
   "instanceParams":[],
   "validationCounter":0,
   "existingNames":{
     "iperf_vnf_svc1":""
   },
+  "existingPNFCounterMap": {},
   "existingVNFCounterMap":{
     "fe200ee4-96bb-4a10-9022-a188a20cf145":2
   },

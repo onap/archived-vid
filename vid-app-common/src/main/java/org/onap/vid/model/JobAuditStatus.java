@@ -169,7 +169,7 @@ public class JobAuditStatus extends VidBaseEntity {
 
     public JobAuditStatus(UUID requestId, String instanceName,
                 String modelType, String instanceType, String startTime,
-                String finishTime, String jobStatus, String additionalInfo) {
+                String finishTime, String jobStatus, String instanceId, String additionalInfo) {
          this.requestId = requestId;
          this.instanceName = instanceName;
          this.modelType = modelType;
@@ -177,7 +177,8 @@ public class JobAuditStatus extends VidBaseEntity {
 
          this.startTime = startTime;
          this.finishTime = finishTime;
-
+		 
+		 this.instanceId = instanceId;
          this.jobStatus = jobStatus;
          this.additionalInfo = additionalInfo;
          this.created = dateStringToDate(finishTime);
@@ -185,6 +186,17 @@ public class JobAuditStatus extends VidBaseEntity {
     private String modelType;
     private String startTime;
     private String finishTime;
+	
+	 @Transient
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
+
+    private String instanceId;
 
     @Transient
     public String getModelType() {

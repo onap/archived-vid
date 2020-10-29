@@ -2,12 +2,14 @@
   "action": "None",
   "isDirty": true,
   "vnfs": {},
+  "pnfs": {},
   "vrfs": {},
   "instanceParams": [],
   "validationCounter": 0,
   "existingNames": {
     "oam_protected_net_svc1": ""
   },
+  "existingPNFCounterMap": {},
   "existingVNFCounterMap": {},
   "existingVRFCounterMap": {},
   "existingVnfGroupCounterMap": {},

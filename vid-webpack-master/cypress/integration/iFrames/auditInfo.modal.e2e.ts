@@ -60,8 +60,9 @@ describe('Audit information modal', function () {
             cy.setViewportToSmallPopup();
             cy.get('#service-instantiation-audit-info-mso thead tr th#instanceName').should("be.visible")
               .get('#service-instantiation-audit-info-mso tbody tr').each(function (row, index) {
+                let instanceColumn :any = res[index]['instanceName'] + " | undefined";
               assert.equal(row.find('#msoRequestId').text().trim(), res[index]['requestId']);
-              assert.equal(row.find('.msoInstanceName').text().trim(), res[index]['instanceName']);
+              assert.equal(row.find('.msoInstanceName').text().trim(),instanceColumn );
               assert.equal(row.find('#msoJobStatus').text().trim(), _.capitalize(res[index]['jobStatus']));
               assert.equal(row.find('#msoAdditionalInfo span').text().trim(), res[index]['additionalInfo']);
             });
@@ -107,8 +108,9 @@ describe('Audit information modal', function () {
             cy.setViewportToSmallPopup();
             cy.get('#service-instantiation-audit-info-mso thead tr th#instanceName').should("be.visible")
               .get('#service-instantiation-audit-info-mso tbody tr').each(function (row, index) {
+                const instanceColumn :any = expectedResult[index]['instanceName'] + " | " +expectedResult[index]['instanceId'];
               assert.equal(row.find('#msoRequestId').text().trim(), expectedResult[index]['requestId']);
-              assert.equal(row.find('.msoInstanceName').text().trim(), expectedResult[index]['instanceName']);
+              assert.equal(row.find('.msoInstanceName').text().trim(), instanceColumn);
               assert.equal(row.find('#msostartTime').text().trim(), expectedResult[index]['startTime']);
             });
           });

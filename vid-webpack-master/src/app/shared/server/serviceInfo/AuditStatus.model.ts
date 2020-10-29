@@ -9,6 +9,7 @@ export class AuditStatus{
   additionalInfo :any;
   instanceName: string;
   instanceType : string;
+  instanceId: any;
   modelType: string;
   startTime: string;
   finishTime: string;

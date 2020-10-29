@@ -11,7 +11,8 @@
         <br>
         <span style="font-size: 16px;">
           <!-- ServiceInstanceName(ServiceModelName/ServiceModelId) -->
-          <span title="Service Instance name">{{serviceInstanceName }}</span><span title="Service Model name"> ({{serviceModelName}}/</span>
+          <span title="Service Instance name">{{serviceInstanceName }} </span><span *ngIf= "serviceInstanceId" title="Service Instance ID"> | {{serviceInstanceId}}</span>
+          <span title="Service Model name"> ({{serviceModelName}}/</span>
           <span title="Service Model version">{{serviceModelVersion}})</span>
         </span>
       </div>
@@ -38,7 +39,7 @@
               <thead class="thead-dark row">
               <tr class="row">
                 <th scope="col" class="request-id">Request ID</th>
-                <th *ngIf="isAlaCarte&&isALaCarteFlagOn" id="instanceName" class="col-md-2" scope="col" >Instance Name</th>
+                <th *ngIf="isAlaCarte&&isALaCarteFlagOn" id="instanceName" class="col-md-2" scope="col" >Instance Name | <br>Instance ID</th>
                 <th>Model Type</th>
                 <th>Request Type</th>
                 <th>Start Time</th>
@@ -49,11 +50,11 @@
               </thead>
               <tbody>
               <tr class="row" *ngFor="let data of msoInfoData">
-                <td id="msoRequestId" style="width: 22%">
+                <td id="msoRequestId" class="col-md-2" style="width: 22%">
                   <custom-ellipsis [id]="data?.requestId" [value]="data?.requestId" [attr.data-tests-id]="'requestId'"></custom-ellipsis>
                 </td>
-                <td *ngIf="isAlaCarte && isALaCarteFlagOn" class="msoInstanceName" style="width: 10%">
-                  <custom-ellipsis [id]="data?.instanceName" [value]="data?.instanceName"></custom-ellipsis>
+                <td id="msoInstanceName" *ngIf="isAlaCarte && isALaCarteFlagOn" class="msoInstanceName col-md-2" style="width: 10%">
+                  <custom-ellipsis [id]="data?.instanceId" [value]="data?.instanceColumn"></custom-ellipsis>
                 </td>
                 <td id="msoModelType" style="width: 7%">
                   <custom-ellipsis [value]="data?.modelType"></custom-ellipsis>
