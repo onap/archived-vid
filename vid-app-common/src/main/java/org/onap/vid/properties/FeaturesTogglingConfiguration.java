@@ -3,6 +3,7 @@
  * VID
  * ================================================================================
  * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2020 Nokia. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +44,7 @@ public class FeaturesTogglingConfiguration {
     public FeatureManager featureManager(ServletContext servletContext, Environment environment) {
         final String defaultFilename = "features.properties";
 
-        String filename = environment.getProperty("features.set.filename");
+        String filename = environment.getProperty(getFeaturesPropDir());
 
         if (StringUtils.isBlank(filename)) {
             filename = defaultFilename;
@@ -59,5 +60,10 @@ public class FeaturesTogglingConfiguration {
                 ))
                 .build(), new AlternativeFeatureSetNameFromCookie(), servletContext
         );
+    }
+
+    private String getFeaturesPropDir() {
+        File file = new File("/usr/local/tomcat/properties/onap.features.properties");
+        return file.exists() ? "features.set.extfilename" : "features.set.filename";
     }
 }
