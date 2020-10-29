@@ -43,7 +43,7 @@ public class FeaturesTogglingConfiguration {
     public FeatureManager featureManager(ServletContext servletContext, Environment environment) {
         final String defaultFilename = "features.properties";
 
-        String filename = environment.getProperty("features.set.filename");
+        String filename = environment.getProperty(setPropDir());
 
         if (StringUtils.isBlank(filename)) {
             filename = defaultFilename;
@@ -59,5 +59,10 @@ public class FeaturesTogglingConfiguration {
                 ))
                 .build(), new AlternativeFeatureSetNameFromCookie(), servletContext
         );
+    }
+
+    private String setPropDir() {
+        File file = new File("/usr/local/tomcat/properties/onap.features.properties");
+        return file.exists() ? "features.set.extfilename" : "features.set.filename";
     }
 }
