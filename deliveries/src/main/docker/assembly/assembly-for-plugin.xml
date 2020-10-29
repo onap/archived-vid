@@ -34,6 +34,13 @@
 			<directory>../epsdk-app-onap/src/main/webapp/WEB-INF/cert</directory>
 			<outputDirectory>config</outputDirectory>
 		</fileSet>
+		<fileSet>
+			<includes>
+				<include>onap.features.properties</include>
+			</includes>
+			<directory>../vid-app-common/src/main/webapp/WEB-INF/conf</directory>
+			<outputDirectory>config</outputDirectory>
+		</fileSet>
 	</fileSets>
 	
 </assembly>

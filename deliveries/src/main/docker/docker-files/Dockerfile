@@ -51,7 +51,8 @@ ENV VID_KEYSTORE_FILENAME="${ROOT_DIR}/etc/org.onap.vid.jks" \
   VID_TRUSTSTORE_FILENAME="${ROOT_DIR}/etc/org.onap.vid.trust.jks" \
   VID_KEYSTORE_PASSWORD="ry1RLC\(\?M6\?2fQ\]1a2\)2y\{P:" \
   VID_TRUSTSTORE_PASSWORD="OBF:1dx01j0e1hs01t981mis1dws156s1ojc1qjc1zsx1pw31qob1qr71pyj1zst1qhy1ojq156i1dua1mm21tb61hvi1j0g1du2" \
-  VID_TOMCAT_PATH="/usr/local/tomcat/conf/"
+  VID_TOMCAT_PATH="/usr/local/tomcat/conf/" \
+  VID_ONAP_FEATURES_PROP="/usr/local/tomcat/conf/onap.features.properties"
 
 # Logging variables
 ENV VID_LOG_DIR="${ROOT_DIR}/logs" \
@@ -107,6 +108,7 @@ ENV VID_CONTACT_US_LINK="https://todo_contact_us_link.com" \
 ENV JAVA_OPTS="-Xmx1536m -Xms1536m"
 
 ADD maven/config/server.xml ${VID_TOMCAT_PATH}
+ADD maven/config/onap.features.properties ${VID_ONAP_FEATURES_PROP}
 ADD maven/scripts/*.sh /tmp/vid/
 RUN chown $user:$group /tmp/vid /usr/local/tomcat -R
 
