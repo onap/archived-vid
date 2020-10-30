@@ -10,20 +10,44 @@ Version: Guilin (7.0.x)
 :In a nutshell...:
 
 
-    *Security*
+The followinng areas have received improvements in Guilin Release
 
+   Pause:
+      * Pause/Stop on Failures.
+      * Pause Point Addition on Edit window inside the drawing board.
+      * Pause Point removal feature.
 
-    *Bug fixes*
+   Audit Info:
+      * Overhauling of the Audit Info screen popup.
+      * MSO Status table can now be exported and viewed as .csv files (in Excel and other type software)
+      * Audit Info pate is also refreshable now. New status from MSO will arrive upton pressing the refresh button.
 
+   VF Module Sequencing and Base Module Related Rules:
+     * The sequence of VF Modules can now be changed by dragging up and down in the drawing board.
+     * A sequence number box is introduced bearing the current position of the VF Module in the the list.
+     * Various rules have been put in place for special check on the Base module in the drawing board.
+
+*Security Issues*
+
+This section is empty.
+
+*Bug fixes*
+
+This section is empty.
 
 **Known Issues**
 
 This section is empty.
 
-
 **Resolved Issues**
 
-This section is empty.
+       https://jira.onap.org/browse/VID-862
+       https://jira.onap.org/browse/VID-902
+       https://jira.onap.org/browse/VID-889
+       https://jira.onap.org/browse/VID-875
+       https://jira.onap.org/browse/VID-861
+       https://jira.onap.org/browse/VID-860
+       https://jira.onap.org/browse/VID-858
 
 
 **Security Notes**
