@@ -9,6 +9,7 @@
         <button type="button" class="close" (click)="onCancelClick()">&times;</button>
         <span [attr.data-tests-id]="'audit-info-title'" class="modal-title">{{title}}</span>
         <br>
+		
         <span style="font-size: 16px;">
           <!-- ServiceInstanceName(ServiceModelName/ServiceModelId) -->
           <span title="Service Instance name">{{serviceInstanceName }} </span><span *ngIf= "serviceInstanceId" title="Service Instance ID"> | {{serviceInstanceId}}</span>
