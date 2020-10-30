@@ -20,17 +20,22 @@
 
 package org.onap.vid.model.aaiTree;
 
-import java.util.Map;
+import static org.onap.vid.aai.util.AAITreeConverter.PNF_TYPE;
 
-public interface ExistingElementsCounterMaps {
+public class Pnf extends Node {
 
-    Map<String, Long> getExistingVNFCounterMap();
+    public Pnf(AAITreeNode node) {
+        super(node);
+        fillCloudConfigurationProperties(this, node.getCloudConfiguration());
+    }
 
-    Map<String, Long> getExistingPNFCounterMap();
+    public static Pnf from(AAITreeNode node) {
+        Pnf pnf = new Pnf(node);
 
-    Map<String, Long> getExistingNetworksCounterMap();
+        if (node.getAdditionalProperties().get(PNF_TYPE) != null) {
+            pnf.setInstanceType(node.getAdditionalProperties().get(PNF_TYPE).toString());
+        }
 
-    Map<String, Long> getExistingVnfGroupCounterMap();
-
-    Map<String, Long> getExistingVRFCounterMap();
+        return pnf;
+    }
 }

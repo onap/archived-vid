@@ -226,6 +226,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
                 AsyncInstantiationBusinessLogicTest.AIC_ZONE_ID,
                 AsyncInstantiationBusinessLogicTest.AIC_ZONE_NAME,
                 vnfs,
+                null,
                 networks,
                 vnfGroups,
                 null,
@@ -397,7 +398,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         ServiceInstantiation serviceInstantiation = new ServiceInstantiation(createServiceModelInfo(), "038d99af-0427-42c2-9d15-971b99b9b489",
                 "JULIO ERICKSON", "some_project_name", "some_subscriber_id", "some_subscriber_name",
                 "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", null, "MOG", lcpCloudRegionId, null, tenantId,
-                null, null, null, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, instanceParams, false, 1, false, false,
+                null, null, null, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, instanceParams, false, 1, false, false,
                 null, null, null, null, null, null,
                 new VidNotions(InstantiationUI.TRANSPORT_SERVICE, ModelCategory.Transport, InstantiationUI.TRANSPORT_SERVICE, InstantiationType.Macro), "originalName"
         );

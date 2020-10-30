@@ -1064,7 +1064,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     public void whenLcpRegionNotEmpty_thenCloudRegionIdOfServiceIsLegacy() {
         String legacyCloudRegion = "legacyCloudRegion";
         ServiceInstantiation service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
-                null, null, "anyCloudRegion", legacyCloudRegion, null, null, null, null, null, null, null, null, null,
+                null, null, "anyCloudRegion", legacyCloudRegion, null, null, null, null, null, null, null, null, null, null,
                 false, 1,false, false, null, null, Action.Create.name(), UUID.randomUUID().toString(), null, null, null, "originalName");
         assertThat(service.getLcpCloudRegionId(), equalTo(legacyCloudRegion));
     }
@@ -1087,7 +1087,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     @NotNull
     protected ServiceInstantiation createServiceWithIsALaCarteAndAction(boolean isALaCarte, Action action) {
         return new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null,
                 false, 1, false, isALaCarte, null, null, action.name(),
                 UUID.randomUUID().toString(), null, null, null, "originalName");
     }

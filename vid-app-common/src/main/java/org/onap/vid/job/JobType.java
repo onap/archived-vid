@@ -37,6 +37,7 @@ public enum JobType {
     ALaCarteServiceInstantiation(ALaCarteServiceCommand.class),
     ALaCarteService(ALaCarteServiceCommand.class),
     VnfInstantiation(VnfCommand.class),
+    PnfInstantiation(PnfCommand.class),
     VfmoduleInstantiation(VfmoduleCommand.class),
     VolumeGroupInstantiation(VolumeGroupCommand.class),
     NetworkInstantiation(NetworkCommand.class),

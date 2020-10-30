@@ -3,3 +3,8 @@ blackDuckHubProjectVersionName.txt
 vid-parent_bdio.jsonld
 *.iml
 .idea/
+target/
+vid-app-common/node/
+vid-app-common/package-lock.json
+vid-webpack-master/package-lock.json
+

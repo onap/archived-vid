@@ -472,6 +472,43 @@ public class ServiceInfo extends DomainVo {
     }
 
     @Override
+    public String toString() {
+        return "ServiceInfo{" +
+                "jobId=" + jobId +
+                ", templateId=" + templateId +
+                ", userId='" + userId + '\'' +
+                ", msoRequestId=" + msoRequestId +
+                ", aLaCarte=" + aLaCarte +
+                ", jobStatus=" + jobStatus +
+                ", statusModifiedDate=" + statusModifiedDate +
+                ", hidden=" + hidden +
+                ", pause=" + pause +
+                ", retryEnabled=" + retryEnabled +
+                ", deletedAt=" + deletedAt +
+                ", owningEntityId='" + owningEntityId + '\'' +
+                ", owningEntityName='" + owningEntityName + '\'' +
+                ", project='" + project + '\'' +
+                ", aicZoneId='" + aicZoneId + '\'' +
+                ", aicZoneName='" + aicZoneName + '\'' +
+                ", tenantId='" + tenantId + '\'' +
+                ", tenantName='" + tenantName + '\'' +
+                ", regionId='" + regionId + '\'' +
+                ", regionName='" + regionName + '\'' +
+                ", serviceType='" + serviceType + '\'' +
+                ", subscriberName='" + subscriberName + '\'' +
+                ", subscriberId='" + subscriberId + '\'' +
+                ", serviceInstanceId='" + serviceInstanceId + '\'' +
+                ", serviceInstanceName='" + serviceInstanceName + '\'' +
+                ", serviceModelId='" + serviceModelId + '\'' +
+                ", serviceModelName='" + serviceModelName + '\'' +
+                ", serviceModelVersion='" + serviceModelVersion + '\'' +
+                ", createdBulkDate=" + createdBulkDate +
+                ", action=" + action +
+                ", requestSummary=" + requestSummary +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ServiceInfo)) return false;

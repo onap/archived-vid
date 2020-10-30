@@ -20,9 +20,11 @@
 
 package org.onap.vid.job.command;
 
+import org.onap.portalsdk.core.logging.logic.EELFLoggerDelegate;
 import org.onap.vid.exceptions.GenericUncheckedException;
 import org.onap.vid.job.Job;
 import org.onap.vid.job.JobCommand;
+import org.onap.vid.job.impl.JobWorker;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +33,8 @@ import java.util.function.Function;
 
 @Component
 public class JobCommandFactory {
+
+    private static final EELFLoggerDelegate LOGGER = EELFLoggerDelegate.getLogger(JobCommandFactory.class);
 
     final Function<Class<? extends JobCommand>, JobCommand> jobFactory;
 
@@ -54,6 +58,9 @@ public class JobCommandFactory {
     public JobCommand toCommand(Job job) {
 
         final JobCommand command = jobFactory.apply(job.getType().getCommandClass());
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "job: " + job);
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "job type: " + job.getType());
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "job command class: " + job.getType().getCommandClass());
         command.init(job.getSharedData(), job.getData());
 
         return command;

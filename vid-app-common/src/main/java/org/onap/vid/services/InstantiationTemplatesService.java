@@ -63,6 +63,7 @@ public class InstantiationTemplatesService {
         return new ServiceInstantiationTemplate(
             jobRequest,
             counterMap(jobRequest.getVnfs()),
+            counterMap(jobRequest.getPnfs()),
             counterMap(jobRequest.getNetworks()),
             counterMap(jobRequest.getVnfGroups()),
             emptyMap() // model info for VRF is not stored

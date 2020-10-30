@@ -165,11 +165,15 @@ public class AsyncInstantiationBusinessLogicImpl implements
     @Override
     public List<UUID> pushBulkJob(ServiceInstantiation request, String userId) {
 
+        logger.debug(EELFLoggerDelegate.debugLogger, "----------------------START pushBulkJob() ----------------------");
+
         List<UUID> uuids = new ArrayList<>();
         Date createdBulkDate = Calendar.getInstance().getTime();
         int bulkSize = request.getBulkSize();
+        logger.debug(EELFLoggerDelegate.debugLogger, "MG BULK SIZE: " + bulkSize);
         UUID templateId = UUID.randomUUID();
         for (int i = 0; i < bulkSize; i++) {
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG ITERATION: " + i);
             ServiceInstantiation clonedServiceInstantiation = cloneServiceInstantiation(request);
             ServiceInstantiation requestPerJob = prepareServiceToBeUnique(clonedServiceInstantiation);
             requestPerJob = clearStatusFromRequest(requestPerJob);
@@ -180,12 +184,43 @@ public class AsyncInstantiationBusinessLogicImpl implements
             Job job = jobAdapter.createServiceInstantiationJob(jobType, requestPerJob, templateId, userId, request.getTestApi(), optimisticUniqueServiceInstanceName, i);
             UUID jobId = job.getUuid();
 
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG SAVING DATA IN REPOSITORY");
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG userId: " + userId);
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG requestPerJob: " + requestPerJob);
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG jobId: " + jobId);
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG templateId: " + templateId);
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG createdBulkDate: " + createdBulkDate);
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG optimisticUniqueServiceInstanceName: " + optimisticUniqueServiceInstanceName);
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG serviceAction: " + serviceAction);
+
+            ServiceInfo servInfo =  createServiceInfo(
+                    userId, requestPerJob, jobId, templateId, createdBulkDate,
+                    optimisticUniqueServiceInstanceName, serviceAction,
+                    requestSummaryOrNull(requestPerJob));
+
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG created ServiceInfo: " + servInfo);
+
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG calling saveServiceInfo");
+
             asyncInstantiationRepository.saveServiceInfo(createServiceInfo(
                 userId, requestPerJob, jobId, templateId, createdBulkDate,
                 optimisticUniqueServiceInstanceName, serviceAction,
                 requestSummaryOrNull(requestPerJob)));
+
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG saveServiceInfo complemeted");
+
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG calling addJobRequest");
+
             asyncInstantiationRepository.addJobRequest(jobId, requestPerJob);
+
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG addJobRequest complemeted");
+
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG calling auditVidStatus");
+
             auditService.auditVidStatus(jobId, job.getStatus());
+
+            logger.debug(EELFLoggerDelegate.debugLogger, "MG auditVidStatus complemeted");
+
             uuids.add(jobId);
 
             jobService.add(job);
