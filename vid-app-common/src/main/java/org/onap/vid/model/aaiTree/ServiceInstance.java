@@ -41,6 +41,7 @@ public class ServiceInstance extends AbstractNode implements ExistingElementsCou
     private boolean isALaCarte;
 
     private Map<String, Vnf> vnfs = new HashMap<>();
+    private Map<String, Pnf> pnfs = new HashMap<>();
     private Map<String, Network> networks = new HashMap<>();
     private Map<String, Vrf> vrfs = new HashMap<>();
 
@@ -50,6 +51,7 @@ public class ServiceInstance extends AbstractNode implements ExistingElementsCou
 
     private int validationCounter;
     private Map<String, Long> existingVNFCounterMap;
+    private Map<String, Long> existingPNFCounterMap;
     private Map<String, Long> existingNetworksCounterMap;
     private Map<String, Long> existingVnfGroupCounterMap;
     private Map<String, Long> existingVRFCounterMap;
@@ -170,6 +172,14 @@ public class ServiceInstance extends AbstractNode implements ExistingElementsCou
         this.vnfs = vnfs;
     }
 
+    public Map<String, Pnf> getPnfs() {
+        return pnfs;
+    }
+
+    public void setPnfs(Map<String, Pnf> pnfs) {
+        this.pnfs = pnfs;
+    }
+
     public Map<String, Network> getNetworks() {
         return networks;
     }
@@ -203,8 +213,18 @@ public class ServiceInstance extends AbstractNode implements ExistingElementsCou
         return existingVNFCounterMap;
     }
 
+
     public void setExistingVNFCounterMap(Map<String, Long> existingVNFCounterMap) {
         this.existingVNFCounterMap = existingVNFCounterMap;
+    }
+
+    @Override
+    public Map<String, Long> getExistingPNFCounterMap() {
+        return existingPNFCounterMap;
+    }
+
+    public void setExistingPNFCounterMap(Map<String, Long> existingPNFCounterMap) {
+        this.existingPNFCounterMap = existingPNFCounterMap;
     }
 
     @Override

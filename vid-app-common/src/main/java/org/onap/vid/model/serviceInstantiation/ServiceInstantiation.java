@@ -59,6 +59,8 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
 
     private final Map<String, Vnf> vnfs;
 
+    private final Map<String, Pnf> pnfs;
+
     private final Map<String, Network> networks;
 
     private final Map<String, InstanceGroup> vnfGroups;
@@ -90,6 +92,7 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
                                 @JsonProperty("aicZoneId") String aicZoneId,
                                 @JsonProperty("aicZoneName") String aicZoneName,
                                 @JsonProperty("vnfs") Map<String, Vnf> vnfs,
+                                @JsonProperty("pnfs") Map<String, Pnf> pnfs,
                                 @JsonProperty("networks") Map<String, Network> networks,
                                 @JsonProperty("vnfGroups") Map<String, InstanceGroup> vnfGroups,
                                 @JsonProperty("vrfs") Map<String, VrfEntry> vrfs,
@@ -119,6 +122,7 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
         this.aicZoneId = aicZoneId;
         this.aicZoneName = aicZoneName;
         this.vnfs = vnfs;
+        this.pnfs = pnfs;
         this.networks = networks;
         this.vnfGroups = vnfGroups;
         this.vrfs = vrfs;
@@ -179,6 +183,10 @@ public class ServiceInstantiation extends BaseResource implements JobAdapter.Asy
 
     public Map<String, Vnf> getVnfs() {
         return emptyMapIfNull(vnfs);
+    }
+
+    public Map<String, Pnf> getPnfs() {
+        return emptyMapIfNull(pnfs);
     }
 
     public Map<String, Network> getNetworks() {

@@ -8,6 +8,7 @@ import org.onap.vid.aai.AaiClientInterface
 import org.onap.vid.aai.ExceptionWithRequestInfo
 import org.onap.vid.aai.model.ResourceType
 import org.onap.vid.changeManagement.RequestDetailsWrapper
+import org.onap.vid.job.impl.JobWorker
 import org.onap.vid.model.serviceInstantiation.*
 import org.onap.vid.mso.model.*
 import org.onap.vid.mso.model.BaseResourceInstantiationRequestDetails.*
@@ -248,9 +249,22 @@ class MsoRequestBuilder
                 }
         }
 
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "MG instanceParams in MsoRequestBuilder " + instanceParams[0]);
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "MG entries in MsoRequestBuilder " + instanceParams[0].entries);
+
+        for (key in instanceParams[0].keys) {
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "MG key in MsoRequestBuilder " + key);
+        }
+
+        for (value in instanceParams[0].values) {
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "MG value in MsoRequestBuilder " + value);
+        }
+
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "MG before stream ");
         val result: MutableMap<String, String> = instanceParams[0].entries.stream()
                 .filter { entry -> !keysToRemove.contains(entry.key) }
                 .collect(Collectors.toMap({ it.key }, { it.value }))
+        LOGGER.debug(EELFLoggerDelegate.debugLogger, "MG after stream ");
 
         return if (result.isEmpty()) emptyList() else listOf(result)
     }

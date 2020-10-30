@@ -112,9 +112,13 @@ public class JobWorker extends QuartzJobBean {
         NextCommand nextCommand;
         try {
             final JobCommand jobCommand = jobCommandFactory.toCommand(job);
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "MG calling command:" + jobCommand);
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "MG calling command type:" + jobCommand.getType());
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "MG calling command class:" + jobCommand.getType().getCommandClass());
             nextCommand = jobCommand.call();
         } catch (Exception e) {
             LOGGER.error("error while executing job from queue: {}", e, e);
+            LOGGER.debug("error while executing job from queue: {}", e, e);
             nextCommand = new NextCommand(FAILED);
         }
 

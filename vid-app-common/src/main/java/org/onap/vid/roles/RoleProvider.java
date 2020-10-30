@@ -93,7 +93,28 @@ public class RoleProvider {
 
         List<Role> roleList = new ArrayList<>();
         Map roles = getRolesFunction.apply(request);
-        final Map<String, String> owningEntityMap = owningEntityNameToOwningEntityIdMapper();
+
+        //TODO: this is only temporary solution, remove before commit!
+
+//        final Map<String, String> owningEntityMap = owningEntityNameToOwningEntityIdMapper();
+        Map<String, String> owningEntityMap = owningEntityNameToOwningEntityIdMapper();
+        LOG.debug(EELFLoggerDelegate.debugLogger, "MG Replacing owningEntityMap with new id to remove conflict");
+
+        LOG.debug(EELFLoggerDelegate.debugLogger, "MG original map: ");
+        for (Map.Entry<String,String> entry : owningEntityMap.entrySet()) {
+            LOG.debug(EELFLoggerDelegate.debugLogger, "MG Key = " + entry.getKey() + " value : " + entry.getValue());
+            if (entry.getKey() != null)
+            {
+                LOG.debug(EELFLoggerDelegate.debugLogger, "MG Replacing value for key" + entry.getKey());
+                owningEntityMap.replace(entry.getKey(), "07400d90-0699-4110-b3cf-7fe605098cb4");
+            }
+        }
+        LOG.debug(EELFLoggerDelegate.debugLogger, "MG updated map: ");
+        for (Map.Entry<String,String> entry : owningEntityMap.entrySet()) {
+            LOG.debug(EELFLoggerDelegate.debugLogger, "MG Key = " + entry.getKey() + " value : " + entry.getValue());
+        }
+
+        //TODO: this is only temporary solution, remove before commit!
 
         for (Object role : roles.keySet()) {
             org.onap.portalsdk.core.domain.Role sdkRol = (org.onap.portalsdk.core.domain.Role) roles.get(role);
@@ -157,6 +178,14 @@ public class RoleProvider {
     }
 
     public Role createRoleFromStringArr(String[] roleParts, String rolePrefix, Map<String, String> owningEntityMap) throws RoleParsingException {
+
+        LOG.debug(EELFLoggerDelegate.debugLogger, "MG ------------ start createRoleFromStringArr ");
+
+        LOG.debug(EELFLoggerDelegate.debugLogger, "MG Iterate over owningEntityMap: ");
+        for (Map.Entry<String,String> entry : owningEntityMap.entrySet()) {
+            LOG.debug(EELFLoggerDelegate.debugLogger, "MG Key = " + entry.getKey() + " value : " + entry.getValue());
+        }
+
         String globalCustomerID = replaceSubscriberNameToGlobalCustomerID(roleParts[0], rolePrefix);
         String owningEntityId = translateOwningEntityNameToOwningEntityId(roleParts[0], owningEntityMap);
 
