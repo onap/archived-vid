@@ -86,6 +86,11 @@ public class AsyncRequestStatus  {
 		public String vnfInstanceId;
 		public String vfModuleInstanceId;
 		public String volumeGroupInstanceId;
+
+        public String serviceInstanceName;
+        public String vnfInstanceName;
+        public String vfModuleInstanceName;
+        public String volumeGroupInstanceName;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

@@ -179,14 +179,15 @@ public class AuditServiceImpl implements AuditService{
             if (request.requestId != null) {
                 requestId = UUID.fromString(request.requestId);
             }
-            instanceName = extractInstanceName(instanceName, request);
+
             instanceType = request.requestType;
             if (request.requestDetails != null && request.requestDetails.modelInfo != null) {
                 modelType = request.requestDetails.modelInfo.modelType;
             }
 			
 			instanceId = extractInstanceId(modelType,request);
-			
+            instanceName = extractInstanceName(instanceName, request, modelType);
+
             startTime = request.startTime;
 
             if (request.requestStatus != null) {
@@ -221,7 +222,20 @@ public class AuditServiceImpl implements AuditService{
         }
         return "";
     }
-
+    private String extractInstanceName(String instanceName, AsyncRequestStatus.Request request, String modelType) {
+        if(null != request.instanceReferences) {
+            if("service".equalsIgnoreCase(modelType)) {
+                instanceName = request.instanceReferences.serviceInstanceName;
+            } else if("vfModule".equalsIgnoreCase(modelType)){
+                instanceName = request.instanceReferences.vfModuleInstanceName;
+            } else if("vnf".equalsIgnoreCase(modelType)) {
+                instanceName = request.instanceReferences.vnfInstanceName;
+            } else if("volumeGroup".equalsIgnoreCase(modelType)){
+                instanceName = request.instanceReferences.volumeGroupInstanceName;
+            }
+        }
+        return instanceName;
+    }
     private String buildAdditionalInfo(AsyncRequestStatus.Request request) {
         String source = "";
         String statusMessage = "";
