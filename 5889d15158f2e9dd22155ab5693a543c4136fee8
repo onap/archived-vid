@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dfe06d52_178e1d12",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-02T12:35:52Z",
+      "side": 1,
+      "message": "following",
+      "range": {
+        "startLine": 13,
+        "startChar": 4,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "5889d15158f2e9dd22155ab5693a543c4136fee8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a4b0423_806833bd",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-02T12:35:52Z",
+      "side": 1,
+      "message": "pate? Is this supposed to be \"panel\" or what?",
+      "range": {
+        "startLine": 23,
+        "startChar": 19,
+        "endLine": 23,
+        "endChar": 23
+      },
+      "revId": "5889d15158f2e9dd22155ab5693a543c4136fee8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f30fe38e_ee280355",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2020-11-02T12:35:52Z",
+      "side": 1,
+      "message": "upon",
+      "range": {
+        "startLine": 23,
+        "startChar": 81,
+        "endLine": 23,
+        "endChar": 86
+      },
+      "revId": "5889d15158f2e9dd22155ab5693a543c4136fee8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
