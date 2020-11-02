@@ -64,7 +64,7 @@
                                     <descriptor>assembly/assembly-for-plugin.xml</descriptor>
                                 </assembly>
                                 <tags>
-                                    <tag>6.0-STAGING-latest</tag>
+                                    <tag>7.0-STAGING-latest</tag>
                                     <tag>latest</tag>
                                     <tag>${docker.tag}</tag>
                                     <tag>${docker.latest.tag}</tag>
