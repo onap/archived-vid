@@ -2,7 +2,7 @@
      tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
   <div style="width: 100%; height: 100%" id="audit-info-modal" class=""
        [ngStyle]="style" mwlResizable [enableGhostResize]="true"
-       [resizeEdges]="{ bottom: true, right: true, top: true, left: true }" (resizeEnd)="onResizeEnd($event)"
+       [resizeEdges]="{ bottom: true, right: true, top: true, left: true, bottomRight : true, bottomLeft : true, topLeft : true, topRight : true }" (resizeEnd)="onResizeEnd($event)"
        [validateResize]="validate">
     <div class="modal-content">
       <div class="modal-header">
@@ -28,7 +28,7 @@
                 <a id="glossary_link" target="_blank" href="#" (click)="onNavigate()">Building Block (BB) glossary</a>
               </span>
               &nbsp;
-              <span>
+              <span *ngIf="showMoreAuditInfoLink">
                 <a id="full_screen_link" target="_parent" title="Go to drawing board" [href]="readOnlyRetryUrl()">
                   <i class="fa fa-external-link"></i>
                 </a>
