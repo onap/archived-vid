@@ -409,7 +409,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     @Test(dataProvider = "pauseAndInstanceParams")
     public void createMacroServiceInstantiationMsoRequestUniqueName(Boolean isPause, HashMap<String, String> vfModuleInstanceParamsMap, List vnfInstanceParams) throws Exception {
         defineMocks();
-        ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(isPause, createVnfList(vfModuleInstanceParamsMap, vnfInstanceParams, true), 2, true, PROJECT_NAME, false);
+        ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(isPause, createVnfList(vfModuleInstanceParamsMap, vnfInstanceParams, true), null, 2, true, PROJECT_NAME, false);
         final URL resource = this.getClass().getResource("/payload_jsons/bulk_service_request_unique_names.json");
         when(jobAdapterMock.createServiceInstantiationJob(any(), any(), any(), any(), any(), anyString(), any())).thenAnswer(invocation -> {
             Object[] args = invocation.getArguments();
@@ -481,7 +481,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         final ServiceInstantiation request = generateMockMacroServiceInstantiationPayload(
                 false,
                 createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
-                bulkSize, isUserProvidedNaming, projectName, true
+                createPnfList(), bulkSize, isUserProvidedNaming, projectName, true
         );
 
         // in "createServiceInstantiationJob()" we will probe the service, with the generated names
@@ -618,7 +618,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         ServiceInstantiation macroPayload = generateMockMacroServiceInstantiationPayload(
                 false,
                 createVnfList(instanceParamsMapWithoutParams, ImmutableList.of(vnfInstanceParamsMapWithParamsToRemove, vnfInstanceParamsMapWithParamsToRemove), true),
-                2, false,PROJECT_NAME, false);
+                createPnfList(), 2, false,PROJECT_NAME, false);
         ServiceInstantiation aLaCartePayload = generateALaCarteServiceInstantiationPayload();
 
         return new Object[][]{
@@ -733,7 +733,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
 
     @Test(dataProvider = "isPauseAndPropertyDataProvider")
     public void testServiceInstantiationPath_RequestPathIsAsExpected(boolean isPause, String expectedProperty) {
-        ServiceInstantiation serviceInstantiationPauseFlagTrue = generateMacroMockServiceInstantiationPayload(isPause, createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true));
+        ServiceInstantiation serviceInstantiationPauseFlagTrue = generateMacroMockServiceInstantiationPayload(isPause, createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true), createPnfList());
         String path = asyncInstantiationBL.getServiceInstantiationPath(serviceInstantiationPauseFlagTrue);
         Assert.assertEquals(path, SystemProperties.getProperty(expectedProperty));
     }
@@ -752,7 +752,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
         final ServiceInstantiation request = generateMockMacroServiceInstantiationPayload(
                 false,
                 createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
-                100, true,PROJECT_NAME, true
+                createPnfList(), 100, true,PROJECT_NAME, true
         );
 
         pushJobAndAssertDates(startTestDate, request);
@@ -1013,7 +1013,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
 
     @Test
     public void pushBulkJob_verifyMacroFlow_useMacroServiceInstantiationJobType(){
-        final ServiceInstantiation request = generateMacroMockServiceInstantiationPayload(false, Collections.emptyMap());
+        final ServiceInstantiation request = generateMacroMockServiceInstantiationPayload(false, Collections.emptyMap(), Collections.emptyMap());
 
         // in "createServiceInstantiationJob()" we will probe the service, with the generated names
         configureMockitoWithMockedJob();
@@ -1064,7 +1064,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     public void whenLcpRegionNotEmpty_thenCloudRegionIdOfServiceIsLegacy() {
         String legacyCloudRegion = "legacyCloudRegion";
         ServiceInstantiation service = new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
-                null, null, "anyCloudRegion", legacyCloudRegion, null, null, null, null, null, null, null, null, null,
+                null, null, "anyCloudRegion", legacyCloudRegion, null, null, null, null, null, null, null, null, null, null,
                 false, 1,false, false, null, null, Action.Create.name(), UUID.randomUUID().toString(), null, null, null, "originalName");
         assertThat(service.getLcpCloudRegionId(), equalTo(legacyCloudRegion));
     }
@@ -1087,7 +1087,7 @@ public class AsyncInstantiationBusinessLogicTest extends AsyncInstantiationBaseT
     @NotNull
     protected ServiceInstantiation createServiceWithIsALaCarteAndAction(boolean isALaCarte, Action action) {
         return new ServiceInstantiation(new ModelInfo(), null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null,
                 false, 1, false, isALaCarte, null, null, action.name(),
                 UUID.randomUUID().toString(), null, null, null, "originalName");
     }

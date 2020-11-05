@@ -213,7 +213,7 @@ public class AsyncInstantiationIntegrationTest extends AsyncInstantiationBaseTes
     private List<UUID> pushMacroBulk() {
         ServiceInstantiation serviceInstantiation = generateMockMacroServiceInstantiationPayload(false,
             createVnfList(instanceParamsMapWithoutParams, Collections.EMPTY_LIST, true),
-            3, true,PROJECT_NAME, true);
+            createPnfList(), 3, true,PROJECT_NAME, true);
         return asyncInstantiationBL.pushBulkJob(serviceInstantiation, USER_ID);
     }
 

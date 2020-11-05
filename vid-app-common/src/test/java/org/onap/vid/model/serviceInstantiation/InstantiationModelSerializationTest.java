@@ -81,6 +81,7 @@ public class InstantiationModelSerializationTest {
             emptyMap(),
             emptyMap(),
             emptyMap(),
+            emptyMap(),
             instanceParams,
             true,
             1,

@@ -32,6 +32,7 @@ public enum ResourceType {
 
     SERVICE_INSTANCE("service-instances", "service-instance-name"),
     GENERIC_VNF("generic-vnfs", "vnf-name"),
+    PNF("pnfs", "pnf-name"),
     L3_NETWORK("l3-networks", "network-name"),
     VF_MODULE("vf-modules", "vf-module-name"),
     INSTANCE_GROUP("instance-groups", "instance-group-name"),

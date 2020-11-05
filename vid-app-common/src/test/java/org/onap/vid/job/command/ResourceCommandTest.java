@@ -286,6 +286,7 @@ public class ResourceCommandTest {
         static ServiceInstantiation createService(List<Vnf> vnfs, List<Network> networks, List<InstanceGroup> vnfGroups) {
             return new ServiceInstantiation(mock(ModelInfo.class), null, null, null, null, null, null, null, null, null, null, null, null, null, null,
                     convertToMap(vnfs),
+                    convertToMap(null),
                     convertToMap(networks),
                     convertToMap(vnfGroups),
                     null,
