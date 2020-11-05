@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e6958d7_dec1261d",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1739
+      },
+      "writtenOn": "2020-11-05T15:20:25Z",
+      "side": 1,
+      "message": "Rachitha, can you fix this indentation please?",
+      "revId": "937eba216817b8463c3ad3f7f884dcbd939fb6c8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
