@@ -29,6 +29,7 @@ import org.onap.vid.model.aaiTree.ExistingElementsCounterMaps;
 public class ServiceInstantiationTemplate extends ServiceInstantiation implements ExistingElementsCounterMaps {
 
     private final Map<String, Long> existingVNFCounterMap;
+    private final Map<String, Long> existingPNFCounterMap;
     private final Map<String, Long> existingNetworksCounterMap;
     private final Map<String, Long> existingVnfGroupCounterMap;
     private final Map<String, Long> existingVRFCounterMap;
@@ -37,6 +38,7 @@ public class ServiceInstantiationTemplate extends ServiceInstantiation implement
     public ServiceInstantiationTemplate(
         ServiceInstantiation baseService,
         Map<String, Long> vnfCounterMap,
+        Map<String, Long> pnfCounterMap,
         Map<String, Long> networksCounterMap,
         Map<String, Long> vnfGroupCounterMap,
         Map<String, Long> VRFCounterMap
@@ -47,7 +49,7 @@ public class ServiceInstantiationTemplate extends ServiceInstantiation implement
             baseService.getProductFamilyId(), baseService.getInstanceName(), baseService.getSubscriptionServiceType(),
             baseService.getLcpCloudRegionId(), baseService.getLcpCloudRegionId(), baseService.getTenantId(),
             baseService.getTenantName(), baseService.getAicZoneId(), baseService.getAicZoneName(),
-            baseService.getVnfs(), baseService.getNetworks(), baseService.getVnfGroups(), baseService.getVrfs(),
+            baseService.getVnfs(), baseService.getPnfs(), baseService.getNetworks(), baseService.getVnfGroups(), baseService.getVrfs(),
             baseService.getInstanceParams(), baseService.isPause(), baseService.getBulkSize(),
             baseService.isRollbackOnFailure(), baseService.isALaCarte(), baseService.getTestApi(),
             baseService.getInstanceId(), Objects.toString(baseService.getAction(), null),
@@ -57,6 +59,7 @@ public class ServiceInstantiationTemplate extends ServiceInstantiation implement
         );
 
         this.existingVNFCounterMap = vnfCounterMap;
+        this.existingPNFCounterMap = pnfCounterMap;
         this.existingNetworksCounterMap = networksCounterMap;
         this.existingVnfGroupCounterMap = vnfGroupCounterMap;
         this.existingVRFCounterMap = VRFCounterMap;
@@ -65,6 +68,11 @@ public class ServiceInstantiationTemplate extends ServiceInstantiation implement
     @Override
     public Map<String, Long> getExistingVNFCounterMap() {
         return existingVNFCounterMap;
+    }
+
+    @Override
+    public Map<String, Long> getExistingPNFCounterMap() {
+        return existingPNFCounterMap;
     }
 
     @Override

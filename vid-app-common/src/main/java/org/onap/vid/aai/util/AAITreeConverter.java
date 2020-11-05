@@ -42,6 +42,7 @@ import org.springframework.stereotype.Component;
 public class AAITreeConverter {
 
     public static final String VNF_TYPE = "vnf-type";
+    public static final String PNF_TYPE = "pnf-type";
     public static final String NETWORK_TYPE = "network-type";
     public static final String NETWORK_ROLE = "network-role";
     public static final String PHYSICAL_NETWORK_NAME = "physical-network-name";
