@@ -7,7 +7,7 @@ import {
   CreateVRFInstanceAction, DeleteActionVrfInstanceAction, UndoDeleteActionVrfInstanceAction,
   VrfActions
 } from "./vrf.actions";
-import {calculateNextUniqueModelName} from "../vnf/vnf.reducers";
+import {calculateNextUniqueModelName} from "../reducersHelper";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
 
 export function vrfReducer(state: ServiceState, action: Action): ServiceState {

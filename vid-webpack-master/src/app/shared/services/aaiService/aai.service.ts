@@ -58,6 +58,7 @@ export class AaiService {
 
   getServiceModelById = (serviceModelId: string): Observable<any> => {
     if (_.has(this.store.getState().service.serviceHierarchy, serviceModelId)) {
+      this.initializePnfModelCustomizationName(this.store.getState().service.serviceHierarchy[serviceModelId]);
       return of(<any> JSON.parse(JSON.stringify(this.store.getState().service.serviceHierarchy[serviceModelId])));
     }
     let pathQuery: string = Constants.Path.SERVICES_PATH + serviceModelId;
@@ -319,6 +320,15 @@ export class AaiService {
       result = filteredArray[0].name;
     }
     return result;
+  }
+
+  initializePnfModelCustomizationName(serviceHierarchy) : void {
+    let pnfs = serviceHierarchy.pnfs;
+    for (let pnf in pnfs) {
+      if (!pnfs[pnf].modelCustomizationName){
+        pnfs[pnf].modelCustomizationName = pnf;
+      }
+    }
   }
 
   loadMockMembers(): any {

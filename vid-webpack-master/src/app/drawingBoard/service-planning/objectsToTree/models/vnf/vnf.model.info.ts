@@ -235,7 +235,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
             let storeKey: string = node.data.vnfStoreKey;
             this._store.dispatch(removeInstance(node.data.vnfStoreKey, serviceModelId, storeKey, node));
             this._store.dispatch(changeInstanceCounter(node.data.modelUniqueId, serviceModelId, -1, node));
-            this._sharedTreeService.selectedVNF = null;
+            this._sharedTreeService.selectedNF = null;
           } else {
             let messageBoxData: MessageBoxData = new MessageBoxData(
               "Remove VNF",  // modal title
@@ -306,7 +306,7 @@ export class VnfModelInfo implements ILevelNodeInfo {
   removeVnf(this, node, serviceModelId) {
     this._store.dispatch(removeInstance(node.data.modelName, serviceModelId, node.data.vnfStoreKey, node));
     this._store.dispatch(changeInstanceCounter(node.data.modelUniqueId, serviceModelId, -1, node));
-    this._sharedTreeService.selectedVNF = null;
+    this._sharedTreeService.selectedNF = null;
   }
 
   /***********************************************************
