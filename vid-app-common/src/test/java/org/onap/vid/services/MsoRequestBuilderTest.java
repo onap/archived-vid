@@ -137,7 +137,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
 
     @Test(dataProvider = "pauseAndInstanceParams", enabled = false) //Test is irrelevant with unique names feature
     public void createMacroServiceInstantiationMsoRequest(Boolean isPause, HashMap<String, String> vfModuleInstanceParamsMap, List vnfInstanceParams) throws Exception {
-        ServiceInstantiation serviceInstantiationPayload = generateMacroMockServiceInstantiationPayload(isPause, createVnfList(vfModuleInstanceParamsMap, vnfInstanceParams, true));
+        ServiceInstantiation serviceInstantiationPayload = generateMacroMockServiceInstantiationPayload(isPause, createVnfList(vfModuleInstanceParamsMap, vnfInstanceParams, true), createPnfList());
         final URL resource = this.getClass().getResource("/payload_jsons/bulk_macro_service_request.json");
         RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
                 msoRequestBuilder.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
@@ -166,9 +166,8 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     private void createMacroServiceInfo_WithUserProvidedNamingFalse_ServiceInfoIsAsExpected(boolean withVfmodules, boolean disabledHoming) throws IOException {
 
         ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
-                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, EMPTY_LIST, false),
-                1,
-                false, PROJECT_NAME, true);
+                createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, EMPTY_LIST, false), null,
+                1, false, PROJECT_NAME, true);
         URL resource;
         if (disabledHoming) {
             resource = this.getClass().getResource("/payload_jsons/bulk_service_no_homing.json");
@@ -258,7 +257,7 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     }
 
     private ServiceInstantiation generateServiceDeletionPayload() {
-        return generateMockServiceDeletionPayload(false, EMPTY_MAP, EMPTY_MAP, EMPTY_MAP, 1, true, PROJECT_NAME, false, "VNF_API", "1234567890");
+        return generateMockServiceDeletionPayload(false, EMPTY_MAP, EMPTY_MAP, EMPTY_MAP, EMPTY_MAP,1, true, PROJECT_NAME, false, "VNF_API", "1234567890");
     }
 
     @DataProvider
@@ -484,16 +483,14 @@ public class MsoRequestBuilderTest extends AsyncInstantiationBaseTest {
     public void checkIfNullProjectNameSentToMso() {
         ServiceInstantiation serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
                 createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, EMPTY_LIST, false),
-                1,
-                false, null, false);
+                createPnfList(), 1, false, null, false);
         RequestDetailsWrapper<ServiceInstantiationRequestDetails> result =
                 msoRequestBuilder.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
         JsonNode jsonNode = new ObjectMapper().valueToTree(result.requestDetails);
         Assert.assertTrue(jsonNode.get("project").isNull());
         serviceInstantiationPayload = generateMockMacroServiceInstantiationPayload(true,
                 createVnfList(vfModuleInstanceParamsMapWithParamsToRemove, EMPTY_LIST, false),
-                1,
-                false, "not null", false);
+                createPnfList(), 1, false, "not null", false);
         result = msoRequestBuilder.generateMacroServiceInstantiationRequest(null, serviceInstantiationPayload, serviceInstantiationPayload.getInstanceName(), "az2016");
         jsonNode = new ObjectMapper().valueToTree(result.requestDetails);
         Assert.assertTrue(jsonNode.get("project").get("projectName").asText().equalsIgnoreCase("not null"));

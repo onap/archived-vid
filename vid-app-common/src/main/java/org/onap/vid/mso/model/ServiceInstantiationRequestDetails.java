@@ -175,8 +175,8 @@ public class ServiceInstantiationRequestDetails {
     public static class ServiceInstantiationService implements UserParamTypes {
         private final ServiceInstantiationServiceInner serviceInstantiationServiceInner;
 
-        public ServiceInstantiationService(ModelInfo modelInfo, String instanceName, List<Map<String, String>> instanceParams, ServiceInstantiationVnfList vnfs) {
-            serviceInstantiationServiceInner = new ServiceInstantiationServiceInner(modelInfo, instanceName, instanceParams, vnfs);
+        public ServiceInstantiationService(ModelInfo modelInfo, String instanceName, List<Map<String, String>> instanceParams, List<ServiceInstantiationVnf> vnfs, List<ServiceInstantiationPnf> pnfs) {
+            serviceInstantiationServiceInner = new ServiceInstantiationServiceInner(modelInfo, instanceName, instanceParams, vnfs, pnfs);
         }
 
         @JsonProperty("service")
@@ -189,15 +189,15 @@ public class ServiceInstantiationRequestDetails {
             @JsonInclude(NON_EMPTY)
             public String instanceName;
             public List<Map<String, String>> instanceParams;
-            public ServiceInstantiationVnfList resources;
+            public Resources resources;
 
-            public ServiceInstantiationServiceInner(ModelInfo modelInfo, String instanceName, List<Map<String, String>> instanceParams, ServiceInstantiationVnfList vnfs) {
+            public ServiceInstantiationServiceInner(ModelInfo modelInfo, String instanceName, List<Map<String, String>> instanceParams, List<ServiceInstantiationVnf> vnfs, List<ServiceInstantiationPnf> pnfs) {
                 this.modelInfo.setModelType(modelInfo.getModelType());
                 this.modelInfo.setModelName(modelInfo.getModelName());
                 this.modelInfo.setModelVersionId(modelInfo.getModelVersionId());
                 this.instanceName = instanceName;
                 this.instanceParams = instanceParams;
-                this.resources = vnfs;
+                this.resources = new Resources(vnfs, pnfs);
             }
         }
     }
@@ -207,6 +207,15 @@ public class ServiceInstantiationRequestDetails {
 
         public ServiceInstantiationVnfList(List<ServiceInstantiationVnf> vnfList) {
             this.vnfs = vnfList;
+        }
+    }
+
+    public static class ServiceInstantiationPnfList{
+
+        public final List<ServiceInstantiationPnf> pnfs;
+
+        public ServiceInstantiationPnfList(List<ServiceInstantiationPnf> pnfList) {
+            this.pnfs = pnfList;
         }
     }
 
@@ -228,6 +237,25 @@ public class ServiceInstantiationRequestDetails {
             this.productFamilyId = productFamilyId;
             this.instanceParams = instanceParams;
             this.vfModules = vfModules;
+            this.instanceName = instanceName;
+        }
+    }
+
+    public static class ServiceInstantiationPnf{
+
+        public final ModelInfo modelInfo;
+        public final Platform platform;
+        public final LineOfBusiness lineOfBusiness;
+        public final String productFamilyId;
+        public final List<Map<String, String>>  instanceParams;
+        @JsonInclude(NON_EMPTY) public final String instanceName;
+
+        public ServiceInstantiationPnf(ModelInfo modelInfo, String platform, String lineOfBusiness, String productFamilyId, List<Map<String, String>>  instanceParams, String instanceName) {
+            this.modelInfo = modelInfo;
+            this.platform = new Platform(platform);
+            this.lineOfBusiness = new LineOfBusiness(lineOfBusiness);
+            this.productFamilyId = productFamilyId;
+            this.instanceParams = instanceParams;
             this.instanceName = instanceName;
         }
     }

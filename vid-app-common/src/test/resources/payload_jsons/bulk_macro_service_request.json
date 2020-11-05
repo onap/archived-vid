@@ -88,7 +88,29 @@
                                   "vre_a_volume_size_0": "100"
                                 }]
                               }]
-						}]
+						}],
+						"pnfs": [
+							{
+								"modelInfo": {
+									"modelCustomizationName": "modelCustomizationName",
+									"modelCustomizationId": "modelCustomizationId",
+									"modelInvariantId": "modelInvariantId",
+									"modelVersionId": "modelVersionId",
+									"modelName": "modelName",
+									"modelType": "pnf",
+									"modelVersion": "1.0"
+								},
+								"platform": {
+									"platformName": "platformName"
+								},
+								"lineOfBusiness": {
+									"lineOfBusinessName": "lineOfBusinessName"
+								},
+								"productFamilyId": "productFamilyId",
+								"instanceParams": [],
+								"instanceName": "instanceName"
+							}
+						]
 					}
 				}
 			}]
