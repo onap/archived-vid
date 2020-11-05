@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.onap.vid</groupId>
     <artifactId>vid-parent</artifactId>
-    <version>7.0.1-SNAPSHOT</version>
+    <version>7.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>vid</name>
 
@@ -86,7 +86,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <build.version>7.0.1-SNAPSHOT</build.version>
+        <build.version>7.0.2-SNAPSHOT</build.version>
         <nexusproxy>https://nexus.onap.org</nexusproxy>
         <snapshotNexusPath>content/repositories/snapshots/</snapshotNexusPath>
         <releaseNexusPath>content/repositories/releases/</releaseNexusPath>

@@ -8,7 +8,7 @@
         the Portal team. -->
     <groupId>org.onap.vid</groupId>
     <artifactId>epsdk-app-onap</artifactId>
-    <version>7.0.1-SNAPSHOT</version>
+    <version>7.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>ECOMP SDK Webapp for OpenSource</name>
     <description>ECOMP SDK Web Application for public release</description>
