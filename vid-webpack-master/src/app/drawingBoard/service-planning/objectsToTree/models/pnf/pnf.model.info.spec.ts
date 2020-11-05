@@ -12,9 +12,7 @@ import {IframeService} from "../../../../../shared/utils/iframe.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {MockNgRedux, NgReduxTestingModule} from "@angular-redux/store/testing";
 import {HttpClient, HttpHandler} from "@angular/common/http";
-import {CollectionResourceModel} from "../../../../../shared/models/collectionResourceModel";
 import {ComponentInfoType} from "../../../component-info/component-info-model";
-import {VNFModel} from "../../../../../shared/models/vnfModel";
 import {PNFModel} from "../../../../../shared/models/pnfModel";
 
 

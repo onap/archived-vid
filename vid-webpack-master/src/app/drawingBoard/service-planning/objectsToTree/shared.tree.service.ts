@@ -28,19 +28,21 @@ export class SharedTreeService {
    * @param dynamicInputs - from the instance
    * @param isEcompGeneratedNaming
    ************************************************************/
-  selectedVNF: string = null;
+  selectedNF: string = null;
 
-
-  getSelectedVNF(): string {
-    return this.selectedVNF;
+  getSelectedNF(): string {
+    return this.selectedNF;
   }
 
-  setSelectedVNF(node): void {
+  setSelectedNF(node): void {
     if (_.isNil(node) || node.data.type !== 'VF') {
-      this.selectedVNF = null;
-    } else {
-      this.selectedVNF = node.data.vnfStoreKey;
+      this.selectedNF = null;
+    } else if (node.data.type === 'VF'){
+      this.selectedNF = node.data.vnfStoreKey;
+    } else if (node.data.type === 'PNF'){
+      this.selectedNF = node.data.pnfStoreKey;
     }
+
   }
 
   /**

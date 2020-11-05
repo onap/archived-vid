@@ -197,7 +197,7 @@ describe('VFModule Model Info', () => {
         name : 'vnfName'
       }
     };
-    _sharedTreeService.setSelectedVNF({
+    _sharedTreeService.setSelectedNF({
       data : {
         id : 'vfModuleId',
         name : 'VfModuleName'
@@ -250,7 +250,7 @@ describe('VFModule Model Info', () => {
         }
       }
     };
-    jest.spyOn(_sharedTreeService, 'getSelectedVNF').mockReturnValue('vnfName');
+    jest.spyOn(_sharedTreeService, 'getSelectedNF').mockReturnValue('vnfName');
     jest.spyOn(_sharedTreeService, 'modelUniqueId').mockReturnValue('vnfCustomizationId');
     jest.spyOn(vfModuleModel, 'getOptionalVNFs').mockReturnValue([{vnfStoreKey: 'vnfName'}]);
     jest.spyOn(MockNgRedux.getInstance(), 'getState').mockReturnValue({
@@ -535,7 +535,7 @@ describe('VFModule Model Info', () => {
         }
       }
     });
-    jest.spyOn(_sharedTreeService, 'getSelectedVNF').mockReturnValue('vnfName_1');
+    jest.spyOn(_sharedTreeService, 'getSelectedNF').mockReturnValue('vnfName_1');
 
     let node = {
       data : {
@@ -557,7 +557,7 @@ describe('VFModule Model Info', () => {
 
 
   test('onClickAdd should open message box if no vnfStoreKey', ()=>{
-    jest.spyOn(_sharedTreeService, 'getSelectedVNF').mockReturnValue(null);
+    jest.spyOn(_sharedTreeService, 'getSelectedNF').mockReturnValue(null);
     jest.spyOn(vfModuleModel, 'getDefaultVNF').mockReturnValue(null);
     jest.spyOn(MessageBoxService.openModal, 'next');
     vfModuleModel.onClickAdd(<any>{}, 'serviceId');
