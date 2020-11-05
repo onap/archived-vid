@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6d4821ee_43e3cf2f",
+        "filename": "deliveries/src/main/scripts/start.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4965
+      },
+      "writtenOn": "2020-11-05T08:42:10Z",
+      "side": 1,
+      "message": "would it be possible to kill two birds with one stone and change here the logging configuration to STDOUT instead of file in /tmp?",
+      "revId": "4e0eef703656481458c9a5f084ff7c5fc23d2b3f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
