@@ -157,14 +157,16 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
     spyOn(component, 'initializeProperties');
     spyOn(component, 'setModalTitles');
     spyOn(component.auditInfoModal, 'show');
-    spyOn(_serviceInfoService, 'getAuditStatusForRetry');
+    spyOn(_serviceInfoService, 'getInstanceAuditStatus');
     jest.spyOn(_serviceInfoService, 'getInstanceAuditStatus').mockReturnValue(of([]))
 
     spyOn(AuditInfoModalComponentService, 'getInstanceModelName');
     const instanceId: string = "instanceID";
     const type: string = 'VNF';
     const model = {};
-    const instance = {};
+    const instance: NodeInstance = new NodeInstance();
+    instance.instanceId = 'instanceID';
+    instance.isFailed= false;
 
     AuditInfoModalComponent.openInstanceAuditInfoModal.next({
       instanceId: instanceId,
@@ -176,7 +178,7 @@ describe('Audit Info Modal Component_serviceInfoService', () => {
     expect(component.showVidStatus).toEqual(false);
     expect(component.initializeProperties).toHaveBeenCalled();
     expect(component.setModalTitles).toHaveBeenCalled();
-    expect(_serviceInfoService.getInstanceAuditStatus).toHaveBeenCalledWith(instanceId, type);
+    expect(_serviceInfoService.getInstanceAuditStatus).toHaveBeenCalledWith(instance.instanceId, type);
     expect(component.auditInfoModal.show).toHaveBeenCalled();
     expect(AuditInfoModalComponentService.getInstanceModelName).toHaveBeenCalledWith(model);
   });

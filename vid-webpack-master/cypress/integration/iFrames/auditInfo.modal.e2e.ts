@@ -128,6 +128,7 @@ function getExpectedResult() {
     {
       "requestId": "1fc2ef3b-26f0-4e62-a00a-6a31502d39e2",
       "instanceName": "zrdm54cfmgw01_sup_1",
+      "instanceId":"5fd7eb77-34c6-4cb9-adf7-03297d85e7ed",
       "modelType": "vfModule",
       "instanceType": "createInstance",
       "startTime": "Mon, 24 Aug 2020 22:54:29 GMT",
@@ -138,6 +139,7 @@ function getExpectedResult() {
     {
       "requestId": "a4e43d9e-4813-42e4-94bf-c5c6f22ed0bc",
       "instanceName": "zrdm54cfmgw01_base",
+      "instanceId":"5fd7eb77-34c6-4cb9-adf7-03297d85e9cc",
       "modelType": "vfModule",
       "instanceType": "createInstance",
       "startTime": "Mon, 24 Aug 2020 22:44:42 GMT",
@@ -148,6 +150,7 @@ function getExpectedResult() {
     {
       "requestId": "f1aa7175-c237-4b56-ba64-7cb728a38ff2",
       "instanceName": "zrdm54cfmgw01",
+      "instanceId":"f5c72b2c-8e32-43db-9c42-f2b7901c69d8",
       "modelType": "vnf",
       "instanceType": "createInstance",
       "startTime": "Mon, 24 Aug 2020 22:38:18 GMT",
@@ -158,6 +161,7 @@ function getExpectedResult() {
     {
       "requestId": "7ba7900c-3e51-4d87-b1b4-3c53bdfaaa7d",
       "instanceName": "zrdm54cfmgw01_svc",
+      "instanceId":"de46c407-9f9b-4f2f-b1c3-be1c6599b957",
       "modelType": "service",
       "instanceType": "createInstance",
       "startTime": "Mon, 24 Aug 2020 22:37:53 GMT",
