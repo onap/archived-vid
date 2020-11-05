@@ -112,6 +112,39 @@ describe('View Edit page: Add a second instance', () =>{
 
   });
 
+  it(`Open Audit info modal for the service instance, verify show audit info is not available for individual instance`, () =>{
+    const serviceType = 'Mobility';
+    const subscriberId = 'a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb';
+    const serviceModelId = '82255513-e19f-46e5-bdfb-957c6bf57b82';
+    const serviceInstanceId = 'e6cc1c4f-05f7-49bc-8e86-ac2eb92baaaa';
+
+    cy.initDrawingBoardUserPermission();
+    cy.route(`**/rest/models/services/${serviceModelId}`,
+      'fixture:../support/jsonBuilders/mocks/jsons/add_vnf/add_vnf_model.json')
+    .as('serviceModelAddVnf');
+
+    cy.route(`**/aai_get_service_instance_topology/${subscriberId}/${serviceType}/${serviceInstanceId}`,
+      'fixture:../support/jsonBuilders/mocks/jsons/add_vnf/add_vnf_instance.json')
+    .as('serviceInstanceAddVnf');
+
+    cy.openIframe(`app/ui/#/servicePlanning/EDIT?serviceModelId=${serviceModelId}&subscriberId=${subscriberId}&serviceType=${serviceType}&serviceInstanceId=${serviceInstanceId}`);
+    cy.getElementByDataTestsId('node-c8087818-6f3e-4451-b339-111a1a3e7970-iperf_vnf_2002_by5924 0-menu-btn').click({force: true}).then(() => {
+        cy.getElementByDataTestsId('context-menu-showAuditInfo').should('not.be.visible');
+      
+    });
+    cy.readFile('../vid-automation/src/test/resources/a-la-carte/auditInfoMSOALaCarteNew.json').then((res) => {
+    cy.initAuditInfoMSOALaCarteNew(res);
+    cy.getElementByDataTestsId('openMenuBtn').click({force:true}).then(() => {
+      cy.getElementByDataTestsId('context-menu-header-audit-item').click({force: true}).then(() => {
+
+        cy.setViewportToSmallPopup();
+        })
+    })
+
+    });
+    
+
+  });
 
   function mockAsyncBulkResponse() {
     cy.server().route({

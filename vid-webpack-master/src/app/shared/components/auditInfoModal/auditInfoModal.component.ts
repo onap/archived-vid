@@ -49,6 +49,9 @@ export class AuditInfoModalComponent {
   exportMSOStatusFeatureEnabled: boolean;
   dataIsReady : boolean = false;
   jobDataLocal : any;
+  isDrawingBoard :boolean = false;
+  serviceInstanceObject :any;
+  typeFromDrawingBoard: any;
   constructor(private _serviceInfoService: ServiceInfoService, private _iframeService : IframeService,
               private _auditInfoModalComponentService : AuditInfoModalComponentService,
               private _featureFlagsService: FeatureFlagsService,
@@ -56,10 +59,11 @@ export class AuditInfoModalComponent {
               private spacetoUnderscore: SpaceToUnderscorePipe,
               private store: NgRedux<AppState>) {
     this.auditInfoModalComponentService = this._auditInfoModalComponentService;
+    this.exportMSOStatusFeatureEnabled = _featureFlagsService.getFlagState(Features.FLAG_2011_EXPORT_MSO_STATUS);
     AuditInfoModalComponent.openModal.subscribe((jobData: ServiceInfoModel) => {
       this.isALaCarteFlagOn = this.store.getState().global.flags['FLAG_A_LA_CARTE_AUDIT_INFO'];
       this.showMoreAuditInfoLink = _featureFlagsService.getFlagState(Features.FLAG_MORE_AUDIT_INFO_LINK_ON_AUDIT_INFO);
-      this.exportMSOStatusFeatureEnabled = _featureFlagsService.getFlagState(Features.FLAG_2011_EXPORT_MSO_STATUS);
+      
       this.initializeProperties();
       this.showVidStatus = true;
       if (jobData) {
@@ -83,19 +87,20 @@ export class AuditInfoModalComponent {
     AuditInfoModalComponent.openInstanceAuditInfoModal.subscribe(({instanceId  , type ,  model, instance}) => {
       this.showVidStatus = false;
       this.showMoreAuditInfoLink = false;
+      this.isDrawingBoard = true;
       this.initializeProperties();
       this.setModalTitles(type);
       this.serviceModelName = AuditInfoModalComponentService.getInstanceModelName(model);
+      this.serviceInstanceObject = instance;
+      this.typeFromDrawingBoard = type;
 
-      if (instance.isFailed) {
-        this._serviceInfoService.getAuditStatusForRetry(instance.trackById).subscribe((res: AuditStatus) => {
-          this.msoInfoData = [res];
-        });
-      }else{
-        this._serviceInfoService.getInstanceAuditStatus(instanceId, type).subscribe((res : AuditStatus[]) =>{
-          this.msoInfoData = res;
-       });
+      this.callApi(instance, type);
+      
+      if(this.msoInfoData && Array.isArray(this.msoInfoData)) {
+        this.sortMsoInfo();
       }
+      
+      
       this.modelInfoItems = this.auditInfoModalComponentService.getModelInfo(model, instance, instanceId);
       _iframeService.addClassOpenModal(this.parentElementClassName);
       this.auditInfoModal.show();
@@ -106,7 +111,7 @@ export class AuditInfoModalComponent {
   validate(event: ResizeEvent): boolean {
     console.log("event : ", event);
     if(event.rectangle.width && event.rectangle.height &&
-      ( event.rectangle.width < 800 || event.rectangle.width > 1240)
+      ( event.rectangle.width < 600 || event.rectangle.width > 1412)
     ){
       return false;
     } else{
@@ -116,7 +121,7 @@ export class AuditInfoModalComponent {
   onResizeEnd(event: ResizeEvent): void {
     console.log('Element was resized', event);
     this.style = {
-      position: 'fixed',
+      position: 'relative',
       left: `${event.rectangle.left}px`,
       top: `${event.rectangle.top}px`,
       width: `${event.rectangle.width}px`,
@@ -153,10 +158,7 @@ export class AuditInfoModalComponent {
       .subscribe((res: AuditStatus[][]) => {
         this.vidInfoData = res[0];
         this.msoInfoData = res[1];
-        this.msoInfoData.sort(this.getSortOrder("startTime"));
-        this.msoInfoData.forEach((element ) => {
-           element.instanceColumn = element.instanceName + " | " +"<br>" + element.instanceId;
-        });
+        this.sortMsoInfo();
         this.isLoading = false;
       });
   }
@@ -167,10 +169,7 @@ export class AuditInfoModalComponent {
       +currentTime.getHours()+":"+currentTime.getMinutes()+":"+currentTime.getSeconds()
     let fileName = this.spacetoUnderscore.transform(this.serviceInstanceName)+'_'+timestamp;
     let msoStatusTableElement = document.getElementById('service-instantiation-audit-info-mso');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(msoStatusTableElement, {
-	  cellDates: true,
-      raw: true
-    });
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(msoStatusTableElement);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     /* save to file */
@@ -191,7 +190,11 @@ export class AuditInfoModalComponent {
 
   refreshData(): void {
     this.dataIsReady = false;
-    this.initAuditInfoData(this.jobDataLocal);
+    if(this.isDrawingBoard) {
+      this.callApi(this.serviceInstanceObject, this.typeFromDrawingBoard);
+    } else {
+      this.initAuditInfoData(this.jobDataLocal);
+    }
     this.dataIsReady = true;
 
   }
@@ -200,14 +203,32 @@ export class AuditInfoModalComponent {
 	getSortOrder(timestamp) {
 	  return (obj1, obj2) =>{
 
-		let firstObj = obj1[timestamp];
-		let secondObj = obj2[timestamp];
-		return ((secondObj < firstObj) ? -1 : ((secondObj > firstObj) ? 1 : 0));
+      let firstObj = obj1[timestamp];
+      let secondObj = obj2[timestamp];
+      return ((secondObj < firstObj) ? -1 : ((secondObj > firstObj) ? 1 : 0));
 
 	  }
-	}
+  }
+
+  sortMsoInfo() {
+    this.msoInfoData.sort(this.getSortOrder("startTime"));
+    this.msoInfoData.forEach((element ) => {
+       element.instanceColumn = element.instanceName + " | " +"<br>" + element.instanceId;
+    });
+  }
+  
+  callApi(instance, type) {
+    if (instance.isFailed) {
+      this._serviceInfoService.getAuditStatusForRetry(instance.trackById).subscribe((res: AuditStatus) => {
+        this.msoInfoData = [res];
+      });
+    }else{
+      this._serviceInfoService.getInstanceAuditStatus(instance.instanceId, type).subscribe((res : AuditStatus[]) =>{
+        this.msoInfoData = res;
+     });
+    }
+  }
 
   readOnlyRetryUrl = (): string =>
     `../../serviceModels.htm?more#/servicePlanning/RETRY?serviceModelId=${this.serviceModelId}&jobId=${this.jobId}`
 }
-

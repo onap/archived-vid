@@ -67,7 +67,6 @@ describe('Drawing board tree Service', () => {
     const expected: TreeNodeContextMenuModel[] = [
       new TreeNodeContextMenuModel('edit', 'context-menu-edit', 'Edit', 'edit-file-o'),
       new TreeNodeContextMenuModel('duplicate', 'context-menu-duplicate', 'Duplicate', 'copy-o'),
-      new TreeNodeContextMenuModel('showAuditInfo', 'context-menu-showAuditInfo', 'Show audit info', 'eye-o'),
       new TreeNodeContextMenuModel('addGroupMember', 'context-menu-addGroupMember', 'Add group members', 'plus'),
       new TreeNodeContextMenuModel('delete', 'context-menu-delete', 'Delete', 'trash-o'),
       new TreeNodeContextMenuModel('remove', 'context-menu-remove', 'Remove', 'trash-o'),
@@ -78,7 +77,7 @@ describe('Drawing board tree Service', () => {
       new TreeNodeContextMenuModel('pauseInstantiation', 'context-menu-pause', 'Add pause upon completion', 'pause-upon-completion'),
       new TreeNodeContextMenuModel('removePause', 'context-menu-removePause', 'Remove Pause', 'pause-upon-completion')
     ];
-    expect(options.length).toEqual(12);
+    expect(options.length).toEqual(11);
     expect(options).toEqual(expected);
   });
 
