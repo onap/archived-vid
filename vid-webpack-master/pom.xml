@@ -9,7 +9,7 @@
       inherit from a parent maven module. -->
   <groupId>org.onap.vid</groupId>
   <artifactId>vid-webpack-master</artifactId>
-  <version>7.0.1-SNAPSHOT</version>
+  <version>7.0.2-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>VID UI</name>
   <description>VID UI</description>

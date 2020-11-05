@@ -10,7 +10,7 @@ Version: Guilin (7.0.x)
 :In a nutshell...:
 
 
-The followinng areas have received improvements in Guilin Release
+The following areas have received improvements in Guilin Release
 
    Pause:
       * Pause/Stop on Failures.
@@ -20,7 +20,7 @@ The followinng areas have received improvements in Guilin Release
    Audit Info:
       * Overhauling of the Audit Info screen popup.
       * MSO Status table can now be exported and viewed as .csv files (in Excel and other type software)
-      * Audit Info pate is also refreshable now. New status from MSO will arrive upton pressing the refresh button.
+      * Audit Info page is also refreshable now. New status from MSO will arrive upon pressing the refresh button.
 
    VF Module Sequencing and Base Module Related Rules:
      * The sequence of VF Modules can now be changed by dragging up and down in the drawing board.
@@ -48,6 +48,7 @@ This section is empty.
        https://jira.onap.org/browse/VID-861
        https://jira.onap.org/browse/VID-860
        https://jira.onap.org/browse/VID-858
+	   https://jira.onap.org/browse/VID-890
 
 
 **Security Notes**
