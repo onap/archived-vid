@@ -2,7 +2,7 @@
  * ============LICENSE_START=======================================================
  * VID
  * ================================================================================
- * Copyright (C) 2017 - 2019 AT&T Intellectual Property. All rights reserved.
+ * Copyright (C) 2020 Nokia Intellectual Property. All rights reserved.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,19 +18,26 @@
  * ============LICENSE_END=========================================================
  */
 
-package org.onap.vid.model.aaiTree;
+package org.onap.vid.mso.model;
 
-import java.util.Map;
+import java.util.List;
 
-public interface ExistingElementsCounterMaps {
+public class Resources {
 
-    Map<String, Long> getExistingVNFCounterMap();
+    private final List<ServiceInstantiationRequestDetails.ServiceInstantiationVnf> vnfs;
+    private final List<ServiceInstantiationRequestDetails.ServiceInstantiationPnf> pnfs;
 
-    Map<String, Long> getExistingPNFCounterMap();
+    public Resources(List<ServiceInstantiationRequestDetails.ServiceInstantiationVnf> vnfs, List<ServiceInstantiationRequestDetails.ServiceInstantiationPnf> pnfs) {
+        this.vnfs = vnfs;
+        this.pnfs = pnfs;
+    }
 
-    Map<String, Long> getExistingNetworksCounterMap();
+    public List<ServiceInstantiationRequestDetails.ServiceInstantiationVnf> getVnfs() {
+        return vnfs;
+    }
 
-    Map<String, Long> getExistingVnfGroupCounterMap();
-
-    Map<String, Long> getExistingVRFCounterMap();
+    public List<ServiceInstantiationRequestDetails.ServiceInstantiationPnf> getPnfs() {
+        return pnfs;
+    }
 }
+

@@ -57,13 +57,10 @@ import org.onap.vid.model.Action;
 import org.onap.vid.model.ServiceInfo;
 import org.onap.vid.model.ServiceInfo.ServiceAction;
 import org.onap.vid.model.VidNotions;
-import org.onap.vid.model.serviceInstantiation.InstanceGroup;
-import org.onap.vid.model.serviceInstantiation.Network;
-import org.onap.vid.model.serviceInstantiation.ServiceInstantiation;
-import org.onap.vid.model.serviceInstantiation.VfModule;
-import org.onap.vid.model.serviceInstantiation.Vnf;
+import org.onap.vid.model.serviceInstantiation.*;
 import org.onap.vid.mso.RestObject;
 import org.onap.vid.mso.model.ModelInfo;
+import org.onap.vid.mso.model.ServiceInstantiationRequestDetails;
 import org.onap.vid.mso.model.ServiceInstantiationRequestDetails.UserParamNameAndValue;
 import org.onap.vid.mso.rest.AsyncRequestStatus;
 import org.onap.vid.mso.rest.RequestStatus;
@@ -190,22 +187,22 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
     }
 
 
-    public ServiceInstantiation generateMockMacroServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure) {
-        return generateMockServiceInstantiationPayload(isPause, vnfs, Collections.EMPTY_MAP, Collections.EMPTY_MAP, bulkSize, isUserProvidedNaming, projectName, rollbackOnFailure, false, null, Action.Create, null);
+    public ServiceInstantiation generateMockMacroServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs, Map<String, Pnf> pnfs, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure) {
+        return generateMockServiceInstantiationPayload(isPause, vnfs, pnfs, Collections.EMPTY_MAP, Collections.EMPTY_MAP, bulkSize, isUserProvidedNaming, projectName, rollbackOnFailure, false, null, Action.Create, null);
     }
 
     public ServiceInstantiation generateMockALaCarteServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs, Map<String, Network> networks, Map<String, InstanceGroup> vnfGroups, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure, String testApi) {
-        return generateMockServiceInstantiationPayload(isPause, vnfs, networks, vnfGroups, bulkSize, isUserProvidedNaming, projectName, rollbackOnFailure, true, testApi, Action.Create, null);
+        return generateMockServiceInstantiationPayload(isPause, vnfs, null, networks, vnfGroups, bulkSize, isUserProvidedNaming, projectName, rollbackOnFailure, true, testApi, Action.Create, null);
     }
 
     public ServiceInstantiation generateMockAlaCarteServiceDeletionPayload(boolean isPause, Map<String, Vnf> vnfs, Map<String, Network> networks, Map<String, InstanceGroup> vnfGroups, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure, String testApi, String instanceId) {
-        return generateMockServiceInstantiationPayload(isPause, vnfs, networks, vnfGroups, bulkSize, isUserProvidedNaming, projectName, rollbackOnFailure, true, testApi, Action.Delete, instanceId);
+        return generateMockServiceInstantiationPayload(isPause, vnfs, null, networks, vnfGroups, bulkSize, isUserProvidedNaming, projectName, rollbackOnFailure, true, testApi, Action.Delete, instanceId);
     }
 
-    public ServiceInstantiation generateMockServiceDeletionPayload(boolean isPause, Map<String, Vnf> vnfs, Map<String, Network> networks, Map<String, InstanceGroup> vnfGroups, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure, String testApi, String instanceId) {
-        return generateMockServiceInstantiationPayload(isPause, vnfs, networks, vnfGroups, bulkSize, isUserProvidedNaming, projectName, rollbackOnFailure, false, testApi, Action.Delete, instanceId);
+    public ServiceInstantiation generateMockServiceDeletionPayload(boolean isPause, Map<String, Vnf> vnfs, Map<String, Pnf> pnfs, Map<String, Network> networks, Map<String, InstanceGroup> vnfGroups, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure, String testApi, String instanceId) {
+        return generateMockServiceInstantiationPayload(isPause, vnfs, pnfs, networks, vnfGroups, bulkSize, isUserProvidedNaming, projectName, rollbackOnFailure, false, testApi, Action.Delete, instanceId);
     }
-    private ServiceInstantiation generateMockServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs, Map<String, Network> networks, Map<String, InstanceGroup> vnfGroups, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure, boolean isAlacarte, String testApi, Action action, String instanceId) {
+    private ServiceInstantiation generateMockServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs, Map<String, Pnf> pnfs, Map<String, Network> networks, Map<String, InstanceGroup> vnfGroups, int bulkSize, boolean isUserProvidedNaming, String projectName, boolean rollbackOnFailure, boolean isAlacarte, String testApi, Action action, String instanceId) {
         ModelInfo modelInfo = createModelInfo();
 
         List<Map<String,String>> instanceParams = createInstanceParams();
@@ -226,6 +223,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
                 AsyncInstantiationBusinessLogicTest.AIC_ZONE_ID,
                 AsyncInstantiationBusinessLogicTest.AIC_ZONE_NAME,
                 vnfs,
+                pnfs,
                 networks,
                 vnfGroups,
                 null,
@@ -304,6 +302,26 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         return createModelInfo("vnf", modelName, modelVersion, modelVersionId, modelInvariantId, modelCustomizationId, modelCustomizationName);
     }
 
+    protected ModelInfo createPnfModelInfo() {
+        ModelInfo modelInfo = new ModelInfo();
+        modelInfo.setModelCustomizationName("modelCustomizationName");
+        modelInfo.setModelCustomizationId("modelCustomizationId");
+        modelInfo.setModelInvariantId("modelInvariantId");
+        modelInfo.setModelVersionId("modelVersionId");
+        modelInfo.setModelName("modelName");
+        modelInfo.setModelType("pnf");
+        modelInfo.setModelVersion("1.0");
+        return modelInfo;
+    }
+
+    protected Pnf createPnf() {
+        ModelInfo modelInfo = createPnfModelInfo();
+        List<Map<String, String>> instanceParams = new ArrayList<>();
+
+        return new Pnf(modelInfo, "productFamilyId", "instanceName", null, "platformName", null, null,
+                null, instanceParams, "lineOfBusinessName", true,null, null, null, null, null, null);
+    }
+
     private ModelInfo createNetworkModelInfo(boolean isAlacarte, String modelCustomizationId)
     {
         ModelInfo modelInfo = new ModelInfo();
@@ -373,6 +391,16 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         return vnfs;
     }
 
+    protected Map<String, Pnf> createPnfList() {
+        Map<String, Pnf> pnfs = new HashMap<>();
+        Pnf pnf = createPnf();
+
+        pnfs.put(pnf.getModelInfo().getModelName(), pnf);
+
+
+        return pnfs;
+    }
+
     protected void mockAaiClientAaiStatusOK() {
         when(aaiClient.isNodeTypeExistsByName(eq(AsyncInstantiationBusinessLogicImpl.NAME_FOR_CHECK_AAI_STATUS), any())).thenReturn(false);
     }
@@ -387,8 +415,8 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         enableAddCloudOwnerOnMsoRequest(true);
     }
 
-    protected ServiceInstantiation generateMacroMockServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs) {
-        return generateMockMacroServiceInstantiationPayload(isPause, vnfs, 1, true, PROJECT_NAME, false);
+    protected ServiceInstantiation generateMacroMockServiceInstantiationPayload(boolean isPause, Map<String, Vnf> vnfs, Map<String, Pnf> pnfs) {
+        return generateMockMacroServiceInstantiationPayload(isPause, vnfs, pnfs,1, true, PROJECT_NAME, false);
     }
 
     protected ServiceInstantiation generatePre1806MacroTransportServiceInstantiationPayload(String tenantId, String lcpCloudRegionId) {
@@ -397,7 +425,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
         ServiceInstantiation serviceInstantiation = new ServiceInstantiation(createServiceModelInfo(), "038d99af-0427-42c2-9d15-971b99b9b489",
                 "JULIO ERICKSON", "some_project_name", "some_subscriber_id", "some_subscriber_name",
                 "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb", null, "MOG", lcpCloudRegionId, null, tenantId,
-                null, null, null, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, instanceParams, false, 1, false, false,
+                null, null, null, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, Collections.EMPTY_MAP, instanceParams, false, 1, false, false,
                 null, null, null, null, null, null,
                 new VidNotions(InstantiationUI.TRANSPORT_SERVICE, ModelCategory.Transport, InstantiationUI.TRANSPORT_SERVICE, InstantiationType.Macro), "originalName"
         );
@@ -516,7 +544,7 @@ public class AsyncInstantiationBaseTest extends AbstractTestNGSpringContextTests
                 "foo:002", instanceGroup2,
                 "foo:003", instanceGroup3
         );
-        return generateMockServiceInstantiationPayload(false, emptyMap(), emptyMap(), groups,
+        return generateMockServiceInstantiationPayload(false, emptyMap(), emptyMap(), emptyMap(), groups,
                 1, true, PROJECT_NAME, false, true, "VNF_API",
                 Action.None, "1234567890");
     }

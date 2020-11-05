@@ -25,6 +25,7 @@
   "rollbackOnFailure": null,
   "isALaCarte": false,
   "vnfs": {},
+  "pnfs": {},
   "networks": {},
   "vrfs": {},
   "vnfGroups": {},
@@ -89,6 +90,7 @@
   },
   "validationCounter": 0,
   "existingVNFCounterMap": {},
+  "existingPNFCounterMap": null,
   "existingNetworksCounterMap": {},
   "existingVnfGroupCounterMap": {},
   "existingVRFCounterMap": {}
