@@ -46,7 +46,6 @@ export class  DrawingBoardTreeService {
     return [
       new TreeNodeContextMenuModel('edit', 'context-menu-edit', 'Edit', 'edit-file-o'),
       new TreeNodeContextMenuModel('duplicate', 'context-menu-duplicate', 'Duplicate', 'copy-o'),
-      new TreeNodeContextMenuModel('showAuditInfo', 'context-menu-showAuditInfo', 'Show audit info', 'eye-o'),
       new TreeNodeContextMenuModel('addGroupMember', 'context-menu-addGroupMember', 'Add group members', 'plus'),
       new TreeNodeContextMenuModel('delete', 'context-menu-delete', 'Delete', 'trash-o'),
       new TreeNodeContextMenuModel('remove', 'context-menu-remove', 'Remove', 'trash-o'),
