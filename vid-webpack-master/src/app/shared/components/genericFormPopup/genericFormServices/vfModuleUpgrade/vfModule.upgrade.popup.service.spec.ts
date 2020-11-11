@@ -133,10 +133,6 @@ describe('VFModule popup service', () => {
     }
   }
 
-  test('get controls should return retainAssignments control with false', ()=> {
-    getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_ASSIGNMENTS, false, true);
-  });
-
   test('get controls should return retainVolumeGroup control with false', ()=> {
     getControlByNameAndCheckValue(UpgradeFormControlNames.RETAIN_VOLUME_GROUPS, false, true);
   });
@@ -209,12 +205,13 @@ describe('VFModule popup service', () => {
         }
       }
     };
-
+form.value['retainAssignments'] = false;
     let expectedMergePayload = {
       a: "value",
       b: "another",
       supplementaryFileContent: [{"name": "c", "value": "c"}, {"name": "d", "value": "1"}],
-      supplementaryFileName: "name"
+      supplementaryFileName: "name",
+	  retainAssignments: false
     };
 
     spyOn(store, 'dispatch');
