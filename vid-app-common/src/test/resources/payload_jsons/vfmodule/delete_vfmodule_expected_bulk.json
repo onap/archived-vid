@@ -59,7 +59,7 @@
             "trackById": "b0732bed-3ddf-43cc-b193-7f18db84e476",
             "isBase": true,
             "volumeGroupName": null,
-            "retainAssignments": true,
+            "retainAssignments": false,
             "sdncPreLoad": false,
             "supplementaryFile": null,
             "supplementaryFile_hidden": null,
