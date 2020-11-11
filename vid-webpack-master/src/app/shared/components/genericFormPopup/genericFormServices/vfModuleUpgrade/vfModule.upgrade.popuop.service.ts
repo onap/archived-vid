@@ -44,7 +44,6 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
 
   getControls(serviceId: string, vnfStoreKey: string, vfModuleStoreKey: string, isUpdateMode: boolean): FormControlModel[]  {
     let result: FormControlModel[] =[
-      this.getRetainAssignmentsControl(),
       this._sharedControllersService.getSDNCControl(null, true)
     ];
 
@@ -70,6 +69,7 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
 
     this.updateFormValueWithSupplementaryFile(form, that);
 
+form.value[UpgradeFormControlNames.RETAIN_ASSIGNMENTS] = false;
     this._store.dispatch(upgradeVFModule(modelName, vnfStoreKey, serviceInstanceId, dynamicModelName));
     this._store.dispatch(mergeObjectByPathAction(['serviceInstance', serviceInstanceId, 'vnfs', vnfStoreKey, 'vfModules', modelName, dynamicModelName], form.value));
     this._sharedTreeService.upgradeBottomUp(node, serviceInstanceId);
@@ -84,17 +84,6 @@ export class VfModuleUpgradePopupService extends VfModulePopupServiceBase {
       controlName: UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,
       displayName: 'Retain Volume Groups',
       dataTestId: UpgradeFormControlNames.RETAIN_VOLUME_GROUPS,
-      value: false,
-      validations: []
-    })
-  };
-
-  getRetainAssignmentsControl = (): CheckboxFormControl => {
-    return new CheckboxFormControl({
-      type: FormControlType.CHECKBOX,
-      controlName: UpgradeFormControlNames.RETAIN_ASSIGNMENTS,
-      displayName: 'Retain Assignments',
-      dataTestId: UpgradeFormControlNames.RETAIN_ASSIGNMENTS,
       value: false,
       validations: []
     })

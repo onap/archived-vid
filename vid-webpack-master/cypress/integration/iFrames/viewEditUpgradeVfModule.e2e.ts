@@ -318,7 +318,7 @@ describe('View Edit Page: Upgrade VFModule', function () {
     .drawingBoardTreeClickOnContextMenuOptionByName("Upgrade");
     // The following is needed when enabling FLAG_2002_VFM_UPGRADE_ADDITIONAL_OPTIONS
 
-    cy.getElementByDataTestsId('retainAssignments').click();
+    //cy.getElementByDataTestsId('retainAssignments').click();
     if (shouldVGCheckboxExist) {
       cy.getElementByDataTestsId('retainVolumeGroups').click();
     }
