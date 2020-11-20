@@ -186,6 +186,9 @@ public class AuditServiceImpl implements AuditService{
             }
 			
 			instanceId = extractInstanceId(modelType,request);
+			
+			//Instance name no more retrieved from requestInfo object rather from instance references, because
+            //for delete operation, requestInfo does not exists.
             instanceName = extractInstanceName(instanceName, request, modelType);
 
             startTime = request.startTime;
