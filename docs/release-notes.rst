@@ -485,6 +485,6 @@ A scheduler is needed for the change management feature to work (not included in
 
 **Other**
 
-In order to work properly, VID needs a working instance of SDC, A&AI and SO.
+In order to work properly, VID needs a working instance of SDC, A&AI and SO. All the required interfaces should be up and running.
 
 End of Release Notes
