@@ -104,7 +104,8 @@ public enum Features implements Feature {
     FLAG_2008_REMOVE_PAUSE_INSTANTIATION,
     FLAG_2008_PAUSE_VFMODULE_INSTANTIATION_FAILURE,
     FLAG_2011_EXPORT_MSO_STATUS,
-    FLAG_EXTENDED_MACRO_PNF_CONFIG;
+    FLAG_EXTENDED_MACRO_PNF_CONFIG,
+    FLAG_2012_UPGRADE_BASE_MODULE_FLAG;
 
     public boolean isActive() {
         return FeatureContext.getFeatureManager().isActive(this);

@@ -254,7 +254,10 @@ export class SharedTreeService {
 
   isVfMoudleCouldBeUpgraded(node, serviceModelId): boolean{
     return (FeatureFlagsService.getFlagState(Features.FLAG_FLASH_REPLACE_VF_MODULE, this._store) &&
-      (this.isThereAnUpdatedLatestVersion(serviceModelId) || this.isVfModuleCustomizationIdNotExistsOnModel(node, serviceModelId)))
+    (this.isThereAnUpdatedLatestVersion(serviceModelId) || this.isVfModuleCustomizationIdNotExistsOnModel(node, serviceModelId)) && 
+    (this.upgradeAllowedForBm(node,serviceModelId))) 
+
+    
   }
 
   isVfModuleCustomizationIdNotExistsOnModel(vfModuleNode, serviceModelId) {
@@ -563,5 +566,35 @@ export class SharedTreeService {
 
   isAddPositionFlagTrue():boolean{
     return FeatureFlagsService.getFlagState(Features.FLAG_2008_CREATE_VFMODULE_INSTANTIATION_ORDER_NUMBER, this._store);
+  }
+
+  upgradeAllowedForBm(node, serviceModelId):boolean {
+
+    if(FeatureFlagsService.getFlagState(Features.FLAG_2012_UPGRADE_BASE_MODULE_FLAG, this._store)){
+      let returnValue = false;
+      if(node.data.type == 'VFmodule') {
+        let serviceHierarchy = this._store.getState().service.serviceHierarchy[serviceModelId];
+        let vnf = node.parent.data.modelName;
+        let baseModuleFlag= (serviceHierarchy.vnfs[vnf].vfModules[node.data.modelName].properties.baseModule) ? true: false;
+
+        if(baseModuleFlag) {
+          if(node.parent.children.length >1) {
+            return returnValue;
+          }
+          else {
+            returnValue = true;
+          }
+        }else {
+          returnValue = true;
+        }
+
+      } else {
+        returnValue= true
+      }
+      
+      return returnValue;
+    } else {
+      return true;
+    }
   }
 }
