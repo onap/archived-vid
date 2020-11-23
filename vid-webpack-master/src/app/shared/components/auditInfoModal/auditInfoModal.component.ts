@@ -59,11 +59,10 @@ export class AuditInfoModalComponent {
               private spacetoUnderscore: SpaceToUnderscorePipe,
               private store: NgRedux<AppState>) {
     this.auditInfoModalComponentService = this._auditInfoModalComponentService;
-    this.exportMSOStatusFeatureEnabled = _featureFlagsService.getFlagState(Features.FLAG_2011_EXPORT_MSO_STATUS);
     AuditInfoModalComponent.openModal.subscribe((jobData: ServiceInfoModel) => {
       this.isALaCarteFlagOn = this.store.getState().global.flags['FLAG_A_LA_CARTE_AUDIT_INFO'];
       this.showMoreAuditInfoLink = _featureFlagsService.getFlagState(Features.FLAG_MORE_AUDIT_INFO_LINK_ON_AUDIT_INFO);
-      
+      this.exportMSOStatusFeatureEnabled = _featureFlagsService.getFlagState(Features.FLAG_2011_EXPORT_MSO_STATUS);
       this.initializeProperties();
       this.showVidStatus = true;
       if (jobData) {
@@ -85,6 +84,7 @@ export class AuditInfoModalComponent {
     });
 
     AuditInfoModalComponent.openInstanceAuditInfoModal.subscribe(({instanceId  , type ,  model, instance}) => {
+      this.exportMSOStatusFeatureEnabled = _featureFlagsService.getFlagState(Features.FLAG_2011_EXPORT_MSO_STATUS);
       this.showVidStatus = false;
       this.showMoreAuditInfoLink = false;
       this.isDrawingBoard = true;
@@ -95,11 +95,7 @@ export class AuditInfoModalComponent {
       this.typeFromDrawingBoard = type;
 
       this.callApi(instance, type);
-      
-      if(this.msoInfoData && Array.isArray(this.msoInfoData)) {
-        this.sortMsoInfo();
-      }
-      
+      this.sortMsoInfo();
       
       this.modelInfoItems = this.auditInfoModalComponentService.getModelInfo(model, instance, instanceId);
       _iframeService.addClassOpenModal(this.parentElementClassName);
@@ -198,23 +194,14 @@ export class AuditInfoModalComponent {
     this.dataIsReady = true;
 
   }
-  
-  //Comparer Function
-	getSortOrder(timestamp) {
-	  return (obj1, obj2) =>{
-
-      let firstObj = obj1[timestamp];
-      let secondObj = obj2[timestamp];
-      return ((secondObj < firstObj) ? -1 : ((secondObj > firstObj) ? 1 : 0));
-
-	  }
-  }
 
   sortMsoInfo() {
-    this.msoInfoData.sort(this.getSortOrder("startTime"));
-    this.msoInfoData.forEach((element ) => {
-       element.instanceColumn = element.instanceName + " | " +"<br>" + element.instanceId;
-    });
+    if(this.msoInfoData && Array.isArray(this.msoInfoData)) {
+      this.msoInfoData.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+      this.msoInfoData.forEach((element ) => {
+        element.instanceColumn = element.instanceName + " | " +"<br>" + element.instanceId;
+      });
+    }
   }
   
   callApi(instance, type) {
