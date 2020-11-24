@@ -546,7 +546,11 @@ public class AaiClient implements AaiClientInterface {
     public AaiResponse<Services> getSubscriberData(String subscriberId, boolean omitServiceInstances) {
         String depth = omitServiceInstances ? "1" : "2";
         AaiResponse<Services> subscriberDataResponse;
-        Response resp = doAaiGet(BUSINESS_CUSTOMERS_CUSTOMER + subscriberId + "?depth=" + depth, false);
+		String query = depth.equals("1") ?
+                BUSINESS_CUSTOMERS_CUSTOMER + subscriberId + "?depth=" + depth :
+                BUSINESS_CUSTOMERS_CUSTOMER + subscriberId + "?depth=" + depth +"&nodes-only";
+				
+        Response resp = doAaiGet(query, false);
         subscriberDataResponse = processAaiResponse(resp, Services.class, null);
         return subscriberDataResponse;
     }
