@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "86de33ee_5a56d349",
+        "filename": "vid-app-common/src/main/java/org/onap/vid/aai/AaiClient.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 1739
+      },
+      "writtenOn": "2020-11-25T19:44:56Z",
+      "side": 1,
+      "message": "Please align this line to left - Align with the line above - \u0027AaiReponse\u003cServices\u003e ...\u0027",
+      "revId": "1eb57fdf677602acae8faf9af5abeccef8419696",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
