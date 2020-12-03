@@ -18,6 +18,7 @@
       "globalSubscriberId": "{some subscriber id}"
     },
     "requestInfo": {
+      "instanceName": "MOW AVPN vMX BV vPE 1 Service",
       "productFamilyId": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
       "source": "VID",
       "suppressRollback": false,
@@ -28,6 +29,7 @@
       "aLaCarte": false,
       "userParams": [{
         "service": {
+          "instanceName": "MOW AVPN vMX BV vPE 1 Service",
           "modelInfo": {
             "modelType": "service",
             "modelName": "MOW AVPN vMX BV vPE 1 Service",
