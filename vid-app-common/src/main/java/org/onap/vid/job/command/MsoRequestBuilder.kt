@@ -189,11 +189,13 @@ class MsoRequestBuilder
     }
 
     private fun generateServiceName(jobId: UUID?, payload: ServiceInstantiation, optimisticUniqueServiceInstanceName: String): String? {
-        var serviceInstanceName: String? = null
-        if (StringUtils.isNotEmpty(optimisticUniqueServiceInstanceName)) {
-            serviceInstanceName = peekServiceName(jobId, payload, optimisticUniqueServiceInstanceName)
+        var serviceInstanceName: String
+        if (StringUtils.isEmpty(optimisticUniqueServiceInstanceName)) {
+            serviceInstanceName = payload.modelInfo.modelName
+        } else {
+            serviceInstanceName = optimisticUniqueServiceInstanceName
         }
-        return serviceInstanceName
+        return peekServiceName(jobId, payload, serviceInstanceName)
     }
 
     private fun peekServiceName(jobId: UUID?, payload: ServiceInstantiation, optimisticUniqueServiceInstanceName: String): String {
@@ -202,7 +204,7 @@ class MsoRequestBuilder
         if (isNameFreeInAai(optimisticUniqueServiceInstanceName, ResourceType.SERVICE_INSTANCE)) {
             serviceInstanceName = optimisticUniqueServiceInstanceName
         } else {
-            serviceInstanceName = asyncInstantiationBL.getUniqueName(payload.instanceName, ResourceType.SERVICE_INSTANCE)
+            serviceInstanceName = asyncInstantiationBL.getUniqueName(optimisticUniqueServiceInstanceName, ResourceType.SERVICE_INSTANCE)
         }//otherwise we used the original service instance name (from payload) to get a new unique name from DB and AAI
 
         //update serviceInfo with new name if needed
