@@ -325,8 +325,8 @@ export class SharedTreeService {
 
   shouldShowButtonGeneric(node, method, serviceModelId) {
     const mode = this._store.getState().global.drawingBoardStatus;
-    const isMacro = !(this.getServiceInstance(serviceModelId).isALaCarte);
-
+	const isMacro = this.getServiceInstance(serviceModelId) ? !(this.getServiceInstance(serviceModelId).isALaCarte) : false;
+	//  const isMacro = !(this.getServiceInstance(serviceModelId).isALaCarte);
     if (isMacro) { //if macro action allowed only for service level
       return false;
     }
