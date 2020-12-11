@@ -574,8 +574,17 @@ export class SharedTreeService {
       let returnValue = false;
       if(node.data.type == 'VFmodule') {
         let serviceHierarchy = this._store.getState().service.serviceHierarchy[serviceModelId];
-        let vnf = node.parent.data.modelName;
-        let baseModuleFlag= (serviceHierarchy.vnfs[vnf].vfModules[node.data.modelName].properties.baseModule) ? true: false;
+        let vnf :any;
+        let baseModuleFlag: any;
+
+        if(node.parent) {
+            vnf= node.parent.data.modelName;
+        } 
+        
+        if(vnf) {
+            baseModuleFlag=(serviceHierarchy.vnfs[vnf].vfModules[node.data.modelName].properties.baseModule) ? true: false;
+        }
+        
 
         if(baseModuleFlag) {
           if(node.parent.children.length >1) {
