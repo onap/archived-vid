@@ -147,7 +147,7 @@ export class ControlGeneratorUtil {
           case 'select' :
           case 'boolean' : {
             data.value = data.value || input.optionList.filter((option) => option.isDefault ? option.id || option.name : null);
-            data.onInit = this.getSubscribeInitResult.bind(null, this.getInputsOptions.bind(this, input.optionList));
+            data.onInit = this.getSubscribeInitResult.bind(null, input.optionList == null ? this.getBooleanOptions : this.getInputsOptions.bind(this, input.optionList));
             result.push(new DropdownFormControl(data));
             break;
           }
@@ -247,6 +247,13 @@ export class ControlGeneratorUtil {
     return of([
       new SelectOption({id: 'true', name: 'Rollback'}),
       new SelectOption({id: 'false', name: 'Don\'t Rollback'})
+    ]);
+  };
+
+  getBooleanOptions = (): Observable<SelectOption[]> => {
+    return of([
+      new SelectOption({id: 'true', name: 'true'}),
+      new SelectOption({id: 'false', name: 'false'})
     ]);
   };
 

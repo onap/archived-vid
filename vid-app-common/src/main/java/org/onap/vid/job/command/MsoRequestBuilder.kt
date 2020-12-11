@@ -250,9 +250,10 @@ class MsoRequestBuilder
                 }
         }
 
-        val result: MutableMap<String, String> = instanceParams[0].entries.stream()
+        val result: MutableMap<String, String> = mutableMapOf();
+        instanceParams[0].entries.stream()
                 .filter { entry -> !keysToRemove.contains(entry.key) }
-                .collect(Collectors.toMap({ it.key }, { it.value }))
+                .forEach { t -> result.put(t.key, t.value) }
 
         return if (result.isEmpty()) emptyList() else listOf(result)
     }
