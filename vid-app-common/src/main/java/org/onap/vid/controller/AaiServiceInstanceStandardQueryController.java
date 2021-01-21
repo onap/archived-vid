@@ -139,6 +139,10 @@ public class AaiServiceInstanceStandardQueryController extends VidRestrictedBase
         if (serviceModel == null) {
             throw new GenericUncheckedException("Internal error while fetching Service Model: " + sdcModelUuid);
         }
+        if (serviceModel.getService() == null || serviceModel.getService().getVidNotions() == null) {
+            return false;
+        }
+
         VidNotions.ModelCategory serviceModelCategory = serviceModel.getService().getVidNotions().getModelCategory();
         return (serviceModelCategory == VidNotions.ModelCategory.IS_5G_PROVIDER_NETWORK_MODEL) ||
                 (serviceModelCategory == VidNotions.ModelCategory.IS_5G_FABRIC_CONFIGURATION_MODEL);
