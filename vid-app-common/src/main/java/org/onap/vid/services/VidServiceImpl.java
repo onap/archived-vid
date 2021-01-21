@@ -127,6 +127,7 @@ public class VidServiceImpl implements VidService {
         try {
             return serviceModelCache.get(uuid);
         } catch (ExecutionException e) {
+            LOG.error("Failed to get service info from cache ", e.getLocalizedMessage());
             if (e.getCause() instanceof AsdcCatalogException) {
                 throw (AsdcCatalogException) e.getCause();
             } else if (e.getCause() instanceof NullServiceModelException) {
@@ -155,6 +156,7 @@ public class VidServiceImpl implements VidService {
         try {
             return toscaParser.makeServiceModel(serviceCsar, asdcServiceMetadata);
         } catch (SdcToscaParserException e) {
+            LOG.error("Failed to create service model using sdc tosca library", e);
             return tosca.makeServiceModel(uuid, serviceCsar, asdcServiceMetadata);
         }
     }
