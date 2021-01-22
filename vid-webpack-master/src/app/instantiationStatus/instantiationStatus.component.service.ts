@@ -174,7 +174,7 @@ export class InstantiationStatusComponentService {
       case  'COMPLETED_AND_PAUSED' :
         return new ServiceStatus(PAUSE_UPON_COMPLETION, 'default','Pause upon completion. you may resume the instantiation.\n Open the service to check it out.' );
       case 'FAILED_AND_PAUSED' :
-        return new ServiceStatus(FAILED_AND_PAUSED, 'success','Failed and Paused: you may re-deploy the instantiation.\n Open the service to check it out.' );
+        return new ServiceStatus(FAILED_AND_PAUSED, 'success','Failed and Paused: you may re-deploy the instantiation.' );
       default:
         return new ServiceStatus(UNKNOWN, 'primary', `Unexpected status: "${status}"`);
     }

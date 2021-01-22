@@ -151,7 +151,7 @@ describe('Instantiation Status Service', () => {
     'COMPLETED_WITH_ERRORS': 'Completed with errors: some of the planned actions where successfully committed while other have not.\n Open the service to check it out.',
     'UNEXPECTED_RANDOM_STATUS': 'Unexpected status: "UNEXPECTED_RANDOM_STATUS"',
     'COMPLETED_AND_PAUSED': 'Pause upon completion. you may resume the instantiation.\n Open the service to check it out.',
-    'FAILED_AND_PAUSED': 'Failed and Paused: you may re-deploy the instantiation.\n Open the service to check it out.',
+    'FAILED_AND_PAUSED': 'Failed and Paused: you may re-deploy the instantiation.',
   })) {
 
     test(`getStatusTooltip should return status popover: status=${status}`, () => {
