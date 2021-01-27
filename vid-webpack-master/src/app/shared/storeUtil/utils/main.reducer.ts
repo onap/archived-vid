@@ -31,6 +31,7 @@ import {pnfReducer} from "./pnf/pnf.reducers";
 
 export let initialState: ServiceState = {
   serviceHierarchy: {},
+  serviceInfoModel: {},
   serviceInstance: {},
   lcpRegionsAndTenants: new LcpRegionsAndTenants(),
   subscribers: null,
@@ -44,6 +45,7 @@ export let initialState: ServiceState = {
 
 export interface ServiceState {
   serviceHierarchy: any;
+  serviceInfoModel: any;
   serviceInstance: { [uuid: string]: ServiceInstance; };
   lcpRegionsAndTenants: LcpRegionsAndTenants;
   subscribers: SelectOptionInterface[];
