@@ -12,6 +12,7 @@ import {ErrorMsgService} from "../../../shared/components/error-msg/error-msg.se
 import {DrawingBoardModes} from "../drawing-board.modes";
 import {ServiceInstance} from "../../../shared/models/serviceInstance";
 import {FeatureFlagsService, Features} from "../../../shared/services/featureFlag/feature-flags.service";
+import {ServiceInfoModel} from "../../../shared/server/serviceInfo/serviceInfo.model";
 
 @Injectable()
 export class DrawingBoardHeaderService{
@@ -48,7 +49,13 @@ export class DrawingBoardHeaderService{
   showAuditInfo(serviceModelId) : void {
     let instance: ServiceInstance = this.store.getState().service.serviceInstance[serviceModelId];
     let model =  new ServiceModel(this.store.getState().service.serviceHierarchy[serviceModelId]);
-    AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance});
+    let serviceInfoModel: ServiceInfoModel = this.store.getState().service.serviceInfoModel;
+    console.log("ShowAuditInfo : ServiceInfoModel from drawing-board-header service : ", serviceInfoModel);
+    if(serviceInfoModel != null || serviceInfoModel != undefined){
+      AuditInfoModalComponent.openModal.next(serviceInfoModel);
+    } else{
+      AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance});
+    }
   }
 
   toggleResumeService(serviceModelId, isResume: boolean) : void {

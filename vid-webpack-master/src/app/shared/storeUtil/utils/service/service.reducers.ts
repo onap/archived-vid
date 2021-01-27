@@ -7,12 +7,14 @@ import {
   UndoUpgradeServiceAction,
   UpdateServiceInstanceAction,
   UpdateServiceModelAction,
-  UpgradeServiceAction
+  UpgradeServiceAction,
+  UpdateServiceModelInfoAction
 } from "./service.actions";
 import {ServiceInstance} from "../../../models/serviceInstance";
 import {ServiceState} from "../main.reducer";
 import {ServiceInstanceActions} from "../../../models/serviceInstanceActions";
 import * as _ from "lodash";
+import {ServiceInfoModel} from "../../../server/serviceInfo/serviceInfo.model";
 
 export function serviceReducer(state: ServiceState, action: Action) : ServiceState{
 
@@ -97,6 +99,15 @@ export function serviceReducer(state: ServiceState, action: Action) : ServiceSta
       if(!_.isNil(clonedState.serviceInstance[uuid].action) && clonedState.serviceInstance[uuid].action.includes("Upgrade")) {
         return undoUpgradeServiceInstance(clonedState, uuid);
       }
+    }
+
+    case ServiceActions.UPDATE_SERVICE_INFO_MODEL: {
+      const updateServiceInfoModel = <UpdateServiceModelInfoAction>action;
+      let newState = _.cloneDeep(state);
+      const serviceInfoModel : ServiceInfoModel = new ServiceInfoModel();
+      const currentServiceInfoModel = state.serviceInfoModel ? serviceInfoModel : null;
+      newState.serviceInfoModel = Object.assign(serviceInfoModel, updateServiceInfoModel.serviceInfoModel);
+      return newState
     }
   }
 }
