@@ -13,6 +13,7 @@ import {NgRedux} from '@angular-redux/store';
 import {JobStatus, ServiceAction} from "../shared/models/serviceInstanceActions";
 import {ActivatedRoute} from "@angular/router";
 import {FeatureFlagsService, Features} from "../shared/services/featureFlag/feature-flags.service";
+import {updateServiceInfoModel} from "../shared/storeUtil/utils/service/service.actions";
 
 export interface MenuAction{
   name: string;
@@ -62,7 +63,7 @@ export class InstantiationStatusComponent implements OnInit {
       name: "Open",
       dataTestId: "context-menu-open",
       className: "fa-external-link",
-      click: (item: ServiceInfoModel) => this.instantiationStatusComponentService.open(item),
+      click: (item: ServiceInfoModel) => this.openModule(item),
       enabled: (item: ServiceInfoModel) =>  this.isOpenEnabled(item),
       visible: () =>  true,
     },
@@ -70,7 +71,7 @@ export class InstantiationStatusComponent implements OnInit {
       name: "New View/Edit",
       dataTestId: "context-menu-new-view-edit",
       className: "fa-pencil",
-      click: (item: ServiceInfoModel) => this.instantiationStatusComponentService.forwardToNewViewEdit(item),
+      click: (item: ServiceInfoModel) => this.newViewEdit(item),
       enabled: () => true,
       visible: () => this.instantiationStatusComponentService.isNewViewEditVisible(),
     },
@@ -78,7 +79,7 @@ export class InstantiationStatusComponent implements OnInit {
       name: "Create another one",
       dataTestId: "context-menu-create-another-one",
       className: "fa-clone",
-      click: (item: ServiceInfoModel) => this.instantiationStatusComponentService.recreate(item),
+      click: (item: ServiceInfoModel) => this.recreateItem(item),
       enabled: (item: ServiceInfoModel) =>  this.instantiationStatusComponentService.isRecreateEnabled(item),
       visible: () =>  this.instantiationStatusComponentService.isRecreateVisible(),
     },
@@ -145,6 +146,11 @@ export class InstantiationStatusComponent implements OnInit {
     clearInterval(this.timer);
   }
 
+  openModule(item: ServiceInfoModel){
+    this._store.dispatch(updateServiceInfoModel(item));
+    this.instantiationStatusComponentService.open(item);
+  }
+
   refreshData(): void {
     this.dataIsReady = false;
     this._serviceInfoService.getServicesJobInfo(this.lastUpdatedDate === null)
@@ -166,6 +172,7 @@ export class InstantiationStatusComponent implements OnInit {
   }
 
   deleteItem(item: ServiceInfoModel): void {
+    this._store.dispatch(updateServiceInfoModel(item));
     this._serviceInfoService.deleteJob(item.jobId).subscribe(() => {
       this.refreshData();
     });
@@ -178,12 +185,27 @@ export class InstantiationStatusComponent implements OnInit {
   }
 
   retryItem(item: ServiceInfoModel) : void {
+    this._store.dispatch(updateServiceInfoModel(item));
+    this.instantiationStatusComponentService.jobData = item;
     if (item.isRetryEnabled) {
       this._instantiationStatusComponentService.retry(item);
     }
   }
 
+  recreateItem(item: ServiceInfoModel){
+    this._store.dispatch(updateServiceInfoModel(item));
+    this.instantiationStatusComponentService.recreate(item)
+  }
+
+  newViewEdit(item: ServiceInfoModel) : void {
+    this._store.dispatch(updateServiceInfoModel(item));
+    this.instantiationStatusComponentService.jobData = item;
+    this.instantiationStatusComponentService.forwardToNewViewEdit(item)
+  }
+
   resumeItem(item: ServiceInfoModel) : void {
+    this._store.dispatch(updateServiceInfoModel(item));
+    this.instantiationStatusComponentService.jobData = item;
     if(item.isRetryEnabled && item.jobStatus === JobStatus.COMPLETED_AND_PAUSED){
       this._instantiationStatusComponentService.resume(item);
     }
