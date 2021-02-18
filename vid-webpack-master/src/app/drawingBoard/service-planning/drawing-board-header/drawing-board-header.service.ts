@@ -51,11 +51,22 @@ export class DrawingBoardHeaderService{
     let model =  new ServiceModel(this.store.getState().service.serviceHierarchy[serviceModelId]);
     let serviceInfoModel: ServiceInfoModel = this.store.getState().service.serviceInfoModel;
     console.log("ShowAuditInfo : ServiceInfoModel from drawing-board-header service : ", serviceInfoModel);
-    if(serviceInfoModel != null || serviceInfoModel != undefined){
+    /*if(serviceInfoModel != null || serviceInfoModel != undefined){
       AuditInfoModalComponent.openModal.next(serviceInfoModel);
     } else{
       AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance});
+    }*/
+	if(serviceInfoModel == null || serviceInfoModel == undefined){
+      console.log("serviceInfoModel is null or undefined");
+      serviceInfoModel.serviceInstanceName = instance.instanceName;
+      serviceInfoModel.serviceInstanceId = instance.instanceId;
+      serviceInfoModel.serviceModelVersion = instance.modelInfo.modelVersion;
+      serviceInfoModel.serviceModelName = instance.modelInfo.modelName;
+      serviceInfoModel.aLaCarte = true;
+    // AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance});
     }
+    console.log("ServiceInfoModel : ", serviceInfoModel);
+    AuditInfoModalComponent.openModal.next(serviceInfoModel);
   }
 
   toggleResumeService(serviceModelId, isResume: boolean) : void {
