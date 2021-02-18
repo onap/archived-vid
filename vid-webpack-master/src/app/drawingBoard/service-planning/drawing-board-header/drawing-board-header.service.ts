@@ -46,16 +46,24 @@ export class DrawingBoardHeaderService{
     }
   }
 
+  serviceInfoModel: ServiceInfoModel;
   showAuditInfo(serviceModelId) : void {
     let instance: ServiceInstance = this.store.getState().service.serviceInstance[serviceModelId];
     let model =  new ServiceModel(this.store.getState().service.serviceHierarchy[serviceModelId]);
-    let serviceInfoModel: ServiceInfoModel = this.store.getState().service.serviceInfoModel;
-    console.log("ShowAuditInfo : ServiceInfoModel from drawing-board-header service : ", serviceInfoModel);
-    if(serviceInfoModel != null || serviceInfoModel != undefined){
-      AuditInfoModalComponent.openModal.next(serviceInfoModel);
-    } else{
-      AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance});
+    this.serviceInfoModel = this.store.getState().service.serviceInfoModel;
+    console.log("ShowAuditInfo : ServiceInfoModel from drawing-board-header service : ", this.serviceInfoModel);
+    if(this.serviceInfoModel == null || this.serviceInfoModel == undefined){
+      console.log("serviceInfoModel is null or undefined");
+      this.serviceInfoModel['serviceInstanceName'] = instance.instanceName;
+      this.serviceInfoModel['serviceInstanceId'] = instance.instanceId;
+      this.serviceInfoModel['serviceModelVersion'] = instance.modelInfo.modelVersion;
+      this.serviceInfoModel['serviceModelName'] = instance.modelInfo.modelName;
+      this.serviceInfoModel['aLaCarte'] = true;
+      console.log("ServiceInfoModel in if : ", this.serviceInfoModel);
+    // AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance});
     }
+    console.log("ServiceInfoModel : ", this.serviceInfoModel);
+    AuditInfoModalComponent.openModal.next(this.serviceInfoModel);
   }
 
   toggleResumeService(serviceModelId, isResume: boolean) : void {
