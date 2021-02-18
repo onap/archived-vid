@@ -50,11 +50,21 @@ export class DrawingBoardHeaderService{
     let instance: ServiceInstance = this.store.getState().service.serviceInstance[serviceModelId];
     let model =  new ServiceModel(this.store.getState().service.serviceHierarchy[serviceModelId]);
     let serviceInfoModel: ServiceInfoModel = this.store.getState().service.serviceInfoModel;
-    console.log("ShowAuditInfo : ServiceInfoModel from drawing-board-header service : ", serviceInfoModel);
-    if(serviceInfoModel != null || serviceInfoModel != undefined){
+    if(serviceInfoModel == null || serviceInfoModel == undefined){
+      console.log("serviceInfoModel is null or undefined");
+      let serviceInfoModelNew : any = {
+        serviceInstanceId : instance.instanceId,
+        serviceInstanceName: instance.instanceName,
+        serviceModelVersion: instance.modelInfo.modelVersion,
+        serviceModelName: instance.modelInfo.modelName,
+        aLaCarte: true
+      };
+      console.log("New service Info Model : ", serviceInfoModelNew);
+      AuditInfoModalComponent.openModal.next(serviceInfoModelNew);
+    // AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance});
+    } else {
+      console.log("ServiceInfoModel is not null: ", serviceInfoModel);
       AuditInfoModalComponent.openModal.next(serviceInfoModel);
-    } else{
-      AuditInfoModalComponent.openInstanceAuditInfoModal.next({instanceId : serviceModelId , type : 'SERVICE', model : model , instance : instance});
     }
   }
 

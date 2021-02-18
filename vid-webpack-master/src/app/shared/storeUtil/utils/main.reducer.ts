@@ -31,7 +31,7 @@ import {pnfReducer} from "./pnf/pnf.reducers";
 
 export let initialState: ServiceState = {
   serviceHierarchy: {},
-  serviceInfoModel: {},
+  serviceInfoModel: null,
   serviceInstance: {},
   lcpRegionsAndTenants: new LcpRegionsAndTenants(),
   subscribers: null,
