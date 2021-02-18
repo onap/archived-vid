@@ -68,7 +68,16 @@ export class AuditInfoModalComponent {
       if (jobData) {
         this.jobDataLocal = jobData;
         this.isAlaCarte = jobData.aLaCarte;
-        this.openAuditInfoModal(jobData);
+        //this.openAuditInfoModal(jobData);
+		if(jobData.jobId != null || jobData.jobId != undefined){
+          console.log("jobId not null : ", jobData.jobId);
+          this.openAuditInfoModal(jobData);
+        } else{
+          this._serviceInfoService.getInstanceAuditStatus(jobData.serviceInstanceId, 'SERVICE').subscribe((res : AuditStatus[]) =>{
+            this.msoInfoData = res;
+          });
+        }
+		
         _iframeService.addClassOpenModal(this.parentElementClassName);
         this.serviceModelName = jobData.serviceModelName ? jobData.serviceModelName : '';
         this.serviceModelId = jobData.serviceModelId;
