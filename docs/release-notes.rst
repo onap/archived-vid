@@ -4,6 +4,63 @@
 VID Release Notes
 =================
 
+Version: Honolulu (8.0.x)
+------------------------
+
+:In a nutshell...:
+
+The following areas have received improvements in Honolulu Release
+
+   * VID development (back-end for SO BB). 
+     In R6/R7 SO BB were implemented for more streamlined processing of W/F. BPMN to BB. Completed in R7. 
+     Modern UI for PNFs in VID was not rendering the models (empty UI). This is now built. 
+     Introduced VNF GUI to fit the SO BB work using SO API from R7.
+
+     More details at: https://jira.onap.org/browse/REQ-430
+ 
+   * Place-Geolocation Development for PnP completed in VID:
+     Please see for more details  https://wiki.onap.org/display/DW/Proposed+Location+Model
+
+*Security Issues*
+
+This section is empty.
+
+*Bug fixes*
+
+This section is empty.
+
+**Known Issues**
+
+This section is empty.
+
+**Resolved Issues**
+       https://jira.onap.org/browse/VID-890
+       https://jira.onap.org/browse/VID-902
+       https://jira.onap.org/browse/VID-917
+       https://jira.onap.org/browse/VID-922
+       https://jira.onap.org/browse/VID-694     
+       https://jira.onap.org/browse/VID-921
+       https://jira.onap.org/browse/VID-924
+       https://jira.onap.org/browse/VID-925
+       https://jira.onap.org/browse/VID-695
+       https://jira.onap.org/browse/VID-927
+       https://jira.onap.org/browse/VID-928
+       https://jira.onap.org/browse/VID-903
+       https://jira.onap.org/browse/VID-943
+       https://jira.onap.org/browse/VID-944
+       https://jira.onap.org/browse/VID-945
+
+**Security Notes**
+
+*Fixed Security Issues*
+
+This section is empty.
+
+*Known Security Issues*
+
+This section is empty.
+
+
 Version: Guilin (7.0.x)
 ------------------------
 
