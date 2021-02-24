@@ -11,7 +11,7 @@ Overview
 --------
 
 Using VID with A-La-Carte method means that the user needs to performed
-by himself the instantiation of each object  : service, VNF(s), VF module(s),
+by himself the instantiation of each object: service, VNF(s), VF module(s),
 network(s).
 
 ONAP to VIM interactions will occurs when instantiating/deleting VF module(s)
@@ -42,7 +42,7 @@ Network = Virtual Link in SDC
 Pre-requisites
 --------------
 
-pre-instantiation operations must have been performed in AAI and VID,
+Pre-instantiation operations must have been performed in AAI and VID,
 via Rest API, to declare some values for:
 
 - Subscriber Name (= customer in AAI)
@@ -54,12 +54,11 @@ via Rest API, to declare some values for:
 - LCP Region (= CloudOwner/RegionId in AAI)
 - Tenant
 
-see, in the ONAP User Guides, section about adding a CloudSite
+See, in the ONAP User Guides, section about adding a CloudSite
 and section about pre-instantiation Operations
 
 .. note::
    Robot demo script will be used to populate demo models automatically with Demonstration as Subscriber Name in VID by running "demo-k8s.sh onap init"
-
 
 Access to VID portal
 --------------------
@@ -96,8 +95,8 @@ There are two choices:
 
 
 
-Instantiate Service
--------------------
+Instantiate Service in "A-la-carte" mode
+----------------------------------------
 
 Click Browse SDC Service Models and search for the service to instantiate.
 
@@ -116,7 +115,7 @@ Complete the fields indicated by the red star and click Confirm.
 .. figure:: images/create-service-instance-alacarte.png
    :align: center
 
-A status ox appears that shows the ONAP SO instantiation progress
+A status box appears that shows the ONAP SO instantiation progress
 as well as any messages associated with the process.
 
 .. figure:: images/create-service-instance-alacarte-success.png
