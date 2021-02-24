@@ -18,3 +18,4 @@ The following VID user guides are available on the ONAP Wiki:
    :maxdepth: 1
 
    instantiate.rst
+   instantiatemacro.rst
