@@ -11,8 +11,10 @@ Overview
 --------
 
 Using VID with A-La-Carte method means that the user needs to performed
-by himself the instantiation of each object  : service, VNF(s), VF module(s),
+by himself the instantiation of each object: service, VNF(s), VF module(s),
 network(s).
+
+VID serves as well as a front-end to "macro" orchestration model, where all the service model resources are deployed in a single SO API call. Macro orchestration model can be used to orchestrate service models, which contain PNFs and VNFs. 
 
 ONAP to VIM interactions will occurs when instantiating/deleting VF module(s)
 or Network(s). In case of an Openstack VIM, Heat Stack(s) will
@@ -42,7 +44,7 @@ Network = Virtual Link in SDC
 Pre-requisites
 --------------
 
-pre-instantiation operations must have been performed in AAI and VID,
+Pre-instantiation operations must have been performed in AAI and VID,
 via Rest API, to declare some values for:
 
 - Subscriber Name (= customer in AAI)
@@ -54,12 +56,16 @@ via Rest API, to declare some values for:
 - LCP Region (= CloudOwner/RegionId in AAI)
 - Tenant
 
-see, in the ONAP User Guides, section about adding a CloudSite
+See, in the ONAP User Guides, section about adding a CloudSite
 and section about pre-instantiation Operations
 
 .. note::
    Robot demo script will be used to populate demo models automatically with Demonstration as Subscriber Name in VID by running "demo-k8s.sh onap init"
 
+.. note::
+   To be able to orchestrate services in "macro" mode, the VID ModernUI needs to be enabled.
+   Review settings in VID container`s /usr/local/tomcat/webapps/vid/WEB-INF/conf/onap.features.properties file.
+   Make sure to enable settings in ModernUI section. 
 
 Access to VID portal
 --------------------
@@ -96,8 +102,8 @@ There are two choices:
 
 
 
-Instantiate Service
--------------------
+Instantiate Service in "A-la-carte" mode
+----------------------------------------
 
 Click Browse SDC Service Models and search for the service to instantiate.
 
@@ -116,7 +122,7 @@ Complete the fields indicated by the red star and click Confirm.
 .. figure:: images/create-service-instance-alacarte.png
    :align: center
 
-A status ox appears that shows the ONAP SO instantiation progress
+A status box appears that shows the ONAP SO instantiation progress
 as well as any messages associated with the process.
 
 .. figure:: images/create-service-instance-alacarte-success.png
@@ -131,6 +137,12 @@ that are part of the service model composition.
 .. figure:: images/create-service-instance-alacarte-VNF-network.png
    :align: center
 
+
+Instantiate Service in "Macro" mode
+-----------------------------------
+A Service Model, which contains a PNF resource will be used to demonstarte the "Macro" orchestration mode.
+
+TBD: Complete the Macro Service Model orchestratoon example.
 
 Instantiate a VNF
 -----------------
