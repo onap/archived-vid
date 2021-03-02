@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "22660da2_305a7ab7",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "Let`s change this to \"(PNF example)\"",
+      "range": {
+        "startLine": 6,
+        "startChar": 32,
+        "endLine": 6,
+        "endChar": 39
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b58cde01_14da9a04",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "Can we add here a listing of Feature Flags essential for this use case?\nI mean enable ModernUI, enable the PNF support in ModernUI - at least these 2 flags?\nYou can use \"..note\"",
+      "range": {
+        "startLine": 17,
+        "startChar": 1,
+        "endLine": 17,
+        "endChar": 15
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5110af0d_fcb0880c",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "Let`s have a parenthesis \"Browse SDC Service Models\" here.",
+      "range": {
+        "startLine": 32,
+        "startChar": 6,
+        "endLine": 32,
+        "endChar": 31
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b663766d_c009bd6a",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "Is this \"Confirm\" or \"Set\"?\nThe picture below shows \"Set\"...",
+      "range": {
+        "startLine": 54,
+        "startChar": 66,
+        "endLine": 54,
+        "endChar": 73
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68f0d4f4_a8ab271d",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "This should be \"instantiation_status\" and not \"instantiation-status\".\nUnderscore \"_\" and not dash \"-\".",
+      "range": {
+        "startLine": 69,
+        "startChar": 19,
+        "endLine": 69,
+        "endChar": 39
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed349b1c_eb8e4285",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "Remove this -- this is about the SO internals, not really a matter of VID.\nHowever, let`s re-use the \"note\" here to cover the previous sequence as a note:\n\"In case of Service Models, which contain PNF resources, to complete the deployment of the service instance with PNF object, send a \"pnfRegistration\" event to VES.\nNo additional actions are needed for VNFs/CNFs\" \n\nThis shall be sufficient here.",
+      "range": {
+        "startLine": 75,
+        "startChar": 3,
+        "endLine": 75,
+        "endChar": 88
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccede71e_3ef5a35a",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "Let`s remove this part.\nIt has very little to do with VID itself. This pnfRegistration shall be covered in E2E user-documentation, and not necessarily in the VID documentation. Let`s drop this from here.\nA note shall be sufficient, as far as VID is concerned.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 99
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3841369_5e53da74",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "\"The \"Instantiation Status\" page...\"",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 29
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2799c4c2_e49965ce",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "This shall be \"instantiation_status_complete\" - underscores \"_\" and not dashes \"-\".",
+      "range": {
+        "startLine": 127,
+        "startChar": 19,
+        "endLine": 127,
+        "endChar": 48
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae453e1e_392d0274",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "...Service Instances previous orchestrated in \"macro\" model... would be probably a little bit better.",
+      "range": {
+        "startLine": 135,
+        "startChar": 9,
+        "endLine": 135,
+        "endChar": 41
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06040ab0_7e4caf04",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-02T17:04:58Z",
+      "side": 1,
+      "message": "Better would be \"with a service instance removal, from VID Home screen\"",
+      "range": {
+        "startLine": 140,
+        "startChar": 11,
+        "endLine": 140,
+        "endChar": 25
+      },
+      "revId": "90e3ad8777e7b076e2c1a2ce946f11eb804f67ea",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
