@@ -24,9 +24,6 @@ RUN groupadd -r $group && useradd -ms /bin/bash $user -g $group && \
     mkdir /var/log/$user && \
     chown -R $user:$group /var/log/$user
 
-#install procps
-RUN apt-get update && apt-get install -y procps
-
 # Kubernetes variables
 # set to TRUE (in capital) if on Kubernetes
 ENV ON_KUBERNETES="FALSE"
@@ -115,6 +112,6 @@ RUN chown $user:$group /tmp/vid /usr/local/tomcat -R
 
 COPY --chown=$user:$group --from=build /vid /usr/local/tomcat/webapps/vid/
 
-RUN chmod +x /tmp/vid/start.sh
+RUN chmod +x /tmp/vid/localize.sh
 USER $user
-CMD ["/tmp/vid/start.sh"]
+CMD ["/tmp/vid/localize.sh"]
