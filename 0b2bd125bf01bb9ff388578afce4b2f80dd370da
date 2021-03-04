@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9e0fe00f_990e73bb",
+        "filename": "docs/instantiatemacro.rst",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2021-03-04T13:03:53Z",
+      "side": 1,
+      "message": "This needs to be updated. Compare against the \"instantiate.rst\".\nWe need \"spaces\" or \"tabs\", to get thus \"International License\" seen as part of previous line.\nCurrently, this is rendering in the page, which shall not be the case.\n\nThat is probably the last fix to be done, rest looks good.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 22
+      },
+      "revId": "0b2bd125bf01bb9ff388578afce4b2f80dd370da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
