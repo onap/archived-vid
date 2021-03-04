@@ -49,6 +49,7 @@ This section is empty.
        https://jira.onap.org/browse/VID-943
        https://jira.onap.org/browse/VID-944
        https://jira.onap.org/browse/VID-945
+       https://jira.onap.org/browse/VID-970
 
 **Security Notes**
 
