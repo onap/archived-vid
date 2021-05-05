@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "01b51257_ae5d44ad",
+        "filename": "deliveries/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 3949
+      },
+      "writtenOn": "2021-05-05T10:37:52Z",
+      "side": 1,
+      "message": "Should this have been updated as well? And should this separate hardcoded version number be replaced with common project version number?",
+      "range": {
+        "startLine": 67,
+        "startChar": 41,
+        "endLine": 67,
+        "endChar": 59
+      },
+      "revId": "7d36b5e4afe42ee117aa856849c93c23adac6edd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
