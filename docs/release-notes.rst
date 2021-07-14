@@ -31,7 +31,13 @@ This section is empty.
 
 **Known Issues**
 
-This section is empty.
+       1. Default vid mariadb-password has special character '/' in the password. We must change the default password without special characters.
+          Workaround: Override the 'userPassword' in the values.yaml file
+
+       2. Vid default user 'onap' doesn't have permissions to create directory /opt/app/vid/cache. Do make necessarily changes in the docker file.
+          Workaround: run the vid pod with root privileges.
+
+          See https://jira.onap.org/browse/VID-983 for more details
 
 **Resolved Issues**
        https://jira.onap.org/browse/VID-890
