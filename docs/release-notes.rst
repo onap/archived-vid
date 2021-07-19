@@ -31,7 +31,10 @@ This section is empty.
 
 **Known Issues**
 
-This section is empty.
+   VID-983: Two issues where encountered when attempting to deploy in OKD resulting in deployment failure. These issues have not been reported in OOM deployments; however, we cannot say for certain that they will not be encountered in OOM. If encountered, please note the issue and workarounds:
+      * Default VID mariadb-password has special character ‘/’ in the password. Change the default password to remove special characters. Workaround: Override the ‘userPassword’ in the values.yaml file.
+      * VID default user ‘onap’ doesn’t have permissions to create directory /opt/app/vid/cache. Make necessary changes in the docker file. Workaround: run the vid pod with root privileges.
+      * See https://jira.onap.org/browse/VID-983 for more details.
 
 **Resolved Issues**
        https://jira.onap.org/browse/VID-890
