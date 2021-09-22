@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -67,6 +68,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.togglz.core.manager.FeatureManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.onap.vid.aai.CustomerSpecificServiceInstance;
+import org.onap.vid.aai.DSLQuerySimpleResponse;
+import org.onap.vid.aai.model.ServiceRelationships;
+import org.onap.vid.aai.model.ViewEditSIResult;
 
 
 @RestController
@@ -268,14 +279,27 @@ public class AaiController extends RestrictedBaseController {
     public ResponseEntity<String> SearchServiceInstances(HttpServletRequest request,
         @RequestParam(value = "subscriberId", required = false) String subscriberId,
         @RequestParam(value = "serviceInstanceIdentifier", required = false) String instanceIdentifier,
+        @RequestParam(value = "serviceInstanceIdentifierType", required = false) String instanceIdentifierType,
         @RequestParam(value = "project", required = false) List<String> projects,
         @RequestParam(value = "owningEntity", required = false) List<String> owningEntities) throws IOException {
         ResponseEntity responseEntity;
 
         RoleValidator roleValidator = roleProvider.getUserRolesValidator(request);
 
-        AaiResponse<ServiceInstancesSearchResults> searchResult = aaiService
-            .getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator, owningEntities, projects);
+        AaiResponse<ServiceInstancesSearchResults> searchResult = null;
+
+        if( instanceIdentifier != null && isValidInstanceIdentifierType(instanceIdentifierType)) {
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== search_service_instances search by subscriberId "
+                + " instanceIdentifier and instanceIdentifierType start");
+            searchResult = aaiService
+                .getServiceInstanceSearchResultsByIdentifierType(subscriberId, instanceIdentifier,
+                    instanceIdentifierType, roleValidator, owningEntities, projects);
+        } else {
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== search_service_instances search by subscriberId "
+                + "instanceIdentifier instanceIdentifier and instanceIdentifierType start");
+            searchResult = aaiService
+                .getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator, owningEntities, projects);
+        }
 
         String httpMessage = searchResult.getT() != null ?
             objectMapper.writeValueAsString(searchResult.getT()) :
@@ -290,6 +314,85 @@ public class AaiController extends RestrictedBaseController {
         }
         return responseEntity;
     }
+
+    @RequestMapping(value = {
+        "/aai_get_service_instance_by_id_and_type/{globalCustomerId}/{serviceInstanceIdentifier}/{serviceIdentifierType}/{subscriberName}",
+        "/aai_get_service_instance_by_id_and_type/{globalCustomerId}/{serviceInstanceIdentifier}/{serviceIdentifierType}"},
+        method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> doGetServiceInstanceByIdAndType(
+        @PathVariable("globalCustomerId") String globalCustomerId,
+        @PathVariable("serviceInstanceIdentifier") String serviceInstanceIdentifier,
+        @PathVariable("serviceIdentifierType") String serviceIdentifierType,
+        @PathVariable("subscriberName") java.util.Optional<String> subscriberName) throws IOException {
+
+        AaiResponse aaiResponse = null;
+        String orchStatus = null;
+        String siid, siName, modelVerId, modelInvId = null;
+        String errorMessage = null;
+        int statusCode = -1;
+        ViewEditSIResult viewEditSIResult = new ViewEditSIResult();
+        if(!subscriberName.equals(Optional.empty()) && serviceInstanceIdentifier != null) {
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + ".aai_get_service_instance_by_id_and_type. "
+                + "Search node query to get Service Type: "+serviceInstanceIdentifier);
+            ResponseEntity entity = convertResponseToResponseEntity(doAaiGet(
+                "search/nodes-query?search-node-type=service-instance&filter=service-instance-id:EQUALS:"
+                    + serviceInstanceIdentifier, false));
+            JSONParser jsonParser = new JSONParser();
+            try {
+                if(entity != null) {
+                    org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) jsonParser.parse(
+                                                                                            entity.getBody().toString());
+                    JSONArray jSONArray = (JSONArray)jsonObject.get("result-data");
+                    org.json.simple.JSONObject jSONObject = (org.json.simple.JSONObject)jSONArray.get(0);
+                    String resourceLink = jSONObject.get("resource-link").toString();
+                    String serviceType = resourceLink.split("/")[9];
+                    aaiResponse = aaiService.getServiceInstanceBySubscriberIdAndSIID(globalCustomerId,serviceType,
+                                                                                            serviceInstanceIdentifier);
+                    if(aaiResponse != null && aaiResponse.getT() != null) {
+                        viewEditSIResult.setOrchestrationStatus(((ServiceRelationships) aaiResponse.getT()).orchestrationStatus);
+                        viewEditSIResult.setServiceInstanceId(((ServiceRelationships) aaiResponse.getT()).serviceInstanceId);
+                        viewEditSIResult.setServiceInstanceName(((ServiceRelationships) aaiResponse.getT()).serviceInstanceName);
+                        viewEditSIResult.setModelVersionId(((ServiceRelationships) aaiResponse.getT()).modelVersionId);
+                        viewEditSIResult.setModelInvariantId(((ServiceRelationships) aaiResponse.getT()).modelInvariantId);
+                        viewEditSIResult.setSubscriberName(subscriberName.get());
+                    } else {
+                        LOGGER.info(EELFLoggerDelegate.errorLogger, "<== " + ".aai_get_service_instance_by_id_and_type. No response for getServiceInstanceBySubscriberIdAndSIID: "+serviceInstanceIdentifier);
+                        errorMessage = aaiResponse.getErrorMessage();
+                    }
+                    statusCode = aaiResponse.getHttpCode();
+                } else {
+                    LOGGER.info(EELFLoggerDelegate.errorLogger, "<== " + ".aai_get_service_instance_by_id_and_type. No response for nodes-query for siid: "+serviceInstanceIdentifier);
+                    statusCode = entity.getStatusCode().value();
+                    errorMessage = aaiResponse.getErrorMessage();
+                }
+            } catch (Exception e) {
+                LOGGER.info(EELFLoggerDelegate.errorLogger, "<== " + ".aai_get_service_instance_by_id_and_type" + e.toString());
+                LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + ".aai_get_service_instance_by_id_and_type" + e.toString());
+            }
+        } else {
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== " + ".aai_get_service_instance_by_id_and_type. Use DSL query to get SI details."+serviceInstanceIdentifier);
+            aaiResponse = aaiService
+                .getServiceInstanceBySubscriberIdAndInstanceIdentifier(globalCustomerId, serviceIdentifierType, serviceInstanceIdentifier);
+            if(aaiResponse != null && aaiResponse.getT() != null) {
+                CustomerSpecificServiceInstance siData = ((DSLQuerySimpleResponse)aaiResponse.getT()).getResults().get(0).getCustomer().
+                    customerRelatedNodes.get(0).getCustomerServiceSubscription().
+                    getServiceSubscriptionRelatedNodes().get(0).getServiceInstance();
+                viewEditSIResult.setOrchestrationStatus(siData.getOrchestrationStatus());
+                viewEditSIResult.setServiceInstanceId(siData.serviceInstanceId);
+                viewEditSIResult.setServiceInstanceName(siData.serviceInstanceName);
+                viewEditSIResult.setModelVersionId(siData.modelVersionId);
+                viewEditSIResult.setModelInvariantId(siData.modelInvariantId);
+                viewEditSIResult.setSubscriberName(((DSLQuerySimpleResponse)aaiResponse.getT()).getResults().get(0).getCustomer().subscriberName);
+            } else {
+                LOGGER.info(EELFLoggerDelegate.errorLogger, "<== " + ".aai_get_service_instance_by_id_and_type. No result for DSL query :"+serviceInstanceIdentifier);
+                errorMessage = aaiResponse.getErrorMessage();
+            }
+            statusCode = aaiResponse.getHttpCode();
+        }
+        String httpMessage = viewEditSIResult != null ? objectMapper.writeValueAsString(viewEditSIResult) : errorMessage;
+        return new ResponseEntity<>(httpMessage,HttpStatus.valueOf(statusCode));
+    }
+
 
     @RequestMapping(value = "/aai_sub_viewedit/{namedQueryId}/{globalCustomerId}/{serviceType}/{serviceInstance}", method = RequestMethod.GET)
     public ResponseEntity<String> viewEditGetComponentList(
@@ -576,5 +679,10 @@ public class AaiController extends RestrictedBaseController {
         } catch (Exception e) {
             return null;
         }
+    }
+    private boolean isValidInstanceIdentifierType(String instanceIdentifierType) {
+        return instanceIdentifierType != null
+            && (    instanceIdentifierType.equalsIgnoreCase("Service Instance Id") ||
+            instanceIdentifierType.equalsIgnoreCase("Service Instance Name"));
     }
 }

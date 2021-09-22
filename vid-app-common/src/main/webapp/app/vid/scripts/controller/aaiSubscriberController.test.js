@@ -691,6 +691,14 @@ describe('aaiSubscriberController testing', () => {
             });
         };
 
+        mockAaiService.getSubscriberNameAndServiceInstanceInfo = (customerId, serviceInstanceId, serviceIdentifierType, subscriberName, successFunction) => {
+            successFunction({"serviceInstanceId":"5d942bc7-3acf-4e35-836a-393619ebde66",
+                "serviceInstanceName":"dpa2actsf5001v_Port_Mirroring_dpa2a_SVC",
+                "modelVersionId":"a9088517-efe8-4bed-9c54-534462cb08c2",
+                "modelInvariantId":"0757d856-a9c6-450d-b494-e1c0a4aab76f",
+                "orchestrationStatus":"Active","subscriberName":"Mobility"});
+        };
+
         mock_.map = (serviceNetworkVlans, networkId) => {
             return ["aaiNetworkId1","aaiNetworkId2"];
         };

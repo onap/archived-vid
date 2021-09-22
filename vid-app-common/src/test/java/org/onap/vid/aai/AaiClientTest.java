@@ -148,6 +148,9 @@ public class AaiClientTest {
     private static String responseJsonNfRole = "/payload_jsons/changeManagement/vnfs-fromServiceInstance-filterNfRole.json";
     private static String responseJsonCloudRegion ="/payload_jsons/changeManagement/vnfs-fromServiceInstance-filterByCloudRegion.json";
 
+    private static String responseJsonDSLServiceInstance ="/payload_jsons/service-instance-by-subscriberid.json";
+    private static String dslQueryPayloadByServiceInstanceId = "{\"dsl\":\"customer*('global-customer-id','SOME_GLOBAL_CUST_ID')>service-subscription>service-instance*('service-instance-id','SOME_SERVICE_INSTANCE_ID')\"}";
+    private static String dslQueryPayloadByServiceInstanceName = "{\"dsl\":\"customer*('global-customer-id','SOME_GLOBAL_CUST_ID')>service-subscription>service-instance*('service-instance-name','SOME_SERVICE_INSTANCE_NAME')\"}";
 
     @DataProvider
     public static Object[][] aaiPutCustomQueryData() {
@@ -950,6 +953,54 @@ public class AaiClientTest {
         when(aaiClientMock.getSubscriberData(anyString(),anyBoolean())).thenCallRealMethod();
         aaiClientMock.getSubscriberData(subscriberId, omitServiceInstances);
         Mockito.verify(aaiClientMock).doAaiGet(argThat(s -> s.contains("customer/" + subscriberId + "?") && s.contains("depth=" + depth)),any(Boolean.class));
+    }
+
+
+    @DataProvider
+    public static Object[][] aaiDSLPutServiceInstanceQueryData() {
+        return new Object[][] {
+            {"SOME_GLOBAL_CUST_ID", "Service Instance Id", "SOME_SERVICE_INSTANCE_ID",
+                dslQueryPayloadByServiceInstanceId, responseJsonDSLServiceInstance, "SOME_SERVICE_INSTANCE_ID", 200},
+            {"SOME_GLOBAL_CUST_ID", "Service Instance Name", "SOME_SERVICE_INSTANCE_NAME",
+                dslQueryPayloadByServiceInstanceName, responseJsonDSLServiceInstance, "SOME_SERVICE_INSTANCE_ID", 200},
+            {"SOME_GLOBAL_CUST_ID", "Service Instance Name", "SOME_SERVICE_INSTANCE_NAME",
+                dslQueryPayloadByServiceInstanceName, responseJsonDSLServiceInstance, "SOME_SERVICE_INSTANCE_ID",200},
+
+        };
+    }
+
+    @Test(dataProvider = "aaiDSLPutServiceInstanceQueryData")
+    public void testAaiDSLPutServiceInstanceQueryByParams(          String globalCustomerId,
+                                                                    String identifierType,
+                                                                    String identifier,
+                                                                    String expectedPayload,
+                                                                    String responseBody,
+                                                                    String expectedSiId,
+                                                                    int responseHttpCode) {
+
+        String queryFormat = "dsl?format=resource&nodesOnly=true&depth=0&as-tree=true";
+
+        final ResponseWithRequestInfo mockedResponseWithRequestInfo = mockedResponseWithRequestInfo(Response.Status.OK,
+            TestUtils.readFileAsString(responseBody),
+            "dsl?format=resource&nodesOnly=true&depth=0&as-tree=true&Mock=True",
+            HttpMethod.PUT);
+
+        when(aaiClientMock.doAaiPut(eq(queryFormat), anyString(), anyBoolean(), anyBoolean())).thenReturn(mockedResponseWithRequestInfo);
+        when(aaiClientMock.getServiceInstanceBySubscriberIdAndInstanceIdentifier(anyString(), anyString(), anyString())).thenCallRealMethod();
+
+        AaiResponse<DSLQuerySimpleResponse> response = aaiClientMock.getServiceInstanceBySubscriberIdAndInstanceIdentifier(globalCustomerId, identifierType, identifier);
+
+        verify(aaiClientMock).doAaiPut(eq(queryFormat), eq(expectedPayload), eq(false), eq(false));
+
+        assertEquals(response.getHttpCode(), responseHttpCode);
+        assertEquals(response.getT().getResults().get(0).getCustomer().getCustomerRelatedNodes().get(0).getCustomerServiceSubscription().
+            getServiceSubscriptionRelatedNodes().get(0).getServiceInstance().serviceInstanceId, expectedSiId);
+
+        assertEquals(response.getT().getResults().get(0).getCustomer().getSubscriberName(), "Mobility");
+
+        assertEquals(response.getT().getResults().get(0).getCustomer().getCustomerRelatedNodes().get(0).getCustomerServiceSubscription().
+            getServiceSubscriptionRelatedNodes().get(0).getServiceInstance().orchestrationStatus, "SOME_ORCH_STATUS");
+
     }
 
     @Test

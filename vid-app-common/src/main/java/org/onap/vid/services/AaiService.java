@@ -102,4 +102,8 @@ public interface AaiService {
     List<Network> getL3NetworksByCloudRegion(String cloudRegionId, String tenantId, String networkRole);
 
     ModelVer getNewestModelVersionByInvariantId(String modelInvariantId);
+
+    AaiResponse getServiceInstanceBySubscriberIdAndInstanceIdentifier(String globalCustomerId, String identifierType, String serviceIdentifier);
+    AaiResponse getServiceInstanceSearchResultsByIdentifierType(String subscriberId, String instanceIdentifier, String instanceIdentifierType, RoleValidator roleValidator, List<String> owningEntities, List<String> projects);
+    AaiResponse getServiceInstanceBySubscriberIdAndSIID(String globalCustomerId, String serviceType, String serviceId);
 }
