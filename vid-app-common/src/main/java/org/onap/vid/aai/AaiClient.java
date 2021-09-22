@@ -109,7 +109,7 @@ public class AaiClient implements AaiClientInterface {
     private static final String BUSINESS_CUSTOMER = "/business/customers/customer/";
     private static final String SERVICE_INSTANCE = "/service-instances/service-instance/";
     private static final String BUSINESS_CUSTOMERS_CUSTOMER = "business/customers/customer/";
-
+    private static final String QUERY_FORMAT_RESOURCE_DSL = "dsl?format=resource&nodesOnly=true&depth=0&as-tree=true";
     protected String fromAppId = "VidAaiController";
 
     private PortDetailsTranslator portDetailsTranslator;
@@ -916,6 +916,39 @@ public class AaiClient implements AaiClientInterface {
             AaiResponse aaiResponse = processAaiResponse(resp, GetTenantsResponse[].class, responseAsString);
             return ((GetTenantsResponse[])aaiResponse.getT())[0];
         }
+    }
+
+    @Override
+    public AaiResponse<DSLQuerySimpleResponse> getServiceInstanceBySubscriberIdAndInstanceIdentifier(String globalCustomerId, String identifierType, String serviceIdentifier) {
+        ResponseWithRequestInfo response;
+        String payload = getDSLQueryPayloadByServiceIdentifier(globalCustomerId,identifierType,serviceIdentifier);
+//        Response resp = doAaiPut(QUERY_FORMAT_RESOURCE_DSL, payload, false);
+//        resp.bufferEntity();
+//        String rawPayload = resp.readEntity(String.class);
+//        AaiResponse<DSLQuerySimpleResponse> aaiResponse = processAaiResponse(resp, DSLQuerySimpleResponse.class, rawPayload);
+
+        response = doAaiPut(QUERY_FORMAT_RESOURCE_DSL, payload, false, false);
+        AaiResponseWithRequestInfo<DSLQuerySimpleResponse> aaiResponse = processAaiResponse(response, DSLQuerySimpleResponse.class, false);
+        verifyAaiResponseValidityOrThrowExc(aaiResponse, aaiResponse.getAaiResponse().getHttpCode());
+        return aaiResponse.getAaiResponse();
+    }
+
+    private String getDSLQueryPayloadByServiceIdentifier(String globalCustomerId, String identifierType, String serviceIdentifier) {
+        String query = null;
+        String payLoad = null;
+        if(globalCustomerId != null && identifierType != null && serviceIdentifier != null) {
+            if(identifierType.equalsIgnoreCase("Service Instance Id")) {
+                query = "customer*('global-customer-id','"+globalCustomerId+"')>" +
+                    "service-subscription>service-instance*('service-instance-id','"+serviceIdentifier+"')";
+                payLoad = "{\"dsl\":\"" + query + "\"}";
+            } else {
+                query = "customer*('global-customer-id','"+globalCustomerId+"')>" +
+                    "service-subscription>service-instance*('service-instance-name','"+serviceIdentifier+"')";
+                payLoad = "{\"dsl\":\"" + query + "\"}";
+            }
+
+        }
+        return payLoad;
     }
 
     @Override

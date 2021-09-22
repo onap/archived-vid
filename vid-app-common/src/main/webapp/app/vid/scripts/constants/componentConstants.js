@@ -113,6 +113,9 @@ appDS2
     VPN_ID_1: "1a2b3c4d5e6f",
 
     // PATHS
+    //2011 AAI query optimization work
+    AAI_SUB_DETAILS_SERVICE_INSTANCE_PATH: "aai_get_service_instance_by_id_and_type/",
+    SELECTED_SERVICE_INSTANCE_TYPE_SUB_PATH: "serviceInstanceIdentifierType=",
     CHANGE_MANAGEMENT_OPERATION_NO_SCHEDULER: "change-management/workflow/@vnfName",
     GET_WORKFLOW: "change-management/get_vnf_workflow_relation",
     GET_SO_WORKFLOWS: "workflows-management/workflows",

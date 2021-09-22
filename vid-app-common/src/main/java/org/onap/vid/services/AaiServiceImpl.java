@@ -48,8 +48,12 @@ import org.onap.vid.aai.AaiClientInterface;
 import org.onap.vid.aai.AaiGetVnfResponse;
 import org.onap.vid.aai.AaiResponse;
 import org.onap.vid.aai.AaiResponseTranslator;
+import org.onap.vid.aai.Customer;
+import org.onap.vid.aai.CustomerSpecificServiceInstance;
+import org.onap.vid.aai.DSLQuerySimpleResponse;
 import org.onap.vid.aai.ExceptionWithRequestInfo;
 import org.onap.vid.aai.ServiceInstance;
+import org.onap.vid.aai.ServiceInstanceResponseBySubscriber;
 import org.onap.vid.aai.ServiceInstancesSearchResults;
 import org.onap.vid.aai.ServiceSubscription;
 import org.onap.vid.aai.ServiceSubscriptions;
@@ -750,4 +754,90 @@ public class AaiServiceImpl implements AaiService {
     public ModelVer getNewestModelVersionByInvariantId(String modelInvariantId){
         return aaiClient.getLatestVersionByInvariantId(modelInvariantId);
     }
+
+    @Override
+    public AaiResponse getServiceInstanceBySubscriberIdAndInstanceIdentifier(String globalCustomerId, String identifierType, String serviceIdentifier) {
+        return aaiClient.getServiceInstanceBySubscriberIdAndInstanceIdentifier(globalCustomerId,identifierType,serviceIdentifier);
+    }
+
+    @Override
+    public AaiResponse getServiceInstanceSearchResultsByIdentifierType(String subscriberId, String instanceIdentifier,
+        String instanceIdentifierType,
+        RoleValidator roleValidator,
+        List<String> owningEntities, List<String> projects) {
+        List<List<ServiceInstanceSearchResult>> resultList = new ArrayList<>();
+        ServiceInstancesSearchResults serviceInstancesSearchResults = new ServiceInstancesSearchResults();
+
+        if (subscriberId != null && instanceIdentifier != null && isValidInstanceIdentifierType(instanceIdentifierType)) {
+            resultList.add(getServicesBySubscriberAndServiceInstance(subscriberId, instanceIdentifier, instanceIdentifierType, roleValidator));
+        }
+        if (owningEntities != null) {
+            resultList.add(getServicesByOwningEntityId(owningEntities, roleValidator));
+        }
+        if (projects != null) {
+            resultList.add(getServicesByProjectNames(projects, roleValidator));
+        }
+        if (!resultList.isEmpty()) {
+            serviceInstancesSearchResults.serviceInstances = Intersection.of(resultList);
+        }
+
+        return new AaiResponse<>(serviceInstancesSearchResults, null, HttpStatus.SC_OK);
+    }
+
+    private boolean isValidInstanceIdentifierType(String instanceIdentifierType) {
+        return instanceIdentifierType != null
+            && (    instanceIdentifierType.equalsIgnoreCase("Service Instance Id") ||
+            instanceIdentifierType.equalsIgnoreCase("Service Instance Name"));
+    }
+    private List<ServiceInstanceSearchResult> getServicesBySubscriberAndServiceInstance(String subscriberId,
+        String instanceIdentifier,
+        String instanceIdentifierType,
+        RoleValidator roleValidator) {
+        LOGGER.info("Starting getServicesBySubscriberAndServiceInstance subscriberId : {}, " +
+                "instanceIdentifier : {}, instanceIdentifierType: {} ",
+            subscriberId,instanceIdentifier, instanceIdentifierType);
+        ArrayList<ServiceInstanceSearchResult> results = new ArrayList<>();
+        if( instanceIdentifier == null || instanceIdentifierType == null) {
+            return results;
+        }
+        ServiceInstanceResponseBySubscriber serviceInstanceResponseBySubscriber = null;
+        Customer customer = null;
+        CustomerSpecificServiceInstance serviceInstance = null;
+        String subscriberName,serviceType,serviceInstanceId, serviceInstanceName,modelInvariantId,modelVersionId= null;
+        ServiceInstanceSearchResult serviceInstanceSearchResult = null;
+
+        AaiResponse<DSLQuerySimpleResponse> aaiResponse =
+            aaiClient.getServiceInstanceBySubscriberIdAndInstanceIdentifier(subscriberId,instanceIdentifierType,
+                instanceIdentifier);
+        if( aaiResponse != null && aaiResponse.getT() !=null && aaiResponse.getT().getResults() != null){
+            serviceInstanceResponseBySubscriber = aaiResponse.getT().getResults().get(0);
+            customer = serviceInstanceResponseBySubscriber.getCustomer();
+            serviceInstance = customer.getCustomerRelatedNodes().get(0).getCustomerServiceSubscription().
+                getServiceSubscriptionRelatedNodes().get(0).getServiceInstance();
+            subscriberName = customer.getSubscriberName();
+            serviceType = customer.getCustomerRelatedNodes().get(0).getCustomerServiceSubscription().getServiceType();
+            serviceInstanceId = serviceInstance.getServiceInstanceId();
+            serviceInstanceName = serviceInstance.getServiceInstanceName();
+            modelInvariantId = serviceInstance.getModelInvariantId();
+            modelVersionId = serviceInstance.getModelVersionId();
+
+            serviceInstanceSearchResult =
+                new ServiceInstanceSearchResult(serviceInstanceId, subscriberId, serviceType,
+                    serviceInstanceName, subscriberName, modelInvariantId,
+                    modelVersionId, null, false);
+            serviceInstanceSearchResult.setIsPermitted(roleValidator.isServicePermitted(serviceInstanceSearchResult));
+
+            LOGGER.info("Result from AAI, getServicesBySubscriberAndServiceInstance serviceType : {}, " +
+                    "serviceInstanceId : {}, serviceInstanceName: {} , modelInvariantId : {}, " +
+                    "modelVersionId :{}, permission :{}",
+                serviceType, serviceInstanceId, serviceInstanceName, modelInvariantId,
+                modelVersionId, serviceInstanceSearchResult.getIsPermitted());
+            results.add(serviceInstanceSearchResult);
+        } else {
+            LOGGER.error("Inside getServicesBySubscriberAndServiceInstance response NULL");
+        }
+
+        return results;
+    }
+
 }

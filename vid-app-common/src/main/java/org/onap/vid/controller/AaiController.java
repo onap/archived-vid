@@ -268,14 +268,27 @@ public class AaiController extends RestrictedBaseController {
     public ResponseEntity<String> SearchServiceInstances(HttpServletRequest request,
         @RequestParam(value = "subscriberId", required = false) String subscriberId,
         @RequestParam(value = "serviceInstanceIdentifier", required = false) String instanceIdentifier,
+        @RequestParam(value = "serviceInstanceIdentifierType", required = false) String instanceIdentifierType,
         @RequestParam(value = "project", required = false) List<String> projects,
         @RequestParam(value = "owningEntity", required = false) List<String> owningEntities) throws IOException {
         ResponseEntity responseEntity;
 
         RoleValidator roleValidator = roleProvider.getUserRolesValidator(request);
 
-        AaiResponse<ServiceInstancesSearchResults> searchResult = aaiService
-            .getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator, owningEntities, projects);
+        AaiResponse<ServiceInstancesSearchResults> searchResult = null;
+
+        if( instanceIdentifier != null && isValidInstanceIdentifierType(instanceIdentifierType)) {
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== search_service_instances search by subscriberId "
+                + " instanceIdentifier and instanceIdentifierType start");
+            searchResult = aaiService
+                .getServiceInstanceSearchResultsByIdentifierType(subscriberId, instanceIdentifier,
+                    instanceIdentifierType, roleValidator, owningEntities, projects);
+        } else {
+            LOGGER.debug(EELFLoggerDelegate.debugLogger, "<== search_service_instances search by subscriberId "
+                + "instanceIdentifier instanceIdentifier and instanceIdentifierType start");
+            searchResult = aaiService
+                .getServiceInstanceSearchResults(subscriberId, instanceIdentifier, roleValidator, owningEntities, projects);
+        }
 
         String httpMessage = searchResult.getT() != null ?
             objectMapper.writeValueAsString(searchResult.getT()) :
@@ -289,6 +302,20 @@ public class AaiController extends RestrictedBaseController {
 
         }
         return responseEntity;
+    }
+
+    @RequestMapping(value = "/aai_get_service_instance_by_id_and_type/{globalCustomerId}/{serviceInstanceIdentifier}/{serviceIdentifierType}",
+        method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> doGetServiceInstanceByIdAndType(
+        @PathVariable("globalCustomerId") String globalCustomerId,
+        @PathVariable("serviceInstanceIdentifier") String serviceInstanceIdentifier,
+        @PathVariable("serviceIdentifierType") String serviceIdentifierType) throws IOException {
+
+        AaiResponse siData = aaiService
+            .getServiceInstanceBySubscriberIdAndInstanceIdentifier(globalCustomerId, serviceIdentifierType, serviceInstanceIdentifier);
+        String httpMessage = siData.getT() != null ? objectMapper.writeValueAsString(siData.getT()) : siData.getErrorMessage();
+
+        return new ResponseEntity<>(httpMessage,HttpStatus.valueOf(siData.getHttpCode()));
     }
 
     @RequestMapping(value = "/aai_sub_viewedit/{namedQueryId}/{globalCustomerId}/{serviceType}/{serviceInstance}", method = RequestMethod.GET)
@@ -576,5 +603,10 @@ public class AaiController extends RestrictedBaseController {
         } catch (Exception e) {
             return null;
         }
+    }
+    private boolean isValidInstanceIdentifierType(String instanceIdentifierType) {
+        return instanceIdentifierType != null
+            && (    instanceIdentifierType.equalsIgnoreCase("Service Instance Id") ||
+            instanceIdentifierType.equalsIgnoreCase("Service Instance Name"));
     }
 }

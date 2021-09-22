@@ -522,7 +522,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
             var deferred = $q.defer();
             AaiService.searchServiceInstances(
                 '?subscriberId=' + $location.search().subscriberId +
-                '&serviceInstanceIdentifier=' + $location.search().serviceInstanceId)
+                '&serviceInstanceIdentifier=' + $location.search().serviceInstanceId + '&serviceInstanceIdentifierType=Service Instance Id')
                 .then(function (response) {
                     if (response.displayData && response.displayData.length) {
                         var first = response.displayData[0];
@@ -589,7 +589,14 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                     $scope.hasFabricConfigurations = !UtilityService.isObjectEmpty($scope.service.model.fabricConfigurations);
                     return AaiService.runNamedQuery($scope.namedQueryId, $scope.globalCustomerId, $scope.serviceType, $scope.serviceInstanceId,
                         function (response) { //success
-                            $scope.handleInitialResponseInventoryItems(response);
+                            try {
+                                $log.debug("Getting inventory reponse items from Named Query with AAI query optimization - Before ");
+                                $scope.handleInitialResponseInventoryItemsOptimized(response);
+                                $log.debug("Getting inventory reponse items from Named Query with AAI query optimization - After ");
+                            }catch (error) {
+                                $log.error("Exception: Fallback to original method of getting subscriber name and SI orch status.");
+                                $scope.handleInitialResponseInventoryItems(response);
+                            }
                             $scope.setProgress(100); // done
                             $scope.status = FIELD.STATUS.DONE;
                             $scope.isSpinnerVisible = false;
@@ -630,7 +637,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 return $q.resolve($scope.modelVersionIdForServiceInstance.aaiModelVersionId);
             } else {
                 $scope.status = FIELD.STATUS.FETCHING_SERVICE_INST_DATA + $scope.serviceInstanceId;
-                return AaiService.getModelVersionId(instance.globalCustomerId, instance.serviceInstanceId)
+                return AaiService.getModelVersionId(instance.globalCustomerId, instance.serviceInstanceId, 'Service Instance Id')
                     .then(function (aaiModelVersionId) {
                         $scope.modelVersionIdForServiceInstance = {
                             globalCustomerId: instance.globalCustomerId,
@@ -825,6 +832,298 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                 vfModuleStatusHasAllowedResume.push('created');
             }
             return _.includes(vfModuleStatusHasAllowedResume, vfModuleStatus) && !$scope.isActivateDeactivateEnabled("activate");
+        };
+
+        $scope.handleInitialResponseInventoryItemsOptimized = function (response) {
+
+            $scope.inventoryResponseItemList = response.data[FIELD.ID.INVENTORY_RESPONSE_ITEM]; // get data from json
+            $log.debug($scope.inventoryResponseItemList);
+
+            $scope.displayData = [];
+            $scope.vnfs = [];
+
+            $scope.counter = 100;
+
+            $scope.subscriberName = "";
+
+            $scope.allConfigurationsAssigned = true;
+            // look up the subscriber name and service orchestration status from A&AI here...
+            AaiService.getSubscriberNameAndServiceInstanceInfo( $scope.globalCustomerId,
+                $scope.serviceInstanceId,
+                'Service Instance Id',function (response) {
+                    $scope.subscriberName = response['results'][0]['customer']['subscriber-name'];
+                    DataService.setSubscriberName($scope.subscriberName);
+                    $scope.serviceOrchestrationStatus = response['results'][0]['customer']['related-nodes'][0]['service-subscription']['related-nodes'][0]['service-instance']['orchestration-status'];
+                    if ($scope.serviceOrchestrationStatus.toLowerCase() !== FIELD.STATUS.ASSIGNED.toLowerCase()) {
+                        $scope.allConfigurationsAssigned = false;
+                    }
+                    angular.forEach($scope.inventoryResponseItemList, function (inventoryResponseItem, key) {
+
+                        $scope.inventoryResponseItem = inventoryResponseItem;
+
+                        $scope.service.instance = {
+                            "name": $scope.inventoryResponseItem[FIELD.ID.SERVICE_INSTANCE][FIELD.ID.SERVICE_INSTANCE_NAME],
+                            "serviceInstanceId": $scope.serviceInstanceId,
+                            "serviceType": $scope.serviceType,
+                            "globalCustomerId": $scope.globalCustomerId,
+                            "subscriberName": $scope.subscriberName,
+                            "id": $scope.serviceInstanceId,
+                            "inputs": {
+                                "a": {
+                                    "type": PARAMETER.STRING,
+                                    "description": FIELD.PROMPT.VAR_DESCRIPTION_A,
+                                    "default": FIELD.PROMPT.DEFAULT_A
+                                },
+                                "b": {
+                                    "type": PARAMETER.STRING,
+                                    "description": FIELD.PROMPT.VAR_DESCRIPTION_B,
+                                    "default": FIELD.PROMPT.DEFAULT_B
+                                }
+                            },
+                            "object": $scope.inventoryResponseItem[FIELD.ID.SERVICE_INSTANCE],
+                            "vnfs": [],
+                            "networks": [],
+                            "configurations": []
+                        };
+
+                        var portMirroringConfigurationIds = [];
+                        if (inventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
+
+                            angular.forEach(inventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS][FIELD.ID.INVENTORY_RESPONSE_ITEM], function (subInventoryResponseItem, key) {
+                                // i expect to find vnfs now
+
+                                if (subInventoryResponseItem[FIELD.ID.L3_NETWORK] != null) {
+                                    var l3NetworkObject = subInventoryResponseItem[FIELD.ID.L3_NETWORK];
+                                    var l3Network = {
+                                        "id": $scope.counter++,
+                                        "name": l3NetworkObject[FIELD.ID.NETWORK_NAME],
+                                        "itemType": FIELD.ID.L3_NETWORK,
+                                        "nodeId": l3NetworkObject[FIELD.ID.NETWORK_ID],
+                                        "nodeType": l3NetworkObject[FIELD.ID.NETWORK_TYPE],
+                                        "nodeStatus": l3NetworkObject[FIELD.ID.ORCHESTRATION_STATUS],
+                                        "object": l3NetworkObject,
+                                        "nodes": [],
+                                        "subnets": [],
+                                        "vlans": []
+                                    };
+                                    if (subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
+                                        //console.log ("subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS]=");
+                                        //console.log (JSON.stringify (subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS], null, 4 ));
+                                        angular.forEach(subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS][FIELD.ID.INVENTORY_RESPONSE_ITEM], function (subSubInventoryResponseItem, key) {
+                                            //console.log (JSON.stringify (subSubInventoryResponseItem, null, 4 ));
+                                            var subnet = {};
+                                            var subnetObject;
+                                            if (subSubInventoryResponseItem[FIELD.ID.SUB_NET] != null) {
+                                                subnetObject = subSubInventoryResponseItem[FIELD.ID.SUB_NET];
+                                                subnet = {
+                                                    "subnet-id": subnetObject[FIELD.ID.SUBNET_ID],
+                                                    "subnet-name": subnetObject[FIELD.ID.SUBNET_NAME],
+                                                    "gateway-address": subnetObject[FIELD.ID.GATEWAY_ADDRESS],
+                                                    "network-start-address": subnetObject[FIELD.ID.NETWORK_START_ADDRESS],
+                                                    "cidr-mask": subnetObject[FIELD.ID.CIDR_MASK]
+                                                };
+                                                l3Network.subnets.push(subnet);
+                                            }
+                                        });
+                                    }
+
+
+                                    var networkObj = _.find(serviceNetworkVlans, { 'networkId': l3Network.nodeId});
+                                    if (networkObj !== undefined && networkObj.vlans !== undefined) {
+                                        l3Network["vlans"] = networkObj.vlans;
+                                    }
+                                    $scope.service.instance[FIELD.ID.NETWORKS].push(l3Network);
+                                }
+
+                                if (subInventoryResponseItem[FIELD.ID.GENERIC_VNF] != null) {
+                                    var genericVnfObject = subInventoryResponseItem[FIELD.ID.GENERIC_VNF];
+
+                                    var genericVnf = {
+                                        "name": genericVnfObject[FIELD.ID.VNF_NAME],
+                                        "id": $scope.counter++,
+                                        "itemType": COMPONENT.VNF,
+                                        "nodeType": genericVnfObject[FIELD.ID.VNF_TYPE],
+                                        "nodeId": genericVnfObject[FIELD.ID.VNF_ID],
+                                        "nodeStatus": genericVnfObject[FIELD.ID.ORCHESTRATION_STATUS],
+                                        "modelVersionId" : genericVnfObject[FIELD.ID.MODEL_VERSION_ID],
+                                        "object": genericVnfObject,
+                                        "vfModules": [],
+                                        "volumeGroups": [],
+                                        "instanceGroups": [],
+                                        "availableVolumeGroups": [],
+                                        "networks": []
+                                    };
+
+                                    var vnfNetworkObj = _.find(vnfNetworksAndVlans, { 'vnfId': genericVnf.nodeId});
+                                    if (vnfNetworkObj !== undefined && vnfNetworkObj.networks !== undefined) {
+                                        genericVnf["networks"] = vnfNetworkObj.networks;
+                                    }
+
+                                    $scope.service.instance[FIELD.ID.VNFS].push(genericVnf);
+                                    getRelatedInstanceGroupsByVnfId(genericVnf);
+
+
+
+                                    // look for volume-groups
+                                    if (subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
+                                        angular.forEach(subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS][FIELD.ID.INVENTORY_RESPONSE_ITEM], function (vfmodules, key) {
+
+                                            if (vfmodules[FIELD.ID.VOLUME_GROUP] != null) {
+                                                var volumeGroupObject = vfmodules[FIELD.ID.VOLUME_GROUP];
+                                                var volumeGroup = {
+                                                    "id": $scope.counter++,
+                                                    "name": volumeGroupObject[FIELD.ID.VOLUME_GROUP_NAME],
+                                                    "itemType": FIELD.ID.VOLUME_GROUP,
+                                                    "nodeId": volumeGroupObject[FIELD.ID.VOLUME_GROUP_ID],
+                                                    "nodeType": volumeGroupObject[FIELD.ID.VNF_TYPE],
+                                                    "nodeStatus": volumeGroupObject[FIELD.ID.ORCHESTRATION_STATUS],
+                                                    "object": volumeGroupObject,
+                                                    "nodes": []
+                                                };
+                                                genericVnf[FIELD.ID.VOLUMEGROUPS].push(volumeGroup);
+                                                genericVnf[FIELD.ID.AVAILABLEVOLUMEGROUPS].push(volumeGroup);
+                                            }
+                                        });
+                                    }
+                                    // now we've loaded up the availableVolumeGroups, we can use it
+                                    if (subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
+                                        angular.forEach(subInventoryResponseItem[FIELD.ID.INVENTORY_RESPONSE_ITEMS][FIELD.ID.INVENTORY_RESPONSE_ITEM], function (vfmodules, key) {
+
+                                            if (vfmodules[FIELD.ID.VF_MODULE] != null) {
+                                                var vfModuleObject = vfmodules[FIELD.ID.VF_MODULE];
+                                                var vfModule = {
+                                                    "id": $scope.counter++,
+                                                    "name": vfModuleObject[FIELD.ID.VF_MODULE_NAME],
+                                                    "itemType": FIELD.ID.VF_MODULE,
+                                                    "nodeType": FIELD.ID.VF_MODULE,
+                                                    "nodeStatus": vfModuleObject[FIELD.ID.ORCHESTRATION_STATUS],
+                                                    "volumeGroups": [],
+                                                    "object": vfModuleObject,
+                                                    "networks": []
+                                                };
+                                                genericVnf[FIELD.ID.VF_MODULES].push(vfModule);
+                                                if (vfmodules[FIELD.ID.INVENTORY_RESPONSE_ITEMS] != null) {
+                                                    angular.forEach(vfmodules[FIELD.ID.INVENTORY_RESPONSE_ITEMS][FIELD.ID.INVENTORY_RESPONSE_ITEM], function (networks, key) {
+                                                        if (networks[FIELD.ID.L3_NETWORK] != null) {
+                                                            var l3NetworkObject = networks[FIELD.ID.L3_NETWORK];
+                                                            var l3Network = {
+                                                                "id": $scope.counter++,
+                                                                "name": l3NetworkObject[FIELD.ID.NETWORK_NAME],
+                                                                "itemType": FIELD.ID.L3_NETWORK,
+                                                                "nodeId": l3NetworkObject[FIELD.ID.NETWORK_ID],
+                                                                "nodeType": l3NetworkObject[FIELD.ID.NETWORK_TYPE],
+                                                                "nodeStatus": l3NetworkObject[FIELD.ID.ORCHESTRATION_STATUS],
+                                                                "object": l3NetworkObject,
+                                                                "nodes": []
+                                                            };
+                                                            vfModule[FIELD.ID.NETWORKS].push(l3Network);
+                                                        }
+                                                        if (networks[FIELD.ID.VOLUME_GROUP] != null) {
+                                                            var volumeGroupObject = networks[FIELD.ID.VOLUME_GROUP];
+
+                                                            var volumeGroup = {
+                                                                "id": $scope.counter++,
+                                                                "name": volumeGroupObject[FIELD.ID.VOLUME_GROUP_NAME],
+                                                                "itemType": FIELD.ID.VOLUME_GROUP,
+                                                                "nodeId": volumeGroupObject[FIELD.ID.VOLUME_GROUP_ID],
+                                                                "nodeType": volumeGroupObject[FIELD.ID.VNF_TYPE],
+                                                                "nodeStatus": volumeGroupObject[FIELD.ID.ORCHESTRATION_STATUS],
+                                                                "object": volumeGroupObject,
+                                                                "nodes": []
+                                                            };
+                                                            var tmpVolGroup = [];
+
+                                                            angular.forEach(genericVnf[FIELD.ID.AVAILABLEVOLUMEGROUPS], function (avgroup, key) {
+                                                                if (avgroup.name != volumeGroup.name) {
+                                                                    tmpVolGroup.push(avgroup);
+                                                                }
+                                                            });
+
+                                                            genericVnf[FIELD.ID.AVAILABLEVOLUMEGROUPS] = tmpVolGroup;
+
+                                                            vfModule[FIELD.ID.VOLUMEGROUPS].push(volumeGroup);
+                                                        }
+
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+
+
+                                if (subInventoryResponseItem[FIELD.ID.GENERIC_CONFIGURATION] != null) {
+                                    var configObject = subInventoryResponseItem[FIELD.ID.GENERIC_CONFIGURATION];
+                                    var config = {
+                                        "id": $scope.counter++,
+                                        "name": configObject[FIELD.ID.CONFIGURATION_NAME],
+                                        "itemType": FIELD.ID.CONFIGURATION,
+                                        "nodeId": configObject[FIELD.ID.CONFIGURATION_ID],
+                                        "nodeType": configObject[FIELD.ID.CONFIGURATION_TYPE],
+                                        "nodeStatus": configObject[FIELD.ID.ORCHESTRATION_STATUS],
+                                        "modelInvariantId": configObject[FIELD.ID.MODEL_INVAR_ID],
+                                        "modelVersionId": configObject[FIELD.ID.MODEL_VERSION_ID],
+                                        "modelCustomizationId": configObject[FIELD.ID.MODEL_CUSTOMIZATION_ID],
+                                        "object": configObject,
+                                        "ports": [],
+                                        "configData" : null
+                                    };
+                                    if( !$scope.hasFabricConfigurations ) {
+                                        portMirroringConfigurationIds.push(configObject[FIELD.ID.CONFIGURATION_ID]);
+                                        $scope.service.instance[FIELD.ID.CONFIGURATIONS].push(config);
+                                    } else {
+                                        if (config.nodeStatus.toLowerCase() !== FIELD.STATUS.ASSIGNED.toLowerCase()) {
+                                            $scope.allConfigurationsAssigned = false;
+                                            if ($scope.isActivateFabricConfiguration()) {
+                                                $scope.errorMsg = "Activate fabric configuration button is not available as some of the configuration objects are not in Assigned status. Check MSO logs for the reasons for this abnormal case.";
+                                            }
+                                        }
+                                    }
+                                }
+
+                            });
+
+                            AaiService.getPortMirroringData(portMirroringConfigurationIds).then(function(result){
+                                angular.forEach($scope.service.instance[FIELD.ID.CONFIGURATIONS], function(config){
+                                    config['configData'] = result.data[config['nodeId']];
+
+                                    if (config.configData && config.configData.errorDescription) {
+                                        $scope.errorMsg = ($scope.errorMsg ? $scope.errorMsg + "\n" : "") +
+                                            "Cannot read cloud-region for configuration \"" + config.name + "\": " +
+                                            config.configData.errorDescription;
+                                    }
+                                });
+                            });
+
+                            AaiService.getPortMirroringSourcePorts(portMirroringConfigurationIds).then(function(result){
+                                angular.forEach($scope.service.instance[FIELD.ID.CONFIGURATIONS], function(config){
+                                    angular.forEach(result.data[config['nodeId']], function(port){
+                                        if (port.errorDescription) {
+                                            $scope.errorMsg = ($scope.errorMsg ? $scope.errorMsg + "\n" : "") +
+                                                "Cannot read a source port for configuration \"" + config.name + "\": " +
+                                                port.errorDescription;
+                                        } else {
+                                            config.ports.push({
+                                                "portId": port[FIELD.ID.PORT_ID],
+                                                "portName": port[FIELD.ID.PORT_NAME],
+                                                "portStatus": port[FIELD.ID.PORT_MIRRORED] === true ? FIELD.STATUS.AAI_ENABLED : FIELD.STATUS.AAI_DISABLED
+                                            });
+                                        }
+                                    });
+                                });
+                            });
+
+                        }
+                    });
+
+                    var aaiNetworkIds = _.map(serviceNetworkVlans, 'networkId');
+                    var serviceInstanceNetworkIds = _.map($scope.service.instance[FIELD.ID.NETWORKS], 'nodeId');
+                    var isContains = aaiNetworkIds.every(function(val) { return serviceInstanceNetworkIds.indexOf(val) >= 0; });
+                    if (aaiNetworkIds.length && !isContains)  {
+                        $log.error("vlansByNetworks contain network that not found in service instance", aaiNetworkIds, serviceInstanceNetworkIds);
+                    }
+
+                });
         };
 
         $scope.handleInitialResponseInventoryItems = function (response) {
@@ -1521,12 +1820,13 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
         $scope.serviceInstanceses = [{"sinstance": FIELD.NAME.SERVICE_INSTANCE_Id}, {"sinstance": FIELD.NAME.SERVICE_INSTANCE_NAME}];
 
-        function navigateToSearchResultsPage(globalCustomerId, selectedServiceInstance, selectedProjects, selectedOwningEntities) {
+        function navigateToSearchResultsPage(globalCustomerId, selectedServiceInstance, selectedProjects, selectedOwningEntities, selectedInstanceIdentifierType) {
             var projectQuery = AaiService.getMultipleValueParamQueryString(_.map(selectedProjects, 'id'), COMPONENT.PROJECT_SUB_PATH);
             var owningEntityQuery = AaiService.getMultipleValueParamQueryString(_.map(selectedOwningEntities, 'id'), COMPONENT.OWNING_ENTITY_SUB_PATH);
             var globalCustomerIdQuery = globalCustomerId ? COMPONENT.SELECTED_SUBSCRIBER_SUB_PATH + globalCustomerId : null;
             var serviceInstanceQuery = selectedServiceInstance ? COMPONENT.SELECTED_SERVICE_INSTANCE_SUB_PATH + selectedServiceInstance : null;
-            var query = AaiService.getJoinedQueryString([projectQuery, owningEntityQuery, globalCustomerIdQuery, serviceInstanceQuery]);
+            var serviceInstanceTypeQuery = selectedInstanceIdentifierType ? COMPONENT.SELECTED_SERVICE_INSTANCE_TYPE_SUB_PATH + selectedInstanceIdentifierType : null;
+            var query = AaiService.getJoinedQueryString([projectQuery, owningEntityQuery, globalCustomerIdQuery, serviceInstanceQuery, serviceInstanceTypeQuery]);
 
             window.location.href = COMPONENT.SELECTED_SERVICE_SUB_PATH + query;
         }
@@ -1542,7 +1842,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
                             .getGlobalCustomerIdByInstanceIdentifier(selectedServiceInstance, selectedInstanceIdentifierType)
                             .then(handleCustomerIdResponse);
                     } else {
-                        navigateToSearchResultsPage(selectedCustomer, null, selectedProject, selectedOwningEntity);
+                        navigateToSearchResultsPage(selectedCustomer, null, selectedProject, selectedOwningEntity, selectedInstanceIdentifierType);
                     }
                 } else {
                     alert(FIELD.ERROR.SELECT);
@@ -1550,7 +1850,7 @@ appDS2.controller("aaiSubscriberController", ["COMPONENT", "FIELD", "PARAMETER",
 
                 function handleCustomerIdResponse(globalCustomerId) {
                     if (UtilityService.hasContents(globalCustomerId)) {
-                        navigateToSearchResultsPage(globalCustomerId, selectedServiceInstance, selectedProject, selectedOwningEntity);
+                        navigateToSearchResultsPage(globalCustomerId, selectedServiceInstance, selectedProject, selectedOwningEntity, selectedInstanceIdentifierType);
                     } else {
                         alert(FIELD.ERROR.SERVICE_INST_DNE);
                     }

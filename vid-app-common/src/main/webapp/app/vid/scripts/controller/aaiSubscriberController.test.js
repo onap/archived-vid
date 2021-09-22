@@ -691,6 +691,17 @@ describe('aaiSubscriberController testing', () => {
             });
         };
 
+        mockAaiService.getSubscriberNameAndServiceInstanceInfo = (customerId, servicInstanceId, servicIdentifierType, successFunction) => {
+            successFunction({"results": [{"customer": {	"global-customer-id": "a9a77d5a-123e-4ca2-9eb9-0b015d2ee0fb",
+                        "subscriber-name": "Mobility","subscriber-type": "INFRA","resource-version": "1602518417955",
+                        "related-nodes": [	{"service-subscription": {"service-type": "VPMS","resource-version": "1629183620246",
+                                "related-nodes": [{"service-instance": {"service-instance-id": "5d942bc7-3acf-4e35-836a-393619ebde66",
+                                        "service-instance-name": "dpa2actsf5001v_Port_Mirroring_dpa2a_SVC","service-type": "PORT-MIRROR",
+                                        "service-role": "VPROBE",	"environment-context": "General_Revenue-Bearing","workload-context": "Production",
+                                        "model-invariant-id": "0757d856-a9c6-450d-b494-e1c0a4aab76f","model-version-id": "a9088517-efe8-4bed-9c54-534462cb08c2",
+                                        "resource-version": "1615330529236","selflink": "SOME_SELF_LINK","orchestration-status": "Active"}}]}}]}}]});
+        };
+
         mock_.map = (serviceNetworkVlans, networkId) => {
             return ["aaiNetworkId1","aaiNetworkId2"];
         };

@@ -125,7 +125,28 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             })["catch"]
             (UtilityService.runHttpErrorHandler);
         },
+        getSubscriberNameAndServiceInstanceInfo: function (subscriberUuid, serviceInstanceIdentifier,
+            serviceInstanceIdentifierType,successCallbackFunction ) {
+            $log.debug("AaiService:getSubscriberNameAndServiceInstanceInfo: subscriberUuid: " + subscriberUuid +
+                ",serviceInstanceIdentifier :"+serviceInstanceIdentifier +
+                " , serviceInstanceIdentifierType="+serviceInstanceIdentifierType);
 
+            if (UtilityService.hasContents(subscriberUuid) && UtilityService.hasContents(serviceInstanceIdentifier) &&
+                UtilityService.hasContents(serviceInstanceIdentifierType) ) {
+                $http.get(COMPONENT.AAI_SUB_DETAILS_SERVICE_INSTANCE_PATH +
+                    subscriberUuid + COMPONENT.FORWARD_SLASH + serviceInstanceIdentifier +  COMPONENT.FORWARD_SLASH +
+                    serviceInstanceIdentifierType + COMPONENT.ASSIGN + Math.random(),
+                    {
+                        timeout: PropertyService.getServerResponseTimeoutMsec()
+                    }).then(function (response) {
+                    var result = {};
+                    if (response.data) {
+                        result = response.data;
+                    }
+                    successCallbackFunction(result);
+                })["catch"]
+                (UtilityService.runHttpErrorHandler);
+            }},
         runNamedQuery: function (namedQueryId, globalCustomerId, serviceType, serviceInstanceId, successCallback, errorCallback) {
 
             var url = COMPONENT.AAI_SUB_VIEWEDIT_PATH +
@@ -209,11 +230,11 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
 
         searchServiceInstances: searchServiceInstances,
 
-        getModelVersionId: function (subscriberId, instanceId) {
+        getModelVersionId: function (subscriberId, instanceId, identifierType) {
             var globalCustomerIdQuery = COMPONENT.SELECTED_SUBSCRIBER_SUB_PATH + subscriberId;
             var serviceInstanceQuery = COMPONENT.SELECTED_SERVICE_INSTANCE_SUB_PATH + instanceId;
-
-            var query = "?" + getJoinedQueryString([globalCustomerIdQuery, serviceInstanceQuery]);
+            var serviceIdentifierType = COMPONENT.SELECTED_SERVICE_INSTANCE_TYPE_SUB_PATH + identifierType;
+            var query = "?" + getJoinedQueryString([globalCustomerIdQuery, serviceInstanceQuery, serviceIdentifierType]);
 
             var deferred = $q.defer();
 
@@ -695,7 +716,7 @@ var AaiService = function ($http, $log, PropertyService, UtilityService, COMPONE
             $log.debug("AaiService:getSubscriberServiceTypes: subscriberUuid: " + subscriberUuid);
 
             if (UtilityService.hasContents(subscriberUuid)) {
-                $http.get(COMPONENT.AAI_SUB_DETAILS_PATH + subscriberUuid + COMPONENT.ASSIGN + Math.random())
+                $http.get(COMPONENT.AAI_SUB_DETAILS_PATH + subscriberUuid + COMPONENT.ASSIGN + Math.random()+ COMPONENT.AAI_OMIT_SERVICE_INSTANCES + true)
                     .success(function (response) {
                         if (response && [FIELD.ID.SERVICE_SUBSCRIPTIONS]) {
                             deferred.resolve({data: response[FIELD.ID.SERVICE_SUBSCRIPTIONS][FIELD.ID.SERVICE_SUBSCRIPTION]});
