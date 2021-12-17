@@ -279,6 +279,16 @@
             <artifactId>epsdk-app-common</artifactId>
             <version>${epsdk.version}</version>
             <type>jar</type>
+	    <exclusions>
+		<exclusion>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		</exclusion>
+		<exclusion>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-api</artifactId>
+		</exclusion>
+	    </exclusions>
         </dependency>
         <dependency>
             <groupId>org.onap.vid</groupId>
@@ -304,6 +314,16 @@
             <groupId>org.onap.portal.sdk</groupId>
             <artifactId>epsdk-core</artifactId>
             <version>${epsdk.version}</version>
+	    <exclusions>
+		<exclusion>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		</exclusion>
+		<exclusion>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-api</artifactId>
+		</exclusion>
+	    </exclusions>
         </dependency>
         <dependency>
             <groupId>org.onap.portal.sdk</groupId>
