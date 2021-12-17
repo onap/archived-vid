@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f20f5015_673f99c6",
+        "filename": "vid-app-common/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1739
+      },
+      "writtenOn": "2021-12-17T19:52:16Z",
+      "side": 1,
+      "message": "Please correct the indentations here and other such places.",
+      "revId": "709243e4f0260c27a4b949c8b5018a61c45ebf28",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
