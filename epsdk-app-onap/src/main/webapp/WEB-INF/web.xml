@@ -71,4 +71,8 @@
     <url-pattern>/app/ui/*</url-pattern>
   </filter-mapping>
 
+  <error-page>
+    <error-code>404</error-code>
+    <location>/vid/epsdk-app-onap/src/main/webapp/WEB-INF/jsp/errorPage.jsp</location>
+  </error-page>
 </web-app>
